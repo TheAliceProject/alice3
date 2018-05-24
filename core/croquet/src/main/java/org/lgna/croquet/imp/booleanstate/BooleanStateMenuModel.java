@@ -42,16 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.booleanstate;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.Operation;
+import org.lgna.croquet.views.MenuItemContainer;
+
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.event.PopupMenuEvent;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/class BooleanStateMenuModel extends MenuModel {
 	public BooleanStateMenuModel( BooleanState state ) {
-		super( java.util.UUID.fromString( "89447818-3c15-4707-9464-79c3f0283262" ), state.getClass() );
+		super( UUID.fromString( "89447818-3c15-4707-9464-79c3f0283262" ), state.getClass() );
 		this.state = state;
 	}
 
@@ -81,15 +89,15 @@ import org.lgna.croquet.Operation;
 	}
 
 	@Override
-	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
+	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
+		Logger.todo( menuItemContainer, e );
 		super.handleShowing( menuItemContainer, e );
-		javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+		ButtonGroup buttonGroup = new ButtonGroup();
 		for( boolean isTrue : new boolean[] { true, false } ) {
 			Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
 			operation.initializeIfNecessary();
-			javax.swing.Action action = operation.getImp().getSwingModel().getAction();
-			javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
+			Action action = operation.getImp().getSwingModel().getAction();
+			JCheckBoxMenuItem jMenuItem = new JCheckBoxMenuItem( action );
 			buttonGroup.add( jMenuItem );
 			jMenuItem.setSelected( this.state.getValue() == isTrue );
 			menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
@@ -97,7 +105,7 @@ import org.lgna.croquet.Operation;
 	}
 
 	@Override
-	protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		super.handleHiding( menuItemContainer, e );
 	}

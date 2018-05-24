@@ -43,37 +43,48 @@
 
 package org.lgna.story.resources;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JointId {
-	private static final java.util.Map<Class<? extends JointedModelResource>, java.util.Map<JointId, java.util.List<JointId>>> externalChildrenMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<Class<? extends JointedModelResource>, Map<JointId, List<JointId>>> externalChildrenMap = Maps.newHashMap();
 
 	private static void addExternalChild( JointId parent, JointId child ) {
 		Class<? extends JointedModelResource> childClass = child.getContainingClass();
-		java.util.Map<JointId, java.util.List<JointId>> childClassMap = null;
+		Map<JointId, List<JointId>> childClassMap = null;
 		if( externalChildrenMap.containsKey( childClass ) ) {
 			childClassMap = externalChildrenMap.get( childClass );
 		} else {
-			childClassMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+			childClassMap = Maps.newHashMap();
 			externalChildrenMap.put( childClass, childClassMap );
 		}
-		java.util.List<JointId> externalChildList = null;
+		List<JointId> externalChildList = null;
 		if( childClassMap.containsKey( parent ) ) {
 			externalChildList = childClassMap.get( parent );
 		} else {
-			externalChildList = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			externalChildList = Lists.newLinkedList();
 			childClassMap.put( parent, externalChildList );
 		}
 		externalChildList.add( child );
 	}
 
-	private static java.util.List<JointId> getChildList( Class<? extends JointedModelResource> forClass, JointId forJoint ) {
+	private static List<JointId> getChildList( Class<? extends JointedModelResource> forClass, JointId forJoint ) {
 		if( ( forClass == null ) || ( forJoint == null ) ) {
 			return null;
 		}
 		if( externalChildrenMap.containsKey( forClass ) ) {
-			java.util.Map<JointId, java.util.List<JointId>> classMap = externalChildrenMap.get( forClass );
+			Map<JointId, List<JointId>> classMap = externalChildrenMap.get( forClass );
 			if( classMap.containsKey( forJoint ) ) {
 				return classMap.get( forJoint );
 			}
@@ -81,10 +92,10 @@ public class JointId {
 		return null;
 	}
 
-	private static class ExternalChildrenIterator implements java.util.Iterator<JointId> {
+	private static class ExternalChildrenIterator implements Iterator<JointId> {
 		private final JointId forJoint;
 		private Class<? extends JointedModelResource> currentClass;
-		private java.util.Iterator<JointId> currentIterator;
+		private Iterator<JointId> currentIterator;
 		private final JointedModelResource forResource;
 
 		public ExternalChildrenIterator( Class<? extends JointedModelResource> forClass, JointedModelResource forResource, JointId forJoint ) {
@@ -99,10 +110,10 @@ public class JointId {
 			}
 		}
 
-		private java.util.Iterator<JointId> getIteratorForExternalChildren() {
-			java.util.Iterator<JointId> externalIterator = null;
+		private Iterator<JointId> getIteratorForExternalChildren() {
+			Iterator<JointId> externalIterator = null;
 			while( ( currentClass != null ) && ( externalIterator == null ) ) {
-				java.util.List<JointId> jointList = JointId.getChildList( currentClass, forJoint );
+				List<JointId> jointList = JointId.getChildList( currentClass, forJoint );
 				if( jointList != null ) {
 					externalIterator = jointList.iterator();
 				}
@@ -150,7 +161,7 @@ public class JointId {
 		}
 	}
 
-	private static class ExternalChildrenIterable implements java.lang.Iterable<JointId> {
+	private static class ExternalChildrenIterable implements Iterable<JointId> {
 		private final Class<? extends JointedModelResource> forClass;
 		private final JointId forJoint;
 		private final JointedModelResource forResource;
@@ -162,7 +173,7 @@ public class JointId {
 		}
 
 		@Override
-		public java.util.Iterator<JointId> iterator() {
+		public Iterator<JointId> iterator() {
 			return new ExternalChildrenIterator( this.forClass, this.forResource, this.forJoint );
 		}
 
@@ -171,16 +182,16 @@ public class JointId {
 	private final JointId parent;
 	private final Class<? extends JointedModelResource> containingClass;
 	private final JointedModelResource resourceReference;
-	private final java.util.List<JointId> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.Map<JointedModelResource, java.util.List<JointId>> childrenMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private java.lang.reflect.Field fld;
+	private final List<JointId> children = Lists.newLinkedList();
+	private final Map<JointedModelResource, List<JointId>> childrenMap = Maps.newHashMap();
+	private Field fld;
 
 	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass, JointedModelResource resourceReference ) {
 		this.parent = parent;
 		this.containingClass = containingClass;
 		this.resourceReference = resourceReference;
 		//Initialize the childrenMap such that there's an empty list to be gotten
-		this.childrenMap.put( resourceReference, new java.util.ArrayList<JointId>() );
+		this.childrenMap.put( resourceReference, new ArrayList<JointId>() );
 		if( this.parent != null ) {
 			if( this.parent.getContainingClass() == this.getContainingClass() ) {
 				this.parent.addChild( this.resourceReference, this );
@@ -199,16 +210,16 @@ public class JointId {
 	}
 
 	private void addChild( JointedModelResource resource, JointId child ) {
-		java.util.List<JointId> childList = null;
+		List<JointId> childList = null;
 		if( this.childrenMap.containsKey( resource ) ) {
 			childList = this.childrenMap.get( resource );
 		} else if( this.childrenMap.containsKey( null ) ) {
 			//Joints that are in the "null" resource child map are the base joints for this resource and are part of all resources in this group
-			java.util.List<JointId> baseChildList = this.childrenMap.get( null );
-			childList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( baseChildList );
+			List<JointId> baseChildList = this.childrenMap.get( null );
+			childList = Lists.newArrayList( baseChildList );
 			this.childrenMap.put( resource, childList );
 		} else {
-			childList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+			childList = Lists.newArrayList();
 			this.childrenMap.put( resource, childList );
 		}
 		childList.add( child );
@@ -222,15 +233,15 @@ public class JointId {
 		return this.resourceReference;
 	}
 
-	public java.lang.reflect.Field getPublicStaticFinalFld() {
+	public Field getPublicStaticFinalFld() {
 		if( this.fld != null ) {
 			//pass
 		} else {
-			for( java.lang.reflect.Field fld : this.containingClass.getFields() ) {
+			for( Field fld : this.containingClass.getFields() ) {
 				int modidiers = fld.getModifiers();
-				if( java.lang.reflect.Modifier.isPublic( modidiers ) ) {
-					if( java.lang.reflect.Modifier.isStatic( modidiers ) ) {
-						if( java.lang.reflect.Modifier.isFinal( modidiers ) ) {
+				if( Modifier.isPublic( modidiers ) ) {
+					if( Modifier.isStatic( modidiers ) ) {
+						if( Modifier.isFinal( modidiers ) ) {
 							try {
 								Object o = fld.get( null );
 								if( o == this ) {
@@ -238,7 +249,7 @@ public class JointId {
 									break;
 								}
 							} catch( IllegalAccessException iae ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( iae, fld );
+								Logger.throwable( iae, fld );
 							}
 						}
 					}
@@ -265,7 +276,7 @@ public class JointId {
 
 	@Override
 	public String toString() {
-		java.lang.reflect.Field fld = this.getPublicStaticFinalFld();
+		Field fld = this.getPublicStaticFinalFld();
 		if( fld != null ) {
 			return fld.getName();
 		} else {

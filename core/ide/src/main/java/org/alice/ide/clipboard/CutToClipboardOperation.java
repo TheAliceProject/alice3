@@ -43,13 +43,23 @@
 
 package org.alice.ide.clipboard;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.clipboard.edits.CutToClipboardEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.Statement, CutToClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class CutToClipboardOperation extends ActionOperation {
+	private static Map<Statement, CutToClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized CutToClipboardOperation getInstance( org.lgna.project.ast.Statement node ) {
+	public static synchronized CutToClipboardOperation getInstance( Statement node ) {
 		assert node != null;
 		CutToClipboardOperation rv = map.get( node );
 		if( rv != null ) {
@@ -61,15 +71,15 @@ public class CutToClipboardOperation extends org.lgna.croquet.ActionOperation {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.Statement statement;
+	private final Statement statement;
 
-	private CutToClipboardOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
+	private CutToClipboardOperation( Statement statement ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "9ae5c84b-60f4-486f-aaf1-bd7b5dc6ba86" ) );
 		this.statement = statement;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.alice.ide.clipboard.edits.CutToClipboardEdit( step, statement ) );
+	protected void perform( CompletionStep<?> step ) {
+		step.commitAndInvokeDo( new CutToClipboardEdit( step, statement ) );
 	}
 }

@@ -42,11 +42,13 @@
  */
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  */
 public class GetDistanceToTheRightOf extends AsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = GetDistanceToTheRightOf.class )
+	@ClassTemplate( keywordFactoryCls = GetDistanceToTheRightOf.class )
 	public static interface Detail {
 	}
 

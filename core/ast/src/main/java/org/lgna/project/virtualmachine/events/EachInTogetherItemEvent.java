@@ -42,18 +42,21 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine.events;
 
+import org.lgna.project.ast.AbstractEachInTogether;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public class EachInTogetherItemEvent extends VirtualMachineEvent {
-	public EachInTogetherItemEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.AbstractEachInTogether eachInTogether, Object value, Object[] array ) {
+	public EachInTogetherItemEvent( VirtualMachine vm, AbstractEachInTogether eachInTogether, Object value, Object[] array ) {
 		super( vm );
 		this.eachInTogether = eachInTogether;
 		this.value = value;
 		this.array = array;
 	}
 
-	public org.lgna.project.ast.AbstractEachInTogether getEachInTogether() {
+	public AbstractEachInTogether getEachInTogether() {
 		return this.eachInTogether;
 	}
 
@@ -65,7 +68,7 @@ public class EachInTogetherItemEvent extends VirtualMachineEvent {
 		return this.array;
 	}
 
-	private final org.lgna.project.ast.AbstractEachInTogether eachInTogether;
+	private final AbstractEachInTogether eachInTogether;
 	private final Object value;
 	private final Object[] array;
 }

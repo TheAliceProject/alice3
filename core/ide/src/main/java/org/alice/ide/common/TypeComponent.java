@@ -42,12 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.AbstractType;
+
+import javax.swing.JLabel;
+import java.awt.Font;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends org.lgna.croquet.views.SwingComponentView<javax.swing.JLabel> {
+public class TypeComponent extends SwingComponentView<JLabel> {
 	public static TypeComponent createInstance( AbstractType<?, ?, ?> type ) {
 		return new TypeComponent( type );
 	}
@@ -59,11 +63,11 @@ public class TypeComponent extends org.lgna.croquet.views.SwingComponentView<jav
 	}
 
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		final javax.swing.JLabel rv = new javax.swing.JLabel();
+	protected JLabel createAwtComponent() {
+		final JLabel rv = new JLabel();
 		final TypeIcon typeIcon = new TypeIcon( type ) {
 			@Override
-			protected java.awt.Font getTypeFont() {
+			protected Font getTypeFont() {
 				return rv.getFont();
 			}
 		};

@@ -43,6 +43,19 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.triggers.ChangeEventTrigger;
+import org.lgna.croquet.views.Slider;
+import org.lgna.croquet.views.Spinner;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,9 +104,9 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 	}
 
 	public static interface SwingModel<N extends Number> {
-		public javax.swing.BoundedRangeModel getBoundedRangeModel();
+		public BoundedRangeModel getBoundedRangeModel();
 
-		public javax.swing.SpinnerNumberModel getSpinnerModel();
+		public SpinnerNumberModel getSpinnerModel();
 
 		public void setValue( N value );
 
@@ -101,23 +114,23 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 	}
 
 	private final SwingModel<N> swingModel;
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	private final ChangeListener changeListener = new ChangeListener() {
 		//private boolean previousValueIsAdjusting = false;
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		public void stateChanged( ChangeEvent e ) {
 			BoundedNumberState.this.handleStateChanged( e );
 		}
 	};
 
-	public BoundedNumberState( Group group, java.util.UUID id, N initialValue, SwingModel<N> swingModel ) {
+	public BoundedNumberState( Group group, UUID id, N initialValue, SwingModel<N> swingModel ) {
 		super( group, id, initialValue );
 		this.swingModel = swingModel;
 		this.swingModel.getSpinnerModel().addChangeListener( this.changeListener );
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -134,9 +147,9 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 		return false;
 	}
 
-	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+	private void handleStateChanged( ChangeEvent e ) {
 		N nextValue = this.getSwingValue();
-		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
+		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), ChangeEventTrigger.createUserInstance( e ) );
 	}
 
 	@Override
@@ -180,11 +193,11 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 		this.swingModel.setValue( nextValue );
 	}
 
-	public org.lgna.croquet.views.Slider createSlider() {
-		return new org.lgna.croquet.views.Slider( this );
+	public Slider createSlider() {
+		return new Slider( this );
 	}
 
-	public org.lgna.croquet.views.Spinner createSpinner() {
-		return new org.lgna.croquet.views.Spinner( this );
+	public Spinner createSpinner() {
+		return new Spinner( this );
 	}
 }

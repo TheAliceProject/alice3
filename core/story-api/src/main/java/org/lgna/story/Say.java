@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  * 
  */
 public class Say extends DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = Say.class )
+	@ClassTemplate( keywordFactoryCls = Say.class )
 	public static interface Detail {
 	}
 

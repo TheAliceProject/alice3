@@ -42,18 +42,24 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FilenameListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
+public class FilenameListCellRenderer extends ListCellRenderer<String> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, String value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {
 			//pass
 		} else {
 			rv.setText( "working" );
-			rv.setBackground( java.awt.Color.WHITE );
-			rv.setForeground( java.awt.Color.GRAY );
+			rv.setBackground( Color.WHITE );
+			rv.setForeground( Color.GRAY );
 		}
 		return rv;
 	}

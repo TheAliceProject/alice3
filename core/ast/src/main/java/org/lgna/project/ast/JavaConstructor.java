@@ -43,20 +43,33 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.annotations.ConstructorTemplate;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
 public class JavaConstructor extends AbstractConstructor {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static final InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
 	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
 		if( constructorReflectionProxy != null ) {
-			return mapReflectionProxyToInstance.getInitializingIfAbsent( constructorReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( constructorReflectionProxy, new InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
 				@Override
-				public org.lgna.project.ast.JavaConstructor initialize( org.lgna.project.ast.ConstructorReflectionProxy key ) {
+				public JavaConstructor initialize( ConstructorReflectionProxy key ) {
 					return new JavaConstructor( key );
 				}
 			} );
@@ -65,18 +78,18 @@ public class JavaConstructor extends AbstractConstructor {
 		}
 	}
 
-	public static JavaConstructor getInstance( java.lang.reflect.Constructor<?> cnstrctr ) {
+	public static JavaConstructor getInstance( Constructor<?> cnstrctr ) {
 		return getInstance( new ConstructorReflectionProxy( cnstrctr ) );
 	}
 
 	public static JavaConstructor getInstance( Class<?> declaringCls, Class<?>... parameterClses ) {
-		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
+		return getInstance( ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
 	}
 
 	@Override
 	public Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( getConstructorReflectionProxy().getReification(), arguments );
+		return ReflectionUtilities.newInstance( getConstructorReflectionProxy().getReification(), arguments );
 	}
 
 	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {
@@ -88,12 +101,12 @@ public class JavaConstructor extends AbstractConstructor {
 		} else {
 			N = parameterTypeReflectionProxies.length;
 		}
-		java.util.ArrayList<JavaConstructorParameter> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( N );
-		java.lang.annotation.Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
+		ArrayList<JavaConstructorParameter> list = Lists.newArrayListWithInitialCapacity( N );
+		Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < N; i++ ) {
 			list.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
 		}
-		this.requiredParameters = java.util.Collections.unmodifiableList( list );
+		this.requiredParameters = Collections.unmodifiableList( list );
 		if( this.constructorReflectionProxy.isVarArgs() ) {
 			this.variableOrKeyedParameter = new JavaConstructorParameter( this, N, parameterAnnotations[ N ] );
 		} else {
@@ -137,17 +150,17 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	@Override
-	public java.util.List<JavaConstructorParameter> getRequiredParameters() {
+	public List<JavaConstructorParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
 	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
-		java.lang.reflect.Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
+	public Visibility getVisibility() {
+		Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {
-			if( cnstrctr.isAnnotationPresent( org.lgna.project.annotations.ConstructorTemplate.class ) ) {
+			if( cnstrctr.isAnnotationPresent( ConstructorTemplate.class ) ) {
 				//todo: investigate cast requirement
-				org.lgna.project.annotations.ConstructorTemplate cnstrctrTemplate = cnstrctr.getAnnotation( org.lgna.project.annotations.ConstructorTemplate.class );
+				ConstructorTemplate cnstrctrTemplate = cnstrctr.getAnnotation( ConstructorTemplate.class );
 				return cnstrctrTemplate.visibility();
 			} else {
 				return null;
@@ -192,7 +205,7 @@ public class JavaConstructor extends AbstractConstructor {
 
 	@Override
 	public AccessLevel getAccessLevel() {
-		java.lang.reflect.Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
+		Constructor<?> cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {
 			return AccessLevel.getValueFromModifiers( cnstrctr.getModifiers() );
 		} else {
@@ -202,7 +215,7 @@ public class JavaConstructor extends AbstractConstructor {
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		JavaConstructor other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaConstructor.class );
+		JavaConstructor other = ClassUtilities.getInstance( o, JavaConstructor.class );
 		if( other != null ) {
 			return this.constructorReflectionProxy.equals( other.constructorReflectionProxy );
 		} else {
@@ -216,6 +229,6 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	private final ConstructorReflectionProxy constructorReflectionProxy;
-	private final java.util.List<JavaConstructorParameter> requiredParameters;
+	private final List<JavaConstructorParameter> requiredParameters;
 	private final JavaConstructorParameter variableOrKeyedParameter;
 }

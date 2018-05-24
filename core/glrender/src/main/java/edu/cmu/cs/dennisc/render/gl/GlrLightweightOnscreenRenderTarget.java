@@ -43,32 +43,48 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.awt.GLJPanel;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.awt.ProxyGraphics2D;
+import edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import javax.swing.GrayFilter;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
+/*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<JPanel> implements LightweightOnscreenRenderTarget {
 	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
-	private class RenderPane extends com.jogamp.opengl.awt.GLJPanel {
-		private java.awt.Image mostRecentDrawnImage;
-		private java.awt.Image disabledImage;
+	private class RenderPane extends GLJPanel {
+		private Image mostRecentDrawnImage;
+		private Image disabledImage;
 
-		private class ImageTrackingProxyGraphics extends edu.cmu.cs.dennisc.java.awt.ProxyGraphics2D {
+		private class ImageTrackingProxyGraphics extends ProxyGraphics2D {
 			@Override
-			public java.awt.Graphics create() {
+			public Graphics create() {
 				ImageTrackingProxyGraphics rv = new ImageTrackingProxyGraphics();
-				rv.setOther( (java.awt.Graphics2D)super.create() );
+				rv.setOther( (Graphics2D)super.create() );
 				return rv;
 			}
 
 			@Override
-			public boolean drawImage( java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer ) {
+			public boolean drawImage( Image img, int x, int y, int width, int height, ImageObserver observer ) {
 				mostRecentDrawnImage = img;
 				return super.drawImage( img, x, y, width, height, observer );
 			}
 		}
 
-		public RenderPane( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		public RenderPane( RenderCapabilities requestedCapabilities ) {
 			super( GlDrawableUtils.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser() );
 		}
 
@@ -80,17 +96,17 @@ package edu.cmu.cs.dennisc.render.gl;
 		}
 
 		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
+		protected void paintComponent( Graphics g ) {
 			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
 				if( GlrLightweightOnscreenRenderTarget.this.getSgCameraCount() > 0 ) {
 					try {
 						super.paintComponent( g );
 						this.prevThrowable = null;
 					} catch( Throwable throwable ) {
-						g.setColor( java.awt.Color.RED );
+						g.setColor( Color.RED );
 						g.fillRect( 0, 0, getWidth(), getHeight() );
-						g.setColor( java.awt.Color.BLACK );
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
+						g.setColor( Color.BLACK );
+						GraphicsUtilities.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
 						//edu.cmu.cs.dennisc.awt.GraphicsUtilities.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
 						if( this.prevThrowable != null ) {
 							//pass
@@ -100,17 +116,17 @@ package edu.cmu.cs.dennisc.render.gl;
 						}
 					}
 				} else {
-					g.setColor( java.awt.Color.DARK_GRAY );
+					g.setColor( Color.DARK_GRAY );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
 			}
 		}
 
 		@Override
-		public void paint( java.awt.Graphics g ) {
+		public void paint( Graphics g ) {
 			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
 				if( imageTrackingProxyGraphics != null ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Graphics2D g2 = (Graphics2D)g;
 					imageTrackingProxyGraphics.setOther( g2 );
 					mostRecentDrawnImage = null;
 					disabledImage = null;
@@ -124,22 +140,22 @@ package edu.cmu.cs.dennisc.render.gl;
 					//pass
 				} else {
 					if( mostRecentDrawnImage != null ) {
-						disabledImage = javax.swing.GrayFilter.createDisabledImage( mostRecentDrawnImage );
+						disabledImage = GrayFilter.createDisabledImage( mostRecentDrawnImage );
 					}
 				}
-				java.awt.Dimension size = this.getSize();
+				Dimension size = this.getSize();
 				if( disabledImage != null ) {
 					g.drawImage( disabledImage, 0, 0, this );
 				} else {
-					g.setColor( java.awt.Color.GRAY );
+					g.setColor( Color.GRAY );
 					g.fillRect( 0, 0, size.width, size.height );
 				}
 				String text = "rendering disabled for performance considerations";
-				g.setColor( java.awt.Color.BLACK );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
-				g.setColor( java.awt.Color.YELLOW );
+				g.setColor( Color.BLACK );
+				GraphicsUtilities.drawCenteredText( g, text, size );
+				g.setColor( Color.YELLOW );
 				g.translate( -1, -1 );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
+				GraphicsUtilities.drawCenteredText( g, text, size );
 				g.translate( 1, 1 );
 			}
 		}
@@ -148,24 +164,24 @@ package edu.cmu.cs.dennisc.render.gl;
 		private Throwable prevThrowable = null;
 	}
 
-	/* package-private */ GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		this.glPanel = new RenderPane( requestedCapabilities );
 		this.glPanel.setFocusable( true );
 	}
 
 	@Override
-	public javax.swing.JPanel getAwtComponent() {
+	public JPanel getAwtComponent() {
 		return this.glPanel;
 	}
 
 	@Override
-	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+	protected Dimension getSurfaceSize( Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 
 	@Override
-	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+	protected Dimension getDrawableSize( Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 
@@ -175,9 +191,9 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public GLAutoDrawable getGLAutoDrawable() {
 		return this.glPanel;
 	}
 
-	private final com.jogamp.opengl.awt.GLJPanel glPanel;
+	private final GLJPanel glPanel;
 }

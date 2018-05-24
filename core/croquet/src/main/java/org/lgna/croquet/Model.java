@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Model extends Element {
 	public Iterable<ContextFactory<?>> getContextFactories();
 
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
+	public Step<?> fire( Trigger trigger );
 
 	public boolean isEnabled();
 

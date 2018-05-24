@@ -108,7 +108,7 @@ public class SOAPUtilities {
 		return remoteIssue;
 	}
 
-	public static RemoteIssue createIssue( JIRAReport jiraReport, JiraSoapService service, String token ) throws java.rmi.RemoteException {
+	public static RemoteIssue createIssue( JIRAReport jiraReport, JiraSoapService service, String token ) throws RemoteException {
 		String project = jiraReport.getProjectKey();
 		RemoteIssue remoteIssue = createPreparedIssue( jiraReport );
 		remoteIssue.setProject( project );
@@ -117,7 +117,7 @@ public class SOAPUtilities {
 		return service.createIssue( token, remoteIssue );
 	}
 
-	public static RemoteIssue addAttachment( RemoteIssue rv, Attachment attachment, JiraSoapService service, String token ) throws java.rmi.RemoteException {
+	public static RemoteIssue addAttachment( RemoteIssue rv, Attachment attachment, JiraSoapService service, String token ) throws RemoteException {
 		String[] names = { attachment.getFileName() };
 		final boolean isBase64EncodingDesired = true; // addAttachmentsToIssue is slow and uses too much memory
 		if( isBase64EncodingDesired ) {

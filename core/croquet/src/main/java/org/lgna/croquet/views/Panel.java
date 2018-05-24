@@ -43,16 +43,25 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.croquet.Composite<?>> {
-	protected class DefaultJPanel extends javax.swing.JPanel {
+public abstract class Panel extends CompositeView<JPanel, Composite<?>> {
+	protected class DefaultJPanel extends JPanel {
 		public DefaultJPanel() {
 			this.setOpaque( false );
 			this.setBackground( null );
-			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+			this.setAlignmentX( Component.LEFT_ALIGNMENT );
+			this.setAlignmentY( Component.CENTER_ALIGNMENT );
 		}
 
 		@Override
@@ -62,13 +71,13 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
+		public Dimension getPreferredSize() {
 			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
 
 		@Override
-		public java.awt.Dimension getMaximumSize() {
-			java.awt.Dimension rv = super.getMaximumSize();
+		public Dimension getMaximumSize() {
+			Dimension rv = super.getMaximumSize();
 			if( Panel.this.isMaximumSizeClampedToPreferredSize() ) {
 				rv.setSize( this.getPreferredSize() );
 			}
@@ -80,22 +89,22 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 		this( null );
 	}
 
-	public Panel( org.lgna.croquet.Composite<?> composite ) {
+	public Panel( Composite<?> composite ) {
 		super( composite );
 	}
 
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		return new DefaultJPanel();
 	}
 
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+	protected abstract LayoutManager createLayoutManager( JPanel jPanel );
 
 	@Override
-	protected final javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = this.createJPanel();
-		java.awt.LayoutManager prevLayoutManager = rv.getLayout();
-		java.awt.LayoutManager nextLayoutManager = this.createLayoutManager( rv );
-		if( prevLayoutManager instanceof java.awt.FlowLayout ) {
+	protected final JPanel createAwtComponent() {
+		JPanel rv = this.createJPanel();
+		LayoutManager prevLayoutManager = rv.getLayout();
+		LayoutManager nextLayoutManager = this.createLayoutManager( rv );
+		if( prevLayoutManager instanceof FlowLayout ) {
 			//pass
 		} else {
 			StringBuilder sb = new StringBuilder();
@@ -121,7 +130,7 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 			sb.append( "\n********************************************************" );
 			sb.append( "\n********************************************************" );
 			sb.append( "\n********************************************************" );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sb.toString() );
+			Logger.severe( sb.toString() );
 		}
 		rv.setLayout( nextLayoutManager );
 		return rv;
@@ -184,7 +193,7 @@ public abstract class Panel extends CompositeView<javax.swing.JPanel, org.lgna.c
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		if( this.isRefreshOnAddedToDesired() ) {
 			this.refreshIfNecessary();
 		}

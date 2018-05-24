@@ -43,18 +43,22 @@
 
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Sphere implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public final edu.cmu.cs.dennisc.math.Point3 center = edu.cmu.cs.dennisc.math.Point3.createNaN();
+public class Sphere implements BinaryEncodableAndDecodable {
+	public final Point3 center = Point3.createNaN();
 	public double radius = Double.NaN;
 
 	public Sphere() {
 		setNaN();
 	}
 
-	public Sphere( edu.cmu.cs.dennisc.math.Point3 center, double radius ) {
+	public Sphere( Point3 center, double radius ) {
 		this.center.set( center );
 		this.radius = radius;
 	}
@@ -63,17 +67,17 @@ public class Sphere implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 		set( other );
 	}
 
-	public Sphere( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Sphere( BinaryDecoder binaryDecoder ) {
 		decode( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.center );
 		binaryEncoder.encode( this.radius );
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		Point3 p = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.center.set( p );
 		this.radius = binaryDecoder.decodeDouble();
@@ -177,7 +181,7 @@ public class Sphere implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 	//		m_center.z += m.translation.z;
 	//	}
 
-	public void scale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
+	public void scale( Matrix3x3 m ) {
 		//todo?
 
 		//todo: test

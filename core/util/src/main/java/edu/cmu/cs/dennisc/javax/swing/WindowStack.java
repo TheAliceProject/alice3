@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+
+import javax.swing.JFrame;
+import java.awt.Window;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,18 +56,18 @@ public class WindowStack {
 		throw new AssertionError();
 	}
 
-	private static final javax.swing.JFrame rootFrame = new javax.swing.JFrame();
-	private static final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Window> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private static final JFrame rootFrame = new JFrame();
+	private static final DStack<Window> stack = Stacks.newStack();
 
-	public static javax.swing.JFrame getRootFrame() {
+	public static JFrame getRootFrame() {
 		return rootFrame;
 	}
 
-	public static void push( java.awt.Window window ) {
+	public static void push( Window window ) {
 		stack.push( window );
 	}
 
-	public static java.awt.Window peek() {
+	public static Window peek() {
 		if( stack.size() > 0 ) {
 			return stack.peek();
 		} else {
@@ -69,7 +75,7 @@ public class WindowStack {
 		}
 	}
 
-	public static java.awt.Window pop() {
+	public static Window pop() {
 		return stack.pop();
 	}
 }

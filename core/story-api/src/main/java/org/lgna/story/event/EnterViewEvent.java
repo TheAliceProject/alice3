@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
+import org.lgna.story.SModel;
+
 public class EnterViewEvent extends ViewEvent {
-	public EnterViewEvent( org.lgna.story.SModel model ) {
+	public EnterViewEvent( SModel model ) {
 		super( model );
 	}
 }

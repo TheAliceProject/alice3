@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Vector4;
+import org.lgna.story.SFlyer;
+import org.lgna.story.resources.FlyerResource;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author dculyba
  * 
  */
-public final class FlyerImp extends JointedModelImp<org.lgna.story.SFlyer, org.lgna.story.resources.FlyerResource> {
-	public FlyerImp( org.lgna.story.SFlyer abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.FlyerResource> factory ) {
+public final class FlyerImp extends JointedModelImp<SFlyer, FlyerResource> {
+	public FlyerImp( SFlyer abstraction, JointImplementationAndVisualDataFactory<FlyerResource> factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
-		return org.lgna.story.resources.FlyerResource.JOINT_ID_ROOTS;
+	public JointId[] getRootJointIds() {
+		return FlyerResource.JOINT_ID_ROOTS;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.FlyerResource.HEAD ) );
+	protected Vector4 getThoughtBubbleOffset() {
+		return this.getTopOffsetForJoint( this.getJointImplementation( FlyerResource.HEAD ) );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.FlyerResource.MOUTH ) );
+	protected Vector4 getSpeechBubbleOffset() {
+		return this.getFrontOffsetForJoint( this.getJointImplementation( FlyerResource.MOUTH ) );
 	}
 
 	//	private static class WingJointData {

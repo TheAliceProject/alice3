@@ -42,14 +42,16 @@
  */
 package org.alice.stageide.ast;
 
+import org.lgna.project.ast.AbstractMethod;
+
 /**
  * @author dculyba
  */
 public class JointMethodArrayAccessInfo {
 	private final int index;
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 
-	public JointMethodArrayAccessInfo( org.lgna.project.ast.AbstractMethod method, int index ) {
+	public JointMethodArrayAccessInfo( AbstractMethod method, int index ) {
 		this.method = method;
 		this.index = index;
 	}
@@ -58,7 +60,7 @@ public class JointMethodArrayAccessInfo {
 		return index;
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 }

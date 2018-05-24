@@ -42,18 +42,25 @@
  *******************************************************************************/
 package org.lgna.stencil;
 
+import org.lgna.croquet.resolvers.RuntimeResolver;
+import org.lgna.croquet.views.TrackableShape;
+
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Hole extends Feature {
 	private static final int PAD = 4;
 	private static final int BOUNDS_PAD = PAD + 64;
-	private static final java.awt.Insets PAINT_INSETS = new java.awt.Insets( PAD, PAD, PAD, PAD );
-	private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
+	private static final Insets PAINT_INSETS = new Insets( PAD, PAD, PAD, PAD );
+	private static final Insets BOUNDS_INSETS = new Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
 
 	private final Painter painter;
 
-	public Hole( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.views.TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
+	public Hole( RuntimeResolver<? extends TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
 		super( trackableShapeResolver, connectionPreference );
 		this.painter = painter;
 	}
@@ -68,22 +75,22 @@ public class Hole extends Feature {
 	}
 
 	@Override
-	protected java.awt.Insets getBoundsInsets() {
+	protected Insets getBoundsInsets() {
 		return BOUNDS_INSETS;
 	}
 
 	@Override
-	protected java.awt.Insets getContainsInsets() {
+	protected Insets getContainsInsets() {
 		return null;
 	}
 
 	@Override
-	protected java.awt.Insets getPaintInsets() {
+	protected Insets getPaintInsets() {
 		return PAINT_INSETS;
 	}
 
 	@Override
-	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection ) {
+	protected void paint( Graphics2D g2, Shape shape, Connection actualConnection ) {
 		if( this.isHoleRenderingDesired() ) {
 			this.painter.paint( g2, shape );
 		}

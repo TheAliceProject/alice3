@@ -43,24 +43,34 @@
 
 package org.alice.stageide.personresource.views;
 
+import org.alice.stageide.personresource.HairTabComposite;
+import org.alice.stageide.personresource.data.HairHatStyle;
+import org.alice.stageide.personresource.views.renderers.HairListCellRenderer;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HairTabView extends org.lgna.croquet.views.MigPanel {
-	public HairTabView( org.alice.stageide.personresource.HairTabComposite composite ) {
+public class HairTabView extends MigPanel {
+	public HairTabView( HairTabComposite composite ) {
 		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "[grow 0][grow]" );
-		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
+		Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel() );
 		//this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
 		this.addComponent( new HairColorNameRadioButtons( composite.getHairColorNameState() ), "align left, wrap, grow, shrink" );
 
-		org.lgna.croquet.views.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
-		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
-		org.lgna.croquet.views.ScrollPane hairScrollPane = new org.lgna.croquet.views.ScrollPane( hairList );
-		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		List<HairHatStyle> hairList = new HorizontalWrapList<HairHatStyle>( composite.getHairHatStyleState(), -1, HairListCellRenderer.getInstance() );
+		hairList.setBackgroundColor( IngredientsView.BACKGROUND_COLOR );
+		ScrollPane hairScrollPane = new ScrollPane( hairList );
+		hairScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
 
 		this.addComponent( hairScrollPane, "span 2, wrap, grow, shrink" );

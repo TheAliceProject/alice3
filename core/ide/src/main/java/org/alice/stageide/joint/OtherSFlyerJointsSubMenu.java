@@ -43,11 +43,15 @@
 
 package org.alice.stageide.joint;
 
+import org.lgna.story.SFlyer;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OtherSFlyerJointsSubMenu<FB> extends JointsSubMenu<FB> {
 	public OtherSFlyerJointsSubMenu() {
-		super( java.util.UUID.fromString( "f1ee6351-f9d6-4cc3-b9b7-23d9bc3fcd44" ), org.lgna.story.SFlyer.class, "getNeck2", "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getLeftFoot", "getRightFoot" );
+		super( UUID.fromString( "f1ee6351-f9d6-4cc3-b9b7-23d9bc3fcd44" ), SFlyer.class, "getNeck2", "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getLeftFoot", "getRightFoot" );
 	}
 }

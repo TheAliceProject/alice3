@@ -43,16 +43,31 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.imp.dialog.DialogContentComposite;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Dialog;
+
+import javax.swing.JComboBox;
+import javax.swing.UIManager;
+import java.util.Locale;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
-	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
+public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends DialogContentComposite<?>> extends AbstractDialogComposite<V> {
+	protected static final Step.Key<Boolean> IS_COMMITED_KEY = Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
 	protected static abstract class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
 
-		public InternalDialogOperation( java.util.UUID id, AdornedDialogCoreComposite coreComposite ) {
+		public InternalDialogOperation( UUID id, AdornedDialogCoreComposite coreComposite ) {
 			super( DIALOG_IMPLEMENTATION_GROUP, id );
 			this.coreComposite = coreComposite;
 		}
@@ -70,26 +85,26 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	private static abstract class InternalFinishOperation extends InternalDialogOperation {
 		private final boolean isCommit;
 
-		public InternalFinishOperation( java.util.UUID id, AdornedDialogCoreComposite coreComposite, boolean isCommit ) {
+		public InternalFinishOperation( UUID id, AdornedDialogCoreComposite coreComposite, boolean isCommit ) {
 			super( id, coreComposite );
 			this.isCommit = isCommit;
 		}
 
 		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		protected final void perform( Transaction transaction, Trigger trigger ) {
 			if( ( this.isCommit == false ) || this.getDialogCoreComposite().isClearedForCommit() ) {
-				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+				CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 				AdornedDialogCoreComposite coreComposite = this.getDialogCoreComposite();
 				assert coreComposite != null : this;
-				org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
+				CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
 				assert dialogStep != null : transaction;
-				org.lgna.croquet.views.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
+				Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
 				assert dialog != null : dialogStep;
 				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 				dialog.setVisible( false );
 				step.finish();
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
+				Logger.outln( this );
 			}
 		}
 
@@ -97,7 +112,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 
 	private static final class InternalCommitOperation extends InternalFinishOperation {
 		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( java.util.UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
+			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
 		}
 
 		@Override
@@ -111,10 +126,10 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 			if( rv != null ) {
 				//pass
 			} else {
-				java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+				Locale locale = JComboBox.getDefaultLocale();
 				String commitUiKey = this.getDialogCoreComposite().getCommitUiKey();
 				if( commitUiKey != null ) {
-					rv = javax.swing.UIManager.getString( commitUiKey, locale );
+					rv = UIManager.getString( commitUiKey, locale );
 				}
 				if( rv != null ) {
 					//pass
@@ -128,7 +143,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 
 	private static final class InternalCancelOperation extends InternalFinishOperation {
 		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
+			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
 		}
 
 		@Override
@@ -142,8 +157,8 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 			if( rv != null ) {
 				//pass
 			} else {
-				java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
-				rv = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
+				Locale locale = JComboBox.getDefaultLocale();
+				rv = UIManager.getString( "OptionPane.cancelButtonText", locale );
 				if( rv != null ) {
 					//pass
 				} else {
@@ -157,7 +172,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	private final InternalCommitOperation commitOperation = new InternalCommitOperation( this );
 	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
-	public AdornedDialogCoreComposite( java.util.UUID migrationId ) {
+	public AdornedDialogCoreComposite( UUID migrationId ) {
 		super( migrationId, IsModal.TRUE );
 	}
 
@@ -186,10 +201,10 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 		if( commitText != null ) {
 			//pass
 		} else {
-			java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
+			Locale locale = JComboBox.getDefaultLocale();
 			String commitUiKey = this.getCommitUiKey();
 			if( commitUiKey != null ) {
-				commitText = javax.swing.UIManager.getString( commitUiKey, locale );
+				commitText = UIManager.getString( commitUiKey, locale );
 			}
 			if( commitText != null ) {
 				//pass
@@ -202,8 +217,8 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 		if( cancelText != null ) {
 			//pass
 		} else {
-			java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
-			cancelText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
+			Locale locale = JComboBox.getDefaultLocale();
+			cancelText = UIManager.getString( "OptionPane.cancelButtonText", locale );
 			if( cancelText != null ) {
 				//pass
 			} else {
@@ -214,13 +229,13 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	}
 
 	@Override
-	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected CompositeView<?, ?> allocateView( CompletionStep<?> step ) {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
 
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
+	protected void releaseView( CompletionStep<?> step, CompositeView<?, ?> view ) {
 		//todo
 	}
 
@@ -229,19 +244,19 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
 		if( this.isDefaultButtonDesired() ) {
-			org.lgna.croquet.views.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
+			Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 			if( commitButton != null ) {
-				org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
+				Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 				dialog.setDefaultButton( commitButton );
 			}
 		}
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePostHideDialog( CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePostDeactivation();
 	}
 }

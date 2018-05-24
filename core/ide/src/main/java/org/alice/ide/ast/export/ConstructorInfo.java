@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import org.lgna.project.ast.UserConstructor;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorInfo extends MemberInfo<org.lgna.project.ast.UserConstructor> {
-	public ConstructorInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserConstructor constructor ) {
+public class ConstructorInfo extends MemberInfo<UserConstructor> {
+	public ConstructorInfo( ProjectInfo projectInfo, UserConstructor constructor ) {
 		super( projectInfo, constructor );
 	}
 }

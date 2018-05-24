@@ -42,16 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ClassHierarchyBasedResourceNode extends ResourceNode {
-	public ClassHierarchyBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
-		super( java.util.UUID.fromString( "3829c7ee-e604-4917-9384-2913b5df28b3" ), resourceKey, children );
+	public ClassHierarchyBasedResourceNode( ResourceKey resourceKey, List<ResourceNode> children ) {
+		super( UUID.fromString( "3829c7ee-e604-4917-9384-2913b5df28b3" ), resourceKey, children );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
+	protected ResourceNodeTreeState getState() {
 		return ClassHierarchyBasedResourceNodeTreeState.getInstance();
 	}
 }

@@ -43,26 +43,40 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.triggers.ActionEventTrigger;
+import org.lgna.croquet.triggers.EventObjectTrigger;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.PopupButton;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import java.awt.event.ActionEvent;
+import java.util.EventObject;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PopupPrepModel extends AbstractPrepModel {
 	public class SwingModel {
-		private final javax.swing.Action action = new javax.swing.AbstractAction() {
+		private final Action action = new AbstractAction() {
 			@Override
-			public void actionPerformed( final java.awt.event.ActionEvent e ) {
-				PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+			public void actionPerformed( final ActionEvent e ) {
+				PopupPrepModel.this.fire( ActionEventTrigger.createUserInstance( e ) );
 			}
 		};
 
-		public javax.swing.Action getAction() {
+		public Action getAction() {
 			return this.action;
 		}
 	}
 
 	private final SwingModel swingModel = new SwingModel();
 
-	public PopupPrepModel( java.util.UUID id ) {
+	public PopupPrepModel( UUID id ) {
 		super( id );
 	}
 
@@ -81,11 +95,11 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	}
 
 	public String getName() {
-		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
+		return String.class.cast( this.swingModel.action.getValue( Action.NAME ) );
 	}
 
 	public void setName( String name ) {
-		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
+		this.swingModel.action.putValue( Action.NAME, name );
 	}
 
 	//	public void setShortDescription( String shortDescription ) {
@@ -114,20 +128,20 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		this.swingModel.action.setEnabled( isEnabled );
 	}
 
-	public org.lgna.croquet.views.PopupButton createPopupButton() {
-		return new org.lgna.croquet.views.PopupButton( this );
+	public PopupButton createPopupButton() {
+		return new PopupButton( this );
 	}
 
-	private javax.swing.ButtonModel prevButtonModel;
+	private ButtonModel prevButtonModel;
 
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void prologue( Trigger trigger ) {
 		this.prevButtonModel = null;
-		if( trigger instanceof org.lgna.croquet.triggers.EventObjectTrigger ) {
-			org.lgna.croquet.triggers.EventObjectTrigger<?> eventTrigger = (org.lgna.croquet.triggers.EventObjectTrigger<?>)trigger;
-			java.util.EventObject e = eventTrigger.getEvent();
+		if( trigger instanceof EventObjectTrigger ) {
+			EventObjectTrigger<?> eventTrigger = (EventObjectTrigger<?>)trigger;
+			EventObject e = eventTrigger.getEvent();
 			Object source = e.getSource();
-			if( source instanceof javax.swing.AbstractButton ) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)source;
+			if( source instanceof AbstractButton ) {
+				AbstractButton button = (AbstractButton)source;
 				this.prevButtonModel = button.getModel();
 			}
 		}
@@ -143,10 +157,10 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		}
 	}
 
-	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract Step<?> perform( Trigger trigger );
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public Step<?> fire( Trigger trigger ) {
 		return this.perform( trigger );
 	}
 }

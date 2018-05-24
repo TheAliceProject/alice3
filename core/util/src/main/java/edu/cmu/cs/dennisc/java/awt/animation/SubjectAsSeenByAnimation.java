@@ -42,25 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.animation;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SubjectAsSeenByAnimation extends SubjectAnimation {
-	private java.awt.Component m_awtAsSeenBy = null;
+	private Component m_awtAsSeenBy = null;
 
 	public SubjectAsSeenByAnimation() {
 	}
 
-	public SubjectAsSeenByAnimation( java.awt.Component awtSubject, java.awt.Component awtAsSeenBy ) {
+	public SubjectAsSeenByAnimation( Component awtSubject, Component awtAsSeenBy ) {
 		super( awtSubject );
 		setAsSeenBy( awtAsSeenBy );
 	}
 
-	public java.awt.Component getAsSeenBy() {
+	public Component getAsSeenBy() {
 		return m_awtAsSeenBy;
 	}
 
-	public void setAsSeenBy( java.awt.Component awtAsSeenBy ) {
+	public void setAsSeenBy( Component awtAsSeenBy ) {
 		assert awtAsSeenBy != null;
 		m_awtAsSeenBy = awtAsSeenBy;
 	}

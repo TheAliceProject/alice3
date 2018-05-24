@@ -43,6 +43,11 @@
 
 package edu.cmu.cs.dennisc.java.util.logging;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
+
+import java.util.logging.Level;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +59,8 @@ public class Logger {
 		logger.setUseParentHandlers( false );
 
 		String levelText = System.getProperty( LEVEL_KEY, "SEVERE" );
-		java.util.logging.Level level = null;
-		for( java.util.logging.Level customLevel : new java.util.logging.Level[] {
+		Level level = null;
+		for( Level customLevel : new Level[] {
 				THROWABLE,
 				TODO,
 		//TESTING 
@@ -68,11 +73,11 @@ public class Logger {
 		if( level != null ) {
 			//pass
 		} else {
-			level = java.util.logging.Level.parse( levelText );
+			level = Level.parse( levelText );
 			if( level != null ) {
 				//pass
 			} else {
-				level = java.util.logging.Level.SEVERE;
+				level = Level.SEVERE;
 			}
 		}
 		logger.setLevel( level );
@@ -93,21 +98,21 @@ public class Logger {
 
 	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
 
-	private static final java.util.logging.Level THROWABLE = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {
+	private static final Level THROWABLE = new Level( "THROWABLE", Level.SEVERE.intValue() + 1 ) {
 	};
 	//	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
-	private static final java.util.logging.Level TODO = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {
+	private static final Level TODO = new Level( "TODO", Level.WARNING.intValue() - 1 ) {
 	};
 
 	private Logger() {
 		throw new AssertionError();
 	}
 
-	public static java.util.logging.Level getLevel() {
+	public static Level getLevel() {
 		return getInstance().getLevel();
 	}
 
-	public static void setLevel( java.util.logging.Level level ) {
+	public static void setLevel( Level level ) {
 		getInstance().setLevel( level );
 	}
 
@@ -120,17 +125,17 @@ public class Logger {
 		String separator = "";
 		for( Object o : objects ) {
 			sb.append( separator );
-			sb.append( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.toString( o ) );
+			sb.append( ArrayUtilities.toString( o ) );
 			separator = " ";
 		}
 		return sb.toString();
 	}
 
-	private static boolean isLoggable( java.util.logging.Level level ) {
+	private static boolean isLoggable( Level level ) {
 		return getInstance().isLoggable( level );
 	}
 
-	private static void log( java.util.logging.Level level, Object object, Throwable throwable ) {
+	private static void log( Level level, Object object, Throwable throwable ) {
 		if( isLoggable( level ) ) {
 			String message = buildMessage( object );
 			if( throwable != null ) {
@@ -141,7 +146,7 @@ public class Logger {
 		}
 	}
 
-	private static void log( java.util.logging.Level level, Object[] objects, Throwable throwable ) {
+	private static void log( Level level, Object[] objects, Throwable throwable ) {
 		if( isLoggable( level ) ) {
 			String message = buildMessage( objects );
 			if( throwable != null ) {
@@ -152,11 +157,11 @@ public class Logger {
 		}
 	}
 
-	private static void log( java.util.logging.Level level, Object object ) {
+	private static void log( Level level, Object object ) {
 		log( level, object, null );
 	}
 
-	private static void log( java.util.logging.Level level, Object[] objects ) {
+	private static void log( Level level, Object[] objects ) {
 		log( level, objects, null );
 	}
 
@@ -177,14 +182,14 @@ public class Logger {
 	}
 
 	public static void throwable( Throwable t, Object object ) {
-		Object[] array = { edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( t ), object };
+		Object[] array = { ThrowableUtilities.getStackTraceAsString( t ), object };
 		log( THROWABLE, array );
 	}
 
 	public static void throwable( Throwable t, Object... objects ) {
 		Object[] array = new Object[ objects.length + 1 ];
 		System.arraycopy( objects, 0, array, 0, objects.length );
-		array[ array.length - 1 ] = edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( t );
+		array[ array.length - 1 ] = ThrowableUtilities.getStackTraceAsString( t );
 		log( THROWABLE, array );
 	}
 
@@ -197,58 +202,58 @@ public class Logger {
 	}
 
 	public static void severe( Object object ) {
-		log( java.util.logging.Level.SEVERE, object );
+		log( Level.SEVERE, object );
 	}
 
 	public static void severe( Object... objects ) {
-		log( java.util.logging.Level.SEVERE, objects );
+		log( Level.SEVERE, objects );
 	}
 
 	public static void warning( Object object ) {
-		log( java.util.logging.Level.WARNING, object );
+		log( Level.WARNING, object );
 	}
 
 	public static void warning( Object... objects ) {
-		log( java.util.logging.Level.WARNING, objects );
+		log( Level.WARNING, objects );
 	}
 
 	public static void info( Object object ) {
-		log( java.util.logging.Level.INFO, object );
+		log( Level.INFO, object );
 	}
 
 	public static void info( Object... objects ) {
-		log( java.util.logging.Level.INFO, objects );
+		log( Level.INFO, objects );
 	}
 
 	public static void config( Object object ) {
-		log( java.util.logging.Level.CONFIG, object );
+		log( Level.CONFIG, object );
 	}
 
 	public static void config( Object... objects ) {
-		log( java.util.logging.Level.CONFIG, objects );
+		log( Level.CONFIG, objects );
 	}
 
 	public static void fine( Object object ) {
-		log( java.util.logging.Level.FINE, object );
+		log( Level.FINE, object );
 	}
 
 	public static void fine( Object... objects ) {
-		log( java.util.logging.Level.FINE, objects );
+		log( Level.FINE, objects );
 	}
 
 	public static void finer( Object object ) {
-		log( java.util.logging.Level.FINER, object );
+		log( Level.FINER, object );
 	}
 
 	public static void finer( Object... objects ) {
-		log( java.util.logging.Level.FINER, objects );
+		log( Level.FINER, objects );
 	}
 
 	public static void finest( Object object ) {
-		log( java.util.logging.Level.FINEST, object );
+		log( Level.FINEST, object );
 	}
 
 	public static void finest( Object... objects ) {
-		log( java.util.logging.Level.FINEST, objects );
+		log( Level.FINEST, objects );
 	}
 }

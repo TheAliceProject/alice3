@@ -43,46 +43,56 @@
 
 package edu.cmu.cs.dennisc.texture;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BufferedImageTexture extends Texture {
-	private java.awt.image.BufferedImage m_bufferedImage = null;
+	private BufferedImage m_bufferedImage = null;
 	private boolean m_isMipMappingDesired = true;
 	private boolean m_isPotentiallyAlphaBlended = false;
 
 	public BufferedImageTexture() {
 	}
 
-	public BufferedImageTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BufferedImageTexture( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		byte[] buffer = binaryDecoder.decodeByteArray();
-		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( buffer );
+		ByteArrayInputStream bais = new ByteArrayInputStream( buffer );
 		try {
-			setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bais ) );
-		} catch( java.io.IOException ioe ) {
+			setBufferedImage( ImageUtilities.read( ImageUtilities.PNG_CODEC_NAME, bais ) );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( binaryDecoder.toString(), ioe );
 		}
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		//todo
 		assert m_bufferedImage != null;
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
-		} catch( java.io.IOException ioe ) {
+			ImageUtilities.write( ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( binaryEncoder.toString(), ioe );
 		}
 		binaryEncoder.encode( baos.toByteArray() );
 	}
 
-	public java.awt.image.BufferedImage getBufferedImage() {
+	public BufferedImage getBufferedImage() {
 		return m_bufferedImage;
 	}
 
-	public void setBufferedImage( java.awt.image.BufferedImage bufferedImage ) {
+	public void setBufferedImage( BufferedImage bufferedImage ) {
 		if( m_bufferedImage != bufferedImage ) {
 			m_bufferedImage = bufferedImage;
 			fireTextureChanged();
@@ -143,12 +153,12 @@ public class BufferedImageTexture extends Texture {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
-		return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
+	public MipMapGenerationPolicy getMipMapGenerationPolicy() {
+		return MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics2D g, int width, int height ) {
+	public void paint( Graphics2D g, int width, int height ) {
 		g.drawImage( m_bufferedImage, 0, 0, width, height, null );
 	}
 }

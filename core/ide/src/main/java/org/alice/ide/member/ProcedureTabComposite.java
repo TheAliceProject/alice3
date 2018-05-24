@@ -42,44 +42,55 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.StringCodec;
+import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+import org.alice.ide.member.views.ProcedureTabView;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ProcedureTabComposite extends MemberTabComposite<org.alice.ide.member.views.ProcedureTabView> {
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ) );
+public final class ProcedureTabComposite extends MemberTabComposite<ProcedureTabView> {
+	private final ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ) );
 
 	public ProcedureTabComposite() {
-		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ), org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? null : new AddProcedureMenuModel() );
+		super( UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ), IsEmphasizingClassesState.getInstance().getValue() ? null : new AddProcedureMenuModel() );
 	}
 
 	@Override
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<String> getSortState() {
+	public ImmutableDataSingleSelectListState<String> getSortState() {
 		return this.sortState;
 	}
 
 	@Override
-	protected org.alice.ide.member.views.ProcedureTabView createView() {
-		return new org.alice.ide.member.views.ProcedureTabView( this );
+	protected ProcedureTabView createView() {
+		return new ProcedureTabView( this );
 	}
 
 	@Override
-	protected org.alice.ide.member.UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type ) {
+	protected UserMethodsSubComposite getUserMethodsSubComposite( NamedUserType type ) {
 		return UserProceduresSubComposite.getInstance( type );
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+	protected boolean isAcceptable( AbstractMethod method ) {
 		return method.isProcedure();
 	}
 
 	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
+	protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
 	}
 
 	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
+	protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
 	}
 
 	@Override

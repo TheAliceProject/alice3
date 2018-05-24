@@ -43,15 +43,30 @@
 
 package org.alice.ide.ast.delete.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.delete.DeleteDeclarationLikeSubstanceOperation;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.UserMember;
+import org.lgna.project.ast.UserType;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.ast.delete.DeleteDeclarationLikeSubstanceOperation> {
-	private final org.lgna.project.ast.UserType<?> declaringType;
+public abstract class DeleteMemberEdit<M extends UserMember> extends AbstractEdit<DeleteDeclarationLikeSubstanceOperation> {
+	private final UserType<?> declaringType;
 	private final int index;
 	private final M member;
 
-	public DeleteMemberEdit( org.lgna.croquet.history.CompletionStep completionStep, M member ) {
+	public DeleteMemberEdit( CompletionStep completionStep, M member ) {
 		super( completionStep );
 		this.declaringType = member.getDeclaringType();
 		assert this.declaringType != null : member;
@@ -60,46 +75,46 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		this.member = member;
 	}
 
-	public DeleteMemberEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeleteMemberEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
+		this.declaringType = NodeCodec.getInstance( UserType.class ).decodeValue( binaryDecoder );
 		this.index = binaryDecoder.decodeInt();
-		this.member = (M)org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).decodeValue( binaryDecoder );
+		this.member = (M)NodeCodec.getInstance( UserMember.class ).decodeValue( binaryDecoder );
 	}
 
-	protected abstract org.lgna.project.ast.NodeListProperty<M> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
+	protected abstract NodeListProperty<M> getNodeListProperty( UserType<?> declaringType );
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		NodeCodec.getInstance( UserType.class ).encodeValue( binaryEncoder, this.declaringType );
 		binaryEncoder.encode( this.index );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMember.class ).encodeValue( binaryEncoder, this.member );
+		NodeCodec.getInstance( UserMember.class ).encodeValue( binaryEncoder, this.member );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
+		NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
 		assert this.index == owner.indexOf( this.member ) : this.member;
 		owner.remove( this.index );
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		declarationTabState.removeAllOrphans();
 	}
 
 	@Override
 	protected final void undoInternal() {
-		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
+		NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
 		owner.add( this.index, member );
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, member, Application.getLocale() );
 	}
 }

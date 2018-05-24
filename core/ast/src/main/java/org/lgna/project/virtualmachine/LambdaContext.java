@@ -43,9 +43,12 @@
 
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Lambda;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface LambdaContext {
-	public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, UserInstance thisInstance, Object... arguments );
+	public void invokeEntryPoint( Lambda lambda, AbstractMethod singleAbstractMethod, UserInstance thisInstance, Object... arguments );
 }

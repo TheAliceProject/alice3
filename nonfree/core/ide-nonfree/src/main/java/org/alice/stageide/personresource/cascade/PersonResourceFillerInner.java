@@ -42,27 +42,41 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.cascade;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.PersonResource;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+public abstract class PersonResourceFillerInner extends ExpressionFillerInner {
+	private final LifeStage lifeStage;
 
-	public PersonResourceFillerInner( Class<? extends org.lgna.story.resources.sims2.PersonResource> cls, org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	public PersonResourceFillerInner( Class<? extends PersonResource> cls, LifeStage lifeStage ) {
 		super( cls );
 		this.lifeStage = lifeStage;
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, Void> fillIn = null;
-		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceCreation.getType();
-			if( type instanceof org.lgna.project.ast.JavaType ) {
-				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
-					fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		CascadeFillIn<InstanceCreation, Void> fillIn = null;
+		if( prevExpression instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)prevExpression;
+			AbstractType<?, ?, ?> type = instanceCreation.getType();
+			if( type instanceof JavaType ) {
+				JavaType javaType = (JavaType)type;
+				if( javaType.isAssignableTo( PersonResource.class ) ) {
+					fillIn = PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
 
 				}
 			}
@@ -70,7 +84,7 @@ public abstract class PersonResourceFillerInner extends org.alice.ide.cascade.fi
 		if( fillIn != null ) {
 			//pass
 		} else {
-			fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn();
+			fillIn = PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn();
 		}
 		items.add( fillIn );
 	}

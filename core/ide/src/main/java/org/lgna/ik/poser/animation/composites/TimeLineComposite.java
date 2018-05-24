@@ -48,6 +48,8 @@ import org.lgna.ik.poser.animation.TimeLine;
 import org.lgna.ik.poser.animation.views.TimeLineView;
 import org.lgna.story.Pose;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
@@ -57,7 +59,7 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 	private final TimeLine timeLine = new TimeLine();
 
 	public TimeLineComposite() {
-		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
+		super( UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
 	}
 
 	public void selectKeyFrame( KeyFrameData keyFrameData ) {

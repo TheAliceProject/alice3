@@ -44,16 +44,23 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
+import edu.cmu.cs.dennisc.scenegraph.Torus;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrTorus extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Torus> {
-	private void glVertex( Context context, edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled ) {
+public class GlrTorus extends GlrShape<Torus> {
+	private void glVertex( Context context, Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled ) {
 		double sinTheta = Math.sin( theta );
 		double cosTheta = Math.cos( theta );
 		double sinPhi = Math.sin( phi );
@@ -67,16 +74,16 @@ public class GlrTorus extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Torus> {
 			double i = sinTheta * cosPhi;
 			double j = sinPhi;
 			double k = cosTheta * cosPhi;
-			if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
+			if( coordinatePlane == Torus.CoordinatePlane.XY ) {
 				//todo
-			} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
+			} else if( coordinatePlane == Torus.CoordinatePlane.YZ ) {
 				//todo
 			}
 			context.gl.glNormal3d( i, j, k );
 		}
-		if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
+		if( coordinatePlane == Torus.CoordinatePlane.XY ) {
 			//todo
-		} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
+		} else if( coordinatePlane == Torus.CoordinatePlane.YZ ) {
 			//todo
 		}
 		context.gl.glVertex3d( x, y, z );
@@ -84,7 +91,7 @@ public class GlrTorus extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Torus> {
 
 	private void glTorus( Context context, boolean isLightingEnabled ) {
 
-		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+		Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
 		double majorRadius = this.owner.majorRadius.getValue();
 		double minorRadius = this.owner.minorRadius.getValue();
 
@@ -127,13 +134,13 @@ public class GlrTorus extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Torus> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		//todo: solve for intersection with actual torus as opposed to just the plane
-		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
-		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
-		if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
+		Vector3 direction = new Vector3( 0, 0, 0 );
+		Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+		if( coordinatePlane == Torus.CoordinatePlane.XY ) {
 			direction.z = 1;
-		} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
+		} else if( coordinatePlane == Torus.CoordinatePlane.YZ ) {
 			direction.x = 1;
 		} else {
 			direction.y = 1;
@@ -142,7 +149,7 @@ public class GlrTorus extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Torus> {
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.majorRadius ) {
 			setIsGeometryChanged( true );
 		} else if( property == owner.minorRadius ) {

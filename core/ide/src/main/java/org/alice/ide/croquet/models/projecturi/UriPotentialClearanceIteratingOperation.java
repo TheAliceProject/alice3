@@ -42,29 +42,41 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.ValueCreator;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UriPotentialClearanceIteratingOperation extends PotentialClearanceIteratingOperation {
-	public UriPotentialClearanceIteratingOperation( java.util.UUID migrationId, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.Model postClearanceModel ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, migrationId, projectDocumentFrame, postClearanceModel );
+	public UriPotentialClearanceIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
+		super( ProjectApplication.URI_GROUP, migrationId, projectDocumentFrame, postClearanceModel );
 	}
 
-	protected abstract org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
+	protected abstract UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps );
 
 	@Override
-	protected final void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		org.alice.ide.uricontent.UriProjectLoader uriProjectPair = this.getUriProjectLoader( step, subSteps );
+	protected final void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
+		UriProjectLoader uriProjectPair = this.getUriProjectLoader( step, subSteps );
 		if( uriProjectPair != null ) {
-			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( uriProjectPair );
+			ProjectApplication.getActiveInstance().loadProjectFrom( uriProjectPair );
 			step.finish();
 		} else {
 			step.cancel();
 		}
 		if( subSteps.size() > 0 ) {
-			org.alice.ide.uricontent.UriProjectLoader value = (org.alice.ide.uricontent.UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			UriProjectLoader value = (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( ValueCreator.VALUE_KEY ) );
 
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( value );
+			Logger.outln( value );
 
 			step.finish();
 		} else {

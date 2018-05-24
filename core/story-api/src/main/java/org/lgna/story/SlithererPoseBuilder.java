@@ -42,13 +42,14 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.JointId;
 
 /**
  * @author user
  */
-public class SlithererPoseBuilder extends PoseBuilder<org.lgna.story.SSlitherer, SlithererPose> {
-	public SlithererPoseBuilder joint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+public class SlithererPoseBuilder extends PoseBuilder<SSlitherer, SlithererPose> {
+	public SlithererPoseBuilder joint( JointId jointId, Orientation orientation ) {
 		this.addJointIdQuaternionPair( jointId, orientation );
 		return this;
 	}
@@ -59,7 +60,7 @@ public class SlithererPoseBuilder extends PoseBuilder<org.lgna.story.SSlitherer,
 	}
 
 	@Override
-	protected org.lgna.story.SlithererPose build( org.lgna.story.implementation.JointIdTransformationPair[] buffer ) {
+	protected SlithererPose build( JointIdTransformationPair[] buffer ) {
 		return new SlithererPose( buffer );
 	}
 }

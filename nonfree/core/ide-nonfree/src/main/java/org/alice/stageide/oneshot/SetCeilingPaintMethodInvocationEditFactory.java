@@ -42,22 +42,30 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.stageide.oneshot.edits.SetCeilingPaintEdit;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetCeilingPaintMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	private final InstanceFactory instanceFactory;
+	private final AbstractMethod method;
+	private final Expression[] argumentExpressions;
 
-	public SetCeilingPaintMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public SetCeilingPaintMethodInvocationEditFactory( InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
-		return new org.alice.stageide.oneshot.edits.SetCeilingPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	public Edit createEdit( CompletionStep<Cascade<MethodInvocationEditFactory>> step ) {
+		return new SetCeilingPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

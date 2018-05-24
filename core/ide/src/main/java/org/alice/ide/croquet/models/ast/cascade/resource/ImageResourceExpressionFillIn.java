@@ -43,13 +43,19 @@
 
 package org.alice.ide.croquet.models.ast.cascade.resource;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.common.resources.ImageResource;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn<org.lgna.common.resources.ImageResource> {
-	private static java.util.Map<org.lgna.common.resources.ImageResource, ImageResourceExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn<ImageResource> {
+	private static Map<ImageResource, ImageResourceExpressionFillIn> map = Maps.newHashMap();
 
-	public static synchronized ImageResourceExpressionFillIn getInstance( org.lgna.common.resources.ImageResource resource ) {
+	public static synchronized ImageResourceExpressionFillIn getInstance( ImageResource resource ) {
 		assert resource != null;
 		ImageResourceExpressionFillIn rv = map.get( resource );
 		if( rv != null ) {
@@ -61,7 +67,7 @@ public class ImageResourceExpressionFillIn extends ResourceExpressionFillIn<org.
 		return rv;
 	}
 
-	private ImageResourceExpressionFillIn( org.lgna.common.resources.ImageResource resource ) {
-		super( java.util.UUID.fromString( "4ffd82b6-f6bd-4ff6-8270-cbbe0b02741a" ), org.lgna.common.resources.ImageResource.class, resource );
+	private ImageResourceExpressionFillIn( ImageResource resource ) {
+		super( UUID.fromString( "4ffd82b6-f6bd-4ff6-8270-cbbe0b02741a" ), ImageResource.class, resource );
 	}
 }

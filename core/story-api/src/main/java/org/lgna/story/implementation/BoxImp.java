@@ -42,41 +42,49 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Box;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.lgna.story.SBox;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BoxImp extends ShapeImp {
-	public BoxImp( org.lgna.story.SBox abstraction ) {
+	public BoxImp( SBox abstraction ) {
 		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgBox } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgBox } );
 		this.sgBox.yMinimum.setValue( 0.0 );
 		this.sgBox.yMaximum.setValue( 1.0 );
 	}
 
 	@Override
-	public org.lgna.story.SBox getAbstraction() {
+	public SBox getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.sgBox.xMaximum, this.sgBox.yMaximum, this.sgBox.zMaximum };
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS };
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.UNIFORM, Resizer.X_AXIS, Resizer.Y_AXIS, Resizer.Z_AXIS };
 	}
 
 	@Override
-	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.UNIFORM ) {
 			return this.sgBox.yMaximum.getValue();
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
+		} else if( resizer == Resizer.X_AXIS ) {
 			return this.sgBox.xMaximum.getValue();
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+		} else if( resizer == Resizer.Y_AXIS ) {
 			return this.sgBox.yMaximum.getValue();
-		} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
+		} else if( resizer == Resizer.Z_AXIS ) {
 			return this.sgBox.zMaximum.getValue();
 		} else {
 			assert false : resizer;
@@ -85,9 +93,9 @@ public class BoxImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
+	public void setValueForResizer( Resizer resizer, double value ) {
 		if( value > 0.0 ) {
-			if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+			if( resizer == Resizer.UNIFORM ) {
 				double prevValue = this.sgBox.yMaximum.getValue();
 				double ratio = value / prevValue;
 				double x = this.sgBox.xMaximum.getValue() * ratio;
@@ -99,24 +107,24 @@ public class BoxImp extends ShapeImp {
 				this.sgBox.zMaximum.setValue( z );
 				this.sgBox.zMinimum.setValue( -z );
 
-			} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
+			} else if( resizer == Resizer.X_AXIS ) {
 				this.sgBox.xMaximum.setValue( value );
 				this.sgBox.xMinimum.setValue( -value );
-			} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+			} else if( resizer == Resizer.Y_AXIS ) {
 				this.sgBox.yMaximum.setValue( value );
-			} else if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
+			} else if( resizer == Resizer.Z_AXIS ) {
 				this.sgBox.zMaximum.setValue( value );
 				this.sgBox.zMinimum.setValue( -value );
 			} else {
 				assert false : resizer;
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, value );
+			Logger.severe( this, value );
 		}
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		double x = size.x * 0.5;
 		double z = size.z * 0.5;
 		this.sgBox.xMinimum.setValue( -x );
@@ -126,6 +134,6 @@ public class BoxImp extends ShapeImp {
 		this.sgBox.zMaximum.setValue( +z );
 	}
 
-	private final org.lgna.story.SBox abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
+	private final SBox abstraction;
+	private final Box sgBox = new Box();
 }

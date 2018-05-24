@@ -43,21 +43,30 @@
 
 package org.alice.ide.croquet.models.history;
 
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.FrameCompositeWithInternalIsShowingState;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.CompositeView;
+
+import java.awt.BorderLayout;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState {
-	private final org.lgna.croquet.Group historyGroup;
+public abstract class HistoryComposite extends FrameCompositeWithInternalIsShowingState {
+	private final Group historyGroup;
 
-	public HistoryComposite( java.util.UUID id, org.lgna.croquet.Group historyGroup ) {
-		super( id, org.alice.ide.ProjectApplication.INFORMATION_GROUP );
+	public HistoryComposite( UUID id, Group historyGroup ) {
+		super( id, ProjectApplication.INFORMATION_GROUP );
 		this.historyGroup = historyGroup;
 	}
 
 	@Override
-	protected final org.lgna.croquet.views.CompositeView createView() {
-		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
-		rv.getAwtComponent().add( new org.alice.ide.croquet.models.history.HistoryPane( this.historyGroup ), java.awt.BorderLayout.CENTER );
+	protected final CompositeView createView() {
+		BorderPanel rv = new BorderPanel();
+		rv.getAwtComponent().add( new HistoryPane( this.historyGroup ), BorderLayout.CENTER );
 		return rv;
 	}
 }

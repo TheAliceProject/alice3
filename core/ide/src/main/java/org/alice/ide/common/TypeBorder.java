@@ -42,28 +42,45 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import org.alice.ide.ThemeUtilities;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.TypeExpression;
+
+import javax.swing.border.Border;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeBorder implements javax.swing.border.Border {
+public class TypeBorder implements Border {
 	private static final int X_INSET = 8;
 	private static final int Y_INSET = 2;
-	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
-	private static java.awt.Color FILL_COLOR = org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.TypeExpression.class );
-	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
-	private static java.awt.Color FILL_DARKER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.8 );
+	private static Insets insets = new Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
+	private static Color FILL_COLOR = ThemeUtilities.getActiveTheme().getColorFor( TypeExpression.class );
+	private static Color FILL_BRIGHTER_COLOR = ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
+	private static Color FILL_DARKER_COLOR = ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.8 );
 
 	//private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
 	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
 
-	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
+	private static Color OUTLINE_COLOR = Color.GRAY;
 	private static TypeBorder singletonForUser = new TypeBorder( true );
 	private static TypeBorder singletonForJava = new TypeBorder( false );
 	private static TypeBorder singletonForNull = new TypeBorder( null );
 
-	public static TypeBorder getSingletonFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static TypeBorder getSingletonFor( AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
-			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+			if( type instanceof NamedUserType ) {
 				return TypeBorder.singletonForUser;
 			} else {
 				return TypeBorder.singletonForJava;
@@ -93,9 +110,9 @@ public class TypeBorder implements javax.swing.border.Border {
 
 	private int yPrevious = -1;
 	private int heightPrevious = -1;
-	private java.awt.Paint paintPrevious = null;
+	private Paint paintPrevious = null;
 
-	private java.awt.Paint getFillPaint( java.awt.Component c, int x, int y, int width, int height ) {
+	private Paint getFillPaint( Component c, int x, int y, int width, int height ) {
 		if( c.isEnabled() ) {
 			if( ( y == this.yPrevious ) && ( height == this.heightPrevious ) ) {
 				//pass
@@ -104,25 +121,25 @@ public class TypeBorder implements javax.swing.border.Border {
 				this.heightPrevious = height;
 				if( isDeclaredByUser != null ) {
 					if( isDeclaredByUser ) {
-						this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
+						this.paintPrevious = new GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
 					} else {
-						this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
+						this.paintPrevious = new GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
 					}
 				} else {
 					//this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
 					//this.paintPrevious = java.awt.Color.GRAY;
 					//this.paintPrevious = java.awt.Color.RED.darker();
-					this.paintPrevious = java.awt.Color.RED;
+					this.paintPrevious = Color.RED;
 				}
 			}
 			return this.paintPrevious;
 		} else {
-			return java.awt.Color.RED;
+			return Color.RED;
 		}
 	}
 
 	@Override
-	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
+	public Insets getBorderInsets( Component c ) {
 		return TypeBorder.insets;
 	}
 
@@ -131,8 +148,8 @@ public class TypeBorder implements javax.swing.border.Border {
 		return false;
 	}
 
-	private static java.awt.Shape createShape( int x, int y, int width, int height ) {
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+	private static Shape createShape( int x, int y, int width, int height ) {
+		GeneralPath rv = new GeneralPath();
 		int x0 = x + 0;
 		int x1 = ( x0 + width ) - 1;
 		int xA = x0 + ( X_INSET / 2 );
@@ -153,9 +170,9 @@ public class TypeBorder implements javax.swing.border.Border {
 	}
 
 	@Override
-	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
-		java.awt.Shape shape = TypeBorder.createShape( x, y, width, height );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	public void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
+		Shape shape = TypeBorder.createShape( x, y, width, height );
+		Graphics2D g2 = (Graphics2D)g;
 		g2.setPaint( getFillPaint( c, x, y, width, height ) );
 		g2.fill( shape );
 		g2.setPaint( OUTLINE_COLOR );

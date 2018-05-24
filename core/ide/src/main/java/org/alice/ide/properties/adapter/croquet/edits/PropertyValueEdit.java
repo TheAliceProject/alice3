@@ -42,15 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.properties.adapter.croquet.edits;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyValueEdit<P> extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.alice.ide.properties.adapter.AbstractPropertyAdapter<P, ?> propertyAdapter;
+public class PropertyValueEdit<P> extends AbstractEdit {
+	private final AbstractPropertyAdapter<P, ?> propertyAdapter;
 	private final P nextValue;
 	private P originalValue;
 
-	public PropertyValueEdit( org.lgna.croquet.history.CompletionStep step, org.alice.ide.properties.adapter.AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
+	public PropertyValueEdit( CompletionStep step, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
 		super( step );
 		this.propertyAdapter = propertyAdapter;
 		this.nextValue = nextValue;

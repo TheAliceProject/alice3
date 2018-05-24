@@ -43,15 +43,21 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.lgna.croquet.CascadeLabelSeparator;
+import org.lgna.project.ast.AbstractParameter;
+
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterNameSeparator> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ParameterNameSeparator extends CascadeLabelSeparator {
+	private static Map<AbstractParameter, ParameterNameSeparator> map = Maps.newHashMap();
 
-	public static synchronized ParameterNameSeparator getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
+	public static synchronized ParameterNameSeparator getInstance( AbstractParameter parameter ) {
 		assert parameter != null;
 		ParameterNameSeparator rv = map.get( parameter );
 		if( rv != null ) {
@@ -63,10 +69,10 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractParameter parameter;
+	private final AbstractParameter parameter;
 
-	private ParameterNameSeparator( org.lgna.project.ast.AbstractParameter parameter ) {
-		super( java.util.UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
+	private ParameterNameSeparator( AbstractParameter parameter ) {
+		super( UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
 		this.parameter = parameter;
 	}
 

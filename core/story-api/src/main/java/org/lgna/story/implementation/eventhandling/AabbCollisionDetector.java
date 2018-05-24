@@ -43,6 +43,8 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.EntityImp;
@@ -67,12 +69,12 @@ public class AabbCollisionDetector {
 		return doAabbsCollide( center1, corner1, center2, corner2 );
 	}
 
-	public static boolean doTheseCollide( edu.cmu.cs.dennisc.scenegraph.Transformable object1, edu.cmu.cs.dennisc.scenegraph.Transformable object2, double dist ) {
+	public static boolean doTheseCollide( Transformable object1, Transformable object2, double dist ) {
 
 		return doTheseCollide( EntityImp.getAbstractionFromSgElement( object1 ), EntityImp.getAbstractionFromSgElement( object2 ), dist );
 	}
 
-	public static boolean doTheseCollide( edu.cmu.cs.dennisc.scenegraph.Transformable object1, edu.cmu.cs.dennisc.scenegraph.Transformable object2 ) {
+	public static boolean doTheseCollide( Transformable object1, Transformable object2 ) {
 		return doTheseCollide( EntityImp.getAbstractionFromSgElement( object1 ), EntityImp.getAbstractionFromSgElement( object2 ) );
 	}
 
@@ -101,7 +103,7 @@ public class AabbCollisionDetector {
 	//	}
 
 	private static void findCenterAndCorner( SThing object, Point3 center, Vector3 corner ) {
-		AxisAlignedBox aabb1 = org.lgna.story.EmployeesOnly.getImplementation( object ).getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE );
+		AxisAlignedBox aabb1 = EmployeesOnly.getImplementation( object ).getAxisAlignedMinimumBoundingBox( AsSeenBy.SCENE );
 		Point3 min = aabb1.getMinimum();
 		Point3 max = aabb1.getMaximum();
 		center.setToInterpolation( min, max, .5 );

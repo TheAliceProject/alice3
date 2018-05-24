@@ -42,26 +42,37 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
+import org.lgna.common.Resource;
+import org.lgna.common.event.ResourceContentEvent;
+import org.lgna.common.event.ResourceContentListener;
+import org.lgna.common.resources.ImageResource;
+
+import java.awt.image.BufferedImage;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class TextureFactory {
-	private static java.util.Map<org.lgna.common.resources.ImageResource, edu.cmu.cs.dennisc.texture.BufferedImageTexture> resourceToTextureMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+	private static Map<ImageResource, BufferedImageTexture> resourceToTextureMap = Maps.newHashMap();
+	private static ResourceContentListener resourceContentListener = new ResourceContentListener() {
 		@Override
-		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
+		public void contentChanging( ResourceContentEvent e ) {
 		}
 
 		@Override
-		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
-			org.lgna.common.Resource resource = e.getTypedSource();
-			if( resource instanceof org.lgna.common.resources.ImageResource ) {
-				org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
-				java.awt.image.BufferedImage bufferedImage = org.lgna.story.implementation.ImageFactory.getBufferedImage( imageResource );
+		public void contentChanged( ResourceContentEvent e ) {
+			Resource resource = e.getTypedSource();
+			if( resource instanceof ImageResource ) {
+				ImageResource imageResource = (ImageResource)resource;
+				BufferedImage bufferedImage = ImageFactory.getBufferedImage( imageResource );
 				if( bufferedImage != null ) {
-					edu.cmu.cs.dennisc.texture.Texture texture = TextureFactory.resourceToTextureMap.get( e.getTypedSource() );
-					if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
-						edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;
+					Texture texture = TextureFactory.resourceToTextureMap.get( e.getTypedSource() );
+					if( texture instanceof BufferedImageTexture ) {
+						BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
 						TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
 					} else {
 						//todo
@@ -78,23 +89,23 @@ public final class TextureFactory {
 	private TextureFactory() {
 	}
 
-	private static void updateBufferedImageTexture( edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture, java.awt.image.BufferedImage bufferedImage ) {
+	private static void updateBufferedImageTexture( BufferedImageTexture bufferedImageTexture, BufferedImage bufferedImage ) {
 		bufferedImageTexture.setBufferedImage( bufferedImage );
 
 		//todo: handle java.awt.image.BufferedImage.BITMASK? 
-		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == java.awt.image.BufferedImage.TRANSLUCENT;
+		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency() == BufferedImage.TRANSLUCENT;
 		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
 	}
 
-	public static edu.cmu.cs.dennisc.texture.BufferedImageTexture getTexture( org.lgna.common.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
+	public static BufferedImageTexture getTexture( ImageResource imageResource, boolean isMipMappingDesired ) {
 		assert imageResource != null;
-		edu.cmu.cs.dennisc.texture.BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
+		BufferedImageTexture rv = TextureFactory.resourceToTextureMap.get( imageResource );
 		if( rv != null ) {
 			//pass
 		} else {
-			java.awt.image.BufferedImage bufferedImage = org.lgna.story.implementation.ImageFactory.getBufferedImage( imageResource );
+			BufferedImage bufferedImage = ImageFactory.getBufferedImage( imageResource );
 			if( bufferedImage != null ) {
-				edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
 				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
 				TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
 				rv = bufferedImageTexture;

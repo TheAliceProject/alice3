@@ -43,19 +43,29 @@
 
 package org.alice.ide.croquet.models;
 
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.ide.croquet.components.ExpressionDropDown;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.DefaultCustomItemState;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState<org.lgna.project.ast.Expression> {
-	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue ) {
-		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
+public abstract class ExpressionState extends DefaultCustomItemState<Expression> {
+	public ExpressionState( Group group, UUID id, Expression initialValue ) {
+		super( group, id, NodeCodec.getInstance( Expression.class ), initialValue );
 	}
 
-	public org.lgna.croquet.views.SwingComponentView<?> createEditor( org.alice.ide.x.AstI18nFactory factory ) {
-		return new org.alice.ide.croquet.components.ExpressionDropDown( this, factory );
+	public SwingComponentView<?> createEditor( AstI18nFactory factory ) {
+		return new ExpressionDropDown( this, factory );
 	}
 
-	public org.lgna.croquet.views.SwingComponentView<?> createView( org.alice.ide.x.AstI18nFactory factory ) {
+	public SwingComponentView<?> createView( AstI18nFactory factory ) {
 		return factory.createExpressionPane( this.getValue() );
 	}
 }

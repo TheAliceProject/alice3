@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  * 
  */
 public class SetFloorPaint extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetFloorPaint.class )
+	@ClassTemplate( keywordFactoryCls = SetFloorPaint.class )
 	public static interface Detail {
 	}
 

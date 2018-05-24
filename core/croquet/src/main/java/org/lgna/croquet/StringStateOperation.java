@@ -42,23 +42,30 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.PasswordField;
+import org.lgna.croquet.views.TextField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StringStateOperation extends ActionOperation {
 	private final StringState stringState;
 
-	public StringStateOperation( java.util.UUID migrationId, StringState stringState ) {
+	public StringStateOperation( UUID migrationId, StringState stringState ) {
 		super( stringState.getGroup(), migrationId );
 		this.stringState = stringState;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, String value ) throws CancelException;
+	protected abstract Edit perform( CompletionStep<?> step, String value ) throws CancelException;
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		try {
-			org.lgna.croquet.edits.Edit edit = this.perform( step, this.stringState.getValue() );
+			Edit edit = this.perform( step, this.stringState.getValue() );
 			if( edit != null ) {
 				step.commitAndInvokeDo( edit );
 			} else {
@@ -69,11 +76,11 @@ public abstract class StringStateOperation extends ActionOperation {
 		}
 	}
 
-	public org.lgna.croquet.views.TextField createTextField() {
+	public TextField createTextField() {
 		return this.stringState.createTextField( this );
 	}
 
-	public org.lgna.croquet.views.PasswordField createPasswordField() {
+	public PasswordField createPasswordField() {
 		return this.stringState.createPasswordField( this );
 	}
 }

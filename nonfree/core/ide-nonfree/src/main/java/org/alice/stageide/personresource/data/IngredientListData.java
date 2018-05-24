@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.story.resources.sims2.BaseSkinTone;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IngredientListData<T> extends org.lgna.croquet.data.RefreshableListData<T> {
-	protected static final org.lgna.story.resources.sims2.BaseSkinTone SKIN_TONE_FOR_FILTERING = org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
-	private org.lgna.story.resources.sims2.LifeStage lifeStage;
-	private org.lgna.story.resources.sims2.Gender gender;
+public abstract class IngredientListData<T> extends RefreshableListData<T> {
+	protected static final BaseSkinTone SKIN_TONE_FOR_FILTERING = BaseSkinTone.LIGHTER;
+	private LifeStage lifeStage;
+	private Gender gender;
 
-	public IngredientListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public IngredientListData( ItemCodec<T> itemCodec ) {
 		super( itemCodec );
 	}
 
-	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+	public LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
 
-	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	public void setLifeStage( LifeStage lifeStage ) {
 		if( this.lifeStage == lifeStage ) {
 			//pass
 		} else {
@@ -67,11 +76,11 @@ public abstract class IngredientListData<T> extends org.lgna.croquet.data.Refres
 		}
 	}
 
-	public org.lgna.story.resources.sims2.Gender getGender() {
+	public Gender getGender() {
 		return this.gender;
 	}
 
-	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+	public void setGender( Gender gender ) {
 		if( this.gender == gender ) {
 			//pass
 		} else {
@@ -80,7 +89,7 @@ public abstract class IngredientListData<T> extends org.lgna.croquet.data.Refres
 		}
 	}
 
-	public void setLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+	public void setLifeStageAndGender( LifeStage lifeStage, Gender gender ) {
 		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
 			//pass
 		} else {
@@ -90,14 +99,14 @@ public abstract class IngredientListData<T> extends org.lgna.croquet.data.Refres
 		}
 	}
 
-	protected abstract java.util.List<T> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender );
+	protected abstract List<T> createValues( LifeStage lifeStage, Gender gender );
 
 	@Override
-	protected final java.util.List<T> createValues() {
+	protected final List<T> createValues() {
 		if( ( this.lifeStage != null ) && ( this.gender != null ) ) {
 			return this.createValues( this.lifeStage, this.gender );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 

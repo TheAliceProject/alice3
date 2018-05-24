@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.imp.frame.IsFrameShowingState;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FrameCompositeWithInternalIsShowingState<V extends org.lgna.croquet.views.Panel> extends FrameComposite<V> {
-	public FrameCompositeWithInternalIsShowingState( java.util.UUID migrationId, Group booleanStateGroup ) {
+public abstract class FrameCompositeWithInternalIsShowingState<V extends Panel> extends FrameComposite<V> {
+	public FrameCompositeWithInternalIsShowingState( UUID migrationId, Group booleanStateGroup ) {
 		super( migrationId );
-		this.isFrameShowingState = new org.lgna.croquet.imp.frame.IsFrameShowingState( booleanStateGroup, this );
+		this.isFrameShowingState = new IsFrameShowingState( booleanStateGroup, this );
 	}
 
 	public BooleanState getIsFrameShowingState() {
 		return this.isFrameShowingState;
 	}
 
-	private final org.lgna.croquet.imp.frame.IsFrameShowingState isFrameShowingState;
+	private final IsFrameShowingState isFrameShowingState;
 }

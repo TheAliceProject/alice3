@@ -42,12 +42,30 @@
  */
 package org.lgna.ik.poser.anchors.views;
 
+import edu.cmu.cs.dennisc.math.GoldenRatio;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.ik.poser.anchors.Anchors;
+import org.lgna.ik.poser.anchors.events.AnchorEvent;
+import org.lgna.ik.poser.anchors.events.AnchorListener;
+
+import javax.swing.JComponent;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax.swing.JComponent> {
+public class AnchorsView extends SwingComponentView<JComponent> {
 	private static class Node {
-		private static final java.awt.Shape SHAPE = new java.awt.geom.Ellipse2D.Float( -8, -8, 16, 16 );
+		private static final Shape SHAPE = new Ellipse2D.Float( -8, -8, 16, 16 );
 		private final double theta;
 		private final double length;
 		private boolean isSelected;
@@ -65,19 +83,19 @@ public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax
 			this.isSelected = isSelected;
 		}
 
-		public void paint( java.awt.Graphics2D g2 ) {
+		public void paint( Graphics2D g2 ) {
 			g2.rotate( this.theta );
-			g2.setPaint( java.awt.Color.BLACK );
+			g2.setPaint( Color.BLACK );
 			g2.drawLine( 0, 0, 0, (int)this.length );
 
 			if( this.isSelected() ) {
-				g2.setPaint( java.awt.Color.GREEN );
+				g2.setPaint( Color.GREEN );
 			} else {
-				g2.setPaint( java.awt.Color.GRAY );
+				g2.setPaint( Color.GRAY );
 			}
 			g2.fill( SHAPE );
 
-			g2.setPaint( java.awt.Color.BLACK );
+			g2.setPaint( Color.BLACK );
 			g2.draw( SHAPE );
 			g2.translate( 0, this.length );
 		}
@@ -95,8 +113,8 @@ public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax
 			this.nodes[ 0 ].setSelected( true );
 		}
 
-		public void paint( java.awt.Graphics2D g2 ) {
-			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+		public void paint( Graphics2D g2 ) {
+			AffineTransform prevTransform = g2.getTransform();
 			g2.translate( this.tx, this.ty );
 			for( Node node : this.nodes ) {
 				node.paint( g2 );
@@ -117,7 +135,7 @@ public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax
 		}
 	}
 
-	private final class JAnchorsView extends javax.swing.JComponent {
+	private final class JAnchorsView extends JComponent {
 		private static final double LEFT__SIDE_DIRECTION = 1;
 		private static final double RIGHT_SIDE_DIRECTION = -1;
 		private static final double ARM_Y = 40;
@@ -129,9 +147,9 @@ public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax
 		private final LegChain rightLegChain = new LegChain( 140, LEG_Y, RIGHT_SIDE_DIRECTION );
 
 		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
+		protected void paintComponent( Graphics g ) {
 			super.paintComponent( g );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			Graphics2D g2 = (Graphics2D)g;
 			this.leftArmChain.paint( g2 );
 			this.rightArmChain.paint( g2 );
 			this.leftLegChain.paint( g2 );
@@ -139,48 +157,48 @@ public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 240 );
+		public Dimension getPreferredSize() {
+			return GoldenRatio.createTallerSizeFromWidth( 240 );
 		}
 	}
 
-	private final org.lgna.ik.poser.anchors.Anchors anchors;
+	private final Anchors anchors;
 
-	private final org.lgna.ik.poser.anchors.events.AnchorListener anchorListener = new org.lgna.ik.poser.anchors.events.AnchorListener() {
+	private final AnchorListener anchorListener = new AnchorListener() {
 		@Override
-		public void leftArmChanged( org.lgna.ik.poser.anchors.events.AnchorEvent e ) {
+		public void leftArmChanged( AnchorEvent e ) {
 			getAwtComponent().repaint();
 		}
 
 		@Override
-		public void rightArmChanged( org.lgna.ik.poser.anchors.events.AnchorEvent e ) {
+		public void rightArmChanged( AnchorEvent e ) {
 			getAwtComponent().repaint();
 		}
 
 		@Override
-		public void leftLegChanged( org.lgna.ik.poser.anchors.events.AnchorEvent e ) {
+		public void leftLegChanged( AnchorEvent e ) {
 			getAwtComponent().repaint();
 		}
 
 		@Override
-		public void rightLegChanged( org.lgna.ik.poser.anchors.events.AnchorEvent e ) {
+		public void rightLegChanged( AnchorEvent e ) {
 			getAwtComponent().repaint();
 		}
 	};
 
-	public AnchorsView( org.lgna.ik.poser.anchors.Anchors anchors ) {
+	public AnchorsView( Anchors anchors ) {
 		this.anchors = anchors;
 	}
 
 	@Override
-	protected javax.swing.JComponent createAwtComponent() {
+	protected JComponent createAwtComponent() {
 		return new JAnchorsView();
 	}
 
 	public static void main( String[] args ) {
-		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
+		Application app = new SimpleApplication();
 		app.getDocumentFrame().getFrame().getContentPane().addCenterComponent( new AnchorsView( null ) );
-		app.getDocumentFrame().getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+		app.getDocumentFrame().getFrame().setDefaultCloseOperation( Frame.DefaultCloseOperation.EXIT );
 		app.getDocumentFrame().getFrame().pack();
 		app.getDocumentFrame().getFrame().setVisible( true );
 	}

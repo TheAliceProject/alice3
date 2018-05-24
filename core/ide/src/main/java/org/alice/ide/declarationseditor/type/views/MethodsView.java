@@ -42,16 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.MethodsComposite;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsView extends MembersView<org.lgna.project.ast.UserMethod> {
-	public MethodsView( org.alice.ide.declarationseditor.type.MethodsComposite composite ) {
+public class MethodsView extends MembersView<UserMethod> {
+	public MethodsView( MethodsComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponentForItem( org.lgna.project.ast.UserMethod method ) {
+	protected SwingComponentView<?> createComponentForItem( UserMethod method ) {
 		return new MethodView( method );
 	}
 }

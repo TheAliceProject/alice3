@@ -43,45 +43,63 @@
 
 package org.alice.ide.projecturi;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.projecturi.views.FileSystemPane;
+import org.alice.ide.uricontent.FileProjectLoader;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FileSystemTab extends SelectUriTab {
-	private final org.lgna.croquet.StringState pathState = this.createStringState( "pathState" );
-	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
+	private final StringState pathState = this.createStringState( "pathState" );
+	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			java.io.File file = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true );
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, IoUtilities.PROJECT_EXTENSION, true );
 			if( file != null ) {
-				FileSystemTab.this.pathState.setValueTransactionlessly( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+				FileSystemTab.this.pathState.setValueTransactionlessly( FileUtilities.getCanonicalPathIfPossible( file ) );
 			}
 			return null;
 		}
 	} );
 
 	public FileSystemTab() {
-		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
+		super( UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
-	public org.lgna.croquet.StringState getPathState() {
+	public StringState getPathState() {
 		return this.pathState;
 	}
 
-	public org.lgna.croquet.Operation getBrowseOperation() {
+	public Operation getBrowseOperation() {
 		return this.browseOperation;
 	}
 
 	@Override
-	public org.alice.ide.uricontent.UriProjectLoader getSelectedUri() {
+	public UriProjectLoader getSelectedUri() {
 		String path = this.pathState.getValue();
-		java.io.File file = new java.io.File( path );
+		File file = new File( path );
 		if( file.exists() ) {
-			return new org.alice.ide.uricontent.FileProjectLoader( file );
+			return new FileProjectLoader( file );
 		} else {
 			return null;
 		}
@@ -92,7 +110,7 @@ public class FileSystemTab extends SelectUriTab {
 	}
 
 	@Override
-	protected org.alice.ide.projecturi.views.FileSystemPane createView() {
-		return new org.alice.ide.projecturi.views.FileSystemPane( this );
+	protected FileSystemPane createView() {
+		return new FileSystemPane( this );
 	}
 }

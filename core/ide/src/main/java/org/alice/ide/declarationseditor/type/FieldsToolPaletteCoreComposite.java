@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.views.FieldsToolPaletteCoreView;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
 	private final ManagedFieldsComposite managedFieldsComposite;
-	private final org.lgna.croquet.PlainStringValue managedLabel = this.createStringValue( "managedLabel" );
-	private final org.lgna.croquet.PlainStringValue unmanagedLabel = this.createStringValue( "unmanagedLabel" );
+	private final PlainStringValue managedLabel = this.createStringValue( "managedLabel" );
+	private final PlainStringValue unmanagedLabel = this.createStringValue( "unmanagedLabel" );
 
-	public FieldsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, UnmanagedFieldsComposite.getInstance( type ) );
+	public FieldsToolPaletteCoreComposite( NamedUserType type ) {
+		super( UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, UnmanagedFieldsComposite.getInstance( type ) );
 		this.managedFieldsComposite = ManagedFieldsComposite.getInstance( type );
 	}
 
@@ -59,16 +65,16 @@ public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreCompos
 		return this.managedFieldsComposite;
 	}
 
-	public org.lgna.croquet.PlainStringValue getManagedLabel() {
+	public PlainStringValue getManagedLabel() {
 		return this.managedLabel;
 	}
 
-	public org.lgna.croquet.PlainStringValue getUnmanagedLabel() {
+	public PlainStringValue getUnmanagedLabel() {
 		return this.unmanagedLabel;
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.views.FieldsToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.views.FieldsToolPaletteCoreView( this );
+	protected FieldsToolPaletteCoreView createView() {
+		return new FieldsToolPaletteCoreView( this );
 	}
 }

@@ -43,26 +43,91 @@
 
 package org.alice.ide.instancefactory.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ApiConfigurationManager;
+import org.alice.ide.IDE;
+import org.alice.ide.MetaDeclarationFauxState;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.ast.fieldtree.FieldNode;
+import org.alice.ide.ast.fieldtree.FieldTree;
+import org.alice.ide.ast.fieldtree.RootNode;
+import org.alice.ide.ast.fieldtree.TypeNode;
+import org.alice.ide.croquet.models.cascade.MethodNameSeparator;
 import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.LocalAccessFactory;
+import org.alice.ide.instancefactory.ParameterAccessFactory;
+import org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory;
+import org.alice.ide.instancefactory.ThisInstanceFactory;
+import org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec;
+import org.alice.ide.meta.DeclarationMeta;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.alice.ide.project.events.ProjectChangeOfInterestListener;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.CascadeItemMenuCombo;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.CustomItemStateWithInternalBlank;
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.edits.StateEdit;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.Lambda;
+import org.lgna.project.ast.LambdaExpression;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserLambda;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SProp;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.SShape;
+import org.lgna.story.SSlitherer;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.SThing;
+import org.lgna.story.STransport;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank<InstanceFactory> {
-	public InstanceFactoryState( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
+public class InstanceFactoryState extends CustomItemStateWithInternalBlank<InstanceFactory> {
+	public InstanceFactoryState( ProjectDocumentFrame projectDocumentFrame ) {
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, InstanceFactoryCodec.SINGLETON );
 		projectDocumentFrame.getMetaDeclarationFauxState().addValueListener( declarationListener );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 	}
 
 	private void fallBackToDefaultFactory() {
-		this.setValueTransactionlessly( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() );
+		this.setValueTransactionlessly( ThisInstanceFactory.getInstance() );
 	}
 
-	private void handleDeclarationChanged( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
+	private void handleDeclarationChanged( AbstractDeclaration prevValue, AbstractDeclaration nextValue ) {
 		if( this.ignoreCount == 0 ) {
-			if( nextValue instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)nextValue;
+			if( nextValue instanceof AbstractMethod ) {
+				AbstractMethod method = (AbstractMethod)nextValue;
 				if( method.isStatic() ) {
 					this.setValueTransactionlessly( null );
 					return;
@@ -118,31 +183,31 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	}
 
-	private static org.lgna.croquet.CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn<InstanceFactory, Void> item, org.lgna.croquet.CascadeMenuModel<InstanceFactory> subMenu ) {
+	private static CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessary( CascadeFillIn<InstanceFactory, Void> item, CascadeMenuModel<InstanceFactory> subMenu ) {
 		if( subMenu != null ) {
-			return new org.lgna.croquet.CascadeItemMenuCombo<InstanceFactory>( item, subMenu );
+			return new CascadeItemMenuCombo<InstanceFactory>( item, subMenu );
 		} else {
 			return item;
 		}
 	}
 
-	/* package-private */static org.lgna.croquet.CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessaryForField( org.alice.ide.ApiConfigurationManager apiConfigurationManager, org.lgna.project.ast.UserField field ) {
+	/* package-private */static CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessaryForField( ApiConfigurationManager apiConfigurationManager, UserField field ) {
 		return createFillInMenuComboIfNecessary(
-				InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ),
+				InstanceFactoryFillIn.getInstance( ThisFieldAccessFactory.getInstance( field ) ),
 				apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
 	}
 
 	@Override
-	protected void appendPrepModelsToCascadeRootPath( java.util.List<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit edit ) {
+	protected void appendPrepModelsToCascadeRootPath( List<PrepModel> cascadeRootPath, Edit edit ) {
 		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
-		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-			org.lgna.croquet.edits.StateEdit<InstanceFactory> stateEdit = (org.lgna.croquet.edits.StateEdit<InstanceFactory>)edit;
+		if( edit instanceof StateEdit ) {
+			StateEdit<InstanceFactory> stateEdit = (StateEdit<InstanceFactory>)edit;
 			InstanceFactory nextValue = stateEdit.getNextValue();
-			if( nextValue instanceof org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory ) {
-				org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (org.alice.ide.instancefactory.ThisFieldAccessMethodInvocationFactory)nextValue;
-				org.lgna.project.ast.UserField field = thisFieldAccessMethodInvocationFactory.getField();
-				org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-				org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+			if( nextValue instanceof ThisFieldAccessMethodInvocationFactory ) {
+				ThisFieldAccessMethodInvocationFactory thisFieldAccessMethodInvocationFactory = (ThisFieldAccessMethodInvocationFactory)nextValue;
+				UserField field = thisFieldAccessMethodInvocationFactory.getField();
+				IDE ide = IDE.getActiveInstance();
+				ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
 				cascadeRootPath.add( apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
 			}
 		} else {
@@ -154,90 +219,90 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<InstanceFactory> blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.meta.DeclarationMeta.getDeclaration();
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode ) {
+		IDE ide = IDE.getActiveInstance();
+		ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
+		AbstractDeclaration declaration = DeclarationMeta.getDeclaration();
 		boolean isStaticMethod;
-		if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+		if( declaration instanceof AbstractMethod ) {
+			AbstractMethod method = (AbstractMethod)declaration;
 			isStaticMethod = method.isStatic();
 		} else {
 			isStaticMethod = false;
 		}
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
+		AbstractType<?, ?, ?> type = DeclarationMeta.getType();
 
 		if( isStaticMethod ) {
 			//pass
 		} else {
 			blankChildren.add(
 					createFillInMenuComboIfNecessary(
-							InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
+							InstanceFactoryFillIn.getInstance( ThisInstanceFactory.getInstance() ),
 							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
 							)
 					);
 		}
-		if( type instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+		if( type instanceof NamedUserType ) {
+			NamedUserType namedUserType = (NamedUserType)type;
 			if( isStaticMethod ) {
 				//pass
 			} else {
-				java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
-				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				for( org.lgna.project.ast.UserField field : fields ) {
+				List<UserField> fields = namedUserType.getDeclaredFields();
+				List<UserField> filteredFields = Lists.newLinkedList();
+				for( UserField field : fields ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
 						filteredFields.add( field );
 					}
 				}
 				final boolean IS_COLLAPSE_DESIRED = true;
 				if( IS_COLLAPSE_DESIRED && ( filteredFields.size() > 16 ) ) {
-					org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor(
+					RootNode root = FieldTree.createTreeFor(
 							filteredFields,
-							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SBiped.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SQuadruped.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSwimmer.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SFlyer.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSlitherer.class ),
+							FieldTree.createFirstClassThreshold( SBiped.class ),
+							FieldTree.createFirstClassThreshold( SQuadruped.class ),
+							FieldTree.createFirstClassThreshold( SSwimmer.class ),
+							FieldTree.createFirstClassThreshold( SFlyer.class ),
+							FieldTree.createFirstClassThreshold( SSlitherer.class ),
 
-							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SProp.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.STransport.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SShape.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SThing.class ),
-							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
+							FieldTree.createSecondClassThreshold( SProp.class ),
+							FieldTree.createSecondClassThreshold( STransport.class ),
+							FieldTree.createSecondClassThreshold( SShape.class ),
+							FieldTree.createSecondClassThreshold( SThing.class ),
+							FieldTree.createSecondClassThreshold( Object.class )
 							);
-					for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {
+					for( FieldNode fieldNode : root.getFieldNodes() ) {
 						blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, fieldNode.getDeclaration() ) );
 					}
-					for( org.alice.ide.ast.fieldtree.TypeNode typeNode : root.getTypeNodes() ) {
+					for( TypeNode typeNode : root.getTypeNodes() ) {
 						blankChildren.add( new TypeCascadeMenuModel( typeNode, apiConfigurationManager ) );
 					}
 				} else {
-					for( org.lgna.project.ast.UserField field : filteredFields ) {
+					for( UserField field : filteredFields ) {
 						blankChildren.add( createFillInMenuComboIfNecessaryForField( apiConfigurationManager, field ) );
 					}
 				}
 			}
 
-			org.lgna.project.ast.AbstractCode code = ide.getDocumentFrame().getFocusedCode();
-			if( code instanceof org.lgna.project.ast.UserCode ) {
+			AbstractCode code = ide.getDocumentFrame().getFocusedCode();
+			if( code instanceof UserCode ) {
 
-				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				java.util.List<org.lgna.croquet.CascadeBlankChild> locals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				List<CascadeBlankChild> parameters = Lists.newLinkedList();
+				List<CascadeBlankChild> locals = Lists.newLinkedList();
 				boolean containsVariable = false;
 				boolean containsConstant = false;
-				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;
-				for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
+				UserCode userCode = (UserCode)code;
+				for( UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( parameter.getValueType() ) ) {
 						parameters.add(
 								createFillInMenuComboIfNecessary(
-										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ),
+										InstanceFactoryFillIn.getInstance( ParameterAccessFactory.getInstance( parameter ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
 										)
 								);
 					}
 				}
 
-				for( org.lgna.project.ast.UserLocal local : org.lgna.project.ProgramTypeUtilities.getLocals( userCode ) ) {
+				for( UserLocal local : ProgramTypeUtilities.getLocals( userCode ) ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( local.getValueType() ) ) {
 						if( local.isFinal.getValue() ) {
 							containsConstant = true;
@@ -246,17 +311,17 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 						}
 						locals.add(
 								createFillInMenuComboIfNecessary(
-										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ),
+										InstanceFactoryFillIn.getInstance( LocalAccessFactory.getInstance( local ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
 										)
 								);
 					}
 				}
 				if( ( parameters.size() > 0 ) || ( locals.size() > 0 ) ) {
-					blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+					blankChildren.add( CascadeLineSeparator.getInstance() );
 					blankChildren.add( this.parametersVariablesConstantsSeparator );
 					StringBuilder sb = new StringBuilder();
-					org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, code );
+					NodeUtilities.safeAppendRepr( sb, code );
 					sb.append( " " );
 					String prefix = "";
 					if( parameters.size() > 0 ) {
@@ -280,32 +345,32 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					this.parametersVariablesConstantsSeparator.setMenuItemText( sb.toString() );
 				}
 
-				if( userCode instanceof org.lgna.project.ast.UserMethod ) {
-					org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)userCode;
-					if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( userMethod.getName() ) ) {
-						for( org.lgna.project.ast.Statement statement : userMethod.body.getValue().statements ) {
-							if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-								org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-								org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-								if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-									org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-									java.util.List<org.lgna.croquet.CascadeBlankChild> methodInvocationBlankChildren = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				if( userCode instanceof UserMethod ) {
+					UserMethod userMethod = (UserMethod)userCode;
+					if( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( userMethod.getName() ) ) {
+						for( Statement statement : userMethod.body.getValue().statements ) {
+							if( statement instanceof ExpressionStatement ) {
+								ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+								Expression expression = expressionStatement.expression.getValue();
+								if( expression instanceof MethodInvocation ) {
+									MethodInvocation methodInvocation = (MethodInvocation)expression;
+									List<CascadeBlankChild> methodInvocationBlankChildren = Lists.newLinkedList();
 
-									for( org.lgna.project.ast.SimpleArgument argument : methodInvocation.requiredArguments ) {
-										org.lgna.project.ast.Expression argumentExpression = argument.expression.getValue();
-										if( argumentExpression instanceof org.lgna.project.ast.LambdaExpression ) {
-											org.lgna.project.ast.LambdaExpression lambdaExpression = (org.lgna.project.ast.LambdaExpression)argumentExpression;
-											org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
-											if( lambda instanceof org.lgna.project.ast.UserLambda ) {
-												org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
-												for( org.lgna.project.ast.UserParameter parameter : userLambda.getRequiredParameters() ) {
-													org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = parameter.getValueType();
-													for( org.lgna.project.ast.AbstractMethod parameterMethod : org.lgna.project.ast.AstUtilities.getAllMethods( parameterType ) ) {
-														org.lgna.project.ast.AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
-														if( parameterMethodReturnType.isAssignableTo( org.lgna.story.SThing.class ) ) {
+									for( SimpleArgument argument : methodInvocation.requiredArguments ) {
+										Expression argumentExpression = argument.expression.getValue();
+										if( argumentExpression instanceof LambdaExpression ) {
+											LambdaExpression lambdaExpression = (LambdaExpression)argumentExpression;
+											Lambda lambda = lambdaExpression.value.getValue();
+											if( lambda instanceof UserLambda ) {
+												UserLambda userLambda = (UserLambda)lambda;
+												for( UserParameter parameter : userLambda.getRequiredParameters() ) {
+													AbstractType<?, ?, ?> parameterType = parameter.getValueType();
+													for( AbstractMethod parameterMethod : AstUtilities.getAllMethods( parameterType ) ) {
+														AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
+														if( parameterMethodReturnType.isAssignableTo( SThing.class ) ) {
 															methodInvocationBlankChildren.add(
 																	createFillInMenuComboIfNecessary(
-																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
+																			InstanceFactoryFillIn.getInstance( ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
 																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
 																			)
 																	);
@@ -317,8 +382,8 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 									}
 
 									if( methodInvocationBlankChildren.size() > 0 ) {
-										org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-										blankChildren.add( org.alice.ide.croquet.models.cascade.MethodNameSeparator.getInstance( method ) );
+										AbstractMethod method = methodInvocation.method.getValue();
+										blankChildren.add( MethodNameSeparator.getInstance( method ) );
 										blankChildren.addAll( methodInvocationBlankChildren );
 									}
 								}
@@ -331,12 +396,12 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	@Override
-	protected org.alice.ide.instancefactory.InstanceFactory getSwingValue() {
+	protected InstanceFactory getSwingValue() {
 		return this.value;
 	}
 
 	@Override
-	protected void setSwingValue( org.alice.ide.instancefactory.InstanceFactory value ) {
+	protected void setSwingValue( InstanceFactory value ) {
 		this.value = value;
 	}
 
@@ -353,9 +418,9 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	}
 
-	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+	private final MetaDeclarationFauxState.ValueListener declarationListener = new MetaDeclarationFauxState.ValueListener() {
 		@Override
-		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
+		public void changed( AbstractDeclaration prevValue, AbstractDeclaration nextValue ) {
 			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
 		}
 	};
@@ -363,7 +428,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private InstanceFactory value;
 
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+	private final ProjectChangeOfInterestListener projectChangeOfInterestListener = new ProjectChangeOfInterestListener() {
 		@Override
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();

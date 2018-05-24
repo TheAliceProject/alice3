@@ -42,7 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.x;
 
+import org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade;
 import org.alice.ide.x.croquet.SceneEditorUpdatingArgumentCascade;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.resources.ModelResource;
 
 /**
  * @author Dennis Cosgrove
@@ -60,12 +65,12 @@ public class SceneEditorUpdatingProjectEditorAstI18nFactory extends AbstractProj
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade getArgumentCascade( org.lgna.project.ast.SimpleArgument simpleArgument ) {
-		org.lgna.project.ast.InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );
+	protected ExpressionPropertyCascade getArgumentCascade( SimpleArgument simpleArgument ) {
+		InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( InstanceCreation.class );
 		if( instanceCreation != null ) {
-			org.lgna.project.ast.UserField field = instanceCreation.getFirstAncestorAssignableTo( org.lgna.project.ast.UserField.class );
+			UserField field = instanceCreation.getFirstAncestorAssignableTo( UserField.class );
 			if( field != null ) {
-				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( ModelResource.class ) ) {
 					return SceneEditorUpdatingArgumentCascade.getInstance( simpleArgument );
 				}
 			}

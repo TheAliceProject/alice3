@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,13 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory;
+import org.lgna.story.implementation.sims2.NebulousPersonVisualData;
+import org.lgna.story.implementation.sims2.NebulousVisualData;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.PersonResource;
 
 /**
  * @author Dave Culyba
@@ -81,279 +90,279 @@ public class SimsThumbnailMaker extends AliceThumbnailMaker {
 		super();
 	}
 
-	private AffineMatrix4x4 getThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+	private AffineMatrix4x4 getThumbnailCameraOrientationForLifeStage( LifeStage lifeStage ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) || ( lifeStage == LifeStage.TEEN ) ) {
 			return getThumbnailCameraOrientation( new AxisAlignedBox( -.4, 0, -.4, .4, 1.6, .5 ) );
 		} else {
 			return getThumbnailCameraOrientation( new AxisAlignedBox( -.2, 0, -.2, .2, 1.1, .2 ) );
 		}
 	}
 
-	private AffineMatrix4x4 getGalleryThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	private AffineMatrix4x4 getGalleryThumbnailCameraOrientationForLifeStage( LifeStage lifeStage ) {
 		Vector3 cameraDir = new Vector3( -1.0, -.5, 3.0 );
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) || ( lifeStage == LifeStage.TEEN ) ) {
 			return getThumbnailCameraOrientation( new AxisAlignedBox( -.4, 0, -.4, .4, 1.6, .5 ), cameraDir );
 		} else {
 			return getThumbnailCameraOrientation( new AxisAlignedBox( -.2, 0, -.2, .2, 1.6, .2 ), cameraDir );
 		}
 	}
 
-	private AffineMatrix4x4 getThumbnailCameraOrientationForPerson( org.lgna.story.resources.sims2.PersonResource personResource ) {
+	private AffineMatrix4x4 getThumbnailCameraOrientationForPerson( PersonResource personResource ) {
 		return getThumbnailCameraOrientationForLifeStage( personResource.getLifeStage() );
 	}
 
-	private AffineMatrix4x4 getHeadThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+	private AffineMatrix4x4 getHeadThumbnailCameraOrientationForLifeStage( LifeStage lifeStage ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.58, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.48, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .7, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .6 );
 		} else {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.1, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
 		}
 	}
 
-	private AffineMatrix4x4 getBodyThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+	private AffineMatrix4x4 getBodyThumbnailCameraOrientationForLifeStage( LifeStage lifeStage ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .72, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 3.3 );
 		}
-		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		if( lifeStage == LifeStage.TEEN ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .68, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 3.25 );
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .3, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2 );
 		} else {
 			return getThumbnailCameraOrientation( new Point3( 0, .5, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2.3 );
 		}
 	}
 
-	private AffineMatrix4x4 getTopBodyThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+	private AffineMatrix4x4 getTopBodyThumbnailCameraOrientationForLifeStage( LifeStage lifeStage ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.07, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.8 );
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.02, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.6 );
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .5, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
 		} else {
 			return getThumbnailCameraOrientation( new Point3( 0, .75, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.2 );
 		}
 	}
 
-	private AffineMatrix4x4 getBottomBodyThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
+	private AffineMatrix4x4 getBottomBodyThumbnailCameraOrientationForLifeStage( LifeStage lifeStage ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .5, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2.4 );
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .48, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2.3 );
 		} else {
 			return getThumbnailCameraOrientation( new Point3( 0, .33, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.6 );
 		}
 	}
 
-	private AffineMatrix4x4 getFaceThumbnailCameraOrientationForLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
-			if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
+	private AffineMatrix4x4 getFaceThumbnailCameraOrientationForLifeStageAndGender( LifeStage lifeStage, Gender gender ) {
+		if( ( lifeStage == LifeStage.ADULT ) || ( lifeStage == LifeStage.ELDER ) ) {
+			if( gender == Gender.FEMALE ) {
 				return getThumbnailCameraOrientation( new Point3( 0, 1.58, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .56 );
 			} else {
 				return getThumbnailCameraOrientation( new Point3( 0, 1.569, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .569 );
 			}
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
-			if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
+		} else if( lifeStage == LifeStage.TEEN ) {
+			if( gender == Gender.FEMALE ) {
 				return getThumbnailCameraOrientation( new Point3( 0, 1.48, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .56 );
 			} else {
 				return getThumbnailCameraOrientation( new Point3( 0, 1.469, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .569 );
 			}
-		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( lifeStage == LifeStage.TODDLER ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .685, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .4 );
 		} else {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.09, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .48 );
 		}
 	}
 
-	public java.awt.image.BufferedImage createThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public BufferedImage createThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim ) {
 		return createThumbnailFromPersonVisualData( visualData, trim, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createGalleryThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createGalleryThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getGalleryThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getGalleryThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public java.awt.image.BufferedImage createThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource ) throws Exception {
+	public BufferedImage createThumbnailFromPersonResource( PersonResource resource ) throws Exception {
 		return createThumbnailFromPersonResource( resource, true );
 	}
 
-	public java.awt.image.BufferedImage createGalleryThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createGalleryThumbnailFromPersonVisualData( visualData, false, null );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public BufferedImage createGalleryThumbnailFromPersonResource( PersonResource resource ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createGalleryThumbnailFromPersonVisualData( visualData, false, null );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}
 
-	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createThumbnailFromPersonVisualData( visualData, trim );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public synchronized BufferedImage createThumbnailFromPersonResource( PersonResource resource, boolean trim ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createThumbnailFromPersonVisualData( visualData, trim );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}
 
-	public java.awt.image.BufferedImage createBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public BufferedImage createBodyThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim ) {
 		return createBodyThumbnailFromPersonVisualData( visualData, trim, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createBodyThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createBodyThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createBodyThumbnailFromPersonVisualData( visualData, trim );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public synchronized BufferedImage createBodyThumbnailFromPersonResource( PersonResource resource, boolean trim ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createBodyThumbnailFromPersonVisualData( visualData, trim );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}
 
-	public java.awt.image.BufferedImage createTopBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public BufferedImage createTopBodyThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim ) {
 		return createTopBodyThumbnailFromPersonVisualData( visualData, trim, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createTopBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createTopBodyThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getTopBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getTopBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createTopBodyThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createTopBodyThumbnailFromPersonVisualData( visualData, trim );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public synchronized BufferedImage createTopBodyThumbnailFromPersonResource( PersonResource resource, boolean trim ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createTopBodyThumbnailFromPersonVisualData( visualData, trim );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}
 
-	public java.awt.image.BufferedImage createBottomBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public BufferedImage createBottomBodyThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim ) {
 		return createBottomBodyThumbnailFromPersonVisualData( visualData, trim, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createBottomBodyThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createBottomBodyThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getBottomBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getBottomBodyThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createBottomBodyThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createBottomBodyThumbnailFromPersonVisualData( visualData, trim );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public synchronized BufferedImage createBottomBodyThumbnailFromPersonResource( PersonResource resource, boolean trim ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createBottomBodyThumbnailFromPersonVisualData( visualData, trim );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}
 
-	public java.awt.image.BufferedImage createHeadThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public BufferedImage createHeadThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim ) {
 		return createHeadThumbnailFromPersonVisualData( visualData, trim, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createHeadThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createHeadThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getHeadThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getHeadThumbnailCameraOrientationForLifeStage( visualData.getLifeStage() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createHeadThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createHeadThumbnailFromPersonVisualData( visualData, trim );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public synchronized BufferedImage createHeadThumbnailFromPersonResource( PersonResource resource, boolean trim ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createHeadThumbnailFromPersonVisualData( visualData, trim );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}
 
-	public java.awt.image.BufferedImage createFaceThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim ) {
+	public BufferedImage createFaceThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim ) {
 		return createFaceThumbnailFromPersonVisualData( visualData, trim, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createFaceThumbnailFromPersonVisualData( org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData, boolean trim, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createFaceThumbnailFromPersonVisualData( NebulousPersonVisualData visualData, boolean trim, Color colorKey ) {
 		visualData.setSGParent( this.getModelTransformable() );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getFaceThumbnailCameraOrientationForLifeStageAndGender( visualData.getLifeStage(), visualData.getGender() ), trim, colorKey );
+		BufferedImage returnImage = takePicture( getFaceThumbnailCameraOrientationForLifeStageAndGender( visualData.getLifeStage(), visualData.getGender() ), trim, colorKey );
 		visualData.setSGParent( null );
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
+		for( Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
 
-	public synchronized java.awt.image.BufferedImage createFaceThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource, boolean trim ) throws Exception {
-		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
-		org.lgna.story.implementation.sims2.NebulousPersonVisualData visualData = (org.lgna.story.implementation.sims2.NebulousPersonVisualData)factory.createVisualData();
-		java.awt.image.BufferedImage thumbnail = createFaceThumbnailFromPersonVisualData( visualData, trim );
-		( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+	public synchronized BufferedImage createFaceThumbnailFromPersonResource( PersonResource resource, boolean trim ) throws Exception {
+		JointImplementationAndVisualDataFactory factory = JointImplementationAndVisualDataFactory.getInstance( resource );
+		NebulousPersonVisualData visualData = (NebulousPersonVisualData)factory.createVisualData();
+		BufferedImage thumbnail = createFaceThumbnailFromPersonVisualData( visualData, trim );
+		( (NebulousVisualData<?>)visualData ).unload();
 		this.clear();
 		return thumbnail;
 	}

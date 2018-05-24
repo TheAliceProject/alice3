@@ -42,18 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf.metal;
 
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.metal.OceanTheme;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTheme {
+public class AdjustableFontSizeOceanTheme extends OceanTheme {
 	private float sizeDelta = 0.0f;
 	private float sizeMinimum = 0.0f;
 
-	private javax.swing.plaf.FontUIResource createDeltaFontIfNecessary( javax.swing.plaf.FontUIResource fontUIResource ) {
-		javax.swing.plaf.FontUIResource rv;
+	private FontUIResource createDeltaFontIfNecessary( FontUIResource fontUIResource ) {
+		FontUIResource rv;
 		if( this.sizeDelta != 0 ) {
 			float nextSize = Math.max( this.sizeMinimum, fontUIResource.getSize() + this.sizeDelta );
-			rv = new javax.swing.plaf.FontUIResource( fontUIResource.deriveFont( nextSize ) );
+			rv = new FontUIResource( fontUIResource.deriveFont( nextSize ) );
 		} else {
 			rv = fontUIResource;
 		}
@@ -88,15 +91,15 @@ public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTh
 		setSizeDelta( this.sizeDelta + sizeDeltaDelta );
 	}
 
-	private javax.swing.plaf.FontUIResource controlTextFont = null;
-	private javax.swing.plaf.FontUIResource menuTextFont = null;
-	private javax.swing.plaf.FontUIResource subTextFont = null;
-	private javax.swing.plaf.FontUIResource systemTextFont = null;
-	private javax.swing.plaf.FontUIResource userTextFont = null;
-	private javax.swing.plaf.FontUIResource windowTitleTextFont = null;
+	private FontUIResource controlTextFont = null;
+	private FontUIResource menuTextFont = null;
+	private FontUIResource subTextFont = null;
+	private FontUIResource systemTextFont = null;
+	private FontUIResource userTextFont = null;
+	private FontUIResource windowTitleTextFont = null;
 
 	@Override
-	public javax.swing.plaf.FontUIResource getControlTextFont() {
+	public FontUIResource getControlTextFont() {
 		if( this.controlTextFont != null ) {
 			//pass
 		} else {
@@ -106,7 +109,7 @@ public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTh
 	}
 
 	@Override
-	public javax.swing.plaf.FontUIResource getMenuTextFont() {
+	public FontUIResource getMenuTextFont() {
 		if( this.menuTextFont != null ) {
 			//pass
 		} else {
@@ -116,7 +119,7 @@ public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTh
 	}
 
 	@Override
-	public javax.swing.plaf.FontUIResource getSubTextFont() {
+	public FontUIResource getSubTextFont() {
 		if( this.subTextFont != null ) {
 			//pass
 		} else {
@@ -126,7 +129,7 @@ public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTh
 	}
 
 	@Override
-	public javax.swing.plaf.FontUIResource getSystemTextFont() {
+	public FontUIResource getSystemTextFont() {
 		if( this.systemTextFont != null ) {
 			//pass
 		} else {
@@ -136,7 +139,7 @@ public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTh
 	}
 
 	@Override
-	public javax.swing.plaf.FontUIResource getUserTextFont() {
+	public FontUIResource getUserTextFont() {
 		if( this.userTextFont != null ) {
 			//pass
 		} else {
@@ -146,7 +149,7 @@ public class AdjustableFontSizeOceanTheme extends javax.swing.plaf.metal.OceanTh
 	}
 
 	@Override
-	public javax.swing.plaf.FontUIResource getWindowTitleFont() {
+	public FontUIResource getWindowTitleFont() {
 		if( this.windowTitleTextFont != null ) {
 			//pass
 		} else {

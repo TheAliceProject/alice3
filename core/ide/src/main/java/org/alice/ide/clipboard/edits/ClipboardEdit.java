@@ -42,59 +42,76 @@
  *******************************************************************************/
 package org.alice.ide.clipboard.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.clipboard.Clipboard;
+import org.alice.ide.issue.croquet.AnomalousSituationComposite;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
+import javax.swing.SwingUtilities;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ClipboardEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.project.ast.Statement statement;
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+public abstract class ClipboardEdit extends AbstractEdit {
+	private final Statement statement;
+	private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public ClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public ClipboardEdit( CompletionStep completionStep, Statement statement, BlockStatementIndexPair blockStatementIndexPair ) {
 		super( completionStep );
 		this.statement = statement;
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
-	public ClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public ClipboardEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project = ide.getProject();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
+		IDE ide = IDE.getActiveInstance();
+		Project project = ide.getProject();
+		UUID statementId = binaryDecoder.decodeId();
+		this.statement = ProgramTypeUtilities.lookupNode( project, statementId );
 		this.blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
-	public org.lgna.project.ast.Statement getStatement() {
+	public Statement getStatement() {
 		return this.statement;
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.statement.getId() );
 		binaryEncoder.encode( this.blockStatementIndexPair );
 	}
 
 	protected void pushAndRemove() {
-		org.alice.ide.clipboard.Clipboard.SINGLETON.push( this.statement );
+		Clipboard.SINGLETON.push( this.statement );
 		this.blockStatementIndexPair.getBlockStatement().statements.remove( this.blockStatementIndexPair.getIndex() );
 	}
 
 	protected void popAndAdd() {
-		org.lgna.project.ast.Node node = org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
+		Node node = Clipboard.SINGLETON.pop();
 		if( node == this.statement ) {
 			this.blockStatementIndexPair.getBlockStatement().statements.add( this.blockStatementIndexPair.getIndex(), this.statement );
 		} else {
 			StringBuilder sb = new StringBuilder();
 			try {
-				org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, statement );
+				NodeUtilities.safeAppendRepr( sb, statement );
 			} catch( Throwable t ) {
 				sb.append( statement );
 			}
 			sb.append( ";" );
 			sb.append( statement.getId() );
-			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					composite.getLaunchOperation().fire();

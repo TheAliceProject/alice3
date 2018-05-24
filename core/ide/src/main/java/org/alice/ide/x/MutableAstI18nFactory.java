@@ -42,18 +42,44 @@
  *******************************************************************************/
 package org.alice.ide.x;
 
+import org.alice.ide.ast.IdeExpression;
+import org.alice.ide.ast.declaration.DeclarationNameState;
+import org.alice.ide.codeeditor.ArgumentListPropertyPane;
+import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
+import org.alice.ide.common.AbstractStatementPane;
+import org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade;
+import org.alice.ide.croquet.models.ast.StatementContextMenu;
+import org.alice.ide.x.components.ExpressionPropertyView;
+import org.alice.ide.x.components.KeyedArgumentListPropertyView;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArgumentListProperty;
+import org.lgna.project.ast.ArgumentOwner;
+import org.lgna.project.ast.DeclarationProperty;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.JavaKeyedArgument;
+import org.lgna.project.ast.KeyedArgumentListProperty;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MutableAstI18nFactory extends AstI18nFactory {
-	private final org.lgna.croquet.Group group;
+	private final Group group;
 
-	public MutableAstI18nFactory( org.lgna.croquet.Group group ) {
+	public MutableAstI18nFactory( Group group ) {
 		this.group = group;
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createNameView( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	public SwingComponentView<?> createNameView( AbstractDeclaration declaration ) {
 		final boolean IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME = false;
 		if( IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME ) {
 			//			if( declaration instanceof org.lgna.project.ast.Code ) {
@@ -63,68 +89,68 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 			//					return super.createNameView( declaration );
 			//				}
 			//			}
-			return org.alice.ide.ast.declaration.DeclarationNameState.getInstance( declaration ).createSubduedTextField();
+			return DeclarationNameState.getInstance( declaration ).createSubduedTextField();
 		} else {
 			return super.createNameView( declaration );
 		}
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}
 
-	public boolean isStatementListPropertyMutable( org.lgna.project.ast.StatementListProperty statementListProperty ) {
+	public boolean isStatementListPropertyMutable( StatementListProperty statementListProperty ) {
 		return true;
 	}
 
-	public boolean isKeyedArgumentListMutable( org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
+	public boolean isKeyedArgumentListMutable( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
 		return true;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
-		org.lgna.project.ast.ArgumentOwner owner = argumentListProperty.getOwner();
-		org.lgna.project.ast.DeclarationProperty<? extends org.lgna.project.ast.AbstractCode> codeProperty = owner.getParameterOwnerProperty();
-		org.lgna.project.ast.AbstractCode code = codeProperty.getValue();
+	protected SwingComponentView<?> createKeyedArgumentListPropertyPane( KeyedArgumentListProperty argumentListProperty ) {
+		ArgumentOwner owner = argumentListProperty.getOwner();
+		DeclarationProperty<? extends AbstractCode> codeProperty = owner.getParameterOwnerProperty();
+		AbstractCode code = codeProperty.getValue();
 		if( code.getKeyedParameter() != null ) {
-			return new org.alice.ide.x.components.KeyedArgumentListPropertyView( this, argumentListProperty );
+			return new KeyedArgumentListPropertyView( this, argumentListProperty );
 		} else {
-			return new org.lgna.croquet.views.Label();
+			return new Label();
 		}
 
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
+	protected SwingComponentView<?> createIdeExpressionPane( IdeExpression ideExpression ) {
 		throw new RuntimeException( ideExpression.toString() );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
+	protected SwingComponentView<?> createSimpleArgumentListPropertyPane( SimpleArgumentListProperty argumentListProperty ) {
+		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredValueType ) {
-		org.lgna.croquet.views.SwingComponentView<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
+	public SwingComponentView<?> createExpressionPropertyPane( ExpressionProperty expressionProperty, AbstractType<?, ?, ?> desiredValueType ) {
+		SwingComponentView<?> rv = new ExpressionPropertyView( this, expressionProperty );
 		if( this.isDropDownDesiredFor( expressionProperty ) ) {
-			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
-			org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), null, rv, expressionProperty );
+			DefaultExpressionPropertyCascade model = DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
+			ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), null, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}
 		return rv;
 	}
 
-	protected boolean isStatementContextMenuDesiredFor( org.lgna.project.ast.Statement statement ) {
+	protected boolean isStatementContextMenuDesiredFor( Statement statement ) {
 		return true;
 	}
 
 	@Override
-	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
-		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( dragModel, statement, statementListProperty );
+	public AbstractStatementPane createStatementPane( DragModel dragModel, Statement statement, StatementListProperty statementListProperty ) {
+		AbstractStatementPane abstractStatementPane = super.createStatementPane( dragModel, statement, statementListProperty );
 		if( this.isStatementContextMenuDesiredFor( statement ) ) {
-			abstractStatementPane.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
+			abstractStatementPane.setPopupPrepModel( StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
 		}
 		return abstractStatementPane;
 	}

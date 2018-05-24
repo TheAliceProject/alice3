@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 public class AddMouseClickOnScreenListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddMouseClickOnScreenListener.class )
+	@ClassTemplate( keywordFactoryCls = AddMouseClickOnScreenListener.class )
 	public static interface Detail {
 	}
 

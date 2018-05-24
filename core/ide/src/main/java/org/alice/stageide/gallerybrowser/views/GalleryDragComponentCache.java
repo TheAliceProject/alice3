@@ -42,19 +42,26 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.views;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponentCache {
-	private final java.util.Map<org.alice.stageide.modelresource.ResourceKey, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<ResourceKey, GalleryDragComponent> map = Maps.newHashMap();
 
-	public synchronized org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
-		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = this.map.get( resourceKey );
+	public synchronized GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode ) {
+		ResourceKey resourceKey = resourceNode.getResourceKey();
+		GalleryDragComponent rv = this.map.get( resourceKey );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( resourceNode );
+			rv = new GalleryDragComponent( resourceNode );
 			this.map.put( resourceKey, rv );
 		}
 		return rv;

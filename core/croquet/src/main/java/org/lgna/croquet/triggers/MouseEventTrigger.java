@@ -43,23 +43,28 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MouseEventTrigger extends AbstractMouseEventTrigger {
-	public static MouseEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+	public static MouseEventTrigger createUserInstance( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
 		return new MouseEventTrigger( viewController, mouseEvent );
 	}
 
-	public static MouseEventTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent ) {
+	public static MouseEventTrigger createUserInstance( MouseEvent mouseEvent ) {
 		return createUserInstance( null, mouseEvent );
 	}
 
-	private MouseEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
+	private MouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
 		super( viewController, mouseEvent );
 	}
 
-	public MouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MouseEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 }

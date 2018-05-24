@@ -42,21 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.common.FieldDeclarationPane;
+import org.alice.ide.declarationseditor.type.FieldMenuModel;
+import org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.UserField;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldView extends MemberView {
-	public FieldView( org.lgna.project.ast.UserField field ) {
-		super( org.alice.ide.declarationseditor.type.FieldMenuModel.getInstance( field ) );
-		org.lgna.project.ast.ManagementLevel managementLevel = field.managementLevel.getValue();
-		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "*" );
+	public FieldView( UserField field ) {
+		super( FieldMenuModel.getInstance( field ) );
+		ManagementLevel managementLevel = field.managementLevel.getValue();
+		if( managementLevel == ManagementLevel.MANAGED ) {
+			Label label = new Label( "*" );
 			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( java.awt.Color.GRAY );
+			label.setForegroundColor( Color.GRAY );
 			label.scaleFont( 2.0f );
-			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+			label.setBorder( BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 			this.addComponent( label );
 		}
-		this.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), field, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ) );
+		this.addComponent( new FieldDeclarationPane( SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), field, managementLevel != ManagementLevel.MANAGED ) );
 	}
 }

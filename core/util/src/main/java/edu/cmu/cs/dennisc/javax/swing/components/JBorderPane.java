@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,6 +53,6 @@ public class JBorderPane extends JPane {
 	}
 
 	public JBorderPane( int hgap, int vgap ) {
-		setLayout( new java.awt.BorderLayout( hgap, vgap ) );
+		setLayout( new BorderLayout( hgap, vgap ) );
 	}
 }

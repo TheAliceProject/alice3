@@ -42,18 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Thing extends Model {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( Thing.class, ThingAdapter.class );
+		AdapterFactory.register( Thing.class, ThingAdapter.class );
 	}
 
 	private final Object o;
 	private final Object o2;
 
-	public Thing( Object o, Object o2 ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public Thing( Object o, Object o2 ) throws LicenseRejectedException {
 		this.o = o;
 		this.o2 = o2;
 		synchronized( renderLock ) {

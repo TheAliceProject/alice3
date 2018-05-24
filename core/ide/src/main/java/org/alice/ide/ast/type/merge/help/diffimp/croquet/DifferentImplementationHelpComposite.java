@@ -42,35 +42,48 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.help.diffimp.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
 import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite;
+import org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.codecs.EnumCodec;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DifferentImplementationHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView, M, DifferentImplementation<M>> {
-	private final org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
+public abstract class DifferentImplementationHelpComposite<M extends Member> extends PotentialNameChangerHelpComposite<DifferentImplementationHelpView, M, DifferentImplementation<M>> {
+	private final EnumCodec.LocalizationCustomizer<DifferentImplementationChoice> localizationCustomizer = new EnumCodec.LocalizationCustomizer<DifferentImplementationChoice>() {
 		@Override
 		public String customize( String localization, DifferentImplementationChoice value ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localization, value );
-			return org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly() );
+			Logger.outln( localization, value );
+			return AddMembersPage.modifyFilenameLocalizedText( localization, getPotentialNameChanger().getUriForDescriptionPurposesOnly() );
 		}
 	};
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentImplementationChoice> choiceState = this.createImmutableListStateForEnum( "choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null );
+	private final ImmutableDataSingleSelectListState<DifferentImplementationChoice> choiceState = this.createImmutableListStateForEnum( "choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null );
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( "noTopLevelError" );
 
-	private final org.lgna.croquet.PlainStringValue selectOneHeader = this.createStringValue( "selectOneHeader" );
+	private final PlainStringValue selectOneHeader = this.createStringValue( "selectOneHeader" );
 
-	private final org.lgna.croquet.event.ValueListener<DifferentImplementationChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentImplementationChoice>() {
+	private final ValueListener<DifferentImplementationChoice> topLevelListener = new ValueListener<DifferentImplementationChoice>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
+		public void valueChanged( ValueEvent<DifferentImplementationChoice> e ) {
 			handleChanged();
 		}
 	};
 
-	public DifferentImplementationHelpComposite( java.util.UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText ) {
+	public DifferentImplementationHelpComposite( UUID migrationId, DifferentImplementation<M> differentImplementation, String signatureText, String implementationPluralText ) {
 		super( migrationId, differentImplementation );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
@@ -91,30 +104,30 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 
 		String kindOfMemberText;
 		M member = differentImplementation.getImportHub().getMember();
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+		if( member instanceof UserMethod ) {
+			UserMethod method = (UserMethod)member;
 			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
 		} else {
 			kindOfMemberText = "property";
 		}
 		String text = sb.toString();
-		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentImplementation.getUriForDescriptionPurposesOnly() );
+		text = AddMembersPage.modifyFilenameLocalizedText( text, differentImplementation.getUriForDescriptionPurposesOnly() );
 		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
 		text = text.replaceAll( "</memberName/>", member.getName() );
 		this.getHeader().setText( text );
 	}
 
-	public org.lgna.croquet.PlainStringValue getSelectOneHeader() {
+	public PlainStringValue getSelectOneHeader() {
 		return this.selectOneHeader;
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentImplementationChoice> getChoiceState() {
+	public ImmutableDataSingleSelectListState<DifferentImplementationChoice> getChoiceState() {
 		return this.choiceState;
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView createView() {
-		return new org.alice.ide.ast.type.merge.help.diffimp.croquet.views.DifferentImplementationHelpView( this );
+	protected DifferentImplementationHelpView createView() {
+		return new DifferentImplementationHelpView( this );
 	}
 
 	@Override
@@ -123,7 +136,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep step ) {
 		Status rv = super.getStatusPreRejectorCheck( step );
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
 			DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();

@@ -42,35 +42,50 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Context;
+import org.lgna.croquet.ContextFactory;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.ViewController;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step<M extends org.lgna.croquet.Model> extends TransactionNode<Transaction> {
+public abstract class Step<M extends Model> extends TransactionNode<Transaction> {
 
-	private final java.util.List<org.lgna.croquet.Context> contexts;
+	private final List<Context> contexts;
 	private final M model;
-	private final org.lgna.croquet.triggers.Trigger trigger;
-	private final java.util.UUID id;
+	private final Trigger trigger;
+	private final UUID id;
 
-	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public Step( Transaction parent, M model, Trigger trigger ) {
 		super( parent );
 		this.model = model;
 		if( trigger != null ) {
 			this.trigger = trigger;
 		} else {
 			//todo?
-			this.trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
+			this.trigger = NullTrigger.createUserInstance();
 		}
-		this.id = java.util.UUID.randomUUID();
+		this.id = UUID.randomUUID();
 
-		java.util.List<org.lgna.croquet.Context> contexts = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<Context> contexts = Lists.newLinkedList();
 		if( model != null ) {
-			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
+			for( ContextFactory<?> contextFactory : model.getContextFactories() ) {
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( model );
 				contexts.add( contextFactory.createContext() );
 			}
 		}
-		this.contexts = java.util.Collections.unmodifiableList( contexts );
+		this.contexts = Collections.unmodifiableList( contexts );
 	}
 
 	public static class Key<T> {
@@ -90,7 +105,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 	}
 
-	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map/* < Key<T>, T > */dataMap = Maps.newHashMap();
 
 	public <T> boolean containsEphemeralDataFor( Key<T> key ) {
 		return this.dataMap.containsKey( key );
@@ -109,28 +124,28 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 	}
 
 	@Override
-	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
+	protected void appendContexts( List<Context> out ) {
 		out.addAll( this.contexts );
 	}
 
-	/* package-private */Iterable<org.lgna.croquet.Context> getContexts() {
+	/* package-private */Iterable<Context> getContexts() {
 		return this.contexts;
 	}
 
-	public <C extends org.lgna.croquet.Context> C findFirstContext( Class<C> cls ) {
+	public <C extends Context> C findFirstContext( Class<C> cls ) {
 		if( this.getOwnerTransaction() != null ) {
 			return this.getOwnerTransaction().findFirstContext( this, cls );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
+			Logger.severe( cls );
 			return null;
 		}
 	}
 
-	public org.lgna.croquet.triggers.Trigger getTrigger() {
+	public Trigger getTrigger() {
 		return this.trigger;
 	}
 
-	public java.util.UUID getId() {
+	public UUID getId() {
 		return this.id;
 	}
 
@@ -143,7 +158,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 	}
 
-	protected org.lgna.croquet.views.ViewController<?, ?> getViewController() {
+	protected ViewController<?, ?> getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
 
@@ -157,12 +172,12 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 	}
 
 	protected StringBuilder updateRepr( StringBuilder rv ) {
-		org.lgna.croquet.Model model = this.getModel();
+		Model model = this.getModel();
 		if( model != null ) {
 			rv.append( "model=" );
 			rv.append( model );
 			rv.append( ";trigger=" );
-			org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
+			Trigger trigger = this.getTrigger();
 			if( trigger != null ) {
 				trigger.appendRepr( rv );
 			}

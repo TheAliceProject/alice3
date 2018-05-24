@@ -43,12 +43,14 @@
 
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum OkCancelResult {
-	OK( javax.swing.JOptionPane.OK_OPTION ),
-	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
+	OK( JOptionPane.OK_OPTION ),
+	CANCEL( JOptionPane.CANCEL_OPTION );
 	private final int internal;
 
 	OkCancelResult( int internal ) {

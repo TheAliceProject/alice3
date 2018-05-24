@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SingleThreadIteratingOperation extends IteratingOperation {
-	public SingleThreadIteratingOperation( Group group, java.util.UUID migrationId ) {
+	public SingleThreadIteratingOperation( Group group, UUID migrationId ) {
 		super( group, migrationId );
 	}
 
 	@Override
-	protected final void perform( final org.lgna.croquet.history.Transaction transaction, final org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void perform( final Transaction transaction, final Trigger trigger ) {
 		this.iterateOverSubModels( transaction, trigger );
 	}
 }

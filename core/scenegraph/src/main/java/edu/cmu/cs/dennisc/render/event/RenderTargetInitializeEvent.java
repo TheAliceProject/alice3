@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.event;
 
+import edu.cmu.cs.dennisc.render.RenderTarget;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RenderTargetInitializeEvent extends RenderTargetEvent {
-	public RenderTargetInitializeEvent( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, int width, int height ) {
+	public RenderTargetInitializeEvent( RenderTarget renderTarget, int width, int height ) {
 		super( renderTarget );
 		this.width = width;
 		this.height = height;

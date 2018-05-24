@@ -43,20 +43,27 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+
+import javax.swing.JMenuBar;
+import javax.swing.event.PopupMenuListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croquet.MenuBarComposite> implements MenuItemContainer {
-	public MenuBar( org.lgna.croquet.MenuBarComposite composite ) {
+public class MenuBar extends CompositeView<JMenuBar, MenuBarComposite> implements MenuItemContainer {
+	public MenuBar( MenuBarComposite composite ) {
 		super( composite );
-		for( org.lgna.croquet.StandardMenuItemPrepModel item : composite.getChildren() ) {
+		for( StandardMenuItemPrepModel item : composite.getChildren() ) {
 			item.createMenuItemAndAddTo( this );
 		}
 	}
 
 	@Override
-	protected javax.swing.JMenuBar createAwtComponent() {
-		return new javax.swing.JMenuBar();
+	protected JMenuBar createAwtComponent() {
+		return new JMenuBar();
 	}
 
 	@Override
@@ -83,13 +90,13 @@ public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croque
 	}
 
 	@Override
-	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
+	public void addPopupMenuListener( PopupMenuListener listener ) {
+		Logger.todo( listener );
 	}
 
 	@Override
-	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
+	public void removePopupMenuListener( PopupMenuListener listener ) {
+		Logger.todo( listener );
 	}
 
 	@Override
@@ -128,43 +135,43 @@ public class MenuBar extends CompositeView<javax.swing.JMenuBar, org.lgna.croque
 
 	@Override
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenu );
+		Logger.todo( cascadeMenu );
 	}
 
 	@Override
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenuItem );
+		Logger.todo( cascadeMenuItem );
 	}
 
 	@Override
-	public void addCascadeCombo( org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.views.CascadeMenu cascadeMenu ) {
+	public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
 		this.addCascadeMenu( cascadeMenu );
 	}
 
 	@Override
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( checkBoxMenuItem );
+		Logger.todo( checkBoxMenuItem );
 	}
 
 	@Override
 	public void addSeparator() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+		Logger.todo();
 	}
 
 	@Override
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuTextSeparator );
+		Logger.todo( menuTextSeparator );
 	}
 
 	@Override
 	public void forgetAndRemoveAllMenuItems() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+		Logger.todo();
 	}
 
 	@Override
 	public void removeAllMenuItems() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+		Logger.todo();
 	}
 
 }

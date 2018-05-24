@@ -42,10 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
+import org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState;
+import org.lgna.croquet.FileDialogValueCreator;
+import org.lgna.project.io.IoUtilities;
+
+import java.awt.Component;
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.FileDialogValueCreator<java.io.File> {
+public final class ImportTypeFileDialogValueCreator extends FileDialogValueCreator<File> {
 	private static class SingletonHolder {
 		private static ImportTypeFileDialogValueCreator instance = new ImportTypeFileDialogValueCreator();
 	}
@@ -55,15 +64,15 @@ public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.Fil
 	}
 
 	private ImportTypeFileDialogValueCreator() {
-		super( java.util.UUID.fromString( "116c66ce-2ccd-48fc-86eb-92ea734d5d2b" ) );
+		super( UUID.fromString( "116c66ce-2ccd-48fc-86eb-92ea734d5d2b" ) );
 	}
 
-	private java.io.File getDefaultDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	private File getDefaultDirectory() {
+		return UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
 	private String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+		return IoUtilities.TYPE_EXTENSION;
 	}
 
 	private String getInitialFilename() {
@@ -71,12 +80,12 @@ public final class ImportTypeFileDialogValueCreator extends org.lgna.croquet.Fil
 	}
 
 	@Override
-	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+	protected File showFileDialog( Component awtComponent ) {
+		return FileDialogUtilities.showOpenFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
 	}
 
 	@Override
-	protected java.io.File createValueFromFile( java.io.File file ) {
+	protected File createValueFromFile( File file ) {
 		return file;
 	}
 }

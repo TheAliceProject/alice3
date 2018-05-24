@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.browser.BrowserUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,9 +57,9 @@ public class DesktopUtilities {
 		throw new AssertionError();
 	}
 
-	private static java.awt.Desktop getDesktop( java.awt.Desktop.Action action ) {
-		if( java.awt.Desktop.isDesktopSupported() ) {
-			java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+	private static Desktop getDesktop( Desktop.Action action ) {
+		if( Desktop.isDesktopSupported() ) {
+			Desktop desktop = Desktop.getDesktop();
 			if( desktop.isSupported( action ) ) {
 				return desktop;
 			}
@@ -60,23 +67,23 @@ public class DesktopUtilities {
 		return null;
 	}
 
-	public static void browse( java.net.URI uri ) throws Exception {
-		java.awt.Desktop desktop = getDesktop( java.awt.Desktop.Action.BROWSE );
+	public static void browse( URI uri ) throws Exception {
+		Desktop desktop = getDesktop( Desktop.Action.BROWSE );
 		if( desktop != null ) {
 			desktop.browse( uri );
 		} else {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( uri );
+			BrowserUtilities.browse( uri );
 		}
 	}
 
-	public static boolean edit( java.io.File file ) {
-		java.awt.Desktop desktop = getDesktop( java.awt.Desktop.Action.EDIT );
+	public static boolean edit( File file ) {
+		Desktop desktop = getDesktop( Desktop.Action.EDIT );
 		if( desktop != null ) {
 			try {
 				desktop.edit( file );
 				return true;
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, file );
+				Logger.throwable( t, file );
 				return false;
 			}
 		} else {
@@ -84,14 +91,14 @@ public class DesktopUtilities {
 		}
 	}
 
-	public static boolean open( java.io.File file ) {
-		java.awt.Desktop desktop = getDesktop( java.awt.Desktop.Action.OPEN );
+	public static boolean open( File file ) {
+		Desktop desktop = getDesktop( Desktop.Action.OPEN );
 		if( desktop != null ) {
 			try {
 				desktop.open( file );
 				return true;
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, file );
+				Logger.throwable( t, file );
 				return false;
 			}
 		} else {

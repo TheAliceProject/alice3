@@ -43,90 +43,98 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+
+import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BoxUtilities {
-	private static class Filler extends SwingComponentView<javax.swing.Box.Filler> {
-		private final java.awt.Dimension min;
-		private final java.awt.Dimension pref;
-		private final java.awt.Dimension max;
+	private static class Filler extends SwingComponentView<Box.Filler> {
+		private final Dimension min;
+		private final Dimension pref;
+		private final Dimension max;
 
-		public Filler( java.awt.Dimension min, java.awt.Dimension pref, java.awt.Dimension max ) {
+		public Filler( Dimension min, Dimension pref, Dimension max ) {
 			this.min = min;
 			this.pref = pref;
 			this.max = max;
 		}
 
 		@Override
-		protected javax.swing.Box.Filler createAwtComponent() {
-			return new javax.swing.Box.Filler( this.min, this.pref, this.max );
+		protected Box.Filler createAwtComponent() {
+			return new Box.Filler( this.min, this.pref, this.max );
 		}
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createGlue() {
-		return new Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
+	public static SwingComponentView<Box.Filler> createGlue() {
+		return new Filler( new Dimension( 0, 0 ), new Dimension( 0, 0 ), new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createHorizontalGlue() {
-		return new Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
+	public static SwingComponentView<Box.Filler> createHorizontalGlue() {
+		return new Filler( new Dimension( 0, 0 ), new Dimension( 0, 0 ), new Dimension( Short.MAX_VALUE, 0 ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createVerticalGlue() {
-		return new Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
+	public static SwingComponentView<Box.Filler> createVerticalGlue() {
+		return new Filler( new Dimension( 0, 0 ), new Dimension( 0, 0 ), new Dimension( 0, Short.MAX_VALUE ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createHorizontalSliver( int width ) {
-		return new Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ) );
+	public static SwingComponentView<Box.Filler> createHorizontalSliver( int width ) {
+		return new Filler( new Dimension( width, 0 ), new Dimension( width, 0 ), new Dimension( width, 0 ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createVerticalSliver( int height ) {
-		return new Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ) );
+	public static SwingComponentView<Box.Filler> createVerticalSliver( int height ) {
+		return new Filler( new Dimension( 0, height ), new Dimension( 0, height ), new Dimension( 0, height ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createHorizontalStrut( int width ) {
-		return new Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
+	public static SwingComponentView<Box.Filler> createHorizontalStrut( int width ) {
+		return new Filler( new Dimension( width, 0 ), new Dimension( width, 0 ), new Dimension( width, Short.MAX_VALUE ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createVerticalStrut( int height ) {
-		return new Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
+	public static SwingComponentView<Box.Filler> createVerticalStrut( int height ) {
+		return new Filler( new Dimension( 0, height ), new Dimension( 0, height ), new Dimension( Short.MAX_VALUE, height ) );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createRigidArea( java.awt.Dimension size ) {
+	public static SwingComponentView<Box.Filler> createRigidArea( Dimension size ) {
 		return new Filler( size, size, size );
 	}
 
-	public static SwingComponentView<javax.swing.Box.Filler> createRigidArea( int width, int height ) {
-		return createRigidArea( new java.awt.Dimension( width, height ) );
+	public static SwingComponentView<Box.Filler> createRigidArea( int width, int height ) {
+		return createRigidArea( new Dimension( width, height ) );
 	}
 
 	//todo: use Short.MAX_VALUE instead of null?
-	private static class ClampedComponent extends SwingComponentView<javax.swing.JComponent> {
+	private static class ClampedComponent extends SwingComponentView<JComponent> {
 		private Integer minimumPreferredWidth;
 		private Integer minimumPreferredHeight;
 
 		public ClampedComponent( AwtComponentView<?> component, Integer minimumPreferredWidth, Integer minimumPreferredHeight ) {
 			this.minimumPreferredWidth = minimumPreferredWidth;
 			this.minimumPreferredHeight = minimumPreferredHeight;
-			this.internalAddComponent( component, java.awt.BorderLayout.CENTER );
+			this.internalAddComponent( component, BorderLayout.CENTER );
 		}
 
 		@Override
-		protected javax.swing.JComponent createAwtComponent() {
-			javax.swing.JPanel rv = new javax.swing.JPanel() {
+		protected JComponent createAwtComponent() {
+			JPanel rv = new JPanel() {
 				@Override
-				public java.awt.Dimension getPreferredSize() {
-					java.awt.Dimension rv = super.getPreferredSize();
+				public Dimension getPreferredSize() {
+					Dimension rv = super.getPreferredSize();
 					if( ClampedComponent.this.minimumPreferredWidth != null ) {
-						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, ClampedComponent.this.minimumPreferredWidth );
+						rv = DimensionUtilities.constrainToMinimumWidth( rv, ClampedComponent.this.minimumPreferredWidth );
 					}
 					if( ClampedComponent.this.minimumPreferredHeight != null ) {
-						rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ClampedComponent.this.minimumPreferredHeight );
+						rv = DimensionUtilities.constrainToMinimumHeight( rv, ClampedComponent.this.minimumPreferredHeight );
 					}
 					return rv;
 				}
 			};
-			rv.setLayout( new java.awt.BorderLayout() );
+			rv.setLayout( new BorderLayout() );
 			return rv;
 		}
 	}

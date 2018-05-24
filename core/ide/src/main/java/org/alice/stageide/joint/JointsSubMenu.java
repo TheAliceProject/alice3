@@ -43,19 +43,29 @@
 
 package org.alice.stageide.joint;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Method;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointsSubMenu<FB> extends org.lgna.croquet.CascadeMenuModel<FB> {
-	private final java.util.List<org.lgna.croquet.CascadeFillIn<FB, ?>> fillIns = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<String> methodNames;
+public abstract class JointsSubMenu<FB> extends CascadeMenuModel<FB> {
+	private final List<CascadeFillIn<FB, ?>> fillIns = Lists.newLinkedList();
+	private final List<String> methodNames;
 
-	public JointsSubMenu( java.util.UUID migrationId, Class<?> cls, String... methodNames ) {
+	public JointsSubMenu( UUID migrationId, Class<?> cls, String... methodNames ) {
 		super( migrationId );
-		this.methodNames = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( methodNames );
+		this.methodNames = Lists.newArrayList( methodNames );
 	}
 
-	public boolean consumeIfAppropriate( org.lgna.project.ast.Method method, org.lgna.croquet.CascadeFillIn<FB, ?> fillIn ) {
+	public boolean consumeIfAppropriate( Method method, CascadeFillIn<FB, ?> fillIn ) {
 		if( this.methodNames.contains( method.getName() ) ) {
 			this.fillIns.add( fillIn );
 			return true;
@@ -65,8 +75,8 @@ public abstract class JointsSubMenu<FB> extends org.lgna.croquet.CascadeMenuMode
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<FB> blankNode ) {
-		for( org.lgna.croquet.CascadeFillIn<FB, ?> fillIn : this.fillIns ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<FB> blankNode ) {
+		for( CascadeFillIn<FB, ?> fillIn : this.fillIns ) {
 			blankChildren.add( fillIn );
 		}
 	}

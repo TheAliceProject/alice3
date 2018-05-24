@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.croquet.models.print.PrintAllOperation;
+import org.alice.ide.croquet.models.print.PrintCurrentCodeOperation;
+import org.alice.ide.croquet.models.print.PrintSceneEditorOperation;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PrintMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class PrintMenuModel extends PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static PrintMenuModel instance = new PrintMenuModel();
 	}
@@ -55,9 +62,9 @@ public class PrintMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	}
 
 	private PrintMenuModel() {
-		super( java.util.UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ),
-				org.alice.ide.croquet.models.print.PrintAllOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.print.PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.print.PrintSceneEditorOperation.getInstance().getMenuItemPrepModel() );
+		super( UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ),
+				PrintAllOperation.getInstance().getMenuItemPrepModel(),
+				PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(),
+				PrintSceneEditorOperation.getInstance().getMenuItemPrepModel() );
 	}
 }

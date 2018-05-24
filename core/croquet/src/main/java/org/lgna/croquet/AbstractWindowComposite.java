@@ -42,26 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.math.GoldenRatio;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.CompositeView;
+
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractSeverityStatusComposite<V> {
-	public AbstractWindowComposite( java.util.UUID migrationId ) {
+public abstract class AbstractWindowComposite<V extends CompositeView<?, ?>> extends AbstractSeverityStatusComposite<V> {
+	public AbstractWindowComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
 	protected static enum GoldenRatioPolicy {
 		WIDTH_LONG_SIDE {
 			@Override
-			public java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
-				java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
-				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.width );
+			public Dimension calculateWindowSize( AbstractWindow<?> window ) {
+				Dimension size = window.getAwtComponent().getPreferredSize();
+				int phiHeight = GoldenRatio.getShorterSideLength( size.width );
 				if( phiHeight > size.height ) {
-					return new java.awt.Dimension( size.width, phiHeight );
+					return new Dimension( size.width, phiHeight );
 				} else {
-					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.height );
+					int phiWidth = GoldenRatio.getLongerSideLength( size.height );
 					if( phiWidth > size.width ) {
-						return new java.awt.Dimension( phiWidth, size.height );
+						return new Dimension( phiWidth, size.height );
 					} else {
 						return size;
 					}
@@ -70,22 +79,22 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.C
 		},
 		HEIGHT_LONG_SIDE {
 			@Override
-			public java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
-				java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
-				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.width );
+			public Dimension calculateWindowSize( AbstractWindow<?> window ) {
+				Dimension size = window.getAwtComponent().getPreferredSize();
+				int phiHeight = GoldenRatio.getLongerSideLength( size.width );
 				if( phiHeight > size.height ) {
-					return new java.awt.Dimension( size.width, phiHeight );
+					return new Dimension( size.width, phiHeight );
 				} else {
-					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.height );
+					int phiWidth = GoldenRatio.getShorterSideLength( size.height );
 					if( phiWidth > size.width ) {
-						return new java.awt.Dimension( phiWidth, size.height );
+						return new Dimension( phiWidth, size.height );
 					} else {
 						return size;
 					}
 				}
 			}
 		};
-		public abstract java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window );
+		public abstract Dimension calculateWindowSize( AbstractWindow<?> window );
 
 	}
 
@@ -101,14 +110,14 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.C
 		return null;
 	}
 
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
 		Integer width = this.getWiderGoldenRatioSizeFromWidth();
 		if( width != null ) {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.createWiderGoldenRatioSizeFromWidth( width );
+			return DimensionUtilities.createWiderGoldenRatioSizeFromWidth( width );
 		} else {
 			Integer height = this.getWiderGoldenRatioSizeFromHeight();
 			if( height != null ) {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.createWiderGoldenRatioSizeFromHeight( height );
+				return DimensionUtilities.createWiderGoldenRatioSizeFromHeight( height );
 			} else {
 				GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
 				if( goldenRatioPolicy != null ) {
@@ -122,12 +131,12 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.C
 		}
 	}
 
-	public final void updateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	public final void updateWindowSize( AbstractWindow<?> window ) {
 		window.setSize( this.calculateWindowSize( window ) );
 		window.getContentPane().revalidateAndRepaint();
 	}
 
-	protected java.awt.Point getDesiredWindowLocation() {
+	protected Point getDesiredWindowLocation() {
 		return null;
 	}
 }

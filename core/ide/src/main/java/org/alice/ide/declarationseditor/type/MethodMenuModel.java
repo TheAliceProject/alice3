@@ -42,23 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.rename.RenameMethodComposite;
+import org.alice.ide.croquet.models.ast.DeleteMethodOperation;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class MethodMenuModel extends MemberMenuModel<UserMethod> {
+	private static InitializingIfAbsentMap<UserMethod, MethodMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static MethodMenuModel getInstance( final org.lgna.project.ast.UserMethod method ) {
-		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
+	public static MethodMenuModel getInstance( final UserMethod method ) {
+		return map.getInitializingIfAbsent( method, new InitializingIfAbsentMap.Initializer<UserMethod, MethodMenuModel>() {
 			@Override
-			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
-				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
-				org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog changeAnimationProcedureDialog = org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog.getInstance( method );
+			public MethodMenuModel initialize( UserMethod key ) {
+				List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+				prepModels.add( RenameMethodComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
+				prepModels.add( DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
+				DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
+				ChangeAnimationProcedureDialog changeAnimationProcedureDialog = ChangeAnimationProcedureDialog.getInstance( method );
 				if( changeAnimationProcedureDialog != null ) {
 					prepModels.add( changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel() );
 				}
@@ -67,7 +81,7 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 		} );
 	}
 
-	private MethodMenuModel( org.lgna.project.ast.UserMethod method, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
-		super( java.util.UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
+	private MethodMenuModel( UserMethod method, List<StandardMenuItemPrepModel> prepModels ) {
+		super( UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
 	}
 }

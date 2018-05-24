@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.recyclebin;
 
+import org.alice.ide.members.MembersComposite;
+import org.lgna.croquet.DropReceptor;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum RecycleBin {
 	SINGLETON;
-	public org.lgna.croquet.DropReceptor getDropReceptor() {
-		return org.alice.ide.members.MembersComposite.getInstance().getView().getRecycleBinDropReceptor();
+	public DropReceptor getDropReceptor() {
+		return MembersComposite.getInstance().getView().getRecycleBinDropReceptor();
 	}
 }

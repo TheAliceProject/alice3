@@ -43,38 +43,52 @@
 
 package org.alice.ide.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TypeCache {
-	private final org.lgna.project.Project project;
-	private final java.util.Map<TypeKey, org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Project project;
+	private final Map<TypeKey, NamedUserType> map = Maps.newHashMap();
 
-	public TypeCache( org.lgna.project.Project project ) {
+	public TypeCache( Project project ) {
 		this.project = project;
 		this.seed();
 	}
 
-	private static TypeKey createKeyForType( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> superType = type.getSuperType();
-		java.util.List<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
+	private static TypeKey createKeyForType( NamedUserType type ) {
+		AbstractType<?, ?, ?> superType = type.getSuperType();
+		List<NamedUserConstructor> constructors = type.getDeclaredConstructors();
 		final int CONSTRUCTOR_COUNT = constructors.size();
 		switch( CONSTRUCTOR_COUNT ) {
 		case 1:
-			org.lgna.project.ast.NamedUserConstructor constructor0 = constructors.get( 0 );
-			java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
+			NamedUserConstructor constructor0 = constructors.get( 0 );
+			List<? extends AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
 			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
 			switch( REQUIRED_PARAMETER_COUNT ) {
 			case 0:
-				org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
+				ConstructorInvocationStatement constructorInvocationStatement = constructor0.body.getValue().constructorInvocationStatement.getValue();
 				final int SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT = constructorInvocationStatement.requiredArguments.size();
 				switch( SUPER_CONSTRUCTOR_INVOCATION_ARGUMENT_COUNT ) {
 				case 0:
 					return new ExtendsTypeKey( superType );
 				case 1:
-					org.lgna.project.ast.Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
-					if( expression instanceof org.lgna.project.ast.FieldAccess ) {
-						org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+					Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
+					if( expression instanceof FieldAccess ) {
+						FieldAccess fieldAccess = (FieldAccess)expression;
 						return new ExtendsTypeWithSuperArgumentFieldKey( superType, fieldAccess.field.getValue() );
 					} else {
 						throw new AssertionError( type + " " + expression );
@@ -83,7 +97,7 @@ public class TypeCache {
 					throw new AssertionError( type );
 				}
 			case 1:
-				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
+				AbstractParameter parameter0 = requiredParameters.get( 0 );
 				return new ExtendsTypeWithConstructorParameterTypeKey( superType, parameter0.getValueType() );
 			default:
 				throw new AssertionError( type );
@@ -94,19 +108,19 @@ public class TypeCache {
 	}
 
 	private void seed() {
-		for( org.lgna.project.ast.NamedUserType type : this.project.getNamedUserTypes() ) {
+		for( NamedUserType type : this.project.getNamedUserTypes() ) {
 			TypeKey key = createKeyForType( type );
 			if( key != null ) {
 				this.map.put( key, type );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
+				Logger.severe( type );
 			}
 		}
 	}
 
-	public org.lgna.project.ast.NamedUserType getTypeFor( TypeKey key ) {
+	public NamedUserType getTypeFor( TypeKey key ) {
 		synchronized( this.map ) {
-			org.lgna.project.ast.NamedUserType rv = this.map.get( key );
+			NamedUserType rv = this.map.get( key );
 			if( rv != null ) {
 				rv = key.createType();
 				this.map.put( key, rv );

@@ -45,6 +45,9 @@ package org.lgna.project.ast;
 
 //todo: add generic capability
 
+import javax.lang.model.element.Modifier;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.BinaryOperator;
 
 /**
@@ -97,11 +100,11 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 
 	public abstract AbstractType<?, ?, ?>[] getInterfaces();
 
-	public abstract java.util.List<C> getDeclaredConstructors();
+	public abstract List<C> getDeclaredConstructors();
 
-	public abstract java.util.List<M> getDeclaredMethods();
+	public abstract List<M> getDeclaredMethods();
 
-	public abstract java.util.List<F> getDeclaredFields();
+	public abstract List<F> getDeclaredFields();
 
 	public abstract boolean isPrimitive();
 
@@ -123,25 +126,25 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	public abstract AbstractType<?, ?, ?> getComponentType();
 
 	@Override
-	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+	public void addModifiers( Collection<Modifier> modifiers ) {
 		super.addModifiers( modifiers );
 		if( this.isFinal() ) {
-			modifiers.add( javax.lang.model.element.Modifier.FINAL );
+			modifiers.add( Modifier.FINAL );
 		} else if( this.isAbstract() ) {
-			modifiers.add( javax.lang.model.element.Modifier.ABSTRACT );
+			modifiers.add( Modifier.ABSTRACT );
 		}
 		if( this.isStatic() ) {
-			modifiers.add( javax.lang.model.element.Modifier.STATIC );
+			modifiers.add( Modifier.STATIC );
 		}
 		if( this.isStrictFloatingPoint() ) {
-			modifiers.add( javax.lang.model.element.Modifier.STRICTFP );
+			modifiers.add( Modifier.STRICTFP );
 		}
 	}
 
 	public C getDeclaredConstructor( AbstractType<?, ?, ?>... parameterTypes ) {
 		C rv = null;
 		for( C constructor : getDeclaredConstructors() ) {
-			java.util.List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
+			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == parameterTypes.length ) {
 				rv = constructor;
 				for( int i = 0; i < parameterTypes.length; i++ ) {
@@ -174,7 +177,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		M rv = null;
 		for( M method : getDeclaredMethods() ) {
 			if( method.getName().equals( name ) ) {
-				java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+				List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 				AbstractParameter variableLengthParameter = method.getVariableLengthParameter();
 				AbstractParameter keyedParameter = method.getKeyedParameter();
 				//todo: check variableLengthParameter and keyedParameter

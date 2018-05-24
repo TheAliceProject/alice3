@@ -43,8 +43,10 @@
 
 package org.alice.ide.name.validators;
 
+import org.lgna.project.ast.NamedUserType;
+
 public class TypeNameValidator extends NodeNameValidator {
-	public TypeNameValidator( org.lgna.project.ast.NamedUserType type ) {
+	public TypeNameValidator( NamedUserType type ) {
 		super( type );
 	}
 

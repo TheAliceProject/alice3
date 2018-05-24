@@ -48,13 +48,15 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.SQuadruped;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class QuadrupedAnimator extends AnimatorComposite<SQuadruped> {
 
 	public QuadrupedAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( java.util.UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ), valueType, editedMethod );
+		super( UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ), valueType, editedMethod );
 	}
 
 	@Override

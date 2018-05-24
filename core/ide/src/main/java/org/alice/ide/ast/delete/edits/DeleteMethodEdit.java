@@ -43,20 +43,26 @@
 
 package org.alice.ide.ast.delete.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodEdit extends DeleteMemberEdit<org.lgna.project.ast.UserMethod> {
-	public DeleteMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserMethod method ) {
+public class DeleteMethodEdit extends DeleteMemberEdit<UserMethod> {
+	public DeleteMethodEdit( CompletionStep completionStep, UserMethod method ) {
 		super( completionStep, method );
 	}
 
-	public DeleteMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeleteMethodEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
 	@Override
-	protected org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserMethod> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
+	protected NodeListProperty<UserMethod> getNodeListProperty( UserType<?> declaringType ) {
 		return declaringType.methods;
 	}
 }

@@ -54,12 +54,14 @@ import org.alice.interact.manipulator.AbstractManipulator;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
+import javax.swing.JLabel;
+
 //import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public abstract class ManipulationHandle2D extends javax.swing.JLabel implements ManipulationHandle, ManipulationListener {
+public abstract class ManipulationHandle2D extends JLabel implements ManipulationHandle, ManipulationListener {
 	public ManipulationHandle2D() {
 		super();
 	}

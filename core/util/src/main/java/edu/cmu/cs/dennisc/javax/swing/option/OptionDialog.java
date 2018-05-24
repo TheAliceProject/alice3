@@ -42,21 +42,25 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import edu.cmu.cs.dennisc.javax.swing.WindowStack;
+
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class OptionDialog {
-	public OptionDialog( java.awt.Component parentComponent ) {
+	public OptionDialog( Component parentComponent ) {
 		this.parentComponent = parentComponent;
 	}
 
-	protected java.awt.Component getParentComponent() {
+	protected Component getParentComponent() {
 		if( this.parentComponent != null ) {
 			return this.parentComponent;
 		} else {
-			return edu.cmu.cs.dennisc.javax.swing.WindowStack.peek();
+			return WindowStack.peek();
 		}
 	}
 
-	private final java.awt.Component parentComponent;
+	private final Component parentComponent;
 }

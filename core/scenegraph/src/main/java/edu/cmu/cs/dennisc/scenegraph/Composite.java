@@ -43,12 +43,24 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Visitor;
+import edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Component {
 	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
+	public void accept( Visitor visitor ) {
 		super.accept( visitor );
 		for( Component child : this.children ) {
 			child.accept( visitor );
@@ -74,16 +86,16 @@ public abstract class Composite extends Component {
 	protected void fireChildAdded( Component child ) {
 		assert child != this;
 		this.children.add( child );
-		edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent( this, child );
-		for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
+		ComponentAddedEvent e = new ComponentAddedEvent( this, child );
+		for( ComponentsListener childrenListener : this.childrenListeners ) {
 			childrenListener.componentAdded( e );
 		}
 	}
 
 	protected void fireChildRemoved( Component child ) {
 		this.children.remove( child );
-		edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent( this, child );
-		for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : this.childrenListeners ) {
+		ComponentRemovedEvent e = new ComponentRemovedEvent( this, child );
+		for( ComponentsListener childrenListener : this.childrenListeners ) {
 			childrenListener.componentRemoved( e );
 		}
 	}
@@ -121,15 +133,15 @@ public abstract class Composite extends Component {
 		return this.children.toArray( new Component[ this.children.size() ] );
 	}
 
-	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
+	public void addChildrenListener( ComponentsListener childrenListener ) {
 		this.childrenListeners.add( childrenListener );
 	}
 
-	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
+	public void removeChildrenListener( ComponentsListener childrenListener ) {
 		this.childrenListeners.remove( childrenListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener> getChildrenListeners() {
+	public Iterable<ComponentsListener> getChildrenListeners() {
 		return this.childrenListeners;
 	}
 
@@ -150,7 +162,7 @@ public abstract class Composite extends Component {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
+	public void encode( BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		super.encode( binaryEncoder, map );
 		binaryEncoder.encode( this.children.size() );
 		for( Component component : this.children ) {
@@ -159,7 +171,7 @@ public abstract class Composite extends Component {
 	}
 
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map ) {
+	public void decode( BinaryDecoder binaryDecoder, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
 		super.decode( binaryDecoder, map );
 		final int N = binaryDecoder.decodeInt();
 		for( int i = 0; i < N; i++ ) {
@@ -177,6 +189,6 @@ public abstract class Composite extends Component {
 		return rv;
 	}
 
-	private final java.util.List<Component> children = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener> childrenListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<Component> children = Lists.newCopyOnWriteArrayList();
+	private final List<ComponentsListener> childrenListeners = Lists.newCopyOnWriteArrayList();
 }

@@ -2,6 +2,7 @@ package org.alice.serialization.xml;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.lgna.common.Resource;
 import org.lgna.project.ast.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -151,8 +152,8 @@ class Encoder {
 			if( value != null ) {
 				rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
 				String text;
-				if( value instanceof org.lgna.common.Resource ) {
-					org.lgna.common.Resource resource = (org.lgna.common.Resource)value;
+				if( value instanceof Resource ) {
+					Resource resource = (Resource)value;
 					text = resource.getId().toString();
 				} else {
 					text = value.toString();

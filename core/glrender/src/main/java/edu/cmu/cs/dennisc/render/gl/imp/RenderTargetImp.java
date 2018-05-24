@@ -44,21 +44,45 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 
 import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
 
+import com.jogamp.opengl.DebugGL2;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLContext;
+import com.jogamp.opengl.GLEventListener;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.render.AsynchronousImageCapturer;
+import edu.cmu.cs.dennisc.render.AsynchronousPicker;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RenderTargetImp {
-	public RenderTargetImp( edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+	public RenderTargetImp( RenderTarget renderTarget ) {
 		this.renderTarget = renderTarget;
 		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.getRenderTarget(), new Graphics2D( this.renderContext ) );
 	}
 
-	public edu.cmu.cs.dennisc.render.RenderTarget getRenderTarget() {
+	public RenderTarget getRenderTarget() {
 		return this.renderTarget;
 	}
 
@@ -70,27 +94,27 @@ public class RenderTargetImp {
 		return this.synchronousImageCapturer;
 	}
 
-	public edu.cmu.cs.dennisc.render.AsynchronousPicker getAsynchronousPicker() {
+	public AsynchronousPicker getAsynchronousPicker() {
 		return this.asynchronousPicker;
 	}
 
-	public edu.cmu.cs.dennisc.render.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+	public AsynchronousImageCapturer getAsynchronousImageCapturer() {
 		return this.asynchronousImageCapturer;
 	}
 
-	public void addRenderTargetListener( edu.cmu.cs.dennisc.render.event.RenderTargetListener listener ) {
+	public void addRenderTargetListener( RenderTargetListener listener ) {
 		this.renderTargetListeners.add( listener );
 	}
 
-	public void removeRenderTargetListener( edu.cmu.cs.dennisc.render.event.RenderTargetListener listener ) {
+	public void removeRenderTargetListener( RenderTargetListener listener ) {
 		this.renderTargetListeners.remove( listener );
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.render.event.RenderTargetListener> getRenderTargetListeners() {
-		return java.util.Collections.unmodifiableList( this.renderTargetListeners );
+	public List<RenderTargetListener> getRenderTargetListeners() {
+		return Collections.unmodifiableList( this.renderTargetListeners );
 	}
 
-	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void addSgCamera( AbstractCamera sgCamera, GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null : this;
 		this.sgCameras.add( sgCamera );
 		if( this.isListening() ) {
@@ -100,7 +124,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void removeSgCamera( AbstractCamera sgCamera, GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null;
 		this.sgCameras.remove( sgCamera );
 		if( this.isListening() ) {
@@ -110,7 +134,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void clearSgCameras( com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void clearSgCameras( GLAutoDrawable glAutoDrawable ) {
 		if( this.sgCameras.size() > 0 ) {
 			this.sgCameras.clear();
 		}
@@ -123,18 +147,18 @@ public class RenderTargetImp {
 		return this.sgCameras.size();
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
+	public AbstractCamera getSgCameraAt( int index ) {
 		return this.sgCameras.get( index );
 	}
 
-	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
-		return java.util.Collections.unmodifiableList( this.sgCameras );
+	public List<AbstractCamera> getSgCameras() {
+		return Collections.unmodifiableList( this.sgCameras );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
-		java.util.ListIterator<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> iterator = this.sgCameras.listIterator( this.sgCameras.size() );
+	public AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
+		ListIterator<AbstractCamera> iterator = this.sgCameras.listIterator( this.sgCameras.size() );
 		while( iterator.hasPrevious() ) {
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = iterator.previous();
+			AbstractCamera sgCamera = iterator.previous();
 			synchronized( s_actualViewportBufferForReuse ) {
 				this.renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBufferForReuse, sgCamera );
 				if( s_actualViewportBufferForReuse.contains( xPixel, yPixel ) ) {
@@ -162,39 +186,39 @@ public class RenderTargetImp {
 		this.drawable.invoke( false, displayTask );
 	}
 
-	private void fireInitialized( edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent e ) {
-		for( edu.cmu.cs.dennisc.render.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
+	private void fireInitialized( RenderTargetInitializeEvent e ) {
+		for( RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.initialized( e );
 		}
 	}
 
-	private void fireCleared( edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent e ) {
-		for( edu.cmu.cs.dennisc.render.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
+	private void fireCleared( RenderTargetRenderEvent e ) {
+		for( RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.cleared( e );
 		}
 	}
 
-	private void fireRendered( edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent e ) {
-		for( edu.cmu.cs.dennisc.render.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
+	private void fireRendered( RenderTargetRenderEvent e ) {
+		for( RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.rendered( e );
 		}
 	}
 
-	private void fireResized( edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent e ) {
-		for( edu.cmu.cs.dennisc.render.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
+	private void fireResized( RenderTargetResizeEvent e ) {
+		for( RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.resized( e );
 		}
 	}
 
 	//todo:
-	private void fireDisplayChanged( edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent e ) {
-		for( edu.cmu.cs.dennisc.render.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
+	private void fireDisplayChanged( RenderTargetDisplayChangeEvent e ) {
+		for( RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.displayChanged( e );
 		}
 	}
 
-	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent {
-		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, Graphics2D g ) {
+	private static class ReusableLookingGlassRenderEvent extends RenderTargetRenderEvent {
+		public ReusableLookingGlassRenderEvent( RenderTarget renderTarget, Graphics2D g ) {
 			super( renderTarget, g );
 		}
 
@@ -218,14 +242,14 @@ public class RenderTargetImp {
 		return this.isListening;
 	}
 
-	public void startListening( com.jogamp.opengl.GLAutoDrawable drawable ) {
+	public void startListening( GLAutoDrawable drawable ) {
 		if( this.isListening ) {
 			if( drawable == this.drawable ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( drawable, this.drawable );
+				Logger.severe( drawable, this.drawable );
 			}
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "request GLEventAdapter.startListening( drawable ) ignored; already listening." );
+			Logger.warning( "request GLEventAdapter.startListening( drawable ) ignored; already listening." );
 		} else {
 			this.isListening = true;
 			this.drawable = drawable;
@@ -233,17 +257,17 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void stopListening( com.jogamp.opengl.GLAutoDrawable drawable ) {
+	public void stopListening( GLAutoDrawable drawable ) {
 		if( drawable == this.drawable ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( drawable, this.drawable );
+			Logger.severe( drawable, this.drawable );
 		}
 		if( this.isListening ) {
 			this.isListening = false;
 			drawable.removeGLEventListener( this.glEventListener );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "request GLEventAdapter.stopListening( drawable ) ignored; already not listening." );
+			Logger.warning( "request GLEventAdapter.stopListening( drawable ) ignored; already not listening." );
 		}
 		this.drawable = null;
 	}
@@ -280,14 +304,14 @@ public class RenderTargetImp {
 	//	}
 
 	private void performRender() {
-		edu.cmu.cs.dennisc.render.RenderTarget rt = this.getRenderTarget();
+		RenderTarget rt = this.getRenderTarget();
 		if( rt.isRenderingEnabled() ) {
 			this.renderContext.actuallyForgetTexturesIfNecessary();
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
 			} else if( ( this.drawableWidth == 0 ) || ( this.drawableHeight == 0 ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.drawableWidth, this.drawableHeight, rt.getSurfaceSize() );
+				Logger.severe( this.drawableWidth, this.drawableHeight, rt.getSurfaceSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering
@@ -299,8 +323,8 @@ public class RenderTargetImp {
 					}
 					if( rt.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
-						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
-							GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
+						for( AbstractCamera sgCamera : this.sgCameras ) {
+							GlrAbstractCamera<? extends AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
 							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.drawableWidth, this.drawableHeight );
 							this.reusableLookingGlassRenderEvent.prologue();
 							try {
@@ -327,12 +351,12 @@ public class RenderTargetImp {
 					}
 
 				} catch( RuntimeException re ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
+					Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
 					re.printStackTrace();
 					throw re;
 				} catch( Error er ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
+					Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
 					er.printStackTrace();
 					throw er;
@@ -341,27 +365,27 @@ public class RenderTargetImp {
 		}
 	}
 
-	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
+	private BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
 			if( ( this.drawableWidth != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.drawableHeight != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
+				PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
 				this.drawableWidth = GlDrawableUtils.getGlDrawableWidth( this.drawable );
 				this.drawableHeight = GlDrawableUtils.getGlDrawableHeight( this.drawable );
 				this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
 				this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 			}
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
+			PrintUtilities.println( "warning: drawable null" );
 		}
 
 		if( ( this.drawableWidth > 0 ) && ( this.drawableHeight > 0 ) ) {
-			return new java.awt.image.BufferedImage( this.drawableWidth, this.drawableHeight, type );
+			return new BufferedImage( this.drawableWidth, this.drawableHeight, type );
 		} else {
 			return null;
 		}
 	}
 
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
+	public BufferedImage createBufferedImageForUseAsColorBuffer() {
 		//		boolean isClearedToCreateImage;
 		//		if( this.this.renderContext.gl != null ) {
 		//			String extensions = this.this.renderContext.gl.glGetString( GL_EXTENSIONS );
@@ -400,23 +424,23 @@ public class RenderTargetImp {
 		//		} else {
 		//			return null;
 		//		}
-		int type = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		int type = BufferedImage.TYPE_4BYTE_ABGR;
 		return createBufferedImageForUseAsColorBuffer( type );
 	}
 
-	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
+	public BufferedImage getColorBuffer( BufferedImage rv, boolean[] atIsUpsideDown ) {
 		return this.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, null, atIsUpsideDown );
 	}
 
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+	public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
+		return createBufferedImageForUseAsColorBuffer( BufferedImage.TYPE_4BYTE_ABGR );
 	}
 
-	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return java.nio.FloatBuffer.allocate( this.drawableWidth * this.drawableHeight );
+	public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
+		return FloatBuffer.allocate( this.drawableWidth * this.drawableHeight );
 	}
 
-	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
+	public FloatBuffer getDepthBuffer( FloatBuffer rv ) {
 		this.rvDepthBuffer = rv;
 		this.drawable.setAutoSwapBufferMode( false );
 		try {
@@ -428,13 +452,13 @@ public class RenderTargetImp {
 		return rv;
 	}
 
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer, boolean[] atIsUpsideDown ) {
-		com.jogamp.opengl.GLContext glCurrentContext = com.jogamp.opengl.GLContext.getCurrent();
+	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer, boolean[] atIsUpsideDown ) {
+		GLContext glCurrentContext = GLContext.getCurrent();
 		if( ( glCurrentContext != null ) && ( glCurrentContext == this.drawable.getContext() ) ) {
 			this.renderContext.captureBuffers( rv, depthBuffer, atIsUpsideDown );
 		} else {
 			if( this.rvColorBuffer != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.rvColorBuffer );
+				Logger.severe( this.rvColorBuffer );
 			}
 			this.rvColorBuffer = rv;
 			this.rvDepthBuffer = depthBuffer;
@@ -468,21 +492,21 @@ public class RenderTargetImp {
 		return this.screenWidth;
 	}
 
-	private void initialize( com.jogamp.opengl.GLAutoDrawable drawable ) {
+	private void initialize( GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
 		assert drawable == this.drawable;
-		com.jogamp.opengl.GL2 gl = drawable.getGL().getGL2();
+		GL2 gl = drawable.getGL().getGL2();
 		ConformanceTestResults.SINGLETON.updateRenderInformationIfNecessary( gl );
 
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 
 		final boolean USE_DEBUG_GL = false;
 		if( USE_DEBUG_GL ) {
-			if( gl instanceof com.jogamp.opengl.DebugGL2 ) {
+			if( gl instanceof DebugGL2 ) {
 				// pass
 			} else {
-				gl = new com.jogamp.opengl.DebugGL2( gl );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "using debug gl: ", gl );
+				gl = new DebugGL2( gl );
+				Logger.info( "using debug gl: ", gl );
 				drawable.setGL( gl );
 			}
 		}
@@ -493,26 +517,26 @@ public class RenderTargetImp {
 		this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 
 		this.renderContext.setGL( gl );
-		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtils.getGlDrawableWidth( this.drawable ), GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) );
+		this.fireInitialized( new RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtils.getGlDrawableWidth( this.drawable ), GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
-	private void handleInit( com.jogamp.opengl.GLAutoDrawable drawable ) {
+	private void handleInit( GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 
-	private void handleDisplay( com.jogamp.opengl.GLAutoDrawable drawable ) {
+	private void handleDisplay( GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == this.drawable;
 		//this.lookingGlass.commitAnyPendingChanges();
 		//todo?
-		com.jogamp.opengl.GL2 gl = drawable.getGL().getGL2();
+		GL2 gl = drawable.getGL().getGL2();
 		if( this.renderContext.gl != null ) {
 			//pass
 		} else {
 			initialize( drawable );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: initialize necessary from display" );
+			Logger.outln( "note: initialize necessary from display" );
 		}
 		if( ( this.drawableWidth > 0 ) && ( this.drawableHeight > 0 ) ) {
 			//pass
@@ -522,7 +546,7 @@ public class RenderTargetImp {
 			int nextScreenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
 			int nextScreenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 			if( ( this.drawableWidth != nextWidth ) || ( this.drawableHeight != nextHeight ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.drawableWidth, this.drawableHeight, nextWidth, nextHeight );
+				Logger.severe( this.drawableWidth, this.drawableHeight, nextWidth, nextHeight );
 				this.drawableWidth = nextWidth;
 				this.drawableHeight = nextHeight;
 				this.screenHeight = nextScreenHeight;
@@ -534,14 +558,14 @@ public class RenderTargetImp {
 		performRender();
 	}
 
-	private void handleReshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+	private void handleReshape( GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
 		this.drawableWidth = width;
 		this.drawableHeight = height;
 		this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
 		this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
-		this.fireResized( new edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent( this.getRenderTarget(), width, height ) );
+		this.fireResized( new RenderTargetResizeEvent( this.getRenderTarget(), width, height ) );
 	}
 
 	//	public void displayChanged( com.jogamp.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
@@ -550,13 +574,13 @@ public class RenderTargetImp {
 	//		this.rtImp.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.rtImp.getRenderTarget(), modeChanged, deviceChanged ) );
 	//	}
 
-	private void handleDispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( drawable );
+	private void handleDispose( GLAutoDrawable drawable ) {
+		Logger.todo( drawable );
 	}
 
 	private final RenderContext renderContext = new RenderContext();
 
-	private com.jogamp.opengl.GLAutoDrawable drawable;
+	private GLAutoDrawable drawable;
 
 	//The drawable size and the screen size are not necessarily the same
 	//This is known to be the case on retina displays where the drawable size is 2x the screen size
@@ -566,14 +590,14 @@ public class RenderTargetImp {
 	private int screenWidth;
 	private int screenHeight;
 
-	private java.awt.image.BufferedImage rvColorBuffer = null;
-	private java.nio.FloatBuffer rvDepthBuffer = null;
+	private BufferedImage rvColorBuffer = null;
+	private FloatBuffer rvDepthBuffer = null;
 	private boolean[] atIsUpsideDown = null;
 
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 	private final ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
 
-	private final edu.cmu.cs.dennisc.render.RenderTarget renderTarget;
+	private final RenderTarget renderTarget;
 
 	private final SynchronousPicker synchronousPicker = new SynchronousPicker( this );
 	private final SynchronousImageCapturer synchronousImageCapturer = new SynchronousImageCapturer( this );
@@ -581,30 +605,30 @@ public class RenderTargetImp {
 	private final GlrAsynchronousPicker asynchronousPicker = new GlrAsynchronousPicker( this );
 	private final GlrAsynchronousImageCapturer asynchronousImageCapturer = new GlrAsynchronousImageCapturer( this );
 
-	private final java.util.List<edu.cmu.cs.dennisc.render.event.RenderTargetListener> renderTargetListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<RenderTargetListener> renderTargetListeners = Lists.newCopyOnWriteArrayList();
 
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<AbstractCamera> sgCameras = Lists.newCopyOnWriteArrayList();
 
 	//
-	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();
-	private final com.jogamp.opengl.GLEventListener glEventListener = new com.jogamp.opengl.GLEventListener() {
+	private static Rectangle s_actualViewportBufferForReuse = new Rectangle();
+	private final GLEventListener glEventListener = new GLEventListener() {
 		@Override
-		public void init( com.jogamp.opengl.GLAutoDrawable drawable ) {
+		public void init( GLAutoDrawable drawable ) {
 			handleInit( drawable );
 		}
 
 		@Override
-		public void display( com.jogamp.opengl.GLAutoDrawable drawable ) {
+		public void display( GLAutoDrawable drawable ) {
 			handleDisplay( drawable );
 		}
 
 		@Override
-		public void reshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		public void reshape( GLAutoDrawable drawable, int x, int y, int width, int height ) {
 			handleReshape( drawable, x, y, width, height );
 		}
 
 		@Override
-		public void dispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
+		public void dispose( GLAutoDrawable drawable ) {
 			handleDispose( drawable );
 		}
 	};

@@ -42,7 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
-public abstract class JRowsSpringPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
+
+import javax.swing.SpringLayout;
+import java.awt.Component;
+import java.util.LinkedList;
+import java.util.List;
+
+public abstract class JRowsSpringPane extends JPane {
 	private int xPad;
 	private int yPad;
 
@@ -53,18 +60,18 @@ public abstract class JRowsSpringPane extends edu.cmu.cs.dennisc.javax.swing.com
 
 	@Override
 	public void addNotify() {
-		if( getLayout() instanceof javax.swing.SpringLayout ) {
+		if( getLayout() instanceof SpringLayout ) {
 			//pass
 		} else {
-			java.util.List<java.awt.Component[]> componentRows = this.createComponentRows();
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
+			List<Component[]> componentRows = this.createComponentRows();
+			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}
 		super.addNotify();
 	}
 
-	protected abstract java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv );
+	protected abstract List<Component[]> addComponentRows( List<Component[]> rv );
 
-	private java.util.List<java.awt.Component[]> createComponentRows() {
-		return addComponentRows( new java.util.LinkedList<java.awt.Component[]>() );
+	private List<Component[]> createComponentRows() {
+		return addComponentRows( new LinkedList<Component[]>() );
 	}
 }

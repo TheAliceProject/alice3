@@ -42,12 +42,13 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.resources.JointId;
 
 /**
  * @author user
  */
-public class JointedModelPoseBuilder extends PoseBuilder<org.lgna.story.SJointedModel, JointedModelPose> {
+public class JointedModelPoseBuilder extends PoseBuilder<SJointedModel, JointedModelPose> {
 
 	public JointedModelPoseBuilder joint( JointId jointId, Orientation orientation ) {
 		this.addJointIdQuaternionPair( jointId, orientation );
@@ -60,7 +61,7 @@ public class JointedModelPoseBuilder extends PoseBuilder<org.lgna.story.SJointed
 	}
 
 	@Override
-	protected org.lgna.story.JointedModelPose build( org.lgna.story.implementation.JointIdTransformationPair[] buffer ) {
+	protected JointedModelPose build( JointIdTransformationPair[] buffer ) {
 		return new JointedModelPose( buffer );
 	}
 }

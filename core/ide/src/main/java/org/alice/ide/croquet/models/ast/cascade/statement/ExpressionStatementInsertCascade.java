@@ -43,21 +43,29 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementInsertCascade extends StatementInsertCascade {
-	public ExpressionStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
+	public ExpressionStatementInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, CascadeBlank<Expression>... blanks ) {
 		super( id, blockStatementIndexPair, false, blanks );
 	}
 
-	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions );
+	protected abstract Expression createExpression( Expression... expressions );
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
+	protected final Statement createStatement( Expression... expressions ) {
+		Expression expression = this.createExpression( expressions );
 		if( expression != null ) {
-			return new org.lgna.project.ast.ExpressionStatement( expression );
+			return new ExpressionStatement( expression );
 		} else {
 			return null;
 		}

@@ -44,24 +44,29 @@ package edu.cmu.cs.dennisc.java.awt;
 
 //todo: subtract border
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
+public class ExpandAllToBoundsLayoutManager implements LayoutManager {
 	@Override
-	public void layoutContainer( java.awt.Container parent ) {
-		java.awt.Dimension size = parent.getSize();
-		for( java.awt.Component component : parent.getComponents() ) {
+	public void layoutContainer( Container parent ) {
+		Dimension size = parent.getSize();
+		for( Component component : parent.getComponents() ) {
 			component.setLocation( 0, 0 );
 			component.setSize( size );
 		}
 	}
 
 	@Override
-	public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
-		for( java.awt.Component component : parent.getComponents() ) {
-			java.awt.Dimension size = component.getMinimumSize();
+	public Dimension minimumLayoutSize( Container parent ) {
+		Dimension rv = new Dimension( 0, 0 );
+		for( Component component : parent.getComponents() ) {
+			Dimension size = component.getMinimumSize();
 			rv.width = Math.max( rv.width, size.width );
 			rv.height = Math.max( rv.height, size.height );
 		}
@@ -69,10 +74,10 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 	}
 
 	@Override
-	public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
-		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
-		for( java.awt.Component component : parent.getComponents() ) {
-			java.awt.Dimension size = component.getPreferredSize();
+	public Dimension preferredLayoutSize( Container parent ) {
+		Dimension rv = new Dimension( 0, 0 );
+		for( Component component : parent.getComponents() ) {
+			Dimension size = component.getPreferredSize();
 			rv.width = Math.max( rv.width, size.width );
 			rv.height = Math.max( rv.height, size.height );
 		}
@@ -80,10 +85,10 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 	}
 
 	@Override
-	public void addLayoutComponent( String name, java.awt.Component comp ) {
+	public void addLayoutComponent( String name, Component comp ) {
 	}
 
 	@Override
-	public void removeLayoutComponent( java.awt.Component comp ) {
+	public void removeLayoutComponent( Component comp ) {
 	}
 }

@@ -43,13 +43,17 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Releasable;
+import edu.cmu.cs.dennisc.pattern.event.ReleaseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrObject<T extends edu.cmu.cs.dennisc.pattern.Releasable> {
-	/*package-private*/static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
-		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
-		GlrObject<?> glrObject = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( releasable );
+public abstract class GlrObject<T extends Releasable> {
+	/*package-private*/static void handleReleased( ReleaseEvent e ) {
+		Releasable releasable = e.getTypedSource();
+		GlrObject<?> glrObject = AdapterFactory.getAdapterFor( releasable );
 		if( glrObject != null ) {
 			glrObject.handleReleased();
 		}
@@ -61,10 +65,10 @@ public abstract class GlrObject<T extends edu.cmu.cs.dennisc.pattern.Releasable>
 
 	protected void handleReleased() {
 		if( this.owner == null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
+			Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
 		}
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.forget( this.owner );
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler.removeListeners( this.owner );
+		AdapterFactory.forget( this.owner );
+		ChangeHandler.removeListeners( this.owner );
 		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + this.element.hashCode() + " : " + this + "->" + this.element );
 		this.owner = null;
 	}

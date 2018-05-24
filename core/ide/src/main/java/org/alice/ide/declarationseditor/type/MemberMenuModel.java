@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.project.ast.AbstractMember;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberMenuModel<M extends org.lgna.project.ast.AbstractMember> extends org.lgna.croquet.PredeterminedMenuModel {
+public abstract class MemberMenuModel<M extends AbstractMember> extends PredeterminedMenuModel {
 	private final M member;
 
-	public MemberMenuModel( java.util.UUID migrationId, M member, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
+	public MemberMenuModel( UUID migrationId, M member, List<StandardMenuItemPrepModel> prepModels ) {
 		super( migrationId, prepModels );
 		this.member = member;
 	}

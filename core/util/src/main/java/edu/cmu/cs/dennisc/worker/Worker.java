@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.worker;
 
+import javax.swing.SwingWorker;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public abstract class Worker<T> extends AbstractWorker<T, Void> {
 	private final InternalSwingWorker swingWorker = new InternalSwingWorker();
 
 	@Override
-	protected javax.swing.SwingWorker<T, Void> getSwingWorker() {
+	protected SwingWorker<T, Void> getSwingWorker() {
 		return this.swingWorker;
 	}
 }

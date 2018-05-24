@@ -43,13 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.cancels;
 
+import org.lgna.croquet.CascadeCancel;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.JComponent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CancelFillIn<F> extends org.lgna.croquet.CascadeCancel<F> {
+public abstract class CancelFillIn<F> extends CascadeCancel<F> {
 	private String menuItemText;
 
-	public CancelFillIn( java.util.UUID id ) {
+	public CancelFillIn( UUID id ) {
 		super( id );
 	}
 
@@ -60,12 +66,12 @@ public abstract class CancelFillIn<F> extends org.lgna.croquet.CascadeCancel<F> 
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super F, Void> step ) {
 		return null;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> step ) {
+	public String getMenuItemText( ItemNode<? super F, Void> step ) {
 		return this.menuItemText;
 	}
 }

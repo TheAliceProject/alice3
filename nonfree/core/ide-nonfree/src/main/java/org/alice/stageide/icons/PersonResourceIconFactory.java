@@ -42,34 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.stageide.modelresource.PersonResourceKey;
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.awt.Shape;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PersonResourceIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	private final java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories;
+public class PersonResourceIconFactory extends AbstractIconFactory {
+	private final List<? extends AbstractSingleSourceImageIconFactory> iconFactories;
 
 	public PersonResourceIconFactory() {
 		super( IsCachingDesired.TRUE );
 		//todo
-		this.iconFactories = (java.util.List)java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-				org.alice.stageide.modelresource.PersonResourceKey.getChildInstance().getIconFactory(),
-				org.alice.stageide.modelresource.PersonResourceKey.getElderInstance().getIconFactory(),
-				org.alice.stageide.modelresource.PersonResourceKey.getTeenInstance().getIconFactory(),
-				org.alice.stageide.modelresource.PersonResourceKey.getAdultInstance().getIconFactory(),
-				org.alice.stageide.modelresource.PersonResourceKey.getToddlerInstance().getIconFactory()
+		this.iconFactories = (List)Collections.unmodifiableList( Lists.newArrayList(
+				PersonResourceKey.getChildInstance().getIconFactory(),
+				PersonResourceKey.getElderInstance().getIconFactory(),
+				PersonResourceKey.getTeenInstance().getIconFactory(),
+				PersonResourceKey.getAdultInstance().getIconFactory(),
+				PersonResourceKey.getToddlerInstance().getIconFactory()
 				) );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new CollageIcon( size, this.iconFactories ) {
 			@Override
-			protected java.awt.Shape createBackShape( double width, double height ) {
+			protected Shape createBackShape( double width, double height ) {
 				return null;
 			}
 
 			@Override
-			protected java.awt.Shape createFrontShape( double width, double height ) {
+			protected Shape createFrontShape( double width, double height ) {
 				return null;
 			}
 
@@ -94,7 +105,7 @@ public class PersonResourceIconFactory extends org.lgna.croquet.icon.AbstractIco
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		if( this.iconFactories.size() > 0 ) {
 			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
 		} else {

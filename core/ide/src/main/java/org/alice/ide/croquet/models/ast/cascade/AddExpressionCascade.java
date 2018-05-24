@@ -42,17 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade;
 
-class AddExpressionBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression> {
-	private final org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> componentTypeProperty;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.edits.ast.AddExpressionEdit;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.DeclarationProperty;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionListProperty;
 
-	public AddExpressionBlank( org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> componentTypeProperty ) {
-		super( java.util.UUID.fromString( "c8fa59ec-80ba-4776-8b56-4c0e23848a5d" ) );
+import java.util.List;
+import java.util.UUID;
+
+class AddExpressionBlank extends CascadeBlank<Expression> {
+	private final DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty;
+
+	public AddExpressionBlank( DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty ) {
+		super( UUID.fromString( "c8fa59ec-80ba-4776-8b56-4c0e23848a5d" ) );
 		this.componentTypeProperty = componentTypeProperty;
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
+		IDE ide = IDE.getActiveInstance();
 		ide.getExpressionCascadeManager().appendItems( children, blankNode, this.componentTypeProperty.getValue(), null );
 	}
 }
@@ -61,16 +77,16 @@ class AddExpressionBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.
  * @author Dennis Cosgrove
  */
 public class AddExpressionCascade extends ExpressionsCascade {
-	private final org.lgna.project.ast.ExpressionListProperty expressionListProperty;
+	private final ExpressionListProperty expressionListProperty;
 
-	public AddExpressionCascade( org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> componentTypeProperty, org.lgna.project.ast.ExpressionListProperty expressionListProperty ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
+	public AddExpressionCascade( DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty, ExpressionListProperty expressionListProperty ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "4f3ccba2-c44f-49b3-b20e-c9e847e90db2" ), new AddExpressionBlank( componentTypeProperty ) );
 		this.expressionListProperty = expressionListProperty;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.edits.ast.AddExpressionEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.AddExpressionEdit( step, this.expressionListProperty, values[ 0 ] );
+	protected AddExpressionEdit createEdit( CompletionStep<Cascade<Expression>> step, Expression[] values ) {
+		return new AddExpressionEdit( step, this.expressionListProperty, values[ 0 ] );
 	}
 
 	//	public org.lgna.project.ast.ExpressionListProperty getExpressionListProperty() {

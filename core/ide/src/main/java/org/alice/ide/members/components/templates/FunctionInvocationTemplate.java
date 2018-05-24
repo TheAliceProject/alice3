@@ -42,49 +42,60 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.expression.FunctionInvocationDragModel;
+import org.alice.ide.templates.ExpressionTemplate;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationTemplate extends org.alice.ide.templates.ExpressionTemplate {
-	private org.lgna.project.ast.AbstractMethod method;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserParameter> parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserParameter>() {
+public class FunctionInvocationTemplate extends ExpressionTemplate {
+	private AbstractMethod method;
+	private ListPropertyListener<UserParameter> parameterAdapter = new SimplifiedListPropertyAdapter<UserParameter>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserParameter> e ) {
+		protected void changing( ListPropertyEvent<UserParameter> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserParameter> e ) {
+		protected void changed( ListPropertyEvent<UserParameter> e ) {
 			FunctionInvocationTemplate.this.refresh();
 		}
 	};
 
-	public FunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		super( org.alice.ide.ast.draganddrop.expression.FunctionInvocationDragModel.getInstance( method ) );
+	public FunctionInvocationTemplate( AbstractMethod method ) {
+		super( FunctionInvocationDragModel.getInstance( method ) );
 		this.method = method;
-		if( method instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+		if( method instanceof UserMethod ) {
+			UserMethod userMethod = (UserMethod)method;
 			this.setPopupPrepModel( new MethodPopupMenuModel( userMethod ).getPopupPrepModel() );
 		}
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
+	protected Expression createIncompleteExpression() {
+		return IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
+		if( this.method instanceof UserMethod ) {
 			this.refresh();
-			( (org.lgna.project.ast.UserMethod)this.method ).requiredParameters.addListPropertyListener( this.parameterAdapter );
+			( (UserMethod)this.method ).requiredParameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			( (org.lgna.project.ast.UserMethod)this.method ).requiredParameters.removeListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof UserMethod ) {
+			( (UserMethod)this.method ).requiredParameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}

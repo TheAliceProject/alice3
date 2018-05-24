@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.render;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +53,7 @@ public interface SynchronousPicker {
 
 	public PickResult pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
+	public List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, PickObserver pickObserver );
 
-	public java.util.List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
+	public List<PickResult> pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy );
 }

@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarSeparator extends AbstractElement {
-	public ToolBarSeparator( java.util.UUID migrationId ) {
+	public ToolBarSeparator( UUID migrationId ) {
 		super( migrationId );
 	}
 

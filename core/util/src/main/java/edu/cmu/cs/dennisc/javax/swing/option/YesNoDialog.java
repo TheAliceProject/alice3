@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,11 +55,11 @@ public class YesNoDialog extends OptionDialog {
 			this.message = message;
 		}
 
-		public Builder( java.awt.Component message ) {
+		public Builder( Component message ) {
 			this.message = message;
 		}
 
-		public Builder parentComponent( java.awt.Component parentComponent ) {
+		public Builder parentComponent( Component parentComponent ) {
 			this.parentComponent = parentComponent;
 			return this;
 		}
@@ -70,7 +74,7 @@ public class YesNoDialog extends OptionDialog {
 			return this;
 		}
 
-		public Builder icon( javax.swing.Icon icon ) {
+		public Builder icon( Icon icon ) {
 			this.icon = icon;
 			return this;
 		}
@@ -83,11 +87,11 @@ public class YesNoDialog extends OptionDialog {
 			return this.build().show();
 		}
 
-		private java.awt.Component parentComponent;
+		private Component parentComponent;
 		private Object message;
 		private String title;
 		private MessageType messageType = MessageType.QUESTION;
-		private javax.swing.Icon icon;
+		private Icon icon;
 	}
 
 	private YesNoDialog( Builder builder ) {
@@ -99,11 +103,11 @@ public class YesNoDialog extends OptionDialog {
 	}
 
 	public YesNoResult show() {
-		return YesNoResult.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.getParentComponent(), this.message, this.title, javax.swing.JOptionPane.YES_NO_OPTION, this.messageType.getInternal(), this.icon ) );
+		return YesNoResult.getInstance( JOptionPane.showConfirmDialog( this.getParentComponent(), this.message, this.title, JOptionPane.YES_NO_OPTION, this.messageType.getInternal(), this.icon ) );
 	}
 
 	private final Object message;
 	private final String title;
 	private final MessageType messageType;
-	private final javax.swing.Icon icon;
+	private final Icon icon;
 }

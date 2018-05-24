@@ -43,32 +43,40 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserLocal, ExpressionProperty, LocalArrayLengthOperation> mapToMap = MapToMap.newInstance();
 
-	public static LocalArrayLengthOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static LocalArrayLengthOperation getInstance( UserLocal local, ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation>() {
+		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalArrayLengthOperation>() {
 			@Override
-			public LocalArrayLengthOperation initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public LocalArrayLengthOperation initialize( UserLocal local, ExpressionProperty expressionProperty ) {
 				return new LocalArrayLengthOperation( local, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalArrayLengthOperation( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
+	private LocalArrayLengthOperation( UserLocal local, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
 		this.local = local;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createAccessExpression() {
+		return new LocalAccess( this.local );
 	}
 }

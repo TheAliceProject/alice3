@@ -45,8 +45,10 @@ package org.alice.ide.youtube.croquet;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ProjectStack;
 import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
 import org.lgna.croquet.Model;
@@ -62,8 +64,8 @@ import edu.wustl.lookingglass.media.FFmpegProcess;
  * @author Matt May
  */
 public class UploadOperation extends SingleThreadIteratingOperation {
-	public UploadOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( IDE.EXPORT_GROUP, java.util.UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
+	public UploadOperation( ProjectDocumentFrame projectDocumentFrame ) {
+		super( IDE.EXPORT_GROUP, UUID.fromString( "9a855203-b1ce-4ba3-983d-b941a36b2c10" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
@@ -76,11 +78,11 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 		return this.exportToYouTubeWizardDialogComposite;
 	}
 
-	private java.io.File getFFmpegFileIfNotExecutable() {
-		java.io.File fileKnownToBeNotExecuable;
+	private File getFFmpegFileIfNotExecutable() {
+		File fileKnownToBeNotExecuable;
 		if( FFmpegProcess.isArchitectureSpecificCommandAbsolute() ) {
 			String command = FFmpegProcess.getArchitectureSpecificCommand();
-			java.io.File file = new java.io.File( command );
+			File file = new File( command );
 			if( file.exists() ) {
 				fileKnownToBeNotExecuable = file.canExecute() ? null : file;
 			} else {
@@ -131,7 +133,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 
 	@Override
 	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
+		File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
 		if( subSteps.size() == 0 ) {
 			if( fileKnownToBeNotExecuable != null ) {
 				return getExecutionPermissionModel( fileKnownToBeNotExecuable );
@@ -148,6 +150,6 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 	private ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite;
 }

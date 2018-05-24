@@ -42,23 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
+import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
+import org.lgna.project.ast.Member;
+
+import java.awt.Color;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialNameChanger<M extends org.lgna.project.ast.Member> {
-	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
+public abstract class PotentialNameChanger<M extends Member> {
+	private final ColorCustomizer foregroundCustomizer = new ColorCustomizer() {
 		@Override
-		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
-			return isRenameRequired() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
+		public Color changeColorIfAppropriate( Color defaultColor ) {
+			return isRenameRequired() ? MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;
 		}
 	};
-	private final java.net.URI uriForDescriptionPurposesOnly;
+	private final URI uriForDescriptionPurposesOnly;
 
-	public PotentialNameChanger( java.net.URI uriForDescriptionPurposesOnly ) {
+	public PotentialNameChanger( URI uriForDescriptionPurposesOnly ) {
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 	}
 
-	public java.net.URI getUriForDescriptionPurposesOnly() {
+	public URI getUriForDescriptionPurposesOnly() {
 		return this.uriForDescriptionPurposesOnly;
 	}
 
@@ -68,7 +75,7 @@ public abstract class PotentialNameChanger<M extends org.lgna.project.ast.Member
 
 	protected abstract boolean isRenameRequired();
 
-	public edu.cmu.cs.dennisc.javax.swing.ColorCustomizer getForegroundCustomizer() {
+	public ColorCustomizer getForegroundCustomizer() {
 		return this.foregroundCustomizer;
 	}
 }

@@ -44,14 +44,19 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
+import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrTriangleFan extends GlrVertexGeometry<edu.cmu.cs.dennisc.scenegraph.TriangleFan> {
+public class GlrTriangleFan extends GlrVertexGeometry<TriangleFan> {
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
 		renderPrimative( rc, GL_TRIANGLE_FAN );
@@ -63,7 +68,7 @@ public class GlrTriangleFan extends GlrVertexGeometry<edu.cmu.cs.dennisc.scenegr
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		//todo
 		rv.setNaN();
 		return rv;

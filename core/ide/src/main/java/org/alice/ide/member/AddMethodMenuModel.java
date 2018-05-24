@@ -42,20 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.declaration.AddMethodComposite;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodMenuModel extends org.lgna.croquet.MenuModel {
-	public AddMethodMenuModel( java.util.UUID migrationId ) {
+public abstract class AddMethodMenuModel extends MenuModel {
+	public AddMethodMenuModel( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	private org.lgna.project.ast.NamedUserType getInstanceFactoryNamedUserType() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+	private NamedUserType getInstanceFactoryNamedUserType() {
+		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
-			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-				return (org.lgna.project.ast.NamedUserType)type;
+			AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+			if( type instanceof NamedUserType ) {
+				return (NamedUserType)type;
 			} else {
 				return null;
 			}
@@ -68,21 +83,21 @@ public abstract class AddMethodMenuModel extends org.lgna.croquet.MenuModel {
 		return this.getInstanceFactoryNamedUserType() != null;
 	}
 
-	protected abstract org.alice.ide.ast.declaration.AddMethodComposite getAddMethodComposite( org.lgna.project.ast.NamedUserType declaringType );
+	protected abstract AddMethodComposite getAddMethodComposite( NamedUserType declaringType );
 
-	private void appendMenuItemPrepModelsForType( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		if( type instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+	private void appendMenuItemPrepModelsForType( List<StandardMenuItemPrepModel> models, AbstractType<?, ?, ?> type ) {
+		if( type instanceof NamedUserType ) {
+			NamedUserType namedUserType = (NamedUserType)type;
 			models.add( this.getAddMethodComposite( namedUserType ).getLaunchOperation().getMenuItemPrepModel() );
 			appendMenuItemPrepModelsForType( models, namedUserType.superType.getValue() );
 		}
 	}
 
 	@Override
-	public final void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+	public final void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 		this.appendMenuItemPrepModelsForType( models, this.getInstanceFactoryNamedUserType() );
-		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }

@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.image;
 
+import edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy;
+
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +60,7 @@ public interface ImageGenerator {
 
 	public boolean isAnimated();
 
-	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy();
+	public MipMapGenerationPolicy getMipMapGenerationPolicy();
 
-	public void paint( java.awt.Graphics2D g, int width, int height );
+	public void paint( Graphics2D g, int width, int height );
 }

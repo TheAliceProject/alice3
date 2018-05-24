@@ -42,35 +42,40 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.media.MediaFactory;
+import org.lgna.common.resources.AudioResource;
 import org.lgna.project.annotations.ConstructorTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.annotation.VolumeLevelDetails;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class AudioSource {
 	public static boolean isWithinReasonableEpsilonOfDefaultVolume( double volume ) {
-		return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, volume );
+		return EpsilonUtilities.isWithinReasonableEpsilon( MediaFactory.DEFAULT_VOLUME, volume );
 	}
 
 	public static boolean isWithinReasonableEpsilonOfDefaultStartTime( double startTime ) {
-		return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, startTime );
+		return EpsilonUtilities.isWithinReasonableEpsilon( MediaFactory.DEFAULT_START_TIME, startTime );
 	}
 
 	public static boolean isDefaultStopTime_aka_NaN( double stopTime ) {
 		return Double.isNaN( stopTime );
 	}
 
-	private final org.lgna.common.resources.AudioResource audioResource;
+	private final AudioResource audioResource;
 	private final Double volume;
 	private final Double startTime;
 	private final Double stopTime;
 
 	@ConstructorTemplate( )
 	public AudioSource(
-			org.lgna.common.resources.AudioResource audioResource,
-			@org.lgna.project.annotations.ValueTemplate( detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class )
+			AudioResource audioResource,
+			@ValueTemplate( detailsEnumCls = VolumeLevelDetails.class )
 			Number volume,
 			Number startTime,
 			Number stopTime ) {
@@ -90,28 +95,28 @@ public final class AudioSource {
 
 	@ConstructorTemplate( )
 	public AudioSource(
-			org.lgna.common.resources.AudioResource audioResource,
-			@org.lgna.project.annotations.ValueTemplate( detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class )
+			AudioResource audioResource,
+			@ValueTemplate( detailsEnumCls = VolumeLevelDetails.class )
 			Number volume,
 			Number startTime ) {
-		this( audioResource, volume, startTime, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
+		this( audioResource, volume, startTime, MediaFactory.DEFAULT_STOP_TIME );
 	}
 
 	@ConstructorTemplate( )
 	public AudioSource(
-			org.lgna.common.resources.AudioResource audioResource,
-			@org.lgna.project.annotations.ValueTemplate( detailsEnumCls = org.lgna.story.annotation.VolumeLevelDetails.class )
+			AudioResource audioResource,
+			@ValueTemplate( detailsEnumCls = VolumeLevelDetails.class )
 			Number volume ) {
-		this( audioResource, volume, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME );
+		this( audioResource, volume, MediaFactory.DEFAULT_START_TIME );
 	}
 
 	@ConstructorTemplate( isFollowedByLongerConstructor = true )
-	public AudioSource( org.lgna.common.resources.AudioResource audioResource ) {
-		this( audioResource, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME );
+	public AudioSource( AudioResource audioResource ) {
+		this( audioResource, MediaFactory.DEFAULT_VOLUME );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
-	public org.lgna.common.resources.AudioResource getAudioResource() {
+	public AudioResource getAudioResource() {
 		return this.audioResource;
 	}
 

@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.perspectives.noproject;
 
+import org.alice.ide.IdeApp;
+import org.alice.ide.ProjectDocumentFrame;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	public MenuBarComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
+	public MenuBarComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
 		this.addItem( new FileMenuModel( projectDocumentFrame ) );
-		this.addItem( org.alice.ide.IdeApp.INSTANCE.getHelpMenu() );
+		this.addItem( IdeApp.INSTANCE.getHelpMenu() );
 	}
 }

@@ -42,24 +42,32 @@
  */
 package booleanexample;
 
+import booleanexample.croquet.BooleanExampleComposite;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+
+import javax.swing.SwingUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BooleanExample {
 	public static void main( String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+				UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				SimpleApplication app = new SimpleApplication();
+				DocumentFrame documentFrame = app.getDocumentFrame();
+				Frame frame = documentFrame.getFrame();
 
-				booleanexample.croquet.BooleanExampleComposite composite = new booleanexample.croquet.BooleanExampleComposite();
+				BooleanExampleComposite composite = new BooleanExampleComposite();
 
 				frame.setTitle( "Boolean Example" );
 				frame.setMainComposite( composite );
-				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+				frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.EXIT );
 				frame.pack();
 				frame.setVisible( true );
 			}

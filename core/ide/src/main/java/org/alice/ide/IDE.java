@@ -42,27 +42,87 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.crash.CrashDetector;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.ide.cascade.ExpressionCascadeManager;
+import org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation;
 import org.alice.ide.croquet.models.projecturi.OpenProjectFromOsOperation;
+import org.alice.ide.croquet.models.ui.locale.LocaleState;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
+import org.alice.ide.issue.DefaultExceptionHandler;
+import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.ide.stencil.PotentialDropReceptorsFeedbackView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.Perspective;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.preferences.PreferenceManager;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.triggers.WindowEventTrigger;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Accessible;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.ResourceExpression;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.TypeExpression;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.UUID;
+import java.util.prefs.BackingStoreException;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IDE extends org.alice.ide.ProjectApplication {
-	public static final org.lgna.croquet.Group RUN_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
-	public static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
+public abstract class IDE extends ProjectApplication {
+	public static final Group RUN_GROUP = Group.getInstance( UUID.fromString( "f7a87645-567c-42c6-bf5f-ab218d93a226" ), "RUN_GROUP" );
+	public static final Group EXPORT_GROUP = Group.getInstance( UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
 
-	private static org.alice.ide.issue.DefaultExceptionHandler exceptionHandler;
+	private static DefaultExceptionHandler exceptionHandler;
 
 	static {
-		IDE.exceptionHandler = new org.alice.ide.issue.DefaultExceptionHandler();
+		IDE.exceptionHandler = new DefaultExceptionHandler();
 
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired" ) ) {
+		if( SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired" ) ) {
 			//pass
 		} else {
 			Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
@@ -70,24 +130,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public static IDE getActiveInstance() {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), IDE.class );
+		return ClassUtilities.getInstance( Application.getActiveInstance(), IDE.class );
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+	private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
 			IDE.this.setPerspective( e.getNextValue() );
 		}
 	};
 
-	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil;
+	private PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil;
 
-	private java.io.File projectFileToLoadOnWindowOpened;
+	private File projectFileToLoadOnWindowOpened;
 
 	private final IdeConfiguration ideConfiguration;
-	private final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector;
+	private final CrashDetector crashDetector;
 
-	public IDE( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+	public IDE( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, CrashDetector crashDetector ) {
 		super( ideConfiguration, apiConfigurationManager );
 		this.ideConfiguration = ideConfiguration;
 		this.crashDetector = crashDetector;
@@ -101,23 +161,23 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		//If so, it sets that locale and adds the locale listener to the locale state
 		//If not, it adds and invokes the listener on the locale state which has been initialized based on saved preferences
 
-		org.lgna.croquet.event.ValueListener<java.util.Locale> localeListener = new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+		ValueListener<Locale> localeListener = new ValueListener<Locale>() {
 			@Override
-			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
+			public void valueChanged( ValueEvent<Locale> e ) {
 				setLocale( e.getNextValue() );
 			}
 		};
 		String forcedLocaleString = System.getProperty( "org.alice.ide.locale" );
-		java.util.Locale forcedLocale = null;
+		Locale forcedLocale = null;
 		if( forcedLocaleString != null ) {
-			forcedLocale = new java.util.Locale( forcedLocaleString );
+			forcedLocale = new Locale( forcedLocaleString );
 		}
 		if( forcedLocale != null ) {
-			org.lgna.croquet.Application.getActiveInstance().setLocale( forcedLocale );
-			org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addNewSchoolValueListener( localeListener );
+			Application.getActiveInstance().setLocale( forcedLocale );
+			LocaleState.getInstance().addNewSchoolValueListener( localeListener );
 
 		} else {
-			org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addAndInvokeNewSchoolValueListener( localeListener );
+			LocaleState.getInstance().addAndInvokeNewSchoolValueListener( localeListener );
 		}
 
 	}
@@ -138,7 +198,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		documentFrame.initialize();
 	}
 
-	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
+	public abstract AbstractSceneEditor getSceneEditor();
 
 	private Theme theme;
 
@@ -156,20 +216,20 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getPreferencesOperation() {
+	public Operation getPreferencesOperation() {
 		return null;
 	}
 
-	public abstract org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
+	public abstract Operation createPreviewOperation( ProcedureInvocationTemplate procedureInvocationTemplate );
 
 	public enum AccessorAndMutatorDisplayStyle {
 		GETTER_AND_SETTER,
 		ACCESS_AND_ASSIGNMENT
 	}
 
-	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( org.lgna.project.ast.AbstractField field ) {
+	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( AbstractField field ) {
 		if( field != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+			AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
 			if( ( declaringType != null ) && declaringType.isUserAuthored() ) {
 				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 			} else {
@@ -181,41 +241,41 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public abstract org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod();
+	public abstract UserMethod getPerformEditorGeneratedSetUpMethod();
 
-	protected abstract edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> getDeclarationFilter();
+	protected abstract Criterion<Declaration> getDeclarationFilter();
 
-	public void crawlFilteredProgramType( edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
-		org.lgna.project.ast.NamedUserType programType = this.getProgramType();
+	public void crawlFilteredProgramType( Crawler crawler ) {
+		NamedUserType programType = this.getProgramType();
 		if( programType != null ) {
-			programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, this.getDeclarationFilter() );
+			programType.crawl( crawler, CrawlPolicy.COMPLETE, this.getDeclarationFilter() );
 		}
 	}
 
-	private static class UnacceptableFieldAccessCrawler extends edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> {
-		private final java.util.Set<org.lgna.project.ast.UserField> unacceptableFields;
+	private static class UnacceptableFieldAccessCrawler extends IsInstanceCrawler<FieldAccess> {
+		private final Set<UserField> unacceptableFields;
 
-		public UnacceptableFieldAccessCrawler( java.util.Set<org.lgna.project.ast.UserField> unacceptableFields ) {
-			super( org.lgna.project.ast.FieldAccess.class );
+		public UnacceptableFieldAccessCrawler( Set<UserField> unacceptableFields ) {
+			super( FieldAccess.class );
 			this.unacceptableFields = unacceptableFields;
 		}
 
 		@Override
-		protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+		protected boolean isAcceptable( FieldAccess fieldAccess ) {
 			return this.unacceptableFields.contains( fieldAccess.field.getValue() );
 		}
 	}
 
-	private String reorganizeTypeFieldsIfNecessary( org.lgna.project.ast.NamedUserType namedUserType, int startIndex, java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields ) {
-		java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
-		java.util.Set<org.lgna.project.ast.UserField> unacceptableFields = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( fields );
-		org.lgna.project.ast.UserField fieldToMoveToTheEnd = null;
-		java.util.List<org.lgna.project.ast.FieldAccess> accessesForFieldToMoveToTheEnd = null;
-		for( org.lgna.project.ast.UserField field : fields ) {
-			org.lgna.project.ast.Expression initializer = field.initializer.getValue();
+	private String reorganizeTypeFieldsIfNecessary( NamedUserType namedUserType, int startIndex, Set<UserField> alreadyMovedFields ) {
+		List<UserField> fields = namedUserType.fields.getValue().subList( startIndex, namedUserType.fields.size() );
+		Set<UserField> unacceptableFields = Sets.newHashSet( fields );
+		UserField fieldToMoveToTheEnd = null;
+		List<FieldAccess> accessesForFieldToMoveToTheEnd = null;
+		for( UserField field : fields ) {
+			Expression initializer = field.initializer.getValue();
 			UnacceptableFieldAccessCrawler crawler = new UnacceptableFieldAccessCrawler( unacceptableFields );
-			initializer.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			java.util.List<org.lgna.project.ast.FieldAccess> fieldAccesses = crawler.getList();
+			initializer.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			List<FieldAccess> fieldAccesses = crawler.getList();
 			if( fieldAccesses.size() > 0 ) {
 				fieldToMoveToTheEnd = field;
 				accessesForFieldToMoveToTheEnd = fieldAccesses;
@@ -233,8 +293,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				sb.append( fieldToMoveToTheEnd.getDeclaringType().getName() );
 				sb.append( "\"</strong> is referencing: " );
 				String prefix = "<strong>\"";
-				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
-					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+				for( FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					AbstractField accessedField = fieldAccess.field.getValue();
 					sb.append( prefix );
 					sb.append( accessedField.getName() );
 					prefix = "\"</strong>, <strong>\"";
@@ -245,8 +305,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				sb.append( "<br><br><strong>Your program may fail.</strong></html>" );
 				return sb.toString();
 			} else {
-				for( org.lgna.project.ast.FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
-					org.lgna.project.ast.AbstractField accessedField = fieldAccess.field.getValue();
+				for( FieldAccess fieldAccess : accessesForFieldToMoveToTheEnd ) {
+					AbstractField accessedField = fieldAccess.field.getValue();
 					if( accessedField == fieldToMoveToTheEnd ) {
 						StringBuilder sb = new StringBuilder();
 						sb.append( "<html>The field <strong>\"" );
@@ -270,15 +330,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private void reorganizeFieldsIfNecessary() {
-		org.lgna.project.Project project = this.getProject();
+		Project project = this.getProject();
 		if( project != null ) {
-			for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
-				java.util.Set<org.lgna.project.ast.UserField> alreadyMovedFields = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+			for( NamedUserType namedUserType : project.getNamedUserTypes() ) {
+				Set<UserField> alreadyMovedFields = Sets.newHashSet();
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( message )
+					new OkDialog.Builder( message )
 							.title( "Unable to Recover" )
-							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+							.messageType( MessageType.ERROR )
 							.buildAndShow();
 				}
 			}
@@ -287,7 +347,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	public void ensureProjectCodeUpToDate() {
-		org.lgna.project.Project project = this.getProject();
+		Project project = this.getProject();
 		if( project != null ) {
 			if( this.isProjectUpToDateWithSceneSetUp() == false ) {
 				synchronized( project.getLock() ) {
@@ -299,8 +359,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public org.lgna.project.ast.NamedUserType getUpToDateProgramType() {
-		org.lgna.project.Project project = this.getUpToDateProject();
+	public NamedUserType getUpToDateProgramType() {
+		Project project = this.getUpToDateProject();
 		if( project != null ) {
 			return project.getProgramType();
 		} else {
@@ -308,35 +368,35 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public java.util.List<org.lgna.project.ast.FieldAccess> getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
-		return org.lgna.project.ProgramTypeUtilities.getFieldAccesses( this.getProgramType(), field, this.getDeclarationFilter() );
+	public List<FieldAccess> getFieldAccesses( final AbstractField field ) {
+		return ProgramTypeUtilities.getFieldAccesses( this.getProgramType(), field, this.getDeclarationFilter() );
 	}
 
-	public java.util.List<org.lgna.project.ast.MethodInvocation> getMethodInvocations( final org.lgna.project.ast.AbstractMethod method ) {
-		return org.lgna.project.ProgramTypeUtilities.getMethodInvocations( this.getProgramType(), method, this.getDeclarationFilter() );
+	public List<MethodInvocation> getMethodInvocations( final AbstractMethod method ) {
+		return ProgramTypeUtilities.getMethodInvocations( this.getProgramType(), method, this.getDeclarationFilter() );
 	}
 
-	public java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> getArgumentLists( final org.lgna.project.ast.UserCode code ) {
-		return org.lgna.project.ProgramTypeUtilities.getArgumentLists( this.getProgramType(), code, this.getDeclarationFilter() );
+	public List<SimpleArgumentListProperty> getArgumentLists( final UserCode code ) {
+		return ProgramTypeUtilities.getArgumentLists( this.getProgramType(), code, this.getDeclarationFilter() );
 	}
 
-	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
-		if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
+	public boolean isDropDownDesiredFor( Expression expression ) {
+		if( AstUtilities.isKeywordExpression( expression ) ) {
 			return false;
 		}
-		return ( ( expression instanceof org.lgna.project.ast.TypeExpression ) || ( expression instanceof org.lgna.project.ast.ResourceExpression ) ) == false;
+		return ( ( expression instanceof TypeExpression ) || ( expression instanceof ResourceExpression ) ) == false;
 	}
 
-	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
+	public abstract ExpressionCascadeManager getExpressionCascadeManager();
 
-	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
+	public PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if( this.potentialDropReceptorsStencil == null ) {
-			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getDocumentFrame().getFrame() );
+			this.potentialDropReceptorsStencil = new PotentialDropReceptorsFeedbackView( this.getDocumentFrame().getFrame() );
 		}
 		return this.potentialDropReceptorsStencil;
 	}
 
-	public void showDropReceptorsStencilOver( org.lgna.croquet.views.DragComponent potentialDragSource, final org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public void showDropReceptorsStencilOver( DragComponent potentialDragSource, final AbstractType<?, ?, ?> type ) {
 		this.getPotentialDropReceptorsFeedbackView().showStencilOver( potentialDragSource, type );
 	}
 
@@ -351,50 +411,50 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.getPotentialDropReceptorsFeedbackView().setDragInProgress( isDragInProgress );
 	}
 
-	protected boolean isAccessibleDesired( org.lgna.project.ast.Accessible accessible ) {
+	protected boolean isAccessibleDesired( Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
 
 	@Override
-	public void setProject( org.lgna.project.Project project ) {
-		boolean isScenePerspectiveDesiredByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
+	public void setProject( Project project ) {
+		boolean isScenePerspectiveDesiredByDefault = SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
 		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
-		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? documentFrame.getSetupScenePerspective() : documentFrame.getCodePerspective();
+		ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? documentFrame.getSetupScenePerspective() : documentFrame.getCodePerspective();
 		documentFrame.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
-		org.lgna.croquet.Perspective perspective = this.getPerspective();
+		Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == documentFrame.getNoProjectPerspective() ) ) {
 			this.setPerspective( documentFrame.getPerspectiveState().getValue() );
 		}
 	}
 
 	public <N extends AbstractNode & CodeAppender> N createCopy( N original ) {
-		org.lgna.project.ast.NamedUserType root = this.getProgramType();
-		return org.lgna.project.ast.AstUtilities.createCopy( original, root );
+		NamedUserType root = this.getProgramType();
+		return AstUtilities.createCopy( original, root );
 	}
 
-	private org.lgna.project.ast.Comment commentThatWantsFocus = null;
+	private Comment commentThatWantsFocus = null;
 
-	public org.lgna.project.ast.Comment getCommentThatWantsFocus() {
+	public Comment getCommentThatWantsFocus() {
 		return this.commentThatWantsFocus;
 	}
 
-	public void setCommentThatWantsFocus( org.lgna.project.ast.Comment commentThatWantsFocus ) {
+	public void setCommentThatWantsFocus( Comment commentThatWantsFocus ) {
 		this.commentThatWantsFocus = commentThatWantsFocus;
 	}
 
 	protected abstract void promptForLicenseAgreements();
 
-	public java.io.File getProjectFileToLoadOnWindowOpened() {
+	public File getProjectFileToLoadOnWindowOpened() {
 		return this.projectFileToLoadOnWindowOpened;
 	}
 
-	public void setProjectFileToLoadOnWindowOpened( java.io.File projectFileToLoadOnWindowOpened ) {
+	public void setProjectFileToLoadOnWindowOpened( File projectFileToLoadOnWindowOpened ) {
 		this.projectFileToLoadOnWindowOpened = projectFileToLoadOnWindowOpened;
 	}
 
 	@Override
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	protected void handleWindowOpened( WindowEvent e ) {
 		this.promptForLicenseAgreements();
 		if( this.projectFileToLoadOnWindowOpened != null ) {
 			this.loadProjectFrom( this.projectFileToLoadOnWindowOpened );
@@ -405,12 +465,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			//pass
 		} else {
 			this.setPerspective( this.getDocumentFrame().getNoProjectPerspective() );
-			this.getDocumentFrame().getNewProjectOperation().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
+			this.getDocumentFrame().getNewProjectOperation().fire( WindowEventTrigger.createUserInstance( e ) );
 		}
 	}
 
 	@Override
-	protected void handleOpenFiles( java.util.List<java.io.File> files ) {
+	protected void handleOpenFiles( List<File> files ) {
 		if (files != null && !files.isEmpty()) {
 			File file = files.get( 0 );
 			if( file.exists() ) {
@@ -421,13 +481,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	protected void preservePreferences() {
 		try {
-			org.lgna.croquet.preferences.PreferenceManager.preservePreferences();
-		} catch( java.util.prefs.BackingStoreException bse ) {
+			PreferenceManager.preservePreferences();
+		} catch( BackingStoreException bse ) {
 			bse.printStackTrace();
 		}
 	}
 
-	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation( this.getDocumentFrame() );
+	private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
 	public final CompletionStep<?> handleQuit( Trigger trigger ) {
@@ -438,14 +498,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return clearanceCheckingExitOperation.fire( trigger );
 	}
 
-	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
-		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+	protected VirtualMachine createVirtualMachineForSceneEditor() {
+		return new ReleaseVirtualMachine();
 	}
 
-	protected abstract void registerAdaptersForSceneEditorVm( org.lgna.project.virtualmachine.VirtualMachine vm );
+	protected abstract void registerAdaptersForSceneEditorVm( VirtualMachine vm );
 
-	public final org.lgna.project.virtualmachine.VirtualMachine createRegisteredVirtualMachineForSceneEditor() {
-		org.lgna.project.virtualmachine.VirtualMachine vm = this.createVirtualMachineForSceneEditor();
+	public final VirtualMachine createRegisteredVirtualMachineForSceneEditor() {
+		VirtualMachine vm = this.createVirtualMachineForSceneEditor();
 		this.registerAdaptersForSceneEditorVm( vm );
 		return vm;
 	}
@@ -453,18 +513,18 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	protected abstract String getInnerCommentForMethodName( String methodName );
 
 	private void generateCodeForSceneSetUp() {
-		org.lgna.project.ast.UserMethod userMethod = this.getPerformEditorGeneratedSetUpMethod();
-		org.lgna.project.ast.StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
+		UserMethod userMethod = this.getPerformEditorGeneratedSetUpMethod();
+		StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
 		bodyStatementsProperty.clear();
 		String innerComment = getInnerCommentForMethodName( userMethod.getName() );
 		if( innerComment != null ) {
-			bodyStatementsProperty.add( new org.lgna.project.ast.Comment( innerComment ) );
+			bodyStatementsProperty.add( new Comment( innerComment ) );
 		}
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
 	}
 
-	public org.lgna.project.ast.NamedUserType getProgramType() {
-		org.lgna.project.Project project = this.getProject();
+	public NamedUserType getProgramType() {
+		Project project = this.getProject();
 		if( project != null ) {
 			return project.getProgramType();
 		} else {
@@ -472,19 +532,19 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {
+	public String getInstanceTextForAccessible( Accessible accessible ) {
 		String text;
 		if( accessible != null ) {
-			if( accessible instanceof org.lgna.project.ast.AbstractField ) {
-				org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)accessible;
+			if( accessible instanceof AbstractField ) {
+				AbstractField field = (AbstractField)accessible;
 				text = field.getName();
-				org.lgna.project.ast.AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
+				AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
 				if( focusedCode != null ) {
-					org.lgna.project.ast.AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
+					AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
 					if( field.getValueType() == scopeType ) {
 						text = "this";
 					} else if( field.getDeclaringType() == scopeType ) {
-						if( org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
+						if( IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
 							text = "this." + text;
 						}
 					}
@@ -498,8 +558,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return text;
 	}
 
-	protected static <E extends org.lgna.project.ast.Node> E getAncestor( org.lgna.project.ast.Node node, Class<E> cls ) {
-		org.lgna.project.ast.Node ancestor = node.getParent();
+	protected static <E extends Node> E getAncestor( Node node, Class<E> cls ) {
+		Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
 				break;
@@ -510,13 +570,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (E)ancestor;
 	}
 
-	public org.lgna.croquet.views.AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
+	public AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate( FieldAccess fieldAccess ) {
 		return null;
 	}
 
-	public org.lgna.croquet.views.AwtComponentView<?> getPrefixPaneForInstanceCreationIfAppropriate( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	public AwtComponentView<?> getPrefixPaneForInstanceCreationIfAppropriate( InstanceCreation instanceCreation ) {
 		return null;
 	}
 
-	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
+	public abstract boolean isInstanceCreationAllowableFor( NamedUserType userType );
 }

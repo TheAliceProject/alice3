@@ -42,18 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CustomSingleSelectTreeState;
+import org.lgna.croquet.codecs.DefaultItemCodec;
+
+import javax.swing.Icon;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTreeState extends org.lgna.croquet.CustomSingleSelectTreeState<TypeNode> {
+public class TypeTreeState extends CustomSingleSelectTreeState<TypeNode> {
 	private TypeNode root;
 
 	public TypeTreeState() {
 		super(
-				org.lgna.croquet.Application.INHERIT_GROUP,
-				java.util.UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
+				Application.INHERIT_GROUP,
+				UUID.fromString( "92bfc306-c2f0-4d86-8198-d0b832bd2200" ),
 				null,
-				org.lgna.croquet.codecs.DefaultItemCodec.createInstance( TypeNode.class ) );
+				DefaultItemCodec.createInstance( TypeNode.class ) );
 	}
 
 	@Override
@@ -72,8 +79,8 @@ public class TypeTreeState extends org.lgna.croquet.CustomSingleSelectTreeState<
 	}
 
 	@Override
-	public org.alice.stageide.type.croquet.TypeNode getParent( org.alice.stageide.type.croquet.TypeNode node ) {
-		return (org.alice.stageide.type.croquet.TypeNode)node.getParent();
+	public TypeNode getParent( TypeNode node ) {
+		return (TypeNode)node.getParent();
 	}
 
 	@Override
@@ -97,7 +104,7 @@ public class TypeTreeState extends org.lgna.croquet.CustomSingleSelectTreeState<
 	}
 
 	@Override
-	protected javax.swing.Icon getIconForNode( TypeNode node ) {
+	protected Icon getIconForNode( TypeNode node ) {
 		return null;
 	}
 }

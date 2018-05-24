@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,10 +56,10 @@ public class BeveledDownFacingTriangle extends BeveledShape {
 	}
 
 	public void initialize( float x, float y, float width, float height ) {
-		java.awt.geom.GeneralPath base = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath high = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath neut = new java.awt.geom.GeneralPath();
-		java.awt.geom.GeneralPath shad = new java.awt.geom.GeneralPath();
+		GeneralPath base = new GeneralPath();
+		GeneralPath high = new GeneralPath();
+		GeneralPath neut = new GeneralPath();
+		GeneralPath shad = new GeneralPath();
 
 		float xC = x + ( width * 0.5f );
 		float x1 = x + width;

@@ -42,22 +42,29 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import org.alice.ide.IDE;
+import org.alice.stageide.gallerybrowser.GalleryComposite;
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DragIntoSceneStencilModel extends IdeStencil {
 	public DragIntoSceneStencilModel() {
-		super( java.util.UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
+		super( UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
 	}
 
 	@Override
 	protected void showStencil() {
-		org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
+		GalleryComposite galleryComposite = SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
+		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
 		new Thread() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 4000 );
+				ThreadUtilities.sleep( 4000 );
 				barrierAwait();
 			}
 		}.start();

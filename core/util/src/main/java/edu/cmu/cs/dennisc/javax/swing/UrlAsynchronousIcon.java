@@ -42,17 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
-	public UrlAsynchronousIcon( int iconWidthFallback, int iconHeightFallback, java.net.URL url ) {
+	public UrlAsynchronousIcon( int iconWidthFallback, int iconHeightFallback, URL url ) {
 		super( iconWidthFallback, iconHeightFallback );
 		this.url = url;
 	}
 
 	@Override
-	protected void paintIconFallback( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	protected void paintIconFallback( Component c, Graphics g, int x, int y ) {
 		if( c.isOpaque() ) {
 			g.setColor( c.getBackground() );
 			g.fillRect( x, y, this.getIconWidthFallback(), this.getIconHeightFallback() );
@@ -60,9 +65,9 @@ public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
 	}
 
 	@Override
-	protected javax.swing.Icon do_onBackgroundThread() throws Exception {
+	protected Icon do_onBackgroundThread() throws Exception {
 		return IconUtilities.createImageIcon( this.url );
 	}
 
-	private final java.net.URL url;
+	private final URL url;
 }

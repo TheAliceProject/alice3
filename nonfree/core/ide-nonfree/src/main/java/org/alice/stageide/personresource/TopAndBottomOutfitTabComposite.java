@@ -42,37 +42,46 @@
  *******************************************************************************/
 package org.alice.stageide.personresource;
 
+import org.alice.stageide.personresource.data.BottomPieceData;
+import org.alice.stageide.personresource.data.TopPieceData;
+import org.alice.stageide.personresource.views.TopAndBottomOutiftTabView;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.story.resources.sims2.BottomPiece;
+import org.lgna.story.resources.sims2.TopPiece;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<org.alice.stageide.personresource.views.TopAndBottomOutiftTabView> {
-	private final org.alice.stageide.personresource.data.TopPieceData topPieceData = new org.alice.stageide.personresource.data.TopPieceData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.TopPiece> topPieceState = this.createRefreshableListState( "topPieceState", this.topPieceData, -1 );
-	private final org.alice.stageide.personresource.data.BottomPieceData bottomPieceData = new org.alice.stageide.personresource.data.BottomPieceData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> bottomPieceState = this.createRefreshableListState( "bottomPieceState", this.bottomPieceData, -1 );
+public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<TopAndBottomOutiftTabView> {
+	private final TopPieceData topPieceData = new TopPieceData();
+	private final RefreshableDataSingleSelectListState<TopPiece> topPieceState = this.createRefreshableListState( "topPieceState", this.topPieceData, -1 );
+	private final BottomPieceData bottomPieceData = new BottomPieceData();
+	private final RefreshableDataSingleSelectListState<BottomPiece> bottomPieceState = this.createRefreshableListState( "bottomPieceState", this.bottomPieceData, -1 );
 
 	public TopAndBottomOutfitTabComposite() {
-		super( java.util.UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ) );
+		super( UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ) );
 	}
 
-	public org.alice.stageide.personresource.data.TopPieceData getTopPieceData() {
+	public TopPieceData getTopPieceData() {
 		return this.topPieceData;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
+	public RefreshableDataSingleSelectListState<TopPiece> getTopPieceState() {
 		return this.topPieceState;
 	}
 
-	public org.alice.stageide.personresource.data.BottomPieceData getBottomPieceData() {
+	public BottomPieceData getBottomPieceData() {
 		return this.bottomPieceData;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
+	public RefreshableDataSingleSelectListState<BottomPiece> getBottomPieceState() {
 		return this.bottomPieceState;
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.TopAndBottomOutiftTabView createView() {
-		return new org.alice.stageide.personresource.views.TopAndBottomOutiftTabView( this );
+	protected TopAndBottomOutiftTabView createView() {
+		return new TopAndBottomOutiftTabView( this );
 	}
 }

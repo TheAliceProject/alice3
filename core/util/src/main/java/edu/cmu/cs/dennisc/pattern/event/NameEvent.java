@@ -43,11 +43,13 @@
 
 package edu.cmu.cs.dennisc.pattern.event;
 
+import edu.cmu.cs.dennisc.pattern.Nameable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NameEvent extends Event<edu.cmu.cs.dennisc.pattern.Nameable> {
-	public NameEvent( edu.cmu.cs.dennisc.pattern.Nameable source, String prevName, String nextName ) {
+public class NameEvent extends Event<Nameable> {
+	public NameEvent( Nameable source, String prevName, String nextName ) {
 		super( source );
 		this.prevName = prevName;
 		this.nextName = nextName;

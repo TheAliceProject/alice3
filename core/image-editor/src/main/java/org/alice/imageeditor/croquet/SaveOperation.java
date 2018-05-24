@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
+public final class SaveOperation extends SingleThreadIteratingOperation {
 	private final ImageEditorFrame owner;
 	private final SaveOverComposite saveOverComposite = new SaveOverComposite( this );
-	private java.io.File file;
+	private File file;
 
 	public SaveOperation( ImageEditorFrame owner ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "754c7a0e-8aec-4760-83e0-dff2817ac7a0" ) );
+		super( Application.INHERIT_GROUP, UUID.fromString( "754c7a0e-8aec-4760-83e0-dff2817ac7a0" ) );
 		this.owner = owner;
 	}
 
@@ -81,9 +90,9 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
-		org.lgna.croquet.Model rv;
+		Model rv;
 		switch( subSteps.size() ) {
 		case 0:
 			if( owner.isGoodToGoCroppingIfNecessary() ) {
@@ -94,12 +103,12 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 						rv = null;
 					}
 				} else {
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Please select a file" )
+					new OkDialog.Builder( "Please select a file" )
 							.buildAndShow();
-					throw new org.lgna.croquet.CancelException();
+					throw new CancelException();
 				}
 			} else {
-				throw new org.lgna.croquet.CancelException();
+				throw new CancelException();
 			}
 			break;
 		case 1:
@@ -112,12 +121,12 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 		if( this.file != null ) {
-			java.awt.Image image = owner.getView().render();
+			Image image = owner.getView().render();
 			try {
-				edu.cmu.cs.dennisc.image.ImageUtilities.write( this.file, image );
-			} catch( java.io.IOException ioe ) {
+				ImageUtilities.write( this.file, image );
+			} catch( IOException ioe ) {
 				throw new RuntimeException( this.file.getAbsolutePath(), ioe );
 			}
 			this.getOwner().getIsFrameShowingState().setValueTransactionlessly( false );

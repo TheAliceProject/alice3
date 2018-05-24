@@ -42,6 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.personresource;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import org.alice.stageide.personresource.views.MelaninChooserTabView;
+import org.lgna.croquet.color.ColorChooserTabComposite;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.awt.Color;
+import java.util.UUID;
+
 import static org.lgna.story.resources.sims2.BaseSkinTone.DARK;
 import static org.lgna.story.resources.sims2.BaseSkinTone.DARKER;
 import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHT;
@@ -50,19 +58,19 @@ import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
 /**
  * @author Dennis Cosgrove
  */
-public final class MelaninChooserTabComposite extends org.lgna.croquet.color.ColorChooserTabComposite<org.alice.stageide.personresource.views.MelaninChooserTabView> {
-	private static final java.awt.Color[] MELANIN_CHIP_SHADES = {
-			edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( DARKER.getColor(), 1.0, 1.0, 0.7 ),
+public final class MelaninChooserTabComposite extends ColorChooserTabComposite<MelaninChooserTabView> {
+	private static final Color[] MELANIN_CHIP_SHADES = {
+			ColorUtilities.scaleHSB( DARKER.getColor(), 1.0, 1.0, 0.7 ),
 			DARKER.getColor(),
-			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( DARKER.getColor(), DARK.getColor(), 0.5f ),
+			ColorUtilities.interpolate( DARKER.getColor(), DARK.getColor(), 0.5f ),
 			DARK.getColor(),
-			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( DARK.getColor(), LIGHT.getColor(), 0.5f ),
+			ColorUtilities.interpolate( DARK.getColor(), LIGHT.getColor(), 0.5f ),
 			LIGHT.getColor(),
-			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( LIGHT.getColor(), LIGHTER.getColor(), 0.5f ),
+			ColorUtilities.interpolate( LIGHT.getColor(), LIGHTER.getColor(), 0.5f ),
 			LIGHTER.getColor(),
-			edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( LIGHTER.getColor(), 1.0, 1.0, 1.1 )
+			ColorUtilities.scaleHSB( LIGHTER.getColor(), 1.0, 1.0, 1.1 )
 	};
-	private static final java.awt.Color[] MELANIN_SLIDER_SHADES = {
+	private static final Color[] MELANIN_SLIDER_SHADES = {
 			MELANIN_CHIP_SHADES[ 0 ],
 			DARKER.getColor(),
 			DARK.getColor(),
@@ -72,24 +80,24 @@ public final class MelaninChooserTabComposite extends org.lgna.croquet.color.Col
 	};
 
 	public MelaninChooserTabComposite() {
-		super( java.util.UUID.fromString( "e0d31df0-1775-4fdb-ab00-6ecfe74625bd" ) );
+		super( UUID.fromString( "e0d31df0-1775-4fdb-ab00-6ecfe74625bd" ) );
 	}
 
-	public java.awt.Color[] getMelaninChipShades() {
+	public Color[] getMelaninChipShades() {
 		return MELANIN_CHIP_SHADES;
 	}
 
-	public java.awt.Color[] getMelaninSliderShades() {
+	public Color[] getMelaninSliderShades() {
 		return MELANIN_SLIDER_SHADES;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.MelaninChooserTabView createView() {
-		return new org.alice.stageide.personresource.views.MelaninChooserTabView( this );
+	protected MelaninChooserTabView createView() {
+		return new MelaninChooserTabView( this );
 	}
 }

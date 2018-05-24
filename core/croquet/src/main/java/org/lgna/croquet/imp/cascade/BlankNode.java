@@ -43,15 +43,18 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeItem;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BlankNode<B> extends CascadeNode<AbstractItemNode<B, ?, org.lgna.croquet.CascadeItem<B, ?>>, org.lgna.croquet.CascadeBlank<B>> {
-	public static <B> BlankNode<B> createInstance( org.lgna.croquet.CascadeBlank<B> model ) {
+public class BlankNode<B> extends CascadeNode<AbstractItemNode<B, ?, CascadeItem<B, ?>>, CascadeBlank<B>> {
+	public static <B> BlankNode<B> createInstance( CascadeBlank<B> model ) {
 		return new BlankNode<B>( model );
 	}
 
-	private BlankNode( org.lgna.croquet.CascadeBlank<B> model ) {
+	private BlankNode( CascadeBlank<B> model ) {
 		super( null, model );
 	}
 

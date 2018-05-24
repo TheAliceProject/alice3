@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.border;
 
+import java.awt.Insets;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +52,7 @@ public class EmptyBorder extends javax.swing.border.EmptyBorder {
 		super( 0, 0, 0, 0 );
 	}
 
-	public EmptyBorder( java.awt.Insets insets ) {
+	public EmptyBorder( Insets insets ) {
 		super( insets );
 	}
 
@@ -65,7 +67,7 @@ public class EmptyBorder extends javax.swing.border.EmptyBorder {
 		this.right = right;
 	}
 
-	public void setBorderInsets( java.awt.Insets insets ) {
+	public void setBorderInsets( Insets insets ) {
 		this.top = insets.top;
 		this.left = insets.left;
 		this.bottom = insets.bottom;

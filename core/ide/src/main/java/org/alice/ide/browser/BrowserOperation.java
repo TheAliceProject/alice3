@@ -42,33 +42,44 @@
  *******************************************************************************/
 package org.alice.ide.browser;
 
+import edu.cmu.cs.dennisc.browser.BrowserUtilities;
+import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.alice.ide.issue.croquet.AnomalousSituationComposite;
+import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+
+import javax.swing.SwingUtilities;
+import java.net.URL;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public BrowserOperation( java.util.UUID id ) {
+public abstract class BrowserOperation extends InconsequentialActionOperation {
+	public BrowserOperation( UUID id ) {
 		super( id );
 	}
 
-	protected abstract java.net.URL getUrl();
+	protected abstract URL getUrl();
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		java.net.URL url = this.getUrl();
+	protected void performInternal( CompletionStep<?> step ) {
+		URL url = this.getUrl();
 		if( url != null ) {
 			try {
-				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+				BrowserUtilities.browse( url );
 			} catch( Exception e ) {
-				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." )
+				ClipboardUtilities.setClipboardContents( url.toString() );
+				new OkDialog.Builder( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." )
 						.buildAndShow();
 			}
 		} else {
 			StringBuilder sbDescription = new StringBuilder();
 			sbDescription.append( "URL is null for " );
 			sbDescription.append( this.getClass() );
-			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  We do not know which web page to send you to.", sbDescription.toString() );
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "Oh no!  We do not know which web page to send you to.", sbDescription.toString() );
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					composite.getLaunchOperation().fire();

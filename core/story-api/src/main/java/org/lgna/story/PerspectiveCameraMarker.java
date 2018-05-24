@@ -42,16 +42,18 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
+
 /**
  * @author David Culyba
  */
 @Deprecated
 public class PerspectiveCameraMarker extends CameraMarker
 {
-	private final org.lgna.story.implementation.PerspectiveCameraMarkerImp implementation = new org.lgna.story.implementation.PerspectiveCameraMarkerImp( this );
+	private final PerspectiveCameraMarkerImp implementation = new PerspectiveCameraMarkerImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.PerspectiveCameraMarkerImp getImplementation() {
+	/* package-private */PerspectiveCameraMarkerImp getImplementation() {
 		return this.implementation;
 	}
 

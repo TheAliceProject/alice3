@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.AbstractMethod;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface MethodContext {
-	public void invokeEntryPoint( org.lgna.project.ast.AbstractMethod method, Object... arguments );
+	public void invokeEntryPoint( AbstractMethod method, Object... arguments );
 }

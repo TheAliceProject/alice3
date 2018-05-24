@@ -42,31 +42,46 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.stageide.sceneeditor.side.edits.MarkerColorIdEdit;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.ImmutableCascade;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.Color;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, MarkerColorIdCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class MarkerColorIdCascade extends ImmutableCascade<Expression> {
+	private static InitializingIfAbsentMap<UserField, MarkerColorIdCascade> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static MarkerColorIdCascade getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, MarkerColorIdCascade>() {
+	public static MarkerColorIdCascade getInstance( UserField field ) {
+		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, MarkerColorIdCascade>() {
 			@Override
-			public MarkerColorIdCascade initialize( org.lgna.project.ast.UserField key ) {
+			public MarkerColorIdCascade initialize( UserField key ) {
 				return new MarkerColorIdCascade( key );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserField field;
+	private final UserField field;
 
-	private MarkerColorIdCascade( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "1f6171eb-193b-46a9-a49a-22bacab341de" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( org.lgna.story.Color.class ) );
+	private MarkerColorIdCascade( UserField field ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "1f6171eb-193b-46a9-a49a-22bacab341de" ), Expression.class, ExpressionBlank.createBlanks( Color.class ) );
 		this.field = field;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected Edit createEdit( CompletionStep<Cascade<Expression>> completionStep, Expression[] values ) {
 		assert values.length == 1;
-		return new org.alice.stageide.sceneeditor.side.edits.MarkerColorIdEdit( completionStep, this.field, values[ 0 ] );
+		return new MarkerColorIdEdit( completionStep, this.field, values[ 0 ] );
 	}
 }

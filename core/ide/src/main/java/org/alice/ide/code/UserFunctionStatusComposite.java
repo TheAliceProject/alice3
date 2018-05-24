@@ -42,17 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.code;
 
+import org.alice.ide.code.views.UserFunctionStatusView;
+import org.lgna.croquet.AbstractSeverityStatusComposite;
 import org.lgna.croquet.PlainStringValue;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeverityStatusComposite<org.alice.ide.code.views.UserFunctionStatusView> {
+public class UserFunctionStatusComposite extends AbstractSeverityStatusComposite<UserFunctionStatusView> {
 	private static final String UNVIEWED_TEXT = "This message should never be visible";
 
 	private static final class UnlocalizedPlainStringValue extends PlainStringValue {
 		public UnlocalizedPlainStringValue( String text ) {
-			super( java.util.UUID.randomUUID() );
+			super( UUID.randomUUID() );
 			this.setText( text );
 		}
 
@@ -61,21 +66,21 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 		}
 	}
 
-	private final org.lgna.croquet.PlainStringValue metaStringValue = new UnlocalizedPlainStringValue( UNVIEWED_TEXT );
+	private final PlainStringValue metaStringValue = new UnlocalizedPlainStringValue( UNVIEWED_TEXT );
 	private final ErrorStatus noReturnStatementError = this.createErrorStatus( "noReturnStatementError" );
 	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( "notAllPathsEndInReturnStatementError" );
 	private final ErrorStatus unreachableCodeError = this.createErrorStatus( "unreachableCodeError" );
 
-	private final org.lgna.project.ast.UserMethod method;
+	private final UserMethod method;
 	private ErrorStatus errorStatus;
 
-	public UserFunctionStatusComposite( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "5247e4d2-1de0-45b0-88f4-5a8667cfb60d" ) );
+	public UserFunctionStatusComposite( UserMethod method ) {
+		super( UUID.fromString( "5247e4d2-1de0-45b0-88f4-5a8667cfb60d" ) );
 		this.method = method;
 		this.getView().setVisible( false );
 	}
 
-	public org.lgna.croquet.PlainStringValue getMetaStringValue() {
+	public PlainStringValue getMetaStringValue() {
 		return this.metaStringValue;
 	}
 
@@ -91,7 +96,7 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 		return this.unreachableCodeError;
 	}
 
-	public org.lgna.project.ast.UserMethod getMethod() {
+	public UserMethod getMethod() {
 		return this.method;
 	}
 
@@ -117,7 +122,7 @@ public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeveri
 	}
 
 	@Override
-	protected org.alice.ide.code.views.UserFunctionStatusView createView() {
-		return new org.alice.ide.code.views.UserFunctionStatusView( this );
+	protected UserFunctionStatusView createView() {
+		return new UserFunctionStatusView( this );
 	}
 }

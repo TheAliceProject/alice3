@@ -45,6 +45,8 @@ package org.alice.interact.condition;
 import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
+import java.awt.Point;
+
 /**
  * @author David Culyba
  */
@@ -83,7 +85,7 @@ public class MouseDragCondition extends MousePickBasedCondition {
 		if( testClickVal && !testPreviousInputVal )
 		{
 			//			System.out.println("Setting mouseDownLocation: "+this.hashCode());
-			this.mouseDownLocation = new java.awt.Point( currentState.getMouseLocation() );
+			this.mouseDownLocation = new Point( currentState.getMouseLocation() );
 		}
 		boolean testCurrentInputs = testInputs( currentState );
 		//System.out.println("  current input: "+testCurrentInputs);
@@ -122,6 +124,6 @@ public class MouseDragCondition extends MousePickBasedCondition {
 		return false;
 	}
 
-	private java.awt.Point mouseDownLocation;
+	private Point mouseDownLocation;
 	protected boolean hasStarted;
 }

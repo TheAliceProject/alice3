@@ -42,25 +42,35 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.viewmanager.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.AbstractTransformableImp;
+import org.lgna.story.implementation.AsSeenBy;
+import org.lgna.story.implementation.EntityImp;
 
 /**
  * @author dculyba
  * 
  */
 public class MoveAndOrientToEdit extends AbstractEdit {
-	private final org.lgna.story.SMovableTurnable toMove;
-	private final org.lgna.story.SThing target;
-	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
-	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+	private final SMovableTurnable toMove;
+	private final SThing target;
+	private transient AbstractTransformableImp transformable;
+	private transient AffineMatrix4x4 m;
 
-	public MoveAndOrientToEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.story.SMovableTurnable toMove, org.lgna.story.SThing target ) {
+	public MoveAndOrientToEdit( CompletionStep completionStep, SMovableTurnable toMove, SThing target ) {
 		super( completionStep );
 		this.toMove = toMove;
 		this.target = target;
 	}
 
-	public MoveAndOrientToEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public MoveAndOrientToEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.toMove = null;
 		this.target = null;
@@ -68,7 +78,7 @@ public class MoveAndOrientToEdit extends AbstractEdit {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		assert false : "Not implemented yet";
 	}
@@ -76,11 +86,11 @@ public class MoveAndOrientToEdit extends AbstractEdit {
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
 		if( ( this.toMove != null ) && ( this.target != null ) ) {
-			this.transformable = org.lgna.story.EmployeesOnly.getImplementation( this.toMove );
+			this.transformable = EmployeesOnly.getImplementation( this.toMove );
 			this.m = this.transformable.getAbsoluteTransformation();
-			org.lgna.story.implementation.EntityImp targetImp = org.lgna.story.EmployeesOnly.getImplementation( this.target );
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, targetTransform );
+			EntityImp targetImp = EmployeesOnly.getImplementation( this.target );
+			AffineMatrix4x4 targetTransform = targetImp.getAbsoluteTransformation();
+			this.transformable.animateTransformation( AsSeenBy.SCENE, targetTransform );
 		} else {
 			this.transformable = null;
 			this.m = null;
@@ -90,7 +100,7 @@ public class MoveAndOrientToEdit extends AbstractEdit {
 	@Override
 	protected void undoInternal() {
 		if( ( this.transformable != null ) && ( this.m != null ) ) {
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, this.m );
+			this.transformable.animateTransformation( AsSeenBy.SCENE, this.m );
 		}
 	}
 

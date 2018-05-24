@@ -43,6 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +58,7 @@ public class Capsule extends Shape {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		double major = ( this.distanceBetweenSphereCenters.getValue() / 2 ) + this.radius.getValue();
 		double minor = this.radius.getValue();
 		Axis axis = this.axis.getValue();
@@ -92,10 +96,10 @@ public class Capsule extends Shape {
 			super.setValue( value );
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
+	public final InstanceProperty<Axis> axis = new InstanceProperty<Axis>( this, Axis.Y ) {
 		@Override
 		public void setValue( Axis value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				Capsule.this.markBoundsDirty();
 				super.setValue( value );
 				Capsule.this.fireBoundChanged();

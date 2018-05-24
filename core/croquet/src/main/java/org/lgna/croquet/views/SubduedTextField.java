@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField;
+import org.lgna.croquet.StringState;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SubduedTextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField> {
-	public SubduedTextField( org.lgna.croquet.StringState model ) {
+public class SubduedTextField extends AbstractTextField<JSubdudeTextField> {
+	public SubduedTextField( StringState model ) {
 		super( model, null );
 	}
 
@@ -56,7 +59,7 @@ public class SubduedTextField extends AbstractTextField<edu.cmu.cs.dennisc.javax
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField();
+	protected JSubdudeTextField createAwtComponent() {
+		return new JSubdudeTextField();
 	}
 }

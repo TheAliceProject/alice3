@@ -42,18 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.StatementListProperty;
+
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionStatementPane extends AbstractStatementPane {
-	private edu.cmu.cs.dennisc.property.event.PropertyListener refreshAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+	private PropertyListener refreshAdapter = new PropertyListener() {
 		@Override
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void propertyChanging( PropertyEvent e ) {
 		}
 
 		@Override
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		public void propertyChanged( PropertyEvent e ) {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					ExpressionStatementPane.this.refresh();
@@ -62,21 +82,21 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		}
 	};
 
-	public ExpressionStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionStatement expressionStatement, org.lgna.project.ast.StatementListProperty owner ) {
+	public ExpressionStatementPane( DragModel model, AstI18nFactory factory, ExpressionStatement expressionStatement, StatementListProperty owner ) {
 		super( model, factory, expressionStatement, owner );
 		this.refresh();
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		final org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)getStatement();
-		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		final ExpressionStatement expressionStatement = (ExpressionStatement)getStatement();
+		Expression expression = expressionStatement.expression.getValue();
+		if( expression instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation)expression;
 			if( methodInvocation.isValid() ) {
 				//pass
 			} else {
-				return java.awt.Color.RED;
+				return Color.RED;
 			}
 		}
 		return super.getBackgroundPaint( x, y, width, height );
@@ -96,22 +116,22 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 
 	private void refresh() {
 		this.forgetAndRemoveAllComponents();
-		final org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)getStatement();
-		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof org.lgna.project.ast.AssignmentExpression ) {
-			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (org.lgna.project.ast.AssignmentExpression)expression ) );
+		final ExpressionStatement expressionStatement = (ExpressionStatement)getStatement();
+		Expression expression = expressionStatement.expression.getValue();
+		if( expression instanceof AssignmentExpression ) {
+			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (AssignmentExpression)expression ) );
 		} else {
-			org.lgna.croquet.views.SwingComponentView<?> expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
+			SwingComponentView<?> expressionPane = this.getFactory().createComponent( expressionStatement.expression.getValue() );
 			this.addComponent( expressionPane );
-			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				final org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+			if( expression instanceof MethodInvocation ) {
+				final MethodInvocation methodInvocation = (MethodInvocation)expression;
 				assert methodInvocation.getParent() == expressionStatement;
 
-				if( ( this.getFactory() == org.alice.ide.x.PreviewAstI18nFactory.getInstance() ) || methodInvocation.isValid() ) {
+				if( ( this.getFactory() == PreviewAstI18nFactory.getInstance() ) || methodInvocation.isValid() ) {
 					//pass
 				} else {
-					this.setBackgroundColor( java.awt.Color.RED );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation );
+					this.setBackgroundColor( Color.RED );
+					Logger.severe( methodInvocation );
 				}
 
 				//				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
@@ -158,10 +178,10 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				//				}
 			}
 		}
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-			this.addComponent( new org.lgna.croquet.views.Label( ";" ) );
+		if( FormatterState.isJava() ) {
+			this.addComponent( new Label( ";" ) );
 		}
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 		this.revalidateAndRepaint();
 	}
 
@@ -174,7 +194,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	//		}
 	//	}
 
-	protected org.lgna.project.ast.ExpressionStatement getExpressionStatement() {
-		return (org.lgna.project.ast.ExpressionStatement)this.getStatement();
+	protected ExpressionStatement getExpressionStatement() {
+		return (ExpressionStatement)this.getStatement();
 	}
 }

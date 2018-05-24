@@ -42,20 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.browser.BrowserUtilities;
+import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JBrowserHyperlink extends AbstractHyperlink {
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
+	private Action action = new AbstractAction() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent event ) {
+		public void actionPerformed( ActionEvent event ) {
 			String uri = JBrowserHyperlink.this.getURI();
 			try {
-				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( uri );
+				BrowserUtilities.browse( uri );
 			} catch( Exception e ) {
 				e.printStackTrace();
-				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( uri );
-				javax.swing.JOptionPane.showMessageDialog( JBrowserHyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + uri + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
+				ClipboardUtilities.setClipboardContents( uri );
+				JOptionPane.showMessageDialog( JBrowserHyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + uri + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
 			}
 		}
 	};
@@ -65,19 +74,19 @@ public class JBrowserHyperlink extends AbstractHyperlink {
 		this.setAction( action );
 	}
 
-	public JBrowserHyperlink( java.net.URI uri ) {
+	public JBrowserHyperlink( URI uri ) {
 		this( uri.getRawPath() );
 	}
 
 	public String getURI() {
-		return (String)this.action.getValue( javax.swing.Action.NAME );
+		return (String)this.action.getValue( Action.NAME );
 	}
 
 	public void setURI( String uri ) {
-		this.action.putValue( javax.swing.Action.NAME, uri );
+		this.action.putValue( Action.NAME, uri );
 	}
 
-	public void setURI( java.net.URI uri ) {
+	public void setURI( URI uri ) {
 		setURI( uri.getRawPath() );
 	}
 }

@@ -43,19 +43,25 @@
 
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JSplashScreen extends javax.swing.JWindow {
-	public JSplashScreen( javax.swing.JFrame owner, javax.swing.Icon icon ) {
+public class JSplashScreen extends JWindow {
+	public JSplashScreen( JFrame owner, Icon icon ) {
 		super( owner );
 		initialize( icon );
 	}
 
-	private void initialize( javax.swing.Icon icon ) {
-		javax.swing.JLabel label = new javax.swing.JLabel();
+	private void initialize( Icon icon ) {
+		JLabel label = new JLabel();
 		label.setIcon( icon );
-		this.getContentPane().add( label, java.awt.BorderLayout.CENTER );
+		this.getContentPane().add( label, BorderLayout.CENTER );
 		this.pack();
 		this.setLocationRelativeTo( this.getOwner() );
 	}

@@ -42,18 +42,30 @@
  *******************************************************************************/
 package org.alice.stageide.instancefactory.croquet.joint.all;
 
+import edu.cmu.cs.dennisc.map.MapToMapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ParameterAccessMethodInvocationMethodInvocationFactory;
+import org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn;
+import org.alice.stageide.ast.JointedTypeInfo;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ParameterAccessMethodInvocationJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, Integer, ParameterAccessMethodInvocationJointedTypeMenuModel> mapToMapToMap = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+	private static MapToMapToMap<UserParameter, AbstractMethod, Integer, ParameterAccessMethodInvocationJointedTypeMenuModel> mapToMapToMap = MapToMapToMap.newInstance();
 
-	public static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( method.getReturnType() );
+	public static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( UserParameter parameter, AbstractMethod method ) {
+		List<JointedTypeInfo> jointedTypeInfos = JointedTypeInfo.getInstances( method.getReturnType() );
 		return getInstance( parameter, method, jointedTypeInfos, 0 );
 	}
 
-	private static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+	private static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( UserParameter parameter, AbstractMethod method, List<JointedTypeInfo> jointedTypeInfos, int index ) {
 		//todo
 		synchronized( mapToMapToMap ) {
 			ParameterAccessMethodInvocationJointedTypeMenuModel rv = mapToMapToMap.get( parameter, method, index );
@@ -67,22 +79,22 @@ public final class ParameterAccessMethodInvocationJointedTypeMenuModel extends J
 		}
 	}
 
-	private ParameterAccessMethodInvocationJointedTypeMenuModel( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
-		super( java.util.UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), jointedTypeInfos, index );
+	private ParameterAccessMethodInvocationJointedTypeMenuModel( UserParameter parameter, AbstractMethod method, List<JointedTypeInfo> jointedTypeInfos, int index ) {
+		super( UUID.fromString( "4abaaf96-15fe-4269-8bee-d4e8404934a6" ), jointedTypeInfos, index );
 		this.parameter = parameter;
 		this.method = method;
 	}
 
 	@Override
-	protected org.alice.stageide.instancefactory.croquet.joint.all.JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+	protected JointedTypeMenuModel getInstance( List<JointedTypeInfo> jointedTypeInfos, int index ) {
 		return getInstance( this.parameter, this.method, jointedTypeInfos, index );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, ?> getFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationMethodInvocationFactory.getInstance( this.parameter, this.method, method ) );
+	protected CascadeFillIn<InstanceFactory, ?> getFillIn( AbstractMethod method ) {
+		return InstanceFactoryFillIn.getInstance( ParameterAccessMethodInvocationMethodInvocationFactory.getInstance( this.parameter, this.method, method ) );
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final UserParameter parameter;
+	private final AbstractMethod method;
 }

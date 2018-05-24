@@ -42,27 +42,35 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.imageeditor.croquet.ImageEditorFrame;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class AddShapeEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final java.awt.Shape shape;
-	private final org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame;
+public final class AddShapeEdit extends AbstractEdit {
+	private final Shape shape;
+	private final ImageEditorFrame imageEditorFrame;
 
-	public AddShapeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.awt.Shape shape, org.alice.imageeditor.croquet.ImageEditorFrame imageEditorFrame ) {
+	public AddShapeEdit( CompletionStep completionStep, Shape shape, ImageEditorFrame imageEditorFrame ) {
 		super( completionStep );
 		this.shape = shape;
 		this.imageEditorFrame = imageEditorFrame;
 	}
 
-	public AddShapeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AddShapeEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.shape = null; //todo
 		this.imageEditorFrame = null; //todo
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		//todo
 	}

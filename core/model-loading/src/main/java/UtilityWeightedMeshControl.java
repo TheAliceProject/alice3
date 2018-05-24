@@ -53,10 +53,12 @@ import edu.cmu.cs.dennisc.math.Point2;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-
-public class UtilityWeightedMeshControl extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual.WeightedMeshControl
+public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl
 {
 	
 	public AxisAlignedBox getAbsoluteBoundingBox()
@@ -105,14 +107,14 @@ public class UtilityWeightedMeshControl extends edu.cmu.cs.dennisc.render.gl.imp
 		return this.textCoordBuffer;
 	}
 	
-	public edu.cmu.cs.dennisc.scenegraph.WeightedMesh getSgWeightedMesh()
+	public WeightedMesh getSgWeightedMesh()
 	{
 		return this.weightedMesh;
 	}
 	
 	private static final float WEIGHT_THRESHOLD = .2f;
 	
-    public AxisAlignedBox getBoundingBoxForJoint(edu.cmu.cs.dennisc.scenegraph.Joint joint)
+    public AxisAlignedBox getBoundingBoxForJoint(Joint joint)
     { 	
         InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
         AffineMatrix4x4 inverseJoint = joint.getInverseAbsoluteTransformation();
@@ -138,7 +140,7 @@ public class UtilityWeightedMeshControl extends edu.cmu.cs.dennisc.render.gl.imp
         return box;
     }
     
-    private double getRadiusCalculationForJoint(edu.cmu.cs.dennisc.scenegraph.Joint joint)
+    private double getRadiusCalculationForJoint(Joint joint)
     {
         Vector3 directionToBoxCenter = Vector3.createNormalized(joint.boundingBox.getValue().getCenter());
         Point3 min3 = joint.boundingBox.getValue().getMinimum();
@@ -176,13 +178,13 @@ public class UtilityWeightedMeshControl extends edu.cmu.cs.dennisc.render.gl.imp
         return Double.NaN;
     }
     
-    public double getBoundingRadiusForJoint(edu.cmu.cs.dennisc.scenegraph.Joint joint)
+    public double getBoundingRadiusForJoint(Joint joint)
     {
         double thisRadius = getRadiusCalculationForJoint(joint);
         double parentRadius = Double.NaN;
-        if (joint.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.Joint)
+        if (joint.getParent() instanceof Joint)
         {
-            parentRadius = getRadiusCalculationForJoint((edu.cmu.cs.dennisc.scenegraph.Joint)joint.getParent());
+            parentRadius = getRadiusCalculationForJoint((Joint)joint.getParent());
         }
         
         if (Double.isNaN(parentRadius)|| Double.isNaN(thisRadius))

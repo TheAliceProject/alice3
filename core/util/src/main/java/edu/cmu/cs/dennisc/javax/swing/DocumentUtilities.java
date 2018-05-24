@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,18 +53,18 @@ public class DocumentUtilities {
 		throw new AssertionError();
 	}
 
-	public static String getText( javax.swing.text.Document document ) {
+	public static String getText( Document document ) {
 		try {
 			return document.getText( 0, document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
 
-	public static void appendString( javax.swing.text.Document document, String s ) {
+	public static void appendString( Document document, String s ) {
 		try {
 			document.insertString( document.getLength(), s, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}

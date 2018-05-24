@@ -43,6 +43,37 @@
 
 package org.lgna.project;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import edu.cmu.cs.dennisc.tree.DefaultNode;
+import org.lgna.common.Resource;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.ResourceExpression;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,84 +82,84 @@ public class ProgramTypeUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.util.List<org.lgna.project.ast.UserLocal> getLocals( org.lgna.project.ast.UserCode code ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.UserLocal> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
-		code.getBodyProperty().getValue().crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+	public static List<UserLocal> getLocals( UserCode code ) {
+		IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance( UserLocal.class );
+		code.getBodyProperty().getValue().crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 		return crawler.getList();
 	}
 
-	public static java.util.List<org.lgna.project.ast.FieldAccess> getFieldAccesses( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.AbstractField field, edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> declarationFilter ) {
+	public static List<FieldAccess> getFieldAccesses( NamedUserType programType, final AbstractField field, Criterion<Declaration> declarationFilter ) {
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess>( org.lgna.project.ast.FieldAccess.class ) {
+		IsInstanceCrawler<FieldAccess> crawler = new IsInstanceCrawler<FieldAccess>( FieldAccess.class ) {
 			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.FieldAccess fieldAccess ) {
+			protected boolean isAcceptable( FieldAccess fieldAccess ) {
 				return fieldAccess.field.getValue() == field;
 			}
 		};
-		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, declarationFilter );
+		programType.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
 		return crawler.getList();
 	}
 
-	public static java.util.List<org.lgna.project.ast.MethodInvocation> getMethodInvocations( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.AbstractMethod method, edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> declarationFilter ) {
+	public static List<MethodInvocation> getMethodInvocations( NamedUserType programType, final AbstractMethod method, Criterion<Declaration> declarationFilter ) {
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation>(
-				org.lgna.project.ast.MethodInvocation.class ) {
+		IsInstanceCrawler<MethodInvocation> crawler = new IsInstanceCrawler<MethodInvocation>(
+				MethodInvocation.class ) {
 			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+			protected boolean isAcceptable( MethodInvocation methodInvocation ) {
 				return methodInvocation.method.getValue() == method;
 			}
 		};
-		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, declarationFilter );
+		programType.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
 		return crawler.getList();
 	}
 
-	public static java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> getArgumentLists( org.lgna.project.ast.NamedUserType programType, final org.lgna.project.ast.UserCode code, edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> declarationFilter ) {
+	public static List<SimpleArgumentListProperty> getArgumentLists( NamedUserType programType, final UserCode code, Criterion<Declaration> declarationFilter ) {
 		assert programType != null;
-		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-			private final java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		class ArgumentListCrawler implements Crawler {
+			private final List<SimpleArgumentListProperty> list = Lists.newLinkedList();
 
 			@Override
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
+			public void visit( Crawlable crawlable ) {
+				if( crawlable instanceof MethodInvocation ) {
+					MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 					if( methodInvocation.method.getValue() == code ) {
 						this.list.add( methodInvocation.requiredArguments );
 					}
-				} else if( crawlable instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)crawlable;
+				} else if( crawlable instanceof InstanceCreation ) {
+					InstanceCreation instanceCreation = (InstanceCreation)crawlable;
 					if( instanceCreation.constructor.getValue() == code ) {
 						this.list.add( instanceCreation.requiredArguments );
 					}
 				}
 			}
 
-			public java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> getList() {
+			public List<SimpleArgumentListProperty> getList() {
 				return this.list;
 			}
 		}
 		ArgumentListCrawler crawler = new ArgumentListCrawler();
-		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, declarationFilter );
+		programType.crawl( crawler, CrawlPolicy.COMPLETE, declarationFilter );
 		return crawler.getList();
 	}
 
-	public static java.util.Set<org.lgna.common.Resource> getReferencedResources( org.lgna.project.Project project ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> programType = project.getProgramType();
-		java.util.Set<org.lgna.common.Resource> resources = project.getResources();
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression>( org.lgna.project.ast.ResourceExpression.class ) {
+	public static Set<Resource> getReferencedResources( Project project ) {
+		AbstractType<?, ?, ?> programType = project.getProgramType();
+		Set<Resource> resources = project.getResources();
+		IsInstanceCrawler<ResourceExpression> crawler = new IsInstanceCrawler<ResourceExpression>( ResourceExpression.class ) {
 			@Override
-			protected boolean isAcceptable( org.lgna.project.ast.ResourceExpression resourceExpression ) {
+			protected boolean isAcceptable( ResourceExpression resourceExpression ) {
 				return true;
 			}
 		};
-		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
+		programType.crawl( crawler, CrawlPolicy.COMPLETE );
 
-		java.util.Set<org.lgna.common.Resource> rv = new java.util.HashSet<org.lgna.common.Resource>();
-		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
-			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
+		Set<Resource> rv = new HashSet<Resource>();
+		for( ResourceExpression resourceExpression : crawler.getList() ) {
+			Resource resource = resourceExpression.resource.getValue();
 			if( resources.contains( resource ) ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "adding missing resource", resource );
+				Logger.warning( "adding missing resource", resource );
 				resources.add( resource );
 			}
 			rv.add( resource );
@@ -136,26 +167,26 @@ public class ProgramTypeUtilities {
 		return rv;
 	}
 
-	public static <N extends org.lgna.project.ast.Node> N lookupNode( org.lgna.project.Project project, final java.util.UUID id ) {
-		final org.lgna.project.ast.Node[] buffer = { null };
-		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
+	public static <N extends Node> N lookupNode( Project project, final UUID id ) {
+		final Node[] buffer = { null };
+		NamedUserType programType = project.getProgramType();
+		Crawler crawler = new Crawler() {
 			@Override
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.Node ) {
-					org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
+			public void visit( Crawlable crawlable ) {
+				if( crawlable instanceof Node ) {
+					Node node = (Node)crawlable;
 					if( id.equals( node.getId() ) ) {
 						buffer[ 0 ] = node;
 					}
 				}
 			}
 		};
-		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
+		programType.crawl( crawler, CrawlPolicy.COMPLETE );
 		return (N)buffer[ 0 ];
 	}
 
-	public static <R extends org.lgna.common.Resource> R lookupResource( org.lgna.project.Project project, java.util.UUID id ) {
-		for( org.lgna.common.Resource resource : project.getResources() ) {
+	public static <R extends Resource> R lookupResource( Project project, UUID id ) {
+		for( Resource resource : project.getResources() ) {
 			if( resource.getId() == id ) {
 				return (R)resource;
 			}
@@ -163,15 +194,15 @@ public class ProgramTypeUtilities {
 		return null;
 	}
 
-	private static edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> getNode( org.lgna.project.ast.NamedUserType type, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> rv = root.get( type );
+	private static DefaultNode<NamedUserType> getNode( NamedUserType type, DefaultNode<NamedUserType> root ) {
+		DefaultNode<NamedUserType> rv = root.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( type, org.lgna.project.ast.NamedUserType.class );
-			org.lgna.project.ast.AbstractType<?, ?, ?> superType = type.getSuperType();
-			if( superType instanceof org.lgna.project.ast.NamedUserType ) {
-				edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> superNode = getNode( (org.lgna.project.ast.NamedUserType)superType, root );
+			rv = DefaultNode.createSafeInstance( type, NamedUserType.class );
+			AbstractType<?, ?, ?> superType = type.getSuperType();
+			if( superType instanceof NamedUserType ) {
+				DefaultNode<NamedUserType> superNode = getNode( (NamedUserType)superType, root );
 				superNode.addChild( rv );
 			} else {
 				root.addChild( rv );
@@ -180,40 +211,40 @@ public class ProgramTypeUtilities {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> getNamedUserTypesAsTree( org.lgna.project.Project project ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> root = edu.cmu.cs.dennisc.tree.DefaultNode.createSafeInstance( null, org.lgna.project.ast.NamedUserType.class );
-		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
+	public static DefaultNode<NamedUserType> getNamedUserTypesAsTree( Project project ) {
+		DefaultNode<NamedUserType> root = DefaultNode.createSafeInstance( null, NamedUserType.class );
+		Iterable<NamedUserType> types = project.getNamedUserTypes();
+		for( NamedUserType type : types ) {
 			getNode( type, root );
 		}
 		return root;
 	}
 
-	public static org.lgna.project.ast.UserMethod getMainMethod( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.project.ast.UserMethod rv = programType.getDeclaredMethod( "main", String[].class );
+	public static UserMethod getMainMethod( NamedUserType programType ) {
+		UserMethod rv = programType.getDeclaredMethod( "main", String[].class );
 		if( rv != null ) {
 			if( rv.isStatic() ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "main method is not static", rv );
+				Logger.warning( "main method is not static", rv );
 			}
 		}
 		return rv;
 	}
 
-	public static org.lgna.project.ast.UserMethod getMainMethod( org.lgna.project.Project project ) {
+	public static UserMethod getMainMethod( Project project ) {
 		return getMainMethod( project.getProgramType() );
 	}
 
-	public static void sanityCheckAllTypes( org.lgna.project.Project project ) {
-		for( org.lgna.project.ast.NamedUserType type : project.getNamedUserTypes() ) {
-			for( org.lgna.project.ast.NamedUserConstructor constructor : type.constructors ) {
+	public static void sanityCheckAllTypes( Project project ) {
+		for( NamedUserType type : project.getNamedUserTypes() ) {
+			for( NamedUserConstructor constructor : type.constructors ) {
 				assert constructor.getDeclaringType() == type : type;
 			}
-			for( org.lgna.project.ast.UserMethod method : type.methods ) {
+			for( UserMethod method : type.methods ) {
 				assert method.getDeclaringType() == type : type;
 			}
-			for( org.lgna.project.ast.UserField field : type.fields ) {
+			for( UserField field : type.fields ) {
 				assert field.getDeclaringType() == type : type;
 			}
 		}

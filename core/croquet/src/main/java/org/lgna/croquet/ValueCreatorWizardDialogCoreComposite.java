@@ -43,11 +43,13 @@
 
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialogCoreComposite {
-	public ValueCreatorWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
+	public ValueCreatorWizardDialogCoreComposite( UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
 	}
 

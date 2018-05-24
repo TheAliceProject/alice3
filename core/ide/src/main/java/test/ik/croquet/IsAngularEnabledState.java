@@ -43,10 +43,15 @@
 
 package test.ik.croquet;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsAngularEnabledState extends org.lgna.croquet.BooleanState {
+public class IsAngularEnabledState extends BooleanState {
 	private static class SingletonHolder {
 		private static IsAngularEnabledState instance = new IsAngularEnabledState();
 	}
@@ -56,6 +61,6 @@ public class IsAngularEnabledState extends org.lgna.croquet.BooleanState {
 	}
 
 	private IsAngularEnabledState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "28638745-6de7-4d92-b72f-82b15643f65e" ), true );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "28638745-6de7-4d92-b72f-82b15643f65e" ), true );
 	}
 }

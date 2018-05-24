@@ -42,17 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.alice.ide.IDE;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodOperation extends DeleteMemberOperation<org.lgna.project.ast.UserMethod> {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, DeleteMethodOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class DeleteMethodOperation extends DeleteMemberOperation<UserMethod> {
+	private static Map<UserMethod, DeleteMethodOperation> map = Maps.newHashMap();
 
-	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
+	public static synchronized DeleteMethodOperation getInstance( UserMethod method ) {
 		return getInstance( method, method.getDeclaringType() );
 	}
 
-	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method, org.lgna.project.ast.UserType<?> declaringType ) {
+	public static synchronized DeleteMethodOperation getInstance( UserMethod method, UserType<?> declaringType ) {
 		DeleteMethodOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -63,23 +75,23 @@ public class DeleteMethodOperation extends DeleteMemberOperation<org.lgna.projec
 		return rv;
 	}
 
-	private DeleteMethodOperation( org.lgna.project.ast.UserMethod method, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( java.util.UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
+	private DeleteMethodOperation( UserMethod method, UserType<?> declaringType ) {
+		super( UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
 	}
 
 	@Override
-	public Class<org.lgna.project.ast.UserMethod> getNodeParameterType() {
-		return org.lgna.project.ast.UserMethod.class;
+	public Class<UserMethod> getNodeParameterType() {
+		return UserMethod.class;
 	}
 
 	@Override
-	protected org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserMethod> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
+	protected NodeListProperty<UserMethod> getNodeListProperty( UserType<?> declaringType ) {
 		return declaringType.methods;
 	}
 
 	@Override
-	protected boolean isClearToDelete( org.lgna.project.ast.UserMethod method ) {
-		java.util.List<org.lgna.project.ast.MethodInvocation> references = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
+	protected boolean isClearToDelete( UserMethod method ) {
+		List<MethodInvocation> references = IDE.getActiveInstance().getMethodInvocations( method );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();
@@ -108,7 +120,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation<org.lgna.projec
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
+			new OkDialog.Builder( sb.toString() )
 					.buildAndShow();
 			return false;
 		} else {

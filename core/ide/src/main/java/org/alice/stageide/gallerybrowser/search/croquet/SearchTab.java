@@ -43,30 +43,38 @@
 package org.alice.stageide.gallerybrowser.search.croquet;
 
 import org.alice.stageide.gallerybrowser.GalleryTab;
+import org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker;
+import org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SearchTab extends GalleryTab {
 	public SearchTab() {
-		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
+		super( UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
 	}
 
-	public org.lgna.croquet.StringState getFilterState() {
+	public StringState getFilterState() {
 		return this.filterState;
 	}
 
-	public org.lgna.croquet.PlainStringValue getNoMatchesLabel() {
+	public PlainStringValue getNoMatchesLabel() {
 		return this.noMatchesLabel;
 	}
 
-	public org.lgna.croquet.PlainStringValue getNoEntryLabel() {
+	public PlainStringValue getNoEntryLabel() {
 		return this.noEntryLabel;
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView createView() {
-		return new org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView( this );
+	protected SearchTabView createView() {
+		return new SearchTabView( this );
 	}
 
 	@Override
@@ -95,21 +103,21 @@ public class SearchTab extends GalleryTab {
 
 	private void handleFilterChanged( String filter ) {
 		this.cancelWorkerIfNecessary();
-		org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView view = (org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView)this.getView();
+		SearchTabView view = (SearchTabView)this.getView();
 		synchronized( view.getTreeLock() ) {
 			view.removeAllGalleryDragComponents();
 		}
-		this.worker = new org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker( filter, view );
+		this.worker = new SearchGalleryWorker( filter, view );
 		this.worker.execute();
 	}
 
-	private org.alice.stageide.gallerybrowser.search.core.SearchGalleryWorker worker;
-	private final org.lgna.croquet.StringState filterState = this.createStringState( "filterState" );
-	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( "noMatchesLabel" );
-	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( "noEntryLabel" );
-	private final org.lgna.croquet.event.ValueListener<String> filterListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private SearchGalleryWorker worker;
+	private final StringState filterState = this.createStringState( "filterState" );
+	private final PlainStringValue noMatchesLabel = this.createStringValue( "noMatchesLabel" );
+	private final PlainStringValue noEntryLabel = this.createStringValue( "noEntryLabel" );
+	private final ValueListener<String> filterListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			SearchTab.this.handleFilterChanged( e.getNextValue() );
 		}
 	};

@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import org.lgna.story.SCylinder;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CylinderImp extends AbstractCylinderImp {
-	public CylinderImp( org.lgna.story.SCylinder abstraction ) {
+	public CylinderImp( SCylinder abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgCylinder().bottomRadius.setValue( 0.5 );
 		this.getSgCylinder().topRadius.setValue( 0.5 );
 	}
 
 	@Override
-	public org.lgna.story.SCylinder getAbstraction() {
+	public SCylinder getAbstraction() {
 		return this.abstraction;
 	}
 
@@ -67,7 +69,7 @@ public class CylinderImp extends AbstractCylinderImp {
 		return this.radius.getValue();
 	}
 
-	private final org.lgna.story.SCylinder abstraction;
+	private final SCylinder abstraction;
 	public final DoubleProperty radius = new DoubleProperty( CylinderImp.this ) {
 		@Override
 		public Double getValue() {

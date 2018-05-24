@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView;
+import org.alice.stageide.modelresource.ResourceNodeTreeState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TreeOwningGalleryTab extends GalleryTab {
-	public TreeOwningGalleryTab( java.util.UUID migrationId ) {
+	public TreeOwningGalleryTab( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	public abstract org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState();
+	public abstract ResourceNodeTreeState getResourceNodeTreeSelectionState();
 
 	@Override
-	protected final org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView( this );
+	protected final TreeOwningGalleryTabView createView() {
+		return new TreeOwningGalleryTabView( this );
 	}
 }

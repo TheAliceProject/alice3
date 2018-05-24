@@ -44,11 +44,15 @@ package org.alice.ide.croquet.models.clipboard;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CopyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class CopyOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static CopyOperation instance = new CopyOperation();
 	}
@@ -58,11 +62,11 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 	}
 
 	private CopyOperation() {
-		super( java.util.UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
+		super( UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal( CompletionStep<?> step ) {
 		String modifierId = SystemUtilities.isMac() ? "alt" : "control";
 		String modifier = findLocalizedText( modifierId );
 		String content = String.format( findLocalizedText( "content"), modifier, modifier );

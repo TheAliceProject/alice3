@@ -42,16 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProxyGraphics extends java.awt.Graphics {
-	public void setOther( java.awt.Graphics other ) {
+public class ProxyGraphics extends Graphics {
+	public void setOther( Graphics other ) {
 		this.other = other;
 	}
 
 	@Override
-	public java.awt.Graphics create() {
+	public Graphics create() {
 		return this.other.create();
 	}
 
@@ -61,12 +71,12 @@ public class ProxyGraphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public java.awt.Color getColor() {
+	public Color getColor() {
 		return this.other.getColor();
 	}
 
 	@Override
-	public void setColor( java.awt.Color c ) {
+	public void setColor( Color c ) {
 		this.other.setColor( c );
 	}
 
@@ -76,27 +86,27 @@ public class ProxyGraphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setXORMode( java.awt.Color c1 ) {
+	public void setXORMode( Color c1 ) {
 		this.other.setXORMode( c1 );
 	}
 
 	@Override
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.other.getFont();
 	}
 
 	@Override
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		this.other.setFont( font );
 	}
 
 	@Override
-	public java.awt.FontMetrics getFontMetrics( java.awt.Font f ) {
+	public FontMetrics getFontMetrics( Font f ) {
 		return this.other.getFontMetrics( f );
 	}
 
 	@Override
-	public java.awt.Rectangle getClipBounds() {
+	public Rectangle getClipBounds() {
 		return this.other.getClipBounds();
 	}
 
@@ -111,12 +121,12 @@ public class ProxyGraphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public java.awt.Shape getClip() {
+	public Shape getClip() {
 		return this.other.getClip();
 	}
 
 	@Override
-	public void setClip( java.awt.Shape clip ) {
+	public void setClip( Shape clip ) {
 		this.other.setClip( clip );
 	}
 
@@ -191,37 +201,37 @@ public class ProxyGraphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void drawString( java.text.AttributedCharacterIterator iterator, int x, int y ) {
+	public void drawString( AttributedCharacterIterator iterator, int x, int y ) {
 		this.other.drawString( iterator, x, y );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, int width, int height, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, width, height, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, Color bgcolor, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, bgcolor, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer ) {
 		return this.other.drawImage( img, x, y, width, height, bgcolor, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer ) {
 		return this.other.drawImage( img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer ) {
 		return this.other.drawImage( img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, bgcolor, observer );
 	}
 
@@ -230,5 +240,5 @@ public class ProxyGraphics extends java.awt.Graphics {
 		this.other.dispose();
 	}
 
-	private java.awt.Graphics other;
+	private Graphics other;
 }

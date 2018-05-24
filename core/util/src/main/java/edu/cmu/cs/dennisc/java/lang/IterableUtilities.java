@@ -42,21 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.lang.reflect.Array;
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IterableUtilities {
 	public static <E> E[] toArray( Iterable<E> iterable, Class<E> cls ) {
-		java.util.Collection<Object> collection;
-		if( iterable instanceof java.util.Collection<?> ) {
-			collection = (java.util.Collection<Object>)iterable;
+		Collection<Object> collection;
+		if( iterable instanceof Collection<?> ) {
+			collection = (Collection<Object>)iterable;
 		} else {
-			collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			collection = Lists.newLinkedList();
 			for( Object item : iterable ) {
 				collection.add( item );
 			}
 		}
-		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, collection.size() );
+		E[] rv = (E[])Array.newInstance( cls, collection.size() );
 		return collection.toArray( rv );
 	}
 

@@ -47,17 +47,27 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
@@ -68,7 +78,7 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 	private static Paint ROLLOVER_PAINT = new Color( 191, 191, 191, 127 );
 	private static Paint NORMAL_PAINT = new Color( 221, 221, 221, 127 );
 
-	private static java.awt.Shape createShape( JComponent c ) {
+	private static Shape createShape( JComponent c ) {
 		int w = c.getWidth() - 1;
 		int h = c.getHeight() - 1;
 
@@ -80,7 +90,7 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 		double yC = h;
 		double yB = yA + ( ( yC - yA ) * 0.8 );
 
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		GeneralPath path = new GeneralPath();
 		path.moveTo( x0, yA );
 		path.lineTo( x1, yA );
 		path.lineTo( x1, yB );
@@ -88,15 +98,15 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 		path.lineTo( x0, yB );
 		path.closePath();
 		//java.awt.Shape cap = new java.awt.geom.Ellipse2D.Float( 0, 0, w, w );
-		java.awt.Shape cap = new java.awt.geom.RoundRectangle2D.Float( 0, 0, w, w / 2, 8, 8 );
-		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( path, cap );
+		Shape cap = new RoundRectangle2D.Float( 0, 0, w, w / 2, 8, 8 );
+		return AreaUtilities.createUnion( path, cap );
 	}
 
 	@Override
 	public void paint( Graphics g, JComponent c ) {
 		//note: do not invoke super
 		Graphics2D g2 = (Graphics2D)g;
-		edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = new edu.cmu.cs.dennisc.java.awt.GraphicsContext();
+		GraphicsContext gc = new GraphicsContext();
 		gc.pushAll( g2 );
 		gc.pushPaint();
 		gc.pushAndSetAntialiasing( true );
@@ -112,7 +122,7 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 				circlePaint = NORMAL_PAINT;
 			}
 		}
-		java.awt.Shape shape = createShape( c );
+		Shape shape = createShape( c );
 		g2.setPaint( circlePaint );
 		g2.fill( shape );
 
@@ -130,7 +140,7 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 	}
 
 	@Override
-	public boolean contains( javax.swing.JComponent c, int x, int y ) {
+	public boolean contains( JComponent c, int x, int y ) {
 		return createShape( c ).contains( x, y );
 	}
 }
@@ -145,7 +155,7 @@ class JTimeLinePoseMarker extends JToggleButton {
 		this.setRolloverEnabled( true );
 		this.addMouseListener( listener );
 		this.addMouseMotionListener( motionListener );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.setBorder( BorderFactory.createEmptyBorder() );
 		if( data.equals( jView.getComposite().getSelectedKeyFrame() ) ) {
 			setSelected( true );
 		}
@@ -181,11 +191,11 @@ class JTimeLinePoseMarker extends JToggleButton {
 
 		@Override
 		public void mouseReleased( MouseEvent e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+			Logger.outln( e );
 			if( isSliding ) {
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+				TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				Transaction transaction = history.acquireActiveTransaction();
+				CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 
 				double tCurrent = keyFrameData.getEventTime();
 				final double THRESHOLD = 0.0001;

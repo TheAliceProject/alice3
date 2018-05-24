@@ -43,11 +43,14 @@
 
 package org.alice.ide.x.components;
 
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.project.ast.JavaKeyedArgument;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedArgumentView extends ArgumentView<org.lgna.project.ast.JavaKeyedArgument> {
-	public KeyedArgumentView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
+public class KeyedArgumentView extends ArgumentView<JavaKeyedArgument> {
+	public KeyedArgumentView( AstI18nFactory factory, JavaKeyedArgument keyedArgument ) {
 		super( factory, keyedArgument );
 	}
 

@@ -42,50 +42,60 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.MemoryImageSource;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CursorUtilities {
-	private static final java.util.Map<java.awt.Component, java.util.Stack<java.awt.Cursor>> mapComponentToStack = new java.util.HashMap<java.awt.Component, java.util.Stack<java.awt.Cursor>>();
-	public static final java.awt.Cursor NULL_CURSOR;
+	private static final Map<Component, Stack<Cursor>> mapComponentToStack = new HashMap<Component, Stack<Cursor>>();
+	public static final Cursor NULL_CURSOR;
 	static {
-		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-		java.awt.image.MemoryImageSource source = new java.awt.image.MemoryImageSource( 1, 1, new int[] { 0 }, 0, 1 );
-		java.awt.Image nullImage = toolkit.createImage( source );
-		NULL_CURSOR = toolkit.createCustomCursor( nullImage, new java.awt.Point( 0, 0 ), "NULL_CURSOR" );
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		MemoryImageSource source = new MemoryImageSource( 1, 1, new int[] { 0 }, 0, 1 );
+		Image nullImage = toolkit.createImage( source );
+		NULL_CURSOR = toolkit.createCustomCursor( nullImage, new Point( 0, 0 ), "NULL_CURSOR" );
 	}
 
-	private static java.util.Stack<java.awt.Cursor> getStack( java.awt.Component component ) {
-		java.util.Stack<java.awt.Cursor> rv = CursorUtilities.mapComponentToStack.get( component );
+	private static Stack<Cursor> getStack( Component component ) {
+		Stack<Cursor> rv = CursorUtilities.mapComponentToStack.get( component );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new java.util.Stack<java.awt.Cursor>();
+			rv = new Stack<Cursor>();
 			CursorUtilities.mapComponentToStack.put( component, rv );
 		}
 		return rv;
 	}
 
-	public static void pushAndSet( java.awt.Component component, java.awt.Cursor nextCursor ) {
+	public static void pushAndSet( Component component, Cursor nextCursor ) {
 		if( nextCursor != null ) {
 			//pass
 		} else {
 			nextCursor = NULL_CURSOR;
 		}
-		java.util.Stack<java.awt.Cursor> stack = CursorUtilities.getStack( component );
-		java.awt.Cursor prevCursor = component.getCursor();
+		Stack<Cursor> stack = CursorUtilities.getStack( component );
+		Cursor prevCursor = component.getCursor();
 		stack.push( prevCursor );
 		component.setCursor( nextCursor );
 	}
 
-	public static void pushAndSetPredefinedCursor( java.awt.Component component, int nextCursorType ) {
-		pushAndSet( component, java.awt.Cursor.getPredefinedCursor( nextCursorType ) );
+	public static void pushAndSetPredefinedCursor( Component component, int nextCursorType ) {
+		pushAndSet( component, Cursor.getPredefinedCursor( nextCursorType ) );
 
 	}
 
-	public static java.awt.Cursor popAndSet( java.awt.Component component ) {
-		java.util.Stack<java.awt.Cursor> stack = CursorUtilities.getStack( component );
-		java.awt.Cursor prevCursor = stack.pop();
+	public static Cursor popAndSet( Component component ) {
+		Stack<Cursor> stack = CursorUtilities.getStack( component );
+		Cursor prevCursor = stack.pop();
 		component.setCursor( prevCursor );
 		return prevCursor;
 	}

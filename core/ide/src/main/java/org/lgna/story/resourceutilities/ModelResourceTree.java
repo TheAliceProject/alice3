@@ -48,6 +48,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserConstructor;
@@ -55,11 +58,12 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserPackage;
+import org.lgna.story.SModel;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.ModelResource;
 
 public class ModelResourceTree {
-	public ModelResourceTree( List<Class<? extends org.lgna.story.resources.ModelResource>> classes ) {
+	public ModelResourceTree( List<Class<? extends ModelResource>> classes ) {
 		this.galleryTree = this.createClassTree( classes );
 	}
 
@@ -81,15 +85,15 @@ public class ModelResourceTree {
 		return rootNodes;
 	}
 
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( AbstractType<?, ?, ?> type ) {
 		return this.galleryTree.getDescendantOfUserType( type );
 	}
 
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
 		return this.galleryTree.getDescendantOfJavaType( type );
 	}
 
-	public List<? extends ModelResourceTreeNode> getGalleryResourceChildrenForJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public List<? extends ModelResourceTreeNode> getGalleryResourceChildrenForJavaType( AbstractType<?, ?, ?> type ) {
 		ModelResourceTreeNode node = this.galleryTree.getDescendantOfJavaType( type );
 		if( node != null ) {
 			return node.childrenList();
@@ -113,11 +117,11 @@ public class ModelResourceTree {
 	}
 
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
-	private ModelResourceTreeNode addNodes( ModelResourceTreeNode root, Stack<Class<? extends org.lgna.story.resources.ModelResource>> classes ) {
+	private ModelResourceTreeNode addNodes( ModelResourceTreeNode root, Stack<Class<? extends ModelResource>> classes ) {
 		Class<?> rootClass = null;
 		ModelResourceTreeNode currentNode = root;
 		while( !classes.isEmpty() ) {
-			Class<? extends org.lgna.story.resources.ModelResource> currentClass = classes.pop();
+			Class<? extends ModelResource> currentClass = classes.pop();
 			if( currentClass.isAnnotationPresent( Deprecated.class ) ) {
 				continue;
 			}
@@ -135,14 +139,14 @@ public class ModelResourceTree {
 			if( classNode == null ) {
 
 				NamedUserType aliceType = null;
-				String aliceClassName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getAliceClassName( currentClass );
+				String aliceClassName = AliceResourceClassUtilities.getAliceClassName( currentClass );
 				UserPackage packageName = getAlicePackage( currentClass, rootClass );
 
 				UserMethod[] noMethods = {};
 				UserField[] noFields = {};
-				Field[] resourceConstants = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getFieldsOfType( currentClass, org.lgna.story.resources.ModelResource.class );
-				Class<? extends org.lgna.story.SModel> modelClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass( currentClass );
-				org.lgna.project.ast.AbstractType parentType = null;
+				Field[] resourceConstants = AliceResourceClassUtilities.getFieldsOfType( currentClass, ModelResource.class );
+				Class<? extends SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass( currentClass );
+				AbstractType parentType = null;
 				if( ( parentNode == null ) || ( parentNode.getUserType() == null ) ) {
 					parentType = JavaType.getInstance( modelClass );
 				} else {
@@ -161,7 +165,7 @@ public class ModelResourceTree {
 				}
 				if( resourceConstants.length != 0 ) {
 					for( Field f : resourceConstants ) {
-						String fieldClassName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getClassNameFromName( f.getName() ) + aliceClassName;
+						String fieldClassName = AliceResourceClassUtilities.getClassNameFromName( f.getName() ) + aliceClassName;
 						NamedUserType subParentType = classNode.getUserType();
 						NamedUserType fieldType = new NamedUserType( fieldClassName, packageName, subParentType, noConstructors, noMethods, noFields );
 						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode( fieldType, currentClass, null );
@@ -184,16 +188,16 @@ public class ModelResourceTree {
 		return root;
 	}
 
-	private ModelResourceTreeNode createClassTree( List<Class<? extends org.lgna.story.resources.ModelResource>> classes ) {
+	private ModelResourceTreeNode createClassTree( List<Class<? extends ModelResource>> classes ) {
 		ModelResourceTreeNode topNode = new ModelResourceTreeNode( null, null, null );
 
-		for( Class<? extends org.lgna.story.resources.ModelResource> cls : classes ) {
-			Class<? extends org.lgna.story.resources.ModelResource> currentClass = cls;
-			Stack<Class<? extends org.lgna.story.resources.ModelResource>> classStack = new Stack<Class<? extends org.lgna.story.resources.ModelResource>>();
+		for( Class<? extends ModelResource> cls : classes ) {
+			Class<? extends ModelResource> currentClass = cls;
+			Stack<Class<? extends ModelResource>> classStack = new Stack<Class<? extends ModelResource>>();
 			Class<?>[] interfaces = null;
 			while( currentClass != null ) {
 				classStack.push( currentClass );
-				boolean isTopLevelResource = org.lgna.story.implementation.alice.AliceResourceClassUtilities.isTopLevelResource( currentClass );
+				boolean isTopLevelResource = AliceResourceClassUtilities.isTopLevelResource( currentClass );
 				if( isTopLevelResource ) {
 					break;
 				}
@@ -202,8 +206,8 @@ public class ModelResourceTree {
 				currentClass = null;
 				if( ( interfaces != null ) && ( interfaces.length > 0 ) ) {
 					for( Class<?> intrfc : interfaces ) {
-						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( intrfc ) ) {
-							currentClass = (Class<? extends org.lgna.story.resources.ModelResource>)intrfc;
+						if( ModelResource.class.isAssignableFrom( intrfc ) ) {
+							currentClass = (Class<? extends ModelResource>)intrfc;
 							break;
 						}
 					}
@@ -215,6 +219,6 @@ public class ModelResourceTree {
 	}
 
 	private final ModelResourceTreeNode galleryTree;
-	private final Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final List<ModelResourceTreeNode> smodelBasedClasses = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = Maps.newHashMap();
+	private final List<ModelResourceTreeNode> smodelBasedClasses = Lists.newArrayList();
 }

@@ -43,13 +43,27 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map<org.lgna.project.ast.UserField, ThisFieldAccessFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<UserField, ThisFieldAccessFactory> map = Maps.newHashMap();
 
-	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.UserField field ) {
+	public static synchronized ThisFieldAccessFactory getInstance( UserField field ) {
 		assert field != null;
 		ThisFieldAccessFactory rv = map.get( field );
 		if( rv != null ) {
@@ -61,16 +75,16 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserField field;
+	private final UserField field;
 
-	private ThisFieldAccessFactory( org.lgna.project.ast.UserField field ) {
+	private ThisFieldAccessFactory( UserField field ) {
 		super( field.name );
 		this.field = field;
 	}
 
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> fieldDeclaringType = this.field.getDeclaringType();
+	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
+		AbstractType<?, ?, ?> fieldDeclaringType = this.field.getDeclaringType();
 		if( fieldDeclaringType != null ) {
 			return fieldDeclaringType.isAssignableFrom( type );
 		} else {
@@ -78,39 +92,39 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		}
 	}
 
-	public org.lgna.project.ast.UserField getField() {
+	public UserField getField() {
 		return this.field;
 	}
 
-	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.FieldAccess( expression, this.field );
+	private FieldAccess createFieldAccess( Expression expression ) {
+		return new FieldAccess( expression, this.field );
 	}
 
 	@Override
-	public org.lgna.project.ast.FieldAccess createTransientExpression() {
+	public FieldAccess createTransientExpression() {
 		return this.createFieldAccess( createTransientThisExpression() );
 	}
 
 	@Override
-	public org.lgna.project.ast.FieldAccess createExpression() {
+	public FieldAccess createExpression() {
 		return this.createFieldAccess( createThisExpression() );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return this.field.getValueType();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		org.lgna.croquet.icon.IconFactory fallbackIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
-		if( ( fallbackIconFactory != null ) && ( fallbackIconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
+	public IconFactory getIconFactory() {
+		IconFactory fallbackIconFactory = IconFactoryManager.getIconFactoryForField( this.field );
+		if( ( fallbackIconFactory != null ) && ( fallbackIconFactory != EmptyIconFactory.getInstance() ) ) {
 			//pass;
 		} else {
 			fallbackIconFactory = super.getIconFactory();
 		}
 
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 		if( projectDocumentFrame != null ) {
 			return projectDocumentFrame.getIconFactoryManager().getIconFactory( this.field, fallbackIconFactory );
 		} else {

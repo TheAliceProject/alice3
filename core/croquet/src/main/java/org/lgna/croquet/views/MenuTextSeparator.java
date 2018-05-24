@@ -43,30 +43,37 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.lgna.croquet.LabelMenuSeparatorModel;
+
+import javax.swing.Icon;
+import javax.swing.JMenuItem;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MenuTextSeparator extends ViewController<javax.swing.JMenuItem, org.lgna.croquet.LabelMenuSeparatorModel> {
-	public MenuTextSeparator( org.lgna.croquet.LabelMenuSeparatorModel model ) {
+public class MenuTextSeparator extends ViewController<JMenuItem, LabelMenuSeparatorModel> {
+	public MenuTextSeparator( LabelMenuSeparatorModel model ) {
 		super( model );
 	}
 
 	@Override
-	protected javax.swing.JMenuItem createAwtComponent() {
-		javax.swing.JMenuItem rv = new javax.swing.JMenuItem();
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	protected JMenuItem createAwtComponent() {
+		JMenuItem rv = new JMenuItem();
+		FontUtilities.setFontToDerivedFont( rv, TextPosture.OBLIQUE );
 		rv.setEnabled( false );
 		return rv;
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
-		org.lgna.croquet.LabelMenuSeparatorModel model = this.getModel();
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
+		LabelMenuSeparatorModel model = this.getModel();
 		String modelName = model.getName();
 		if( ( modelName != null ) && ( modelName.length() > 0 ) ) {
 			this.getAwtComponent().setText( modelName + ":" );
 		}
-		javax.swing.Icon icon = model.getIcon();
+		Icon icon = model.getIcon();
 		this.getAwtComponent().setIcon( icon );
 		this.getAwtComponent().setDisabledIcon( icon );
 		super.handleAddedTo( parent );

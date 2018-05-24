@@ -43,8 +43,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 public class WeightedMesh extends Mesh {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<WeightInfo> weightInfo = new edu.cmu.cs.dennisc.property.InstanceProperty<WeightInfo>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
+	public final InstanceProperty<WeightInfo> weightInfo = new InstanceProperty<WeightInfo>( this, null );
+	public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>( this, null );
 
 }

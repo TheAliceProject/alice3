@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite;
+import org.alice.stageide.icons.CylinderIconFactory;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SCylinder;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CylinderDragModel extends ShapeDragModel {
-	private static final org.lgna.story.SCylinder sModel = new org.lgna.story.SCylinder();
+	private static final SCylinder sModel = new SCylinder();
 
 	private static class SingletonHolder {
 		private static CylinderDragModel instance = new CylinderDragModel();
@@ -57,12 +67,12 @@ public class CylinderDragModel extends ShapeDragModel {
 	}
 
 	private CylinderDragModel() {
-		super( java.util.UUID.fromString( "cc99d029-9efc-4418-80bf-49fa71281b34" ) );
+		super( UUID.fromString( "cc99d029-9efc-4418-80bf-49fa71281b34" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +81,12 @@ public class CylinderDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getLaunchOperation();
+	public Model getLeftButtonClickModel() {
+		return AddCylinderManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.CylinderIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return CylinderIconFactory.getInstance();
 	}
 }

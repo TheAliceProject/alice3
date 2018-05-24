@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.lang.reflect.Array;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -53,7 +55,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 		//todo: encode -1 for null?
 		int arrayLength;
 		if( array != null ) {
-			arrayLength = java.lang.reflect.Array.getLength( array );
+			arrayLength = Array.getLength( array );
 		} else {
 			arrayLength = -1;
 		}
@@ -139,7 +141,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	}
 
 	@Override
-	public final void encode( java.util.UUID[] array ) {
+	public final void encode( UUID[] array ) {
 		this.encodeArrayLength( array );
 		for( UUID element : array ) {
 			this.encode( element );
@@ -156,7 +158,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	}
 
 	@Override
-	public final void encode( ReferenceableBinaryEncodableAndDecodable[] array, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
+	public final void encode( ReferenceableBinaryEncodableAndDecodable[] array, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		this.encodeArrayLength( array );
 		for( ReferenceableBinaryEncodableAndDecodable element : array ) {
 			this.encode( element, map );
@@ -175,7 +177,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	}
 
 	@Override
-	public final void encode( java.util.UUID value ) {
+	public final void encode( UUID value ) {
 		boolean isNotNull = value != null;
 		this.encode( isNotNull );
 		if( isNotNull ) {
@@ -195,7 +197,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 	}
 
 	@Override
-	public final void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
+	public final void encode( ReferenceableBinaryEncodableAndDecodable value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		if( value != null ) {
 			this.encode( value.getClass().getName() );
 			this.encode( value.hashCode() );

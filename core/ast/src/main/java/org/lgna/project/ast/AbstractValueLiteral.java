@@ -42,12 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractValueLiteral<T> extends AbstractLiteral {
-	public abstract edu.cmu.cs.dennisc.property.InstanceProperty<T> getValueProperty();
+	public abstract InstanceProperty<T> getValueProperty();
 
 	@Override
 	public boolean isValid() {

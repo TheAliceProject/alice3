@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +61,7 @@ public class FloatProperty extends InstanceProperty<Float> {
 	public void setValue( Float value ) {
 		assert value != null : this;
 		assert ( Float.isNaN( value ) == false ) || this.isNaNAcceptable : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+		if( Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( value );
 		}
 	}

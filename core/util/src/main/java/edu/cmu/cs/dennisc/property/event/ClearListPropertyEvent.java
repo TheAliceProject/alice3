@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property.event;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClearListPropertyEvent<E> extends ListPropertyEvent<E> {
-	public ClearListPropertyEvent( edu.cmu.cs.dennisc.property.ListProperty<E> source ) {
+	public ClearListPropertyEvent( ListProperty<E> source ) {
 		super( source );
 	}
 }

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.common.Resource;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,12 +51,12 @@ public final class ResourceExpression extends Expression {
 	public ResourceExpression() {
 	}
 
-	public ResourceExpression( AbstractType<?, ?, ?> type, org.lgna.common.Resource resource ) {
+	public ResourceExpression( AbstractType<?, ?, ?> type, Resource resource ) {
 		this.type.setValue( type );
 		this.resource.setValue( resource );
 	}
 
-	public <T extends org.lgna.common.Resource> ResourceExpression( Class<T> cls, T resource ) {
+	public <T extends Resource> ResourceExpression( Class<T> cls, T resource ) {
 		this( JavaType.getInstance( cls ), resource );
 	}
 
@@ -69,5 +71,5 @@ public final class ResourceExpression extends Expression {
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance( this );
-	public final org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
+	public final ResourceProperty resource = new ResourceProperty( this );
 }

@@ -44,34 +44,64 @@
 package org.alice.stageide.typecontext.components;
 
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon;
+import org.alice.ide.IDE;
+import org.alice.ide.Theme;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.stageide.icons.SceneIconFactory;
+import org.alice.stageide.run.RunComposite;
+import org.alice.stageide.typecontext.NonSceneTypeComposite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.CornerSpringPanel;
+import org.lgna.croquet.views.HorizontalAlignment;
 import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.NamedUserType;
 
-class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
-	private final org.lgna.croquet.views.Label typeLabel = new org.lgna.croquet.views.Label();
-	private final org.lgna.croquet.views.Label snapshotLabel = new org.lgna.croquet.views.Label();
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.event.HierarchyEvent;
+
+class SelectedTypeView extends BorderPanel {
+	private final Label typeLabel = new Label();
+	private final Label snapshotLabel = new Label();
+	private final ValueListener<NamedUserType> typeListener = new ValueListener<NamedUserType>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+		public void valueChanged( ValueEvent<NamedUserType> e ) {
 			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
 
 	public SelectedTypeView() {
 		//this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
-		this.snapshotLabel.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.CENTER );
+		this.snapshotLabel.setHorizontalAlignment( HorizontalAlignment.CENTER );
 		Label label = new Label( ResourceBundleUtilities.getStringForKey( "selectedType", getClass() ) );
-		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel( label, this.typeLabel ) );
+		this.addPageStartComponent( new LineAxisPanel( label, this.typeLabel ) );
 		this.addCenterComponent( this.snapshotLabel );
 	}
 
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		this.typeLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
+	private void handleTypeStateChanged( NamedUserType nextValue ) {
+		this.typeLabel.setIcon( TypeIcon.getInstance( nextValue ) );
 		String snapshotText = null;
-		javax.swing.Icon snapshotIcon = null;
+		Icon snapshotIcon = null;
 		if( nextValue != null ) {
-			org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextValue );
+			IconFactory iconFactory = IconFactoryManager.getIconFactoryForType( nextValue );
 			if( iconFactory != null ) {
-				snapshotIcon = iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+				snapshotIcon = iconFactory.getIcon( iconFactory.getDefaultSize( Theme.DEFAULT_LARGE_ICON_SIZE ) );
 			}
 		}
 		this.snapshotLabel.setText( snapshotText );
@@ -80,45 +110,45 @@ class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
+		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
+		IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }
 
-class ReturnToSceneTypeButton extends org.lgna.croquet.views.Button {
-	private static javax.swing.Icon BACK_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
-	private final org.lgna.croquet.views.Label thumbnailLabel = new org.lgna.croquet.views.Label(
-			new edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ), 0.5f )
+class ReturnToSceneTypeButton extends Button {
+	private static Icon BACK_ICON = IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
+	private final Label thumbnailLabel = new Label(
+			new AlphaIcon( SceneIconFactory.getInstance().getIcon( Theme.DEFAULT_SMALL_ICON_SIZE ), 0.5f )
 			);
-	private final org.lgna.croquet.views.Label typeIconLabel = new org.lgna.croquet.views.Label();
+	private final Label typeIconLabel = new Label();
 
-	public ReturnToSceneTypeButton( org.lgna.croquet.Operation operation ) {
+	public ReturnToSceneTypeButton( Operation operation ) {
 		super( operation );
-		javax.swing.JButton jButton = this.getAwtComponent();
-		jButton.setLayout( new javax.swing.BoxLayout( jButton, javax.swing.BoxLayout.LINE_AXIS ) );
-		this.internalAddComponent( new org.lgna.croquet.views.Label( BACK_ICON ) );
+		JButton jButton = this.getAwtComponent();
+		jButton.setLayout( new BoxLayout( jButton, BoxLayout.LINE_AXIS ) );
+		this.internalAddComponent( new Label( BACK_ICON ) );
 		String backToText = ResourceBundleUtilities.getStringForKey( "backTo", getClass());
 		this.internalAddComponent( new Label( backToText ) );
-		this.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.internalAddComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 		this.internalAddComponent( this.thumbnailLabel );
 		this.internalAddComponent( this.typeIconLabel );
 	}
 
 	@Override
-	protected void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
+	protected void handleHierarchyChanged( HierarchyEvent e ) {
 		super.handleHierarchyChanged( e );
-		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();
+		SceneIconFactory.getInstance().markAllIconsDirty();
 
 		//todo:
-		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
-		this.typeIconLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( sceneType ) );
+		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+		this.typeIconLabel.setIcon( TypeIcon.getInstance( sceneType ) );
 		this.revalidateAndRepaint();
 	}
 }
@@ -126,27 +156,27 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.views.Button {
 /**
  * @author Dennis Cosgrove
  */
-public class NonSceneTypeView extends org.lgna.croquet.views.CornerSpringPanel {
+public class NonSceneTypeView extends CornerSpringPanel {
 	private final ReturnToSceneTypeButton returnToSceneTypeButton;
 
-	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
+	public NonSceneTypeView( NonSceneTypeComposite composite ) {
 		super( composite );
 		this.setNorthWestComponent( new SelectedTypeView() );
-		this.setNorthEastComponent( org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().createButton() );
+		this.setNorthEastComponent( RunComposite.getInstance().getLaunchOperation().createButton() );
 
-		org.lgna.croquet.Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
+		Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
 		returnToSceneTypeOperation.initializeIfNecessary();
 		returnToSceneTypeOperation.setName( "" );
 		this.returnToSceneTypeButton = new ReturnToSceneTypeButton( returnToSceneTypeOperation );
-		this.setSouthWestComponent( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? returnToSceneTypeButton : null );
+		this.setSouthWestComponent( IsEmphasizingClassesState.getInstance().getValue() ? returnToSceneTypeButton : null );
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		return new DefaultJPanel() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( 320, 240 );
+			public Dimension getPreferredSize() {
+				return new Dimension( 320, 240 );
 			}
 		};
 	}

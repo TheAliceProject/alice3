@@ -43,13 +43,15 @@
 
 package edu.cmu.cs.dennisc.tree;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Node<T> {
 	public T getValue();
 
-	public java.util.List<? extends Node<T>> getChildren();
+	public List<? extends Node<T>> getChildren();
 
 	public boolean contains( T value );
 

@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,8 +62,8 @@ public class UserVideosDirectoryState extends DirectoryState {
 
 	private UserVideosDirectoryState() {
 		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe" ),
+				Application.DOCUMENT_UI_GROUP,
+				UUID.fromString( "ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe" ),
 				DEFAULT_VALUE );
 	}
 

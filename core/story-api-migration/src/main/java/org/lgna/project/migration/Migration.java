@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import org.lgna.project.Version;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Migration {
-	public boolean isApplicable( org.lgna.project.Version version );
+	public boolean isApplicable( Version version );
 
-	public org.lgna.project.Version getResultVersion();
+	public Version getResultVersion();
 }

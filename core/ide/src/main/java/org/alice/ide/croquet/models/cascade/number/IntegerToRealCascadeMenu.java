@@ -42,10 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.InstanceCreation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IntegerToRealCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.InstanceCreation> {
+public class IntegerToRealCascadeMenu extends ExpressionCascadeMenu<InstanceCreation> {
 	private static class SingletonHolder {
 		private static IntegerToRealCascadeMenu instance = new IntegerToRealCascadeMenu();
 	}
@@ -55,11 +63,11 @@ public class IntegerToRealCascadeMenu extends org.alice.ide.croquet.models.casca
 	}
 
 	private IntegerToRealCascadeMenu() {
-		super( java.util.UUID.fromString( "8c6de0dc-a320-4345-8755-729ea4ab440c" ) );
+		super( UUID.fromString( "8c6de0dc-a320-4345-8755-729ea4ab440c" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.InstanceCreation> context ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceCreation> context ) {
 		blankChildren.add( DoubleInstanceCreationFillIn.getInstance() );
 	}
 }

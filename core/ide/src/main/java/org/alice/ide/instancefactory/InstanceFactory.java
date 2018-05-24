@@ -43,21 +43,26 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface InstanceFactory {
 	public boolean isValid();
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType();
+	public AbstractType<?, ?, ?> getValueType();
 
-	public org.lgna.project.ast.Expression createTransientExpression();
+	public Expression createTransientExpression();
 
-	public org.lgna.project.ast.Expression createExpression();
+	public Expression createExpression();
 
 	public String getRepr();
 
-	public org.lgna.croquet.icon.IconFactory getIconFactory();
+	public IconFactory getIconFactory();
 
-	public edu.cmu.cs.dennisc.property.InstanceProperty<?>[] getMutablePropertiesOfInterest();
+	public InstanceProperty<?>[] getMutablePropertiesOfInterest();
 }

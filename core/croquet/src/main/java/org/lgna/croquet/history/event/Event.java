@@ -43,10 +43,12 @@
 
 package org.lgna.croquet.history.event;
 
+import org.lgna.croquet.history.TransactionNode;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Event<N extends org.lgna.croquet.history.TransactionNode<?>> {
+public abstract class Event<N extends TransactionNode<?>> {
 	private final N node;
 
 	public Event( N node ) {

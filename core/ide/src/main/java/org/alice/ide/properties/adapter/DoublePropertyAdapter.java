@@ -43,6 +43,7 @@
 package org.alice.ide.properties.adapter;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.story.implementation.Property;
 
 /**
  * @author dculyba
@@ -51,7 +52,7 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 public class DoublePropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Double, O>
 {
 
-	public DoublePropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<Double> property, StandardExpressionState expressionState )
+	public DoublePropertyAdapter( String repr, O instance, Property<Double> property, StandardExpressionState expressionState )
 	{
 		super( repr, instance, property, expressionState );
 	}

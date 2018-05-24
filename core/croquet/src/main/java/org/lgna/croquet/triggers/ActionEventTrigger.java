@@ -43,28 +43,34 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ActionEventTrigger extends EventObjectTrigger<java.awt.event.ActionEvent> {
-	public static ActionEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ActionEvent actionEvent ) {
+public class ActionEventTrigger extends EventObjectTrigger<ActionEvent> {
+	public static ActionEventTrigger createUserInstance( ViewController<?, ?> viewController, ActionEvent actionEvent ) {
 		return new ActionEventTrigger( viewController, actionEvent );
 	}
 
-	public static ActionEventTrigger createUserInstance( java.awt.event.ActionEvent actionEvent ) {
+	public static ActionEventTrigger createUserInstance( ActionEvent actionEvent ) {
 		return createUserInstance( null, actionEvent );
 	}
 
-	private ActionEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.ActionEvent actionEvent ) {
+	private ActionEventTrigger( ViewController<?, ?> viewController, ActionEvent actionEvent ) {
 		super( viewController, actionEvent );
 	}
 
-	public ActionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ActionEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	protected java.awt.Point getPoint() {
+	protected Point getPoint() {
 		return null;
 	}
 }

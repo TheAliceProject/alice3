@@ -43,6 +43,8 @@
 
 package org.alice.media.audio;
 
+import org.lgna.common.resources.AudioResource;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
@@ -57,7 +59,7 @@ import javax.sound.sampled.AudioSystem;
 public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 {
 	private AudioInputStream audioStream;
-	private org.lgna.common.resources.AudioResource audioResource;
+	private AudioResource audioResource;
 	private double startTime;
 	private double volume;
 	private double entryPoint;
@@ -67,7 +69,7 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 	private long bytesRead = 0;
 	private boolean initialized = false;
 
-	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint, double endPoint, double volume )
+	public ScheduledAudioStream( AudioResource audioResource, double startTime, double entryPoint, double endPoint, double volume )
 	{
 		this.startTime = startTime;
 		this.volume = volume;
@@ -76,7 +78,7 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 		this.setAudioResource( audioResource );
 	}
 
-	public void setAudioResource( org.lgna.common.resources.AudioResource resource )
+	public void setAudioResource( AudioResource resource )
 	{
 		this.audioResource = resource;
 	}
@@ -103,22 +105,22 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 		}
 	}
 
-	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint, double endPoint )
+	public ScheduledAudioStream( AudioResource audioResource, double startTime, double entryPoint, double endPoint )
 	{
 		this( audioResource, startTime, entryPoint, endPoint, 1 );
 	}
 
-	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime, double entryPoint )
+	public ScheduledAudioStream( AudioResource audioResource, double startTime, double entryPoint )
 	{
 		this( audioResource, startTime, entryPoint, -1, 1 );
 	}
 
-	public ScheduledAudioStream( org.lgna.common.resources.AudioResource audioResource, double startTime )
+	public ScheduledAudioStream( AudioResource audioResource, double startTime )
 	{
 		this( audioResource, startTime, 0 );
 	}
 
-	public org.lgna.common.resources.AudioResource getAudioResource()
+	public AudioResource getAudioResource()
 	{
 		return this.audioResource;
 	}

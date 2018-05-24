@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.story.resources.sims2.Hair;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum HairCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.Hair> {
+public enum HairCodec implements ItemCodec<Hair> {
 	SINGLETON;
 	@Override
-	public Class<org.lgna.story.resources.sims2.Hair> getValueClass() {
-		return org.lgna.story.resources.sims2.Hair.class;
+	public Class<Hair> getValueClass() {
+		return Hair.class;
 	}
 
 	@Override
-	public org.lgna.story.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Hair decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.Hair value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Hair value ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.Hair value ) {
+	public void appendRepresentation( StringBuilder sb, Hair value ) {
 		sb.append( value );
 	}
 }

@@ -43,22 +43,30 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
+import edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera;
+
+import java.awt.Rectangle;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera> {
-	private static final edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
+public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<FrustumPerspectiveCamera> {
+	private static final ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
+	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
 		throw new RuntimeException( "TODO" );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
-		edu.cmu.cs.dennisc.math.ClippedZPlane actualPicturePlane = getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
+	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
+		ClippedZPlane actualPicturePlane = getActualPicturePlane( new ClippedZPlane(), actualViewport );
 		double left = actualPicturePlane.getXMinimum();
 		double right = actualPicturePlane.getXMaximum();
 		double bottom = actualPicturePlane.getYMinimum();
@@ -76,18 +84,18 @@ public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<ed
 	}
 
 	@Override
-	protected java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv ) {
+	protected Rectangle performLetterboxing( Rectangle rv ) {
 		//todo: handle NaN
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
-		rv.set( owner.picturePlane.getValue(), edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( actualViewport ) );
+	public ClippedZPlane getActualPicturePlane( ClippedZPlane rv, Rectangle actualViewport ) {
+		rv.set( owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI( actualViewport ) );
 		return rv;
 	}
 
 	@Override
-	protected void setupProjection( Context context, java.awt.Rectangle actualViewport, float near, float far ) {
+	protected void setupProjection( Context context, Rectangle actualViewport, float near, float far ) {
 		synchronized( s_actualPicturePlaneBufferForReuse ) {
 			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
 			context.gl.glFrustum( s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far );
@@ -95,7 +103,7 @@ public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<ed
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.picturePlane ) {
 			//pass
 		} else {

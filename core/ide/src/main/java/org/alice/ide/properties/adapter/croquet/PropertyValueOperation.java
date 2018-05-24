@@ -44,19 +44,25 @@
 package org.alice.ide.properties.adapter.croquet;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
 
-public abstract class PropertyValueOperation<P> extends org.lgna.croquet.ActionOperation {
+import java.util.UUID;
+
+public abstract class PropertyValueOperation<P> extends ActionOperation {
 	private final AbstractPropertyAdapter<P, ?> propertyAdapter;
 	private final P nextValue;
 
-	public PropertyValueOperation( java.util.UUID migrationId, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
+	public PropertyValueOperation( UUID migrationId, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
+		super( Application.PROJECT_GROUP, migrationId );
 		this.propertyAdapter = propertyAdapter;
 		this.nextValue = nextValue;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit<P>( step, this.propertyAdapter, this.nextValue ) );
+	protected void perform( CompletionStep<?> step ) {
+		step.commitAndInvokeDo( new PropertyValueEdit<P>( step, this.propertyAdapter, this.nextValue ) );
 	}
 }

@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import org.lgna.croquet.views.DragComponent;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JDropProxy extends JProxy {
 	public static interface Hider {
-		public void setDragSource( org.lgna.croquet.views.DragComponent<?> dragSource );
+		public void setDragSource( DragComponent<?> dragSource );
 	}
 
-	public JDropProxy( org.lgna.croquet.views.DragComponent<?> dragComponent ) {
+	public JDropProxy( DragComponent<?> dragComponent ) {
 		super( dragComponent );
 	}
 
@@ -60,9 +65,9 @@ public class JDropProxy extends JProxy {
 	}
 
 	@Override
-	protected void paintProxy( java.awt.Graphics2D g2 ) {
+	protected void paintProxy( Graphics2D g2 ) {
 		this.getSubject().getAwtComponent().print( g2 );
-		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
+		g2.setColor( new Color( 0, 0, 0, 127 ) );
 		//		java.awt.geom.AffineTransform m = g2.getTransform();
 		//		try {
 		//			int height = this.getHeight();

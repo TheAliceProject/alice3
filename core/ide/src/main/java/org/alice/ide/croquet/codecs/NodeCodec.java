@@ -42,13 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ProjectStack;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.project.ProgramTypeUtilities;
+import org.lgna.project.Project;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.NodeUtilities;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.croquet.ItemCodec<T> {
-	private static java.util.Map<Class<?>, NodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class NodeCodec<T extends Node> implements ItemCodec<T> {
+	private static Map<Class<?>, NodeCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T extends org.lgna.project.ast.Node> NodeCodec<T> getInstance( Class<T> cls ) {
+	public static synchronized <T extends Node> NodeCodec<T> getInstance( Class<T> cls ) {
 		NodeCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
@@ -58,13 +72,13 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		return (NodeCodec<T>)rv;
 	}
 
-	private static java.util.Map<java.util.UUID, org.lgna.project.ast.Node> mapIdToNode = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
+	private static Map<UUID, Node> mapIdToNode = Maps.newWeakHashMap();
 
-	public static void addNodeToGlobalMap( org.lgna.project.ast.Node node ) {
+	public static void addNodeToGlobalMap( Node node ) {
 		mapIdToNode.put( node.getId(), node );
 	}
 
-	public static void removeNodeFromGlobalMap( org.lgna.project.ast.Node node ) {
+	public static void removeNodeFromGlobalMap( Node node ) {
 		mapIdToNode.remove( node.getId() );
 	}
 
@@ -80,15 +94,15 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 	}
 
 	@Override
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
-			java.util.UUID id = binaryDecoder.decodeId();
+			UUID id = binaryDecoder.decodeId();
 			if( mapIdToNode.containsKey( id ) ) {
 				return (T)mapIdToNode.get( id );
 			} else {
-				org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-				return org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+				Project project = ProjectStack.peekProject();
+				return ProgramTypeUtilities.lookupNode( project, id );
 			}
 		} else {
 			return null;
@@ -96,7 +110,7 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
@@ -106,6 +120,6 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 
 	@Override
 	public void appendRepresentation( StringBuilder sb, T value ) {
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, value, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( sb, value, Application.getLocale() );
 	}
 }

@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import java.awt.Component;
+import java.awt.GridLayout;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class JGridPane extends JPane {
-	protected JGridPane( boolean isRowMajor, int hgap, int vgap, java.awt.Component[][] componentArrays ) {
+	protected JGridPane( boolean isRowMajor, int hgap, int vgap, Component[][] componentArrays ) {
 		int rows;
 		int cols;
 		if( isRowMajor ) {
@@ -64,10 +67,10 @@ public abstract class JGridPane extends JPane {
 				rows = 0;
 			}
 		}
-		setLayout( new java.awt.GridLayout( rows, cols, hgap, vgap ) );
+		setLayout( new GridLayout( rows, cols, hgap, vgap ) );
 		if( isRowMajor ) {
-			for( java.awt.Component[] componentArray : componentArrays ) {
-				for( java.awt.Component component : componentArray ) {
+			for( Component[] componentArray : componentArrays ) {
+				for( Component component : componentArray ) {
 					this.add( component );
 				}
 			}

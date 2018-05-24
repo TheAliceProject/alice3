@@ -43,19 +43,26 @@
 
 package org.alice.ide.ast.resource;
 
+import org.lgna.common.Resource;
+import org.lgna.croquet.ImportValueCreator;
+import org.lgna.croquet.importer.Importer;
+import org.lgna.project.ast.ResourceExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceImportValueCreator<R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.ResourceExpression, R> {
+public abstract class ResourceImportValueCreator<R extends Resource> extends ImportValueCreator<ResourceExpression, R> {
 	private final Class<R> resourceCls;
 
-	public ResourceImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer, Class<R> resourceCls ) {
+	public ResourceImportValueCreator( UUID migrationId, Importer<R> importer, Class<R> resourceCls ) {
 		super( migrationId, importer );
 		this.resourceCls = resourceCls;
 	}
 
 	@Override
-	protected org.lgna.project.ast.ResourceExpression createValueFromImportedValue( R importedValue ) {
-		return new org.lgna.project.ast.ResourceExpression( this.resourceCls, importedValue );
+	protected ResourceExpression createValueFromImportedValue( R importedValue ) {
+		return new ResourceExpression( this.resourceCls, importedValue );
 	}
 }

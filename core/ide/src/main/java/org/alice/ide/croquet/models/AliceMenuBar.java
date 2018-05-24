@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models;
 
+import org.alice.ide.ProjectDocumentFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AliceMenuBar extends MenuBarComposite {
-	public AliceMenuBar( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+	public AliceMenuBar( ProjectDocumentFrame projectDocumentFrame ) {
 		super( projectDocumentFrame );
 	}
 }

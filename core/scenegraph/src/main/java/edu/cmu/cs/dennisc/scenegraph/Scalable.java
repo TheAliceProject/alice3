@@ -42,27 +42,31 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.property.Dimension3Property;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Scalable extends Composite {
-	public final edu.cmu.cs.dennisc.math.property.Dimension3Property scale = new edu.cmu.cs.dennisc.math.property.Dimension3Property( this, new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 ) ) {
+	public final Dimension3Property scale = new Dimension3Property( this, new Dimension3( 1, 1, 1 ) ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.math.Dimension3 value ) {
+		public void setValue( Dimension3 value ) {
 			super.setValue( value );
 			Scalable.this.fireAbsoluteTransformationChange();
 		}
 	};
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
 		super.getAbsoluteTransformation( rv );
-		edu.cmu.cs.dennisc.math.Dimension3 scale = this.scale.getValue();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 s = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		Dimension3 scale = this.scale.getValue();
+		AffineMatrix4x4 s = AffineMatrix4x4.createIdentity();
 		s.orientation.right.x = scale.x;
 		s.orientation.up.y = scale.y;
 		s.orientation.backward.z = scale.z;
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4.setReturnValueToMultiplication( rv, rv, s );
+		AffineMatrix4x4.setReturnValueToMultiplication( rv, rv, s );
 		return rv;
 	}
 }

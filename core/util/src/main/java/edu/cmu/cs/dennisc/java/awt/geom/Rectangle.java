@@ -42,14 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Rectangle extends Shape {
-	private java.awt.geom.Rectangle2D m_rect;
+	private Rectangle2D m_rect;
 
 	public Rectangle( double xHalfLength, double yHalfLength ) {
-		m_rect = new java.awt.geom.Rectangle2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
+		m_rect = new Rectangle2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
 	}
 
 	@Override

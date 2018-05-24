@@ -42,39 +42,56 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.icons.CheckIcon;
+import org.alice.ide.icons.CheckIconFactory;
+import org.alice.stageide.type.croquet.TypeNode;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconSize;
+import org.lgna.project.ast.UserField;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.UserField> {
-	private static final java.awt.Dimension ICON_SIZE = org.lgna.croquet.icon.IconSize.EXTRA_SMALL.getSize();
-	private static final javax.swing.Icon EMPTY_ICON = org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final javax.swing.Icon UNSELECTED_CHECK_ICON = org.alice.ide.icons.CheckIconFactory.getInstance().getIcon( ICON_SIZE );
-	private static final javax.swing.Icon SELECTED_CHECK_ICON = new org.alice.ide.icons.CheckIcon( ICON_SIZE ) {
+public class FieldCellRenderer extends ListCellRenderer<UserField> {
+	private static final Dimension ICON_SIZE = IconSize.EXTRA_SMALL.getSize();
+	private static final Icon EMPTY_ICON = EmptyIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static final Icon UNSELECTED_CHECK_ICON = CheckIconFactory.getInstance().getIcon( ICON_SIZE );
+	private static final Icon SELECTED_CHECK_ICON = new CheckIcon( ICON_SIZE ) {
 		@Override
-		protected java.awt.Paint getInnerPaint( java.awt.Component c ) {
-			return java.awt.Color.WHITE;
+		protected Paint getInnerPaint( Component c ) {
+			return Color.WHITE;
 		}
 
 		@Override
-		protected java.awt.Paint getOuterPaint( java.awt.Component c ) {
-			return java.awt.Color.BLACK;
+		protected Paint getOuterPaint( Component c ) {
+			return Color.BLACK;
 		}
 	};
 
-	private final org.lgna.croquet.SingleSelectTreeState<org.alice.stageide.type.croquet.TypeNode> typeState;
+	private final SingleSelectTreeState<TypeNode> typeState;
 
-	public FieldCellRenderer( org.lgna.croquet.SingleSelectTreeState<org.alice.stageide.type.croquet.TypeNode> typeState ) {
+	public FieldCellRenderer( SingleSelectTreeState<TypeNode> typeState ) {
 		this.typeState = typeState;
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, UserField value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {
 			rv.setText( value.getName() );
 		}
-		javax.swing.Icon icon = EMPTY_ICON;
+		Icon icon = EMPTY_ICON;
 		if( value != null ) {
-			org.alice.stageide.type.croquet.TypeNode typeNode = this.typeState.getValue();
+			TypeNode typeNode = this.typeState.getValue();
 			if( typeNode != null ) {
 				if( typeNode.getType().isAssignableFrom( value.getValueType() ) ) {
 					icon = isSelected ? SELECTED_CHECK_ICON : UNSELECTED_CHECK_ICON;

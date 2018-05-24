@@ -46,7 +46,15 @@ package org.lgna.story.resourceutilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
 
 public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	private static final double DEFAULT_SEARCH_FACTOR = .25;
@@ -73,12 +81,12 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	}
 
 	private final double searchFactor;
-	private final edu.cmu.cs.dennisc.render.OffscreenRenderTarget testImageOffscreenRenderTarget;
+	private final OffscreenRenderTarget testImageOffscreenRenderTarget;
 
 	private AdaptiveRecenteringThumbnailMaker( int width, int height ) {
 		super( width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
 		this.searchFactor = DEFAULT_SEARCH_FACTOR;
-		this.testImageOffscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null, new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() );
+		this.testImageOffscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null, new RenderCapabilities.Builder().build() );
 		setUpCamera( this.testImageOffscreenRenderTarget );
 	}
 
@@ -92,7 +100,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		this.testImageOffscreenRenderTarget.forgetAllCachedItems();
 	}
 
-	private Point3 getRecenterPositionBasedOnImage( java.awt.image.BufferedImage testImage, Point3 currentPosition, AxisAlignedBox bbox ) {
+	private Point3 getRecenterPositionBasedOnImage( BufferedImage testImage, Point3 currentPosition, AxisAlignedBox bbox ) {
 		int topBorder = getTopBorder( testImage );
 		int bottomBorder = getBottomBorder( testImage );
 		int rightBorder = getRightBorder( testImage );
@@ -113,15 +121,15 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	}
 
 	@Override
-	protected AffineMatrix4x4 getThumbnailTransform( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) {
+	protected AffineMatrix4x4 getThumbnailTransform( Visual v, AxisAlignedBox bbox ) {
 		v.setParent( this.getModelTransformable() );
 		getSGCameraVehicle().setLocalTransformation( getThumbnailCameraOrientation( bbox ) );
 
 		AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
 
-		edu.cmu.cs.dennisc.render.OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
-		java.awt.image.BufferedImage testImage = testImageRT.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-		java.nio.FloatBuffer depthBuffer = testImageRT.getSynchronousImageCapturer().createFloatBufferForUseAsDepthBuffer();
+		OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
+		BufferedImage testImage = testImageRT.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		FloatBuffer depthBuffer = testImageRT.getSynchronousImageCapturer().createFloatBufferForUseAsDepthBuffer();
 
 		testImageRT.clearAndRenderOffscreen();
 		testImage = testImageRT.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
@@ -132,7 +140,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 		Point3 lastGoodPosition = new Point3( testPosition );
 
-		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray( testPosition, Vector3.createMultiplication( cameraTransform.orientation.backward, -1 ) );
+		Ray cameraRay = new Ray( testPosition, Vector3.createMultiplication( cameraTransform.orientation.backward, -1 ) );
 		double distanceToCenter = Point3.calculateDistanceBetween( cameraRay.accessOrigin(), bbox.getCenter() );
 		double bboxDiagonal = Point3.calculateDistanceBetween( bbox.getMinimum(), bbox.getMaximum() );
 		double distanceToEdge = distanceToCenter - bboxDiagonal;

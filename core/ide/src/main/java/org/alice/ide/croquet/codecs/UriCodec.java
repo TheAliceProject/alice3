@@ -43,29 +43,35 @@
 
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
+public enum UriCodec implements ItemCodec<URI> {
 	SINGLETON;
 	@Override
-	public Class<java.net.URI> getValueClass() {
-		return java.net.URI.class;
+	public Class<URI> getValueClass() {
+		return URI.class;
 	}
 
 	@Override
-	public java.net.URI decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public URI decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String path = binaryDecoder.decodeString();
-			return java.net.URI.create( path );
+			return URI.create( path );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, URI value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.toString() );
@@ -75,7 +81,7 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, java.net.URI value ) {
+	public void appendRepresentation( StringBuilder sb, URI value ) {
 		sb.append( value );
 	}
 }

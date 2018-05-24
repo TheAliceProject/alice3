@@ -42,12 +42,36 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.declaration.AddManagedFieldComposite;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.cascade.ExpressionCascadeContext;
+import org.alice.ide.typemanager.TypeManager;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.ValueCreator;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.NamedUserType;
+
+import java.awt.Dimension;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.declaration.AddManagedFieldComposite {
+public class AddPersonResourceManagedFieldComposite extends AddManagedFieldComposite {
 	private static class SingletonHolder {
 		private static AddPersonResourceManagedFieldComposite instance = new AddPersonResourceManagedFieldComposite();
 	}
@@ -56,30 +80,30 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 		return SingletonHolder.instance;
 	}
 
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {
-		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+	private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( Expression expression ) {
+		if( expression instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)expression;
 			return instanceCreation.constructor.getValue().getDeclaringType();
 		} else {
 			return null;
 		}
 	}
 
-	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
+	private InstanceCreation initialInstanceCreation;
 
 	private AddPersonResourceManagedFieldComposite() {
-		super( java.util.UUID.fromString( "a3484b6d-bee1-40b6-9162-a8066bd9b015" ), new FieldDetailsBuilder()
+		super( UUID.fromString( "a3484b6d-bee1-40b6-9162-a8066bd9b015" ), new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.EDITABLE, null )
 				.build() );
 	}
 
-	private static org.lgna.project.ast.InstanceCreation createPersonInstanceCreationFromPersonResourceInstanceCreation( org.lgna.project.ast.InstanceCreation personResourceInstanceCreation ) {
+	private static InstanceCreation createPersonInstanceCreationFromPersonResourceInstanceCreation( InstanceCreation personResourceInstanceCreation ) {
 		if( personResourceInstanceCreation != null ) {
-			org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation( personResourceInstanceCreation );
+			NamedUserType type = TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation( personResourceInstanceCreation );
 
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+			return AstUtilities.createInstanceCreation(
 					type.getDeclaredConstructors().get( 0 ),
 					personResourceInstanceCreation
 					);
@@ -88,40 +112,40 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 		}
 	}
 
-	public void setInitialPersonResourceInstanceCreation( org.lgna.project.ast.InstanceCreation argumentExpression ) {
+	public void setInitialPersonResourceInstanceCreation( InstanceCreation argumentExpression ) {
 		this.initialInstanceCreation = createPersonInstanceCreationFromPersonResourceInstanceCreation( argumentExpression );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+	protected Expression getInitializerInitialValue() {
 		return this.initialInstanceCreation;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
 		return getDeclaringTypeFromInitializer( this.getInitializer() );
 	}
 
-	private static final class PersonResourceToPersonConverter extends org.lgna.croquet.ValueConverter<org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.InstanceCreation> {
-		public PersonResourceToPersonConverter( ValueCreator<org.lgna.project.ast.InstanceCreation> valueCreator ) {
-			super( java.util.UUID.fromString( "f04fd1b1-24a6-444d-af92-b885e18a3887" ), valueCreator );
+	private static final class PersonResourceToPersonConverter extends ValueConverter<InstanceCreation, InstanceCreation> {
+		public PersonResourceToPersonConverter( ValueCreator<InstanceCreation> valueCreator ) {
+			super( UUID.fromString( "f04fd1b1-24a6-444d-af92-b885e18a3887" ), valueCreator );
 		}
 
 		@Override
-		protected org.lgna.project.ast.InstanceCreation convert( org.lgna.project.ast.InstanceCreation value ) {
+		protected InstanceCreation convert( InstanceCreation value ) {
 			return createPersonInstanceCreationFromPersonResourceInstanceCreation( value );
 		}
 	}
 
-	private final org.lgna.croquet.ValueConverter<org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToPersonConverter( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter() );
+	private final ValueConverter<InstanceCreation, InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToPersonConverter( PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter() );
 
-	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
+	private class InitializerContext implements ExpressionCascadeContext {
 		@Override
-		public org.lgna.project.ast.Expression getPreviousExpression() {
+		public Expression getPreviousExpression() {
 			//todo: investigate
-			org.lgna.project.ast.Expression initializer = getInitializer();
-			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+			Expression initializer = getInitializer();
+			if( initializer instanceof InstanceCreation ) {
+				InstanceCreation instanceCreation = (InstanceCreation)initializer;
 				if( instanceCreation.requiredArguments.size() == 1 ) {
 					return instanceCreation.requiredArguments.get( 0 ).expression.getValue();
 				}
@@ -130,49 +154,49 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 		}
 
 		@Override
-		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		public BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
 	}
 
-	private class PersonResourceInitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
-		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
+	private class PersonResourceInitializerCustomizer implements ItemStateCustomizer<Expression> {
+		private ExpressionCascadeContext pushedContext;
 
 		@Override
-		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
+		public CascadeFillIn getFillInFor( Expression value ) {
 			return null;
 		}
 
 		@Override
-		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		public void prologue( Trigger trigger ) {
 			this.pushedContext = new InitializerContext();
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		}
 
 		@Override
 		public void epilogue() {
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 			this.pushedContext = null;
 		}
 
 		@Override
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
 			blankChildren.add( previousResourceExpressionValueConverter.getFillIn() );
 		}
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumHeight( super.calculateWindowSize( window ), 400 );
+	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
+		return DimensionUtilities.constrainToMaximumHeight( super.calculateWindowSize( window ), 400 );
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractComposite.ItemStateCustomizer<org.lgna.project.ast.Expression> createInitializerCustomizer() {
+	protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
 		return new PersonResourceInitializerCustomizer();
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		this.initialInstanceCreation = null;
 	}

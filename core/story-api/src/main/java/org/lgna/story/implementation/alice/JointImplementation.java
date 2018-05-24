@@ -43,14 +43,22 @@
 
 package org.lgna.story.implementation.alice;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementation extends org.lgna.story.implementation.JointImp {
-	private edu.cmu.cs.dennisc.scenegraph.Joint sgJoint;
-	private final org.lgna.story.resources.JointId jointId;
+public class JointImplementation extends JointImp {
+	private Joint sgJoint;
+	private final JointId jointId;
 
-	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId, edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
+	public JointImplementation( JointedModelImp<?, ?> jointedModelImplementation, JointId jointId, Joint sgJoint ) {
 		super( jointedModelImplementation );
 		assert sgJoint != null;
 		this.jointId = jointId;
@@ -59,12 +67,12 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId getJointId() {
+	public JointId getJointId() {
 		return this.jointId;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Joint getSgComposite() {
+	public Joint getSgComposite() {
 		return this.sgJoint;
 	}
 
@@ -84,8 +92,8 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox( null, false );
+	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
+		AxisAlignedBox jointBBox = this.sgJoint.getBoundingBox( null, false );
 		rv.addBoundingBox( jointBBox, trans );
 		return rv;
 	}

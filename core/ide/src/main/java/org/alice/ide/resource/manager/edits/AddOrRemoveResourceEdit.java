@@ -43,25 +43,31 @@
 
 package org.alice.ide.resource.manager.edits;
 
+import org.alice.ide.IDE;
+import org.lgna.common.Resource;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.Project;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddOrRemoveResourceEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.common.Resource resource;
+public abstract class AddOrRemoveResourceEdit extends AbstractEdit {
+	private final Resource resource;
 
-	public AddOrRemoveResourceEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.common.Resource resource ) {
+	public AddOrRemoveResourceEdit( CompletionStep<?> completionStep, Resource resource ) {
 		super( completionStep );
 		this.resource = resource;
 	}
 
-	public org.lgna.common.Resource getResource() {
+	public Resource getResource() {
 		return this.resource;
 	}
 
 	protected void addResource() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
-			org.lgna.project.Project project = ide.getProject();
+			Project project = ide.getProject();
 			if( project != null ) {
 				project.addResource( this.resource );
 				//ResourceManagerPane.this.resetModel();
@@ -70,9 +76,9 @@ public abstract class AddOrRemoveResourceEdit extends org.lgna.croquet.edits.Abs
 	}
 
 	protected void removeResource() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
-			org.lgna.project.Project project = ide.getProject();
+			Project project = ide.getProject();
 			if( project != null ) {
 				project.removeResource( this.resource );
 				//ResourceManagerPane.this.resetModel();

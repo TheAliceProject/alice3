@@ -41,21 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Install4JUtils {
-	private static void checkFile( Config config, java.io.File directory, String prefix, String postfix ) {
-		java.io.File file = new java.io.File( directory, prefix + config.getInstallerIncludedJvmVersion() + postfix );
+	private static void checkFile( Config config, File directory, String prefix, String postfix ) {
+		File file = new File( directory, prefix + config.getInstallerIncludedJvmVersion() + postfix );
 		assert file.exists() : file;
 	}
 
 	public static void initialize( Config config ) {
-		java.io.File install4jHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "INSTALL4J_HOME" );
-		install4JCommandFile = new java.io.File( install4jHomeDir, "bin/install4jc.exe" );
+		File install4jHomeDir = SystemUtilities.getEnvironmentVariableDirectory( "INSTALL4J_HOME" );
+		install4JCommandFile = new File( install4jHomeDir, "bin/install4jc.exe" );
 		assert install4JCommandFile.exists() : install4JCommandFile;
 
-		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".install4j5/jres" );
+		File directory = new File( FileUtilities.getUserDirectory(), ".install4j5/jres" );
 		assert directory.isDirectory() : directory;
 
 		checkFile( config, directory, "windows-amd64-", ".tar.gz" );
@@ -66,7 +71,7 @@ public class Install4JUtils {
 		checkFile( config, directory, "macosx-amd64-", "_unpacked.tar.gz" );
 	}
 
-	public static java.io.File getInstall4JCommandFile( Config config ) {
+	public static File getInstall4JCommandFile( Config config ) {
 		if( install4JCommandFile != null ) {
 			//pass
 		} else {
@@ -75,7 +80,7 @@ public class Install4JUtils {
 		return install4JCommandFile;
 	}
 
-	private static java.io.File install4JCommandFile;
+	private static File install4JCommandFile;
 
 	private Install4JUtils() {
 		throw new AssertionError();

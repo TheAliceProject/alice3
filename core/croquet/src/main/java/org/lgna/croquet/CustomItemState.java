@@ -43,26 +43,38 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.RtRoot;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemState<T> extends ItemState<T> {
-	public static class InternalRoot<T> extends org.lgna.croquet.CascadeRoot<T, CustomItemState<T>> {
+	public static class InternalRoot<T> extends CascadeRoot<T, CustomItemState<T>> {
 		private final CustomItemState<T> state;
 
 		private InternalRoot( CustomItemState<T> state ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
+			super( UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
 			this.state = state;
 		}
 
 		@Override
-		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
+		public List<? extends CascadeBlank<T>> getBlanks() {
 			return this.state.getBlanks();
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep<CustomItemState<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			return org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this.state, trigger, null );
+		public CompletionStep<CustomItemState<T>> createCompletionStep( Transaction transaction, Trigger trigger ) {
+			return CompletionStep.createAndAddToTransaction( transaction, this.state, trigger, null );
 		}
 
 		@Override
@@ -76,7 +88,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		protected void prologue( Trigger trigger ) {
 			super.prologue( trigger );
 			this.state.prologue( trigger );
 		}
@@ -88,12 +100,12 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.imp.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
+		public CompletionStep handleCompletion( TransactionHistory transactionHistory, Trigger trigger, RtRoot<T, CustomItemState<T>> rtRoot ) {
 			try {
 				//todo: investigate
-				org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
-				org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
+				Transaction transaction = transactionHistory.acquireActiveTransaction();
+				CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
+				TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
 				T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
 				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
 			} finally {
@@ -104,25 +116,25 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 	private final InternalRoot<T> root;
 
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public CustomItemState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue, itemCodec );
 		this.root = new InternalRoot<T>( this );
 	}
 
-	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
+	protected abstract List<? extends CascadeBlank<T>> getBlanks();
 
 	public InternalRoot<T> getCascadeRoot() {
 		return this.root;
 	}
 
-	protected void appendPrepModelsToCascadeRootPath( java.util.List<PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit edit ) {
+	protected void appendPrepModelsToCascadeRootPath( List<PrepModel> cascadeRootPath, Edit edit ) {
 	}
 
 	@Override
-	public final java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public final List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		PrepModel rootPrepModel = this.root.getPopupPrepModel();
-		java.util.ArrayList<PrepModel> cascadeRootPath = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( rootPrepModel );
-		java.util.List<java.util.List<PrepModel>> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+		ArrayList<PrepModel> cascadeRootPath = Lists.newArrayList( rootPrepModel );
+		List<List<PrepModel>> rv = Lists.newArrayList();
 		rv.add( cascadeRootPath );
 		this.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
 		return rv;
@@ -132,7 +144,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	protected void localize() {
 	}
 
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void prologue( Trigger trigger ) {
 	}
 
 	protected void epilogue() {

@@ -43,15 +43,25 @@
 
 package org.alice.ide.ast.code;
 
+import edu.cmu.cs.dennisc.map.MapToMapToMap;
+import org.alice.ide.ast.code.edits.MoveStatementEdit;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapSingle = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> mapMultiple = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+public final class MoveStatementOperation extends ActionOperation {
+	private static MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> mapSingle = MapToMapToMap.newInstance();
+	private static MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> mapMultiple = MapToMapToMap.newInstance();
 
-	public static synchronized MoveStatementOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
-		edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> map = isToTheEnd ? mapMultiple : mapSingle;
+	public static synchronized MoveStatementOperation getInstance( BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
+		MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> map = isToTheEnd ? mapMultiple : mapSingle;
 		MoveStatementOperation rv = map.get( fromLocation, statement, toLocation );
 		if( rv != null ) {
 			//pass
@@ -62,28 +72,28 @@ public final class MoveStatementOperation extends org.lgna.croquet.ActionOperati
 		return rv;
 	}
 
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
-	private final org.lgna.project.ast.Statement statement;
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+	private final BlockStatementIndexPair fromLocation;
+	private final Statement statement;
+	private final BlockStatementIndexPair toLocation;
 	private final boolean isMultiple;
 
-	private MoveStatementOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isMultiple ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
+	private MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;
 		this.isMultiple = isMultiple;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getFromLocation() {
+	public BlockStatementIndexPair getFromLocation() {
 		return this.fromLocation;
 	}
 
-	public org.lgna.project.ast.Statement getStatement() {
+	public Statement getStatement() {
 		return this.statement;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getToLocation() {
+	public BlockStatementIndexPair getToLocation() {
 		return this.toLocation;
 	}
 
@@ -92,7 +102,7 @@ public final class MoveStatementOperation extends org.lgna.croquet.ActionOperati
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
-		step.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( step, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
+	protected void perform( CompletionStep step ) {
+		step.commitAndInvokeDo( new MoveStatementEdit( step, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
 	}
 }

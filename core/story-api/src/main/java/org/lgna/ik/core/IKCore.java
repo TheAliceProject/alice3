@@ -42,19 +42,25 @@
  */
 package org.lgna.ik.core;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lgna.ik.core.enforcer.JointedModelIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer;
 import org.lgna.ik.core.enforcer.TightPositionalIkEnforcer.PositionConstraint;
+import org.lgna.ik.core.solver.Bone;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
+import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Point3;
+import org.lgna.story.resources.biped.OgreResource;
 
 /**
  * @author Matt May
@@ -68,7 +74,7 @@ public class IKCore {
 		LEFT_LEG
 	}
 
-	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
+	private static final SBiped ogre = new SBiped( OgreResource.GREEN );
 	private static final boolean USING_OLD = false;
 	private static List<JointId> defaultAnchors = Lists.newArrayList(
 			( (JointImp)EmployeesOnly.getImplementation( ogre.getRightShoulder() ) ).getJointId(),
@@ -95,8 +101,8 @@ public class IKCore {
 		//TODO do what's below to complete it
 		// set its chain
 		int level = 0;
-		org.lgna.story.resources.JointId endId = end.getJointId();
-		org.lgna.story.resources.JointId anchorId = anchor.getJointId();
+		JointId endId = end.getJointId();
+		JointId anchorId = anchor.getJointId();
 		PositionConstraint myPositionConstraint = tightIkEnforcer.createPositionConstraint( level, anchorId, endId );
 
 		//				System.out.println("will start");
@@ -172,11 +178,11 @@ public class IKCore {
 		JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer( jointedParent );
 		enforcer.addFullBodyDefaultPoseUsingCurrentPose();
 		enforcer.setDefaultJointWeight( 1 );
-		enforcer.setJointWeight( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1 );
+		enforcer.setJointWeight( BipedResource.RIGHT_ELBOW, 1 );
 		JointId anchorId = anchor.getJointId();
 		JointId eeId = end.getJointId();
 		enforcer.setChainBetween( anchorId, eeId );
-		Point3 currTransformation = end.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).translation;
+		Point3 currTransformation = end.getTransformation( AsSeenBy.SCENE ).translation;
 		Point3 prevTransformation = new Point3( Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE );
 		double delta = .001;//arbitrary
 		while( Point3.calculateDistanceBetween( currTransformation, prevTransformation ) > delta ) {
@@ -185,7 +191,7 @@ public class IKCore {
 			//I can tell solver, for this chain this is the linear target, etc. 
 			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
 
-			java.util.Map<org.lgna.ik.core.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.core.solver.Bone.Axis, Double>();
+			Map<Bone.Axis, Double> desiredSpeedForAxis = new HashMap<Bone.Axis, Double>();
 
 			//not bad concurrent programming practice
 			boolean isLinearEnabled = true; //todo: test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
@@ -229,7 +235,7 @@ public class IKCore {
 				//						});
 			}
 
-			currTransformation = end.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).translation;
+			currTransformation = end.getTransformation( AsSeenBy.SCENE ).translation;
 		}
 	}
 

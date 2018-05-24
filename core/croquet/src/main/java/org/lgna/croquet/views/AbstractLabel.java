@@ -42,10 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import javax.swing.Icon;
+import javax.swing.JLabel;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractLabel extends SwingComponentView<javax.swing.JLabel> {
+public abstract class AbstractLabel extends SwingComponentView<JLabel> {
 	public String getText() {
 		return this.getAwtComponent().getText();
 	}
@@ -55,11 +58,11 @@ public abstract class AbstractLabel extends SwingComponentView<javax.swing.JLabe
 		this.getAwtComponent().setText( text );
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.getAwtComponent().getIcon();
 	}
 
-	public void setIcon( javax.swing.Icon icon ) {
+	public void setIcon( Icon icon ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setIcon( icon );
 	}

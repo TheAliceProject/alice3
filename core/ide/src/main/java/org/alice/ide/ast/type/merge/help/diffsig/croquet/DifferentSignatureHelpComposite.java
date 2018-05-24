@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.help.diffsig.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.merge.croquet.DifferentSignature;
 import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite;
+import org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView, M, DifferentSignature<M>> {
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentSignatureChoice> choiceState = this.createImmutableListStateForEnum( "choiceState", DifferentSignatureChoice.class, null );
+public abstract class DifferentSignatureHelpComposite<M extends Member> extends PotentialNameChangerHelpComposite<DifferentSignatureHelpView, M, DifferentSignature<M>> {
+	private final ImmutableDataSingleSelectListState<DifferentSignatureChoice> choiceState = this.createImmutableListStateForEnum( "choiceState", DifferentSignatureChoice.class, null );
 
-	private final org.lgna.croquet.event.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentSignatureChoice>() {
+	private final ValueListener<DifferentSignatureChoice> topLevelListener = new ValueListener<DifferentSignatureChoice>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
+		public void valueChanged( ValueEvent<DifferentSignatureChoice> e ) {
 			handleChanged();
 		}
 	};
 
-	public DifferentSignatureHelpComposite( java.util.UUID migrationId, DifferentSignature<M> differentSignature, String signatureText ) {
+	public DifferentSignatureHelpComposite( UUID migrationId, DifferentSignature<M> differentSignature, String signatureText ) {
 		super( migrationId, differentSignature );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
@@ -74,20 +83,20 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 
 		String kindOfMemberText;
 		M member = differentSignature.getImportHub().getMember();
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)member;
+		if( member instanceof UserMethod ) {
+			UserMethod method = (UserMethod)member;
 			kindOfMemberText = method.isProcedure() ? "procedure" : "function";
 		} else {
 			kindOfMemberText = "property";
 		}
 		String text = sb.toString();
-		text = org.alice.ide.ast.type.merge.croquet.AddMembersPage.modifyFilenameLocalizedText( text, differentSignature.getUriForDescriptionPurposesOnly() );
+		text = AddMembersPage.modifyFilenameLocalizedText( text, differentSignature.getUriForDescriptionPurposesOnly() );
 		text = text.replaceAll( "</kindOfMember/>", kindOfMemberText );
 		text = text.replaceAll( "</memberName/>", member.getName() );
 		this.getHeader().setText( text );
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentSignatureChoice> getChoiceState() {
+	public ImmutableDataSingleSelectListState<DifferentSignatureChoice> getChoiceState() {
 		return this.choiceState;
 	}
 
@@ -97,8 +106,8 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView createView() {
-		return new org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView( this );
+	protected DifferentSignatureHelpView createView() {
+		return new DifferentSignatureHelpView( this );
 	}
 
 	@Override

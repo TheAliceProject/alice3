@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import org.lgna.project.ast.DoubleLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleModel extends NumberModel<org.lgna.project.ast.DoubleLiteral> {
+public class DoubleModel extends NumberModel<DoubleLiteral> {
 	private static class SingletonHolder {
 		private static DoubleModel instance = new DoubleModel();
 	}
@@ -55,7 +60,7 @@ public class DoubleModel extends NumberModel<org.lgna.project.ast.DoubleLiteral>
 	}
 
 	private DoubleModel() {
-		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
+		super( NUMBER_PAD_GROUP, UUID.fromString( "034bda41-f608-4c03-8090-f7c8b8e0bf1a" ) );
 	}
 
 	@Override
@@ -64,12 +69,12 @@ public class DoubleModel extends NumberModel<org.lgna.project.ast.DoubleLiteral>
 	}
 
 	@Override
-	protected org.lgna.project.ast.DoubleLiteral valueOf( String s ) {
-		double d = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
+	protected DoubleLiteral valueOf( String s ) {
+		double d = DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
 		if( Double.isNaN( d ) ) {
 			return null;
 		} else {
-			return new org.lgna.project.ast.DoubleLiteral( d );
+			return new DoubleLiteral( d );
 		}
 	}
 }

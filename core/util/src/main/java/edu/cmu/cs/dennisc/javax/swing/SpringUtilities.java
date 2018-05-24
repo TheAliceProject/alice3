@@ -42,6 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.Spring;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,9 +62,9 @@ public class SpringUtilities {
 	}
 
 	public enum Vertical {
-		NORTH( javax.swing.SpringLayout.NORTH ),
+		NORTH( SpringLayout.NORTH ),
 		CENTER( null ),
-		SOUTH( javax.swing.SpringLayout.SOUTH );
+		SOUTH( SpringLayout.SOUTH );
 		private String internal;
 
 		private Vertical( String internal ) {
@@ -66,9 +77,9 @@ public class SpringUtilities {
 	}
 
 	public enum Horizontal {
-		WEST( javax.swing.SpringLayout.WEST ),
+		WEST( SpringLayout.WEST ),
 		CENTER( null ),
-		EAST( javax.swing.SpringLayout.EAST );
+		EAST( SpringLayout.EAST );
 		private String internal;
 
 		private Horizontal( String internal ) {
@@ -80,12 +91,12 @@ public class SpringUtilities {
 		}
 	}
 
-	private static abstract class CenterSpring extends javax.swing.Spring {
-		private java.awt.Container container;
-		private java.awt.Component component;
+	private static abstract class CenterSpring extends Spring {
+		private Container container;
+		private Component component;
 		private int offset;
 
-		public CenterSpring( java.awt.Container container, java.awt.Component component, int offset ) {
+		public CenterSpring( Container container, Component component, int offset ) {
 			this.container = container;
 			this.component = component;
 			this.offset = offset;
@@ -100,12 +111,12 @@ public class SpringUtilities {
 		public void setValue( int value ) {
 		}
 
-		protected abstract int getValue( java.awt.Dimension dimension );
+		protected abstract int getValue( Dimension dimension );
 
 		@Override
 		public int getPreferredValue() {
 			int macro = getValue( this.container.getSize() );
-			java.awt.Dimension size;
+			Dimension size;
 			if( this.component.isValid() ) {
 				size = this.component.getSize();
 			} else {
@@ -127,81 +138,81 @@ public class SpringUtilities {
 	}
 
 	private static class HorizontalCenterSpring extends CenterSpring {
-		public HorizontalCenterSpring( java.awt.Container container, java.awt.Component component, int offset ) {
+		public HorizontalCenterSpring( Container container, Component component, int offset ) {
 			super( container, component, offset );
 		}
 
 		@Override
-		protected int getValue( java.awt.Dimension dimension ) {
+		protected int getValue( Dimension dimension ) {
 			return dimension.width;
 		}
 	}
 
 	private static class VerticalCenterSpring extends CenterSpring {
-		public VerticalCenterSpring( java.awt.Container container, java.awt.Component component, int offset ) {
+		public VerticalCenterSpring( Container container, Component component, int offset ) {
 			super( container, component, offset );
 		}
 
 		@Override
-		protected int getValue( java.awt.Dimension dimension ) {
+		protected int getValue( Dimension dimension ) {
 			return dimension.height;
 		}
 	}
 
-	protected static void putConstraint( java.awt.Container container, java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
-		javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)container.getLayout();
+	protected static void putConstraint( Container container, Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		SpringLayout springLayout = (SpringLayout)container.getLayout();
 		String horizontalConstraint = horizontal.getInternal();
 		String verticalConstraint = vertical.getInternal();
 		if( horizontalConstraint != null ) {
 			springLayout.putConstraint( horizontalConstraint, component, x, horizontalConstraint, container );
 		} else {
-			springLayout.putConstraint( javax.swing.SpringLayout.WEST, component, new HorizontalCenterSpring( container, component, x ), javax.swing.SpringLayout.WEST, container );
+			springLayout.putConstraint( SpringLayout.WEST, component, new HorizontalCenterSpring( container, component, x ), SpringLayout.WEST, container );
 		}
 		if( verticalConstraint != null ) {
 			springLayout.putConstraint( verticalConstraint, component, y, verticalConstraint, container );
 		} else {
-			springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component, new VerticalCenterSpring( container, component, y ), javax.swing.SpringLayout.NORTH, container );
+			springLayout.putConstraint( SpringLayout.NORTH, component, new VerticalCenterSpring( container, component, y ), SpringLayout.NORTH, container );
 		}
 	}
 
-	public static void add( java.awt.Container container, java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+	public static void add( Container container, Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
 		putConstraint( container, component, horizontal, x, vertical, y );
 		container.add( component );
 	}
 
-	public static void addNorthEast( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addNorthEast( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.EAST, -inset, Vertical.NORTH, inset );
 	}
 
-	public static void addNorth( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addNorth( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.CENTER, 0, Vertical.NORTH, inset );
 	}
 
-	public static void addNorthWest( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addNorthWest( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.WEST, inset, Vertical.NORTH, inset );
 	}
 
-	public static void addEast( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addEast( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.EAST, -inset, Vertical.CENTER, 0 );
 	}
 
-	public static void addCenter( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addCenter( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.CENTER, 0, Vertical.CENTER, 0 );
 	}
 
-	public static void addWest( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addWest( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.WEST, inset, Vertical.CENTER, 0 );
 	}
 
-	public static void addSouthEast( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addSouthEast( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.EAST, -inset, Vertical.SOUTH, -inset );
 	}
 
-	public static void addSouth( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addSouth( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.CENTER, 0, Vertical.SOUTH, -inset );
 	}
 
-	public static void addSouthWest( java.awt.Container container, java.awt.Component component, int inset ) {
+	public static void addSouthWest( Container container, Component component, int inset ) {
 		add( container, component, Horizontal.WEST, inset, Vertical.SOUTH, -inset );
 	}
 
@@ -265,18 +276,18 @@ public class SpringUtilities {
 	//		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
 	//		return layout;
 	//	}
-	public static java.awt.Component createColumn0Label( String text ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+	public static Component createColumn0Label( String text ) {
+		JLabel rv = LabelUtilities.createLabel( text );
+		rv.setHorizontalAlignment( SwingConstants.TRAILING );
 		return rv;
 	}
 
-	public static java.awt.Component[] createRow( java.awt.Component... rv ) {
+	public static Component[] createRow( Component... rv ) {
 		for( int i = 0; i < rv.length; i++ ) {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				java.awt.Component box = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 0 ) );
+				Component box = Box.createRigidArea( new Dimension( 0, 0 ) );
 				//				box.setBackground( java.awt.Color.BLUE );
 				//				if( box instanceof javax.swing.JComponent ) {
 				//					((javax.swing.JComponent)box).setOpaque( false );
@@ -287,64 +298,64 @@ public class SpringUtilities {
 		return rv;
 	}
 
-	public static java.awt.Container springItUpANotch( java.awt.Container rv, java.util.List<java.awt.Component[]> componentRows, int xPad, int yPad ) {
+	public static Container springItUpANotch( Container rv, List<Component[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;
 		int rowCount = componentRows.size();
 		assert rowCount > 0;
 		int columnCount = componentRows.get( 0 ).length;
-		for( java.awt.Component[] componentRow : componentRows ) {
+		for( Component[] componentRow : componentRows ) {
 			assert componentRow.length == columnCount;
 		}
-		javax.swing.SpringLayout layout = new javax.swing.SpringLayout();
+		SpringLayout layout = new SpringLayout();
 		rv.setLayout( layout );
 
-		for( java.awt.Component[] componentRow : componentRows ) {
-			for( java.awt.Component component : componentRow ) {
+		for( Component[] componentRow : componentRows ) {
+			for( Component component : componentRow ) {
 				assert component != null;
 				rv.add( component );
 			}
 		}
 
-		javax.swing.Spring xSpring = javax.swing.Spring.constant( 0 );
-		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );
+		Spring xSpring = Spring.constant( 0 );
+		Spring xPadSpring = Spring.constant( xPad );
 		for( int c = 0; c < columnCount; c++ ) {
-			javax.swing.Spring widthSpring = javax.swing.Spring.constant( 0 );
-			for( java.awt.Component[] componentRow : componentRows ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
-				widthSpring = javax.swing.Spring.max( widthSpring, constraints.getWidth() );
+			Spring widthSpring = Spring.constant( 0 );
+			for( Component[] componentRow : componentRows ) {
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
+				widthSpring = Spring.max( widthSpring, constraints.getWidth() );
 			}
-			for( java.awt.Component[] componentRow : componentRows ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
+			for( Component[] componentRow : componentRows ) {
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
 				constraints.setX( xSpring );
 				constraints.setWidth( widthSpring );
 			}
-			xSpring = javax.swing.Spring.sum( xSpring, widthSpring );
+			xSpring = Spring.sum( xSpring, widthSpring );
 			if( c < ( columnCount - 1 ) ) {
-				xSpring = javax.swing.Spring.sum( xSpring, xPadSpring );
+				xSpring = Spring.sum( xSpring, xPadSpring );
 			}
 		}
-		javax.swing.Spring ySpring = javax.swing.Spring.constant( 0 );
-		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );
+		Spring ySpring = Spring.constant( 0 );
+		Spring yPadSpring = Spring.constant( yPad );
 		for( int r = 0; r < rowCount; r++ ) {
-			java.awt.Component[] componentRow = componentRows.get( r );
-			javax.swing.Spring heightSpring = javax.swing.Spring.constant( 0 );
+			Component[] componentRow = componentRows.get( r );
+			Spring heightSpring = Spring.constant( 0 );
 			for( int c = 0; c < columnCount; c++ ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
-				heightSpring = javax.swing.Spring.max( heightSpring, constraints.getHeight() );
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
+				heightSpring = Spring.max( heightSpring, constraints.getHeight() );
 			}
 			for( int c = 0; c < columnCount; c++ ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ] );
 				constraints.setY( ySpring );
 				constraints.setHeight( heightSpring );
 			}
-			ySpring = javax.swing.Spring.sum( ySpring, heightSpring );
+			ySpring = Spring.sum( ySpring, heightSpring );
 			if( r < ( rowCount - 1 ) ) {
-				ySpring = javax.swing.Spring.sum( ySpring, yPadSpring );
+				ySpring = Spring.sum( ySpring, yPadSpring );
 			}
 		}
-		javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( rv );
-		constraints.setConstraint( javax.swing.SpringLayout.EAST, xSpring );
-		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
+		SpringLayout.Constraints constraints = layout.getConstraints( rv );
+		constraints.setConstraint( SpringLayout.EAST, xSpring );
+		constraints.setConstraint( SpringLayout.SOUTH, ySpring );
 		return rv;
 	}
 
@@ -357,31 +368,31 @@ public class SpringUtilities {
 	//		return springItUpANotch( rv, list, xPad, yPad );
 	//	}
 
-	public static java.awt.Component expandToBounds( java.awt.Component rv, java.awt.Container container, int xInset, int yInset ) {
-		java.awt.LayoutManager layout = container.getLayout();
-		javax.swing.SpringLayout springLayout;
-		if( layout instanceof javax.swing.SpringLayout ) {
-			springLayout = (javax.swing.SpringLayout)layout;
+	public static Component expandToBounds( Component rv, Container container, int xInset, int yInset ) {
+		LayoutManager layout = container.getLayout();
+		SpringLayout springLayout;
+		if( layout instanceof SpringLayout ) {
+			springLayout = (SpringLayout)layout;
 		} else {
-			springLayout = new javax.swing.SpringLayout();
+			springLayout = new SpringLayout();
 			container.setLayout( springLayout );
 		}
-		springLayout.putConstraint( javax.swing.SpringLayout.NORTH, rv, yInset, javax.swing.SpringLayout.NORTH, container );
-		springLayout.putConstraint( javax.swing.SpringLayout.WEST, rv, xInset, javax.swing.SpringLayout.WEST, container );
-		springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, rv, -yInset, javax.swing.SpringLayout.SOUTH, container );
-		springLayout.putConstraint( javax.swing.SpringLayout.EAST, rv, -xInset, javax.swing.SpringLayout.EAST, container );
+		springLayout.putConstraint( SpringLayout.NORTH, rv, yInset, SpringLayout.NORTH, container );
+		springLayout.putConstraint( SpringLayout.WEST, rv, xInset, SpringLayout.WEST, container );
+		springLayout.putConstraint( SpringLayout.SOUTH, rv, -yInset, SpringLayout.SOUTH, container );
+		springLayout.putConstraint( SpringLayout.EAST, rv, -xInset, SpringLayout.EAST, container );
 		return rv;
 	}
 
-	public static java.awt.Component expandToBounds( java.awt.Component rv, int xInset, int yInset ) {
+	public static Component expandToBounds( Component rv, int xInset, int yInset ) {
 		return expandToBounds( rv, rv.getParent(), xInset, yInset );
 	}
 
-	public static java.awt.Component expandToBounds( java.awt.Component rv, java.awt.Container container ) {
+	public static Component expandToBounds( Component rv, Container container ) {
 		return expandToBounds( rv, rv.getParent(), 0, 0 );
 	}
 
-	public static java.awt.Component expandToBounds( java.awt.Component rv ) {
+	public static Component expandToBounds( Component rv ) {
 		return expandToBounds( rv, rv.getParent(), 0, 0 );
 	}
 

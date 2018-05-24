@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.lgna.project.properties;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BooleanPropertyKey extends PropertyKey<Boolean> {
-	public BooleanPropertyKey( java.util.UUID id, String repr ) {
+	public BooleanPropertyKey( UUID id, String repr ) {
 		super( id, repr );
 	}
 
 	@Override
-	protected Boolean decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	protected Boolean decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			return binaryDecoder.decodeBoolean();
@@ -61,7 +66,7 @@ public class BooleanPropertyKey extends PropertyKey<Boolean> {
 	}
 
 	@Override
-	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Boolean value ) {
+	protected void encodeValue( BinaryEncoder binaryEncoder, Boolean value ) {
 		binaryEncoder.encode( value != null );
 		binaryEncoder.encode( value );
 	}

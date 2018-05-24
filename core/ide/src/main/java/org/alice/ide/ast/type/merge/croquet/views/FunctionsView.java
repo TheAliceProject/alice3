@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.type.merge.croquet.FunctionsToolPalette;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionsView extends MethodsView {
-	public FunctionsView( org.alice.ide.ast.type.merge.croquet.FunctionsToolPalette composite ) {
-		super( composite, org.alice.ide.ThemeUtilities.getActiveTheme().getFunctionColor() );
+	public FunctionsView( FunctionsToolPalette composite ) {
+		super( composite, ThemeUtilities.getActiveTheme().getFunctionColor() );
 	}
 }

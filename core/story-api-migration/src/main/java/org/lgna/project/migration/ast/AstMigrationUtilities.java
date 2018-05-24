@@ -42,14 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.Node;
+import org.lgna.project.io.MigrationManagerDecodedVersionPair;
+import org.lgna.project.migration.MigrationManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AstMigrationUtilities {
-	public static void migrateNode( org.lgna.project.ast.Node affecteeNode, org.lgna.project.Project projectIfApplicable, org.lgna.project.io.MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) {
-		for( org.lgna.project.io.MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
-			org.lgna.project.migration.MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
-			org.lgna.project.Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
+	public static void migrateNode( Node affecteeNode, Project projectIfApplicable, MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) {
+		for( MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
+			MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
+			Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
 			if( ( migrationManager.getCurrentVersion().compareTo( decodedVersion ) == 0 ) && migrationManager.isDevoidOfVersionIndependentMigrations() ) {
 				//pass
 			} else {

@@ -43,10 +43,12 @@
 
 package edu.cmu.cs.dennisc.pattern.event;
 
+import java.util.EventObject;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Event<E> extends java.util.EventObject {
+public abstract class Event<E> extends EventObject {
 	public Event( E source ) {
 		super( source );
 	}

@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.project.ast.LocalAccess> {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<LocalAccess> {
+	private static Map<UserLocal, LocalAccessFillIn> map = Maps.newHashMap();
 
-	public static LocalAccessFillIn getInstance( org.lgna.project.ast.UserLocal value ) {
+	public static LocalAccessFillIn getInstance( UserLocal value ) {
 		synchronized( map ) {
 			LocalAccessFillIn rv = map.get( value );
 			if( rv != null ) {
@@ -61,24 +70,24 @@ public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.pr
 		}
 	}
 
-	private final org.lgna.project.ast.LocalAccess transientValue;
+	private final LocalAccess transientValue;
 
-	private LocalAccessFillIn( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "a1e1b9a6-cd25-4e61-af59-955492c0d885" ) );
+	private LocalAccessFillIn( UserLocal local ) {
+		super( UUID.fromString( "a1e1b9a6-cd25-4e61-af59-955492c0d885" ) );
 		this.transientValue = this.createValue( local );
 	}
 
-	private org.lgna.project.ast.LocalAccess createValue( org.lgna.project.ast.UserLocal local ) {
-		return new org.lgna.project.ast.LocalAccess( local );
+	private LocalAccess createValue( UserLocal local ) {
+		return new LocalAccess( local );
 	}
 
 	@Override
-	public org.lgna.project.ast.LocalAccess createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public LocalAccess createValue( ItemNode<? super LocalAccess, Void> node, TransactionHistory transactionHistory ) {
 		return this.createValue( this.transientValue.local.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.LocalAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node ) {
+	public LocalAccess getTransientValue( ItemNode<? super LocalAccess, Void> node ) {
 		return this.transientValue;
 	}
 }

@@ -42,37 +42,41 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.map;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, java.util.List<E>> {
+public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, List<E>> {
 	public static <A, B, E> MapToListValueMap<A, B, E> newInstance() {
 		return new MapToListValueMap<A, B, E>();
 	}
 
-	public java.util.List<E> getInitializingIfAbsentToLinkedList( A a, B b ) {
-		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
+	public List<E> getInitializingIfAbsentToLinkedList( A a, B b ) {
+		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, List<E>>() {
 			@Override
-			public java.util.List<E> initialize( A a, B b ) {
-				return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			public List<E> initialize( A a, B b ) {
+				return Lists.newLinkedList();
 			}
 		} );
 	}
 
-	public java.util.List<E> getInitializingIfAbsentToArrayList( A a, B b ) {
-		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
+	public List<E> getInitializingIfAbsentToArrayList( A a, B b ) {
+		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, List<E>>() {
 			@Override
-			public java.util.List<E> initialize( A a, B b ) {
-				return edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+			public List<E> initialize( A a, B b ) {
+				return Lists.newArrayList();
 			}
 		} );
 	}
 
-	public java.util.List<E> getInitializingIfAbsentToCopyOnWriteArrayList( A a, B b ) {
-		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
+	public List<E> getInitializingIfAbsentToCopyOnWriteArrayList( A a, B b ) {
+		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, List<E>>() {
 			@Override
-			public java.util.List<E> initialize( A a, B b ) {
-				return edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+			public List<E> initialize( A a, B b ) {
+				return Lists.newCopyOnWriteArrayList();
 			}
 		} );
 	}

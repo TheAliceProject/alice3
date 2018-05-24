@@ -42,8 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.resources.sims2;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.random.RandomUtilities;
+
+import java.util.Map;
+
 public abstract class IngredientManager<E> {
-	private java.util.Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private Map<Class<? extends E>, Class<? extends E>[]> mapInterfaceClsToImplementingClses = Maps.newHashMap();
 
 	protected void add( Class<? extends E> interfaceCls, Class<? extends E>... implementingClses ) {
 		this.mapInterfaceClsToImplementingClses.put( interfaceCls, implementingClses );
@@ -58,7 +64,7 @@ public abstract class IngredientManager<E> {
 
 		Class<? extends E>[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
 
-		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered );
+		return SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered );
 	}
 
 	public Class<? extends E> getRandomClass( LifeStage lifeStage, Gender gender ) {
@@ -66,14 +72,14 @@ public abstract class IngredientManager<E> {
 		assert gender != null;
 		Class<? extends E>[] clses = getImplementingClasses( lifeStage, gender );
 		assert clses.length > 0 : lifeStage.toString() + gender.toString();
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( clses );
+		return RandomUtilities.getRandomValueFrom( clses );
 	}
 
 	public E getRandomEnumConstant( LifeStage lifeStage, Gender gender ) {
 		while( true ) {
 			Class enumCls = getRandomClass( lifeStage, gender );
 			if( enumCls.isEnum() ) {
-				E rv = (E)edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( enumCls );
+				E rv = (E)RandomUtilities.getRandomEnumConstant( enumCls );
 				if( rv != null ) {
 					return rv;
 				}

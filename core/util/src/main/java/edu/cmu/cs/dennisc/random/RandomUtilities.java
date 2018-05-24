@@ -43,12 +43,15 @@
 
 package edu.cmu.cs.dennisc.random;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
 public class RandomUtilities {
-	private static java.util.Random s_random = new java.util.Random();
+	private static Random s_random = new Random();
 
 	private static int getRandomIndex( int n ) {
 		return s_random.nextInt( n );
@@ -90,7 +93,7 @@ public class RandomUtilities {
 		return array[ getRandomIndex( array.length ) ];
 	}
 
-	public static <E> E getRandomValueFrom( java.util.List<E> list ) {
+	public static <E> E getRandomValueFrom( List<E> list ) {
 		assert list != null;
 		if( list.size() > 0 ) {
 			return list.get( getRandomIndex( list.size() ) );

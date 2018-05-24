@@ -43,31 +43,38 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.pattern.Reusable;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.StandIn;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.SThing;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.dennisc.pattern.Reusable {
+public class StandInImp extends AbstractTransformableImp implements Reusable {
 	public StandInImp() {
 		this.putInstance( this.sgStandIn );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
+	protected Composite getSgVehicle() {
 		return this.sgStandIn.getVehicle();
 	}
 
 	@Override
-	protected void setSgVehicle( edu.cmu.cs.dennisc.scenegraph.Composite sgVehicle ) {
+	protected void setSgVehicle( Composite sgVehicle ) {
 		this.sgStandIn.setVehicle( sgVehicle );
 	}
 
 	@Override
-	public org.lgna.story.SThing getAbstraction() {
+	public SThing getAbstraction() {
 		return null;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.StandIn getSgComposite() {
+	public StandIn getSgComposite() {
 		return this.sgStandIn;
 	}
 
@@ -76,9 +83,9 @@ public class StandInImp extends AbstractTransformableImp implements edu.cmu.cs.d
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
 		return rv;
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.StandIn sgStandIn = new edu.cmu.cs.dennisc.scenegraph.StandIn();
+	private final StandIn sgStandIn = new StandIn();
 }

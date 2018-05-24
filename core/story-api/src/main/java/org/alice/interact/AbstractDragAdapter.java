@@ -43,6 +43,14 @@
 
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.clock.Clock;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.scenegraph.Element;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import org.alice.interact.InteractionGroup.InteractionInfo;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.SelectionEvent;
@@ -63,6 +71,8 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+
+import java.util.Map;
 
 /**
  * @author David Culyba
@@ -102,7 +112,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		private AbstractCamera activeCamera;
 	}
 
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<edu.cmu.cs.dennisc.math.AxisAlignedBox> BOUNDING_BOX_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "BOUNDING_BOX_KEY" );
+	public static final Element.Key<AxisAlignedBox> BOUNDING_BOX_KEY = Element.Key.createInstance( "BOUNDING_BOX_KEY" );
 
 	private static final double MARKER_SELECTION_DURATION = .25;
 
@@ -177,7 +187,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
-	protected void setHandleSelectionState( org.alice.interact.handle.HandleStyle handleStyle ) {
+	protected void setHandleSelectionState( HandleStyle handleStyle ) {
 		//Default behavior is to set the interaction state directly
 		//CroquetSupportingDragAdapter sets the croquet selection state object to make this happen
 		this.setInteractionState( handleStyle );
@@ -249,7 +259,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
-	public void setInteractionState( org.alice.interact.handle.HandleStyle handleStyle ) {
+	public void setInteractionState( HandleStyle handleStyle ) {
 		if( this.currentInteractionState != null ) {
 			this.currentInteractionState.enabledManipulators( false );
 		}
@@ -258,7 +268,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	public void makeCameraActive( AbstractCamera camera ) {
 		boolean activated = false;
-		for( java.util.Map.Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet() ) {
+		for( Map.Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet() ) {
 			if( cameras.getValue().hasCamera( camera ) ) {
 				cameras.getValue().setActiveCamera( camera );
 				activated = true;
@@ -353,16 +363,16 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	@Override
-	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
+	protected void handleAutomaticDisplayCompleted( AutomaticDisplayEvent e ) {
+		AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
 			if( !hasSetCameraTransformables ) {
 				setSGCamera( sgCamera );
 				hasSetCameraTransformables = true;
 			}
-			double timeCurr = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+			double timeCurr = Clock.getCurrentTime();
 			if( Double.isNaN( this.timePrev ) ) {
-				this.timePrev = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+				this.timePrev = Clock.getCurrentTime();
 			}
 			double timeDelta = timeCurr - this.timePrev;
 			update( timeDelta );
@@ -370,8 +380,8 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+	public AbstractCamera getSGCamera() {
+		OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		if( onscreenRenderTarget != null ) {
 			if( this.cameraIndex < onscreenRenderTarget.getSgCameraCount() ) {
 				return onscreenRenderTarget.getSgCameraAt( this.cameraIndex );
@@ -383,10 +393,10 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraTransformable() {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
+	public Transformable getSGCameraTransformable() {
+		AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
-			return (edu.cmu.cs.dennisc.scenegraph.Transformable)sgCamera.getParent();
+			return (Transformable)sgCamera.getParent();
 		} else {
 			return null;
 		}
@@ -397,7 +407,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	protected HandleStyle getDefaultJointHandleStyle() {
-		return org.alice.interact.handle.HandleStyle.ROTATION;
+		return HandleStyle.ROTATION;
 	}
 
 	public abstract boolean shouldSnapToGround();
@@ -408,7 +418,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	public abstract double getGridSpacing();
 
-	public abstract edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle();
+	public abstract Angle getRotationSnapAngle();
 
 	public abstract void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation );
 
@@ -432,7 +442,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	private int cameraIndex = 0;
 
-	protected final java.util.Map<org.alice.interact.handle.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	protected final Map<HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = Maps.newHashMap();
 
-	private final java.util.Map<CameraView, CameraPair> cameraMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<CameraView, CameraPair> cameraMap = Maps.newHashMap();
 }

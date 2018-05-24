@@ -42,34 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.ProjectDocumentFrame;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Group;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialClearanceIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
-	public PotentialClearanceIteratingOperation( org.lgna.croquet.Group group, java.util.UUID migrationId, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.Model postClearanceModel ) {
+public abstract class PotentialClearanceIteratingOperation extends SingleThreadIteratingOperation {
+	public PotentialClearanceIteratingOperation( Group group, UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
 		super( group, migrationId );
 		this.projectDocumentFrame = projectDocumentFrame;
 		this.postClearanceModel = postClearanceModel;
 	}
 
-	protected org.lgna.croquet.Model getPostClearanceModel() {
+	protected Model getPostClearanceModel() {
 		return this.postClearanceModel;
 	}
 
 	@Override
 	protected Iterator<Model> createIteratingData() {
-		java.util.List<org.lgna.croquet.Model> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
+		List<Model> models = Lists.newLinkedList();
+		ProjectApplication application = ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
 		if (!application.isProjectUpToDateWithFile()) {
 			YesNoCancelResult result = new YesNoCancelDialog.Builder( findLocalizedText("message") )
@@ -98,6 +104,6 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 		return iterator.next();
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
-	private final org.lgna.croquet.Model postClearanceModel;
+	private final ProjectDocumentFrame projectDocumentFrame;
+	private final Model postClearanceModel;
 }

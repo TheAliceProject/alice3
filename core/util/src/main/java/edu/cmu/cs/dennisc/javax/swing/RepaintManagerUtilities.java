@@ -43,30 +43,40 @@
 
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+
+import javax.swing.JComponent;
+import javax.swing.RepaintManager;
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RepaintManagerUtilities {
-	private static javax.swing.RepaintManager originalRepaintManager;
-	private static edu.cmu.cs.dennisc.java.util.DStack<javax.swing.JComponent> stencils = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private static RepaintManager originalRepaintManager;
+	private static DStack<JComponent> stencils = Stacks.newStack();
 
-	private static class StencilRepaintManager extends javax.swing.RepaintManager {
+	private static class StencilRepaintManager extends RepaintManager {
 		@Override
-		public void addDirtyRegion( javax.swing.JComponent c, int x, int y, int w, int h ) {
+		public void addDirtyRegion( JComponent c, int x, int y, int w, int h ) {
 			super.addDirtyRegion( c, x, y, w, h );
-			final javax.swing.JComponent jStencil = stencils.peek();
+			final JComponent jStencil = stencils.peek();
 			if( ( jStencil == c ) || jStencil.isAncestorOf( c ) ) {
 				//pass
 			} else {
-				java.awt.Component srcRoot = javax.swing.SwingUtilities.getRoot( c );
-				java.awt.Component dstRoot = javax.swing.SwingUtilities.getRoot( jStencil );
+				Component srcRoot = SwingUtilities.getRoot( c );
+				Component dstRoot = SwingUtilities.getRoot( jStencil );
 
 				if( ( srcRoot != null ) && ( srcRoot == dstRoot ) ) {
-					java.awt.Rectangle rect = new java.awt.Rectangle( x, y, w, h );
-					java.awt.Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
+					Rectangle rect = new Rectangle( x, y, w, h );
+					Rectangle visibleRect = rect.intersection( c.getVisibleRect() );
 					if( ( visibleRect.width != 0 ) && ( visibleRect.height != 0 ) ) {
-						final java.awt.Rectangle rectAsSeenByStencil = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( c, visibleRect, jStencil );
-						javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						final Rectangle rectAsSeenByStencil = ComponentUtilities.convertRectangle( c, visibleRect, jStencil );
+						SwingUtilities.invokeLater( new Runnable() {
 							@Override
 							public void run() {
 								StencilRepaintManager.super.addDirtyRegion( jStencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
@@ -83,22 +93,22 @@ public class RepaintManagerUtilities {
 		throw new AssertionError();
 	}
 
-	public static void pushStencil( javax.swing.JComponent jStencil ) {
+	public static void pushStencil( JComponent jStencil ) {
 		if( stencils.size() > 0 ) {
 			//pass
 		} else {
-			originalRepaintManager = javax.swing.RepaintManager.currentManager( jStencil );
-			javax.swing.RepaintManager.setCurrentManager( new StencilRepaintManager() );
+			originalRepaintManager = RepaintManager.currentManager( jStencil );
+			RepaintManager.setCurrentManager( new StencilRepaintManager() );
 		}
 		stencils.push( jStencil );
 	}
 
-	public static javax.swing.JComponent popStencil() {
-		javax.swing.JComponent rv = stencils.pop();
+	public static JComponent popStencil() {
+		JComponent rv = stencils.pop();
 		if( stencils.size() > 0 ) {
 			//pass
 		} else {
-			javax.swing.RepaintManager.setCurrentManager( originalRepaintManager );
+			RepaintManager.setCurrentManager( originalRepaintManager );
 		}
 		return rv;
 	}

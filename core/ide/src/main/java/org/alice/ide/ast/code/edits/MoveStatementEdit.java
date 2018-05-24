@@ -43,23 +43,39 @@
 
 package org.alice.ide.ast.code.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ast.code.MoveStatementOperation;
+import org.alice.ide.ast.code.ShiftDragStatementUtilities;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.edits.ast.StatementEdit;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.StatementEdit<org.alice.ide.ast.code.MoveStatementOperation> {
-	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
-	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+public class MoveStatementEdit extends StatementEdit<MoveStatementOperation> {
+	private BlockStatementIndexPair fromLocation;
+	private BlockStatementIndexPair toLocation;
 	private final boolean isMultiple;
 	private transient int count;
 
-	public MoveStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.MoveStatementOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation, boolean isMultiple ) {
+	public MoveStatementEdit( CompletionStep<MoveStatementOperation> completionStep, BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
 		super( completionStep, statement );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 		this.isMultiple = isMultiple;
 	}
 
-	public MoveStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public MoveStatementEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -67,7 +83,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fromLocation );
 		binaryEncoder.encode( this.toLocation );
@@ -88,15 +104,15 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		return toDelta;
 	}
 
-	private static void move( org.lgna.project.ast.StatementListProperty remove, int removeIndex, org.lgna.project.ast.StatementListProperty add, int addIndex ) {
-		org.lgna.project.ast.Statement statement = remove.get( removeIndex );
+	private static void move( StatementListProperty remove, int removeIndex, StatementListProperty add, int addIndex ) {
+		Statement statement = remove.get( removeIndex );
 		remove.remove( removeIndex );
 		add.add( addIndex, statement );
 	}
 
 	private int getCount() {
 		if( this.isMultiple ) {
-			return org.alice.ide.ast.code.ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
+			return ShiftDragStatementUtilities.calculateShiftMoveCount( fromLocation, toLocation );
 		} else {
 			return 1;
 		}
@@ -105,16 +121,16 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		int toDelta = this.getToDelta();
-		org.lgna.project.ast.StatementListProperty from = this.fromLocation.getBlockStatement().statements;
-		org.lgna.project.ast.StatementListProperty to = this.toLocation.getBlockStatement().statements;
+		StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+		StatementListProperty to = this.toLocation.getBlockStatement().statements;
 		int fromIndex = this.fromLocation.getIndex();
 		int toIndex = this.toLocation.getIndex() + toDelta;
 
 		this.count = this.getCount();
 		if( ( this.count > 1 ) && ( from == to ) ) {
-			org.lgna.project.ast.StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
+			StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
 			if( fromIndex > toIndex ) {
-				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
+				List<Statement> l = Lists.newArrayList( statementListProperty.subList( fromIndex, fromIndex + count ) );
 				statementListProperty.removeExclusive( fromIndex, fromIndex + count );
 				statementListProperty.addAll( toIndex, l );
 			} else {
@@ -125,22 +141,22 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 				move( from, fromIndex, to, toIndex + i );
 			}
 		}
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	public void undoInternal() {
 		int toDelta = this.getToDelta();
 
-		org.lgna.project.ast.StatementListProperty from = this.fromLocation.getBlockStatement().statements;
-		org.lgna.project.ast.StatementListProperty to = this.toLocation.getBlockStatement().statements;
+		StatementListProperty from = this.fromLocation.getBlockStatement().statements;
+		StatementListProperty to = this.toLocation.getBlockStatement().statements;
 		int fromIndex = this.fromLocation.getIndex();
 		int toIndex = this.toLocation.getIndex() + toDelta;
 
 		if( ( this.count > 1 ) && ( from == to ) ) {
-			org.lgna.project.ast.StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
+			StatementListProperty statementListProperty = from; // identical so it doesn't matter which we choose
 			if( fromIndex > toIndex ) {
-				java.util.List<org.lgna.project.ast.Statement> l = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
+				List<Statement> l = Lists.newArrayList( statementListProperty.subList( toIndex, toIndex + count ) );
 				statementListProperty.removeExclusive( toIndex, toIndex + count );
 				statementListProperty.addAll( fromIndex, l );
 			} else {
@@ -151,12 +167,12 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 				move( to, toIndex, from, fromIndex + i );
 			}
 		}
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "move: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getStatement(), org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.getStatement(), Application.getLocale() );
 	}
 }

@@ -43,14 +43,18 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+
+import java.awt.Font;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Title extends ShapeEnclosedText {
-	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
-	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 24 );
-	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
-	private static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.createNaN();
+	private static final Color4f DEFAULT_TEXT_COLOR = Color4f.WHITE;
+	private static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 24 );
+	private static final Color4f DEFAULT_FILL_COLOR = Color4f.BLACK;
+	private static final Color4f DEFAULT_OUTLINE_COLOR = Color4f.createNaN();
 
 	public Title() {
 		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );

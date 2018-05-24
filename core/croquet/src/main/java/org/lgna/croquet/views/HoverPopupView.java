@@ -42,13 +42,23 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.HoverPopupElement;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JWindow;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * @author Dennis Cosgrove
  */
 public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButton> {
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private final MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//	public void run() {
 			showWindow();
@@ -57,7 +67,7 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//	public void run() {
 			hideWindow();
@@ -66,24 +76,24 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 		}
 
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 	};
 
-	private final javax.swing.JWindow window;
-	private final org.lgna.croquet.HoverPopupElement element;
+	private final JWindow window;
+	private final HoverPopupElement element;
 
-	public HoverPopupView( org.lgna.croquet.HoverPopupElement element ) {
+	public HoverPopupView( HoverPopupElement element ) {
 		this.element = element;
-		this.window = new javax.swing.JWindow();
+		this.window = new JWindow();
 		this.window.setAlwaysOnTop( true );
 	}
 
@@ -91,7 +101,7 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 		this.element.getComposite().handlePreActivation();
 		synchronized( this.window.getTreeLock() ) {
 			assert this.window.isVisible() == false;
-			java.awt.Point p = this.getLocationOnScreen();
+			Point p = this.getLocationOnScreen();
 			this.window.getContentPane().add( this.element.getComposite().getRootComponent().getAwtComponent() );
 			this.window.setLocation( p.x + this.getWidth() + 16, ( p.y + this.getHeight() ) - 4 );
 			this.window.pack();
@@ -116,18 +126,18 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		this.addMouseListener( this.mouseListener );
 		super.handleAddedTo( parent );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		this.removeMouseListener( this.mouseListener );
 	}
 
-	private class JHoverPopupView extends javax.swing.JButton {
+	private class JHoverPopupView extends JButton {
 		public JHoverPopupView() {
 			this.setRolloverEnabled( true );
 			this.setOpaque( false );
@@ -135,11 +145,11 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 
 		@Override
 		public void updateUI() {
-			this.setUI( javax.swing.plaf.basic.BasicButtonUI.createUI( this ) );
+			this.setUI( BasicButtonUI.createUI( this ) );
 		}
 
 		@Override
-		public javax.swing.Icon getRolloverIcon() {
+		public Icon getRolloverIcon() {
 			return super.getRolloverIcon();
 		}
 	}

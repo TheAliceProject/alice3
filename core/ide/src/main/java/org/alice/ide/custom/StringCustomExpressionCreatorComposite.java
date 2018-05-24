@@ -43,10 +43,18 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.custom.components.StringCustomExpressionCreatorView;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.StringLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.StringCustomExpressionCreatorView> {
+public class StringCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<StringCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
 	}
@@ -55,36 +63,36 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.StringState valueState = this.createStringState( "valueState" );
+	private final StringState valueState = this.createStringState( "valueState" );
 
 	private StringCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );
+		super( UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );
 	}
 
 	@Override
-	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.StringCustomExpressionCreatorView( this );
+	protected StringCustomExpressionCreatorView createView() {
+		return new StringCustomExpressionCreatorView( this );
 	}
 
-	public org.lgna.croquet.StringState getValueState() {
+	public StringState getValueState() {
 		return this.valueState;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return new org.lgna.project.ast.StringLiteral( this.valueState.getValue() );
+	protected Expression createValue() {
+		return new StringLiteral( this.valueState.getValue() );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected void initializeToPreviousExpression( Expression expression ) {
 		String value;
-		if( expression instanceof org.lgna.project.ast.StringLiteral ) {
-			org.lgna.project.ast.StringLiteral stringLiteral = (org.lgna.project.ast.StringLiteral)expression;
+		if( expression instanceof StringLiteral ) {
+			StringLiteral stringLiteral = (StringLiteral)expression;
 			value = stringLiteral.value.getValue();
 		} else {
 			value = "";

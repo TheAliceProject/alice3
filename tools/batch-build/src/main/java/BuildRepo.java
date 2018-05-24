@@ -41,25 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import com.sun.tools.javadoc.Main;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ProcessUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BuildRepo extends GitRepo {
 	public BuildRepo( Config config ) {
 		super( config, "alice_for_build" );
-		this.distributionSourceDir = new java.io.File( this.getRootDir(), "/core/resources/target/distribution" );
+		this.distributionSourceDir = new File( this.getRootDir(), "/core/resources/target/distribution" );
 	}
 
-	public java.io.File getDistributionSourceDir() {
+	public File getDistributionSourceDir() {
 		return this.distributionSourceDir;
 	}
 
-	public java.io.File getCoreSrcDirectory( String projectName ) {
-		return new java.io.File( this.getRootDir(), "core/" + projectName + "/src/main/java" );
+	public File getCoreSrcDirectory( String projectName ) {
+		return new File( this.getRootDir(), "core/" + projectName + "/src/main/java" );
 	}
 
-	public void compileJars() throws java.io.IOException, InterruptedException {
-		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public void compileJars() throws IOException, InterruptedException {
+		List<String> command = Lists.newLinkedList();
 		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
 		if( this.getConfig().isCleanDesired() ) {
 			command.add( "clean" );
@@ -68,27 +80,27 @@ public class BuildRepo extends GitRepo {
 		command.add( "install" );
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
 		processBuilder.directory( this.getRootDir() );
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+		ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 
-	public void copyJars( ProjectCollection projectCollection, java.io.File dstDir ) throws java.io.IOException {
+	public void copyJars( ProjectCollection projectCollection, File dstDir ) throws IOException {
 		for( String projectName : projectCollection.getProjectNames() ) {
 			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-			java.io.File src = new java.io.File( this.getRootDir(), projectCollection.getDirName() + "/" + projectName + "/target/" + filename );
-			java.io.File dst = new java.io.File( dstDir, filename );
+			File src = new File( this.getRootDir(), projectCollection.getDirName() + "/" + projectName + "/target/" + filename );
+			File dst = new File( dstDir, filename );
 			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			FileUtilities.copyFile( src, dst );
 			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+			Logger.outln( dst );
 		}
 	}
 
-	public java.io.File generateJavaDocs() throws java.io.IOException {
-		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
+	public File generateJavaDocs() throws IOException {
+		File tempDirectoryForJavaDoc = new File( FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
 		boolean isRequired = ( this.getConfig().isJavaDocGenerationDesired() ) || ( tempDirectoryForJavaDoc.exists() == false );
 		if( isRequired ) {
 			if( tempDirectoryForJavaDoc.exists() ) {
-				org.apache.commons.io.FileUtils.deleteDirectory( tempDirectoryForJavaDoc );
+				FileUtils.deleteDirectory( tempDirectoryForJavaDoc );
 			}
 			assert tempDirectoryForJavaDoc.exists() == false : tempDirectoryForJavaDoc;
 			tempDirectoryForJavaDoc.mkdirs();
@@ -97,14 +109,14 @@ public class BuildRepo extends GitRepo {
 			String[] subNames = { "util", "scenegraph", "ast", "story-api" };
 			for( String subName : subNames ) {
 				sb.append( this.getCoreSrcDirectory( subName ).getAbsolutePath() );
-				sb.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.PATH_SEPARATOR );
+				sb.append( SystemUtilities.PATH_SEPARATOR );
 			}
 			String srcPath = sb.toString();
 
-			com.sun.tools.javadoc.Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
+			Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
 		}
 		return tempDirectoryForJavaDoc;
 	}
 
-	private final java.io.File distributionSourceDir;
+	private final File distributionSourceDir;
 }

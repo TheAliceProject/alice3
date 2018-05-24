@@ -43,11 +43,19 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel;
+import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
+
+import javax.swing.tree.TreePath;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
-	private final edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T> treeModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<T>() {
+	private final AbstractMutableTreeModel<T> treeModel = new AbstractMutableTreeModel<T>() {
 		@Override
 		public int getChildCount( Object parent ) {
 			return CustomSingleSelectTreeState.this.getChildCount( (T)parent );
@@ -74,7 +82,7 @@ public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeSta
 		}
 
 		private Object[] getPathToRoot( T node ) {
-			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<T> collection = Lists.newLinkedList();
 			T n = node;
 			if( n != null ) {
 				T root = this.getRoot();
@@ -93,19 +101,19 @@ public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeSta
 		}
 
 		@Override
-		public javax.swing.tree.TreePath getTreePath( Object node ) {
+		public TreePath getTreePath( Object node ) {
 			if( node != null ) {
 				Object[] nodes = this.getPathToRoot( (T)node );
 				assert nodes != null : CustomSingleSelectTreeState.this;
 				assert nodes.length > 0 : CustomSingleSelectTreeState.this;
-				return new javax.swing.tree.TreePath( nodes );
+				return new TreePath( nodes );
 			} else {
 				return null;
 			}
 		}
 	};
 
-	public CustomSingleSelectTreeState( Group group, java.util.UUID id, T initialSelection, ItemCodec<T> itemCodec ) {
+	public CustomSingleSelectTreeState( Group group, UUID id, T initialSelection, ItemCodec<T> itemCodec ) {
 		super( group, id, initialSelection, itemCodec );
 	}
 
@@ -121,7 +129,7 @@ public abstract class CustomSingleSelectTreeState<T> extends SingleSelectTreeSta
 	public abstract boolean isLeaf( T node );
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
+	public TreeModel<T> getTreeModel() {
 		return this.treeModel;
 	}
 

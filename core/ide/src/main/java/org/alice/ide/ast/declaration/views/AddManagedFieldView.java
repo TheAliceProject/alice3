@@ -42,21 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.AddManagedFieldComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ToolPaletteTitle;
+import org.lgna.croquet.views.ToolPaletteView;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddManagedFieldView extends AddFieldView {
-	public AddManagedFieldView( org.alice.ide.ast.declaration.AddManagedFieldComposite composite ) {
+	public AddManagedFieldView( AddManagedFieldComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.BorderPanel createMainComponent() {
-		org.lgna.croquet.views.BorderPanel rv = super.createMainComponent();
-		org.alice.ide.ast.declaration.AddManagedFieldComposite composite = (org.alice.ide.ast.declaration.AddManagedFieldComposite)this.getComposite();
+	protected BorderPanel createMainComponent() {
+		BorderPanel rv = super.createMainComponent();
+		AddManagedFieldComposite composite = (AddManagedFieldComposite)this.getComposite();
 		if( composite.getInitialPropertyValuesToolPaletteCoreComposite().getInitialPropertyValueExpressionStateCount() > 0 ) {
-			org.lgna.croquet.views.ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
-			toolPaletteView.getTitle().setRenderingStyle( org.lgna.croquet.views.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+			ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
+			toolPaletteView.getTitle().setRenderingStyle( ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 			//rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
 			toolPaletteView.setBackgroundColor( this.getBackgroundColor() );
 			rv.addCenterComponent( toolPaletteView );

@@ -42,42 +42,54 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.help.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.ast.type.merge.croquet.PotentialNameChanger;
+import org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane;
 import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
+import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.VerticalTextPosition;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PotentialNameChangerHelpView extends org.lgna.croquet.views.BorderPanel {
-	private final org.lgna.croquet.views.MigPanel keepBothPanel = new org.lgna.croquet.views.MigPanel( null, "fill" );
+public class PotentialNameChangerHelpView extends BorderPanel {
+	private final MigPanel keepBothPanel = new MigPanel( null, "fill" );
 
-	public PotentialNameChangerHelpView( org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposite<?, ?, ?> composite ) {
+	public PotentialNameChangerHelpView( PotentialNameChangerHelpComposite<?, ?, ?> composite ) {
 		super( composite );
-		org.lgna.croquet.views.AbstractLabel label = composite.getHeader().createLabel();
-		label.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getQuestionIcon() );
+		AbstractLabel label = composite.getHeader().createLabel();
+		label.setIcon( IconUtilities.getQuestionIcon() );
 		label.setOpaque( true );
-		label.setBackgroundColor( java.awt.Color.WHITE );
-		label.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.TOP );
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		label.setBackgroundColor( Color.WHITE );
+		label.setVerticalTextPosition( VerticalTextPosition.TOP );
+		label.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		label.getAwtComponent().setIconTextGap( 12 );
 		this.addPageStartComponent( label );
 
-		org.lgna.croquet.views.MigPanel previewPanel = new org.lgna.croquet.views.MigPanel();
+		MigPanel previewPanel = new MigPanel();
 		previewPanel.addComponent( composite.getImportNameText().createLabel(), "wrap" );
-		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getImportHub(), true ), "wrap" );
+		previewPanel.addComponent( MemberPreviewPane.createView( composite.getPotentialNameChanger().getImportHub(), true ), "wrap" );
 		previewPanel.addComponent( composite.getProjectNameText().createLabel(), "wrap" );
-		previewPanel.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberPreviewPane.createView( composite.getPotentialNameChanger().getProjectHub(), true ), "wrap" );
+		previewPanel.addComponent( MemberPreviewPane.createView( composite.getPotentialNameChanger().getProjectHub(), true ), "wrap" );
 		this.addCenterComponent( previewPanel );
 
-		edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
+		ColorCustomizer foregroundCustomizer = composite.getForegroundCustomizer();
 
-		org.alice.ide.ast.type.merge.croquet.PotentialNameChanger<?> potentialNameChanger = composite.getPotentialNameChanger();
+		PotentialNameChanger<?> potentialNameChanger = composite.getPotentialNameChanger();
 		this.keepBothPanel.addComponent( composite.getImportNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( potentialNameChanger.getImportHub().getNameState(), foregroundCustomizer ), "wrap" );
 		this.keepBothPanel.addComponent( composite.getProjectNameText().createLabel(), "align right" );
 		this.keepBothPanel.addComponent( MemberViewUtilities.createTextField( potentialNameChanger.getProjectHub().getNameState(), foregroundCustomizer ), "wrap" );
 	}
 
-	public org.lgna.croquet.views.MigPanel getKeepBothPanel() {
+	public MigPanel getKeepBothPanel() {
 		return this.keepBothPanel;
 	}
 }

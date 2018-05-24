@@ -42,24 +42,31 @@
  *******************************************************************************/
 package org.lgna.croquet.simple;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.Trigger;
+
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleApplication extends org.lgna.croquet.Application<org.lgna.croquet.DocumentFrame> {
+public class SimpleApplication extends Application<DocumentFrame> {
 	@Override
-	public org.lgna.croquet.DocumentFrame getDocumentFrame() {
+	public DocumentFrame getDocumentFrame() {
 		return this.documentFrame;
 	}
 
 	@Override
-	protected void handleOpenFiles( java.util.List<java.io.File> files ) {
+	protected void handleOpenFiles( List<File> files ) {
 	}
 
 	@Override
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	protected void handleWindowOpened( WindowEvent e ) {
 	}
 
 	@Override
@@ -69,14 +76,14 @@ public class SimpleApplication extends org.lgna.croquet.Application<org.lgna.cro
 	}
 
 	@Override
-	protected org.lgna.croquet.Operation getAboutOperation() {
+	protected Operation getAboutOperation() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.Operation getPreferencesOperation() {
+	protected Operation getPreferencesOperation() {
 		return null;
 	}
 
-	private final org.lgna.croquet.DocumentFrame documentFrame = new SimpleDocumentFrame();
+	private final DocumentFrame documentFrame = new SimpleDocumentFrame();
 }

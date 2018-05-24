@@ -42,29 +42,34 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.animation;
 
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AffineMatrix4x4Animation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_q0;
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_q1;
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_qBuffer;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_m0;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_m1;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_mBuffer;
+public abstract class AffineMatrix4x4Animation extends DurationBasedAnimation {
+	private UnitQuaternion m_q0;
+	private UnitQuaternion m_q1;
+	private UnitQuaternion m_qBuffer;
+	private AffineMatrix4x4 m_m0;
+	private AffineMatrix4x4 m_m1;
+	private AffineMatrix4x4 m_mBuffer;
 
-	public AffineMatrix4x4Animation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1 ) {
+	public AffineMatrix4x4Animation( Number duration, Style style, AffineMatrix4x4 m0, AffineMatrix4x4 m1 ) {
 		super( duration, style );
 		m_q0 = m0.orientation.createUnitQuaternion();
 		m_q1 = m1.orientation.createUnitQuaternion();
-		m_qBuffer = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
+		m_qBuffer = UnitQuaternion.createNaN();
 
 		m_m0 = m0;
 		m_m1 = m1;
-		m_mBuffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+		m_mBuffer = AffineMatrix4x4.createNaN();
 	}
 
-	protected abstract void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value );
+	protected abstract void updateValue( AffineMatrix4x4 value );
 
 	@Override
 	protected void prologue() {

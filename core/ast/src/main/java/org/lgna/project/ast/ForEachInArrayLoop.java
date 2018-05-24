@@ -61,7 +61,7 @@ public final class ForEachInArrayLoop extends AbstractForEachLoop implements Eac
 	}
 
 	@Override
-	protected org.lgna.project.ast.ExpressionProperty getArrayOrIterableProperty() {
+	protected ExpressionProperty getArrayOrIterableProperty() {
 		return this.getArrayProperty();
 	}
 

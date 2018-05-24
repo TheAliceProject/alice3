@@ -44,6 +44,7 @@ package org.alice.interact.handle;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
 
 /**
  * @author dculyba
@@ -53,7 +54,7 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	private static final double MIN_SIZE = .6;
 
 	public ManipulationAxes() {
-		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1, 1.5 );
+		this.axis = new ExtravagantAxes( 1, 1.5 );
 		this.axis.setParent( this );
 	}
 
@@ -135,6 +136,6 @@ public class ManipulationAxes extends ManipulationHandle3D {
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
+	private final ExtravagantAxes axis;
 	private double diameterScale = 1;
 }

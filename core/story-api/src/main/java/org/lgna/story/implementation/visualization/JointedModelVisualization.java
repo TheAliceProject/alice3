@@ -43,21 +43,25 @@
 
 package org.lgna.story.implementation.visualization;
 
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.scenegraph.Leaf;
+import org.lgna.story.implementation.JointedModelImp;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Leaf {
+public class JointedModelVisualization extends Leaf {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( JointedModelVisualization.class, GlrJointedModelVisualization.class );
+		AdapterFactory.register( JointedModelVisualization.class, GlrJointedModelVisualization.class );
 	}
 
-	public JointedModelVisualization( org.lgna.story.implementation.JointedModelImp implementation ) {
+	public JointedModelVisualization( JointedModelImp implementation ) {
 		this.implementation = implementation;
 	}
 
-	public org.lgna.story.implementation.JointedModelImp getImplementation() {
+	public JointedModelImp getImplementation() {
 		return this.implementation;
 	}
 
-	private final org.lgna.story.implementation.JointedModelImp implementation;
+	private final JointedModelImp implementation;
 }

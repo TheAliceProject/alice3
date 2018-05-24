@@ -42,30 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.declaration.views.AddProcedureView;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.UserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class AddProcedureComposite extends AddMethodComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserType<?>, AddProcedureComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddProcedureComposite>() {
+	public static AddProcedureComposite getInstance( UserType<?> declaringType ) {
+		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddProcedureComposite>() {
 			@Override
-			public AddProcedureComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+			public AddProcedureComposite initialize( UserType<?> declaringType ) {
 				return new AddProcedureComposite( declaringType );
 			}
 		} );
 	}
 
-	private AddProcedureComposite( org.lgna.project.ast.UserType<?> declaringType ) {
-		super( java.util.UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
-				.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
+	private AddProcedureComposite( UserType<?> declaringType ) {
+		super( UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
+				.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, JavaType.VOID_TYPE )
 				.name( ApplicabilityStatus.EDITABLE )
 				, declaringType );
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.AddProcedureView createView() {
-		return new org.alice.ide.ast.declaration.views.AddProcedureView( this );
+	protected AddProcedureView createView() {
+		return new AddProcedureView( this );
 	}
 }

@@ -43,31 +43,45 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.data.ListData;
+
+import javax.swing.JPanel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.SingleSelectListState<E, ?>> {
-	private final java.util.Map<E, BooleanStateButton<?>> mapItemToButton = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public abstract class ItemSelectablePanel<E> extends ItemSelectable<JPanel, E, SingleSelectListState<E, ?>> {
+	private final Map<E, BooleanStateButton<?>> mapItemToButton = Maps.newHashMap();
 
 	private E[] prevItems;
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+	private final ListDataListener listDataListener = new ListDataListener() {
 		@Override
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+		public void intervalAdded( ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
 
 		@Override
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+		public void intervalRemoved( ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
 
 		@Override
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+		public void contentsChanged( ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
 	};
 
-	public ItemSelectablePanel( org.lgna.croquet.SingleSelectListState<E, ?> model ) {
+	public ItemSelectablePanel( SingleSelectListState<E, ?> model ) {
 		super( model );
 	}
 
@@ -85,23 +99,23 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 		super.handleDisplayable();
 	}
 
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+	protected abstract LayoutManager createLayoutManager( JPanel jPanel );
 
-	protected class JItemSelectablePanel extends javax.swing.JPanel {
+	protected class JItemSelectablePanel extends JPanel {
 		public JItemSelectablePanel() {
 			this.setOpaque( false );
-			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+			this.setAlignmentX( Component.LEFT_ALIGNMENT );
+			this.setAlignmentY( Component.CENTER_ALIGNMENT );
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
+		public Dimension getPreferredSize() {
 			return ItemSelectablePanel.this.constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
 
 		@Override
-		public java.awt.Dimension getMaximumSize() {
-			java.awt.Dimension rv = super.getMaximumSize();
+		public Dimension getMaximumSize() {
+			Dimension rv = super.getMaximumSize();
 			if( ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize() ) {
 				rv.setSize( this.getPreferredSize() );
 			}
@@ -109,14 +123,14 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 		}
 	}
 
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		return new JItemSelectablePanel();
 	}
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = this.createJPanel();
-		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
+	protected JPanel createAwtComponent() {
+		JPanel rv = this.createJPanel();
+		LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		return rv;
 	}
@@ -125,11 +139,11 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 		return this.mapItemToButton.get( item );
 	}
 
-	protected java.util.Collection<BooleanStateButton<?>> getAllButtons() {
+	protected Collection<BooleanStateButton<?>> getAllButtons() {
 		return this.mapItemToButton.values();
 	}
 
-	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState );
+	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, BooleanState itemSelectedState );
 
 	protected abstract void removeAllDetails();
 
@@ -143,7 +157,7 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 	protected abstract void addEpilogue();
 
 	private void handleListDataChanged() {
-		org.lgna.croquet.data.ListData<E> data = this.getModel().getData();
+		ListData<E> data = this.getModel().getData();
 		synchronized( data ) {
 			final int N = data.getItemCount();
 
@@ -201,7 +215,7 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 	}
 
 	@Override
-	public org.lgna.croquet.views.TrackableShape getTrackableShapeFor( E item ) {
+	public TrackableShape getTrackableShapeFor( E item ) {
 		return this.getItemDetails( item );
 	}
 }

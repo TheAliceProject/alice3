@@ -43,32 +43,39 @@
 
 package org.alice.ide.croquet.edits.ast.rename;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractDeclaration;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenameDeclarationEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.project.ast.AbstractDeclaration declaration;
+public class RenameDeclarationEdit extends AbstractEdit {
+	private final AbstractDeclaration declaration;
 	private final String prevValue;
 	private final String nextValue;
 
-	public RenameDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractDeclaration declaration, String prevValue, String nextValue ) {
+	public RenameDeclarationEdit( CompletionStep completionStep, AbstractDeclaration declaration, String prevValue, String nextValue ) {
 		super( completionStep );
 		this.declaration = declaration;
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
 
-	public RenameDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public RenameDeclarationEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaration = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractDeclaration.class ).decodeValue( binaryDecoder );
+		this.declaration = NodeCodec.getInstance( AbstractDeclaration.class ).decodeValue( binaryDecoder );
 		this.prevValue = binaryDecoder.decodeString();
 		this.nextValue = binaryDecoder.decodeString();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractDeclaration.class ).encodeValue( binaryEncoder, this.declaration );
+		NodeCodec.getInstance( AbstractDeclaration.class ).encodeValue( binaryEncoder, this.declaration );
 		binaryEncoder.encode( this.prevValue );
 		binaryEncoder.encode( this.nextValue );
 	}

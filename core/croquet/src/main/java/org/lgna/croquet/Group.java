@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class Group {
-	private static java.util.Map<java.util.UUID, Group> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<UUID, Group> map = Maps.newHashMap();
 
-	public static synchronized Group getInstance( java.util.UUID id ) {
+	public static synchronized Group getInstance( UUID id ) {
 		Group rv = map.get( id );
 		if( rv != null ) {
 			//pass
@@ -59,21 +64,21 @@ public final class Group {
 		return rv;
 	}
 
-	public static Group getInstance( java.util.UUID id, String description ) {
+	public static Group getInstance( UUID id, String description ) {
 		Group rv = getInstance( id );
 		assert rv.description == null;
 		rv.description = description;
 		return rv;
 	}
 
-	private java.util.UUID id;
+	private UUID id;
 	private String description;
 
-	private Group( java.util.UUID id ) {
+	private Group( UUID id ) {
 		this.id = id;
 	}
 
-	public java.util.UUID getId() {
+	public UUID getId() {
 		return this.id;
 	}
 

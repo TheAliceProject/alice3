@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util.zip;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -72,7 +75,7 @@ public class ByteArrayDataSource implements DataSource {
 	}
 
 	@Override
-	public void write( java.io.OutputStream os ) throws java.io.IOException {
+	public void write( OutputStream os ) throws IOException {
 		os.write( this.data );
 	}
 }

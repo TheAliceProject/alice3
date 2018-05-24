@@ -44,13 +44,25 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
+
+import com.jogamp.opengl.GL;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Plane;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geometry> extends GlrElement<T> {
+public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
 	public void addRenderContext( RenderContext rc ) {
 		this.renderContexts.add( rc );
 	}
@@ -111,8 +123,8 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 				rc.gl.glEndList();
 				{
 					int error = rc.gl.glGetError();
-					if( error != com.jogamp.opengl.GL.GL_NO_ERROR ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rc.glu.gluErrorString( error ), error, this );
+					if( error != GL.GL_NO_ERROR ) {
+						Logger.severe( rc.glu.gluErrorString( error ), error, this );
 						//throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
 					}
 				}
@@ -121,7 +133,7 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 				if( rc.gl.glIsList( id ) ) {
 					rc.gl.glCallList( id );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+					Logger.severe( this );
 				}
 			}
 		} else {
@@ -134,12 +146,12 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 		pickGeometry( pc, isSubElementRequired );
 	}
 
-	protected static edu.cmu.cs.dennisc.math.Point3 getIntersectionInSourceFromPlaneInLocal( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, double px, double py, double pz, double nx, double ny, double nz ) {
-		edu.cmu.cs.dennisc.math.Point3 position = new edu.cmu.cs.dennisc.math.Point3( px, py, pz );
-		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( nx, ny, nz );
+	protected static Point3 getIntersectionInSourceFromPlaneInLocal( Point3 rv, Ray ray, AffineMatrix4x4 m, double px, double py, double pz, double nx, double ny, double nz ) {
+		Point3 position = new Point3( px, py, pz );
+		Vector3 direction = new Vector3( nx, ny, nz );
 		m.transform( position );
 		m.transform( direction );
-		edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( position, direction );
+		Plane plane = Plane.createInstance( position, direction );
 		if( plane.isNaN() ) {
 			rv.setNaN();
 		} else {
@@ -149,12 +161,12 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 		return rv;
 	}
 
-	protected static edu.cmu.cs.dennisc.math.Point3 getIntersectionInSourceFromPlaneInLocal( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, edu.cmu.cs.dennisc.math.Point3 planePosition, edu.cmu.cs.dennisc.math.Vector3 planeDirection ) {
+	protected static Point3 getIntersectionInSourceFromPlaneInLocal( Point3 rv, Ray ray, AffineMatrix4x4 m, Point3 planePosition, Vector3 planeDirection ) {
 		return getIntersectionInSourceFromPlaneInLocal( rv, ray, m, planePosition.x, planePosition.y, planePosition.x, planeDirection.x, planeDirection.y, planeDirection.z );
 	}
 
-	public abstract edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement );
+	public abstract Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement );
 
-	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<RenderContext> renderContexts = Lists.newLinkedList();
 	private boolean isGeometryChanged;
 }

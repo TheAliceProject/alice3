@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ValueHolder<T> {
-	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ValueListener<T>> valueListeners = Lists.newCopyOnWriteArrayList();
 
 	private T value;
 
@@ -63,28 +70,28 @@ public final class ValueHolder<T> {
 	}
 
 	public void setValue( T value ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.value, value ) ) {
+		if( Objects.equals( this.value, value ) ) {
 			//pass
 		} else {
-			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value, value );
+			ValueEvent<T> e = ValueEvent.createInstance( this.value, value );
 			this.value = value;
-			for( org.lgna.croquet.event.ValueListener<T> listener : this.valueListeners ) {
+			for( ValueListener<T> listener : this.valueListeners ) {
 				listener.valueChanged( e );
 			}
 		}
 	}
 
-	public void addValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+	public void addValueListener( ValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 
-	public void addAndInvokeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
-		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value );
+	public void addAndInvokeValueListener( ValueListener<T> listener ) {
+		ValueEvent<T> e = ValueEvent.createInstance( this.value );
 		listener.valueChanged( e );
 		this.addValueListener( listener );
 	}
 
-	public void removeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+	public void removeValueListener( ValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 

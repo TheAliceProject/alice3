@@ -42,17 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
+
 /**
  * @author Dennis Cosgrove
  */
 public class WindowUtilities {
-	public static void setLocationOnScreenToCenteredWithin( java.awt.Window window, java.awt.Component root ) {
-		java.awt.Dimension sizeDialog = window.getSize();
-		java.awt.Rectangle boundsRoot;
+	public static void setLocationOnScreenToCenteredWithin( Window window, Component root ) {
+		Dimension sizeDialog = window.getSize();
+		Rectangle boundsRoot;
 		if( ( root != null ) && root.isShowing() ) {
-			java.awt.Point locationRoot = root.getLocationOnScreen();
-			java.awt.Dimension sizeRoot = root.getSize();
-			boundsRoot = new java.awt.Rectangle( locationRoot, sizeRoot );
+			Point locationRoot = root.getLocationOnScreen();
+			Dimension sizeRoot = root.getSize();
+			boundsRoot = new Rectangle( locationRoot, sizeRoot );
 		} else {
 			//todo: handle multiple screens better?
 			boundsRoot = window.getGraphicsConfiguration().getBounds();
@@ -63,19 +70,19 @@ public class WindowUtilities {
 		//ensureTopLeftCornerIsOnScreen( window );
 	}
 
-	public static void ensureTopLeftCornerIsOnScreen( final java.awt.Window window ) {
+	public static void ensureTopLeftCornerIsOnScreen( final Window window ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ensureTopLeftCornerIsOnScreen", window.isValid(), window.isVisible() );
 		assert window != null;
 		if( /* window.isValid() && */window.isVisible() ) {
-			java.awt.Point ptScreen = window.getLocationOnScreen();
+			Point ptScreen = window.getLocationOnScreen();
 			if( ( ptScreen.x < 0 ) || ( ptScreen.y < 0 ) ) {
-				java.awt.Point ptParent = window.getLocation();
+				Point ptParent = window.getLocation();
 				ptParent.x -= Math.min( ptScreen.x, 0 );
 				ptParent.y -= Math.min( ptScreen.y, 0 );
 				window.setLocation( ptParent );
 			}
 		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					WindowUtilities.ensureTopLeftCornerIsOnScreen( window );

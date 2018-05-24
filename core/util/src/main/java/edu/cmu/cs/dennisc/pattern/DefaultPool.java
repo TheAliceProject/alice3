@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,6 +56,6 @@ public class DefaultPool<E extends Reusable> extends AbstractPool<E> {
 
 	@Override
 	protected E createInstance() {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
+		return ReflectionUtilities.newInstance( this.cls );
 	}
 }

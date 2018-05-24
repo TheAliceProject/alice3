@@ -42,12 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.templates;
 
+import org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel;
+import org.alice.ide.common.StatementLikeSubstance;
+import org.lgna.project.ast.Statement;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
-	public StatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel model, Class<? extends org.lgna.project.ast.Statement> cls ) {
-		super( model, cls, javax.swing.BoxLayout.LINE_AXIS );
+public abstract class StatementTemplate extends StatementLikeSubstance {
+	public StatementTemplate( AbstractStatementDragModel model, Class<? extends Statement> cls ) {
+		super( model, cls, BoxLayout.LINE_AXIS );
 	}
 
 	@Override

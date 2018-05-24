@@ -41,27 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.project.ProjectVersion;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PluginCommon {
 	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
 		s = s.trim();
-		s = s.replaceAll( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
+		s = s.replaceAll( "___ALICE_VERSION___", ProjectVersion.getCurrentVersionText() );
 		s = s.replaceAll( "___JOGL_VERSION___", config.getJoglVersion() );
 		s = s.replaceAll( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
 		s = s.replaceAll( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
 		return s;
 	}
 
-	public static java.util.List<String> getJarPathsToCopyFromMaven( Config config ) {
-		java.util.List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public static List<String> getJarPathsToCopyFromMaven( Config config ) {
+		List<String> list = Lists.newLinkedList();
 		list.add( substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ) );
 		list.add( substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ) );
 		list.add( "javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" );
 		list.add( "com/sun/javamp3/1.0/javamp3-1.0.jar" );
 		list.add( substituteVersionTexts( config, "org/alice/alice-model-source/___ALICE_MODEL_SOURCE_VERSION___/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar" ) );
 		list.add( substituteVersionTexts( config, "org/alice/nonfree/nebulous-model-source/___NEBULOUS_MODEL_SOURCE_VERSION___/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar" ) );
-		return java.util.Collections.unmodifiableList( list );
+		return Collections.unmodifiableList( list );
 	}
 }

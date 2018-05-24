@@ -42,17 +42,25 @@
  *******************************************************************************/
 package org.alice.build;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CopyDistributionJarsUtilities {
 
-	private static java.io.File getUserDirectory() {
-		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-		java.io.File rv;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+	private static File getUserDirectory() {
+		File defaultDirectory = FileUtilities.getDefaultDirectory();
+		File rv;
+		if( SystemUtilities.isWindows() ) {
 			rv = defaultDirectory.getParentFile();
 		} else {
 			rv = defaultDirectory;
@@ -60,45 +68,45 @@ public class CopyDistributionJarsUtilities {
 		return rv;
 	}
 
-	public static void copyDistributionJars( java.io.File distributionRootDirectory ) throws java.io.IOException {
-		java.io.File userDirectory = getUserDirectory();
-		java.io.File mavenRepositoryRootDirectory = new java.io.File( userDirectory, ".m2/repository" );
-		java.util.List<java.io.File> jarFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( String pathname : edu.cmu.cs.dennisc.java.lang.SystemUtilities.getClassPath() ) {
-			java.io.File file = new java.io.File( pathname );
+	public static void copyDistributionJars( File distributionRootDirectory ) throws IOException {
+		File userDirectory = getUserDirectory();
+		File mavenRepositoryRootDirectory = new File( userDirectory, ".m2/repository" );
+		List<File> jarFiles = Lists.newLinkedList();
+		for( String pathname : SystemUtilities.getClassPath() ) {
+			File file = new File( pathname );
 			if( file.isDirectory() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping directory:", file );
+				Logger.errln( "skipping directory:", file );
 			} else {
-				if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, "jar" ) ) {
-					if( edu.cmu.cs.dennisc.java.io.FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "++ adding: " + file );
+				if( FileUtilities.isExtensionAmoung( file, "jar" ) ) {
+					if( FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
+						Logger.outln( "++ adding: " + file );
 						jarFiles.add( file );
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non descendant:", file );
+						Logger.errln( "skipping non descendant:", file );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non jar:", file );
+					Logger.errln( "skipping non jar:", file );
 				}
 			}
 		}
 		System.err.flush();
-		edu.cmu.cs.dennisc.java.io.FileUtilities.delete( distributionRootDirectory );
-		java.util.Collections.sort( jarFiles );
-		for( java.io.File jarFile : jarFiles ) {
-			java.io.File distibutionFile = edu.cmu.cs.dennisc.java.io.FileUtilities.getAnalogousFile( jarFile, mavenRepositoryRootDirectory, distributionRootDirectory );
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( jarFile, distibutionFile );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( distibutionFile );
+		FileUtilities.delete( distributionRootDirectory );
+		Collections.sort( jarFiles );
+		for( File jarFile : jarFiles ) {
+			File distibutionFile = FileUtilities.getAnalogousFile( jarFile, mavenRepositoryRootDirectory, distributionRootDirectory );
+			FileUtilities.copyFile( jarFile, distibutionFile );
+			Logger.outln( distibutionFile );
 		}
 	}
 
 	public static void copyDistributionJars( String path ) throws IOException {
-		copyDistributionJars( new java.io.File( path ) );
+		copyDistributionJars( new File( path ) );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		java.io.File userDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory();
+		File userDirectory = FileUtilities.getUserDirectory();
 		//java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/aliceBuildProcess/jars/lib" );
-		java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/gits/alice/installer/aliceInstallData/Alice3/ext" );
+		File distributionRootDirectory = new File( userDirectory, "Documents/gits/alice/installer/aliceInstallData/Alice3/ext" );
 		copyDistributionJars( distributionRootDirectory );
 	}
 }

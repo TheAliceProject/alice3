@@ -43,21 +43,32 @@
 
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.PublicStaticFieldValueDetails;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.ImagePaint;
+
+import java.lang.reflect.Field;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImagePaintFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public class ImagePaintFillerInner extends ExpressionFillerInner {
 	public ImagePaintFillerInner() {
-		super( org.lgna.story.ImagePaint.class );
+		super( ImagePaint.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		if( details instanceof org.lgna.project.annotations.PublicStaticFieldValueDetails ) {
-			org.lgna.project.annotations.PublicStaticFieldValueDetails publicStaticFieldValueDetails = (org.lgna.project.annotations.PublicStaticFieldValueDetails)details;
-			java.lang.reflect.Field[] flds = publicStaticFieldValueDetails.getFlds();
-			for( java.lang.reflect.Field fld : flds ) {
-				items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( fld ) );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		if( details instanceof PublicStaticFieldValueDetails ) {
+			PublicStaticFieldValueDetails publicStaticFieldValueDetails = (PublicStaticFieldValueDetails)details;
+			Field[] flds = publicStaticFieldValueDetails.getFlds();
+			for( Field fld : flds ) {
+				items.add( StaticFieldAccessFillIn.getInstance( fld ) );
 			}
 		}
 	}

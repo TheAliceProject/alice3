@@ -42,16 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.SwingUtilities;
+import java.awt.EventQueue;
+import java.net.URI;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+
 /**
  * @author Dennis Cosgrove
  */
 //todo: make more thread safe and more sophisticated
 public abstract class UriContentLoader<T> {
 	private static <T> void invokeOnEventDispatchThread( final GetContentObserver<T> observer, final T content ) {
-		if( java.awt.EventQueue.isDispatchThread() ) {
+		if( EventQueue.isDispatchThread() ) {
 			observer.completed( content );
 		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					observer.completed( content );
@@ -61,15 +73,15 @@ public abstract class UriContentLoader<T> {
 	}
 
 	private class Worker {
-		private final java.util.List<GetContentObserver<T>> observers = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+		private final List<GetContentObserver<T>> observers = Lists.newCopyOnWriteArrayList();
 
-		private final java.util.concurrent.FutureTask<T> futureTask;
+		private final FutureTask<T> futureTask;
 		private boolean isStarted;
 
-		private final java.util.concurrent.ExecutorService executorService = java.util.concurrent.Executors.newSingleThreadExecutor();
+		private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 		public Worker() {
-			this.futureTask = new java.util.concurrent.FutureTask<T>( new java.util.concurrent.Callable<T>() {
+			this.futureTask = new FutureTask<T>( new Callable<T>() {
 				@Override
 				public T call() throws Exception {
 					return loadContent();
@@ -82,7 +94,7 @@ public abstract class UriContentLoader<T> {
 						invokeObserversOnEventDispatchThread( this.get() );
 					} catch( InterruptedException ie ) {
 						throw new Error( "done", ie );
-					} catch( java.util.concurrent.ExecutionException ee ) {
+					} catch( ExecutionException ee ) {
 						throw new Error( "done", ee );
 					}
 				}
@@ -132,7 +144,7 @@ public abstract class UriContentLoader<T> {
 			return this.isStarted;
 		}
 
-		public T getContent() throws InterruptedException, java.util.concurrent.ExecutionException {
+		public T getContent() throws InterruptedException, ExecutionException {
 			return this.futureTask.get();
 		}
 
@@ -145,7 +157,7 @@ public abstract class UriContentLoader<T> {
 
 	private Worker worker;
 
-	public abstract java.net.URI getUri();
+	public abstract URI getUri();
 
 	protected abstract T load();
 
@@ -191,7 +203,7 @@ public abstract class UriContentLoader<T> {
 		}
 	}
 
-	public T getContentWaitingIfNecessary( MutationPlan intention ) throws InterruptedException, java.util.concurrent.ExecutionException {
+	public T getContentWaitingIfNecessary( MutationPlan intention ) throws InterruptedException, ExecutionException {
 		Worker worker = this.getWorker( intention );
 		worker.executeIfNecessary();
 		return worker.getContent();

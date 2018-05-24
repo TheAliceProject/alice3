@@ -42,32 +42,43 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.java.net.UriUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveOperation extends UriActionOperation {
-	public AbstractSaveOperation( java.util.UUID id ) {
+	public AbstractSaveOperation( UUID id ) {
 		super( id );
 	}
 
-	protected abstract boolean isPromptNecessary( java.io.File file );
+	protected abstract boolean isPromptNecessary( File file );
 
-	protected abstract java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application );
+	protected abstract File getDefaultDirectory( ProjectApplication application );
 
 	protected abstract String getExtension();
 
-	protected abstract void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException;
+	protected abstract void save( ProjectApplication application, File file ) throws IOException;
 
 	protected abstract String getInitialFilename();
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.ProjectApplication application = this.getProjectApplication();
-		java.net.URI uri = application.getUri();
-		java.io.File filePrevious = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+	protected void perform( CompletionStep<?> step ) {
+		ProjectApplication application = this.getProjectApplication();
+		URI uri = application.getUri();
+		File filePrevious = UriUtilities.getFile( uri );
 		boolean isExceptionRaised = false;
 		do {
-			java.io.File fileNext;
+			File fileNext;
 			if( isExceptionRaised || this.isPromptNecessary( filePrevious ) ) {
 				fileNext = application.getDocumentFrame().showSaveFileDialog( this.getDefaultDirectory( application ), this.getInitialFilename(), this.getExtension(), true );
 			} else {
@@ -77,11 +88,11 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 			if( fileNext != null ) {
 				try {
 					this.save( application, fileNext );
-				} catch( java.io.IOException ioe ) {
+				} catch( IOException ioe ) {
 					isExceptionRaised = true;
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( ioe.getMessage() )
+					new OkDialog.Builder( ioe.getMessage() )
 							.title( "Unable to save file" )
-							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+							.messageType( MessageType.ERROR )
 							.buildAndShow();
 				}
 				if( isExceptionRaised ) {

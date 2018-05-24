@@ -43,21 +43,28 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.triggers.MouseEventTrigger;
+
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ButtonWithRightClickCascade extends Button {
-	private final org.lgna.croquet.Cascade<?> cascade;
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseClickListener = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+	private final Cascade<?> cascade;
+	private final LenientMouseClickAdapter mouseClickListener = new LenientMouseClickAdapter() {
 		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( e.getButton() == java.awt.event.MouseEvent.BUTTON3 ) {
-				cascade.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( ButtonWithRightClickCascade.this, e ) );
+		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
+			if( e.getButton() == MouseEvent.BUTTON3 ) {
+				cascade.fire( MouseEventTrigger.createUserInstance( ButtonWithRightClickCascade.this, e ) );
 			}
 		}
 	};
 
-	public ButtonWithRightClickCascade( org.lgna.croquet.Operation model, org.lgna.croquet.Cascade<?> cascade ) {
+	public ButtonWithRightClickCascade( Operation model, Cascade<?> cascade ) {
 		super( model );
 		this.cascade = cascade;
 	}

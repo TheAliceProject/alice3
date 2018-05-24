@@ -374,7 +374,7 @@ public class JointedModelColladaExporter {
 		return geometry;
 	}
 
-	private double[] getBindShapeMatrix( edu.cmu.cs.dennisc.scenegraph.WeightedMesh sgWeightedMesh ) {
+	private double[] getBindShapeMatrix( WeightedMesh sgWeightedMesh ) {
 		//TODO: have this return the correct bind shape matrix
 		AffineMatrix4x4 bindShapeMatrix = AffineMatrix4x4.createIdentity();
 		return bindShapeMatrix.getAsColumnMajorArray16();
@@ -405,7 +405,7 @@ public class JointedModelColladaExporter {
 
 	}
 
-	private Controller createControllerForMesh( edu.cmu.cs.dennisc.scenegraph.WeightedMesh sgWeightedMesh ) {
+	private Controller createControllerForMesh( WeightedMesh sgWeightedMesh ) {
 		Controller controller = factory.createController();
 		String meshName = meshNameMap.get( sgWeightedMesh );
 		String controllerName = meshName + "Controller";

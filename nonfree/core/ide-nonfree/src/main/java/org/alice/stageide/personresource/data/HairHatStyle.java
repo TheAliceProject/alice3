@@ -42,21 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import org.lgna.story.resources.sims2.Hair;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class HairHatStyle implements Comparable<HairHatStyle> {
 	private final HairClsHatNameCombo hairClsHatNameCombo;
-	private final java.util.List<HairColorNameHairCombo> hairColorNameHairCombos;
+	private final List<HairColorNameHairCombo> hairColorNameHairCombos;
 
-	public HairHatStyle( HairClsHatNameCombo hairClsHatNameCombo, java.util.List<HairColorNameHairCombo> hairColorNames ) {
+	public HairHatStyle( HairClsHatNameCombo hairClsHatNameCombo, List<HairColorNameHairCombo> hairColorNames ) {
 		assert hairClsHatNameCombo != null;
 		assert hairColorNames != null;
 		this.hairClsHatNameCombo = hairClsHatNameCombo;
-		this.hairColorNameHairCombos = java.util.Collections.unmodifiableList( hairColorNames );
+		this.hairColorNameHairCombos = Collections.unmodifiableList( hairColorNames );
 	}
 
-	public Class<? extends org.lgna.story.resources.sims2.Hair> getHairCls() {
+	public Class<? extends Hair> getHairCls() {
 		return this.hairClsHatNameCombo.getHairCls();
 	}
 
@@ -64,11 +70,11 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		return this.hairClsHatNameCombo.getHatName();
 	}
 
-	public java.util.List<HairColorNameHairCombo> getHairColorNameHairCombos() {
+	public List<HairColorNameHairCombo> getHairColorNameHairCombos() {
 		return this.hairColorNameHairCombos;
 	}
 
-	public org.lgna.story.resources.sims2.Hair getHair( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
+	public Hair getHair( HairColorName hairColorName ) {
 		for( HairColorNameHairCombo hairColorNameHairCombo : this.hairColorNameHairCombos ) {
 			if( hairColorNameHairCombo.getHairColorName() == hairColorName ) {
 				return hairColorNameHairCombo.getHair();
@@ -88,7 +94,7 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		return null;
 	}
 
-	private int compareHatName( org.alice.stageide.personresource.data.HairHatStyle other ) {
+	private int compareHatName( HairHatStyle other ) {
 		String thisHatName = this.getHatName();
 		String otherHatName = other.getHatName();
 		if( thisHatName != null ) {
@@ -106,11 +112,11 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		}
 	}
 
-	private int compareClsName( org.alice.stageide.personresource.data.HairHatStyle other ) {
-		Class<? extends org.lgna.story.resources.sims2.Hair> thisHairCls = this.getHairCls();
-		Class<? extends org.lgna.story.resources.sims2.Hair> otherHairCls = other.getHairCls();
-		String thisSimpleName = thisHairCls.getSimpleName().toLowerCase( java.util.Locale.ENGLISH );
-		String otherSimpleName = otherHairCls.getSimpleName().toLowerCase( java.util.Locale.ENGLISH );
+	private int compareClsName( HairHatStyle other ) {
+		Class<? extends Hair> thisHairCls = this.getHairCls();
+		Class<? extends Hair> otherHairCls = other.getHairCls();
+		String thisSimpleName = thisHairCls.getSimpleName().toLowerCase( Locale.ENGLISH );
+		String otherSimpleName = otherHairCls.getSimpleName().toLowerCase( Locale.ENGLISH );
 		String[] thisSplit = thisSimpleName.split( "hair", 2 );
 		assert thisSplit.length == 2 : thisHairCls;
 		String[] otherSplit = otherSimpleName.split( "hair", 2 );
@@ -119,14 +125,14 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 	}
 
 	@Override
-	public int compareTo( org.alice.stageide.personresource.data.HairHatStyle other ) {
-		Class<? extends org.lgna.story.resources.sims2.Hair> thisHairCls = this.getHairCls();
-		Class<? extends org.lgna.story.resources.sims2.Hair> otherHairCls = other.getHairCls();
+	public int compareTo( HairHatStyle other ) {
+		Class<? extends Hair> thisHairCls = this.getHairCls();
+		Class<? extends Hair> otherHairCls = other.getHairCls();
 		if( thisHairCls.equals( otherHairCls ) ) {
 			return compareHatName( other );
 		} else {
-			org.lgna.story.resources.sims2.Hair thisHair0 = thisHairCls.getEnumConstants()[ 0 ];
-			org.lgna.story.resources.sims2.Hair otherHair0 = otherHairCls.getEnumConstants()[ 0 ];
+			Hair thisHair0 = thisHairCls.getEnumConstants()[ 0 ];
+			Hair otherHair0 = otherHairCls.getEnumConstants()[ 0 ];
 			if( thisHair0.hasHat() ) {
 				if( otherHair0.hasHat() ) {
 					return compareClsName( other );

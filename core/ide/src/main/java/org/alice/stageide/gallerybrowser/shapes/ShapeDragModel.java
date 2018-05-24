@@ -45,6 +45,11 @@ package org.alice.stageide.gallerybrowser.shapes;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -52,7 +57,7 @@ import org.alice.ide.formatter.Formatter;
 public abstract class ShapeDragModel extends GalleryDragModel {
 	private String text;
 
-	public ShapeDragModel( java.util.UUID migrationId ) {
+	public ShapeDragModel( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -78,7 +83,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+	public Model getDropModel( DragStep step, DropSite dropSite ) {
 		return this.getLeftButtonClickModel();
 	}
 

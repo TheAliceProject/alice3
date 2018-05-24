@@ -42,16 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProcessStartException extends Exception {
-	public ProcessStartException( java.io.IOException cause ) {
+	public ProcessStartException( IOException cause ) {
 		super( cause );
 	}
 
 	@Override
-	public synchronized java.io.IOException getCause() {
-		return (java.io.IOException)super.getCause();
+	public synchronized IOException getCause() {
+		return (IOException)super.getCause();
 	}
 }

@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.clipboard.icons;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import org.alice.ide.clipboard.DragReceptorState;
+
+import javax.swing.Icon;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -50,17 +54,19 @@ import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
+import java.lang.reflect.Constructor;
 
 /**
  * This class has been automatically generated using svg2java
  * 
  */
-public class ClipboardIcon implements javax.swing.Icon {
+public class ClipboardIcon implements Icon {
 
 	private float origAlpha = 1.0f;
 
@@ -76,15 +82,15 @@ public class ClipboardIcon implements javax.swing.Icon {
 	//		return new java.awt.RadialGradientPaint( center, radius, focus, fractions, colors, cycleMethod, colorSpace, gradientTransform );
 	//	}
 
-	private static java.awt.Paint new_LinearGradientPaint( Point2D start, Point2D end, float[] fractions, Color[] colors, AffineTransform gradientTransform ) {
+	private static Paint new_LinearGradientPaint( Point2D start, Point2D end, float[] fractions, Color[] colors, AffineTransform gradientTransform ) {
 		try {
 			Class<?> cls = Class.forName( "java.awt.LinearGradientPaint" );
 			Class<?> cycleMethodCls = Class.forName( "java.awt.MultipleGradientPaint$CycleMethod" );
 			Class<?> colorSpaceTypeCls = Class.forName( "java.awt.MultipleGradientPaint$ColorSpaceType" );
 			final Object NO_CYCLE = cycleMethodCls.getField( "NO_CYCLE" ).get( null );
 			final Object SRGB = colorSpaceTypeCls.getField( "SRGB" ).get( null );
-			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Point2D.class, Point2D.class, float[].class, Color[].class, cycleMethodCls, colorSpaceTypeCls, AffineTransform.class );
-			return (java.awt.Paint)cnstrctr.newInstance( start, end, fractions, colors, NO_CYCLE, SRGB, gradientTransform );
+			Constructor<?> cnstrctr = ReflectionUtilities.getConstructor( cls, Point2D.class, Point2D.class, float[].class, Color[].class, cycleMethodCls, colorSpaceTypeCls, AffineTransform.class );
+			return (Paint)cnstrctr.newInstance( start, end, fractions, colors, NO_CYCLE, SRGB, gradientTransform );
 		} catch( Throwable t ) {
 			//t.printStackTrace();
 			return colors[ 0 ];
@@ -92,15 +98,15 @@ public class ClipboardIcon implements javax.swing.Icon {
 		}
 	}
 
-	private static java.awt.Paint new_RadialGradientPaint( Point2D center, float radius, Point2D focus, float[] fractions, Color[] colors, AffineTransform gradientTransform ) {
+	private static Paint new_RadialGradientPaint( Point2D center, float radius, Point2D focus, float[] fractions, Color[] colors, AffineTransform gradientTransform ) {
 		try {
 			Class<?> cls = Class.forName( "java.awt.RadialGradientPaint" );
 			Class<?> cycleMethodCls = Class.forName( "java.awt.MultipleGradientPaint$CycleMethod" );
 			Class<?> colorSpaceTypeCls = Class.forName( "java.awt.MultipleGradientPaint$ColorSpaceType" );
 			final Object NO_CYCLE = cycleMethodCls.getField( "NO_CYCLE" ).get( null );
 			final Object SRGB = colorSpaceTypeCls.getField( "SRGB" ).get( null );
-			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Point2D.class, Float.TYPE, Point2D.class, float[].class, Color[].class, cycleMethodCls, colorSpaceTypeCls, AffineTransform.class );
-			return (java.awt.Paint)cnstrctr.newInstance( center, radius, focus, fractions, colors, NO_CYCLE, SRGB, gradientTransform );
+			Constructor<?> cnstrctr = ReflectionUtilities.getConstructor( cls, Point2D.class, Float.TYPE, Point2D.class, float[].class, Color[].class, cycleMethodCls, colorSpaceTypeCls, AffineTransform.class );
+			return (Paint)cnstrctr.newInstance( center, radius, focus, fractions, colors, NO_CYCLE, SRGB, gradientTransform );
 		} catch( Throwable t ) {
 			//t.printStackTrace();
 			return colors[ 0 ];
@@ -445,7 +451,7 @@ public class ClipboardIcon implements javax.swing.Icon {
 		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -167.00001525878906f, -3.0f ) );
 		paintCompositeGraphicsNode_0_0_2_0_0( g );
 		g.setTransform( trans_0_0_2_0_0 );
-		if( this.isFull || ( this.dragReceptorState == org.alice.ide.clipboard.DragReceptorState.ENTERED ) ) {
+		if( this.isFull || ( this.dragReceptorState == DragReceptorState.ENTERED ) ) {
 			// _0_0_2_0_1
 			g.setComposite( AlphaComposite.getInstance( 3, 0.2f * origAlpha ) );
 			AffineTransform trans_0_0_2_0_1 = g.getTransform();
@@ -562,7 +568,7 @@ public class ClipboardIcon implements javax.swing.Icon {
 	 */
 	private int height;
 
-	private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
+	private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 
 	/**
 	 * Creates a new transcoded SVG image.
@@ -601,11 +607,11 @@ public class ClipboardIcon implements javax.swing.Icon {
 		this.height = newDimension.height;
 	}
 
-	public org.alice.ide.clipboard.DragReceptorState getDragReceptorState() {
+	public DragReceptorState getDragReceptorState() {
 		return this.dragReceptorState;
 	}
 
-	public void setDragReceptorState( org.alice.ide.clipboard.DragReceptorState dragReceptorState ) {
+	public void setDragReceptorState( DragReceptorState dragReceptorState ) {
 		this.dragReceptorState = dragReceptorState;
 	}
 

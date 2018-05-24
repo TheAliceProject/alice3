@@ -43,32 +43,38 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.event.DocumentEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DocumentEventTrigger extends Trigger {
-	public static DocumentEventTrigger createUserInstance( javax.swing.event.DocumentEvent documentEvent ) {
+	public static DocumentEventTrigger createUserInstance( DocumentEvent documentEvent ) {
 		return new DocumentEventTrigger( documentEvent );
 	}
 
-	private final transient javax.swing.event.DocumentEvent documentEvent;
+	private final transient DocumentEvent documentEvent;
 
-	private DocumentEventTrigger( javax.swing.event.DocumentEvent documentEvent ) {
+	private DocumentEventTrigger( DocumentEvent documentEvent ) {
 		this.documentEvent = documentEvent;
 	}
 
-	public DocumentEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public DocumentEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.documentEvent = null;
 	}
 
 	@Override
-	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
+	public ViewController<?, ?> getViewController() {
 		return null;
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
+	public void showPopupMenu( PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
 	}
 }

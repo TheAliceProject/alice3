@@ -43,11 +43,18 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.croquet.models.FilteredListPropertySingleSelectListState;
+import org.alice.ide.declarationseditor.type.data.FilteredMemberData;
+import org.lgna.croquet.Group;
+import org.lgna.project.ast.UserMember;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredMemberState<T extends org.lgna.project.ast.UserMember> extends org.alice.ide.croquet.models.FilteredListPropertySingleSelectListState<T> {
-	public FilteredMemberState( org.lgna.croquet.Group group, java.util.UUID id, org.alice.ide.declarationseditor.type.data.FilteredMemberData<T> data ) {
+public abstract class FilteredMemberState<T extends UserMember> extends FilteredListPropertySingleSelectListState<T> {
+	public FilteredMemberState( Group group, UUID id, FilteredMemberData<T> data ) {
 		super( group, id, -1, data );
 	}
 }

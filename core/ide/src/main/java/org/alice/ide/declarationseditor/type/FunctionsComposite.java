@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.FunctionData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionsComposite extends MethodsComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionsComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, FunctionsComposite> map = Maps.newHashMap();
 
-	public static synchronized FunctionsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized FunctionsComposite getInstance( NamedUserType type ) {
 		FunctionsComposite rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -59,7 +66,7 @@ public class FunctionsComposite extends MethodsComposite {
 		return rv;
 	}
 
-	private FunctionsComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "0d20c5c3-3c91-4881-94a0-1e41d351b8d7" ), new org.alice.ide.declarationseditor.type.data.FunctionData( type ) );
+	private FunctionsComposite( NamedUserType type ) {
+		super( UUID.fromString( "0d20c5c3-3c91-4881-94a0-1e41d351b8d7" ), new FunctionData( type ) );
 	}
 }

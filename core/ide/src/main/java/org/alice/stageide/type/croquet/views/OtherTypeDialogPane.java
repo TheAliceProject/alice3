@@ -42,21 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.ThemeUtilities;
+import org.alice.stageide.type.croquet.OtherTypeDialog;
+import org.alice.stageide.type.croquet.TypeNode;
+import org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.Separator;
+import org.lgna.croquet.views.Tree;
+import org.lgna.croquet.views.VerticalAlignment;
+import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
+
+import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.tree.TreePath;
+import java.awt.Color;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
-	private final org.lgna.croquet.views.Tree<org.alice.stageide.type.croquet.TypeNode> treeView;
+public class OtherTypeDialogPane extends MigPanel {
+	private final Tree<TypeNode> treeView;
 
-	private final org.lgna.croquet.views.AbstractLabel descriptionLabel;
-	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
+	private final AbstractLabel descriptionLabel;
+	private final ValueListener<TypeNode> typeListener = new ValueListener<TypeNode>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.type.croquet.TypeNode> e ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		public void valueChanged( ValueEvent<TypeNode> e ) {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
-					descriptionLabel.getAwtComponent().scrollRectToVisible( new java.awt.Rectangle( 0, 0, 1, 1 ) );
-					javax.swing.tree.TreePath treePath = treeView.getSelectionPath();
+					descriptionLabel.getAwtComponent().scrollRectToVisible( new Rectangle( 0, 0, 1, 1 ) );
+					TreePath treePath = treeView.getSelectionPath();
 					if( treePath != null ) {
 						treeView.scrollPathToVisible( treePath );
 					}
@@ -65,47 +89,47 @@ public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
 		}
 	};
 
-	public OtherTypeDialogPane( org.alice.stageide.type.croquet.OtherTypeDialog composite ) {
+	public OtherTypeDialogPane( OtherTypeDialog composite ) {
 		super( composite, "fill", "[grow 0, shrink 0]16[grow 0, shrink 0]4[grow, shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
 
 		this.treeView = composite.getTypeTreeState().createTree();
-		this.treeView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.TypeCellRenderer() );
-		this.addComponent( new org.lgna.croquet.views.Label( "Filtering", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
-		this.addComponent( new org.lgna.croquet.views.Label( "Selection", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
-		this.addComponent( new org.lgna.croquet.views.Label( "Available Procedures, Functions, and Properties", edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.treeView.setCellRenderer( new TypeCellRenderer() );
+		this.addComponent( new Label( "Filtering", TextWeight.BOLD ) );
+		this.addComponent( new Label( "Selection", TextWeight.BOLD ) );
+		this.addComponent( new Label( "Available Procedures, Functions, and Properties", TextWeight.BOLD ), "wrap" );
 
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx" );
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx" );
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
+		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx" );
+		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx" );
+		this.addComponent( Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 
-		org.lgna.croquet.views.FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
+		FolderTabbedPane tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.addComponent( tabbedPane, "grow" );
 
-		org.lgna.croquet.views.ScrollPane treeScrollPane = new org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
+		ScrollPane treeScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.treeView );
 		this.addComponent( treeScrollPane, "grow" );
 
 		this.descriptionLabel = composite.getDescriptionText().createLabel();
-		this.descriptionLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.descriptionLabel.setVerticalAlignment( org.lgna.croquet.views.VerticalAlignment.TOP );
-		org.lgna.croquet.views.ScrollPane descriptionScrollPane = new org.lgna.croquet.views.ScrollPane( descriptionLabel );
-		this.descriptionLabel.setBackgroundColor( java.awt.Color.WHITE );
-		descriptionScrollPane.setBackgroundColor( java.awt.Color.WHITE );
+		this.descriptionLabel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.descriptionLabel.setVerticalAlignment( VerticalAlignment.TOP );
+		ScrollPane descriptionScrollPane = new ScrollPane( descriptionLabel );
+		this.descriptionLabel.setBackgroundColor( Color.WHITE );
+		descriptionScrollPane.setBackgroundColor( Color.WHITE );
 		this.addComponent( descriptionScrollPane, "grow" );
 
-		java.awt.Color color = org.alice.ide.ThemeUtilities.getActiveTheme().getTypeColor();
-		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 1.1 );
+		Color color = ThemeUtilities.getActiveTheme().getTypeColor();
+		color = ColorUtilities.scaleHSB( color, 1.0, 0.9, 1.1 );
 		this.setBackgroundColor( color );
 		tabbedPane.setBackgroundColor( color );
 	}
 
 	@Override
-	public org.alice.stageide.type.croquet.OtherTypeDialog getComposite() {
-		return (org.alice.stageide.type.croquet.OtherTypeDialog)super.getComposite();
+	public OtherTypeDialog getComposite() {
+		return (OtherTypeDialog)super.getComposite();
 	}
 
 	@Override
 	public void handleCompositePreActivation() {
-		org.alice.stageide.type.croquet.OtherTypeDialog composite = this.getComposite();
+		OtherTypeDialog composite = this.getComposite();
 		composite.getTypeTreeState().addNewSchoolValueListener( this.typeListener );
 		this.treeView.expandAllRows();
 		super.handleCompositePreActivation();
@@ -113,7 +137,7 @@ public class OtherTypeDialogPane extends org.lgna.croquet.views.MigPanel {
 
 	@Override
 	public void handleCompositePostDeactivation() {
-		org.alice.stageide.type.croquet.OtherTypeDialog composite = this.getComposite();
+		OtherTypeDialog composite = this.getComposite();
 		composite.getTypeTreeState().removeNewSchoolValueListener( this.typeListener );
 		super.handleCompositePostDeactivation();
 	}

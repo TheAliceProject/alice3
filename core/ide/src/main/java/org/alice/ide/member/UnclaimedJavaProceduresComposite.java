@@ -43,6 +43,10 @@
 
 package org.alice.ide.member;
 
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +60,11 @@ public class UnclaimedJavaProceduresComposite extends UnclaimedJavaMethodsCompos
 	}
 
 	private UnclaimedJavaProceduresComposite() {
-		super( java.util.UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
+		super( UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
 	}
 
 	@Override
-	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+	protected boolean isAcceptingOf( JavaMethod method ) {
 		return method.isProcedure();
 	}
 }

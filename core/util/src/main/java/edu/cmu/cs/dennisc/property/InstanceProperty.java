@@ -42,6 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,21 +72,21 @@ public class InstanceProperty<T> {
 		return this.name;
 	}
 
-	public void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+	public void addPropertyListener( PropertyListener propertyListener ) {
 		assert propertyListener != null : this;
 		this.propertyListeners.add( propertyListener );
 	}
 
-	public void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+	public void removePropertyListener( PropertyListener propertyListener ) {
 		this.propertyListeners.remove( propertyListener );
 	}
 
-	public java.util.Collection<edu.cmu.cs.dennisc.property.event.PropertyListener> getPropertyListeners() {
-		return java.util.Collections.unmodifiableCollection( this.propertyListeners );
+	public Collection<PropertyListener> getPropertyListeners() {
+		return Collections.unmodifiableCollection( this.propertyListeners );
 	}
 
-	private void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
+	private void firePropertyChanging( PropertyEvent e ) {
+		for( PropertyListener propertyListener : this.propertyListeners ) {
 			propertyListener.propertyChanging( e );
 		}
 		InstancePropertyOwner owner = this.getOwner();
@@ -83,8 +95,8 @@ public class InstanceProperty<T> {
 		}
 	}
 
-	private void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
+	private void firePropertyChanged( PropertyEvent e ) {
+		for( PropertyListener propertyListener : this.propertyListeners ) {
 			propertyListener.propertyChanged( e );
 		}
 		InstancePropertyOwner owner = this.getOwner();
@@ -102,27 +114,27 @@ public class InstanceProperty<T> {
 	}
 
 	public void setValue( T value ) {
-		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, this.owner, value );
+		PropertyEvent e = new PropertyEvent( this, this.owner, value );
 		firePropertyChanging( e );
 		this.value = value;
 		firePropertyChanged( e );
 	}
 
-	protected void writeValue( java.io.ObjectOutputStream oos ) throws java.io.IOException {
-		assert ( this.value == null ) || ( this.value instanceof java.io.Serializable );
+	protected void writeValue( ObjectOutputStream oos ) throws IOException {
+		assert ( this.value == null ) || ( this.value instanceof Serializable );
 		oos.writeObject( this.value );
 	}
 
-	protected void readValue( java.io.ObjectInputStream ois ) throws java.io.IOException, ClassNotFoundException {
+	protected void readValue( ObjectInputStream ois ) throws IOException, ClassNotFoundException {
 		this.value = (T)ois.readObject();
 	}
 
-	private void writeObject( java.io.ObjectOutputStream oos ) throws java.io.IOException {
+	private void writeObject( ObjectOutputStream oos ) throws IOException {
 		oos.defaultWriteObject();
 		writeValue( oos );
 	}
 
-	private void readObject( java.io.ObjectInputStream ois ) throws java.io.IOException, ClassNotFoundException {
+	private void readObject( ObjectInputStream ois ) throws IOException, ClassNotFoundException {
 		ois.defaultReadObject();
 		readValue( ois );
 	}
@@ -158,7 +170,7 @@ public class InstanceProperty<T> {
 		return getClass().getName() + "[owner=" + getOwner() + ";name=" + getName() + "]";
 	}
 
-	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<PropertyListener> propertyListeners = Lists.newCopyOnWriteArrayList();
 	private final InstancePropertyOwner owner;
 	private T value;
 	private String name;

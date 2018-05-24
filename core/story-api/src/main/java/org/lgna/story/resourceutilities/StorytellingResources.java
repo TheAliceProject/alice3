@@ -43,22 +43,33 @@
 package org.lgna.story.resourceutilities;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousStoryApi;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.lgna.story.resources.ModelResource;
+
+import javax.swing.JOptionPane;
 
 public enum StorytellingResources {
 	INSTANCE;
@@ -68,17 +79,17 @@ public enum StorytellingResources {
 
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
-	private List<Class<? extends org.lgna.story.resources.ModelResource>> aliceClassesLoaded = null;
+	private List<Class<? extends ModelResource>> aliceClassesLoaded = null;
 
 	private List<URLClassLoader> resourceClassLoaders;
-	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
+	private static final FileFilter DIR_FILE_FILTER = new FileFilter() {
 		@Override
-		public boolean accept( java.io.File file ) {
+		public boolean accept( File file ) {
 			return file.isDirectory();
 		}
 	};
 
-	public static File getGalleryDirectory( java.io.File dir ) {
+	public static File getGalleryDirectory( File dir ) {
 		if( dir.exists() && dir.isDirectory() ) {
 			File[] dirs = FileUtilities.listDescendants( dir, DIR_FILE_FILTER, 4 ); //only search a limited depth to avoid massive spidering
 			for( File subDir : dirs ) {
@@ -97,7 +108,7 @@ public enum StorytellingResources {
 		//			return rootGallery;
 		//		}
 		//		return null;
-		return org.lgna.story.implementation.StoryApiDirectoryUtilities.getModelGalleryDirectory();
+		return StoryApiDirectoryUtilities.getModelGalleryDirectory();
 	}
 
 	//	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
@@ -137,7 +148,7 @@ public enum StorytellingResources {
 				while( resourcePath.endsWith( "/" ) ) {
 					resourcePath = resourcePath.substring( 0, resourcePath.length() - 1 );
 				}
-				java.io.File galleryDir = new java.io.File( resourcePath );
+				File galleryDir = new File( resourcePath );
 				if( galleryDir.exists() ) {
 					return resourcePath;
 				}
@@ -169,7 +180,7 @@ public enum StorytellingResources {
 		if( IS_IGNORING_PREFERENCES ) {
 			return null;
 		} else {
-			java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+			Preferences rv = Preferences.userRoot();
 			return rv.get( key, def );
 		}
 	}
@@ -203,7 +214,7 @@ public enum StorytellingResources {
 	}
 
 	public void setAliceResourceDirs( String[] dirs ) {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		String dirsString = makeDirectoryPreferenceString( dirs );
 		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, dirsString );
 		String[] galleryDir = getGalleryPathsFromResourcePath( dirsString );
@@ -222,7 +233,7 @@ public enum StorytellingResources {
 	}
 
 	public void setGalleryResourceDirs( String[] dirs ) {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		rv.put( GALLERY_DIRECTORY_PREF_KEY, makeDirectoryPreferenceString( dirs ) );
 	}
 
@@ -270,8 +281,8 @@ public enum StorytellingResources {
 		return baseName;
 	}
 
-	public static java.util.Map<File, List<String>> getClassNamesFromResources( File... resourceFiles ) {
-		java.util.HashMap<File, List<String>> rv = new java.util.HashMap<File, List<String>>();
+	public static Map<File, List<String>> getClassNamesFromResources( File... resourceFiles ) {
+		HashMap<File, List<String>> rv = new HashMap<File, List<String>>();
 		for( File resourceFile : resourceFiles ) {
 			try {
 				if( resourceFile.isDirectory() ) {
@@ -314,8 +325,8 @@ public enum StorytellingResources {
 
 	public List<String> getClassNamesFromResourceFiles( File... resourceFiles ) {
 		List<String> classNames = new LinkedList<String>();
-		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
-		for( java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
+		Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
+		for( Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
 			for( String className : entry.getValue() ) {
 				classNames.add( className );
 			}
@@ -323,8 +334,8 @@ public enum StorytellingResources {
 		return classNames;
 	}
 
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles ) {
-		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+	public List<Class<? extends ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles ) {
+		List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
 		try {
 			URL[] urlArray = new URL[ resourceFiles.length ];
 			for( int i = 0; i < resourceFiles.length; i++ ) {
@@ -334,7 +345,7 @@ public enum StorytellingResources {
 			for( String className : classNames ) {
 				try {
 					Class<?> cls = cl.loadClass( className );
-					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) ) {
+					if( ModelResource.class.isAssignableFrom( cls ) ) {
 						//TEST
 						Field[] fields = cls.getDeclaredFields();
 						Method[] methods = cls.getDeclaredMethods();
@@ -342,17 +353,17 @@ public enum StorytellingResources {
 						Field[] fields2 = cls.getFields();
 						Method[] methods2 = cls.getMethods();
 
-						classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+						classes.add( (Class<? extends ModelResource>)cls );
 					}
 				} catch( Throwable cnfe ) {
 
 					try {
 						Class<?> cls = ClassLoader.getSystemClassLoader().loadClass( className );
-						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) ) {
-							classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+						if( ModelResource.class.isAssignableFrom( cls ) ) {
+							classes.add( (Class<? extends ModelResource>)cls );
 						}
 					} catch( ClassNotFoundException cnfe2 ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
+						Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
 					}
 				}
 			}
@@ -367,22 +378,22 @@ public enum StorytellingResources {
 		return classes;
 	}
 
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourcesFromFiles( File... resourceFiles ) {
-		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+	public List<Class<? extends ModelResource>> loadResourcesFromFiles( File... resourceFiles ) {
+		List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
 
 		List<String> classNames = new LinkedList<String>();
 		LinkedList<URL> urls = new LinkedList<URL>();
 
-		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
+		Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
 
-		for( java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
+		for( Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
 			try {
 				urls.add( entry.getKey().toURI().toURL() );
 				for( String className : entry.getValue() ) {
 					classNames.add( className );
 				}
-			} catch( java.net.MalformedURLException e ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to load resources from jar: " + entry.getKey() );
+			} catch( MalformedURLException e ) {
+				Logger.severe( "Failed to load resources from jar: " + entry.getKey() );
 			}
 		}
 		try {
@@ -392,11 +403,11 @@ public enum StorytellingResources {
 			for( String className : classNames ) {
 				try {
 					Class<?> cls = cl.loadClass( className );
-					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( cls ) ) {
-						classes.add( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+					if( ModelResource.class.isAssignableFrom( cls ) ) {
+						classes.add( (Class<? extends ModelResource>)cls );
 					}
 				} catch( ClassNotFoundException cnfe ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
+					Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
 				}
 			}
 			if( this.resourceClassLoaders == null ) {
@@ -410,14 +421,14 @@ public enum StorytellingResources {
 		return classes;
 	}
 
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> getAndLoadModelResourceClasses( List<File> resourcePaths ) {
+	public List<Class<? extends ModelResource>> getAndLoadModelResourceClasses( List<File> resourcePaths ) {
 		List<File> resourceFiles = new ArrayList<File>();
-		List<Class<? extends org.lgna.story.resources.ModelResource>> galleryClasses = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
+		List<Class<? extends ModelResource>> galleryClasses = new LinkedList<Class<? extends ModelResource>>();
 		for( File modelPath : resourcePaths ) {
 			if( modelPath.exists() ) {
 				if( modelPath.isDirectory() ) {
-					java.util.Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
-					java.util.Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
+					Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
+					Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
 				} else {
 					resourceFiles.add( modelPath );
 				}
@@ -450,21 +461,21 @@ public enum StorytellingResources {
 
 	private void clearAliceResourceInfo() {
 		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
 
 	}
 
 	public static boolean initializeModelClassPath() {
-		List<Class<? extends org.lgna.story.resources.ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
+		List<Class<? extends ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
 		if( classesLoaded != null ) {
 			return true;
 		}
 		return false;
 	}
 
-	/*package-private*/List<Class<? extends org.lgna.story.resources.ModelResource>> findAndLoadAliceResourcesIfNecessary() {
+	/*package-private*/List<Class<? extends ModelResource>> findAndLoadAliceResourcesIfNecessary() {
 		if( this.aliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 			if( resourcePaths.size() == 0 ) {
@@ -505,7 +516,7 @@ public enum StorytellingResources {
 					String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
 					sb.append( "\nVerify that " + phrase + " and verify that Alice is properly installed." );
 				}
-				javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+				JOptionPane.showMessageDialog( null, sb.toString() );
 			} else {
 				String[] galleryDirs = new String[ resourcePaths.size() ];
 				for( int i = 0; i < resourcePaths.size(); i++ ) {
@@ -524,7 +535,7 @@ public enum StorytellingResources {
 
 	public URL getAliceResource( String resourceString ) {
 		if( resourceString.contains( "ı" ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( resourceString );
+			Logger.severe( resourceString );
 			resourceString = resourceString.replaceAll( "ı", "i" );
 		}
 		this.findAndLoadAliceResourcesIfNecessary();

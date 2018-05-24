@@ -47,13 +47,15 @@ import org.lgna.ik.poser.scene.FlyerPoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SFlyer;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class FlyerPoser extends PoserComposite<SFlyer> {
 
 	public FlyerPoser( NamedUserType valueType ) {
-		super( java.util.UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ), valueType );
+		super( UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ), valueType );
 	}
 
 	@Override

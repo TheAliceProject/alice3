@@ -42,20 +42,26 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.views;
 
+import org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
+import org.alice.stageide.gallerybrowser.ShapesTab;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ShapesTabView extends GalleryTabView {
-	public ShapesTabView( org.alice.stageide.gallerybrowser.ShapesTab composite ) {
+	public ShapesTabView( ShapesTab composite ) {
 		super( composite );
-		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "insets 0, aligny bottom", "[]0[]", "" );
-		for( org.alice.stageide.gallerybrowser.shapes.ShapeDragModel dragModel : composite.getDragModels() ) {
-			panel.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( dragModel ) );
+		MigPanel panel = new MigPanel( null, "insets 0, aligny bottom", "[]0[]", "" );
+		for( ShapeDragModel dragModel : composite.getDragModels() ) {
+			panel.addComponent( new GalleryDragComponent( dragModel ) );
 		}
 
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
-		org.lgna.croquet.views.ScrollPane scrollPane = createGalleryScrollPane( panel );
+		ScrollPane scrollPane = createGalleryScrollPane( panel );
 		this.addCenterComponent( scrollPane );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}

@@ -42,10 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.print.Printable;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Printable {
+public class UnitQuaternion implements Orientation, Printable {
 	public double x = Double.NaN;
 	public double y = Double.NaN;
 	public double z = Double.NaN;
@@ -133,7 +141,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		return rv;
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		x = binaryDecoder.decodeDouble();
 		y = binaryDecoder.decodeDouble();
 		z = binaryDecoder.decodeDouble();
@@ -141,7 +149,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
 		binaryEncoder.encode( z );
@@ -149,7 +157,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 	}
 
 	@Override
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException {
 		if( isLines ) {
 			rv.append( "+-       -+\n" );
 			rv.append( "| " );
@@ -270,12 +278,12 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.print.Pri
 		if( m.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: UnitQuaternion set to non-unit Matrix3x3" );
-			edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "right magnitude:   ", m.right.calculateMagnitude() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "up magnitude:      ", m.up.calculateMagnitude() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "backward magnitude:", m.backward.calculateMagnitude() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
+			PrintUtilities.println( "WARNING: UnitQuaternion set to non-unit Matrix3x3" );
+			PrintUtilities.printlns( m );
+			PrintUtilities.println( "right magnitude:   ", m.right.calculateMagnitude() );
+			PrintUtilities.println( "up magnitude:      ", m.up.calculateMagnitude() );
+			PrintUtilities.println( "backward magnitude:", m.backward.calculateMagnitude() );
+			PrintUtilities.println();
 		}
 		setValue( new AxisRotation( m ) );
 	}

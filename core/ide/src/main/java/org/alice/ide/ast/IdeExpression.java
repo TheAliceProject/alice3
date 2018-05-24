@@ -43,9 +43,11 @@
 
 package org.alice.ide.ast;
 
+import org.lgna.project.ast.FauxExpression;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeExpression extends org.lgna.project.ast.FauxExpression {
+public abstract class IdeExpression extends FauxExpression {
 
 }

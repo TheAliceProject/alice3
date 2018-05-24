@@ -42,13 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.event;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import javax.swing.SwingUtilities;
+import javax.swing.event.MenuDragMouseEvent;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MouseEventUtilities {
-	public static boolean isQuoteLeftUnquoteMouseButton( java.awt.event.MouseEvent e ) {
-		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+	public static boolean isQuoteLeftUnquoteMouseButton( MouseEvent e ) {
+		if( SwingUtilities.isLeftMouseButton( e ) ) {
+			if( SystemUtilities.isMac() ) {
 				return e.isControlDown() == false;
 			} else {
 				return true;
@@ -58,12 +66,12 @@ public class MouseEventUtilities {
 		}
 	}
 
-	public static boolean isQuoteRightUnquoteMouseButton( java.awt.event.MouseEvent e ) {
-		if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+	public static boolean isQuoteRightUnquoteMouseButton( MouseEvent e ) {
+		if( SwingUtilities.isRightMouseButton( e ) ) {
 			return true;
 		} else {
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-				if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if( SystemUtilities.isMac() ) {
+				if( SwingUtilities.isLeftMouseButton( e ) ) {
 					return e.isControlDown();
 				} else {
 					return false;
@@ -74,9 +82,9 @@ public class MouseEventUtilities {
 		}
 	}
 
-	public static java.awt.event.MouseEvent performPlatformFilter( java.awt.event.MouseEvent original ) {
-		java.awt.event.MouseEvent rv;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+	public static MouseEvent performPlatformFilter( MouseEvent original ) {
+		MouseEvent rv;
+		if( SystemUtilities.isMac() ) {
 			int completeModifiers = InputEventUtilities.getCompleteModifiers( original );
 			int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter( completeModifiers );
 			if( completeModifiers == filteredModifiers ) {
@@ -85,7 +93,7 @@ public class MouseEventUtilities {
 				//todo:
 				boolean isPopupTrigger = original.isPopupTrigger();
 
-				rv = new java.awt.event.MouseEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getX(), original.getY(), original.getClickCount(), isPopupTrigger );
+				rv = new MouseEvent( original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getX(), original.getY(), original.getClickCount(), isPopupTrigger );
 			}
 		} else {
 			rv = original;
@@ -93,19 +101,19 @@ public class MouseEventUtilities {
 		return rv;
 	}
 
-	public static java.awt.event.MouseEvent convertMouseEvent( java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination ) {
+	public static MouseEvent convertMouseEvent( Component source, MouseEvent sourceEvent, Component destination ) {
 		int modifiers = sourceEvent.getModifiers();
 		int modifiersEx = sourceEvent.getModifiersEx();
 		int modifiersComplete = modifiers | modifiersEx;
-		java.awt.event.MouseEvent me = javax.swing.SwingUtilities.convertMouseEvent( source, sourceEvent, destination );
-		if( me instanceof java.awt.event.MouseWheelEvent ) {
-			java.awt.event.MouseWheelEvent mwe = (java.awt.event.MouseWheelEvent)me;
-			return new java.awt.event.MouseWheelEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mwe.getScrollType(), mwe.getScrollAmount(), mwe.getWheelRotation() );
-		} else if( me instanceof javax.swing.event.MenuDragMouseEvent ) {
-			javax.swing.event.MenuDragMouseEvent mdme = (javax.swing.event.MenuDragMouseEvent)me;
-			return new javax.swing.event.MenuDragMouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mdme.getPath(), mdme.getMenuSelectionManager() );
+		MouseEvent me = SwingUtilities.convertMouseEvent( source, sourceEvent, destination );
+		if( me instanceof MouseWheelEvent ) {
+			MouseWheelEvent mwe = (MouseWheelEvent)me;
+			return new MouseWheelEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mwe.getScrollType(), mwe.getScrollAmount(), mwe.getWheelRotation() );
+		} else if( me instanceof MenuDragMouseEvent ) {
+			MenuDragMouseEvent mdme = (MenuDragMouseEvent)me;
+			return new MenuDragMouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mdme.getPath(), mdme.getMenuSelectionManager() );
 		} else {
-			return new java.awt.event.MouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger() );
+			return new MouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger() );
 		}
 	}
 }

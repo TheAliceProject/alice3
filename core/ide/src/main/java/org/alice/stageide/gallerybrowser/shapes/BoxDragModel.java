@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite;
+import org.alice.stageide.icons.BoxIconFactory;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SBox;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BoxDragModel extends ShapeDragModel {
-	private static final org.lgna.story.SBox sModel = new org.lgna.story.SBox();
+	private static final SBox sModel = new SBox();
 
 	private static class SingletonHolder {
 		private static BoxDragModel instance = new BoxDragModel();
@@ -57,12 +67,12 @@ public class BoxDragModel extends ShapeDragModel {
 	}
 
 	private BoxDragModel() {
-		super( java.util.UUID.fromString( "d8c23a3c-d510-43e4-a26f-26b565f18c0f" ) );
+		super( UUID.fromString( "d8c23a3c-d510-43e4-a26f-26b565f18c0f" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +81,12 @@ public class BoxDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getLaunchOperation();
+	public Model getLeftButtonClickModel() {
+		return AddBoxManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.BoxIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return BoxIconFactory.getInstance();
 	}
 }

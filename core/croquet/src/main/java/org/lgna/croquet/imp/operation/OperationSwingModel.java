@@ -42,24 +42,31 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.operation;
 
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.triggers.ActionEventTrigger;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OperationSwingModel {
-	/*package-private*/OperationSwingModel( org.lgna.croquet.Operation operation ) {
+	/*package-private*/OperationSwingModel( Operation operation ) {
 		this.operation = operation;
 	}
 
-	public javax.swing.Action getAction() {
+	public Action getAction() {
 		return this.action;
 	}
 
-	private final org.lgna.croquet.Operation operation;
+	private final Operation operation;
 	//todo: private
-	/*package-private*/final javax.swing.Action action = new javax.swing.AbstractAction() {
+	/*package-private*/final Action action = new AbstractAction() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+		public void actionPerformed( ActionEvent e ) {
+			operation.fire( ActionEventTrigger.createUserInstance( e ) );
 		}
 	};
 

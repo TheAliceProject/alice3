@@ -43,18 +43,22 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.SingleSelectTableRowState;
+
+import javax.swing.JTable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Table<T> extends ViewController<javax.swing.JTable, org.lgna.croquet.SingleSelectTableRowState<T>> {
-	public Table( org.lgna.croquet.SingleSelectTableRowState<T> model ) {
+public class Table<T> extends ViewController<JTable, SingleSelectTableRowState<T>> {
+	public Table( SingleSelectTableRowState<T> model ) {
 		super( model );
 	}
 
 	@Override
-	protected javax.swing.JTable createAwtComponent() {
-		org.lgna.croquet.SingleSelectTableRowState<T>.SwingModel swingModel = this.getModel().getSwingModel();
-		javax.swing.JTable rv = new javax.swing.JTable( swingModel.getTableModel(), swingModel.getTableColumnModel(), swingModel.getListSelectionModel() );
+	protected JTable createAwtComponent() {
+		SingleSelectTableRowState<T>.SwingModel swingModel = this.getModel().getSwingModel();
+		JTable rv = new JTable( swingModel.getTableModel(), swingModel.getTableColumnModel(), swingModel.getListSelectionModel() );
 		return rv;
 	}
 }

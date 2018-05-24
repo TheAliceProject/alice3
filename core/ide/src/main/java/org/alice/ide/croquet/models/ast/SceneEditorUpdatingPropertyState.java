@@ -43,55 +43,74 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.PropertyState;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SceneEditorUpdatingPropertyState extends org.alice.ide.ast.PropertyState {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserField, org.lgna.project.ast.JavaMethod, SceneEditorUpdatingPropertyState> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class SceneEditorUpdatingPropertyState extends PropertyState {
+	private static MapToMap<UserField, JavaMethod, SceneEditorUpdatingPropertyState> mapToMap = MapToMap.newInstance();
 
-	public static synchronized SceneEditorUpdatingPropertyState getInstanceForSetter( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
-		return mapToMap.getInitializingIfAbsent( field, setter, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserField, org.lgna.project.ast.JavaMethod, SceneEditorUpdatingPropertyState>() {
+	public static synchronized SceneEditorUpdatingPropertyState getInstanceForSetter( UserField field, JavaMethod setter ) {
+		return mapToMap.getInitializingIfAbsent( field, setter, new MapToMap.Initializer<UserField, JavaMethod, SceneEditorUpdatingPropertyState>() {
 			@Override
-			public SceneEditorUpdatingPropertyState initialize( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
+			public SceneEditorUpdatingPropertyState initialize( UserField field, JavaMethod setter ) {
 				return new SceneEditorUpdatingPropertyState( field, setter );
 			}
 		} );
 	}
 
-	public static synchronized SceneEditorUpdatingPropertyState getInstanceForGetter( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( field, org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
+	public static synchronized SceneEditorUpdatingPropertyState getInstanceForGetter( UserField field, JavaMethod getter ) {
+		return getInstanceForSetter( field, AstUtilities.getSetterForGetter( getter ) );
 	}
 
-	private final org.lgna.project.ast.UserField field;
+	private final UserField field;
 
-	private SceneEditorUpdatingPropertyState( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), setter );
+	private SceneEditorUpdatingPropertyState( UserField field, JavaMethod setter ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), setter );
 		this.field = field;
 	}
 
-	public org.lgna.project.ast.UserField getField() {
+	public UserField getField() {
 		return this.field;
 	}
 
 	@Override
-	protected void handleTruthAndBeautyValueChange( org.lgna.project.ast.Expression nextValue ) {
+	protected void handleTruthAndBeautyValueChange( Expression nextValue ) {
 		super.handleTruthAndBeautyValueChange( nextValue );
-		if( nextValue instanceof org.lgna.project.ast.NullLiteral ) {
+		if( nextValue instanceof NullLiteral ) {
 			//do nothing for null literals
 		}
 		else {
-			org.lgna.project.ast.Expression e;
+			Expression e;
 			if( this.field == null ) {
-				e = org.lgna.project.ast.ThisExpression.createInstanceThatCanExistWithoutAnAncestorType( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneType() );
+				e = ThisExpression.createInstanceThatCanExistWithoutAnAncestorType( StorytellingSceneEditor.getInstance().getActiveSceneType() );
 			}
 			else {
-				e = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
+				e = new FieldAccess( new ThisExpression(), this.field );
 			}
-			org.lgna.project.ast.AbstractParameter parameter = this.getSetter().getRequiredParameters().get( 0 );
-			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, nextValue );
-			org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( e, this.getSetter(), argument );
-			org.lgna.project.ast.Statement s = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().executeStatements( s );
+			AbstractParameter parameter = this.getSetter().getRequiredParameters().get( 0 );
+			SimpleArgument argument = new SimpleArgument( parameter, nextValue );
+			MethodInvocation methodInvocation = new MethodInvocation( e, this.getSetter(), argument );
+			Statement s = new ExpressionStatement( methodInvocation );
+			StorytellingSceneEditor.getInstance().executeStatements( s );
 		}
 	}
 }

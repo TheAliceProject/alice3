@@ -43,10 +43,20 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.PopupPrepModel;
+import org.lgna.croquet.triggers.MouseEventTrigger;
+
+import javax.swing.JComponent;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ViewController<J extends javax.swing.JComponent, M extends org.lgna.croquet.Model> extends SwingComponentView<J> {
+public abstract class ViewController<J extends JComponent, M extends Model> extends SwingComponentView<J> {
 	private final M model;
 
 	public ViewController( M model ) {
@@ -68,38 +78,38 @@ public abstract class ViewController<J extends javax.swing.JComponent, M extends
 	//		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
 	//	}
 
-	private org.lgna.croquet.PopupPrepModel popupPrepModel;
+	private PopupPrepModel popupPrepModel;
 
-	public final org.lgna.croquet.PopupPrepModel getPopupPrepModel() {
+	public final PopupPrepModel getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
 
-	public final void setPopupPrepModel( org.lgna.croquet.PopupPrepModel popupMenuPrepModel ) {
+	public final void setPopupPrepModel( PopupPrepModel popupMenuPrepModel ) {
 		if( this.getAwtComponent().getParent() == null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: setPopupMenuOperation" );
+			PrintUtilities.println( "warning: setPopupMenuOperation" );
 		}
 		if( this.popupPrepModel != null ) {
 			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-			org.lgna.croquet.views.ComponentManager.removeComponent( this.popupPrepModel, this );
+			ComponentManager.removeComponent( this.popupPrepModel, this );
 		}
 		this.popupPrepModel = popupMenuPrepModel;
 		if( this.popupPrepModel != null ) {
-			org.lgna.croquet.views.ComponentManager.addComponent( this.popupPrepModel, this );
+			ComponentManager.addComponent( this.popupPrepModel, this );
 			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
 		}
 	}
 
-	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+	private LenientMouseClickAdapter lenientMouseClickAdapter = new LenientMouseClickAdapter() {
 		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 1 ) {
 				if( ViewController.this.popupPrepModel != null ) {
-					if( ( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton == false ) || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						ViewController.this.popupPrepModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( ViewController.this, e ) );
+					if( ( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton == false ) || MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+						ViewController.this.popupPrepModel.fire( MouseEventTrigger.createUserInstance( ViewController.this, e ) );
 					}
 				}
 			}
@@ -124,19 +134,19 @@ public abstract class ViewController<J extends javax.swing.JComponent, M extends
 	//	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
 		M model = this.getModel();
 		if( model != null ) {
-			org.lgna.croquet.views.ComponentManager.addComponent( model, this );
+			ComponentManager.addComponent( model, this );
 		}
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		M model = this.getModel();
 		if( model != null ) {
-			org.lgna.croquet.views.ComponentManager.removeComponent( model, this );
+			ComponentManager.removeComponent( model, this );
 		}
 		super.handleRemovedFrom( parent );
 	}

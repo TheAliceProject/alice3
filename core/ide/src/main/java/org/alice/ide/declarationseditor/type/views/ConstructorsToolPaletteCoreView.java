@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConstructorsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public ConstructorsToolPaletteCoreView( org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite composite ) {
+	public ConstructorsToolPaletteCoreView( ConstructorsToolPaletteCoreComposite composite ) {
 		super( composite );
 		this.addComponent( composite.getMembersComposite().getView() );
 	}

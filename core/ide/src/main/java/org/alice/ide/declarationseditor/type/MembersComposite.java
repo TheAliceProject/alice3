@@ -42,20 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.data.FilteredMemberData;
+import org.alice.ide.declarationseditor.type.views.MembersView;
+import org.lgna.croquet.ListDataComposite;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMember;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersComposite<T extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.ListDataComposite<T, org.alice.ide.declarationseditor.type.views.MembersView<T>> {
-	public MembersComposite( java.util.UUID migrationId, org.alice.ide.declarationseditor.type.data.FilteredMemberData<T> data ) {
+public abstract class MembersComposite<T extends UserMember> extends ListDataComposite<T, MembersView<T>> {
+	public MembersComposite( UUID migrationId, FilteredMemberData<T> data ) {
 		super( migrationId, data );
 	}
 
-	public org.lgna.project.ast.NamedUserType getType() {
-		return ( (org.alice.ide.declarationseditor.type.data.FilteredMemberData<T>)this.getData() ).getType();
+	public NamedUserType getType() {
+		return ( (FilteredMemberData<T>)this.getData() ).getType();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

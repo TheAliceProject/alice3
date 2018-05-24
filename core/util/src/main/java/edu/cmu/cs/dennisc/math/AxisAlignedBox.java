@@ -43,10 +43,14 @@
 
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
 	private final Point3 minimum = Point3.createNaN();
 	private final Point3 maximum = Point3.createNaN();
 
@@ -71,7 +75,7 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 		set( other );
 	}
 
-	public AxisAlignedBox( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public AxisAlignedBox( BinaryDecoder binaryDecoder ) {
 		this.minimum.decode( binaryDecoder );
 		this.maximum.decode( binaryDecoder );
 	}
@@ -81,7 +85,7 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 	//		m_maximum.decode( binaryDecoder );
 	//	}
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		this.minimum.encode( binaryEncoder );
 		this.maximum.encode( binaryEncoder );
 	}

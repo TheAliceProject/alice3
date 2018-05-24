@@ -43,13 +43,27 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterBlank extends ExpressionBlank {
-	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractParameter, ParameterBlank> map = Maps.newHashMap();
 
-	public static synchronized ParameterBlank getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
+	public static synchronized ParameterBlank getInstance( AbstractParameter parameter ) {
 		assert parameter != null;
 		ParameterBlank rv = map.get( parameter );
 		if( rv != null ) {
@@ -61,23 +75,23 @@ public class ParameterBlank extends ExpressionBlank {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractParameter parameter;
+	private final AbstractParameter parameter;
 
-	private ParameterBlank( org.lgna.project.ast.AbstractParameter parameter ) {
-		super( java.util.UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getValueType(), parameter.getDetails() );
+	private ParameterBlank( AbstractParameter parameter ) {
+		super( UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getValueType(), parameter.getDetails() );
 		this.parameter = parameter;
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
-		org.lgna.project.ast.AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
+		AbstractType<?, ?, ?> valueType = this.parameter.getValueType();
+		AbstractType<?, ?, ?> keywordFactoryType = valueType.getKeywordFactoryType();
 		if( keywordFactoryType != null ) {
-			Class<?> cls = ( (org.lgna.project.ast.JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
-			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
-				org.lgna.project.ast.JavaType returnType = org.lgna.project.ast.JavaType.getInstance( mthd.getReturnType() );
+			Class<?> cls = ( (JavaType)keywordFactoryType ).getClassReflectionProxy().getReification();
+			for( Method mthd : cls.getMethods() ) {
+				JavaType returnType = JavaType.getInstance( mthd.getReturnType() );
 				if( returnType == valueType ) {
-					children.add( KeywordMenuModel.getInstance( org.lgna.project.ast.JavaMethod.getInstance( mthd ) ) );
+					children.add( KeywordMenuModel.getInstance( JavaMethod.getInstance( mthd ) ) );
 				}
 			}
 		} else {

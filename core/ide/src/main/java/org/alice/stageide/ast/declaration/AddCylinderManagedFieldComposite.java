@@ -44,6 +44,13 @@ package org.alice.stageide.ast.declaration;
 
 import org.alice.stageide.gallerybrowser.shapes.CylinderDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.SCylinder;
+import org.lgna.story.SetLength;
+import org.lgna.story.SetRadius;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,22 +64,22 @@ public class AddCylinderManagedFieldComposite extends AddModelManagedFieldCompos
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, org.lgna.story.SCylinder.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> lengthState = this.createInitialPropertyValueExpressionState( "lengthState", 1.0, org.lgna.story.SCylinder.class, "setLength", Number.class, org.lgna.story.SetLength.Detail[].class );
+	private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, SCylinder.class, "setRadius", Number.class, SetRadius.Detail[].class );
+	private final CustomItemState<Expression> lengthState = this.createInitialPropertyValueExpressionState( "lengthState", 1.0, SCylinder.class, "setLength", Number.class, SetLength.Detail[].class );
 
 	private AddCylinderManagedFieldComposite() {
-		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ), org.lgna.story.SCylinder.class );
+		super( UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ), SCylinder.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return CylinderDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+	public CustomItemState<Expression> getRadiusState() {
 		return this.radiusState;
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getLengthState() {
+	public CustomItemState<Expression> getLengthState() {
 		return this.lengthState;
 	}
 }

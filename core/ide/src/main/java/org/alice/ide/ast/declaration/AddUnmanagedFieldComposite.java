@@ -43,26 +43,39 @@
 
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.declaration.views.AddFieldView;
+import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
+import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
+import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddUnmanagedFieldComposite extends AddFieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserType<?>, AddUnmanagedFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite>() {
+	public static AddUnmanagedFieldComposite getInstance( UserType<?> declaringType ) {
+		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddUnmanagedFieldComposite>() {
 			@Override
-			public AddUnmanagedFieldComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+			public AddUnmanagedFieldComposite initialize( UserType<?> declaringType ) {
 				return new AddUnmanagedFieldComposite( declaringType );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserType<?> declaringType;
+	private final UserType<?> declaringType;
 
-	private AddUnmanagedFieldComposite( org.lgna.project.ast.UserType<?> declaringType ) {
+	private AddUnmanagedFieldComposite( UserType<?> declaringType ) {
 		super(
-				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ),
+				UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ),
 				new FieldDetailsBuilder()
 						.isFinal( ApplicabilityStatus.EDITABLE, false )
 						.valueComponentType( ApplicabilityStatus.EDITABLE, null )
@@ -74,11 +87,11 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
 
 	@Override
 	protected boolean isNullAllowedForInitializer() {
-		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getValue();
+		return IsNullAllowedForFieldInitializers.getInstance().getValue();
 	}
 
 	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
 
@@ -88,17 +101,17 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
 	}
 
 	@Override
-	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return org.lgna.project.ast.ManagementLevel.NONE;
+	protected ManagementLevel getManagementLevel() {
+		return ManagementLevel.NONE;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
+	protected DeclareFieldEdit createEdit( CompletionStep<?> step, UserType<?> declaringType, UserField field ) {
+		return new DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.AddFieldView createView() {
-		return new org.alice.ide.ast.declaration.views.AddFieldView( this );
+	protected AddFieldView createView() {
+		return new AddFieldView( this );
 	}
 }

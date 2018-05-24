@@ -42,16 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.adapters.EnterProximityEventListenerAdapterFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.ProximityEnterListener;
+
+import java.util.List;
+
 /**
  * @author Matt May
  */
-public class EnterProximityEventListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public class EnterProximityEventListenerFillerInner extends ExpressionFillerInner {
 	public EnterProximityEventListenerFillerInner() {
-		super( org.lgna.story.event.ProximityEnterListener.class );
+		super( ProximityEnterListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.EnterProximityEventListenerAdapterFillIn.getInstance() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( EnterProximityEventListenerAdapterFillIn.getInstance() );
 	}
 }

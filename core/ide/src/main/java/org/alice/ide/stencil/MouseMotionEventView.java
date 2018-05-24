@@ -42,30 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.stencil;
 
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+
+import java.awt.AWTEvent;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MouseMotionEventView extends CustomView {
-	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
+	private final AWTEventListener awtEventListener = new AWTEventListener() {
 		@Override
-		public void eventDispatched( java.awt.AWTEvent event ) {
-			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
-			e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( e.getComponent(), e, MouseMotionEventView.this.getAwtComponent() );
+		public void eventDispatched( AWTEvent event ) {
+			MouseEvent e = (MouseEvent)event;
+			e = MouseEventUtilities.convertMouseEvent( e.getComponent(), e, MouseMotionEventView.this.getAwtComponent() );
 			MouseMotionEventView.this.handleMouseMotionEvent( e );
 		}
 	};
 
-	protected abstract void handleMouseMotionEvent( java.awt.event.MouseEvent e );
+	protected abstract void handleMouseMotionEvent( MouseEvent e );
 
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+		Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, AWTEvent.MOUSE_MOTION_EVENT_MASK );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
+		Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
 		super.handleUndisplayable();
 	}
 }

@@ -47,17 +47,23 @@ import org.alice.interact.InteractionGroup;
 import org.alice.interact.InteractionGroup.InteractionInfo;
 import org.alice.interact.PickHint;
 import org.alice.interact.PickUtilities;
+import org.alice.interact.handle.HandleStyle;
 import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
+import javax.swing.SwingUtilities;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 public abstract class CroquetSupportingDragAdapter extends AbstractDragAdapter {
-	private java.awt.Point getDragAndDropPoint( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
+	private Point getDragAndDropPoint( DragStep dragAndDropContext ) {
+		MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+		Point pointInLookingGlass = SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
 		return pointInLookingGlass;
 	}
 
-	public void dragUpdated( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void dragUpdated( DragStep dragAndDropContext ) {
 		this.currentInputState.setDragAndDropContext( dragAndDropContext );
 		this.currentInputState.setIsDragEvent( true );
 		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
@@ -66,7 +72,7 @@ public abstract class CroquetSupportingDragAdapter extends AbstractDragAdapter {
 		this.fireStateChange();
 	}
 
-	public void dragEntered( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void dragEntered( DragStep dragAndDropContext ) {
 		this.currentInputState.setDragAndDropContext( dragAndDropContext );
 		this.currentInputState.setIsDragEvent( true );
 		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
@@ -75,7 +81,7 @@ public abstract class CroquetSupportingDragAdapter extends AbstractDragAdapter {
 		this.fireStateChange();
 	}
 
-	public void dragExited( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void dragExited( DragStep dragAndDropContext ) {
 		this.currentInputState.setDragAndDropContext( dragAndDropContext ); //We need a valid dragAndDropContext when we handle the update
 		this.currentInputState.setIsDragEvent( false );
 		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
@@ -85,11 +91,11 @@ public abstract class CroquetSupportingDragAdapter extends AbstractDragAdapter {
 		this.currentInputState.setDragAndDropContext( null );
 	}
 
-	protected abstract SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> getHandleStyleState();
+	protected abstract SingleSelectListState<HandleStyle, ?> getHandleStyleState();
 
 	@Override
-	protected void setHandleSelectionState( org.alice.interact.handle.HandleStyle handleStyle ) {
-		SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
+	protected void setHandleSelectionState( HandleStyle handleStyle ) {
+		SingleSelectListState<HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
 		if( handleStyleListSelectionState != null ) {
 			handleStyleListSelectionState.setValueTransactionlessly( handleStyle );
 		}
@@ -97,15 +103,15 @@ public abstract class CroquetSupportingDragAdapter extends AbstractDragAdapter {
 
 	@Override
 	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-		SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
+		SingleSelectListState<HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
 		if( handleStyleListSelectionState != null ) {
-			org.alice.interact.handle.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
+			HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
 			InteractionGroup selectedStateGroup = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
 			InteractionInfo selectedState = selectedStateGroup.getMatchingInfo( ObjectType.getObjectType( selected ) );
 			if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
 				PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
 				if( !selectedState.canUseIteractionGroup( pickHint ) ) {
-					for( org.alice.interact.handle.HandleStyle handleStyle : handleStyleListSelectionState ) {
+					for( HandleStyle handleStyle : handleStyleListSelectionState ) {
 						InteractionGroup interactionStateGroup = this.mapHandleStyleToInteractionGroup.get( handleStyle );
 						InteractionInfo interactionState = interactionStateGroup.getMatchingInfo( ObjectType.getObjectType( selected ) );
 						if( interactionState.canUseIteractionGroup( pickHint ) ) {

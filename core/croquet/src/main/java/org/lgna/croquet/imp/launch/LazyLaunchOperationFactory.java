@@ -42,27 +42,34 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.launch;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Initializer;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.OperationOwningComposite;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LazyLaunchOperationFactory<C extends org.lgna.croquet.OperationOwningComposite<?>> {
-	public LazyLaunchOperationFactory( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+public abstract class LazyLaunchOperationFactory<C extends OperationOwningComposite<?>> {
+	public LazyLaunchOperationFactory( Class<C> cls, Lazy<C> lazy ) {
 		this.cls = cls;
 		this.lazy = lazy;
 	}
 
-	public edu.cmu.cs.dennisc.pattern.Lazy<C> getLazy() {
+	public Lazy<C> getLazy() {
 		return this.lazy;
 	}
 
-	/*package-private*/Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	/*package-private*/Class<? extends Element> getClassUsedForLocalization() {
 		return this.cls;
 	}
 
-	protected org.lgna.croquet.Operation createLaunchOperation( org.lgna.croquet.Group group, String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
+	protected Operation createLaunchOperation( Group group, String subKeyText, Initializer<C> initializer ) {
 		return new LazyLaunchOperation<C>( this, group, subKeyText, initializer );
 	}
 
 	private final Class<C> cls;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
+	private final Lazy<C> lazy;
 }

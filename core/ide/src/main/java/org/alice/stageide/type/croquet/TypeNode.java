@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet;
 
+import org.lgna.project.ast.AbstractType;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeNode extends javax.swing.tree.DefaultMutableTreeNode {
+public class TypeNode extends DefaultMutableTreeNode {
 	//	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 	//
 	//	public static TypeNode getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
@@ -56,13 +60,13 @@ public class TypeNode extends javax.swing.tree.DefaultMutableTreeNode {
 	//		} );
 	//	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 
-	public TypeNode( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public TypeNode( AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.type;
 	}
 }

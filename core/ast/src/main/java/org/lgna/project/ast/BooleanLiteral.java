@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,12 +63,12 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Boolean> getValueProperty() {
+	public InstanceProperty<Boolean> getValueProperty() {
 		return this.value;
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendBoolean( this.value.getValue() );
 	}
 
@@ -73,5 +77,5 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 		generator.appendBoolean( this.value.getValue() );
 	}
 
-	public final edu.cmu.cs.dennisc.property.BooleanProperty value = new edu.cmu.cs.dennisc.property.BooleanProperty( this, null );
+	public final BooleanProperty value = new BooleanProperty( this, null );
 }

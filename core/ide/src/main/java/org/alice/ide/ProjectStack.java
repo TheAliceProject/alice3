@@ -43,6 +43,11 @@
 
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.Project;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,9 +56,9 @@ public class ProjectStack {
 		throw new AssertionError();
 	}
 
-	private static final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private static final DStack<Project> projectStack = Stacks.newStack();
 
-	private static org.lgna.project.Project peekProject( boolean isUpToDate ) {
+	private static Project peekProject( boolean isUpToDate ) {
 		if( projectStack.size() > 0 ) {
 			return projectStack.peek();
 		} else {
@@ -71,26 +76,26 @@ public class ProjectStack {
 	}
 
 	//todo?
-	public static org.lgna.project.Project peekProject() {
+	public static Project peekProject() {
 		return peekProject( false );
 	}
 
-	public static org.lgna.project.Project peekUpToDateProject() {
+	public static Project peekUpToDateProject() {
 		return peekProject( true );
 	}
 
-	public static void pushProject( org.lgna.project.Project project ) {
+	public static void pushProject( Project project ) {
 		projectStack.push( project );
 	}
 
-	public static org.lgna.project.Project popProject() {
+	public static Project popProject() {
 		return projectStack.pop();
 	}
 
-	public static org.lgna.project.Project popAndCheckProject( org.lgna.project.Project expectedProject ) {
-		org.lgna.project.Project poppedProject = popProject();
+	public static Project popAndCheckProject( Project expectedProject ) {
+		Project poppedProject = popProject();
 		if( poppedProject != expectedProject ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( poppedProject, expectedProject );
+			Logger.severe( poppedProject, expectedProject );
 		}
 		return poppedProject;
 	}

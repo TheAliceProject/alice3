@@ -44,6 +44,15 @@ package org.alice.stageide.ast.declaration;
 
 import org.alice.stageide.gallerybrowser.shapes.BoxDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.SBox;
+import org.lgna.story.SModel;
+import org.lgna.story.SetDepth;
+import org.lgna.story.SetHeight;
+import org.lgna.story.SetWidth;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,27 +66,27 @@ public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> widthState = this.createInitialPropertyValueExpressionState( "widthState", 1.0, org.lgna.story.SModel.class, "setWidth", Number.class, org.lgna.story.SetWidth.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> heightState = this.createInitialPropertyValueExpressionState( "heightState", 1.0, org.lgna.story.SModel.class, "setHeight", Number.class, org.lgna.story.SetHeight.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> depthState = this.createInitialPropertyValueExpressionState( "depthState", 1.0, org.lgna.story.SModel.class, "setDepth", Number.class, org.lgna.story.SetDepth.Detail[].class );
+	private final CustomItemState<Expression> widthState = this.createInitialPropertyValueExpressionState( "widthState", 1.0, SModel.class, "setWidth", Number.class, SetWidth.Detail[].class );
+	private final CustomItemState<Expression> heightState = this.createInitialPropertyValueExpressionState( "heightState", 1.0, SModel.class, "setHeight", Number.class, SetHeight.Detail[].class );
+	private final CustomItemState<Expression> depthState = this.createInitialPropertyValueExpressionState( "depthState", 1.0, SModel.class, "setDepth", Number.class, SetDepth.Detail[].class );
 
 	private AddBoxManagedFieldComposite() {
-		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ), org.lgna.story.SBox.class );
+		super( UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ), SBox.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return BoxDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getWidthState() {
+	public CustomItemState<Expression> getWidthState() {
 		return this.widthState;
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getHeightState() {
+	public CustomItemState<Expression> getHeightState() {
 		return this.heightState;
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getDepthState() {
+	public CustomItemState<Expression> getDepthState() {
 		return this.depthState;
 	}
 }

@@ -56,9 +56,14 @@ import org.alice.stageide.modelresource.InstanceCreatorKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.Paint;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.resources.ModelResource;
 
@@ -102,7 +107,7 @@ public class NebulousIde {
 		return null;
 	}
 
-	public org.lgna.project.ast.NamedUserType createProgramType( TemplateUriState.Template template ) {
+	public NamedUserType createProgramType( TemplateUriState.Template template ) {
 		return null;
 	}
 
@@ -131,14 +136,14 @@ public class NebulousIde {
 		return false;
 	}
 
-	public org.lgna.croquet.Model getPersonResourceDropModel( ResourceKey resourceKey ) {
+	public Model getPersonResourceDropModel( ResourceKey resourceKey ) {
 		return null;
 	}
 
-	public void addRoomMethods( org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType, java.util.List<org.lgna.project.ast.JavaMethod> methods ) {
+	public void addRoomMethods( AbstractType<?, ?, ?> instanceFactoryValueType, List<JavaMethod> methods ) {
 	}
 
-	public org.lgna.croquet.CascadeBlankChild<?> getRoomFillIns( JavaMethod method, InstanceFactory instanceFactory ) {
+	public CascadeBlankChild<?> getRoomFillIns( JavaMethod method, InstanceFactory instanceFactory ) {
 		return null;
 	}
 
@@ -154,19 +159,19 @@ public class NebulousIde {
 		return new StoryApiConfigurationManager();
 	}
 
-	public boolean isAssignableToPersonResource( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public boolean isAssignableToPersonResource( AbstractType<?, ?, ?> type ) {
 		return false;
 	}
 
-	public org.lgna.story.Paint getFloorApperanceRedwood() {
+	public Paint getFloorApperanceRedwood() {
 		return null;
 	}
 
-	public org.lgna.story.Paint getWallApperanceYellow() {
+	public Paint getWallApperanceYellow() {
 		return null;
 	}
 
-	public org.lgna.croquet.CascadeBlankChild<?> getGalleryPersonResourceFillInInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public CascadeBlankChild<?> getGalleryPersonResourceFillInInstance( AbstractType<?, ?, ?> type ) {
 		return null;
 	}
 
@@ -174,7 +179,7 @@ public class NebulousIde {
 		return false;
 	}
 
-	public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass( Class<? extends org.lgna.story.resources.ModelResource> resourceCls ) {
+	public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass( Class<? extends ModelResource> resourceCls ) {
 		return null;
 	}
 
@@ -182,7 +187,7 @@ public class NebulousIde {
 		return new ExpressionCreator();
 	}
 
-	public boolean isPersonResourceTypeAssingleFrom( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public boolean isPersonResourceTypeAssingleFrom( AbstractType<?, ?, ?> type ) {
 		return false;
 	}
 }

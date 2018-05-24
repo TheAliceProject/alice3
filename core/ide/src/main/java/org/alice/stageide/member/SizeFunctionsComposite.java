@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaFunctionsComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SizeFunctionsComposite extends org.alice.ide.member.NameFilteredJavaFunctionsComposite {
+public class SizeFunctionsComposite extends NameFilteredJavaFunctionsComposite {
 	private static class SingletonHolder {
 		private static SizeFunctionsComposite instance = new SizeFunctionsComposite();
 	}
@@ -55,6 +59,6 @@ public class SizeFunctionsComposite extends org.alice.ide.member.NameFilteredJav
 	}
 
 	private SizeFunctionsComposite() {
-		super( java.util.UUID.fromString( "6a50e742-692c-4727-899d-2b3379b0c713" ), "getRadius", "getInnerRadius", "getOuterRadius", "getBaseRadius", "getLength", "getWidth", "getHeight", "getDepth" );
+		super( UUID.fromString( "6a50e742-692c-4727-899d-2b3379b0c713" ), "getRadius", "getInnerRadius", "getOuterRadius", "getBaseRadius", "getLength", "getWidth", "getHeight", "getDepth" );
 	}
 }

@@ -42,23 +42,29 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.alice.ide.croquet.models.cascade.ParameterBlank;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.SimpleArgument;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArgumentCascade extends ProjectExpressionPropertyCascade {
-	private final org.lgna.project.ast.SimpleArgument argument;
+	private final SimpleArgument argument;
 
-	public AbstractArgumentCascade( java.util.UUID migrationId, org.lgna.project.ast.SimpleArgument argument ) {
-		super( migrationId, argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
+	public AbstractArgumentCascade( UUID migrationId, SimpleArgument argument ) {
+		super( migrationId, argument.expression, ParameterBlank.getInstance( argument.parameter.getValue() ) );
 		this.argument = argument;
 	}
 
-	public final org.lgna.project.ast.SimpleArgument getArgument() {
+	public final SimpleArgument getArgument() {
 		return this.argument;
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
+	protected final Expression createExpression( Expression[] expressions ) {
 		assert expressions.length == 1;
 		return expressions[ 0 ];
 	}

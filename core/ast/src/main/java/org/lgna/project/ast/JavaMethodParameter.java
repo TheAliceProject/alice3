@@ -44,6 +44,15 @@
 package org.lgna.project.ast;
 
 //todo: name
+
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.reflect.ClassInfo;
+import org.lgna.project.reflect.ClassInfoManager;
+import org.lgna.project.reflect.MethodInfo;
+
+import java.lang.annotation.Annotation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,9 +60,9 @@ public class JavaMethodParameter extends JavaParameter {
 	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
 		String rv = null;
 		try {
-			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.getInstance( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			ClassInfo classInfo = ClassInfoManager.getInstance( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
 			if( classInfo != null ) {
-				org.lgna.project.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
+				MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
 				if( methodInfo != null ) {
 					String[] parameterNames = methodInfo.getParameterNames();
 					if( parameterNames != null ) {
@@ -62,12 +71,12 @@ public class JavaMethodParameter extends JavaParameter {
 				}
 			}
 		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, methodReflectionProxy, index );
+			Logger.throwable( t, methodReflectionProxy, index );
 		}
 		return rv;
 	}
 
-	/* package-private */JavaMethodParameter( JavaMethod method, int index, java.lang.annotation.Annotation[] annotations ) {
+	/* package-private */JavaMethodParameter( JavaMethod method, int index, Annotation[] annotations ) {
 		super( annotations );
 		this.method = method;
 		this.index = index;
@@ -104,7 +113,7 @@ public class JavaMethodParameter extends JavaParameter {
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaMethodParameter ) {
 			JavaMethodParameter otherJMP = (JavaMethodParameter)other;
-			return this.method.equals( otherJMP.method ) && ( this.index == otherJMP.index ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.name, otherJMP.name ) && this.valueType.equals( otherJMP.valueType );
+			return this.method.equals( otherJMP.method ) && ( this.index == otherJMP.index ) && Objects.equals( this.name, otherJMP.name ) && this.valueType.equals( otherJMP.valueType );
 		} else {
 			return false;
 		}

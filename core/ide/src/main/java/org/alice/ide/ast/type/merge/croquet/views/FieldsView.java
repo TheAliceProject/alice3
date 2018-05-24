@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.type.merge.croquet.FieldsToolPalette;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
-	public FieldsView( org.alice.ide.ast.type.merge.croquet.FieldsToolPalette composite ) {
-		super( composite, org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
+public class FieldsView extends MembersView<UserField> {
+	public FieldsView( FieldsToolPalette composite ) {
+		super( composite, ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 }

@@ -42,31 +42,47 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class GraphicsContext {
 	private static final GraphicsContext edtInstance = new GraphicsContext();
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Thread, GraphicsContext> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static final InitializingIfAbsentMap<Thread, GraphicsContext> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static GraphicsContext getInstanceAndPushGraphics( java.awt.Graphics g ) {
+	public static GraphicsContext getInstanceAndPushGraphics( Graphics g ) {
 		GraphicsContext rv;
-		if( javax.swing.SwingUtilities.isEventDispatchThread() ) {
+		if( SwingUtilities.isEventDispatchThread() ) {
 			rv = edtInstance;
 		} else {
-			rv = map.getInitializingIfAbsent( Thread.currentThread(), new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Thread, GraphicsContext>() {
+			rv = map.getInitializingIfAbsent( Thread.currentThread(), new InitializingIfAbsentMap.Initializer<Thread, GraphicsContext>() {
 				@Override
-				public edu.cmu.cs.dennisc.java.awt.GraphicsContext initialize( Thread key ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: creating graphics context on thread", key );
+				public GraphicsContext initialize( Thread key ) {
+					Logger.outln( "note: creating graphics context on thread", key );
 					return new GraphicsContext();
 				}
 			} );
 		}
-		rv.pushAll( (java.awt.Graphics2D)g );
+		rv.pushAll( (Graphics2D)g );
 		return rv;
 	}
 
-	private static <T> T popTo( edu.cmu.cs.dennisc.java.util.DStack<T> stack, int size ) {
+	private static <T> T popTo( DStack<T> stack, int size ) {
 		assert stack.size() > size;
 		T o = null;
 		while( stack.size() > size ) {
@@ -76,7 +92,7 @@ public final class GraphicsContext {
 	}
 
 	private class GraphicsAndStackSizes {
-		private final java.awt.Graphics2D graphics2d;
+		private final Graphics2D graphics2d;
 		private final int paintStackSize;
 		private final int strokeStackSize;
 		private final int fontStackSize;
@@ -85,7 +101,7 @@ public final class GraphicsContext {
 		private final int antialiasingStackSize;
 		private final int textAntialiasingStackSize;
 
-		public GraphicsAndStackSizes( java.awt.Graphics2D graphics2d ) {
+		public GraphicsAndStackSizes( Graphics2D graphics2d ) {
 			this.graphics2d = graphics2d;
 			this.paintStackSize = paintStack.size();
 			this.strokeStackSize = strokeStack.size();
@@ -113,29 +129,29 @@ public final class GraphicsContext {
 				this.graphics2d.setTransform( popTo( transformStack, this.transformStackSize ) );
 			}
 			if( antialiasingStack.size() > this.antialiasingStackSize ) {
-				this.graphics2d.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, popTo( antialiasingStack, this.antialiasingStackSize ) );
+				this.graphics2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, popTo( antialiasingStack, this.antialiasingStackSize ) );
 			}
 			if( textAntialiasingStack.size() > this.textAntialiasingStackSize ) {
-				this.graphics2d.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, popTo( textAntialiasingStack, this.textAntialiasingStackSize ) );
+				this.graphics2d.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, popTo( textAntialiasingStack, this.textAntialiasingStackSize ) );
 			}
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<GraphicsAndStackSizes> mainStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final DStack<GraphicsAndStackSizes> mainStack = Stacks.newStack();
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Paint> paintStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Stroke> strokeStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Font> fontStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Shape> clipStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.geom.AffineTransform> transformStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final DStack<Paint> paintStack = Stacks.newStack();
+	private final DStack<Stroke> strokeStack = Stacks.newStack();
+	private final DStack<Font> fontStack = Stacks.newStack();
+	private final DStack<Shape> clipStack = Stacks.newStack();
+	private final DStack<AffineTransform> transformStack = Stacks.newStack();
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<Object> antialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.DStack<Object> textAntialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final DStack<Object> antialiasingStack = Stacks.newStack();
+	private final DStack<Object> textAntialiasingStack = Stacks.newStack();
 
 	public GraphicsContext() {
 	}
 
-	public void pushAll( java.awt.Graphics2D g ) {
+	public void pushAll( Graphics2D g ) {
 		this.mainStack.push( new GraphicsAndStackSizes( g ) );
 	}
 
@@ -144,7 +160,7 @@ public final class GraphicsContext {
 		graphicsAndStackSizes.popAll();
 	}
 
-	private java.awt.Graphics2D getGraphics2d() {
+	private Graphics2D getGraphics2d() {
 		GraphicsAndStackSizes graphicsAndStackSizes = this.mainStack.peek();
 		return graphicsAndStackSizes.graphics2d;
 	}
@@ -189,28 +205,28 @@ public final class GraphicsContext {
 		this.getGraphics2d().setStroke( this.strokeStack.pop() );
 	}
 
-	private static void pushAndSetRenderingHint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.java.util.DStack<Object> stack, java.awt.RenderingHints.Key key, Object value ) {
+	private static void pushAndSetRenderingHint( Graphics2D g2, DStack<Object> stack, RenderingHints.Key key, Object value ) {
 		stack.push( g2.getRenderingHint( key ) );
 		g2.setRenderingHint( key, value );
 	}
 
-	private static void popRenderingHint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.java.util.DStack<Object> stack, java.awt.RenderingHints.Key key ) {
+	private static void popRenderingHint( Graphics2D g2, DStack<Object> stack, RenderingHints.Key key ) {
 		g2.setRenderingHint( key, stack.pop() );
 	}
 
 	public void pushAndSetAntialiasing( boolean b ) {
-		pushAndSetRenderingHint( this.getGraphics2d(), this.antialiasingStack, java.awt.RenderingHints.KEY_ANTIALIASING, b ? java.awt.RenderingHints.VALUE_ANTIALIAS_ON : java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
+		pushAndSetRenderingHint( this.getGraphics2d(), this.antialiasingStack, RenderingHints.KEY_ANTIALIASING, b ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF );
 	}
 
 	public void popAntialiasing() {
-		popRenderingHint( this.getGraphics2d(), this.antialiasingStack, java.awt.RenderingHints.KEY_ANTIALIASING );
+		popRenderingHint( this.getGraphics2d(), this.antialiasingStack, RenderingHints.KEY_ANTIALIASING );
 	}
 
 	public void pushAndSetTextAntialiasing( boolean b ) {
-		pushAndSetRenderingHint( this.getGraphics2d(), this.textAntialiasingStack, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, b ? java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON : java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_OFF );
+		pushAndSetRenderingHint( this.getGraphics2d(), this.textAntialiasingStack, RenderingHints.KEY_TEXT_ANTIALIASING, b ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF );
 	}
 
 	public void popTextAntialiasing() {
-		popRenderingHint( this.getGraphics2d(), this.textAntialiasingStack, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
+		popRenderingHint( this.getGraphics2d(), this.textAntialiasingStack, RenderingHints.KEY_TEXT_ANTIALIASING );
 	}
 }

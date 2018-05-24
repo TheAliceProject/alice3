@@ -42,6 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.BevelState;
+import edu.cmu.cs.dennisc.java.awt.BeveledShape;
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState;
+import org.lgna.croquet.DragModel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.ArrayLength;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.Node;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,29 +70,29 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
 	private final boolean isVoid;
 
-	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model, boolean isVoid ) {
+	public ExpressionLikeSubstance( DragModel model, boolean isVoid ) {
 		super( model );
 		this.isVoid = isVoid;
 	}
 
-	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model ) {
+	public ExpressionLikeSubstance( DragModel model ) {
 		this( model, false );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
-		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
+	protected LayoutManager createLayoutManager( JPanel jComponent ) {
+		return new BoxLayout( jComponent, BoxLayout.LINE_AXIS );
 	}
 
 	protected boolean isExpressionTypeFeedbackDesired() {
-		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
+		return IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
 	}
 
-	protected static boolean isExpressionTypeFeedbackSurpressedBasedOnParentClass( org.lgna.project.ast.Expression e ) {
+	protected static boolean isExpressionTypeFeedbackSurpressedBasedOnParentClass( Expression e ) {
 		if( e != null ) {
-			org.lgna.project.ast.Node parent = e.getParent();
+			Node parent = e.getParent();
 			if( parent != null ) {
-				if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( parent.getClass(), org.lgna.project.ast.ArrayAccess.class, org.lgna.project.ast.ArrayLength.class ) ) {
+				if( ClassUtilities.isAssignableToAtLeastOne( parent.getClass(), ArrayAccess.class, ArrayLength.class ) ) {
 					return true;
 				}
 			}
@@ -126,24 +145,24 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.java.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getExpressionType();
+	protected BeveledShape createBoundsShape( int x, int y, int width, int height ) {
+		AbstractType<?, ?, ?> type = this.getExpressionType();
 		if( type != null ) {
 			//			assert type != org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
-			type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
+			type = JavaType.OBJECT_TYPE;
 		}
 		//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
 		int left = this.getDockInsetLeft();
 		int top = this.getInsetTop();
 		int right = this.getInsetRight();
 		int bottom = this.getInsetBottom();
-		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left, top, width - left - right, height - top - bottom, 8, 8 );
+		RoundRectangle2D.Float shape = new RoundRectangle2D.Float( left, top, width - left - right, height - top - bottom, 8, 8 );
 		return BeveledShapeForType.createBeveledShapeFor( type, shape, left, Math.min( height * 0.5f, 12.0f ) );
 	}
 
 	@Override
-	protected java.awt.Shape createShape( int x, int y, int width, int height ) {
+	protected Shape createShape( int x, int y, int width, int height ) {
 		if( this.isVoid || ( this.isExpressionTypeFeedbackDesired() == false ) ) {
 			return null;
 		} else {
@@ -152,26 +171,26 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 
 	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void fillBounds( Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isExpressionTypeFeedbackDesired() ) {
-			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 			beveledShape.fill( g2 );
 		}
 	}
 
 	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintPrologue( Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isVoid || ( this.isExpressionTypeFeedbackDesired() == false ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.awt.BevelState bevelState = edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
-			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			BevelState bevelState = BevelState.FLUSH;
+			BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 			g2.setPaint( this.getBackgroundPaint( x, y, width, height ) );
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}
 	}
 
-	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType();
+	public abstract AbstractType<?, ?, ?> getExpressionType();
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 	//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );

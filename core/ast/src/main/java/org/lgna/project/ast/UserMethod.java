@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 
@@ -68,7 +70,7 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
@@ -117,8 +119,8 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator {
 		return generator.getText();
 	}
 
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isAbstract = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final BooleanProperty isStatic = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isAbstract = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isFinal = new BooleanProperty( this, Boolean.FALSE );
+	public final StringProperty name = new StringProperty( this, null );
 }

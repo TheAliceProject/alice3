@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
-public class StartCollisionListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.adapters.StartCollisionEventAdapterFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.CollisionStartListener;
+
+import java.util.List;
+
+public class StartCollisionListenerFillerInner extends ExpressionFillerInner {
 	public StartCollisionListenerFillerInner() {
-		super( org.lgna.story.event.CollisionStartListener.class );
+		super( CollisionStartListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.StartCollisionEventAdapterFillIn.getInstance() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( StartCollisionEventAdapterFillIn.getInstance() );
 	}
 }

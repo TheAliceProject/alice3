@@ -42,27 +42,32 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.MultipleSelectionListState;
+
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MultipleSelectionListView<T> extends org.lgna.croquet.views.ViewController<javax.swing.JList, org.lgna.croquet.MultipleSelectionListState<T>> {
-	public MultipleSelectionListView( org.lgna.croquet.MultipleSelectionListState<T> state ) {
+public class MultipleSelectionListView<T> extends ViewController<JList, MultipleSelectionListState<T>> {
+	public MultipleSelectionListView( MultipleSelectionListState<T> state ) {
 		super( state );
 	}
 
-	public javax.swing.ListCellRenderer getCellRenderer() {
+	public ListCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}
 
-	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+	public void setCellRenderer( ListCellRenderer listCellRenderer ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
 	@Override
-	protected javax.swing.JList createAwtComponent() {
-		org.lgna.croquet.MultipleSelectionListState.SwingModel swingModel = this.getModel().getSwingModel();
-		javax.swing.JList rv = new javax.swing.JList( swingModel.getListModel() );
+	protected JList createAwtComponent() {
+		MultipleSelectionListState.SwingModel swingModel = this.getModel().getSwingModel();
+		JList rv = new JList( swingModel.getListModel() );
 		rv.setSelectionModel( swingModel.getListSelectionModel() );
 		return rv;
 	}

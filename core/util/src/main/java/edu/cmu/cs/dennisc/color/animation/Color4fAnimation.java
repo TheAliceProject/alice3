@@ -43,26 +43,30 @@
 
 package edu.cmu.cs.dennisc.color.animation;
 
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+import edu.cmu.cs.dennisc.color.Color4f;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Color4fAnimation extends edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation<edu.cmu.cs.dennisc.color.Color4f> {
-	public Color4fAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.color.Color4f c0, edu.cmu.cs.dennisc.color.Color4f c1 ) {
+public abstract class Color4fAnimation extends InterpolationAnimation<Color4f> {
+	public Color4fAnimation( Number duration, Style style, Color4f c0, Color4f c1 ) {
 		super( duration, style, c0, c1 );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f newE( edu.cmu.cs.dennisc.color.Color4f other ) {
+	protected Color4f newE( Color4f other ) {
 		if( other != null ) {
-			return new edu.cmu.cs.dennisc.color.Color4f( other );
+			return new Color4f( other );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f rv, edu.cmu.cs.dennisc.color.Color4f v0, edu.cmu.cs.dennisc.color.Color4f v1, double portion ) {
+	protected Color4f interpolate( Color4f rv, Color4f v0, Color4f v1, double portion ) {
 		assert rv == null;
-		return edu.cmu.cs.dennisc.color.Color4f.createInterpolation( v0, v1, (float)portion );
+		return Color4f.createInterpolation( v0, v1, (float)portion );
 	}
 }

@@ -43,10 +43,14 @@
 
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaProceduresComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SayThinkProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+public class SayThinkProceduresComposite extends NameFilteredJavaProceduresComposite {
 	private static class SingletonHolder {
 		private static SayThinkProceduresComposite instance = new SayThinkProceduresComposite();
 	}
@@ -56,6 +60,6 @@ public class SayThinkProceduresComposite extends org.alice.ide.member.NameFilter
 	}
 
 	private SayThinkProceduresComposite() {
-		super( java.util.UUID.fromString( "b071a0b7-3d60-4888-9c3d-4ab8ff639887" ), "say", "think" );
+		super( UUID.fromString( "b071a0b7-3d60-4888-9c3d-4ab8ff639887" ), "say", "think" );
 	}
 }

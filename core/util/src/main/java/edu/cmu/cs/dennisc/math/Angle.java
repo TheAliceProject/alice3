@@ -42,12 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface Angle extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface Angle extends BinaryEncodableAndDecodable {
 	@Deprecated
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	public void decode( BinaryDecoder binaryDecoder );
 
 	public boolean isNaN();
 

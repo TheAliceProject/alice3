@@ -48,7 +48,9 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
 import org.alice.stageide.properties.IsAllScaleLinkedState;
@@ -58,24 +60,32 @@ import org.alice.stageide.properties.IsYZScaleLinkedState;
 import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.properties.ModelSizeAdapter;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.State;
+import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingAdapter;
+import org.lgna.story.SModel;
+import org.lgna.story.implementation.BillboardImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
 
+import javax.swing.AbstractButton;
+
 public class ModelSizePropertyController extends AbstractAdapterController<Dimension3> {
 
-	private org.lgna.croquet.State.ValueListener<Boolean> linkStateValueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
+	private State.ValueListener<Boolean> linkStateValueObserver = new State.ValueListener<Boolean>() {
 		@Override
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 
 		@Override
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			ModelSizePropertyController.this.updateUIFromLinkState( state, prevValue, nextValue );
 		}
 	};
@@ -92,10 +102,10 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
 	private Button resetButton;
 
-	private BooleanStateButton<javax.swing.AbstractButton> linkAllButton;
-	private BooleanStateButton<javax.swing.AbstractButton> linkXYButton;
-	private BooleanStateButton<javax.swing.AbstractButton> linkXZButton;
-	private BooleanStateButton<javax.swing.AbstractButton> linkYZButton;
+	private BooleanStateButton<AbstractButton> linkAllButton;
+	private BooleanStateButton<AbstractButton> linkXYButton;
+	private BooleanStateButton<AbstractButton> linkXZButton;
+	private BooleanStateButton<AbstractButton> linkYZButton;
 
 	private boolean hasLinkAll = false;
 	private boolean hasLinkXY = false;
@@ -122,7 +132,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
 	@Override
 	public Class<?> getPropertyType() {
-		return org.lgna.story.SModel.class;
+		return SModel.class;
 	}
 
 	@Override
@@ -277,31 +287,31 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
 		if( ( this.propertyAdapter != null ) && ( this.propertyAdapter.getInstance() != null ) ) {
 			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-			for( edu.cmu.cs.dennisc.scenegraph.scale.Resizer r : baseModel.getResizers() ) {
-				if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+			for( Resizer r : baseModel.getResizers() ) {
+				if( r == Resizer.UNIFORM ) {
 					hasLinkAll = true;
 					hasX = true;
 					hasY = true;
 					hasZ = true;
-				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE ) {
+				} else if( r == Resizer.XY_PLANE ) {
 					hasLinkXY = true;
 					hasX = true;
 					hasY = true;
-				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+				} else if( r == Resizer.XZ_PLANE ) {
 					hasLinkXZ = true;
 					hasX = true;
 					hasZ = true;
-				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE ) {
+				} else if( r == Resizer.YZ_PLANE ) {
 					hasLinkYZ = true;
 					hasY = true;
 					hasZ = true;
-				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
+				} else if( r == Resizer.X_AXIS ) {
 					hasX = true;
 					hasIndependentX = true;
-				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+				} else if( r == Resizer.Y_AXIS ) {
 					hasY = true;
 					hasIndependentY = true;
-				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
+				} else if( r == Resizer.Z_AXIS ) {
 					hasZ = true;
 					hasIndependentZ = true;
 				}
@@ -406,7 +416,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		}
 		if( this.propertyAdapter != null ) {
 
-			org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, getOriginalSize() );
+			Operation operation = new ModelSizePropertyValueOperation( this.propertyAdapter, getOriginalSize() );
 			operation.setName( AbstractPropertyAdapter.getLocalizedString( "Reset" ) );
 			this.resetButton = operation.createButton();
 
@@ -414,7 +424,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		boolean usesReset = false;
 		if( ( this.propertyAdapter != null ) && ( this.propertyAdapter.getInstance() != null ) ) {
 			ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
-			if( ( baseModel instanceof org.lgna.story.implementation.JointedModelImp ) || ( baseModel instanceof org.lgna.story.implementation.BillboardImp ) ) {
+			if( ( baseModel instanceof JointedModelImp ) || ( baseModel instanceof BillboardImp ) ) {
 				usesReset = true;
 			}
 		}
@@ -511,7 +521,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		return newSize;
 	}
 
-	private void updateUIFromLinkState( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
+	private void updateUIFromLinkState( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		if( !isUpdatingState && ( nextValue != prevValue ) ) {
 			isUpdatingState = true;
 			if( nextValue ) {
@@ -548,8 +558,8 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			if( newScale != null ) {
 				if( !newScale.equals( this.propertyAdapter.getValue() ) ) {
 					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newScale ) ) {
-						org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, newScale );
-						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+						Operation operation = new ModelSizePropertyValueOperation( this.propertyAdapter, newScale );
+						operation.fire( ActionEventTrigger.createUserInstance( e ) );
 					}
 				}
 			}

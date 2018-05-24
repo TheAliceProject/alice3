@@ -62,30 +62,72 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.glu.GLUtessellator;
+import com.jogamp.opengl.glu.GLUtessellatorCallback;
+import com.jogamp.opengl.util.awt.TextRenderer;
+import edu.cmu.cs.dennisc.image.ImageGenerator;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.math.SineCosineCache;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import edu.cmu.cs.dennisc.texture.CustomTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.Toolkit;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ImageObserver;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderableImage;
+import java.nio.DoubleBuffer;
+import java.text.AttributedCharacterIterator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/class Graphics2D extends edu.cmu.cs.dennisc.render.Graphics2D {
-	private static edu.cmu.cs.dennisc.math.SineCosineCache s_sineCosineCache = new edu.cmu.cs.dennisc.math.SineCosineCache( 8 );
+	private static SineCosineCache s_sineCosineCache = new SineCosineCache( 8 );
 
-	private static final java.awt.Paint DEFAULT_PAINT = java.awt.Color.BLACK;
-	private static final java.awt.Color DEFAULT_BACKGROUND = java.awt.Color.WHITE;
-	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
-	private static final java.awt.Stroke DEFAULT_STROKE = new java.awt.BasicStroke( 1 );
+	private static final Paint DEFAULT_PAINT = Color.BLACK;
+	private static final Color DEFAULT_BACKGROUND = Color.WHITE;
+	private static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 12 );
+	private static final Stroke DEFAULT_STROKE = new BasicStroke( 1 );
 
 	private RenderContext renderContext;
-	private java.awt.Paint paint = DEFAULT_PAINT;
-	private java.awt.Color background = DEFAULT_BACKGROUND;
-	private java.awt.Font font = DEFAULT_FONT;
-	private java.awt.Stroke stroke = DEFAULT_STROKE;
+	private Paint paint = DEFAULT_PAINT;
+	private Color background = DEFAULT_BACKGROUND;
+	private Font font = DEFAULT_FONT;
+	private Stroke stroke = DEFAULT_STROKE;
 
-	private java.awt.RenderingHints renderingHints;
+	private RenderingHints renderingHints;
 
-	private java.awt.geom.AffineTransform affineTransform = new java.awt.geom.AffineTransform();
+	private AffineTransform affineTransform = new AffineTransform();
 	private double[] glTransform = new double[ 16 ];
-	private java.nio.DoubleBuffer glTransformBuffer = java.nio.DoubleBuffer.wrap( glTransform );
+	private DoubleBuffer glTransformBuffer = DoubleBuffer.wrap( glTransform );
 
 	private int width = -1;
 	private int height = -1;
@@ -93,30 +135,30 @@ import com.jogamp.opengl.glu.GLU;
 	public Graphics2D( RenderContext renderContext ) {
 		assert renderContext != null;
 		this.renderContext = renderContext;
-		java.util.Map<java.awt.RenderingHints.Key, Object> map = new java.util.HashMap<java.awt.RenderingHints.Key, Object>();
-		map.put( java.awt.RenderingHints.KEY_ALPHA_INTERPOLATION, java.awt.RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_COLOR_RENDERING, java.awt.RenderingHints.VALUE_COLOR_RENDER_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_DITHERING, java.awt.RenderingHints.VALUE_DITHER_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_FRACTIONALMETRICS, java.awt.RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT );
+		Map<RenderingHints.Key, Object> map = new HashMap<RenderingHints.Key, Object>();
+		map.put( RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT );
+		map.put( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT );
+		map.put( RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT );
+		map.put( RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DEFAULT );
+		map.put( RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT );
 
 		//todo: investigate
 		//map.put( java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR );
+		map.put( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR );
 
-		map.put( java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_DEFAULT );
-		map.put( java.awt.RenderingHints.KEY_STROKE_CONTROL, java.awt.RenderingHints.VALUE_STROKE_DEFAULT );
+		map.put( RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_DEFAULT );
+		map.put( RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT );
 		Object antialiasTextValue;
 		if( Boolean.getBoolean( "swing.aatext" ) ) {
-			antialiasTextValue = java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+			antialiasTextValue = RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
 		} else {
-			antialiasTextValue = java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
+			antialiasTextValue = RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT;
 		}
-		map.put( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, antialiasTextValue );
+		map.put( RenderingHints.KEY_TEXT_ANTIALIASING, antialiasTextValue );
 		this.setRenderingHints( map );
 	}
 
-	public void initialize( java.awt.Dimension surfaceSize ) {
+	public void initialize( Dimension surfaceSize ) {
 		assert this.renderContext.gl != null;
 		this.width = surfaceSize.width;
 		this.height = surfaceSize.height;
@@ -183,21 +225,21 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public java.awt.Graphics create() {
+	public Graphics create() {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public java.awt.Color getColor() {
-		if( this.paint instanceof java.awt.Color ) {
-			return (java.awt.Color)this.paint;
+	public Color getColor() {
+		if( this.paint instanceof Color ) {
+			return (Color)this.paint;
 		} else {
 			throw new RuntimeException( "use getPaint()" );
 		}
 	}
 
 	@Override
-	public void setColor( java.awt.Color color ) {
+	public void setColor( Color color ) {
 		setPaint( color );
 	}
 
@@ -207,27 +249,27 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void setXORMode( java.awt.Color c1 ) {
+	public void setXORMode( Color c1 ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.font;
 	}
 
 	@Override
-	public void setFont( java.awt.Font font ) {
+	public void setFont( Font font ) {
 		this.font = font;
 	}
 
 	@Override
-	public java.awt.FontMetrics getFontMetrics( java.awt.Font f ) {
-		return java.awt.Toolkit.getDefaultToolkit().getFontMetrics( f );
+	public FontMetrics getFontMetrics( Font f ) {
+		return Toolkit.getDefaultToolkit().getFontMetrics( f );
 	}
 
 	@Override
-	public java.awt.Rectangle getClipBounds() {
+	public Rectangle getClipBounds() {
 		throw new RuntimeException( "not implemented" );
 	}
 
@@ -242,12 +284,12 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public java.awt.Shape getClip() {
+	public Shape getClip() {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public void setClip( java.awt.Shape clip ) {
+	public void setClip( Shape clip ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
@@ -396,7 +438,7 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void drawString( java.text.AttributedCharacterIterator iterator, int x, int y ) {
+	public void drawString( AttributedCharacterIterator iterator, int x, int y ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
@@ -411,7 +453,7 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image image, int x, int y, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image image, int x, int y, ImageObserver observer ) {
 		boolean isRemembered = isRemembered( image );
 		if( isRemembered ) {
 			//pass
@@ -431,27 +473,27 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image image, int x, int y, int width, int height, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image image, int x, int y, int width, int height, ImageObserver observer ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image image, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image image, int x, int y, Color bgcolor, ImageObserver observer ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image image, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image image, int x, int y, int width, int height, Color bgcolor, ImageObserver observer ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer ) {
+	public boolean drawImage( Image image, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
@@ -468,22 +510,22 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public boolean drawImage( java.awt.Image img, java.awt.geom.AffineTransform xform, java.awt.image.ImageObserver obs ) {
+	public boolean drawImage( Image img, AffineTransform xform, ImageObserver obs ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public void drawImage( java.awt.image.BufferedImage img, java.awt.image.BufferedImageOp op, int x, int y ) {
+	public void drawImage( BufferedImage img, BufferedImageOp op, int x, int y ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public void drawRenderedImage( java.awt.image.RenderedImage img, java.awt.geom.AffineTransform xform ) {
+	public void drawRenderedImage( RenderedImage img, AffineTransform xform ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public void drawRenderableImage( java.awt.image.renderable.RenderableImage img, java.awt.geom.AffineTransform xform ) {
+	public void drawRenderableImage( RenderableImage img, AffineTransform xform ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
@@ -501,10 +543,10 @@ import com.jogamp.opengl.glu.GLU;
 			referencedObject = this.activeFontToTextRendererMap.get( this.font );
 		}
 		assert referencedObject != null;
-		com.jogamp.opengl.util.awt.TextRenderer glTextRenderer = referencedObject.getObject().getTextRenderer( this.font, this.renderContext.gl );
+		TextRenderer glTextRenderer = referencedObject.getObject().getTextRenderer( this.font, this.renderContext.gl );
 		glTextRenderer.beginRendering( this.width, this.height );
-		if( this.paint instanceof java.awt.Color ) {
-			java.awt.Color color = (java.awt.Color)this.paint;
+		if( this.paint instanceof Color ) {
+			Color color = (Color)this.paint;
 			glTextRenderer.setColor( color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, color.getAlpha() / 255.0f );
 		} else {
 			//todo?
@@ -521,16 +563,16 @@ import com.jogamp.opengl.glu.GLU;
 	//	}
 
 	@Override
-	public void drawString( java.text.AttributedCharacterIterator iterator, float x, float y ) {
+	public void drawString( AttributedCharacterIterator iterator, float x, float y ) {
 		throw new RuntimeException( "todo: use drawString( String, float, float ) for now" );
 	}
 
 	@Override
-	public void drawGlyphVector( java.awt.font.GlyphVector g, float x, float y ) {
+	public void drawGlyphVector( GlyphVector g, float x, float y ) {
 		int n = g.getNumGlyphs();
 		this.translate( x, y );
 		for( int i = 0; i < n; i++ ) {
-			java.awt.Shape shapeI = g.getGlyphOutline( i );
+			Shape shapeI = g.getGlyphOutline( i );
 			this.fill( shapeI );
 		}
 		this.translate( -x, -y );
@@ -540,12 +582,12 @@ import com.jogamp.opengl.glu.GLU;
 	//	private static java.awt.Stroke s_stroke = new java.awt.BasicStroke( 0 );
 	private static final double FLATNESS = 0.01;
 
-	private void fill( java.awt.geom.PathIterator pi ) {
+	private void fill( PathIterator pi ) {
 
-		class MyTessAdapter implements com.jogamp.opengl.glu.GLUtessellatorCallback {
-			private com.jogamp.opengl.GL2 gl;
+		class MyTessAdapter implements GLUtessellatorCallback {
+			private GL2 gl;
 
-			public MyTessAdapter( com.jogamp.opengl.GL2 gl ) {
+			public MyTessAdapter( GL2 gl ) {
 				this.gl = gl;
 			}
 
@@ -612,51 +654,51 @@ import com.jogamp.opengl.glu.GLU;
 
 			@Override
 			public void errorData( int n, Object data ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "tesselator error" );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tn:", n );
+				PrintUtilities.println( "tesselator error" );
+				PrintUtilities.println( "\tn:", n );
 				try {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString:", Graphics2D.this.renderContext.glu.gluErrorString( n ) );
+					PrintUtilities.println( "\tgluErrorString:", Graphics2D.this.renderContext.glu.gluErrorString( n ) );
 				} catch( ArrayIndexOutOfBoundsException aioobe ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString: unknown" );
+					PrintUtilities.println( "\tgluErrorString: unknown" );
 				}
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tdata:", data );
+				PrintUtilities.println( "\tdata:", data );
 			}
 		}
 
-		com.jogamp.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
-		com.jogamp.opengl.glu.GLUtessellator tesselator = com.jogamp.opengl.glu.GLU.gluNewTess();
+		GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
+		GLUtessellator tesselator = GLU.gluNewTess();
 		try {
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
-			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
+			GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
 
 			double[] segment = new double[ 6 ];
 
 			//			this.renderContext.gl.glDisable( GL_CULL_FACE );
 			//			try {
-			com.jogamp.opengl.glu.GLU.gluBeginPolygon( tesselator );
+			GLU.gluBeginPolygon( tesselator );
 			try {
 				while( !pi.isDone() ) {
 					double[] xyz = new double[ 3 ];
 					switch( pi.currentSegment( segment ) ) {
-					case java.awt.geom.PathIterator.SEG_MOVETO:
-						com.jogamp.opengl.glu.GLU.gluTessBeginContour( tesselator );
+					case PathIterator.SEG_MOVETO:
+						GLU.gluTessBeginContour( tesselator );
 						//note: no break
-					case java.awt.geom.PathIterator.SEG_LINETO:
+					case PathIterator.SEG_LINETO:
 						xyz[ 0 ] = segment[ 0 ];
 						xyz[ 1 ] = segment[ 1 ];
-						com.jogamp.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
+						GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 						break;
-					case java.awt.geom.PathIterator.SEG_CLOSE:
-						com.jogamp.opengl.glu.GLU.gluTessEndContour( tesselator );
+					case PathIterator.SEG_CLOSE:
+						GLU.gluTessEndContour( tesselator );
 						break;
 
-					case java.awt.geom.PathIterator.SEG_QUADTO:
+					case PathIterator.SEG_QUADTO:
 						throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-					case java.awt.geom.PathIterator.SEG_CUBICTO:
+					case PathIterator.SEG_CUBICTO:
 						throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
 					default:
 						throw new RuntimeException( "unhandled segment: should not occur" );
@@ -664,24 +706,24 @@ import com.jogamp.opengl.glu.GLU;
 					pi.next();
 				}
 			} finally {
-				com.jogamp.opengl.glu.GLU.gluTessEndPolygon( tesselator );
+				GLU.gluTessEndPolygon( tesselator );
 			}
 			//			} finally {
 			//				this.renderContext.gl.glEnable( GL_CULL_FACE );
 			//			}
 		} finally {
-			com.jogamp.opengl.glu.GLU.gluDeleteTess( tesselator );
+			GLU.gluDeleteTess( tesselator );
 		}
 	}
 
-	private static final java.awt.Stroke LINE_STROKE = new java.awt.BasicStroke( 0 );
+	private static final Stroke LINE_STROKE = new BasicStroke( 0 );
 
 	@Override
-	public void draw( java.awt.Shape s ) {
+	public void draw( Shape s ) {
 		//boolean isLine = this.stroke.equals( DEFAULT_STROKE );
 		boolean isLine;
-		if( this.stroke instanceof java.awt.BasicStroke ) {
-			java.awt.BasicStroke basicStroke = (java.awt.BasicStroke)this.stroke;
+		if( this.stroke instanceof BasicStroke ) {
+			BasicStroke basicStroke = (BasicStroke)this.stroke;
 			if( basicStroke.getDashArray() != null ) {
 				//todo
 				this.renderContext.gl.glLineStipple( 1, (short)0x00FF );
@@ -696,26 +738,26 @@ import com.jogamp.opengl.glu.GLU;
 		//isLine = true;
 
 		if( isLine ) {
-			java.awt.Shape outlinesShape = LINE_STROKE.createStrokedShape( s );
-			java.awt.geom.PathIterator pi = outlinesShape.getPathIterator( null, FLATNESS );
+			Shape outlinesShape = LINE_STROKE.createStrokedShape( s );
+			PathIterator pi = outlinesShape.getPathIterator( null, FLATNESS );
 			float[] segment = new float[ 6 ];
-			this.renderContext.gl.glLineWidth( ( (java.awt.BasicStroke)this.stroke ).getLineWidth() );
+			this.renderContext.gl.glLineWidth( ( (BasicStroke)this.stroke ).getLineWidth() );
 			try {
 				while( !pi.isDone() ) {
 					switch( pi.currentSegment( segment ) ) {
-					case java.awt.geom.PathIterator.SEG_MOVETO:
+					case PathIterator.SEG_MOVETO:
 						this.renderContext.gl.glBegin( GL_LINE_STRIP );
 						//note: no break
-					case java.awt.geom.PathIterator.SEG_LINETO:
+					case PathIterator.SEG_LINETO:
 						this.renderContext.gl.glVertex2f( segment[ 0 ], segment[ 1 ] );
 						break;
-					case java.awt.geom.PathIterator.SEG_CLOSE:
+					case PathIterator.SEG_CLOSE:
 						this.renderContext.gl.glEnd();
 						break;
 
-					case java.awt.geom.PathIterator.SEG_QUADTO:
+					case PathIterator.SEG_QUADTO:
 						throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-					case java.awt.geom.PathIterator.SEG_CUBICTO:
+					case PathIterator.SEG_CUBICTO:
 						throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
 					default:
 						throw new RuntimeException( "unhandled segment: should not occur" );
@@ -728,50 +770,50 @@ import com.jogamp.opengl.glu.GLU;
 			}
 		} else {
 			//todo: investigate
-			java.awt.Shape outlinesShape = this.stroke.createStrokedShape( s );
-			java.awt.geom.PathIterator pi = outlinesShape.getPathIterator( null, FLATNESS );
+			Shape outlinesShape = this.stroke.createStrokedShape( s );
+			PathIterator pi = outlinesShape.getPathIterator( null, FLATNESS );
 			fill( pi );
 		}
 	}
 
 	@Override
-	public void fill( java.awt.Shape s ) {
+	public void fill( Shape s ) {
 		//		System.out.println( "fill: " + s );
 		fill( s.getPathIterator( null, FLATNESS ) );
 		//		System.out.println( "/fill: " + s );
 	}
 
 	@Override
-	public boolean hit( java.awt.Rectangle rect, java.awt.Shape s, boolean onStroke ) {
+	public boolean hit( Rectangle rect, Shape s, boolean onStroke ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public java.awt.GraphicsConfiguration getDeviceConfiguration() {
+	public GraphicsConfiguration getDeviceConfiguration() {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public java.awt.Composite getComposite() {
+	public Composite getComposite() {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public void setComposite( java.awt.Composite comp ) {
+	public void setComposite( Composite comp ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public java.awt.Color getBackground() {
+	public Color getBackground() {
 		return this.background;
 	}
 
 	@Override
-	public void setBackground( java.awt.Color color ) {
+	public void setBackground( Color color ) {
 		this.background = color;
 	}
 
-	private void glSetColor( java.awt.Color color ) {
+	private void glSetColor( Color color ) {
 		assert color != null;
 		//this.renderContext.gl.glColor3ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() );
 		this.renderContext.gl.glColor4ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue(), (byte)color.getAlpha() );
@@ -785,23 +827,23 @@ import com.jogamp.opengl.glu.GLU;
 		}
 	}
 
-	private void glSetPaint( java.awt.Paint paint ) {
-		if( paint instanceof java.awt.Color ) {
-			glSetColor( (java.awt.Color)paint );
+	private void glSetPaint( Paint paint ) {
+		if( paint instanceof Color ) {
+			glSetColor( (Color)paint );
 		} else {
 			throw new RuntimeException( "not implemented" );
 		}
 	}
 
 	@Override
-	public java.awt.Paint getPaint() {
+	public Paint getPaint() {
 		return this.paint;
 	}
 
 	@Override
-	public void setPaint( java.awt.Paint paint ) {
-		if( paint instanceof java.awt.Color ) {
-			glSetColor( (java.awt.Color)paint );
+	public void setPaint( Paint paint ) {
+		if( paint instanceof Color ) {
+			glSetColor( (Color)paint );
 			this.paint = paint;
 		} else {
 			throw new RuntimeException( "not implemented" );
@@ -809,38 +851,38 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public java.awt.Stroke getStroke() {
+	public Stroke getStroke() {
 		return this.stroke;
 	}
 
 	@Override
-	public void setStroke( java.awt.Stroke stroke ) {
+	public void setStroke( Stroke stroke ) {
 		this.stroke = stroke;
 	}
 
 	@Override
-	public Object getRenderingHint( java.awt.RenderingHints.Key hintKey ) {
+	public Object getRenderingHint( RenderingHints.Key hintKey ) {
 		return this.renderingHints.get( hintKey );
 	}
 
 	@Override
-	public java.awt.RenderingHints getRenderingHints() {
+	public RenderingHints getRenderingHints() {
 		return this.renderingHints;
 	}
 
 	@Override
-	public void addRenderingHints( java.util.Map<?, ?> hints ) {
-		this.renderingHints.add( new java.awt.RenderingHints( (java.util.Map<java.awt.RenderingHints.Key, ?>)hints ) );
+	public void addRenderingHints( Map<?, ?> hints ) {
+		this.renderingHints.add( new RenderingHints( (Map<RenderingHints.Key, ?>)hints ) );
 	}
 
 	@Override
-	public void setRenderingHint( java.awt.RenderingHints.Key hintKey, Object hintValue ) {
+	public void setRenderingHint( RenderingHints.Key hintKey, Object hintValue ) {
 		this.renderingHints.put( hintKey, hintValue );
 	}
 
 	@Override
-	public void setRenderingHints( java.util.Map<?, ?> hints ) {
-		this.renderingHints = new java.awt.RenderingHints( (java.util.Map<java.awt.RenderingHints.Key, ?>)hints );
+	public void setRenderingHints( Map<?, ?> hints ) {
+		this.renderingHints = new RenderingHints( (Map<RenderingHints.Key, ?>)hints );
 	}
 
 	private static double[] s_matrix = new double[ 6 ];
@@ -913,32 +955,32 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void transform( java.awt.geom.AffineTransform Tx ) {
+	public void transform( AffineTransform Tx ) {
 		this.affineTransform.concatenate( Tx );
 		glUpdateTransform();
 	}
 
 	@Override
-	public java.awt.geom.AffineTransform getTransform() {
-		return new java.awt.geom.AffineTransform( this.affineTransform );
+	public AffineTransform getTransform() {
+		return new AffineTransform( this.affineTransform );
 	}
 
 	@Override
-	public void setTransform( java.awt.geom.AffineTransform Tx ) {
+	public void setTransform( AffineTransform Tx ) {
 		this.affineTransform.setTransform( Tx );
 		glUpdateTransform();
 	}
 
 	@Override
-	public void clip( java.awt.Shape s ) {
+	public void clip( Shape s ) {
 		throw new RuntimeException( "not implemented" );
 	}
 
 	@Override
-	public java.awt.font.FontRenderContext getFontRenderContext() {
-		boolean isAntiAliased = getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING ) == java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
-		boolean usesFractionalMetrics = getRenderingHint( java.awt.RenderingHints.KEY_FRACTIONALMETRICS ) == java.awt.RenderingHints.VALUE_FRACTIONALMETRICS_ON;
-		return new java.awt.font.FontRenderContext( getTransform(), isAntiAliased, usesFractionalMetrics );
+	public FontRenderContext getFontRenderContext() {
+		boolean isAntiAliased = getRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING ) == RenderingHints.VALUE_TEXT_ANTIALIAS_ON;
+		boolean usesFractionalMetrics = getRenderingHint( RenderingHints.KEY_FRACTIONALMETRICS ) == RenderingHints.VALUE_FRACTIONALMETRICS_ON;
+		return new FontRenderContext( getTransform(), isAntiAliased, usesFractionalMetrics );
 	}
 
 	// edu.cmu.cs.dennisc.renderer.Graphics2D
@@ -970,10 +1012,10 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	private static final class TextRendererHolder {
-		private com.jogamp.opengl.util.awt.TextRenderer textRenderer;
-		private com.jogamp.opengl.GL gl;
+		private TextRenderer textRenderer;
+		private GL gl;
 
-		public com.jogamp.opengl.util.awt.TextRenderer getTextRenderer( java.awt.Font font, com.jogamp.opengl.GL gl ) {
+		public TextRenderer getTextRenderer( Font font, GL gl ) {
 			if( this.textRenderer != null ) {
 				if( this.gl == gl ) {
 					//pass
@@ -985,7 +1027,7 @@ import com.jogamp.opengl.glu.GLU;
 			if( this.textRenderer != null ) {
 				//pass
 			} else {
-				this.textRenderer = new com.jogamp.opengl.util.awt.TextRenderer( font );
+				this.textRenderer = new TextRenderer( font );
 			}
 			return this.textRenderer;
 		}
@@ -999,16 +1041,16 @@ import com.jogamp.opengl.glu.GLU;
 		}
 	}
 
-	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> activeFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<java.awt.Font, ReferencedObject<TextRendererHolder>> forgottenFontToTextRendererMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<Font, ReferencedObject<TextRendererHolder>> activeFontToTextRendererMap = Maps.newHashMap();
+	private final Map<Font, ReferencedObject<TextRendererHolder>> forgottenFontToTextRendererMap = Maps.newHashMap();
 
 	@Override
-	public boolean isRemembered( java.awt.Font font ) {
+	public boolean isRemembered( Font font ) {
 		return this.activeFontToTextRendererMap.containsKey( font );
 	}
 
 	@Override
-	public void remember( java.awt.Font font ) {
+	public void remember( Font font ) {
 		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( font );
 		if( referencedObject != null ) {
 			//pass
@@ -1025,17 +1067,17 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font ) {
+	public Rectangle2D getBounds( String text, Font font ) {
 		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
-		java.awt.geom.Rectangle2D bounds = referencedObject.getObject().getTextRenderer( font, this.renderContext.gl ).getBounds( text );
+		Rectangle2D bounds = referencedObject.getObject().getTextRenderer( font, this.renderContext.gl ).getBounds( text );
 		assert bounds != null;
 		return bounds;
 	}
 
 	@Override
-	public void forget( java.awt.Font font ) {
+	public void forget( Font font ) {
 		ReferencedObject<TextRendererHolder> referencedObject = this.activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
@@ -1051,7 +1093,7 @@ import com.jogamp.opengl.glu.GLU;
 	@Override
 	public void disposeForgottenFonts() {
 		synchronized( this.forgottenFontToTextRendererMap ) {
-			for( java.awt.Font font : this.forgottenFontToTextRendererMap.keySet() ) {
+			for( Font font : this.forgottenFontToTextRendererMap.keySet() ) {
 				ReferencedObject<TextRendererHolder> referencedObject = this.forgottenFontToTextRendererMap.get( font );
 				referencedObject.getObject().dispose();
 			}
@@ -1059,18 +1101,18 @@ import com.jogamp.opengl.glu.GLU;
 		}
 	}
 
-	private java.util.Map<java.awt.Image, edu.cmu.cs.dennisc.image.ImageGenerator> imageToImageGeneratorMap = new java.util.HashMap<java.awt.Image, edu.cmu.cs.dennisc.image.ImageGenerator>();
+	private Map<Image, ImageGenerator> imageToImageGeneratorMap = new HashMap<Image, ImageGenerator>();
 
-	private java.util.Map<edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject<Pixels>> activeImageGeneratorToPixelsMap = new java.util.HashMap<edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject<Pixels>>();
-	private java.util.Map<edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject<Pixels>> forgottenImageGeneratorToPixelsMap = new java.util.HashMap<edu.cmu.cs.dennisc.image.ImageGenerator, ReferencedObject<Pixels>>();
+	private Map<ImageGenerator, ReferencedObject<Pixels>> activeImageGeneratorToPixelsMap = new HashMap<ImageGenerator, ReferencedObject<Pixels>>();
+	private Map<ImageGenerator, ReferencedObject<Pixels>> forgottenImageGeneratorToPixelsMap = new HashMap<ImageGenerator, ReferencedObject<Pixels>>();
 
 	@Override
-	public boolean isRemembered( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
+	public boolean isRemembered( ImageGenerator imageGenerator ) {
 		return this.activeImageGeneratorToPixelsMap.containsKey( imageGenerator );
 	}
 
 	@Override
-	public void remember( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
+	public void remember( ImageGenerator imageGenerator ) {
 		assert imageGenerator != null;
 		ReferencedObject<Pixels> referencedObject = this.activeImageGeneratorToPixelsMap.get( imageGenerator );
 		if( referencedObject != null ) {
@@ -1080,7 +1122,7 @@ import com.jogamp.opengl.glu.GLU;
 			if( referencedObject != null ) {
 				this.forgottenImageGeneratorToPixelsMap.remove( imageGenerator );
 			} else {
-				if( imageGenerator instanceof edu.cmu.cs.dennisc.texture.Texture ) {
+				if( imageGenerator instanceof Texture ) {
 					//					sgTexture.addReleaseListener( new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
 					//					public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
 					//					}
@@ -1088,13 +1130,13 @@ import com.jogamp.opengl.glu.GLU;
 					//						forget( (edu.cmu.cs.dennisc.scenegraph.Texture)releaseEvent.getReleasableSource() );
 					//					};
 					//				} );
-					edu.cmu.cs.dennisc.texture.Texture texture = (edu.cmu.cs.dennisc.texture.Texture)imageGenerator;
+					Texture texture = (Texture)imageGenerator;
 
-					if( texture instanceof edu.cmu.cs.dennisc.texture.CustomTexture ) {
-						( (edu.cmu.cs.dennisc.texture.CustomTexture)texture ).layoutIfNecessary( this );
+					if( texture instanceof CustomTexture ) {
+						( (CustomTexture)texture ).layoutIfNecessary( this );
 					}
 
-					Pixels pixels = new Pixels( (edu.cmu.cs.dennisc.texture.Texture)imageGenerator );
+					Pixels pixels = new Pixels( (Texture)imageGenerator );
 					referencedObject = new ReferencedObject<Pixels>( pixels, 0 );
 
 				} else {
@@ -1107,7 +1149,7 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void paint( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator, float x, float y, float alpha ) {
+	public void paint( ImageGenerator imageGenerator, float x, float y, float alpha ) {
 		ReferencedObject<Pixels> referencedObject = this.activeImageGeneratorToPixelsMap.get( imageGenerator );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
@@ -1130,7 +1172,7 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void forget( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
+	public void forget( ImageGenerator imageGenerator ) {
 		ReferencedObject<Pixels> referencedObject = this.activeImageGeneratorToPixelsMap.get( imageGenerator );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();
@@ -1143,7 +1185,7 @@ import com.jogamp.opengl.glu.GLU;
 		}
 	}
 
-	private void disposeImageGenerator( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator ) {
+	private void disposeImageGenerator( ImageGenerator imageGenerator ) {
 		ReferencedObject<Pixels> referencedObject = this.forgottenImageGeneratorToPixelsMap.get( imageGenerator );
 		referencedObject.getObject().release();
 	}
@@ -1151,7 +1193,7 @@ import com.jogamp.opengl.glu.GLU;
 	@Override
 	public void disposeForgottenImageGenerators() {
 		synchronized( this.forgottenImageGeneratorToPixelsMap ) {
-			for( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator : this.forgottenImageGeneratorToPixelsMap.keySet() ) {
+			for( ImageGenerator imageGenerator : this.forgottenImageGeneratorToPixelsMap.keySet() ) {
 				disposeImageGenerator( imageGenerator );
 			}
 			this.forgottenFontToTextRendererMap.clear();
@@ -1194,8 +1236,8 @@ import com.jogamp.opengl.glu.GLU;
 	//	}
 
 	@Override
-	public boolean isRemembered( java.awt.Image image ) {
-		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
+	public boolean isRemembered( Image image ) {
+		ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
 		if( imageGenerator != null ) {
 			return isRemembered( imageGenerator );
 		} else {
@@ -1204,14 +1246,14 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void remember( java.awt.Image image ) {
-		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
+	public void remember( Image image ) {
+		ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
 		if( imageGenerator != null ) {
 			//pass
 		} else {
-			if( image instanceof java.awt.image.BufferedImage ) {
-				java.awt.image.BufferedImage bufferedImage = (java.awt.image.BufferedImage)image;
-				edu.cmu.cs.dennisc.texture.BufferedImageTexture bufferedImageTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+			if( image instanceof BufferedImage ) {
+				BufferedImage bufferedImage = (BufferedImage)image;
+				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
 				bufferedImageTexture.setBufferedImage( bufferedImage );
 				bufferedImageTexture.setMipMappingDesired( false );
 				imageGenerator = bufferedImageTexture;
@@ -1224,15 +1266,15 @@ import com.jogamp.opengl.glu.GLU;
 	}
 
 	@Override
-	public void forget( java.awt.Image image ) {
-		edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
+	public void forget( Image image ) {
+		ImageGenerator imageGenerator = this.imageToImageGeneratorMap.get( image );
 		forget( imageGenerator );
 	}
 
 	@Override
 	public void disposeForgottenImages() {
 		//todo
-		for( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator : this.imageToImageGeneratorMap.values() ) {
+		for( ImageGenerator imageGenerator : this.imageToImageGeneratorMap.values() ) {
 			if( this.forgottenImageGeneratorToPixelsMap.containsKey( imageGenerator ) ) {
 				disposeImageGenerator( imageGenerator );
 				this.forgottenImageGeneratorToPixelsMap.remove( imageGenerator );
@@ -1242,7 +1284,7 @@ import com.jogamp.opengl.glu.GLU;
 
 	// edu.cmu.cs.dennisc.lookingglass.opengl.Graphics2D
 
-	public com.jogamp.opengl.GL getGL() {
+	public GL getGL() {
 		return this.renderContext.gl;
 	}
 }

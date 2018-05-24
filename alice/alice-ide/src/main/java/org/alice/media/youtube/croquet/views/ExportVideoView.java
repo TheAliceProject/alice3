@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views;
 
+import org.alice.media.youtube.croquet.VideoExportComposite;
+import org.lgna.croquet.views.MigPanel;
+
 /**
  * @author Matt May
  */
-public class ExportVideoView extends org.lgna.croquet.views.MigPanel {
+public class ExportVideoView extends MigPanel {
 
-	public ExportVideoView( org.alice.media.youtube.croquet.VideoExportComposite composite ) {
+	public ExportVideoView( VideoExportComposite composite ) {
 		super( composite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
 		this.addComponent( composite.getVideoComposite().getView(), "w 640, h 360, wrap" );
 		this.addComponent( composite.getExportToFileOperation().createButton(), "push, aligny top, split 2" );

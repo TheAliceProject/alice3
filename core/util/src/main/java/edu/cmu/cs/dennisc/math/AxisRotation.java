@@ -42,6 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.random.RandomUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -76,13 +81,13 @@ public class AxisRotation implements Orientation {
 		setValue( other );
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		axis.decode( binaryDecoder );
 		angle.decode( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		axis.encode( binaryEncoder );
 		angle.encode( binaryEncoder );
 	}
@@ -275,7 +280,7 @@ public class AxisRotation implements Orientation {
 			c = Math.min( c, 1.0 );
 			thetaInRadians = Math.acos( c );
 			if( Double.isNaN( thetaInRadians ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "AxisRotationD isNaN" );
+				Logger.severe( "AxisRotationD isNaN" );
 			}
 			assert Double.isNaN( thetaInRadians ) == false;
 
@@ -374,13 +379,13 @@ public class AxisRotation implements Orientation {
 	public static AxisRotation setReturnValueToRandom( AxisRotation rv ) {
 		double magnitudeSquared;
 		do {
-			rv.axis.x = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( -1, 1 );
-			rv.axis.y = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( -1, 1 );
-			rv.axis.z = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( -1, 1 );
+			rv.axis.x = RandomUtilities.nextDoubleInRange( -1, 1 );
+			rv.axis.y = RandomUtilities.nextDoubleInRange( -1, 1 );
+			rv.axis.z = RandomUtilities.nextDoubleInRange( -1, 1 );
 			magnitudeSquared = rv.axis.calculateMagnitudeSquared();
 		} while( magnitudeSquared == 0.0 );
 		rv.axis.divide( Math.sqrt( magnitudeSquared ) );
-		rv.angle.setAsRadians( edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( -Math.PI, Math.PI ) );
+		rv.angle.setAsRadians( RandomUtilities.nextDoubleInRange( -Math.PI, Math.PI ) );
 		return rv;
 	}
 

@@ -43,13 +43,24 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryResourceBlank> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class GalleryResourceBlank extends CascadeBlank<Expression> {
+	private static Map<AbstractType<?, ?, ?>, GalleryResourceBlank> map = Maps.newHashMap();
 
-	public static GalleryResourceBlank getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> value ) {
+	public static GalleryResourceBlank getInstance( AbstractType<?, ?, ?> value ) {
 		synchronized( map ) {
 			GalleryResourceBlank rv = map.get( value );
 			if( rv != null ) {
@@ -62,15 +73,15 @@ public class GalleryResourceBlank extends org.lgna.croquet.CascadeBlank<org.lgna
 		}
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 
-	private GalleryResourceBlank( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( java.util.UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
+	private GalleryResourceBlank( AbstractType<?, ?, ?> type ) {
+		super( UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
 		this.type = type;
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> blankNode ) {
 		GalleryResourceUtilities.updateChildren( children, blankNode, this.type );
 	}
 }

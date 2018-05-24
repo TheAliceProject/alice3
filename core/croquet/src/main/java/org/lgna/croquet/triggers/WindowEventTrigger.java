@@ -43,24 +43,30 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.Point;
+import java.awt.event.WindowEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WindowEventTrigger extends ComponentEventTrigger<java.awt.event.WindowEvent> {
-	public static WindowEventTrigger createUserInstance( java.awt.event.WindowEvent windowEvent ) {
+public class WindowEventTrigger extends ComponentEventTrigger<WindowEvent> {
+	public static WindowEventTrigger createUserInstance( WindowEvent windowEvent ) {
 		return new WindowEventTrigger( null, windowEvent );
 	}
 
-	private WindowEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, java.awt.event.WindowEvent windowEvent ) {
+	private WindowEventTrigger( ViewController<?, ?> viewController, WindowEvent windowEvent ) {
 		super( viewController, windowEvent );
 	}
 
-	public WindowEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public WindowEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	protected java.awt.Point getPoint() {
+	protected Point getPoint() {
 		return null;
 	}
 }

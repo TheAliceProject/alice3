@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementKey;
@@ -52,6 +53,9 @@ import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author David Culyba
@@ -64,7 +68,7 @@ public abstract class RotateKeyManipulator extends AbstractManipulator {
 
 	public RotateKeyManipulator( MovementKey[] directionKeys ) {
 		this.rotationKeys = directionKeys;
-		java.util.List<MovementDirection> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<MovementDirection> list = Lists.newLinkedList();
 		for( MovementKey direction : directionKeys ) {
 			//necessary check?
 			if( list.contains( direction.movementDescription.direction ) ) {
@@ -73,7 +77,7 @@ public abstract class RotateKeyManipulator extends AbstractManipulator {
 				list.add( direction.movementDescription.direction );
 			}
 		}
-		this.rotateAxes = java.util.Collections.unmodifiableList( list );
+		this.rotateAxes = Collections.unmodifiableList( list );
 	}
 
 	@Override
@@ -181,5 +185,5 @@ public abstract class RotateKeyManipulator extends AbstractManipulator {
 	private Point3 initialPoint = new Point3();
 	private double startTime = 0.0d;
 	private final MovementKey[] rotationKeys;
-	private final java.util.List<MovementDirection> rotateAxes;
+	private final List<MovementDirection> rotateAxes;
 }

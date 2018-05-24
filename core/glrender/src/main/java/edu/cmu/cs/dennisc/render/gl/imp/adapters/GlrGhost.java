@@ -43,12 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Ghost;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrGhost extends GlrTransformable<edu.cmu.cs.dennisc.scenegraph.Ghost> {
+public class GlrGhost extends GlrTransformable<Ghost> {
 	@Override
 	public void renderGhost( RenderContext rc, GlrGhost root ) {
 		rc.pushGlobalOpacity();
@@ -66,7 +68,7 @@ public class GlrGhost extends GlrTransformable<edu.cmu.cs.dennisc.scenegraph.Gho
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.opacity ) {
 			this.opacity = owner.opacity.getValue();
 		} else {

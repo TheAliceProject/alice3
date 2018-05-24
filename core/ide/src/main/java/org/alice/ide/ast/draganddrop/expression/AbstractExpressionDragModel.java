@@ -43,11 +43,21 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.ast.draganddrop.CodeDragModel;
+import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExpressionDragModel extends org.alice.ide.ast.draganddrop.CodeDragModel {
-	public AbstractExpressionDragModel( java.util.UUID id ) {
+public abstract class AbstractExpressionDragModel extends CodeDragModel {
+	public AbstractExpressionDragModel( UUID id ) {
 		super( id );
 	}
 
@@ -68,17 +78,17 @@ public abstract class AbstractExpressionDragModel extends org.alice.ide.ast.drag
 	//	}
 	public abstract boolean isPotentialStatementCreator();
 
-	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty );
+	protected abstract Model getDropModel( ExpressionProperty expressionProperty );
 
-	protected abstract org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair );
+	protected abstract Model getDropModel( BlockStatementIndexPair blockStatementIndexPair );
 
 	@Override
-	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		if( dropSite instanceof org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite ) {
-			org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite expressionPropertyDropSite = (org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite)dropSite;
+	public final Model getDropModel( DragStep step, DropSite dropSite ) {
+		if( dropSite instanceof ExpressionPropertyDropSite ) {
+			ExpressionPropertyDropSite expressionPropertyDropSite = (ExpressionPropertyDropSite)dropSite;
 			return this.getDropModel( expressionPropertyDropSite.getExpressionProperty() );
-		} else if( dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
-			org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
+		} else if( dropSite instanceof BlockStatementIndexPair ) {
+			BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)dropSite;
 			return this.getDropModel( blockStatementIndexPair );
 		} else {
 			return null;

@@ -43,24 +43,36 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.project.annotations.ArrayTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SJoint;
+
+import java.lang.reflect.Method;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JointMethodUtilities {
-	private static final org.lgna.project.ast.JavaType JOINT_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class );
-	private static final org.lgna.project.ast.JavaType JOINT_ARRAY_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint[].class );
+	private static final JavaType JOINT_TYPE = JavaType.getInstance( SJoint.class );
+	private static final JavaType JOINT_ARRAY_TYPE = JavaType.getInstance( SJoint[].class );
 	private static final String GETTER_PREFIX = "get";
 
-	public static boolean isJointGetter( org.lgna.project.ast.AbstractMethod method ) {
+	public static boolean isJointGetter( AbstractMethod method ) {
 		if( method.isPublicAccess() ) {
 			if( method.getReturnType() == JOINT_TYPE ) {
-				if( ( method.getVisibility() == org.lgna.project.annotations.Visibility.PRIME_TIME ) || ( method.getVisibility() == null ) ) {
+				if( ( method.getVisibility() == Visibility.PRIME_TIME ) || ( method.getVisibility() == null ) ) {
 					if( method.getName().startsWith( GETTER_PREFIX ) ) {
-						if( method instanceof org.lgna.project.ast.JavaMethod ) {
+						if( method instanceof JavaMethod ) {
 							return true; //isNotAnnotatedOtherwise
-						} else if( method instanceof org.lgna.project.ast.UserMethod ) {
-							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-							return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
+						} else if( method instanceof UserMethod ) {
+							UserMethod userMethod = (UserMethod)method;
+							return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
 						} else {
 							//throw new AssertionError();
 							return false;
@@ -72,16 +84,16 @@ public class JointMethodUtilities {
 		return false;
 	}
 
-	public static boolean isJointArrayGetter( org.lgna.project.ast.AbstractMethod method ) {
+	public static boolean isJointArrayGetter( AbstractMethod method ) {
 		if( method.isPublicAccess() ) {
 			if( method.getReturnType() == JOINT_ARRAY_TYPE ) {
-				if( ( method.getVisibility() == org.lgna.project.annotations.Visibility.PRIME_TIME ) || ( method.getVisibility() == null ) ) {
+				if( ( method.getVisibility() == Visibility.PRIME_TIME ) || ( method.getVisibility() == null ) ) {
 					if( method.getName().startsWith( GETTER_PREFIX ) ) {
-						if( method instanceof org.lgna.project.ast.JavaMethod ) {
+						if( method instanceof JavaMethod ) {
 							return true; //isNotAnnotatedOtherwise
-						} else if( method instanceof org.lgna.project.ast.UserMethod ) {
-							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-							return userMethod.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.GENERATED;
+						} else if( method instanceof UserMethod ) {
+							UserMethod userMethod = (UserMethod)method;
+							return userMethod.managementLevel.getValue() == ManagementLevel.GENERATED;
 						} else {
 							//throw new AssertionError();
 							return false;
@@ -93,13 +105,13 @@ public class JointMethodUtilities {
 		return false;
 	}
 
-	public static int getJointArrayLength( org.lgna.project.ast.AbstractMethod method ) {
+	public static int getJointArrayLength( AbstractMethod method ) {
 		if( isJointArrayGetter( method ) ) {
-			if( method instanceof org.lgna.project.ast.JavaMethod ) {
-				java.lang.reflect.Method mthd = ( (org.lgna.project.ast.JavaMethod)method ).getMethodReflectionProxy().getReification();
+			if( method instanceof JavaMethod ) {
+				Method mthd = ( (JavaMethod)method ).getMethodReflectionProxy().getReification();
 				if( mthd != null ) {
-					if( mthd.isAnnotationPresent( org.lgna.project.annotations.ArrayTemplate.class ) ) {
-						org.lgna.project.annotations.ArrayTemplate arrayTemplate = mthd.getAnnotation( org.lgna.project.annotations.ArrayTemplate.class );
+					if( mthd.isAnnotationPresent( ArrayTemplate.class ) ) {
+						ArrayTemplate arrayTemplate = mthd.getAnnotation( ArrayTemplate.class );
 						return arrayTemplate.length();
 					} else {
 						return -1;
@@ -107,7 +119,7 @@ public class JointMethodUtilities {
 				} else {
 					return -1;
 				}
-			} else if( method instanceof org.lgna.project.ast.UserMethod ) {
+			} else if( method instanceof UserMethod ) {
 				return -1;
 			} else {
 				return -1;
@@ -116,7 +128,7 @@ public class JointMethodUtilities {
 		return -1;
 	}
 
-	public static String getJointName( org.lgna.project.ast.AbstractMethod method, java.util.Locale locale ) {
+	public static String getJointName( AbstractMethod method, Locale locale ) {
 		String name = method.getName();
 		if( name.startsWith( GETTER_PREFIX ) ) {
 			return name.substring( GETTER_PREFIX.length() );

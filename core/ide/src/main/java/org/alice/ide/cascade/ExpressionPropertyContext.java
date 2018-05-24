@@ -42,37 +42,46 @@
  *******************************************************************************/
 package org.alice.ide.cascade;
 
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyContext implements ExpressionCascadeContext {
-	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	private final ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyContext( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyContext( ExpressionProperty expressionProperty ) {
 		this.expressionProperty = expressionProperty;
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression getPreviousExpression() {
+	public Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
 
 	@Override
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = this.expressionProperty.getOwner();
-		if( owner instanceof org.lgna.project.ast.Node ) {
-			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)owner;
-			org.lgna.project.ast.Statement statement = node.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class, true );
+	public BlockStatementIndexPair getBlockStatementIndexPair() {
+		InstancePropertyOwner owner = this.expressionProperty.getOwner();
+		if( owner instanceof Node ) {
+			Node node = (Node)owner;
+			Statement statement = node.getFirstAncestorAssignableTo( Statement.class, true );
 			if( statement != null ) {
-				if( statement instanceof org.lgna.project.ast.ConstructorInvocationStatement ) {
+				if( statement instanceof ConstructorInvocationStatement ) {
 					//todo
 					return null;
 				} else {
-					org.lgna.project.ast.Node parent = statement.getParent();
-					if( parent instanceof org.lgna.project.ast.BlockStatement ) {
-						org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+					Node parent = statement.getParent();
+					if( parent instanceof BlockStatement ) {
+						BlockStatement blockStatement = (BlockStatement)parent;
 						int index = blockStatement.statements.indexOf( statement );
-						return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+						return new BlockStatementIndexPair( blockStatement, index );
 					}
 				}
 			}

@@ -43,13 +43,17 @@
 
 package org.alice.ide.x.components;
 
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionView extends AbstractExpressionView<org.lgna.project.ast.Expression> {
-	public ExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
+public class ExpressionView extends AbstractExpressionView<Expression> {
+	public ExpressionView( AstI18nFactory factory, Expression expression ) {
 		super( factory, expression );
-		org.lgna.croquet.views.AwtComponentView<?> view = factory.createComponent( expression );
+		AwtComponentView<?> view = factory.createComponent( expression );
 		this.addComponent( view );
 	}
 }

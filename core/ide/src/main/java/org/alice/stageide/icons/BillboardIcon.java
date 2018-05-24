@@ -42,20 +42,31 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.math.GoldenRatio;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BillboardIcon extends ShapeIcon {
-	public BillboardIcon( java.awt.Dimension size ) {
+	public BillboardIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		float h = width / (float)edu.cmu.cs.dennisc.math.GoldenRatio.PHI;
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		float h = width / (float)GoldenRatio.PHI;
 		float x = 0.0f;
 		float y = ( height - h ) * 0.5f;
-		java.awt.Shape outerShape = new java.awt.geom.Rectangle2D.Float( x, y, width, h );
+		Shape outerShape = new Rectangle2D.Float( x, y, width, h );
 		g2.setPaint( fillPaint );
 		g2.fill( outerShape );
 		g2.setPaint( drawPaint );
@@ -67,19 +78,19 @@ public class BillboardIcon extends ShapeIcon {
 		} else {
 			offset = 0.1f * width;
 		}
-		java.awt.geom.Rectangle2D.Float innerShape = new java.awt.geom.Rectangle2D.Float( x + offset, y + offset, width - ( offset * 2 ), h - ( offset * 2 ) );
+		Rectangle2D.Float innerShape = new Rectangle2D.Float( x + offset, y + offset, width - ( offset * 2 ), h - ( offset * 2 ) );
 
-		java.awt.Paint innerFillPaint;
-		if( fillPaint instanceof java.awt.Color ) {
-			java.awt.Color fillColor = (java.awt.Color)fillPaint;
-			innerFillPaint = new java.awt.GradientPaint( (float)innerShape.getMinX(), (float)innerShape.getMinY(), fillColor.brighter(), (float)innerShape.getCenterX(), (float)innerShape.getMaxY(), fillColor );
+		Paint innerFillPaint;
+		if( fillPaint instanceof Color ) {
+			Color fillColor = (Color)fillPaint;
+			innerFillPaint = new GradientPaint( (float)innerShape.getMinX(), (float)innerShape.getMinY(), fillColor.brighter(), (float)innerShape.getCenterX(), (float)innerShape.getMaxY(), fillColor );
 		} else {
 			innerFillPaint = fillPaint;
 		}
 
 		g2.setPaint( innerFillPaint );
 		g2.fill( innerShape );
-		g2.setPaint( java.awt.Color.DARK_GRAY );
+		g2.setPaint( Color.DARK_GRAY );
 		g2.draw( innerShape );
 
 	}

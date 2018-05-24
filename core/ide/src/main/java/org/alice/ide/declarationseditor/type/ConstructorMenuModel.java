@@ -42,25 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.project.ast.NamedUserConstructor;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ConstructorMenuModel extends MemberMenuModel<org.lgna.project.ast.NamedUserConstructor> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class ConstructorMenuModel extends MemberMenuModel<NamedUserConstructor> {
+	private static InitializingIfAbsentMap<NamedUserConstructor, ConstructorMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static ConstructorMenuModel getInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
-		return map.getInitializingIfAbsent( constructor, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel>() {
+	public static ConstructorMenuModel getInstance( NamedUserConstructor constructor ) {
+		return map.getInitializingIfAbsent( constructor, new InitializingIfAbsentMap.Initializer<NamedUserConstructor, ConstructorMenuModel>() {
 			@Override
-			public ConstructorMenuModel initialize( org.lgna.project.ast.NamedUserConstructor key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
+			public ConstructorMenuModel initialize( NamedUserConstructor key ) {
+				List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+				DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
 				return new ConstructorMenuModel( key, prepModels );
 			}
 		} );
 	}
 
-	private ConstructorMenuModel( org.lgna.project.ast.NamedUserConstructor constructor, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
-		super( java.util.UUID.fromString( "22fbfd6d-3b0f-41b3-834e-dd8078fd0733" ), constructor, prepModels );
+	private ConstructorMenuModel( NamedUserConstructor constructor, List<StandardMenuItemPrepModel> prepModels ) {
+		super( UUID.fromString( "22fbfd6d-3b0f-41b3-834e-dd8078fd0733" ), constructor, prepModels );
 	}
 }

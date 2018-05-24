@@ -43,21 +43,46 @@
 
 package org.alice.ide.croquet.components;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.awt.KnurlUtilities;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.imp.JDragView;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JToolTip;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Paint;
+import java.awt.Point;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> extends org.lgna.croquet.views.DragComponent<M> {
+public abstract class KnurlDragComponent<M extends DragModel> extends DragComponent<M> {
 	protected static final int KNURL_WIDTH = 8;
 
 	public KnurlDragComponent( M model, boolean isAlphaDesiredWhenOverDropReceptor ) {
 		super( model, isAlphaDesiredWhenOverDropReceptor );
 	}
 
-	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
+	protected Paint getForegroundPaint( int x, int y, int width, int height ) {
 		return this.getForegroundColor();
 	}
 
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return this.getBackgroundColor();
 	}
 
@@ -91,11 +116,11 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 
 	protected abstract int getInsetRight();
 
-	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent );
+	protected abstract LayoutManager createLayoutManager( JPanel jComponent );
 
 	@Override
-	protected org.lgna.croquet.views.imp.JDragView createAwtComponent() {
-		org.lgna.croquet.views.imp.JDragView rv = new org.lgna.croquet.views.imp.JDragView() {
+	protected JDragView createAwtComponent() {
+		JDragView rv = new JDragView() {
 			@Override
 			public boolean isOpaque() {
 				return false;
@@ -107,17 +132,17 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 			}
 
 			@Override
-			public javax.swing.JToolTip createToolTip() {
+			public JToolTip createToolTip() {
 				return KnurlDragComponent.this.createToolTip( super.createToolTip() );
 			}
 
 			@Override
-			public java.awt.Point getToolTipLocation( java.awt.event.MouseEvent event ) {
+			public Point getToolTipLocation( MouseEvent event ) {
 				return KnurlDragComponent.this.getToolTipLocation( super.getToolTipLocation( event ), event );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
+			public Dimension getMaximumSize() {
 				if( KnurlDragComponent.this.isMaximumSizeClampedToPreferredSize() ) {
 					return this.getPreferredSize();
 				} else {
@@ -126,19 +151,19 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 			}
 
 			@Override
-			public java.awt.Dimension getPreferredSize() {
+			public Dimension getPreferredSize() {
 				return KnurlDragComponent.this.getPreferredSize( super.getPreferredSize() );
 			}
 
 			@Override
-			public void paint( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			public void paint( Graphics g ) {
+				Graphics2D g2 = (Graphics2D)g;
 				int x = 0;
 				int y = 0;
 				int width = this.getWidth();
 				int height = this.getHeight();
 
-				java.awt.Paint prevPaint;
+				Paint prevPaint;
 				prevPaint = g2.getPaint();
 				try {
 					g2.setPaint( KnurlDragComponent.this.getBackgroundPaint( x, y, width, height ) );
@@ -162,19 +187,19 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 
 		};
 
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
+		rv.setBorder( BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 		if( this.isKnurlDesired() ) {
-			rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
+			rv.setCursor( Cursor.getPredefinedCursor( Cursor.HAND_CURSOR ) );
 		}
 
-		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
+		LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 
 		rv.setOpaque( false );
 		rv.setBackground( null );
 
-		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		rv.setAlignmentX( Component.LEFT_ALIGNMENT );
+		rv.setAlignmentY( Component.CENTER_ALIGNMENT );
 
 		return rv;
 	}
@@ -183,32 +208,32 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 		return jContains;
 	}
 
-	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
+	protected Dimension getPreferredSize( Dimension size ) {
 		return size;
 	}
 
-	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
+	protected JToolTip createToolTip( JToolTip jToolTip ) {
 		return jToolTip;
 	}
 
-	protected java.awt.Point getToolTipLocation( java.awt.Point location, java.awt.event.MouseEvent event ) {
+	protected Point getToolTipLocation( Point location, MouseEvent event ) {
 		return location;
 	}
 
-	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
-	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 255 );
-	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 0, 0, 0 );
+	private static final Stroke ACTIVE_STROKE = new BasicStroke( 3.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
+	private static final Stroke PASSIVE_STROKE = new BasicStroke( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND );
+	private static final Color HIGHLIGHT_COLOR = new Color( 255, 255, 255 );
+	private static final Color SHADOW_COLOR = new Color( 0, 0, 0 );
 
-	protected java.awt.Paint getPassiveOutlinePaint() {
-		return java.awt.Color.GRAY;
+	protected Paint getPassiveOutlinePaint() {
+		return Color.GRAY;
 	}
 
-	protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+	protected void paintOutline( Graphics2D g2, Shape shape ) {
 		if( shape != null ) {
-			java.awt.Stroke prevStroke = g2.getStroke();
+			Stroke prevStroke = g2.getStroke();
 			if( this.isActive() ) {
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape( g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
+				GraphicsUtilities.draw3DishShape( g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
 			} else {
 				g2.setPaint( this.getPassiveOutlinePaint() );
 				g2.setStroke( PASSIVE_STROKE );
@@ -218,11 +243,11 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 		}
 	}
 
-	protected abstract java.awt.Shape createShape( int x, int y, int width, int height );
+	protected abstract Shape createShape( int x, int y, int width, int height );
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		java.awt.Shape shape = this.createShape( x, y, width, height );
+	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
+		Shape shape = this.createShape( x, y, width, height );
 		this.paintOutline( g2, shape );
 		if( isKnurlDesired() ) {
 			int grayscale;
@@ -231,20 +256,20 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 			} else {
 				grayscale = 127;
 			}
-			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
-			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
+			g2.setColor( ColorUtilities.createGray( grayscale ) );
+			KnurlUtilities.paintKnurl5( g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
 		}
 	}
 
-	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
+	public void addComponent( AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
 	}
 
-	public void addComponent( org.lgna.croquet.views.AwtComponentView<?> component, Object constraints ) {
+	public void addComponent( AwtComponentView<?> component, Object constraints ) {
 		this.internalAddComponent( component, constraints );
 	}
 
-	public void forgetAndRemoveComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
+	public void forgetAndRemoveComponent( AwtComponentView<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
 
@@ -256,7 +281,7 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 		this.internalForgetAndRemoveAllComponents();
 	}
 
-	protected void fillBounds( java.awt.Graphics2D g2 ) {
+	protected void fillBounds( Graphics2D g2 ) {
 		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}
 }

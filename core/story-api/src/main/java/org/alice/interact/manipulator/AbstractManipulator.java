@@ -43,6 +43,8 @@
 
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
@@ -50,6 +52,9 @@ import org.alice.interact.handle.HandleSet;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.lgna.story.implementation.MarkerImp;
+
+import java.util.List;
 
 //adding comment for testing tags
 
@@ -78,11 +83,11 @@ public abstract class AbstractManipulator {
 		this.mainManipulationEvent = mainManipulationEvent;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getManipulatedTransformable() {
+	public AbstractTransformable getManipulatedTransformable() {
 		return this.manipulatedTransformable;
 	}
 
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable ) {
+	public void setManipulatedTransformable( AbstractTransformable manipulatedTransformable ) {
 		if( manipulatedTransformable != this.manipulatedTransformable ) {
 			this.manipulatedTransformable = manipulatedTransformable;
 			if( this.manipulatedTransformable != null ) {
@@ -120,7 +125,7 @@ public abstract class AbstractManipulator {
 	public boolean doesManipulatedObjectHaveHandles() {
 		if( this.manipulatedTransformable != null ) {
 			EntityImp entityImplementation = EntityImp.getInstance( this.manipulatedTransformable );
-			if( !( entityImplementation instanceof org.lgna.story.implementation.MarkerImp ) ) {
+			if( !( entityImplementation instanceof MarkerImp ) ) {
 				return true;
 			}
 		}
@@ -256,11 +261,11 @@ public abstract class AbstractManipulator {
 	}
 
 	protected AbstractDragAdapter dragAdapter;
-	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedTransformable = null;
+	protected AbstractTransformable manipulatedTransformable = null;
 	private AffineMatrix4x4 originalTransformation = null;
 	private boolean hasStarted = false;
 	protected boolean hasDoneUpdate = false;
 
 	private ManipulationEvent mainManipulationEvent;
-	private final java.util.List<ManipulationEvent> manipulationEvents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ManipulationEvent> manipulationEvents = Lists.newCopyOnWriteArrayList();
 }

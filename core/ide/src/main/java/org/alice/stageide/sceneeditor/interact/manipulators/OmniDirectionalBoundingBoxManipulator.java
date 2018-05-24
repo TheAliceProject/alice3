@@ -45,11 +45,14 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import java.awt.Point;
 
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DragComponent;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -165,13 +168,13 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			this.mousePlaneOffset = new Point( 0, 0 );
 			this.originalPosition = new Point3( 0, 0, 0 );
 
-			org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)startInput.getDragAndDropContext();
-			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
+			DragStep dragStep = (DragStep)startInput.getDragAndDropContext();
+			DragModel dragModel = dragStep.getModel();
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
-			org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = null;
-			if( dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
-				galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)dragModel;
+			GalleryDragModel galleryDragModel = null;
+			if( dragModel instanceof GalleryDragModel ) {
+				galleryDragModel = (GalleryDragModel)dragModel;
 			}
 
 			//We don't need special planes for the orthographic camera
@@ -199,7 +202,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			addPlaneTransitionPointSphereToScene();
 
 			boolean placeOnGround = false;
-			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
+			AxisAlignedBox box = null;
 			if( galleryDragModel != null ) {
 				box = galleryDragModel.getBoundingBox();
 				placeOnGround = galleryDragModel.placeOnGround();
@@ -249,7 +252,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		}
 		//		this.sgBoundingBoxTransformable.setParent(null);
 		//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
-		org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)endInput.getDragAndDropContext();
+		DragStep dragStep = (DragStep)endInput.getDragAndDropContext();
 		if( dragStep != null ) {
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.showDragProxy();

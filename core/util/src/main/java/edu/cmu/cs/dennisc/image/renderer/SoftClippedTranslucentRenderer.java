@@ -42,37 +42,43 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.image.renderer;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SoftClippedTranslucentRenderer extends TranslucentRenderer {
-	protected abstract void renderClip( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void renderClip( Graphics2D g2, int x, int y, int width, int height );
 
 	@Override
-	protected void clear( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void clear( Graphics2D g2, int x, int y, int width, int height ) {
 		super.clear( g2, x, y, width, height );
-		g2.setComposite( java.awt.AlphaComposite.Src );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		g2.setPaint( java.awt.Color.WHITE );
+		g2.setComposite( AlphaComposite.Src );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		g2.setPaint( Color.WHITE );
 		renderClip( g2, x, y, width, height );
 	}
 
-	protected abstract void renderForegroundIntoBufferedImage( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void renderForegroundIntoBufferedImage( Graphics2D g2, int x, int y, int width, int height );
 
 	@Override
-	public final void renderIntoBufferedImage( java.awt.GraphicsConfiguration gc ) {
+	public final void renderIntoBufferedImage( GraphicsConfiguration gc ) {
 		int x = 0;
 		int y = 0;
 		int width = getWidth();
 		int height = getHeight();
 		int transparency = getTransparency();
 		createBufferedImageIfNecessary( gc, width, height, transparency );
-		java.awt.Graphics2D g2 = getBufferedImage().createGraphics();
+		Graphics2D g2 = getBufferedImage().createGraphics();
 		clear( g2, x, y, getAllocatedWidth(), getAllocatedHeight() );
 		g2.dispose();
 
-		java.awt.Graphics2D _g2 = getBufferedImage().createGraphics();
-		_g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		Graphics2D _g2 = getBufferedImage().createGraphics();
+		_g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 		renderForegroundIntoBufferedImage( _g2, x, y, width, height );
 		_g2.dispose();
 

@@ -44,15 +44,28 @@ package org.lgna.ik.poser.animation.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Point;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import javax.swing.JPanel;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 import org.lgna.ik.poser.animation.edits.CurrentTimeLineTimeChangeEdit;
@@ -63,11 +76,11 @@ import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
  * @author Matt May
  */
 public class JTimeLineView extends JPanel {
-	private static final java.text.NumberFormat CENTI_FORMAT = new java.text.DecimalFormat( "0.00" );
-	private static final java.awt.Shape ARROW = createArrow();
+	private static final NumberFormat CENTI_FORMAT = new DecimalFormat( "0.00" );
+	private static final Shape ARROW = createArrow();
 	//	private static final java.awt.Shape D_ARROW = createEndOfTimeLineArrows();
 
-	private static java.awt.Paint PRESSED_PAINT = new Color( 191, 191, 255 );
+	private static Paint PRESSED_PAINT = new Color( 191, 191, 255 );
 
 	public JTimeLineView( TimeLineView timeLineView ) {
 		this.addMouseListener( mlAdapter );
@@ -91,8 +104,8 @@ public class JTimeLineView extends JPanel {
 	public void paintComponent( Graphics g ) {
 		super.paintComponent( g );
 
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = new edu.cmu.cs.dennisc.java.awt.GraphicsContext();
+		Graphics2D g2 = (Graphics2D)g;
+		GraphicsContext gc = new GraphicsContext();
 		gc.pushAll( g2 );
 		try {
 			gc.pushAndSetAntialiasing( true );
@@ -112,9 +125,9 @@ public class JTimeLineView extends JPanel {
 			g.drawLine( maxX, minY, maxX, maxY );
 			g.drawLine( minX, centerY, maxX, centerY );
 
-			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+			AffineTransform prevTransform = g2.getTransform();
 
-			java.awt.Paint timePaint;
+			Paint timePaint;
 			if( this.isTimeSliding || ( this.isWithinTimeMarker && this.isMousePressed ) ) {
 				timePaint = PRESSED_PAINT;
 			} else {
@@ -135,9 +148,9 @@ public class JTimeLineView extends JPanel {
 			int yText = centerY + ARROW.getBounds().height;
 
 			double currentTime = this.composite.getTimeLine().getCurrentTime();
-			String currentTimeText = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( currentTime, CENTI_FORMAT );
+			String currentTimeText = DoubleUtilities.format( currentTime, CENTI_FORMAT );
 
-			java.awt.FontMetrics fm = g.getFontMetrics();
+			FontMetrics fm = g.getFontMetrics();
 			int messageWidth = fm.stringWidth( currentTimeText );
 			int ascent = fm.getMaxAscent();
 			g.drawString( currentTimeText, xTimeMarker - ( messageWidth / 2 ), yText + ascent );
@@ -170,10 +183,10 @@ public class JTimeLineView extends JPanel {
 	//		return rv;
 	//	}
 
-	private static java.awt.Shape createArrow() {
+	private static Shape createArrow() {
 		final int HALF_ARROW = 8;
 		final int ARROW_HEIGHT = 24;
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		GeneralPath rv = new GeneralPath();
 		rv.moveTo( 0, 0 );
 		rv.lineTo( HALF_ARROW, ARROW_HEIGHT );
 		rv.lineTo( -HALF_ARROW, ARROW_HEIGHT );
@@ -273,9 +286,9 @@ public class JTimeLineView extends JPanel {
 		public void mouseReleased( MouseEvent e ) {
 			setMousePressed( false );
 			if( isTimeSliding ) {
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+				TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				Transaction transaction = history.acquireActiveTransaction();
+				CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 				if( isTimeSliding ) {
 					step.commitAndInvokeDo( new CurrentTimeLineTimeChangeEdit( step, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime ) );
 					isTimeSliding = false;

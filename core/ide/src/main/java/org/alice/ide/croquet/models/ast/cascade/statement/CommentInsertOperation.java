@@ -43,13 +43,23 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CommentInsertOperation extends TemplateStatementInsertOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CommentInsertOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, CommentInsertOperation> map = Maps.newHashMap();
 
-	public static synchronized CommentInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized CommentInsertOperation getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		CommentInsertOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -61,14 +71,14 @@ public class CommentInsertOperation extends TemplateStatementInsertOperation {
 		return rv;
 	}
 
-	private CommentInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair, false );
+	private CommentInsertOperation( BlockStatementIndexPair blockStatementIndexPair ) {
+		super( UUID.fromString( "363d6a9e-b926-4355-a644-2f3b8e65c5c3" ), blockStatementIndexPair, false );
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
-		org.lgna.project.ast.Comment rv = org.lgna.project.ast.AstUtilities.createComment();
-		org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( rv );
+	protected final Statement createStatement() {
+		Comment rv = AstUtilities.createComment();
+		IDE.getActiveInstance().setCommentThatWantsFocus( rv );
 		return rv;
 	}
 }

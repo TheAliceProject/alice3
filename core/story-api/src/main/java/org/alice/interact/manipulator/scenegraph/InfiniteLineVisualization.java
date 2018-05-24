@@ -46,6 +46,7 @@ package org.alice.interact.manipulator.scenegraph;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
@@ -69,7 +70,7 @@ public class InfiniteLineVisualization extends Visual {
 
 		LineArray sgLineArray = new LineArray();
 		sgLineArray.vertices.setValue( vertices );
-		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
+		geometries.setValue( new Geometry[] { sgLineArray } );
 		this.sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 		frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 	}

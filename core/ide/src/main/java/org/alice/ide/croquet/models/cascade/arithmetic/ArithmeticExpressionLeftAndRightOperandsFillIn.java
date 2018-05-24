@@ -43,32 +43,43 @@
 
 package org.alice.ide.croquet.models.cascade.arithmetic;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.ArithmeticInfixExpression> {
-	private final org.lgna.project.ast.ArithmeticInfixExpression transientValue;
+public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends ExpressionFillInWithExpressionBlanks<ArithmeticInfixExpression> {
+	private final ArithmeticInfixExpression transientValue;
 
-	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, org.lgna.project.ast.AbstractType<?, ?, ?> resultType, org.lgna.project.ast.AbstractType<?, ?, ?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?, ?, ?> rightOperandType ) {
-		super( id, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( leftOperandType, rightOperandType ) );
+	public ArithmeticExpressionLeftAndRightOperandsFillIn( UUID id, AbstractType<?, ?, ?> resultType, AbstractType<?, ?, ?> leftOperandType, ArithmeticInfixExpression.Operator operator, AbstractType<?, ?, ?> rightOperandType ) {
+		super( id, ExpressionBlank.createBlanks( leftOperandType, rightOperandType ) );
 		assert resultType != null : this;
 		assert leftOperandType != null : this;
 		assert rightOperandType != null : this;
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
+		this.transientValue = IncompleteAstUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
 	}
 
-	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, Class<?> resultCls, Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
-		this( id, org.lgna.project.ast.JavaType.getInstance( resultCls ), org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ) );
+	public ArithmeticExpressionLeftAndRightOperandsFillIn( UUID id, Class<?> resultCls, Class<?> leftOperandCls, ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls ) {
+		this( id, JavaType.getInstance( resultCls ), JavaType.getInstance( leftOperandCls ), operator, JavaType.getInstance( rightOperandCls ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
+	protected ArithmeticInfixExpression createValue( Expression[] expressions ) {
 		assert expressions.length == 2 : this;
-		return new org.lgna.project.ast.ArithmeticInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.expressionType.getValue() );
+		return new ArithmeticInfixExpression( expressions[ 0 ], this.transientValue.operator.getValue(), expressions[ 1 ], this.transientValue.expressionType.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.ArithmeticInfixExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ArithmeticInfixExpression, org.lgna.project.ast.Expression> step ) {
+	public ArithmeticInfixExpression getTransientValue( ItemNode<? super ArithmeticInfixExpression, Expression> step ) {
 		return this.transientValue;
 	}
 }

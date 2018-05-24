@@ -42,57 +42,79 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ast.type.merge.croquet.ActionStatus;
+import org.alice.ide.ast.type.merge.croquet.MemberHub;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.project.ast.Declaration;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.JPanel;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberPreviewPane<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.views.MigPanel {
-	private static java.awt.Paint createOmitOrReplacePaint() {
+public abstract class MemberPreviewPane<M extends Member> extends MigPanel {
+	private static Paint createOmitOrReplacePaint() {
 		int size = 24;
 		int width = size;
 		int height = size;
-		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)image.getGraphics();
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_OFF );
-		g2.setColor( new java.awt.Color( 191, 191, 191, 150 ) );
+		BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
+		Graphics2D g2 = (Graphics2D)image.getGraphics();
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF );
+		g2.setColor( new Color( 191, 191, 191, 150 ) );
 		g2.fillRect( 0, 0, width, height );
-		g2.setColor( new java.awt.Color( 63, 0, 0, 63 ) );
+		g2.setColor( new Color( 63, 0, 0, 63 ) );
 		g2.drawLine( 0, height, width, 0 );
 		g2.drawLine( 0, 0, width, height );
 		g2.dispose();
-		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
+		return new TexturePaint( image, new Rectangle( 0, 0, width, height ) );
 	}
 
-	private static final java.awt.Paint OMIT_OR_REPLACE_PAINT = createOmitOrReplacePaint();
+	private static final Paint OMIT_OR_REPLACE_PAINT = createOmitOrReplacePaint();
 
-	public static org.lgna.croquet.views.AwtComponentView<?> createView( org.alice.ide.ast.type.merge.croquet.MemberHub<?> memberHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
-		org.lgna.project.ast.Declaration member = memberHub.getMember();
-		if( member instanceof org.lgna.project.ast.UserMethod ) {
-			return new MethodPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod>)memberHub, isAlphaDesiredWhenSelectionIsRequired );
-		} else if( member instanceof org.lgna.project.ast.UserField ) {
-			return new FieldPreviewPane( (org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserField>)memberHub, isAlphaDesiredWhenSelectionIsRequired );
+	public static AwtComponentView<?> createView( MemberHub<?> memberHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
+		Declaration member = memberHub.getMember();
+		if( member instanceof UserMethod ) {
+			return new MethodPreviewPane( (MemberHub<UserMethod>)memberHub, isAlphaDesiredWhenSelectionIsRequired );
+		} else if( member instanceof UserField ) {
+			return new FieldPreviewPane( (MemberHub<UserField>)memberHub, isAlphaDesiredWhenSelectionIsRequired );
 		} else {
-			return new org.lgna.croquet.views.Label( "todo" );
+			return new Label( "todo" );
 		}
 	}
 
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<M> memberHub;
+	private final MemberHub<M> memberHub;
 	private final boolean isAlphaDesiredWhenSelectionIsRequired;
 
-	public MemberPreviewPane( org.alice.ide.ast.type.merge.croquet.MemberHub<M> memberHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
+	public MemberPreviewPane( MemberHub<M> memberHub, boolean isAlphaDesiredWhenSelectionIsRequired ) {
 		this.memberHub = memberHub;
 		this.isAlphaDesiredWhenSelectionIsRequired = isAlphaDesiredWhenSelectionIsRequired;
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		return new DefaultJPanel() {
 			@Override
-			public void paint( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				if( memberHub.getActionStatus() == org.alice.ide.ast.type.merge.croquet.ActionStatus.SELECTION_REQUIRED ) {
+			public void paint( Graphics g ) {
+				Graphics2D g2 = (Graphics2D)g;
+				if( memberHub.getActionStatus() == ActionStatus.SELECTION_REQUIRED ) {
 					if( isAlphaDesiredWhenSelectionIsRequired ) {
-						java.awt.Composite prevComposite = g2.getComposite();
-						g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.4f ) );
+						Composite prevComposite = g2.getComposite();
+						g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 0.4f ) );
 						super.paint( g );
 						g2.setComposite( prevComposite );
 					} else {

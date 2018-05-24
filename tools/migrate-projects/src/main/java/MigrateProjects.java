@@ -41,6 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import org.alice.stageide.program.RunProgramContext;
+import org.lgna.project.Project;
+import org.lgna.project.ProjectVersion;
+import org.lgna.project.Version;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.FieldReflectionProxy;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.story.implementation.ProgramImp;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,35 +82,35 @@ public class MigrateProjects extends Batch {
 	private static final int HEIGHT = 150 + 40;
 
 	private void outputProblematicFiles() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "problematic files:", this.problematicFiles.size() );
-		for( java.io.File problematicFile : this.problematicFiles ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( problematicFile );
+		Logger.errln();
+		Logger.errln();
+		Logger.errln();
+		Logger.errln( "problematic files:", this.problematicFiles.size() );
+		for( File problematicFile : this.problematicFiles ) {
+			Logger.errln( problematicFile );
 		}
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "problematic java fields:", this.problematicJavaFields.size() );
-		for( org.lgna.project.ast.JavaField javaField : this.problematicJavaFields ) {
-			org.lgna.project.ast.FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( fieldReflectionProxy.getDeclaringClassReflectionProxy().getName() + " " + fieldReflectionProxy.getName() );
+		Logger.errln( "problematic java fields:", this.problematicJavaFields.size() );
+		for( JavaField javaField : this.problematicJavaFields ) {
+			FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
+			Logger.errln( fieldReflectionProxy.getDeclaringClassReflectionProxy().getName() + " " + fieldReflectionProxy.getName() );
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		Logger.errln();
+		Logger.errln();
+		Logger.errln();
 	}
 
 	@Override
-	protected void handle( java.io.File inFile, java.io.File outFile ) {
-		if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
+	protected void handle( File inFile, File outFile ) {
+		if( Logger.getLevel().intValue() < Level.SEVERE.intValue() ) {
+			Logger.outln( inFile );
 		}
 		try {
-			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
+			Project project = IoUtilities.readProject( inFile );
 
 			final boolean IS_DISPLAY_DESIRED = false;
 			if( IS_DISPLAY_DESIRED ) {
-				final javax.swing.JFrame frame = new javax.swing.JFrame();
+				final JFrame frame = new JFrame();
 				frame.setLocation( x, y );
 				frame.setSize( WIDTH, HEIGHT );
 				x += WIDTH;
@@ -87,10 +120,10 @@ public class MigrateProjects extends Batch {
 				}
 				frame.setVisible( true );
 
-				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
-				runProgramContext.initializeInContainer( new org.lgna.story.implementation.ProgramImp.AwtContainerInitializer() {
+				RunProgramContext runProgramContext = new RunProgramContext( project.getProgramType() );
+				runProgramContext.initializeInContainer( new ProgramImp.AwtContainerInitializer() {
 					@Override
-					public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+					public void addComponents( OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel ) {
 						frame.getContentPane().add( onscreenRenderTarget.getAwtComponent() );
 					}
 				} );
@@ -99,15 +132,15 @@ public class MigrateProjects extends Batch {
 				frame.dispose();
 			}
 
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.FieldAccess.class );
-			project.getProgramType().crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
-			for( org.lgna.project.ast.FieldAccess node : crawler.getList() ) {
+			IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
+			project.getProgramType().crawl( crawler, CrawlPolicy.COMPLETE );
+			for( FieldAccess node : crawler.getList() ) {
 				if( node.isValid() ) {
 					//pass
 				} else {
-					org.lgna.project.ast.AbstractField field = node.field.getValue();
-					if( field instanceof org.lgna.project.ast.JavaField ) {
-						org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+					AbstractField field = node.field.getValue();
+					if( field instanceof JavaField ) {
+						JavaField javaField = (JavaField)field;
 						this.problematicJavaFields.add( javaField );
 					} else {
 						assert false : node;
@@ -117,46 +150,46 @@ public class MigrateProjects extends Batch {
 
 			final boolean IS_WRITE_DESIRED = true;
 			if( IS_WRITE_DESIRED ) {
-				java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( inFile );
-				java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
-				edu.cmu.cs.dennisc.java.util.zip.DataSource[] dataSources;
+				ZipFile zipFile = new ZipFile( inFile );
+				ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
+				DataSource[] dataSources;
 				if( zipEntry != null ) {
-					java.io.InputStream is = zipFile.getInputStream( zipEntry );
-					java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
-					final byte[] data = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, image );
-					dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] { new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+					InputStream is = zipFile.getInputStream( zipEntry );
+					Image image = ImageUtilities.read( ImageUtilities.PNG_CODEC_NAME, is );
+					final byte[] data = ImageUtilities.writeToByteArray( ImageUtilities.PNG_CODEC_NAME, image );
+					dataSources = new DataSource[] { new DataSource() {
 						@Override
 						public String getName() {
 							return "thumbnail.png";
 						}
 
 						@Override
-						public void write( java.io.OutputStream os ) throws java.io.IOException {
+						public void write( OutputStream os ) throws IOException {
 							os.write( data );
 						}
 					} };
 				} else {
-					dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
+					dataSources = new DataSource[] {};
 				}
-				org.lgna.project.io.IoUtilities.writeProject( outFile, project, dataSources );
+				IoUtilities.writeProject( outFile, project, dataSources );
 			}
 
-			if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", inFile );
+			if( Logger.getLevel().intValue() < Level.SEVERE.intValue() ) {
+				Logger.outln( "success", inFile );
 			}
-		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+		} catch( VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( inFile.toString(), ioe );
 		} catch( Throwable t ) {
 			problematicFiles.add( inFile );
 			this.outputProblematicFiles();
 			t.printStackTrace();
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		Logger.outln();
+		Logger.outln();
+		Logger.outln();
+		Logger.outln();
 	}
 
 	@Override
@@ -167,17 +200,17 @@ public class MigrateProjects extends Batch {
 	private int x = 0;
 	private int y = 0;
 
-	private final java.util.List<java.io.File> problematicFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<org.lgna.project.ast.JavaField> problematicJavaFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final List<File> problematicFiles = Lists.newLinkedList();
+	private final List<JavaField> problematicJavaFields = Lists.newLinkedList();
 
 	public static void main( String[] args ) {
 		String inRootPath;
 		String outRootPath;
 		switch( args.length ) {
 		case 0:
-			org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.92.0.0" );
-			inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + prevVersion;
-			outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.ProjectVersion.getCurrentVersionText();
+			Version prevVersion = new Version( "3.1.92.0.0" );
+			inRootPath = FileUtilities.getDefaultDirectory() + "/GalleryTest/" + prevVersion;
+			outRootPath = inRootPath + "_FixedTo_" + ProjectVersion.getCurrentVersionText();
 			break;
 		case 1:
 			inRootPath = args[ 0 ];
@@ -188,7 +221,7 @@ public class MigrateProjects extends Batch {
 			outRootPath = args[ 1 ];
 			break;
 		default:
-			throw new RuntimeException( java.util.Arrays.toString( args ) );
+			throw new RuntimeException( Arrays.toString( args ) );
 		}
 		String ext = "a3p";
 		MigrateProjects migrateProjects = new MigrateProjects();

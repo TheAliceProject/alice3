@@ -42,6 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.PopupPrepModel;
+import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
+import org.lgna.croquet.history.event.PopupMenuResizedEvent;
+import org.lgna.croquet.triggers.DragTrigger;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +62,7 @@ public class TransactionManager {
 
 	@Deprecated
 	private static TransactionHistory getActiveTransactionHistory() {
-		return org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		return Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
 	}
 
 	@Deprecated
@@ -62,32 +71,32 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
+	public static void TODO_REMOVE_fireEvent( Trigger trigger ) {
 		new TODO_REMOVE_BogusStep( getActiveTransaction(), trigger );
 	}
 
 	@Deprecated
 	public static void firePopupMenuResized( PopupPrepStep step ) {
-		step.fireChanged( new org.lgna.croquet.history.event.PopupMenuResizedEvent( step ) );
+		step.fireChanged( new PopupMenuResizedEvent( step ) );
 	}
 
 	@Deprecated
-	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
+	public static DragStep addDragStep( DragModel model, DragTrigger trigger ) {
 		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
 	@Deprecated
-	public static PopupPrepStep addPopupPrepStep( org.lgna.croquet.PopupPrepModel popupPrepModel, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static PopupPrepStep addPopupPrepStep( PopupPrepModel popupPrepModel, Trigger trigger ) {
 		return PopupPrepStep.createAndAddToTransaction( getActiveTransaction(), popupPrepModel, trigger );
 	}
 
 	@Deprecated
-	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, ?> model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( SingleSelectListStateComboBoxPrepModel<T, ?> model, Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
 	@Deprecated
-	public static CompletionStep addCancelCompletionStep( org.lgna.croquet.CompletionModel model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static CompletionStep addCancelCompletionStep( CompletionModel model, Trigger trigger ) {
 		CompletionStep rv = CompletionStep.createAndAddToTransaction( getActiveTransaction(), model, trigger, null );
 		rv.cancel();
 		return rv;

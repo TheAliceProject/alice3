@@ -43,11 +43,17 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.property.StringProperty;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JavaPackage extends AbstractPackage {
-	private static java.util.Map<PackageReflectionProxy, JavaPackage> s_map = new java.util.HashMap<PackageReflectionProxy, JavaPackage>();
+	private static Map<PackageReflectionProxy, JavaPackage> s_map = new HashMap<PackageReflectionProxy, JavaPackage>();
 
 	public static JavaPackage getInstance( PackageReflectionProxy packageReflectionProxy ) {
 		if( packageReflectionProxy != null ) {
@@ -87,13 +93,13 @@ public class JavaPackage extends AbstractPackage {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		JavaPackage other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaPackage.class );
+		JavaPackage other = ClassUtilities.getInstance( o, JavaPackage.class );
 		if( other != null ) {
 			return this.packageReflectionProxy.equals( other.packageReflectionProxy );
 		} else {

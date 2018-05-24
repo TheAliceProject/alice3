@@ -42,24 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.export.type.TypeSummary;
+import org.alice.ide.ast.export.type.TypeSummaryDataSource;
+import org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState;
+import org.alice.ide.icons.Icons;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FileDialogOperation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.io.IoUtilities;
+
+import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialogOperation {
-	private final org.lgna.project.ast.NamedUserType type;
+public class ExportTypeToFileDialogOperation extends FileDialogOperation {
+	private final NamedUserType type;
 
-	public ExportTypeToFileDialogOperation( org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
+	public ExportTypeToFileDialogOperation( NamedUserType type ) {
+		super( IDE.EXPORT_GROUP, UUID.fromString( "000e1da5-0494-4afc-bb05-2fd0c0a46163" ) );
 		this.type = type;
-		this.setButtonIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL );
+		this.setButtonIcon( Icons.FOLDER_ICON_SMALL );
 	}
 
-	private java.io.File getDefaultDirectory() {
-		return org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+	private File getDefaultDirectory() {
+		return UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
 	}
 
 	private String getExtension() {
-		return org.lgna.project.io.IoUtilities.TYPE_EXTENSION;
+		return IoUtilities.TYPE_EXTENSION;
 	}
 
 	private String getInitialFilename() {
@@ -67,12 +83,12 @@ public class ExportTypeToFileDialogOperation extends org.lgna.croquet.FileDialog
 	}
 
 	@Override
-	protected java.io.File showFileDialog( java.awt.Component awtComponent ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+	protected File showFileDialog( Component awtComponent ) {
+		return FileDialogUtilities.showSaveFileDialog( awtComponent, this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
 	}
 
 	@Override
-	protected void handleFile( java.io.File file ) throws org.lgna.croquet.CancelException, java.io.IOException {
-		org.lgna.project.io.IoUtilities.writeType( file, type, new org.alice.ide.ast.export.type.TypeSummaryDataSource( new org.alice.ide.ast.export.type.TypeSummary( this.type ) ) );
+	protected void handleFile( File file ) throws CancelException, IOException {
+		IoUtilities.writeType( file, type, new TypeSummaryDataSource( new TypeSummary( this.type ) ) );
 	}
 }

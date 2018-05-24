@@ -42,19 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.stats.croquet;
 
+import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.ImmutableDataTabState;
 import org.lgna.croquet.SimpleTabComposite;
+
+import java.util.UUID;
 
 /**
  * @author Matt May
  */
-public class StatisticsFrameComposite extends org.lgna.croquet.FrameComposite<StatisticsFrameView> {
+public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
 	//todo: move
 	public static final Integer TOP_SIZE = 250;
 	public static final Integer BOTTOM_SIZE = 100;
 
-	public StatisticsFrameComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ) );
+	public StatisticsFrameComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ) );
 	}
 
 	@Override
@@ -62,11 +67,11 @@ public class StatisticsFrameComposite extends org.lgna.croquet.FrameComposite<St
 		return new StatisticsFrameView( this );
 	}
 
-	public org.lgna.croquet.ImmutableDataTabState<SimpleTabComposite<?>> getTabState() {
+	public ImmutableDataTabState<SimpleTabComposite<?>> getTabState() {
 		return this.tabState;
 	}
 
 	private final StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
 	private final StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
-	private final org.lgna.croquet.ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createImmutableTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
+	private final ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createImmutableTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
 }

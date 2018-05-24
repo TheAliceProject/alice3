@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public abstract class SimpleValueState<T> extends State<T> {
 
 	private T currentValue;
 
-	public SimpleValueState( Group group, java.util.UUID migrationId, T initialValue ) {
+	public SimpleValueState( Group group, UUID migrationId, T initialValue ) {
 		super( group, migrationId, initialValue );
 		this.currentValue = initialValue;
 	}

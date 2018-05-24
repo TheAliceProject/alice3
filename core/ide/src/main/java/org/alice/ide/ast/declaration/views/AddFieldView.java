@@ -43,11 +43,13 @@
 
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.AddFieldComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddFieldView extends FieldView {
-	public AddFieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
+	public AddFieldView( AddFieldComposite composite ) {
 		super( composite );
 	}
 }

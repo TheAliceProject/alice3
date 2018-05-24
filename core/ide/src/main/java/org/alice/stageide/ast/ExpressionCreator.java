@@ -43,90 +43,114 @@
 
 package org.alice.stageide.ast;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaConstructor;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.ResourceExpression;
+import org.lgna.story.Color;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Font;
+import org.lgna.story.ImagePaint;
+import org.lgna.story.ImageSource;
 import org.lgna.story.Orientation;
+import org.lgna.story.Paint;
+import org.lgna.story.Pose;
 import org.lgna.story.PoseBuilder;
+import org.lgna.story.Position;
+import org.lgna.story.Scale;
+import org.lgna.story.Size;
+import org.lgna.story.fontattributes.Attribute;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.PoseUtilities;
 
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import org.lgna.story.resources.JointId;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
-	private org.lgna.project.ast.Expression createPositionExpression( org.lgna.story.Position position ) {
+	private Expression createPositionExpression( Position position ) {
 		if( position != null ) {
-			Class<?> cls = org.lgna.story.Position.class;
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+			Class<?> cls = Position.class;
+			JavaConstructor constructor = JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
+			return AstUtilities.createInstanceCreation(
 					constructor,
 					this.createDoubleExpression( position.getRight(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( position.getUp(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( position.getBackward(), MILLI_DECIMAL_PLACES ) );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createOrientationExpression( org.lgna.story.Orientation orientation ) {
+	private Expression createOrientationExpression( Orientation orientation ) {
 		if( orientation != null ) {
-			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = org.lgna.story.EmployeesOnly.getOrthogonalMatrix3x3( orientation );
-			edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
-			Class<?> cls = org.lgna.story.Orientation.class;
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor,
+			OrthogonalMatrix3x3 axes = EmployeesOnly.getOrthogonalMatrix3x3( orientation );
+			UnitQuaternion q = new UnitQuaternion( axes );
+			Class<?> cls = Orientation.class;
+			JavaConstructor constructor = JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class );
+			return AstUtilities.createInstanceCreation( constructor,
 					this.createDoubleExpression( q.x, MICRO_DECIMAL_PLACES ),
 					this.createDoubleExpression( q.y, MICRO_DECIMAL_PLACES ),
 					this.createDoubleExpression( q.z, MICRO_DECIMAL_PLACES ),
 					this.createDoubleExpression( q.w, MICRO_DECIMAL_PLACES ) );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createScaleExpression( org.lgna.story.Scale scale ) {
+	private Expression createScaleExpression( Scale scale ) {
 		if( scale != null ) {
-			Class<?> cls = org.lgna.story.Scale.class;
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+			Class<?> cls = Scale.class;
+			JavaConstructor constructor = JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
+			return AstUtilities.createInstanceCreation(
 					constructor,
 					this.createDoubleExpression( scale.getLeftToRight(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( scale.getBottomToTop(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( scale.getFrontToBack(), MILLI_DECIMAL_PLACES ) );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createSizeExpression( org.lgna.story.Size size ) {
+	private Expression createSizeExpression( Size size ) {
 		if( size != null ) {
-			Class<?> cls = org.lgna.story.Size.class;
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+			Class<?> cls = Size.class;
+			JavaConstructor constructor = JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
+			return AstUtilities.createInstanceCreation(
 					constructor,
 					this.createDoubleExpression( size.getLeftToRight(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( size.getBottomToTop(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( size.getFrontToBack(), MILLI_DECIMAL_PLACES ) );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createFontExpression( org.lgna.story.Font font ) throws CannotCreateExpressionException {
-		Class<?> cls = org.lgna.story.Font.class;
-		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.fontattributes.Attribute[].class );
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor,
+	private Expression createFontExpression( Font font ) throws CannotCreateExpressionException {
+		Class<?> cls = Font.class;
+		JavaConstructor constructor = JavaConstructor.getInstance( cls, Attribute[].class );
+		return AstUtilities.createInstanceCreation( constructor,
 				this.createExpression( font.getFamily() ),
 				this.createExpression( font.getWeight() ),
 				this.createExpression( font.getPosture() ) );
 	}
 
-	private org.lgna.project.ast.Expression createColorExpression( org.lgna.story.Color color ) {
-		org.lgna.project.ast.Expression rv = null;
-		Class<?> cls = org.lgna.story.Color.class;
-		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
-			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
+	private Expression createColorExpression( Color color ) {
+		Expression rv = null;
+		Class<?> cls = Color.class;
+		for( Field fld : ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
+			if( ReflectionUtilities.get( fld, null ).equals( color ) ) {
 				rv = this.createPublicStaticFieldAccess( fld );
 				break;
 			}
@@ -134,8 +158,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		if( rv != null ) {
 			//pass
 		} else {
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation(
+			JavaConstructor constructor = JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
+			rv = AstUtilities.createInstanceCreation(
 					constructor,
 					this.createDoubleExpression( color.getRed(), MILLI_DECIMAL_PLACES ),
 					this.createDoubleExpression( color.getGreen(), MILLI_DECIMAL_PLACES ),
@@ -144,23 +168,23 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		return rv;
 	}
 
-	private org.lgna.project.ast.Expression createImageSourceExpression( org.lgna.story.ImageSource imageSource ) {
+	private Expression createImageSourceExpression( ImageSource imageSource ) {
 		if( imageSource != null ) {
-			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( org.lgna.story.ImageSource.class, org.lgna.common.resources.ImageResource.class );
-			org.lgna.project.ast.Expression arg0Expression;
-			org.lgna.common.resources.ImageResource imageResource = imageSource.getImageResource();
+			JavaConstructor constructor = JavaConstructor.getInstance( ImageSource.class, ImageResource.class );
+			Expression arg0Expression;
+			ImageResource imageResource = imageSource.getImageResource();
 			if( imageResource != null ) {
-				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.lgna.common.resources.ImageResource.class, imageResource );
+				arg0Expression = new ResourceExpression( ImageResource.class, imageResource );
 			} else {
-				arg0Expression = new org.lgna.project.ast.NullLiteral();
+				arg0Expression = new NullLiteral();
 			}
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression );
+			return AstUtilities.createInstanceCreation( constructor, arg0Expression );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createImagePaintExpression( org.lgna.story.ImagePaint imagePaint ) throws CannotCreateExpressionException {
+	private Expression createImagePaintExpression( ImagePaint imagePaint ) throws CannotCreateExpressionException {
 		if( imagePaint != null ) {
 			if( imagePaint instanceof Enum<?> ) {
 				return this.createEnumExpression( (Enum<?>)imagePaint );
@@ -168,31 +192,31 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 				throw new CannotCreateExpressionException( imagePaint );
 			}
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createPaintExpression( org.lgna.story.Paint paint ) throws CannotCreateExpressionException {
+	private Expression createPaintExpression( Paint paint ) throws CannotCreateExpressionException {
 		if( paint != null ) {
-			if( paint instanceof org.lgna.story.Color ) {
-				org.lgna.story.Color color = (org.lgna.story.Color)paint;
+			if( paint instanceof Color ) {
+				Color color = (Color)paint;
 				return createColorExpression( color );
-			} else if( paint instanceof org.lgna.story.ImagePaint ) {
-				org.lgna.story.ImagePaint imagePaint = (org.lgna.story.ImagePaint)paint;
+			} else if( paint instanceof ImagePaint ) {
+				ImagePaint imagePaint = (ImagePaint)paint;
 				return this.createImagePaintExpression( imagePaint );
-			} else if( paint instanceof org.lgna.story.ImageSource ) {
-				org.lgna.story.ImageSource imageSource = (org.lgna.story.ImageSource)paint;
+			} else if( paint instanceof ImageSource ) {
+				ImageSource imageSource = (ImageSource)paint;
 				return this.createImageSourceExpression( imageSource );
 			} else {
 				throw new CannotCreateExpressionException( paint );
 			}
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	private org.lgna.project.ast.Expression createJointIdExpression( org.lgna.story.resources.JointId jointId ) throws CannotCreateExpressionException {
-		java.lang.reflect.Field fld = jointId.getPublicStaticFinalFld();
+	private Expression createJointIdExpression( JointId jointId ) throws CannotCreateExpressionException {
+		Field fld = jointId.getPublicStaticFinalFld();
 		if( fld != null ) {
 			return this.createPublicStaticFieldAccess( fld );
 		} else {
@@ -201,28 +225,28 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	}
 
 	//private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
-	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
+	private static final JavaMethod BUILD = JavaMethod.getInstance( PoseBuilder.class, "build" );
 
-	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.story.Pose pose ) throws CannotCreateExpressionException {
+	private Expression createPoseExpression( Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( EmployeesOnly.getJointIdTransformationPairs( pose ).length > 0 ) ) {
 			Class<? extends PoseBuilder> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
-			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builderCls );
-			org.lgna.project.ast.Expression prevExpression = null;
+			InstanceCreation builderExpression0 = AstUtilities.createInstanceCreation( builderCls );
+			Expression prevExpression = null;
 			for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( pose ) ) {
 
 				//NOTE: this does not take into account that poses may affect translation as well.
 				//TODO: check jtPair.affectsTranslation() to see if creating a different pose entry is necessary
 				UnitQuaternion q = jtPair.getTransformation().orientation.createUnitQuaternion();
-				Orientation orientation = new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
+				Orientation orientation = new Orientation( q.x, q.y, q.z, q.w );
 
-				org.lgna.project.ast.Expression callerExpression = prevExpression == null ? builderExpression0 : prevExpression;
-				java.lang.reflect.Method jSpecificMethod = PoseUtilities.getSpecificPoseBuilderMethod( builderCls, jtPair.getJointId() );
+				Expression callerExpression = prevExpression == null ? builderExpression0 : prevExpression;
+				Method jSpecificMethod = PoseUtilities.getSpecificPoseBuilderMethod( builderCls, jtPair.getJointId() );
 				if( jSpecificMethod != null ) {
-					prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( callerExpression, org.lgna.project.ast.JavaMethod.getInstance( jSpecificMethod ), this.createOrientationExpression( orientation ) );
+					prevExpression = AstUtilities.createMethodInvocation( callerExpression, JavaMethod.getInstance( jSpecificMethod ), this.createOrientationExpression( orientation ) );
 				} else {
-					java.lang.reflect.Method jCatchAllMethod = PoseUtilities.getCatchAllPoseBuilderMethod( builderCls );
+					Method jCatchAllMethod = PoseUtilities.getCatchAllPoseBuilderMethod( builderCls );
 					if( jCatchAllMethod != null ) {
-						prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( callerExpression, org.lgna.project.ast.JavaMethod.getInstance( jCatchAllMethod ), this.createJointIdExpression( jtPair.getJointId() ), this.createOrientationExpression( orientation ) );
+						prevExpression = AstUtilities.createMethodInvocation( callerExpression, JavaMethod.getInstance( jCatchAllMethod ), this.createJointIdExpression( jtPair.getJointId() ), this.createOrientationExpression( orientation ) );
 					} else {
 						//should not happen
 						//throw new CannotCreateExpressionException( pose );
@@ -231,31 +255,31 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 				}
 			}
 			assert prevExpression != null;
-			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );
+			return AstUtilities.createMethodInvocation( prevExpression, BUILD );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
+	protected Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
 
-		if( value instanceof org.lgna.story.Position ) {
-			return this.createPositionExpression( (org.lgna.story.Position)value );
-		} else if( value instanceof org.lgna.story.Orientation ) {
-			return this.createOrientationExpression( (org.lgna.story.Orientation)value );
-		} else if( value instanceof org.lgna.story.Scale ) {
-			return this.createScaleExpression( (org.lgna.story.Scale)value );
-		} else if( value instanceof org.lgna.story.Size ) {
-			return this.createSizeExpression( (org.lgna.story.Size)value );
-		} else if( value instanceof org.lgna.story.Paint ) {
-			return this.createPaintExpression( (org.lgna.story.Paint)value );
-		} else if( value instanceof org.lgna.story.Font ) {
-			return this.createFontExpression( (org.lgna.story.Font)value );
-		} else if( value instanceof org.lgna.story.Pose<?> ) {
-			return this.createPoseExpression( (org.lgna.story.Pose<?>)value );
-		} else if( value instanceof org.lgna.story.resources.JointId ) {
-			return this.createJointIdExpression( (org.lgna.story.resources.JointId)value );
+		if( value instanceof Position ) {
+			return this.createPositionExpression( (Position)value );
+		} else if( value instanceof Orientation ) {
+			return this.createOrientationExpression( (Orientation)value );
+		} else if( value instanceof Scale ) {
+			return this.createScaleExpression( (Scale)value );
+		} else if( value instanceof Size ) {
+			return this.createSizeExpression( (Size)value );
+		} else if( value instanceof Paint ) {
+			return this.createPaintExpression( (Paint)value );
+		} else if( value instanceof Font ) {
+			return this.createFontExpression( (Font)value );
+		} else if( value instanceof Pose<?> ) {
+			return this.createPoseExpression( (Pose<?>)value );
+		} else if( value instanceof JointId ) {
+			return this.createJointIdExpression( (JointId)value );
 		} else {
 			throw new CannotCreateExpressionException( value );
 		}

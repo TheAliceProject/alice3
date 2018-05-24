@@ -42,43 +42,50 @@
  *******************************************************************************/
 package org.lgna.croquet.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.ItemCodec;
+
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMutableListData<T> extends ListData<T> {
-	private final java.util.List<javax.swing.event.ListDataListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ListDataListener> listeners = Lists.newCopyOnWriteArrayList();
 
-	public AbstractMutableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public AbstractMutableListData( ItemCodec<T> itemCodec ) {
 		super( itemCodec );
 	}
 
 	@Override
-	public final void addListener( javax.swing.event.ListDataListener listener ) {
+	public final void addListener( ListDataListener listener ) {
 		this.listeners.add( listener );
 	}
 
 	@Override
-	public final void removeListener( javax.swing.event.ListDataListener listener ) {
+	public final void removeListener( ListDataListener listener ) {
 		this.listeners.remove( listener );
 	}
 
 	private void fireIntervalAdded( int indexA, int indexB ) {
-		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.INTERVAL_ADDED, indexA, indexB );
-		for( javax.swing.event.ListDataListener listener : this.listeners ) {
+		ListDataEvent e = new ListDataEvent( this, ListDataEvent.INTERVAL_ADDED, indexA, indexB );
+		for( ListDataListener listener : this.listeners ) {
 			listener.intervalAdded( e );
 		}
 	}
 
 	private void fireIntervalRemoved( int indexA, int indexB ) {
-		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.INTERVAL_REMOVED, indexA, indexB );
-		for( javax.swing.event.ListDataListener listener : this.listeners ) {
+		ListDataEvent e = new ListDataEvent( this, ListDataEvent.INTERVAL_REMOVED, indexA, indexB );
+		for( ListDataListener listener : this.listeners ) {
 			listener.intervalRemoved( e );
 		}
 	}
 
 	private void fireContentsChanged( int indexA, int indexB ) {
-		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
-		for( javax.swing.event.ListDataListener listener : this.listeners ) {
+		ListDataEvent e = new ListDataEvent( this, ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
+		for( ListDataListener listener : this.listeners ) {
 			listener.contentsChanged( e );
 		}
 	}

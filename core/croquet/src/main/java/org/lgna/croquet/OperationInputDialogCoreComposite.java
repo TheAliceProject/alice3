@@ -43,11 +43,17 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	public OperationInputDialogCoreComposite( java.util.UUID migrationId ) {
+public abstract class OperationInputDialogCoreComposite<V extends CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
+	public OperationInputDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -61,16 +67,16 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return text;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract Edit createEdit( CompletionStep<?> completionStep );
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
 		if( isCommited != null ) { // close button condition
 			if( isCommited ) {
 				try {
-					org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
+					Edit edit = createEdit( completionStep );
 					if( edit != null ) {
 						completionStep.commitAndInvokeDo( edit );
 					} else {
@@ -88,7 +94,7 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
 		this.showDialog( completionStep );
 	}
 }

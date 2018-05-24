@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util.zip;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface DataSource {
 	public String getName();
 
-	public void write( java.io.OutputStream os ) throws java.io.IOException;
+	public void write( OutputStream os ) throws IOException;
 }

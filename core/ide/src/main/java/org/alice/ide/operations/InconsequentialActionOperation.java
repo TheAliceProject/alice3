@@ -43,20 +43,27 @@
 package org.alice.ide.operations;
 
 //todo: rename
+
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InconsequentialActionOperation extends org.lgna.croquet.ActionOperation {
-	private static final org.lgna.croquet.Group INCONSEQUENTIAL_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "a3a6ebb5-e942-48df-b091-9aa461d68240" ), "INCONSEQUENTIAL_GROUP" );
+public abstract class InconsequentialActionOperation extends ActionOperation {
+	private static final Group INCONSEQUENTIAL_GROUP = Group.getInstance( UUID.fromString( "a3a6ebb5-e942-48df-b091-9aa461d68240" ), "INCONSEQUENTIAL_GROUP" );
 
-	public InconsequentialActionOperation( java.util.UUID id ) {
+	public InconsequentialActionOperation( UUID id ) {
 		super( INCONSEQUENTIAL_GROUP, id );
 	}
 
-	protected abstract void performInternal( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract void performInternal( CompletionStep<?> step );
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		this.performInternal( step );
 		step.finish();
 	}

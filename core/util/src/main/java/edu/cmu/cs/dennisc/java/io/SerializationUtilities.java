@@ -42,55 +42,64 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.io;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SerializationUtilities {
-	public static void serialize( java.io.Serializable serializable, java.io.ObjectOutputStream oos ) {
+	public static void serialize( Serializable serializable, ObjectOutputStream oos ) {
 		try {
 			oos.writeObject( serializable );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void serialize( java.io.Serializable serializable, java.io.File outFile ) {
+	public static void serialize( Serializable serializable, File outFile ) {
 		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
-			java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream( fos );
+			FileOutputStream fos = new FileOutputStream( outFile );
+			ObjectOutputStream oos = new ObjectOutputStream( fos );
 			oos.writeObject( serializable );
 			fos.flush();
 			fos.close();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( outFile.getAbsolutePath(), ioe );
 		}
 	}
 
-	public static java.io.Serializable unserialize( java.io.ObjectInputStream ois ) {
+	public static Serializable unserialize( ObjectInputStream ois ) {
 		try {
-			return (java.io.Serializable)ois.readObject();
+			return (Serializable)ois.readObject();
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( cnfe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static java.io.Serializable unserialize( java.io.File inFile ) {
+	public static Serializable unserialize( File inFile ) {
 		try {
-			java.io.FileInputStream fis = new java.io.FileInputStream( inFile );
-			java.io.ObjectInputStream ois = new java.io.ObjectInputStream( fis );
-			java.io.Serializable serializable = (java.io.Serializable)ois.readObject();
+			FileInputStream fis = new FileInputStream( inFile );
+			ObjectInputStream ois = new ObjectInputStream( fis );
+			Serializable serializable = (Serializable)ois.readObject();
 			fis.close();
 			return serializable;
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( inFile.getAbsolutePath(), cnfe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( inFile.getAbsolutePath(), ioe );
 		}
 	}
 
-	public static void serializeBufferedImage( java.awt.image.BufferedImage bufferedImage, java.io.ObjectOutputStream oos ) {
+	public static void serializeBufferedImage( BufferedImage bufferedImage, ObjectOutputStream oos ) {
 		try {
 			if( bufferedImage != null ) {
 				int width = bufferedImage.getWidth();
@@ -106,32 +115,32 @@ public class SerializationUtilities {
 			} else {
 				oos.writeObject( null );
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void serializeBufferedImage( java.awt.image.BufferedImage bufferedImage, java.io.File outFile ) {
+	public static void serializeBufferedImage( BufferedImage bufferedImage, File outFile ) {
 		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
-			java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream( fos );
+			FileOutputStream fos = new FileOutputStream( outFile );
+			ObjectOutputStream oos = new ObjectOutputStream( fos );
 			serializeBufferedImage( bufferedImage, oos );
 			fos.flush();
 			fos.close();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( outFile.getAbsolutePath(), ioe );
 		}
 	}
 
-	public static java.awt.image.BufferedImage unserializeBufferedImage( java.io.ObjectInputStream ois ) {
+	public static BufferedImage unserializeBufferedImage( ObjectInputStream ois ) {
 		try {
-			java.awt.image.BufferedImage bufferedImage;
+			BufferedImage bufferedImage;
 			Object o = ois.readObject();
 			if( o instanceof int[] ) {
 				int[] pixels = (int[])o;
 				int width = ois.readInt();
 				int height = ois.readInt();
-				bufferedImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
+				bufferedImage = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 				bufferedImage.setRGB( 0, 0, width, height, pixels, 0, width );
 			} else {
 				assert o == null;
@@ -140,19 +149,19 @@ public class SerializationUtilities {
 			return bufferedImage;
 		} catch( ClassNotFoundException cnfe ) {
 			throw new RuntimeException( cnfe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static java.awt.image.BufferedImage unserializeBufferedImage( java.io.File inFile ) {
+	public static BufferedImage unserializeBufferedImage( File inFile ) {
 		try {
-			java.io.FileInputStream fis = new java.io.FileInputStream( inFile );
-			java.io.ObjectInputStream ois = new java.io.ObjectInputStream( fis );
-			java.awt.image.BufferedImage bufferedImage = unserializeBufferedImage( ois );
+			FileInputStream fis = new FileInputStream( inFile );
+			ObjectInputStream ois = new ObjectInputStream( fis );
+			BufferedImage bufferedImage = unserializeBufferedImage( ois );
 			fis.close();
 			return bufferedImage;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( inFile.getAbsolutePath(), ioe );
 		}
 	}

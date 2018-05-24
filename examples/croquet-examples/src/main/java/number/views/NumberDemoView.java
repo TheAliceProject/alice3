@@ -42,11 +42,14 @@
  */
 package number.views;
 
+import number.NumberDemoComposite;
+import org.lgna.croquet.views.MigPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NumberDemoView extends org.lgna.croquet.views.MigPanel {
-	public NumberDemoView( number.NumberDemoComposite composite ) {
+public class NumberDemoView extends MigPanel {
+	public NumberDemoView( NumberDemoComposite composite ) {
 		this.addComponent( composite.getWaterTempFahrenheitState().getSidekickLabel().createLabel() );
 		this.addComponent( composite.getWaterTempFahrenheitState().createSlider() );
 	}

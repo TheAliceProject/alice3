@@ -42,15 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.Context;
+import org.lgna.croquet.history.event.AddTransactionEvent;
+import org.lgna.croquet.history.event.Event;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TransactionHistory extends TransactionNode<CompletionStep<?>> implements Iterable<Transaction> {
-	private final java.util.List<Transaction> transactions;
+	private final List<Transaction> transactions;
 
 	public TransactionHistory() {
 		super( (CompletionStep<?>)null );
-		this.transactions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+		this.transactions = Lists.newCopyOnWriteArrayList();
 	}
 
 	public TransactionHistory getActiveTransactionHistory() {
@@ -71,7 +80,7 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 	}
 
 	@Override
-	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
+	protected void appendContexts( List<Context> out ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.appendContexts( out );
 		}
@@ -79,7 +88,7 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 
 	public void addTransaction( Transaction transaction ) {
 		assert transaction != null;
-		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, this.transactions.size() );
+		Event<?> e = new AddTransactionEvent( transaction, this.transactions.size() );
 		this.fireChanging( e );
 		transaction.setOwner( this );
 		this.transactions.add( transaction );
@@ -89,7 +98,7 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 	public void addTransaction( int index, Transaction transaction ) {
 		assert transaction != null;
 		assert index >= 0;
-		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, index );
+		Event<?> e = new AddTransactionEvent( transaction, index );
 		this.fireChanging( e );
 		transaction.setOwner( this );
 		this.transactions.add( index, transaction );
@@ -97,11 +106,11 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 	}
 
 	@Override
-	public java.util.Iterator<Transaction> iterator() {
+	public Iterator<Transaction> iterator() {
 		return this.transactions.iterator();
 	}
 
-	public java.util.ListIterator<Transaction> listIterator() {
+	public ListIterator<Transaction> listIterator() {
 		return this.transactions.listIterator();
 	}
 

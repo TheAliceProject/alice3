@@ -42,12 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.capture;
 
+import edu.cmu.cs.dennisc.capture.ImageCaptureUtilities;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.capture.views.ImageCaptureRectangleStencilView;
+import org.alice.ide.capture.views.ImageCaptureView;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FrameCompositeWithInternalIsShowingState;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.AbstractWindow;
+
+import javax.swing.JLayeredPane;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.ide.capture.views.ImageCaptureView> {
+public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingState<ImageCaptureView> {
 	//todo
-	private static final org.lgna.croquet.Group IMAGE_CAPTURE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "220c4c60-aea1-4c18-95f9-7a0ef0a1f30b" ), "IMAGE_CAPTURE_GROUP" );
+	private static final Group IMAGE_CAPTURE_GROUP = Group.getInstance( UUID.fromString( "220c4c60-aea1-4c18-95f9-7a0ef0a1f30b" ), "IMAGE_CAPTURE_GROUP" );
 
 	private static class SingletonHolder {
 		private static ImageCaptureComposite instance = new ImageCaptureComposite();
@@ -57,102 +83,102 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithIn
 		return SingletonHolder.instance;
 	}
 
-	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER + 1;
+	private static final int LAYER_ID = JLayeredPane.POPUP_LAYER + 1;
 
-	private org.alice.ide.capture.views.ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		return mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
+	private ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView( AbstractWindow<?> window ) {
+		return mapWindowToStencilView.getInitializingIfAbsent( window, new InitializingIfAbsentMap.Initializer<AbstractWindow<?>, ImageCaptureRectangleStencilView>() {
 			@Override
-			public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.views.AbstractWindow<?> key ) {
-				return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
+			public ImageCaptureRectangleStencilView initialize( AbstractWindow<?> key ) {
+				return new ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
 			}
 		} );
 	}
 
-	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( "captureEntireWindow", new Action() {
+	private final Operation captureEntireWindowOperation = this.createActionOperation( "captureEntireWindow", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.views.AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
-			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			Application app = Application.getActiveInstance();
+			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
+			Image image = ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
 			image = convertToRgbaIfNecessary( image );
 
-			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
+			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
 			stencilView.getImageComposite().setImageClearShapesAndShowFrame( image );
 			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.Operation captureEntireContentPaneOperation = this.createActionOperation( "captureEntireContentPane", new Action() {
+	private final Operation captureEntireContentPaneOperation = this.createActionOperation( "captureEntireContentPane", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.views.AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
-			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			Application app = Application.getActiveInstance();
+			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
+			Image image = ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
 			image = convertToRgbaIfNecessary( image );
-			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
+			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
 			stencilView.getImageComposite().setImageClearShapesAndShowFrame( image );
 			//edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.Operation captureRectangleOperation = this.createActionOperation( "captureRectangle", new Action() {
+	private final Operation captureRectangleOperation = this.createActionOperation( "captureRectangle", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.views.AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
-			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			Application app = Application.getActiveInstance();
+			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
+			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
 			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
 			return null;
 		}
 	} );
 
-	private final org.lgna.croquet.PlainStringValue operationsHeader = this.createStringValue( "operationsHeader" );
-	private final org.lgna.croquet.PlainStringValue propertiesHeader = this.createStringValue( "propertiesHeader" );
-	private final org.lgna.croquet.BoundedIntegerState dpiState = this.createBoundedIntegerState( "dpiState", new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
-	private final org.lgna.croquet.BooleanState isAlphaChannelState = this.createPreferenceBooleanState( "isAlphaChannelState", false );
+	private final PlainStringValue operationsHeader = this.createStringValue( "operationsHeader" );
+	private final PlainStringValue propertiesHeader = this.createStringValue( "propertiesHeader" );
+	private final BoundedIntegerState dpiState = this.createBoundedIntegerState( "dpiState", new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
+	private final BooleanState isAlphaChannelState = this.createPreferenceBooleanState( "isAlphaChannelState", false );
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private final InitializingIfAbsentMap<AbstractWindow<?>, ImageCaptureRectangleStencilView> mapWindowToStencilView = Maps.newInitializingIfAbsentHashMap();
 
 	private ImageCaptureComposite() {
-		super( java.util.UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );
+		super( UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );
 	}
 
-	public java.awt.Image convertToRgbaIfNecessary( java.awt.Image image ) {
+	public Image convertToRgbaIfNecessary( Image image ) {
 		if( this.isAlphaChannelState.getValue() ) {
-			int imageType = java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE; //to pre or not to pre
-			return edu.cmu.cs.dennisc.image.ImageUtilities.createBufferedImage( image, imageType );
+			int imageType = BufferedImage.TYPE_INT_ARGB_PRE; //to pre or not to pre
+			return ImageUtilities.createBufferedImage( image, imageType );
 		} else {
 			return image;
 		}
 	}
 
-	public org.lgna.croquet.PlainStringValue getOperationsHeader() {
+	public PlainStringValue getOperationsHeader() {
 		return this.operationsHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getPropertiesHeader() {
+	public PlainStringValue getPropertiesHeader() {
 		return this.propertiesHeader;
 	}
 
-	public org.lgna.croquet.Operation getCaptureEntireWindowOperation() {
+	public Operation getCaptureEntireWindowOperation() {
 		return this.captureEntireWindowOperation;
 	}
 
-	public org.lgna.croquet.Operation getCaptureEntireContentPaneOperation() {
+	public Operation getCaptureEntireContentPaneOperation() {
 		return this.captureEntireContentPaneOperation;
 	}
 
-	public org.lgna.croquet.Operation getCaptureRectangleOperation() {
+	public Operation getCaptureRectangleOperation() {
 		return this.captureRectangleOperation;
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getDpiState() {
+	public BoundedIntegerState getDpiState() {
 		return this.dpiState;
 	}
 
-	public org.lgna.croquet.BooleanState getIsAlphaChannelState() {
+	public BooleanState getIsAlphaChannelState() {
 		return this.isAlphaChannelState;
 	}
 
@@ -166,13 +192,13 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithIn
 	}
 
 	@Override
-	protected org.alice.ide.capture.views.ImageCaptureView createView() {
-		return new org.alice.ide.capture.views.ImageCaptureView( this );
+	protected ImageCaptureView createView() {
+		return new ImageCaptureView( this );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		SimpleApplication app = new SimpleApplication();
 		ImageCaptureComposite.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
 	}
 

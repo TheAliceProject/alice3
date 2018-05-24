@@ -43,39 +43,50 @@
 
 package org.alice.ide.ast.delete;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.delete.edits.DeleteStatementEdit;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.Statement> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.Statement, DeleteStatementOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOperation<Statement> {
+	private static InitializingIfAbsentMap<Statement, DeleteStatementOperation> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
-		return map.getInitializingIfAbsent( statement, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Statement, DeleteStatementOperation>() {
+	public static DeleteStatementOperation getInstance( Statement statement ) {
+		return map.getInitializingIfAbsent( statement, new InitializingIfAbsentMap.Initializer<Statement, DeleteStatementOperation>() {
 			@Override
-			public DeleteStatementOperation initialize( org.lgna.project.ast.Statement statement ) {
+			public DeleteStatementOperation initialize( Statement statement ) {
 				return new DeleteStatementOperation( statement );
 			}
 		} );
 	}
 
-	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( java.util.UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ), statement );
+	private DeleteStatementOperation( Statement statement ) {
+		super( UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ), statement );
 	}
 
 	@Override
-	protected org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete() {
+	protected Operation getAlertModelIfNotAllowedToDelete() {
 		//todo
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.BooleanState getFindModel() {
+	protected BooleanState getFindModel() {
 		//todo
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.ast.delete.edits.DeleteStatementEdit( completionStep, this.getNode() );
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		return new DeleteStatementEdit( completionStep, this.getNode() );
 	}
 }

@@ -43,12 +43,19 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	public static interface Initializer {
-		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep );
+		public void initialize( CompletionStep<?> completionStep );
 	}
 
 	private final ValueCreatorOwningComposite<?, T> composite;
@@ -56,7 +63,7 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	private final String subKeyForLocalization;
 
 	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite, Initializer initializer, String subKeyForLocalization ) {
-		super( java.util.UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
+		super( UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
 		this.composite = composite;
 		this.initializer = initializer;
 		this.subKeyForLocalization = subKeyForLocalization;
@@ -92,8 +99,8 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	}
 
 	@Override
-	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+	protected T createValue( Transaction transaction, Trigger trigger ) {
+		CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, new TransactionHistory() );
 		if( this.initializer != null ) {
 			this.initializer.initialize( completionStep );
 		}

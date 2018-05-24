@@ -42,24 +42,30 @@
  *******************************************************************************/
 package org.lgna.croquet.meta;
 
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+import org.lgna.croquet.history.TransactionNode;
+import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.history.event.Listener;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TransactionHistoryTrackingMetaState<T> extends MetaState<T> {
-	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+	private final Listener listener = new Listener() {
 		@Override
-		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
+		public void changing( Event<?> e ) {
 		}
 
 		@Override
-		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
+		public void changed( Event<?> e ) {
 			TransactionHistoryTrackingMetaState.this.checkValueAndFireIfAppropriate();
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.history.TransactionNode<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final DStack<TransactionNode<?>> stack = Stacks.newStack();
 
-	public void pushActivation( org.lgna.croquet.history.TransactionNode<?> transactionNode ) {
+	public void pushActivation( TransactionNode<?> transactionNode ) {
 		if( this.stack.size() > 0 ) {
 			//pass
 		} else {
@@ -70,7 +76,7 @@ public abstract class TransactionHistoryTrackingMetaState<T> extends MetaState<T
 	}
 
 	public void popActivation() {
-		org.lgna.croquet.history.TransactionNode<?> transactionNode = this.stack.pop();
+		TransactionNode<?> transactionNode = this.stack.pop();
 		transactionNode.removeListener( this.listener );
 	}
 }

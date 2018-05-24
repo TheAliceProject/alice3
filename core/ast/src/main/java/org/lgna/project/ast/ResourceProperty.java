@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.lgna.common.Resource;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<org.lgna.common.Resource> {
-	public ResourceProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+public class ResourceProperty extends InstanceProperty<Resource> {
+	public ResourceProperty( InstancePropertyOwner owner ) {
 		super( owner, null );
 	}
 }

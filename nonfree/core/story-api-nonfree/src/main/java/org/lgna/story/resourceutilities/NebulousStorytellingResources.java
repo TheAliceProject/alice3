@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -59,6 +60,8 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.nebulous.Manager;
+
+import javax.swing.JOptionPane;
 
 public enum NebulousStorytellingResources {
 	INSTANCE;
@@ -74,7 +77,7 @@ public enum NebulousStorytellingResources {
 	}
 
 	public void setNebulousResourceDir( String[] dirs ) {
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, StorytellingResources.makeDirectoryPreferenceString( dirs ) );
 	}
 
@@ -111,7 +114,7 @@ public enum NebulousStorytellingResources {
 	private void clearSimsResourceInfo()
 	{
 		ResourcePathManager.clearPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
-		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		Preferences rv = Preferences.userRoot();
 		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		rv.put( StorytellingResources.GALLERY_DIRECTORY_PREF_KEY, "" );
 	}
@@ -120,13 +123,13 @@ public enum NebulousStorytellingResources {
 		int count = 0;
 		for( File path : resourcePaths ) {
 			if( path.exists() ) {
-				for( java.io.File file : path.listFiles() ) {
+				for( File file : path.listFiles() ) {
 					if( !simsPathsLoaded.contains( file ) ) {
 						try {
 							if( file.getName().endsWith( "txt" ) ) {
 								//pass
 							} else {
-								edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+								Manager.addBundle( file );
 								simsPathsLoaded.add( file );
 								count++;
 							}
@@ -146,7 +149,7 @@ public enum NebulousStorytellingResources {
 
 		String DEBUG_rawPathValue = System.getProperty( "org.alice.ide.simsDebugResourcePath" );
 		if( DEBUG_rawPathValue != null ) {
-			java.io.File rawResourcePath = new File( DEBUG_rawPathValue );
+			File rawResourcePath = new File( DEBUG_rawPathValue );
 			if( rawResourcePath.exists() ) {
 				Manager.setRawResourcePath( rawResourcePath );
 			}
@@ -193,7 +196,7 @@ public enum NebulousStorytellingResources {
 				String phrase = resourcePaths.size() > 1 ? "these directories exist" : "this directory exists";
 				sb.append( "\nVerify that " + phrase + " and verify that Alice is properly installed." );
 			}
-			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+			JOptionPane.showMessageDialog( null, sb.toString() );
 
 		} else {
 			String[] galleryDirs = new String[ simsPathsLoaded.size() ];

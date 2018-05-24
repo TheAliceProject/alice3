@@ -42,23 +42,28 @@
  *******************************************************************************/
 package org.lgna.project.io;
 
+import org.lgna.common.Resource;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class TypeResourcesPair {
-	public TypeResourcesPair( org.lgna.project.ast.NamedUserType type, java.util.Set<org.lgna.common.Resource> resources ) {
+	public TypeResourcesPair( NamedUserType type, Set<Resource> resources ) {
 		this.type = type;
 		this.resources = resources;
 	}
 
-	public org.lgna.project.ast.NamedUserType getType() {
+	public NamedUserType getType() {
 		return this.type;
 	}
 
-	public java.util.Set<org.lgna.common.Resource> getResources() {
+	public Set<Resource> getResources() {
 		return this.resources;
 	}
 
-	private final org.lgna.project.ast.NamedUserType type;
-	private final java.util.Set<org.lgna.common.Resource> resources;
+	private final NamedUserType type;
+	private final Set<Resource> resources;
 }

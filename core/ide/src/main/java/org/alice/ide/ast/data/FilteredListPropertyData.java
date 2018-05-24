@@ -42,71 +42,86 @@
  *******************************************************************************/
 package org.alice.ide.ast.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.ListProperty;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.data.RefreshableListData;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredListPropertyData<E> extends org.lgna.croquet.data.RefreshableListData<E> {
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {
+public abstract class FilteredListPropertyData<E> extends RefreshableListData<E> {
+	private final ListPropertyListener<E> listPropertyListener = new ListPropertyListener<E>() {
 		@Override
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
+		public void adding( AddListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
+		public void added( AddListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 
 		@Override
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
+		public void clearing( ClearListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
+		public void cleared( ClearListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 
 		@Override
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
+		public void removing( RemoveListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
+		public void removed( RemoveListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 
 		@Override
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
+		public void setting( SetListPropertyEvent<E> e ) {
 		}
 
 		@Override
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
-			FilteredListPropertyData.this.refresh();
-		}
-	};
-
-	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-		@Override
-		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		}
-
-		@Override
-		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		public void set( SetListPropertyEvent<E> e ) {
 			FilteredListPropertyData.this.refresh();
 		}
 	};
 
-	private edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
+	private final PropertyListener propertyListener = new PropertyListener() {
+		@Override
+		public void propertyChanging( PropertyEvent e ) {
+		}
 
-	public FilteredListPropertyData( org.lgna.croquet.ItemCodec<E> itemCodec ) {
+		@Override
+		public void propertyChanged( PropertyEvent e ) {
+			FilteredListPropertyData.this.refresh();
+		}
+	};
+
+	private ListProperty<E> listProperty;
+
+	public FilteredListPropertyData( ItemCodec<E> itemCodec ) {
 		super( itemCodec );
 	}
 
 	protected abstract boolean isAcceptableItem( E item );
 
 	@Override
-	protected java.util.List<E> createValues() {
+	protected List<E> createValues() {
 		if( this.listProperty != null ) {
-			java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<E> list = Lists.newLinkedList();
 
 			for( E item : this.listProperty ) {
 				if( this.isAcceptableItem( item ) ) {
@@ -116,15 +131,15 @@ public abstract class FilteredListPropertyData<E> extends org.lgna.croquet.data.
 
 			return list;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.property.ListProperty<E> getListProperty() {
+	protected ListProperty<E> getListProperty() {
 		return this.listProperty;
 	}
 
-	public void setListProperty( edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {
+	public void setListProperty( ListProperty<E> listProperty ) {
 		if( this.listProperty != null ) {
 			this.listProperty.removePropertyListener( this.propertyListener );
 			this.listProperty.removeListPropertyListener( this.listPropertyListener );

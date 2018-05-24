@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -62,7 +65,7 @@ public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperat
 	}
 
 	private ThingClsUriIteratingOperation() {
-		super( java.util.UUID.fromString( "b3dcac55-4522-4014-b658-93ac8d516c1a" ) );
+		super( UUID.fromString( "b3dcac55-4522-4014-b658-93ac8d516c1a" ) );
 	}
 
 	@Override
@@ -71,12 +74,12 @@ public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperat
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		if( this.thingCls != null ) {
 			switch( subSteps.size() ) {
 			case 0:
-				org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite composite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
-				org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel dragModel = composite.getDragModelForCls( this.thingCls );
+				SetupScenePerspectiveComposite composite = SetupScenePerspectiveComposite.getInstance();
+				GalleryDragModel dragModel = composite.getDragModelForCls( this.thingCls );
 				if( dragModel != null ) {
 					return dragModel.getLeftButtonClickModel();
 				} else {

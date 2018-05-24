@@ -42,26 +42,57 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.Theme;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
+import org.alice.ide.preferences.IsToolBarShowing;
+import org.alice.interact.handle.HandleStyle;
+import org.alice.stageide.oneshot.DynamicOneShotMenuModel;
+import org.alice.stageide.sceneeditor.side.SideComposite;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.AbstractRadioButtons;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.DefaultRadioButtons;
+import org.lgna.croquet.views.FlowPanel;
+import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.PushButton;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.ToolPaletteTitle;
+import org.lgna.croquet.views.ToolPaletteView;
+import org.lgna.croquet.views.VerticalTextPosition;
+
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SideView extends org.lgna.croquet.views.BorderPanel {
-	private static javax.swing.border.Border createSeparatorBorder( int top, int bottom, java.awt.Color color ) {
-		return javax.swing.BorderFactory.createMatteBorder( top, 0, bottom, 0, color );
+public class SideView extends BorderPanel {
+	private static Border createSeparatorBorder( int top, int bottom, Color color ) {
+		return BorderFactory.createMatteBorder( top, 0, bottom, 0, color );
 	}
 
-	public SideView( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
+	public SideView( SideComposite composite ) {
 		super( composite );
 
-		final org.alice.ide.Theme theme = org.alice.ide.ThemeUtilities.getActiveTheme();
-		final java.awt.Color color = theme.getPrimaryBackgroundColor();
+		final Theme theme = ThemeUtilities.getActiveTheme();
+		final Color color = theme.getPrimaryBackgroundColor();
 
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+		if( IsToolBarShowing.getValue() ) {
 			//pass
 		} else {
-			org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
-			org.lgna.croquet.views.FlowPanel undoRedoPanel = new org.lgna.croquet.views.FlowPanel(
-					org.lgna.croquet.views.FlowPanel.Alignment.CENTER,
+			ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+			FlowPanel undoRedoPanel = new FlowPanel(
+					FlowPanel.Alignment.CENTER,
 					projectDocumentFrame.getUndoOperation().createButton(),
 					projectDocumentFrame.getRedoOperation().createButton()
 					);
@@ -70,58 +101,58 @@ public class SideView extends org.lgna.croquet.views.BorderPanel {
 			this.addPageStartComponent( undoRedoPanel );
 		}
 
-		org.lgna.croquet.views.MigPanel migPanel = new org.lgna.croquet.views.MigPanel( null, "fill, insets 0, aligny top", "", "" );
+		MigPanel migPanel = new MigPanel( null, "fill, insets 0, aligny top", "", "" );
 
-		org.lgna.croquet.views.AbstractRadioButtons<org.alice.interact.handle.HandleStyle> radioButtons = new org.lgna.croquet.views.DefaultRadioButtons<org.alice.interact.handle.HandleStyle>( composite.getHandleStyleState(), false ) {
+		AbstractRadioButtons<HandleStyle> radioButtons = new DefaultRadioButtons<HandleStyle>( composite.getHandleStyleState(), false ) {
 			@Override
-			protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.interact.handle.HandleStyle item, org.lgna.croquet.BooleanState itemSelectedState ) {
-				org.lgna.croquet.views.PushButton b = itemSelectedState.createPushButton();
-				b.setVerticalTextPosition( org.lgna.croquet.views.VerticalTextPosition.BOTTOM );
-				b.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.CENTER );
+			protected BooleanStateButton<?> createButtonForItemSelectedState( HandleStyle item, BooleanState itemSelectedState ) {
+				PushButton b = itemSelectedState.createPushButton();
+				b.setVerticalTextPosition( VerticalTextPosition.BOTTOM );
+				b.setHorizontalTextPosition( HorizontalTextPosition.CENTER );
 				b.setSelectedColor( theme.getSelectedColor() );
 				b.setBackgroundColor( color );
 				return b;
 			}
 		};
-		migPanel.addComponent( new org.lgna.croquet.views.LineAxisPanel(
+		migPanel.addComponent( new LineAxisPanel(
 				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.2f ),
 				radioButtons
 				), "wrap" );
 
-		org.lgna.croquet.views.ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
-		org.lgna.croquet.views.ToolPaletteTitle title = toolPaletteView.getTitle();
-		title.setRenderingStyle( org.lgna.croquet.views.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+		ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
+		ToolPaletteTitle title = toolPaletteView.getTitle();
+		title.setRenderingStyle( ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 
-		migPanel.addComponent( new org.lgna.croquet.views.FlowPanel(
+		migPanel.addComponent( new FlowPanel(
 				composite.getIsSnapEnabledState().createCheckBox(),
 				title ), "wrap, gapleft 4" );
 		migPanel.addComponent( toolPaletteView, "wrap" );
 
 		//this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
-		migPanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() ), "wrap" );
+		migPanel.addComponent( new InstanceFactoryPopupButton( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() ), "wrap" );
 
 		//todo
 		//migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
 
-		migPanel.addComponent( org.alice.stageide.oneshot.DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
+		migPanel.addComponent( DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
 
-		org.lgna.croquet.ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {
+		ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {
 				composite.getObjectPropertiesTab(),
 				composite.getObjectMarkersTab(),
 				composite.getCameraMarkersTab()
 		};
 
 		title.setBackgroundColor( color );
-		for( org.lgna.croquet.ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites ) {
-			org.lgna.croquet.views.ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
+		for( ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites ) {
+			ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
 			toolPaletteTitle.setBackgroundColor( color );
 			toolPaletteTitle.scaleFont( 1.4f );
-			toolPaletteTitle.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			toolPaletteTitle.changeFont( TextWeight.BOLD );
 			migPanel.addComponent( toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx" );
 		}
-		migPanel.addComponent( new org.lgna.croquet.views.Label(), "wrap, grow, push" );
+		migPanel.addComponent( new Label(), "wrap, grow, push" );
 
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( migPanel );
+		ScrollPane scrollPane = new ScrollPane( migPanel );
 		this.addCenterComponent( scrollPane );
 
 		migPanel.setBackgroundColor( color );

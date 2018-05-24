@@ -43,11 +43,15 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> extends AbstractWindowComposite<V> {
-	public FrameComposite( java.util.UUID migrationId ) {
+public abstract class FrameComposite<V extends Panel> extends AbstractWindowComposite<V> {
+	public FrameComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 }

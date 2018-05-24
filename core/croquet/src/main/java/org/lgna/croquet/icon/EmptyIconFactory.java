@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,8 +64,8 @@ public class EmptyIconFactory extends ResolutionIndependantIconFactory {
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( final java.awt.Dimension size ) {
-		return new javax.swing.Icon() {
+	protected Icon createIcon( final Dimension size ) {
+		return new Icon() {
 			@Override
 			public int getIconWidth() {
 				return size.width;
@@ -72,18 +77,18 @@ public class EmptyIconFactory extends ResolutionIndependantIconFactory {
 			}
 
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
 			}
 		};
 	}
 
 	@Override
-	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
-		return new java.awt.Dimension( width, 0 );
+	public Dimension getTrimmedSizeForWidth( int width ) {
+		return new Dimension( width, 0 );
 	}
 
 	@Override
-	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
-		return new java.awt.Dimension( 0, height );
+	public Dimension getTrimmedSizeForHeight( int height ) {
+		return new Dimension( 0, height );
 	}
 }

@@ -43,13 +43,30 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.Expression;
+
+import javax.swing.Icon;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, KeywordMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class KeywordMenuModel extends CascadeMenuModel<Expression> {
+	private static Map<AbstractMethod, KeywordMenuModel> map = Maps.newHashMap();
 
-	public static KeywordMenuModel getInstance( org.lgna.project.ast.AbstractMethod value ) {
+	public static KeywordMenuModel getInstance( AbstractMethod value ) {
 		synchronized( map ) {
 			KeywordMenuModel rv = map.get( value );
 			if( rv != null ) {
@@ -62,27 +79,27 @@ public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna
 		}
 	}
 
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 
-	private KeywordMenuModel( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "86b5a4aa-57cf-4f0c-9247-7a63083e1b37" ) );
+	private KeywordMenuModel( AbstractMethod method ) {
+		super( UUID.fromString( "86b5a4aa-57cf-4f0c-9247-7a63083e1b37" ) );
 		this.method = method;
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+	public String getMenuItemText( ItemNode<? super Expression, Expression> step ) {
+		Formatter formatter = FormatterState.getInstance().getValue();
 		return formatter.getNameForDeclaration( this.method );
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
+	public Icon getMenuItemIcon( ItemNode<? super Expression, Expression> step ) {
 		return null;
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.lgna.project.ast.AbstractParameter parameter = this.method.getRequiredParameters().get( 0 );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, parameter.getValueType(), parameter.getDetails() );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
+		AbstractParameter parameter = this.method.getRequiredParameters().get( 0 );
+		IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, parameter.getValueType(), parameter.getDetails() );
 	}
 }

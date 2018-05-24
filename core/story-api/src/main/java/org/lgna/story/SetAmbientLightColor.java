@@ -43,12 +43,14 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
 public class SetAmbientLightColor extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetAmbientLightColor.class )
+	@ClassTemplate( keywordFactoryCls = SetAmbientLightColor.class )
 	public static interface Detail {
 	}
 

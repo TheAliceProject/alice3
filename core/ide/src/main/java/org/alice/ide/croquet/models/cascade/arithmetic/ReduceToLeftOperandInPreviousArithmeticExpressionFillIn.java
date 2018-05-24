@@ -43,6 +43,11 @@
 
 package org.alice.ide.croquet.models.cascade.arithmetic;
 
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +61,11 @@ public class ReduceToLeftOperandInPreviousArithmeticExpressionFillIn extends Red
 	}
 
 	private ReduceToLeftOperandInPreviousArithmeticExpressionFillIn() {
-		super( java.util.UUID.fromString( "3bfcb639-6737-4b8d-9261-d670957ec095" ) );
+		super( UUID.fromString( "3bfcb639-6737-4b8d-9261-d670957ec095" ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic ) {
+	protected Expression getOperand( ArithmeticInfixExpression previousArithmetic ) {
 		return previousArithmetic.leftOperand.getValue();
 	}
 }

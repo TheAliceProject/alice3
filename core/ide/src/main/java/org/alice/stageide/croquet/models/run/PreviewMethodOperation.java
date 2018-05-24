@@ -42,19 +42,26 @@
  *******************************************************************************/
 package org.alice.stageide.croquet.models.run;
 
+import org.alice.ide.IDE;
+import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewMethodOperation extends org.lgna.croquet.ActionOperation {
-	private org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
+public class PreviewMethodOperation extends ActionOperation {
+	private ProcedureInvocationTemplate procedureInvocationTemplate;
 
-	public PreviewMethodOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
+	public PreviewMethodOperation( ProcedureInvocationTemplate procedureInvocationTemplate ) {
+		super( IDE.RUN_GROUP, UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
 		//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {

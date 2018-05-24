@@ -55,7 +55,7 @@ public interface AutomobileResource extends TransportResource {
 	public static final JointId FRONT_RIGHT_WHEEL = new JointId( ROOT, AutomobileResource.class );
 	public static final JointId FRONT_LEFT_WHEEL = new JointId( ROOT, AutomobileResource.class );
 
-	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 }

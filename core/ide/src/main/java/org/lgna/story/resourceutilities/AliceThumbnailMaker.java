@@ -47,6 +47,7 @@ import java.util.Map;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author Dave Culyba
@@ -80,7 +81,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 	}
 
 	@Override
-	protected AffineMatrix4x4 getThumbnailTransform( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) {
+	protected AffineMatrix4x4 getThumbnailTransform( Visual v, AxisAlignedBox bbox ) {
 		return getThumbnailCameraOrientation( bbox );
 	}
 }

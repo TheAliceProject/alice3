@@ -43,14 +43,20 @@
 
 package org.alice.stageide.about.views;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import org.alice.stageide.about.EulaComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.PlainMultiLineLabel;
+import org.lgna.croquet.views.ScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EulaView extends org.lgna.croquet.views.BorderPanel {
-	public EulaView( org.alice.stageide.about.EulaComposite composite ) {
-		org.lgna.croquet.views.PlainMultiLineLabel label = new org.lgna.croquet.views.PlainMultiLineLabel( composite.getEulaText() );
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( label );
+public class EulaView extends BorderPanel {
+	public EulaView( EulaComposite composite ) {
+		PlainMultiLineLabel label = new PlainMultiLineLabel( composite.getEulaText() );
+		ScrollPane scrollPane = new ScrollPane( label );
 		this.addCenterComponent( scrollPane );
-		this.setPreferredSize( edu.cmu.cs.dennisc.java.awt.DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 600 ) );
+		this.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 600 ) );
 	}
 }

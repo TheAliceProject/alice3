@@ -42,10 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.print.Printable;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.print.Printable {
+public abstract class Tuple2 implements BinaryEncodableAndDecodable, Printable {
 	public double x = 0.0;
 	public double y = 0.0;
 
@@ -60,19 +68,19 @@ public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodable
 		set( x, y );
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		x = binaryDecoder.decodeDouble();
 		y = binaryDecoder.decodeDouble();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
 	}
 
 	@Override
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException {
 		if( isLines ) {
 			rv.append( "+-       -+\n" );
 			rv.append( "| " );

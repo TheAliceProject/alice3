@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.member;
 
+import org.alice.ide.member.FilteredJavaMethodsSubComposite;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.story.SJoint;
+
+import java.util.Comparator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JointFunctionsComposite extends org.alice.ide.member.FilteredJavaMethodsSubComposite {
+public class JointFunctionsComposite extends FilteredJavaMethodsSubComposite {
 	private static class SingletonHolder {
 		private static JointFunctionsComposite instance = new JointFunctionsComposite();
 	}
@@ -54,19 +61,19 @@ public class JointFunctionsComposite extends org.alice.ide.member.FilteredJavaMe
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+	private final Comparator<JavaMethod> comparator = new Comparator<JavaMethod>() {
 		@Override
-		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+		public int compare( JavaMethod methodA, JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}
 	};
 
 	private JointFunctionsComposite() {
-		super( java.util.UUID.fromString( "681b12ce-4948-4cc6-a943-985e9caa76bc" ), false );
+		super( UUID.fromString( "681b12ce-4948-4cc6-a943-985e9caa76bc" ), false );
 	}
 
 	@Override
-	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
+	public Comparator<JavaMethod> getComparator() {
 		return this.comparator;
 	}
 
@@ -76,7 +83,7 @@ public class JointFunctionsComposite extends org.alice.ide.member.FilteredJavaMe
 	}
 
 	@Override
-	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
-		return method.isFunction() && method.getReturnType().isAssignableTo( org.lgna.story.SJoint.class ) && method.getName().startsWith( "get" );
+	protected boolean isAcceptingOf( JavaMethod method ) {
+		return method.isFunction() && method.getReturnType().isAssignableTo( SJoint.class ) && method.getName().startsWith( "get" );
 	}
 }

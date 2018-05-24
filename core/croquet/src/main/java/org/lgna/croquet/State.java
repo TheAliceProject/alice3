@@ -42,22 +42,36 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.edits.StateEdit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class State<T> extends AbstractCompletionModel implements org.lgna.croquet.ContextFactory<StateContext<T>> {
+public abstract class State<T> extends AbstractCompletionModel implements ContextFactory<StateContext<T>> {
 	public static interface ValueListener<T> {
 		public void changing( State<T> state, T prevValue, T nextValue, boolean isAdjusting );
 
 		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting );
 	};
 
-	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<ValueListener<T>> oldSchoolValueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
+	private final List<ValueListener<T>> oldSchoolValueListeners = Lists.newCopyOnWriteArrayList();
 
 	private T previousValue;
 
-	public State( Group group, java.util.UUID migrationId, T initialValue ) {
+	public State( Group group, UUID migrationId, T initialValue ) {
 		super( group, migrationId );
 		this.previousValue = initialValue;
 	}
@@ -70,15 +84,15 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public abstract Class<T> getItemClass();
 
-	public abstract T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	public abstract T decodeValue( BinaryDecoder binaryDecoder );
 
-	public abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
+	public abstract void encodeValue( BinaryEncoder binaryEncoder, T value );
 
 	public abstract void appendRepresentation( StringBuilder sb, T value );
 
 	public void addValueListener( ValueListener<T> valueListener ) {
 		if( this.oldSchoolValueListeners.contains( valueListener ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
+			Logger.severe( "listener already contained", this, valueListener );
 		}
 		this.oldSchoolValueListeners.add( valueListener );
 	}
@@ -95,21 +109,21 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		if( this.oldSchoolValueListeners.contains( valueListener ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
+			Logger.severe( "listener not contained", this, valueListener );
 		}
 		this.oldSchoolValueListeners.remove( valueListener );
 	}
 
 	public void addNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
 		if( this.newSchoolValueListeners.contains( valueListener ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
+			Logger.severe( "listener already contained", this, valueListener );
 		}
 		this.newSchoolValueListeners.add( valueListener );
 	}
 
 	public void addAndInvokeNewSchoolValueListener( org.lgna.croquet.event.ValueListener<T> valueListener ) {
 		this.addNewSchoolValueListener( valueListener );
-		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.getValue() );
+		ValueEvent<T> e = ValueEvent.createInstance( this.getValue() );
 		valueListener.valueChanged( e );
 	}
 
@@ -117,7 +131,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		if( this.newSchoolValueListeners.contains( valueListener ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
+			Logger.severe( "listener not contained", this, valueListener );
 		}
 		this.newSchoolValueListeners.remove( valueListener );
 	}
@@ -133,7 +147,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			valueListener.changed( this, prevValue, nextValue, isAdjusting.value );
 		}
 		if( this.newSchoolValueListeners.size() > 0 ) {
-			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( prevValue, nextValue, isAdjusting.value );
+			ValueEvent<T> e = ValueEvent.createInstance( prevValue, nextValue, isAdjusting.value );
 			for( org.lgna.croquet.event.ValueListener<T> valueListener : this.newSchoolValueListeners ) {
 				valueListener.valueChanged( e );
 			}
@@ -141,27 +155,27 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	@Override
-	public org.lgna.croquet.StateContext<T> createContext() {
+	public StateContext<T> createContext() {
 		return new StateContext<T>( this, this.getValue() );
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void perform( Transaction transaction, Trigger trigger ) {
 		throw new UnsupportedOperationException();
 	}
 
-	private org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+	private StateEdit<T> createStateEdit( CompletionStep<State<T>> step, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "createStateEdit", prevValue, nextValue, isAdjusting.value ? "isAdjusting=true" : "" );
-		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
+		return new StateEdit<T>( step, prevValue, nextValue );
 	}
 
 	protected void handleTruthAndBeautyValueChange( T nextValue ) {
 	}
 
-	protected org.lgna.croquet.edits.StateEdit<T> commitStateEdit( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-		org.lgna.croquet.history.CompletionStep<State<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
-		org.lgna.croquet.edits.StateEdit<T> edit = this.createStateEdit( completionStep, prevValue, nextValue, isAdjusting );
+	protected StateEdit<T> commitStateEdit( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
+		Transaction owner = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		CompletionStep<State<T>> completionStep = CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
+		StateEdit<T> edit = this.createStateEdit( completionStep, prevValue, nextValue, isAdjusting );
 		if( edit != null ) {
 			completionStep.commitAndInvokeDo( edit );
 			this.handleTruthAndBeautyValueChange( nextValue );
@@ -169,12 +183,12 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return edit;
 	}
 
-	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
+	protected StateEdit<T> createEdit( CompletionStep<State<T>> completionStep, T nextValue ) {
 		T prevValue = this.getValue();
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( prevValue, nextValue ) ) {
+		if( Objects.equals( prevValue, nextValue ) ) {
 			//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
 		}
-		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
+		return new StateEdit<T>( completionStep, prevValue, nextValue );
 	}
 
 	protected abstract T getCurrentTruthAndBeautyValue();
@@ -198,7 +212,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			boolean isUpdatingSwingValueAppropriate;
 			if( this.isSwingValueValid() ) {
 				T prevSwingValue = this.getSwingValue();
-				if( edu.cmu.cs.dennisc.java.util.Objects.equals( prevSwingValue, nextValue ) ) {
+				if( Objects.equals( prevSwingValue, nextValue ) ) {
 					isUpdatingSwingValueAppropriate = false;
 				} else {
 					isUpdatingSwingValueAppropriate = true;
@@ -240,7 +254,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 	}
 
-	private static final org.lgna.croquet.triggers.Trigger NULL_TRIGGER = null;
+	private static final Trigger NULL_TRIGGER = null;
 
 	private static enum Origin {
 		FROM_SWING( true, false, false, false ),
@@ -291,10 +305,10 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return true;
 	}
 
-	private org.lgna.croquet.edits.StateEdit<T> changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
-		org.lgna.croquet.edits.StateEdit<T> rv = null;
+	private StateEdit<T> changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
+		StateEdit<T> rv = null;
 		this.updateSwingModelIfAppropriate( nextValue, origin );
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.previousValue, nextValue ) ) {
+		if( Objects.equals( this.previousValue, nextValue ) ) {
 			//pass
 		} else {
 			if( this.isInTheMidstOfChange ) {
@@ -317,8 +331,8 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return rv;
 	}
 
-	private org.lgna.croquet.edits.StateEdit<T> changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
-		org.lgna.croquet.edits.StateEdit<T> rv = null;
+	private StateEdit<T> changeValue( T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
+		StateEdit<T> rv = null;
 		if( this.atomicCount > 0 ) {
 			//pass
 		} else {
@@ -331,12 +345,12 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return rv;
 	}
 
-	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
 		this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_SWING );
 	}
 
-	protected org.lgna.croquet.history.CompletionStep<?> changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.edits.StateEdit<T> edit = this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_INDIRECT_MODEL );
+	protected CompletionStep<?> changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
+		StateEdit<T> edit = this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_INDIRECT_MODEL );
 		return edit != null ? edit.getCompletionStep() : null;
 	}
 

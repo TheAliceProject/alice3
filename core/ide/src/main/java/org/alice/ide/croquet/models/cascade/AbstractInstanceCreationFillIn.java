@@ -42,24 +42,34 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractInstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.InstanceCreation> {
-	private final org.lgna.project.ast.InstanceCreation transientValue;
+public abstract class AbstractInstanceCreationFillIn extends ExpressionFillInWithExpressionBlanks<InstanceCreation> {
+	private final InstanceCreation transientValue;
 
-	public AbstractInstanceCreationFillIn( java.util.UUID migrationId, org.lgna.project.ast.AbstractConstructor constructor, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
+	public AbstractInstanceCreationFillIn( UUID migrationId, AbstractConstructor constructor, CascadeBlank<Expression>... blanks ) {
 		super( migrationId, blanks );
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteInstanceCreation( constructor );
+		this.transientValue = IncompleteAstUtilities.createIncompleteInstanceCreation( constructor );
 	}
 
 	@Override
-	protected org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( this.transientValue.constructor.getValue(), expressions );
+	protected InstanceCreation createValue( Expression[] expressions ) {
+		return AstUtilities.createInstanceCreation( this.transientValue.constructor.getValue(), expressions );
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
+	public InstanceCreation getTransientValue( ItemNode<? super InstanceCreation, Expression> step ) {
 		return this.transientValue;
 	}
 }

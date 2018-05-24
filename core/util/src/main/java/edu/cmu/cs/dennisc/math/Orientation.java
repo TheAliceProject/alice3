@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface Orientation extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface Orientation extends BinaryEncodableAndDecodable {
 	public void setNaN();
 
 	public boolean isNaN();

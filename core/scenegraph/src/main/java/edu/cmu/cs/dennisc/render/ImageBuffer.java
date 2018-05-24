@@ -42,15 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface ImageBuffer {
 	Object getImageLock();
 
-	edu.cmu.cs.dennisc.color.Color4f getBackgroundColor();
+	Color4f getBackgroundColor();
 
-	java.awt.image.BufferedImage getImage();
+	BufferedImage getImage();
 
 	boolean isRightSideUp();
 }

@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.lgna.story.resources;
 
+import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.BasicJointedModelImp;
+
 /**
  * @author dculyba
  * 
  */
 public interface BasicResource extends JointedModelResource {
-	public org.lgna.story.resources.JointId[] getRootJointIds();
+	public JointId[] getRootJointIds();
 
-	public org.lgna.story.implementation.BasicJointedModelImp createImplementation( org.lgna.story.SJointedModel abstraction );
+	public BasicJointedModelImp createImplementation( SJointedModel abstraction );
 }

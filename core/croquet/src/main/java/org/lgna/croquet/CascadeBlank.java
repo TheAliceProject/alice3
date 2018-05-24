@@ -43,11 +43,19 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.imp.cascade.BlankNode;
+
+import java.util.List;
+import java.util.ListIterator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlank<B> extends AbstractElement {
-	public CascadeBlank( java.util.UUID id ) {
+	public CascadeBlank( UUID id ) {
 		super( id );
 	}
 
@@ -55,20 +63,20 @@ public abstract class CascadeBlank<B> extends AbstractElement {
 	protected void localize() {
 	}
 
-	protected abstract void updateChildren( java.util.List<CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<B> blankNode );
+	protected abstract void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode );
 
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
 		return ( child instanceof CascadeLineSeparator ) || ( ( child instanceof CascadeLabelSeparator ) && ( ( (CascadeLabelSeparator)child ).isValid() == false ) );
 	}
 
-	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.imp.cascade.BlankNode<B> blankNode ) {
-		java.util.List<CascadeBlankChild> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public final CascadeBlankChild[] getFilteredChildren( BlankNode<B> blankNode ) {
+		List<CascadeBlankChild> children = Lists.newLinkedList();
 		this.updateChildren( children, blankNode );
 		for( CascadeBlankChild child : children ) {
 			assert child != null;
 		}
 
-		java.util.ListIterator<CascadeBlankChild> listIterator = children.listIterator();
+		ListIterator<CascadeBlankChild> listIterator = children.listIterator();
 		boolean isLineSeparatorAcceptable = false;
 		while( listIterator.hasNext() ) {
 			CascadeBlankChild child = listIterator.next();
@@ -96,6 +104,6 @@ public abstract class CascadeBlank<B> extends AbstractElement {
 			}
 		}
 
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( children, CascadeBlankChild.class );
+		return ArrayUtilities.createArray( children, CascadeBlankChild.class );
 	}
 }

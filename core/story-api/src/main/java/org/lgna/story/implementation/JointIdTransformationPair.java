@@ -81,7 +81,7 @@ public class JointIdTransformationPair {
 		this( id, quaternion, Point3.createZero(), false );
 	}
 
-	public JointIdTransformationPair( JointId id, org.lgna.story.Orientation orientation ) {
+	public JointIdTransformationPair( JointId id, Orientation orientation ) {
 		this( id, EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion() );
 	}
 

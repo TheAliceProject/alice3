@@ -1,6 +1,8 @@
 package Jama;
 import Jama.util.*;
 
+import java.io.Serializable;
+
 /** Eigenvalues and eigenvectors of a real matrix. 
 <P>
     If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is
@@ -17,7 +19,7 @@ import Jama.util.*;
     A = V*D*inverse(V) depends upon V.cond().
 **/
 
-public class EigenvalueDecomposition implements java.io.Serializable {
+public class EigenvalueDecomposition implements Serializable {
 
 /* ------------------------
    Class variables

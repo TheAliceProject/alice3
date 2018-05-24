@@ -43,10 +43,17 @@
 
 package org.alice.ide.croquet.models.cascade.literals;
 
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.BooleanLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.BooleanLiteral> {
+public class BooleanLiteralFillIn extends ExpressionFillInWithoutBlanks<BooleanLiteral> {
 	private static BooleanLiteralFillIn trueLiteral = new BooleanLiteralFillIn( true );
 	private static BooleanLiteralFillIn falseLiteral = new BooleanLiteralFillIn( false );
 
@@ -58,20 +65,20 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 		}
 	}
 
-	private final org.lgna.project.ast.BooleanLiteral transientValue;
+	private final BooleanLiteral transientValue;
 
 	private BooleanLiteralFillIn( boolean value ) {
-		super( java.util.UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
-		this.transientValue = new org.lgna.project.ast.BooleanLiteral( value );
+		super( UUID.fromString( "85b65750-aded-4a5f-a41d-d30fa2914115" ) );
+		this.transientValue = new BooleanLiteral( value );
 	}
 
 	@Override
-	public org.lgna.project.ast.BooleanLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.BooleanLiteral( this.transientValue.value.getValue() );
+	public BooleanLiteral createValue( ItemNode<? super BooleanLiteral, Void> node, TransactionHistory transactionHistory ) {
+		return new BooleanLiteral( this.transientValue.value.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node ) {
+	public BooleanLiteral getTransientValue( ItemNode<? super BooleanLiteral, Void> node ) {
 		return this.transientValue;
 	}
 }

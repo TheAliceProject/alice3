@@ -42,16 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import org.alice.ide.croquet.components.AbstractPropertyPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.NodeProperty;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyView<P extends org.lgna.project.ast.NodeProperty<N>, N extends org.lgna.project.ast.AbstractNode> extends org.alice.ide.croquet.components.AbstractPropertyPane<P, N> {
-	public NodePropertyView( org.alice.ide.x.AstI18nFactory factory, P property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+public class NodePropertyView<P extends NodeProperty<N>, N extends AbstractNode> extends AbstractPropertyPane<P, N> {
+	public NodePropertyView( AstI18nFactory factory, P property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 		this.refreshLater();
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( N node ) {
+	protected SwingComponentView<?> createComponent( N node ) {
 		return this.getFactory().createComponent( node );
 	}
 

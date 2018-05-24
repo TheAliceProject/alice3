@@ -43,17 +43,22 @@
 
 package org.alice.stageide.personresource;
 
+import org.alice.stageide.personresource.views.PersonViewer;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class PreviewComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.PersonViewer> {
+public final class PreviewComposite extends SimpleComposite<PersonViewer> {
 	public PreviewComposite() {
-		super( java.util.UUID.fromString( "f9cd8c6a-5307-49ca-ae72-5cf4b629758f" ) );
+		super( UUID.fromString( "f9cd8c6a-5307-49ca-ae72-5cf4b629758f" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.PersonViewer createView() {
-		return new org.alice.stageide.personresource.views.PersonViewer();
+	protected PersonViewer createView() {
+		return new PersonViewer();
 	}
 
 	@Override

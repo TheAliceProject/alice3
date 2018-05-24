@@ -44,6 +44,9 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
+import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -115,12 +118,12 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -451,9 +454,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		this.backPlane = backPlane;
 	}
 
-	protected Point calculateMousePlaneOffset( Point mousePosition, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable transformable ) {
+	protected Point calculateMousePlaneOffset( Point mousePosition, AbstractTransformable transformable ) {
 		Point3 pointInCamera = transformable.getTranslation( this.getCamera() );
-		Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+		Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
 		return new Point( awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y );
 	}
 
@@ -464,12 +467,12 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	protected Point getMouseCursorPositionInLookingGlass() {
 		Point3 new3DPoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin );
 		Point3 pointInCamera = this.camera.transformFrom_New( new3DPoint, this.camera.getRoot() );
-		Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+		Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
 		return awtPoint;
 	}
 
 	protected void moveCursorToPointInLookingGlass( Point awtPoint ) {
-		edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
+		RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 	}
 
 	protected void moveCursorToObjectRelativePosition() {
@@ -499,9 +502,9 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	private final DebugSphere planeTransitionPointDebugSphere = new DebugSphere();
-	private Plane pickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
+	private Plane pickPlane = Plane.XZ_PLANE;
 	private Plane backPlane;
-	protected Plane orthographicPickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
+	protected Plane orthographicPickPlane = Plane.XZ_PLANE;
 	protected Point3 orthographicOffsetToOrigin = null;
 	protected Boolean hasMoved = false;
 	protected Point3 originalPosition = null;
@@ -510,5 +513,5 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	protected boolean hidCursor = false;
 	private double movementScale = 1.0;
 	protected AbstractCamera camera = null;
-	protected edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	protected OnscreenRenderTarget onscreenRenderTarget;
 }

@@ -42,14 +42,22 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.DocumentLabel;
+
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StringValue extends AbstractElement {
 	private String originalLocalizedText;
-	private final javax.swing.text.AbstractDocument document;
+	private final AbstractDocument document;
 
-	public StringValue( java.util.UUID id, javax.swing.text.AbstractDocument document ) {
+	public StringValue( UUID id, AbstractDocument document ) {
 		super( id );
 		this.document = document;
 	}
@@ -69,14 +77,14 @@ public abstract class StringValue extends AbstractElement {
 		return this.originalLocalizedText;
 	}
 
-	public javax.swing.text.AbstractDocument getDocument() {
+	public AbstractDocument getDocument() {
 		return this.document;
 	}
 
 	public String getText() {
 		try {
 			return this.document.getText( 0, this.document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
@@ -84,16 +92,16 @@ public abstract class StringValue extends AbstractElement {
 	public final void setText( String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( text, ble );
 		}
 	}
 
-	public org.lgna.croquet.views.AbstractLabel createLabel( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.views.DocumentLabel( this.document, fontScalar, textAttributes );
+	public AbstractLabel createLabel( float fontScalar, TextAttribute<?>... textAttributes ) {
+		return new DocumentLabel( this.document, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.views.AbstractLabel createLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public AbstractLabel createLabel( TextAttribute<?>... textAttributes ) {
 		return this.createLabel( 1.0f, textAttributes );
 	}
 }

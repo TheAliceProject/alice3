@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ActionOperation extends Operation {
-	public ActionOperation( Group group, java.util.UUID id ) {
+	public ActionOperation( Group group, UUID id ) {
 		super( group, id );
 	}
 
-	protected abstract void perform( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract void perform( CompletionStep<?> step );
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected final void perform( Transaction transaction, Trigger trigger ) {
+		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		this.perform( step );
 	}
 }

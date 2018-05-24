@@ -42,49 +42,69 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.views;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.DefaultTheme;
+import org.alice.stageide.gallerybrowser.ResourceBasedTab;
+import org.alice.stageide.gallerybrowser.TreeOwningGalleryTab;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.ResourceNodeTreeState;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TreeDirectoryViewController;
+import org.lgna.croquet.views.TreePathViewController;
+
+import javax.swing.JScrollBar;
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TreeOwningGalleryTabView extends GalleryTabView {
-	private class ModelResourceDirectoryView extends org.lgna.croquet.views.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
-		public ModelResourceDirectoryView( org.lgna.croquet.SingleSelectTreeState<org.alice.stageide.modelresource.ResourceNode> model ) {
+	private class ModelResourceDirectoryView extends TreeDirectoryViewController<ResourceNode> {
+		public ModelResourceDirectoryView( SingleSelectTreeState<ResourceNode> model ) {
 			super( model );
 		}
 
 		@Override
-		protected org.lgna.croquet.views.SwingComponentView<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
+		protected SwingComponentView<?> getComponentFor( ResourceNode value ) {
 			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value );
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
+	private final ValueListener<ResourceNode> treeListener = new ValueListener<ResourceNode>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.modelresource.ResourceNode> e ) {
+		public void valueChanged( ValueEvent<ResourceNode> e ) {
 			handleChanged( e.getPreviousValue(), e.getNextValue() );
 		}
 	};
 
-	private final java.util.Map<org.alice.stageide.modelresource.ResourceNode, Integer> mapNodeToHorizontalScrollPosition = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final org.lgna.croquet.views.ScrollPane scrollPane;
+	private final Map<ResourceNode, Integer> mapNodeToHorizontalScrollPosition = Maps.newHashMap();
+	private final ScrollPane scrollPane;
 
-	public TreeOwningGalleryTabView( org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite ) {
+	public TreeOwningGalleryTabView( TreeOwningGalleryTab composite ) {
 		super( composite );
 
-		org.alice.stageide.modelresource.ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
+		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
 		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
 		this.scrollPane = createGalleryScrollPane( view );
 
 		final boolean IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES = false;
-		java.awt.Color breadCrumbColor;
-		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && ( composite instanceof org.alice.stageide.gallerybrowser.ResourceBasedTab ) ) {
-			breadCrumbColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+		Color breadCrumbColor;
+		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && ( composite instanceof ResourceBasedTab ) ) {
+			breadCrumbColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
 		} else {
 			breadCrumbColor = null;
 		}
-		org.lgna.croquet.views.BorderPanel panel = new org.lgna.croquet.views.BorderPanel.Builder()
+		BorderPanel panel = new BorderPanel.Builder()
 				.vgap( PAD )
-				.pageStart( new org.lgna.croquet.views.TreePathViewController( state, breadCrumbColor ) )
+				.pageStart( new TreePathViewController( state, breadCrumbColor ) )
 				.center( scrollPane )
 				.build();
 
@@ -98,8 +118,8 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 
 	@Override
 	protected void handleDisplayable() {
-		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
-		org.alice.stageide.modelresource.ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
+		TreeOwningGalleryTab composite = (TreeOwningGalleryTab)this.getComposite();
+		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
 		state.addNewSchoolValueListener( this.treeListener );
 		super.handleDisplayable();
 	}
@@ -107,13 +127,13 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
-		org.alice.stageide.modelresource.ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
+		TreeOwningGalleryTab composite = (TreeOwningGalleryTab)this.getComposite();
+		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
 		state.removeNewSchoolValueListener( this.treeListener );
 	}
 
-	private void handleChanged( org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue ) {
-		final javax.swing.JScrollBar jHorizontalScrollBar = this.scrollPane.getAwtComponent().getHorizontalScrollBar();
+	private void handleChanged( ResourceNode prevValue, ResourceNode nextValue ) {
+		final JScrollBar jHorizontalScrollBar = this.scrollPane.getAwtComponent().getHorizontalScrollBar();
 		this.mapNodeToHorizontalScrollPosition.put( prevValue, jHorizontalScrollBar.getValue() );
 		Integer i = this.mapNodeToHorizontalScrollPosition.get( nextValue );
 		final int nextScrollPosition;
@@ -122,7 +142,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		} else {
 			nextScrollPosition = 0;
 		}
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				jHorizontalScrollBar.setValue( nextScrollPosition );

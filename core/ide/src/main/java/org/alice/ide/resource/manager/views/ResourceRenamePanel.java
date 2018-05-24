@@ -43,41 +43,57 @@
 
 package org.alice.ide.resource.manager.views;
 
+import edu.cmu.cs.dennisc.media.Player;
+import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import org.alice.ide.ast.rename.components.RenamePanel;
+import org.alice.ide.resource.manager.RenameResourceComposite;
+import org.alice.imageeditor.croquet.views.ImageView;
+import org.lgna.common.Resource;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.story.implementation.ImageFactory;
+
+import javax.swing.BorderFactory;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.RenamePanel {
+public class ResourceRenamePanel extends RenamePanel {
 	private static final int SIZE = 128;
-	private final org.lgna.croquet.views.BorderPanel centerPanel = new org.lgna.croquet.views.BorderPanel();
-	private final org.alice.imageeditor.croquet.views.ImageView imageView = new org.alice.imageeditor.croquet.views.ImageView();
-	private edu.cmu.cs.dennisc.media.Player audioPlayer = null;
+	private final BorderPanel centerPanel = new BorderPanel();
+	private final ImageView imageView = new ImageView();
+	private Player audioPlayer = null;
 
-	public ResourceRenamePanel( org.alice.ide.resource.manager.RenameResourceComposite composite ) {
+	public ResourceRenamePanel( RenameResourceComposite composite ) {
 		super( composite );
 		this.centerPanel.setMinimumPreferredHeight( SIZE );
-		this.centerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+		this.centerPanel.setBorder( BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.addCenterComponent( this.centerPanel );
 	}
 
-	public void setResource( org.lgna.common.Resource resource ) {
+	public void setResource( Resource resource ) {
 		if( this.audioPlayer != null ) {
 			this.audioPlayer.stop();
 			this.audioPlayer = null;
 		}
 		this.centerPanel.forgetAndRemoveAllComponents();
-		java.awt.Component awtComponent;
+		Component awtComponent;
 		String constraint;
-		if( resource instanceof org.lgna.common.resources.ImageResource ) {
-			org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
-			java.awt.image.BufferedImage bufferedImage = org.lgna.story.implementation.ImageFactory.getBufferedImage( imageResource );
+		if( resource instanceof ImageResource ) {
+			ImageResource imageResource = (ImageResource)resource;
+			BufferedImage bufferedImage = ImageFactory.getBufferedImage( imageResource );
 			imageView.setImage( bufferedImage );
 			awtComponent = imageView.getAwtComponent();
-			constraint = java.awt.BorderLayout.CENTER;
-		} else if( resource instanceof org.lgna.common.resources.AudioResource ) {
-			org.lgna.common.resources.AudioResource audioResource = (org.lgna.common.resources.AudioResource)resource;
-			edu.cmu.cs.dennisc.media.Player player = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createPlayer( audioResource );
+			constraint = BorderLayout.CENTER;
+		} else if( resource instanceof AudioResource ) {
+			AudioResource audioResource = (AudioResource)resource;
+			Player player = MediaFactory.getSingleton().createPlayer( audioResource );
 			awtComponent = player.getControlPanelComponent();
-			constraint = java.awt.BorderLayout.PAGE_START;
+			constraint = BorderLayout.PAGE_START;
 			this.audioPlayer = player;
 		} else {
 			awtComponent = null;

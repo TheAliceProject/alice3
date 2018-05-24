@@ -43,19 +43,33 @@
 
 package edu.cmu.cs.dennisc.scenegraph.io;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StreamTokenizer;
+import java.util.Vector;
 
 /**
  * @author Dennis Cosgrove
  */
 public class OBJ {
-	private static double getNextNumber( java.io.StreamTokenizer streamTokenizer ) {
+	private static double getNextNumber( StreamTokenizer streamTokenizer ) {
 		try {
 			streamTokenizer.nextToken();
-			if( streamTokenizer.ttype == java.io.StreamTokenizer.TT_NUMBER ) {
+			if( streamTokenizer.ttype == StreamTokenizer.TT_NUMBER ) {
 				double f = streamTokenizer.nval;
 				streamTokenizer.nextToken();
-				if( streamTokenizer.ttype == java.io.StreamTokenizer.TT_WORD ) {
+				if( streamTokenizer.ttype == StreamTokenizer.TT_WORD ) {
 					if( streamTokenizer.sval.startsWith( "E" ) ) {
 						int exponent = Integer.parseInt( streamTokenizer.sval.substring( 1 ) );
 						return f * Math.pow( 10, exponent );
@@ -64,25 +78,25 @@ public class OBJ {
 				streamTokenizer.pushBack();
 				return f;
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			ioe.printStackTrace();
 		}
 		return Double.NaN;
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray decode( java.io.InputStream is ) throws java.io.IOException {
-		java.io.BufferedReader r = new java.io.BufferedReader( new java.io.InputStreamReader( is ) );
-		java.io.StreamTokenizer st = new java.io.StreamTokenizer( r );
+	public static IndexedTriangleArray decode( InputStream is ) throws IOException {
+		BufferedReader r = new BufferedReader( new InputStreamReader( is ) );
+		StreamTokenizer st = new StreamTokenizer( r );
 		st.commentChar( '#' );
 		st.slashSlashComments( false );
 		st.slashStarComments( false );
 		st.whitespaceChars( '/', '/' );
 		st.parseNumbers();
-		java.util.Vector<double[]> xyzs = new java.util.Vector<double[]>();
-		java.util.Vector<double[]> ijks = new java.util.Vector<double[]>();
-		java.util.Vector<double[]> uvs = new java.util.Vector<double[]>();
-		java.util.Vector<java.util.Vector<Integer>> fs = new java.util.Vector<java.util.Vector<Integer>>();
-		while( st.nextToken() == java.io.StreamTokenizer.TT_WORD ) {
+		Vector<double[]> xyzs = new Vector<double[]>();
+		Vector<double[]> ijks = new Vector<double[]>();
+		Vector<double[]> uvs = new Vector<double[]>();
+		Vector<Vector<Integer>> fs = new Vector<Vector<Integer>>();
+		while( st.nextToken() == StreamTokenizer.TT_WORD ) {
 			if( st.sval.startsWith( "vt" ) ) {
 				double uv[] = new double[ 3 ];
 				uv[ 0 ] = getNextNumber( st );
@@ -101,8 +115,8 @@ public class OBJ {
 				xyz[ 2 ] = getNextNumber( st );
 				xyzs.addElement( xyz );
 			} else if( st.sval.startsWith( "f" ) ) {
-				java.util.Vector<Integer> f = new java.util.Vector<Integer>();
-				while( st.nextToken() == java.io.StreamTokenizer.TT_NUMBER ) {
+				Vector<Integer> f = new Vector<Integer>();
+				while( st.nextToken() == StreamTokenizer.TT_NUMBER ) {
 					int index = (int)st.nval;
 					if( index < 0 ) {
 						//todo: account for different lengthed ijks and uvs
@@ -119,7 +133,7 @@ public class OBJ {
 			}
 		}
 		int nVertexCount = xyzs.size();
-		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[ nVertexCount ];
+		Vertex[] vertices = new Vertex[ nVertexCount ];
 		double ijkDefault[] = new double[ 3 ];
 		ijkDefault[ 0 ] = 0;
 		ijkDefault[ 1 ] = 1;
@@ -141,13 +155,13 @@ public class OBJ {
 			} catch( ArrayIndexOutOfBoundsException e ) {
 				uv = uvDefault;
 			}
-			vertices[ v ] = edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( xyz[ 0 ], xyz[ 1 ], xyz[ 2 ], (float)ijk[ 0 ], (float)ijk[ 1 ], (float)ijk[ 2 ], (float)uv[ 0 ], (float)uv[ 1 ] );
+			vertices[ v ] = Vertex.createXYZIJKUV( xyz[ 0 ], xyz[ 1 ], xyz[ 2 ], (float)ijk[ 0 ], (float)ijk[ 1 ], (float)ijk[ 2 ], (float)uv[ 0 ], (float)uv[ 1 ] );
 		}
 		//todo
 		int[] indices = new int[ fs.size() * 3 ];
 		int i = 0;
 		for( int f = 0; f < fs.size(); f++ ) {
-			java.util.Vector<Integer> face = fs.elementAt( f );
+			Vector<Integer> face = fs.elementAt( f );
 			switch( face.size() ) {
 			case 3:
 				indices[ i++ ] = face.elementAt( 0 ).intValue();
@@ -168,7 +182,7 @@ public class OBJ {
 				throw new RuntimeException( "unhandled face index size" );
 			}
 		}
-		edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = new edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray();
+		IndexedTriangleArray ita = new IndexedTriangleArray();
 		ita.vertices.setValue( vertices );
 		ita.polygonData.setValue( indices );
 
@@ -180,17 +194,17 @@ public class OBJ {
 		return ita;
 	}
 
-	public static void encode( java.io.OutputStream os, edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, String groupName ) {
-		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = ita.vertices.getValue();
+	public static void encode( OutputStream os, IndexedTriangleArray ita, AffineMatrix4x4 m, String groupName ) {
+		Vertex[] vertices = ita.vertices.getValue();
 		int[] indices = ita.polygonData.getValueAsArray();
 		if( ( vertices != null ) && ( indices != null ) ) {
-			java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( os );
-			java.io.PrintWriter pw = new java.io.PrintWriter( bos );
+			BufferedOutputStream bos = new BufferedOutputStream( os );
+			PrintWriter pw = new PrintWriter( bos );
 			if( groupName != null ) {
 				pw.println( "g " + groupName );
 			}
-			edu.cmu.cs.dennisc.math.Point3 p = new edu.cmu.cs.dennisc.math.Point3();
-			edu.cmu.cs.dennisc.math.Vector3f n = new edu.cmu.cs.dennisc.math.Vector3f();
+			Point3 p = new Point3();
+			Vector3f n = new Vector3f();
 			for( Vertex vertice : vertices ) {
 				p.set( vertice.position );
 				n.set( vertice.normal );

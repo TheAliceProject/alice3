@@ -42,20 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.projecturi.views.ProjectSideView;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectSideComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.projecturi.views.ProjectSideView> {
+public class ProjectSideComposite extends SimpleComposite<ProjectSideView> {
 	public ProjectSideComposite() {
-		super( java.util.UUID.fromString( "d00d6695-abac-4fa7-b8f9-b5672ac2a64d" ) );
+		super( UUID.fromString( "d00d6695-abac-4fa7-b8f9-b5672ac2a64d" ) );
 	}
 
 	@Override
-	protected org.alice.ide.projecturi.views.ProjectSideView createView() {
-		return new org.alice.ide.projecturi.views.ProjectSideView( this );
+	protected ProjectSideView createView() {
+		return new ProjectSideView( this );
 	}
 
-	/* package-private */void handleMetaStateValueChanged( org.alice.ide.uricontent.UriProjectLoader uri ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "handleMetaStateValueChanged", uri );
+	/* package-private */void handleMetaStateValueChanged( UriProjectLoader uri ) {
+		Logger.errln( "handleMetaStateValueChanged", uri );
 	}
 }

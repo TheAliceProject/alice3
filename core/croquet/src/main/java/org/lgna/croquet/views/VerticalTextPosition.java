@@ -43,13 +43,15 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.SwingConstants;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum VerticalTextPosition {
-	TOP( javax.swing.SwingConstants.TOP ),
-	CENTER( javax.swing.SwingConstants.CENTER ),
-	BOTTOM( javax.swing.SwingConstants.BOTTOM );
+	TOP( SwingConstants.TOP ),
+	CENTER( SwingConstants.CENTER ),
+	BOTTOM( SwingConstants.BOTTOM );
 	private int internal;
 
 	private VerticalTextPosition( int internal ) {

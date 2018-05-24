@@ -45,6 +45,7 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
@@ -62,12 +63,12 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 	private static final double MAX_DISTANCE_PER_PIXEL = .05d;
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -133,7 +134,7 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 			pickDistance = -1;
 			Vector3 cameraForward = new Vector3( absoluteTransform.orientation.backward );
 			cameraForward.multiply( -1.0d );
-			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
+			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
 			if( pickPoint != null ) {
 				pickDistance = Point3.calculateDistanceBetween( pickPoint, absoluteTransform.translation );
 			}
@@ -205,5 +206,5 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 	private double initialCameraDotVertical;
 	private double pickDistance;
 
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 }

@@ -42,7 +42,30 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation;
+import org.alice.ide.croquet.models.help.GraphicsHelpComposite;
+import org.alice.ide.croquet.models.help.ReportIssueComposite;
+import org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite;
+import org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite;
+import org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite;
+import org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite;
+import org.alice.ide.croquet.models.menubar.ContributorMenuModel;
+import org.alice.ide.croquet.models.menubar.HelpMenuModel;
+import org.alice.ide.croquet.models.ui.MemoryUsageComposite;
+import org.alice.ide.help.HelpComposite;
+import org.alice.ide.localize.review.croquet.LocalizeReviewFrame;
+import org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite;
+import org.alice.ide.warning.WarningDialogComposite;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.about.AboutComposite;
+import org.alice.stageide.about.CreditsComposite;
+import org.alice.stageide.about.SystemEulaComposite;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.imp.frame.LazyIsFrameShowingState;
+import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
 
 /**
  * @author Dennis Cosgrove
@@ -50,139 +73,139 @@ import org.alice.nonfree.NebulousIde;
 public enum IdeApp {
 	INSTANCE;
 
-	public org.lgna.croquet.BooleanState getMemoryUsageFrameIsShowingState() {
+	public BooleanState getMemoryUsageFrameIsShowingState() {
 		return this.memoryUsageFrameIsShowingState;
 	}
 
-	public org.lgna.croquet.BooleanState getLocalizeReviewIsShowingState() {
+	public BooleanState getLocalizeReviewIsShowingState() {
 		return this.localizeReviewIsShowingState;
 	}
 
-	public org.lgna.croquet.Operation getIsRecursionAllowedPreferenceDialogLaunchOperation() {
+	public Operation getIsRecursionAllowedPreferenceDialogLaunchOperation() {
 		return this.isRecursionAllowedPreferenceDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.MenuModel getContributorMenuModel() {
+	public MenuModel getContributorMenuModel() {
 		return this.contributorMenuModel;
 	}
 
-	public org.lgna.croquet.Operation getHelpDialogLaunchOperation() {
+	public Operation getHelpDialogLaunchOperation() {
 		return this.helpDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.Operation getGraphicsHelpDialogLaunchOperation() {
+	public Operation getGraphicsHelpDialogLaunchOperation() {
 		return this.graphicsHelpDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.Operation getReportBugLaunchOperation() {
+	public Operation getReportBugLaunchOperation() {
 		return this.reportIssueComposite.getReportBugLaunchOperation();
 	}
 
-	public org.lgna.croquet.Operation getRequestNewFeatureLaunchOperation() {
+	public Operation getRequestNewFeatureLaunchOperation() {
 		return this.reportIssueComposite.getRequestNewFeatureLaunchOperation();
 	}
 
-	public org.lgna.croquet.Operation getSuggestImprovementLaunchOperation() {
+	public Operation getSuggestImprovementLaunchOperation() {
 		return this.reportIssueComposite.getSuggestImprovementLaunchOperation();
 	}
 
-	public org.lgna.croquet.Operation getWarningDialogLaunchOperation() {
+	public Operation getWarningDialogLaunchOperation() {
 		return this.warningDialogLaunchOperation;
 	}
 
-	public org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
+	public ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
 		return this.showClassPathPropertyComposite;
 	}
 
-	public org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite getShowLibraryPathPropertyComposite() {
+	public ShowLibraryPathPropertyComposite getShowLibraryPathPropertyComposite() {
 		return this.showLibraryPathPropertyComposite;
 	}
 
-	public org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
+	public ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
 		return this.showAllSystemPropertiesComposite;
 	}
 
-	public org.lgna.croquet.Operation getShowSystemPropertiesDialogLaunchOperation() {
+	public Operation getShowSystemPropertiesDialogLaunchOperation() {
 		return this.showSystemPropertiesDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.Operation getBrowseReleaseNotesOperation() {
+	public Operation getBrowseReleaseNotesOperation() {
 		return this.browseReleaseNotesOperation;
 	}
 
-	public org.lgna.croquet.Operation getSystemEulaDialogLaunchOperation() {
+	public Operation getSystemEulaDialogLaunchOperation() {
 		return this.systemEulaDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.Operation getSimsArtEulaDialogLaunchOperation() {
+	public Operation getSimsArtEulaDialogLaunchOperation() {
 		return this.simsArtEulaDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.Operation getCreditsDialogLaunchOperation() {
+	public Operation getCreditsDialogLaunchOperation() {
 		return this.creditsDialogLaunchOperation;
 	}
 
-	public org.lgna.croquet.Operation getAboutDialogLaunchOperation() {
+	public Operation getAboutDialogLaunchOperation() {
 		return this.aboutDialogLaunchOperation;
 	}
 
-	public org.alice.ide.croquet.models.menubar.HelpMenuModel getHelpMenu() {
+	public HelpMenuModel getHelpMenu() {
 		return this.helpMenu;
 	}
 
-	private final org.lgna.croquet.BooleanState memoryUsageFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-			org.lgna.croquet.Application.INFORMATION_GROUP,
-			org.alice.ide.croquet.models.ui.MemoryUsageComposite.class );
+	private final BooleanState memoryUsageFrameIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+			Application.INFORMATION_GROUP,
+			MemoryUsageComposite.class );
 
-	private final org.lgna.croquet.BooleanState localizeReviewIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
-			org.lgna.croquet.Application.INFORMATION_GROUP,
-			org.alice.ide.localize.review.croquet.LocalizeReviewFrame.class );
+	private final BooleanState localizeReviewIsShowingState = LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+			Application.INFORMATION_GROUP,
+			LocalizeReviewFrame.class );
 
-	private final org.lgna.croquet.Operation isRecursionAllowedPreferenceDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite.class,
-			org.lgna.croquet.Application.APPLICATION_UI_GROUP ).getLaunchOperation();
+	private final Operation isRecursionAllowedPreferenceDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			IsRecursionAllowedPreferenceDialogComposite.class,
+			Application.APPLICATION_UI_GROUP ).getLaunchOperation();
 
-	private final org.lgna.croquet.MenuModel contributorMenuModel = new org.alice.ide.croquet.models.menubar.ContributorMenuModel( localizeReviewIsShowingState );
+	private final MenuModel contributorMenuModel = new ContributorMenuModel( localizeReviewIsShowingState );
 
-	private final org.lgna.croquet.Operation helpDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.ide.help.HelpComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation helpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			HelpComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.lgna.croquet.Operation graphicsHelpDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.ide.croquet.models.help.GraphicsHelpComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation graphicsHelpDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			GraphicsHelpComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.alice.ide.croquet.models.help.ReportIssueComposite reportIssueComposite = new org.alice.ide.croquet.models.help.ReportIssueComposite();
+	private final ReportIssueComposite reportIssueComposite = new ReportIssueComposite();
 
-	private final org.lgna.croquet.Operation warningDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.ide.warning.WarningDialogComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation warningDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			WarningDialogComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite showClassPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite();
+	private final ShowClassPathPropertyComposite showClassPathPropertyComposite = new ShowClassPathPropertyComposite();
 
-	private final org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite();
+	private final ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new ShowLibraryPathPropertyComposite();
 
-	private final org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite();
+	private final ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new ShowAllSystemPropertiesComposite();
 
-	private final org.lgna.croquet.Operation showSystemPropertiesDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation showSystemPropertiesDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			ShowSystemPropertiesComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation browseReleaseNotesOperation = new org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation();
+	private final BrowseReleaseNotesOperation browseReleaseNotesOperation = new BrowseReleaseNotesOperation();
 
-	private final org.lgna.croquet.Operation systemEulaDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.stageide.about.SystemEulaComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation systemEulaDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			SystemEulaComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.lgna.croquet.Operation simsArtEulaDialogLaunchOperation = NebulousIde.nonfree.newSimsArtEulaDialogLaunchOperation();
+	private final Operation simsArtEulaDialogLaunchOperation = NebulousIde.nonfree.newSimsArtEulaDialogLaunchOperation();
 
-	private final org.lgna.croquet.Operation creditsDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.stageide.about.CreditsComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation creditsDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			CreditsComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.lgna.croquet.Operation aboutDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-			org.alice.stageide.about.AboutComposite.class,
-			org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final Operation aboutDialogLaunchOperation = LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+			AboutComposite.class,
+			Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.alice.ide.croquet.models.menubar.HelpMenuModel helpMenu = new org.alice.ide.croquet.models.menubar.HelpMenuModel( this );
+	private final HelpMenuModel helpMenu = new HelpMenuModel( this );
 }

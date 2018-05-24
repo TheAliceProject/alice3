@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.components.LocalValidNameLabel;
+import org.alice.ide.ast.draganddrop.expression.LocalAccessDragModel;
+import org.alice.ide.croquet.models.ast.LocalMenuModel;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalPane extends TransientPane {
-	public LocalPane( org.lgna.project.ast.UserLocal local, boolean isLocalDraggableAndMutable ) {
-		super( isLocalDraggableAndMutable ? org.alice.ide.ast.draganddrop.expression.LocalAccessDragModel.getInstance( local ) : null );
+	public LocalPane( UserLocal local, boolean isLocalDraggableAndMutable ) {
+		super( isLocalDraggableAndMutable ? LocalAccessDragModel.getInstance( local ) : null );
 		if( isLocalDraggableAndMutable ) {
-			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupPrepModel() );
+			this.setPopupPrepModel( LocalMenuModel.getInstance( local ).getPopupPrepModel() );
 		}
-		this.addComponent( new org.alice.ide.ast.components.LocalValidNameLabel( local ) );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.LocalAccess.class ) );
+		this.addComponent( new LocalValidNameLabel( local ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( LocalAccess.class ) );
 	}
 }

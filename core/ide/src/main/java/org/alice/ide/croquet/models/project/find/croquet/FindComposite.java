@@ -42,21 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Member;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FindComposite extends AbstractFindComposite {
 	//todo: listen to name changes
-	private class FindMemberReferencesOperation extends org.lgna.croquet.ActionOperation {
-		private final org.lgna.project.ast.Member member;
+	private class FindMemberReferencesOperation extends ActionOperation {
+		private final Member member;
 
-		public FindMemberReferencesOperation( org.lgna.project.ast.Member member ) {
-			super( FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
+		public FindMemberReferencesOperation( Member member ) {
+			super( FIND_COMPOSITE_GROUP, UUID.fromString( "eabf3c72-4565-46a8-9ce0-49afc1980209" ) );
 			this.member = member;
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return FindComposite.this.getClassUsedForLocalization();
 		}
 
@@ -73,7 +82,7 @@ public class FindComposite extends AbstractFindComposite {
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected void perform( CompletionStep<?> step ) {
 			getIsFrameShowingState().setValueTransactionlessly( true );
 			String name = member.getName();
 
@@ -84,15 +93,15 @@ public class FindComposite extends AbstractFindComposite {
 		}
 	};
 
-	public FindComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
+	public FindComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
-	public org.lgna.croquet.Operation getMemberReferencesOperationInstance( org.lgna.project.ast.Member member ) {
+	public Operation getMemberReferencesOperationInstance( Member member ) {
 		//todo: cache
 		return new FindMemberReferencesOperation( member );
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

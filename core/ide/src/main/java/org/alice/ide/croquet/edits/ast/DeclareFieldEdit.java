@@ -43,43 +43,53 @@
 
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareFieldEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.project.ast.UserType<?> declaringType;
-	private final org.lgna.project.ast.UserField field;
+public abstract class DeclareFieldEdit extends AbstractEdit {
+	private final UserType<?> declaringType;
+	private final UserField field;
 
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+	public DeclareFieldEdit( CompletionStep step, UserType<?> declaringType, UserField field ) {
 		super( step );
 		this.declaringType = declaringType;
 		this.field = field;
 	}
 
-	public DeclareFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeclareFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
-		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
+		this.declaringType = NodeCodec.getInstance( UserType.class ).decodeValue( binaryDecoder );
+		this.field = NodeCodec.getInstance( UserField.class ).decodeValue( binaryDecoder );
 	}
 
-	protected org.lgna.project.ast.UserType<?> getDeclaringType() {
+	protected UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
 
-	protected org.lgna.project.ast.UserField getField() {
+	protected UserField getField() {
 		return this.field;
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
+		NodeCodec.getInstance( UserType.class ).encodeValue( binaryEncoder, this.declaringType );
+		NodeCodec.getInstance( UserField.class ).encodeValue( binaryEncoder, this.field );
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, field, Application.getLocale() );
 	}
 }

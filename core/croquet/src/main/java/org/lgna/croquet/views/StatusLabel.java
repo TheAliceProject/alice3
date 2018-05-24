@@ -43,19 +43,34 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import org.lgna.croquet.AbstractSeverityStatusComposite;
+
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
+public class StatusLabel extends SwingComponentView<JLabel> {
 	private static final String TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS = "good to go";
 
 	public StatusLabel() {
 	}
 
-	public void setStatus( org.lgna.croquet.AbstractSeverityStatusComposite.Status status ) {
+	public void setStatus( AbstractSeverityStatusComposite.Status status ) {
 		this.checkEventDispatchThread();
 		String text;
-		if( org.lgna.croquet.AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status ) {
+		if( AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status ) {
 			text = TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS;
 		} else {
 			text = status.getText();
@@ -64,10 +79,10 @@ public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 	}
 
 	@Override
-	protected javax.swing.JLabel createAwtComponent() {
-		javax.swing.JLabel rv = new javax.swing.JLabel( TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
+	protected JLabel createAwtComponent() {
+		JLabel rv = new JLabel( TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				if( this.getText() == TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS ) {
 					//pass
 				} else {
@@ -89,7 +104,7 @@ public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 		fB *= SCALE;
 		f1 *= SCALE;
 
-		final java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		final GeneralPath path = new GeneralPath();
 		path.moveTo( fA, f0 );
 		path.lineTo( fB, f0 );
 		path.lineTo( f1, fA );
@@ -99,7 +114,7 @@ public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 		path.lineTo( f0, fB );
 		path.lineTo( f0, fA );
 		path.closePath();
-		rv.setIcon( new javax.swing.Icon() {
+		rv.setIcon( new Icon() {
 			@Override
 			public int getIconWidth() {
 				return SCALE + OFFSET + OFFSET;
@@ -111,21 +126,21 @@ public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 			}
 
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.geom.AffineTransform m = g2.getTransform();
-				java.awt.Font font = g2.getFont();
-				java.awt.Paint paint = g2.getPaint();
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
+				Graphics2D g2 = (Graphics2D)g;
+				AffineTransform m = g2.getTransform();
+				Font font = g2.getFont();
+				Paint paint = g2.getPaint();
 				try {
 					g2.translate( OFFSET + x, OFFSET + y );
 					g2.fill( path );
-					g2.setPaint( java.awt.Color.WHITE );
+					g2.setPaint( Color.WHITE );
 					g2.draw( path );
-					g2.setPaint( java.awt.Color.WHITE );
-					g2.setFont( new java.awt.Font( null, java.awt.Font.BOLD, 12 ) );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+					g2.setPaint( Color.WHITE );
+					g2.setFont( new Font( null, Font.BOLD, 12 ) );
+					g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 					final int FUDGE_X = 1;
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "X", FUDGE_X, 0, SCALE, SCALE );
+					GraphicsUtilities.drawCenteredText( g2, "X", FUDGE_X, 0, SCALE, SCALE );
 				} finally {
 					g2.setTransform( m );
 					g2.setPaint( paint );

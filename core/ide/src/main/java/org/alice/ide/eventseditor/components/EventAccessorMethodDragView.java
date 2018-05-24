@@ -42,19 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.eventseditor.components;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.eventseditor.ParameterAccessorMethodDragModel;
+import org.alice.ide.templates.ExpressionTemplate;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ParameterAccess;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EventAccessorMethodDragView extends org.alice.ide.templates.ExpressionTemplate {
-	public EventAccessorMethodDragView( org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel ) {
+public class EventAccessorMethodDragView extends ExpressionTemplate {
+	public EventAccessorMethodDragView( ParameterAccessorMethodDragModel dragModel ) {
 		super( dragModel );
-		this.addComponent( new org.lgna.croquet.views.Label( dragModel.getMethod().getName() ) );
+		this.addComponent( new Label( dragModel.getMethod().getName() ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		org.alice.ide.eventseditor.ParameterAccessorMethodDragModel dragModel = (org.alice.ide.eventseditor.ParameterAccessorMethodDragModel)this.getModel();
-		org.lgna.project.ast.ParameterAccess parameterAccess = new org.lgna.project.ast.ParameterAccess( dragModel.getParameter() );
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( parameterAccess, dragModel.getMethod() );
+	protected Expression createIncompleteExpression() {
+		ParameterAccessorMethodDragModel dragModel = (ParameterAccessorMethodDragModel)this.getModel();
+		ParameterAccess parameterAccess = new ParameterAccess( dragModel.getParameter() );
+		return IncompleteAstUtilities.createIncompleteMethodInvocation( parameterAccess, dragModel.getMethod() );
 	}
 }

@@ -42,30 +42,32 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class VantagePoint {
-	public static final VantagePoint IDENTITY = new VantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() );
-	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal;
+	public static final VantagePoint IDENTITY = new VantagePoint( AffineMatrix4x4.createIdentity() );
+	private final AffineMatrix4x4 internal;
 
-	private VantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
+	private VantagePoint( AffineMatrix4x4 internal ) {
 		this.internal = internal;
 	}
 
 	public VantagePoint( Orientation orientation, Position position ) {
-		this( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( orientation.getInternal(), position.getInternal() ) );
+		this( new AffineMatrix4x4( orientation.getInternal(), position.getInternal() ) );
 	}
 
-	/* package-private */static VantagePoint createInstance( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
+	/* package-private */static VantagePoint createInstance( AffineMatrix4x4 internal ) {
 		return internal != null ? new VantagePoint( internal ) : null;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
+	/* package-private */AffineMatrix4x4 getInternal() {
 		return this.internal;
 	}
 
-	/* package-private */static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal( VantagePoint vantagePoint ) {
+	/* package-private */static AffineMatrix4x4 getInternal( VantagePoint vantagePoint ) {
 		return vantagePoint != null ? vantagePoint.internal : null;
 	}
 

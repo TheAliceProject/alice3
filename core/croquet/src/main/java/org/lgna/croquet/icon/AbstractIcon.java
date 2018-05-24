@@ -42,13 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIcon implements javax.swing.Icon {
-	private final java.awt.Dimension size;
+public abstract class AbstractIcon implements Icon {
+	private final Dimension size;
 
-	public AbstractIcon( java.awt.Dimension size ) {
+	public AbstractIcon( Dimension size ) {
 		this.size = size;
 	}
 
@@ -62,18 +70,18 @@ public abstract class AbstractIcon implements javax.swing.Icon {
 		return this.size.height;
 	}
 
-	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 );
+	protected abstract void paintIcon( Component c, Graphics2D g2 );
 
 	@Override
-	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint prevPaint = g2.getPaint();
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+	public final void paintIcon( Component c, Graphics g, int x, int y ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Paint prevPaint = g2.getPaint();
+		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 		g2.translate( x, y );
 		this.paintIcon( c, g2 );
 		g2.translate( -x, -y );
 		g2.setPaint( prevPaint );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 	}
 }

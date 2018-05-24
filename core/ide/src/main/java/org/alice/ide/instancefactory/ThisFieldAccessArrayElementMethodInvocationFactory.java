@@ -42,36 +42,47 @@
  */
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.IntegerLiteral;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserField;
+
 /**
  * @author dculyba
  */
 public class ThisFieldAccessArrayElementMethodInvocationFactory extends AbstractInstanceFactory {
 
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserField, AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ThisFieldAccessArrayElementMethodInvocationFactory getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized ThisFieldAccessArrayElementMethodInvocationFactory getInstance( UserField field, AbstractMethod method ) {
 		assert field != null;
-		return mapToMap.getInitializingIfAbsent( field, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory>() {
+		return mapToMap.getInitializingIfAbsent( field, method, new MapToMap.Initializer<UserField, AbstractMethod, ThisFieldAccessArrayElementMethodInvocationFactory>() {
 			@Override
-			public ThisFieldAccessArrayElementMethodInvocationFactory initialize( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+			public ThisFieldAccessArrayElementMethodInvocationFactory initialize( UserField field, AbstractMethod method ) {
 				return new ThisFieldAccessArrayElementMethodInvocationFactory( field, method );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.UserField field;
+	private final AbstractMethod method;
+	private final UserField field;
 	private final Integer arrayIndex;
 
-	public ThisFieldAccessArrayElementMethodInvocationFactory( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+	public ThisFieldAccessArrayElementMethodInvocationFactory( UserField field, AbstractMethod method ) {
 		super( field.name );
 		this.method = method;
 		this.field = field;
 		this.arrayIndex = 0;
 	}
 
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
+	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
+		AbstractType<?, ?, ?> fieldDeclarationType = this.field.getDeclaringType();
 		if( ( fieldDeclarationType != null ) && fieldDeclarationType.isAssignableFrom( type ) ) {
 			return this.field.getValueType();
 		} else {
@@ -80,51 +91,51 @@ public class ThisFieldAccessArrayElementMethodInvocationFactory extends Abstract
 	}
 
 	@Override
-	protected final boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
+	protected final boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
+		AbstractType<?, ?, ?> methodDeclarationType = this.method.getDeclaringType();
 		return ( methodDeclarationType != null ) && methodDeclarationType.isAssignableFrom( this.getValidInstanceType( type, code ) );
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 
-	public org.lgna.project.ast.UserField getField() {
+	public UserField getField() {
 		return this.field;
 	}
 
-	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.FieldAccess( expression, this.field );
+	private FieldAccess createFieldAccess( Expression expression ) {
+		return new FieldAccess( expression, this.field );
 	}
 
-	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+	protected Expression createTransientExpressionForMethodInvocation() {
 		return this.createFieldAccess( createTransientThisExpression() );
 	}
 
-	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
+	protected Expression createExpressionForMethodInvocation() {
 		return this.createFieldAccess( createThisExpression() );
 	}
 
-	private org.lgna.project.ast.MethodInvocation createMethodInvocation( org.lgna.project.ast.Expression access ) {
-		return new org.lgna.project.ast.MethodInvocation( access, this.method );
+	private MethodInvocation createMethodInvocation( Expression access ) {
+		return new MethodInvocation( access, this.method );
 	}
 
-	private org.lgna.project.ast.ArrayAccess createArrayAccess( org.lgna.project.ast.Expression access ) {
-		return new org.lgna.project.ast.ArrayAccess( this.method.getReturnType(), this.createMethodInvocation( access ), new org.lgna.project.ast.IntegerLiteral( this.arrayIndex ) );
+	private ArrayAccess createArrayAccess( Expression access ) {
+		return new ArrayAccess( this.method.getReturnType(), this.createMethodInvocation( access ), new IntegerLiteral( this.arrayIndex ) );
 	}
 
 	@Override
-	public final org.lgna.project.ast.Expression createTransientExpression() {
+	public final Expression createTransientExpression() {
 		return this.createArrayAccess( this.createTransientExpressionForMethodInvocation() );
 	}
 
 	@Override
-	public final org.lgna.project.ast.Expression createExpression() {
+	public final Expression createExpression() {
 		return this.createArrayAccess( this.createExpressionForMethodInvocation() );
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	public final AbstractType<?, ?, ?> getValueType() {
 		return this.method.getReturnType().getComponentType();
 	}
 

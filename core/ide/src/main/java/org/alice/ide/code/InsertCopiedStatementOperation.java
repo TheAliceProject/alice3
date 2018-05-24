@@ -42,24 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.code;
 
+import org.alice.ide.code.edits.InsertCopiedStatementEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InsertCopiedStatementOperation extends org.lgna.croquet.ActionOperation {
-	public InsertCopiedStatementOperation( org.lgna.project.ast.BlockStatement blockStatement, int index, org.lgna.project.ast.Statement statement ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "a6292be1-64b5-4fb3-a8c8-c967635fe48f" ) );
+public class InsertCopiedStatementOperation extends ActionOperation {
+	public InsertCopiedStatementOperation( BlockStatement blockStatement, int index, Statement statement ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "a6292be1-64b5-4fb3-a8c8-c967635fe48f" ) );
 		this.blockStatement = blockStatement;
 		this.index = index;
 		this.statement = statement;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
-		org.alice.ide.code.edits.InsertCopiedStatementEdit edit = new org.alice.ide.code.edits.InsertCopiedStatementEdit( step, this.blockStatement, this.index, this.statement );
+	protected void perform( CompletionStep step ) {
+		InsertCopiedStatementEdit edit = new InsertCopiedStatementEdit( step, this.blockStatement, this.index, this.statement );
 		step.commitAndInvokeDo( edit );
 	}
 
-	private final org.lgna.project.ast.BlockStatement blockStatement;
+	private final BlockStatement blockStatement;
 	private final int index;
-	private final org.lgna.project.ast.Statement statement;
+	private final Statement statement;
 }

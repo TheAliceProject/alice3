@@ -43,16 +43,19 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum SpatialRelationImp {
-	LEFT_OF( new edu.cmu.cs.dennisc.math.Point3( -1, 0, 0 ) ),
-	RIGHT_OF( new edu.cmu.cs.dennisc.math.Point3( 1, 0, 0 ) ),
-	ABOVE( new edu.cmu.cs.dennisc.math.Point3( 0, 1, 0 ) ),
-	BELOW( new edu.cmu.cs.dennisc.math.Point3( 0, -1, 0 ) ),
-	IN_FRONT_OF( new edu.cmu.cs.dennisc.math.Point3( 0, 0, -1 ) ),
-	BEHIND( new edu.cmu.cs.dennisc.math.Point3( 0, 0, 1 ) );
+	LEFT_OF( new Point3( -1, 0, 0 ) ),
+	RIGHT_OF( new Point3( 1, 0, 0 ) ),
+	ABOVE( new Point3( 0, 1, 0 ) ),
+	BELOW( new Point3( 0, -1, 0 ) ),
+	IN_FRONT_OF( new Point3( 0, 0, -1 ) ),
+	BEHIND( new Point3( 0, 0, 1 ) );
 
 	//	FRONT_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3( 0.7071068, 0, -0.7071068 ) ),
 	//	FRONT_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, -0.7071068 ) ),
@@ -63,11 +66,11 @@ public enum SpatialRelationImp {
 	//public static final SpatialRelation ON = new SpatialRelation();
 	//public static final SpatialRelation AT = new SpatialRelation();
 
-	SpatialRelationImp( edu.cmu.cs.dennisc.math.Point3 placeAxis ) {
+	SpatialRelationImp( Point3 placeAxis ) {
 		this.placeAxis = placeAxis;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPlaceLocation( double alongAxisOffset, edu.cmu.cs.dennisc.math.AxisAlignedBox subjectBoundingBox, edu.cmu.cs.dennisc.math.AxisAlignedBox objectBoundingBox ) {
+	public Point3 getPlaceLocation( double alongAxisOffset, AxisAlignedBox subjectBoundingBox, AxisAlignedBox objectBoundingBox ) {
 		double x = alongAxisOffset * this.placeAxis.x;
 		double y = alongAxisOffset * this.placeAxis.y;
 		double z = alongAxisOffset * this.placeAxis.z;
@@ -94,8 +97,8 @@ public enum SpatialRelationImp {
 			z -= subjectBoundingBox.getMaximum().z;
 		}
 
-		return new edu.cmu.cs.dennisc.math.Point3( x, y, z );
+		return new Point3( x, y, z );
 	}
 
-	private final edu.cmu.cs.dennisc.math.Point3 placeAxis;
+	private final Point3 placeAxis;
 }

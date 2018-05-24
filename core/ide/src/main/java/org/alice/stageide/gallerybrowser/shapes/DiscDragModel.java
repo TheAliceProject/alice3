@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite;
+import org.alice.stageide.icons.DiscIconFactory;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SDisc;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DiscDragModel extends ShapeDragModel {
-	private static final org.lgna.story.SDisc sModel = new org.lgna.story.SDisc();
+	private static final SDisc sModel = new SDisc();
 
 	private static class SingletonHolder {
 		private static DiscDragModel instance = new DiscDragModel();
@@ -57,12 +67,12 @@ public class DiscDragModel extends ShapeDragModel {
 	}
 
 	private DiscDragModel() {
-		super( java.util.UUID.fromString( "461b82ed-0e75-4549-90ff-6e34a809fb2c" ) );
+		super( UUID.fromString( "461b82ed-0e75-4549-90ff-6e34a809fb2c" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +81,12 @@ public class DiscDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
+	public Model getLeftButtonClickModel() {
+		return AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.DiscIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return DiscIconFactory.getInstance();
 	}
 }

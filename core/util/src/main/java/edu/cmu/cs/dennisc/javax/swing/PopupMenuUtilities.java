@@ -42,52 +42,67 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JWindow;
+import javax.swing.SwingUtilities;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PopupMenuUtilities {
-	public static void showModal( javax.swing.JPopupMenu popupMenu, java.awt.Component invoker, java.awt.Point pt ) {
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( invoker );
-		final javax.swing.JLayeredPane layeredPane;
-		if( root instanceof javax.swing.JFrame ) {
-			javax.swing.JFrame window = (javax.swing.JFrame)root;
+	public static void showModal( JPopupMenu popupMenu, Component invoker, Point pt ) {
+		Component root = SwingUtilities.getRoot( invoker );
+		final JLayeredPane layeredPane;
+		if( root instanceof JFrame ) {
+			JFrame window = (JFrame)root;
 			layeredPane = window.getLayeredPane();
-		} else if( root instanceof javax.swing.JDialog ) {
-			javax.swing.JDialog window = (javax.swing.JDialog)root;
+		} else if( root instanceof JDialog ) {
+			JDialog window = (JDialog)root;
 			layeredPane = window.getLayeredPane();
-		} else if( root instanceof javax.swing.JWindow ) {
-			javax.swing.JWindow window = (javax.swing.JWindow)root;
+		} else if( root instanceof JWindow ) {
+			JWindow window = (JWindow)root;
 			layeredPane = window.getLayeredPane();
 		} else {
 			layeredPane = null;
 		}
 		if( layeredPane != null ) {
-			class EventConsumer extends javax.swing.JComponent {
-				private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
+			class EventConsumer extends JComponent {
+				private MouseListener mouseAdapter = new MouseListener() {
 					@Override
-					public void mouseEntered( java.awt.event.MouseEvent e ) {
+					public void mouseEntered( MouseEvent e ) {
 					}
 
 					@Override
-					public void mouseExited( java.awt.event.MouseEvent e ) {
+					public void mouseExited( MouseEvent e ) {
 					}
 
 					@Override
-					public void mousePressed( java.awt.event.MouseEvent e ) {
+					public void mousePressed( MouseEvent e ) {
 					}
 
 					@Override
-					public void mouseReleased( java.awt.event.MouseEvent e ) {
+					public void mouseReleased( MouseEvent e ) {
 						EventConsumer.this.removeFromParentJustInCaseAnExceptionWasThrownSomewhere();
 					}
 
 					@Override
-					public void mouseClicked( java.awt.event.MouseEvent e ) {
+					public void mouseClicked( MouseEvent e ) {
 					}
 				};
 
 				private void removeFromParentJustInCaseAnExceptionWasThrownSomewhere() {
-					java.awt.Container parent = this.getParent();
+					Container parent = this.getParent();
 					if( parent != null ) {
 						parent.remove( this );
 					}
@@ -97,7 +112,7 @@ public class PopupMenuUtilities {
 				public void addNotify() {
 					super.addNotify();
 					this.setLocation( 0, 0 );
-					java.awt.Component parent = this.getParent();
+					Component parent = this.getParent();
 					if( parent != null ) {
 						this.setSize( parent.getSize() );
 					}
@@ -112,19 +127,19 @@ public class PopupMenuUtilities {
 
 			}
 			final EventConsumer eventConsumer = new EventConsumer();
-			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+			popupMenu.addPopupMenuListener( new PopupMenuListener() {
 				@Override
-				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-					layeredPane.add( eventConsumer, new Integer( javax.swing.JLayeredPane.MODAL_LAYER ) );
+				public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
+					layeredPane.add( eventConsumer, new Integer( JLayeredPane.MODAL_LAYER ) );
 				}
 
 				@Override
-				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+				public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
 					layeredPane.remove( eventConsumer );
 				}
 
 				@Override
-				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+				public void popupMenuCanceled( PopupMenuEvent e ) {
 				}
 			} );
 		}

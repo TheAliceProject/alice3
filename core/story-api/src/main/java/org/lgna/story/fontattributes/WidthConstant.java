@@ -43,15 +43,17 @@
 
 package org.lgna.story.fontattributes;
 
+import java.awt.font.TextAttribute;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum WidthConstant implements WidthAttribute {
-	CONDENSED( java.awt.font.TextAttribute.WIDTH_CONDENSED ),
-	SEMI_CONDENSED( java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED ),
-	REGULAR( java.awt.font.TextAttribute.WIDTH_REGULAR ),
-	SEMI_EXTENDED( java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED ),
-	EXTENDED( java.awt.font.TextAttribute.WIDTH_EXTENDED );
+	CONDENSED( TextAttribute.WIDTH_CONDENSED ),
+	SEMI_CONDENSED( TextAttribute.WIDTH_SEMI_CONDENSED ),
+	REGULAR( TextAttribute.WIDTH_REGULAR ),
+	SEMI_EXTENDED( TextAttribute.WIDTH_SEMI_EXTENDED ),
+	EXTENDED( TextAttribute.WIDTH_EXTENDED );
 	private Float m_value;
 
 	private WidthConstant( Float value ) {
@@ -59,8 +61,8 @@ public enum WidthConstant implements WidthAttribute {
 	}
 
 	@Override
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WIDTH;
+	public TextAttribute getKey() {
+		return TextAttribute.WIDTH;
 	}
 
 	@Override

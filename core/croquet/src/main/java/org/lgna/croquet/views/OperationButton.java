@@ -43,10 +43,12 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Operation;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Operation> extends AbstractButton<J, M> {
+public abstract class OperationButton<J extends javax.swing.AbstractButton, M extends Operation> extends AbstractButton<J, M> {
 	private String clobberText;
 
 	public OperationButton( M model, String uiDefaultsName ) {

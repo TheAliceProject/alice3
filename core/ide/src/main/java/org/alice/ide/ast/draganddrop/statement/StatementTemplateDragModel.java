@@ -43,26 +43,36 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
+import org.alice.ide.members.MembersComposite;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplateDragModel extends AbstractStatementDragModel {
-	private final Class<? extends org.lgna.project.ast.Statement> statementCls;
-	private final org.lgna.project.ast.Statement possiblyIncompleteStatement;
+	private final Class<? extends Statement> statementCls;
+	private final Statement possiblyIncompleteStatement;
 
-	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
+	public StatementTemplateDragModel( UUID id, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement ) {
 		super( id );
 		this.statementCls = statementCls;
 		this.possiblyIncompleteStatement = possiblyIncompleteStatement;
 
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			// pass
 		} else {
-			this.addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
+			this.addContextFactory( MembersComposite.getInstance().getTabState() );
 		}
 	}
 
-	public org.lgna.project.ast.Statement getPossiblyIncompleteStatement() {
+	public Statement getPossiblyIncompleteStatement() {
 		return this.possiblyIncompleteStatement;
 	}
 
@@ -71,16 +81,16 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		return false;
 	}
 
-	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
+	protected abstract Model getDropModel( DragStep step, BlockStatementIndexPair dropSite );
 
 	@Override
-	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		assert dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
+	public final Model getDropModel( DragStep step, DropSite dropSite ) {
+		assert dropSite instanceof BlockStatementIndexPair;
+		BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)dropSite;
 		return this.getDropModel( step, blockStatementIndexPair );
 	}
 
-	public Class<? extends org.lgna.project.ast.Statement> getStatementCls() {
+	public Class<? extends Statement> getStatementCls() {
 		return this.statementCls;
 	}
 }

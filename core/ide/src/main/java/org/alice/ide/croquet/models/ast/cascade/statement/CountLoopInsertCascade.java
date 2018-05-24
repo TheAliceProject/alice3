@@ -43,15 +43,24 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsertCascade {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, CountLoopInsertCascade> mapEnveloping = Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, CountLoopInsertCascade> mapInsert = Maps.newHashMap();
 
-	public static synchronized CountLoopInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CountLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
+	public static synchronized CountLoopInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		Map<BlockStatementIndexPair, CountLoopInsertCascade> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		CountLoopInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -63,12 +72,12 @@ public class CountLoopInsertCascade extends PotentiallyEnvelopingStatementInsert
 		return rv;
 	}
 
-	private CountLoopInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( java.util.UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, isEnveloping, CountBlank.getInstance() );
+	private CountLoopInsertCascade( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( UUID.fromString( "6c314e4c-fec7-4c33-803c-a7efb17249aa" ), blockStatementIndexPair, isEnveloping, CountBlank.getInstance() );
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.lgna.project.ast.AstUtilities.createCountLoop( expressions[ 0 ] );
+	protected final Statement createStatement( Expression... expressions ) {
+		return AstUtilities.createCountLoop( expressions[ 0 ] );
 	}
 }

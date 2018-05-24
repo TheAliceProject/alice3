@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.undo.event;
 
+import org.lgna.croquet.undo.UndoHistory;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public class HistoryInsertionIndexEvent extends HistoryEvent {
 	private int prevIndex;
 	private int nextIndex;
 
-	public HistoryInsertionIndexEvent( org.lgna.croquet.undo.UndoHistory source, int prevIndex, int nextIndex ) {
+	public HistoryInsertionIndexEvent( UndoHistory source, int prevIndex, int nextIndex ) {
 		super( source );
 		this.prevIndex = prevIndex;
 		this.nextIndex = nextIndex;

@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.map;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClassLookupMap<E> {
-	private java.util.Map<Class<?>, E> m_map = new java.util.HashMap<Class<?>, E>();
+	private Map<Class<?>, E> m_map = new HashMap<Class<?>, E>();
 
 	public E get( Class<?> key ) {
 		Class<?> k;

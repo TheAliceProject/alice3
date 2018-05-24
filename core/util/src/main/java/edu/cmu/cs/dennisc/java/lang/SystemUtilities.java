@@ -43,6 +43,21 @@
 package edu.cmu.cs.dennisc.java.lang;
 
 import edu.cmu.cs.dennisc.app.ApplicationRoot;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Dennis Cosgrove
@@ -69,22 +84,22 @@ public class SystemUtilities {
 		}
 	}
 
-	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
-		java.util.List<SystemProperty> properties = getSortedPropertyList();
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
-		org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "systemProperties" );
+	private static ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
+		List<SystemProperty> properties = getSortedPropertyList();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Document xmlDocument = XMLUtilities.createDocument();
+		Element xmlRootElement = xmlDocument.createElement( "systemProperties" );
 		xmlDocument.appendChild( xmlRootElement );
 		for( SystemProperty property : properties ) {
-			org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
+			Element xmlProperty = xmlDocument.createElement( "property" );
 			xmlProperty.setAttribute( "key", property.getKey() );
 			xmlProperty.appendChild( xmlDocument.createTextNode( property.getValue() ) );
 			xmlRootElement.appendChild( xmlProperty );
 		}
-		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, baos );
+		XMLUtilities.write( xmlDocument, baos );
 		try {
 			baos.flush();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 		return baos;
@@ -98,24 +113,24 @@ public class SystemUtilities {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
 
-	public static java.util.List<SystemProperty> getPropertyList() {
-		java.util.List<SystemProperty> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.Properties systemProperties = System.getProperties();
-		for( java.util.Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
+	public static List<SystemProperty> getPropertyList() {
+		List<SystemProperty> rv = Lists.newLinkedList();
+		Properties systemProperties = System.getProperties();
+		for( Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
 			Object key = entry.getKey();
 			Object value = entry.getValue();
 			if( ( key instanceof String ) && ( value instanceof String ) ) {
-				rv.add( new edu.cmu.cs.dennisc.java.lang.SystemProperty( (String)key, (String)value ) );
+				rv.add( new SystemProperty( (String)key, (String)value ) );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( key, value );
+				Logger.severe( key, value );
 			}
 		}
 		return rv;
 	}
 
-	public static java.util.List<SystemProperty> getSortedPropertyList() {
-		java.util.List<SystemProperty> rv = getPropertyList();
-		java.util.Collections.sort( rv );
+	public static List<SystemProperty> getSortedPropertyList() {
+		List<SystemProperty> rv = getPropertyList();
+		Collections.sort( rv );
 		return rv;
 	}
 
@@ -128,7 +143,7 @@ public class SystemUtilities {
 	private static Platform platform;
 
 	static {
-		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase( java.util.Locale.ENGLISH );
+		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase( Locale.ENGLISH );
 		if( lowercaseOSName.contains( "windows" ) ) {
 			platform = Platform.WINDOWS;
 		} else if( lowercaseOSName.startsWith( "mac os x" ) ) {
@@ -195,9 +210,9 @@ public class SystemUtilities {
 	}
 
 	public static void loadLibrary( String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle ) {
-		java.io.File directory = new java.io.File( ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName );
+		File directory = new File( ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName );
 		if( libDirectoryName.equalsIgnoreCase( "jogl" ) ) {
-			directory = new java.io.File( directory, ApplicationRoot.getArchitectureSpecificJoglSubDirectory() );
+			directory = new File( directory, ApplicationRoot.getArchitectureSpecificJoglSubDirectory() );
 		}
 		String filename = System.mapLibraryName( libraryName );
 		if( isMac() ) {
@@ -208,7 +223,7 @@ public class SystemUtilities {
 				filename = filename.substring( 0, filename.length() - DYLIB_EXT.length() ) + JNILIB_EXT;
 			}
 		}
-		java.io.File file = new java.io.File( directory, filename );
+		File file = new File( directory, filename );
 		if( file.exists() ) {
 			System.load( file.getAbsolutePath() );
 		} else {
@@ -286,7 +301,7 @@ public class SystemUtilities {
 				n += array.length;
 			}
 		}
-		E[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, n );
+		E[] rv = ReflectionUtilities.newTypedArrayInstance( componentType, n );
 		int offset = 0;
 		for( E[] array : arrays ) {
 			if( array != null ) {
@@ -313,11 +328,11 @@ public class SystemUtilities {
 		return parsePath( "java.library.path" );
 	}
 
-	public static java.io.File getEnvironmentVariableDirectory( String name ) {
+	public static File getEnvironmentVariableDirectory( String name ) {
 		String env = System.getenv( name );
 		assert env != null : name;
 
-		java.io.File dir = new java.io.File( env );
+		File dir = new File( env );
 		assert dir.exists() : dir;
 		assert dir.isDirectory() : dir;
 		return dir;

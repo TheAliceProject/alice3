@@ -42,46 +42,52 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.color.property.Color4fProperty;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.FloatProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 public class SimpleAppearance extends Appearance {
 
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty ambientColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, new edu.cmu.cs.dennisc.color.Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN ), true ) {
+	public final Color4fProperty ambientColor = new Color4fProperty( this, new Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN ), true ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.color.Color4f value ) {
+		public void setValue( Color4f value ) {
 			if( value == null ) {
-				value = edu.cmu.cs.dennisc.color.Color4f.createNaN();
+				value = Color4f.createNaN();
 			}
 			super.setValue( value );
 		}
 	};
 
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty diffuseColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, edu.cmu.cs.dennisc.color.Color4f.WHITE );
-	public final edu.cmu.cs.dennisc.property.FloatProperty opacity = new edu.cmu.cs.dennisc.property.FloatProperty( this, 1.0f );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<FillingStyle> fillingStyle = new edu.cmu.cs.dennisc.property.InstanceProperty<FillingStyle>( this, FillingStyle.SOLID ) {
+	public final Color4fProperty diffuseColor = new Color4fProperty( this, Color4f.WHITE );
+	public final FloatProperty opacity = new FloatProperty( this, 1.0f );
+	public final InstanceProperty<FillingStyle> fillingStyle = new InstanceProperty<FillingStyle>( this, FillingStyle.SOLID ) {
 		@Override
 		public void setValue( FillingStyle value ) {
 			assert value != null : this;
 			super.setValue( value );
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<ShadingStyle> shadingStyle = new edu.cmu.cs.dennisc.property.InstanceProperty<ShadingStyle>( this, ShadingStyle.SMOOTH ) {
+	public final InstanceProperty<ShadingStyle> shadingStyle = new InstanceProperty<ShadingStyle>( this, ShadingStyle.SMOOTH ) {
 		@Override
 		public void setValue( ShadingStyle value ) {
 			assert value != null : this;
 			super.setValue( value );
 		}
 	};
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty specularHighlightColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, edu.cmu.cs.dennisc.color.Color4f.BLACK );
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty emissiveColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, edu.cmu.cs.dennisc.color.Color4f.BLACK );
-	public final edu.cmu.cs.dennisc.property.FloatProperty specularHighlightExponent = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isEthereal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final Color4fProperty specularHighlightColor = new Color4fProperty( this, Color4f.BLACK );
+	public final Color4fProperty emissiveColor = new Color4fProperty( this, Color4f.BLACK );
+	public final FloatProperty specularHighlightExponent = new FloatProperty( this, 0.0f );
+	public final BooleanProperty isEthereal = new BooleanProperty( this, false );
 
 	@Override
-	public void setAmbientColor( edu.cmu.cs.dennisc.color.Color4f ambientColor ) {
+	public void setAmbientColor( Color4f ambientColor ) {
 		this.ambientColor.setValue( ambientColor );
 	}
 
 	@Override
-	public void setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f diffuseColor ) {
+	public void setDiffuseColor( Color4f diffuseColor ) {
 		this.diffuseColor.setValue( diffuseColor );
 	}
 
@@ -96,12 +102,12 @@ public class SimpleAppearance extends Appearance {
 	}
 
 	@Override
-	public void setSpecularHighlightColor( edu.cmu.cs.dennisc.color.Color4f specularHighlightColor ) {
+	public void setSpecularHighlightColor( Color4f specularHighlightColor ) {
 		this.specularHighlightColor.setValue( specularHighlightColor );
 	}
 
 	@Override
-	public void setEmissiveColor( edu.cmu.cs.dennisc.color.Color4f emissiveColor ) {
+	public void setEmissiveColor( Color4f emissiveColor ) {
 		this.emissiveColor.setValue( emissiveColor );
 	}
 

@@ -44,7 +44,10 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 
-public class ModelResourceTreeNodeModel extends javax.swing.tree.DefaultTreeModel implements TreeModel<ModelResourceTreeNode> {
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+
+public class ModelResourceTreeNodeModel extends DefaultTreeModel implements TreeModel<ModelResourceTreeNode> {
 	public ModelResourceTreeNodeModel( ModelResourceTreeNode root ) {
 		super( root );
 	}
@@ -60,9 +63,9 @@ public class ModelResourceTreeNodeModel extends javax.swing.tree.DefaultTreeMode
 	}
 
 	@Override
-	public javax.swing.tree.TreePath getTreePath( ModelResourceTreeNode e ) {
+	public TreePath getTreePath( ModelResourceTreeNode e ) {
 		Object[] nodes = this.getPathToRoot( e );
-		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
+		TreePath path = new TreePath( nodes );
 		return path;
 	}
 }

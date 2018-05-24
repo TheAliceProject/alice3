@@ -43,13 +43,20 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout;
+import org.lgna.croquet.Composite;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AxisPanel extends Panel {
 	private final int axis;
 
-	protected AxisPanel( org.lgna.croquet.Composite composite, int axis, AwtComponentView<?>... components ) {
+	protected AxisPanel( Composite composite, int axis, AwtComponentView<?>... components ) {
 		super( composite );
 		this.axis = axis;
 		for( AwtComponentView<?> component : components ) {
@@ -62,12 +69,12 @@ public abstract class AxisPanel extends Panel {
 	}
 
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
 		int pad = this.getBoxLayoutPad();
 		if( pad > 0 ) {
-			return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS, pad );
+			return new PaddedBoxLayout( jPanel, BoxLayout.PAGE_AXIS, pad );
 		} else {
-			return new javax.swing.BoxLayout( jPanel, this.axis );
+			return new BoxLayout( jPanel, this.axis );
 		}
 	}
 

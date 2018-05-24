@@ -42,14 +42,16 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import org.lgna.story.resources.sims2.Hair;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class HairColorNameHairCombo implements Comparable<HairColorNameHairCombo> {
 	private final HairColorName hairColorName;
-	private final org.lgna.story.resources.sims2.Hair hair;
+	private final Hair hair;
 
-	public HairColorNameHairCombo( HairColorName hairColorName, org.lgna.story.resources.sims2.Hair hair ) {
+	public HairColorNameHairCombo( HairColorName hairColorName, Hair hair ) {
 		this.hairColorName = hairColorName;
 		this.hair = hair;
 	}
@@ -58,7 +60,7 @@ public final class HairColorNameHairCombo implements Comparable<HairColorNameHai
 		return this.hairColorName;
 	}
 
-	public org.lgna.story.resources.sims2.Hair getHair() {
+	public Hair getHair() {
 		return this.hair;
 	}
 

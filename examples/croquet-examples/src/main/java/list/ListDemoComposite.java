@@ -42,39 +42,50 @@
  */
 package list;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import list.views.ListDemoView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.simple.SimpleApplication;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ListDemoComposite extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<list.views.ListDemoView> {
+public final class ListDemoComposite extends SimpleOperationInputDialogCoreComposite<ListDemoView> {
 	public ListDemoComposite() {
-		super( java.util.UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+		super( UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), Application.DOCUMENT_UI_GROUP );
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<ZodiacSign> getZodiacState() {
+	public ImmutableDataSingleSelectListState<ZodiacSign> getZodiacState() {
 		return this.zodiacState;
 	}
 
 	@Override
-	protected list.views.ListDemoView createView() {
-		return new list.views.ListDemoView( this );
+	protected ListDemoView createView() {
+		return new ListDemoView( this );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		return null;
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		SimpleApplication app = new SimpleApplication();
 		new ListDemoComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createImmutableListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
+	private final ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createImmutableListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
 }

@@ -46,11 +46,12 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import static com.jogamp.opengl.GL2GL3.GL_QUADS;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrIndexedQuadrilateralArray extends GlrIndexedPolygonArray<edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray> {
+public class GlrIndexedQuadrilateralArray extends GlrIndexedPolygonArray<IndexedQuadrilateralArray> {
 	public GlrIndexedQuadrilateralArray() {
 		super( GL_QUADS, 4 );
 	}

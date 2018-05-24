@@ -43,24 +43,31 @@
 
 package org.alice.ide.recyclebin;
 
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RecycleBinView extends org.lgna.croquet.views.SwingComponentView<javax.swing.JComponent> {
-	private static final javax.swing.Icon EMPTY_ICON = RecycleBinIcon.SINGLETON;
+public class RecycleBinView extends SwingComponentView<JComponent> {
+	private static final Icon EMPTY_ICON = RecycleBinIcon.SINGLETON;
 
 	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		return new javax.swing.JComponent() {
+	protected JComponent createAwtComponent() {
+		return new JComponent() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				super.paintComponent( g );
 				EMPTY_ICON.paintIcon( this, g, 0, 0 );
 			}
 
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( EMPTY_ICON.getIconWidth(), EMPTY_ICON.getIconHeight() );
+			public Dimension getPreferredSize() {
+				return new Dimension( EMPTY_ICON.getIconWidth(), EMPTY_ICON.getIconHeight() );
 			}
 		};
 	}

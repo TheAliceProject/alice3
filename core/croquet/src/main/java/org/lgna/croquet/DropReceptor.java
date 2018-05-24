@@ -42,30 +42,36 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TrackableShape;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface DropReceptor {
-	public org.lgna.croquet.views.TrackableShape getTrackableShape( DropSite potentialDropSite );
+	public TrackableShape getTrackableShape( DropSite potentialDropSite );
 
 	public boolean isPotentiallyAcceptingOf( DragModel dragModel );
 
 	//public ViewController<?,?> getViewController();
 	//todo: rename
-	public org.lgna.croquet.views.SwingComponentView<?> getViewController();
+	public SwingComponentView<?> getViewController();
 
-	public void dragStarted( org.lgna.croquet.history.DragStep step );
+	public void dragStarted( DragStep step );
 
-	public void dragEntered( org.lgna.croquet.history.DragStep step );
+	public void dragEntered( DragStep step );
 
-	public DropSite dragUpdated( org.lgna.croquet.history.DragStep step );
+	public DropSite dragUpdated( DragStep step );
 
 	//todo: Dropped or Exited but not both?
-	public Model dragDropped( org.lgna.croquet.history.DragStep step );
+	public Model dragDropped( DragStep step );
 
-	public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient );
+	public void dragExited( DragStep step, boolean isDropRecipient );
 
-	public void dragStopped( org.lgna.croquet.history.DragStep step );
+	public void dragStopped( DragStep step );
 
 	public void addDropRejector( DropRejector dropRejector );
 
@@ -73,5 +79,5 @@ public interface DropReceptor {
 
 	public void clearDropRejectors();
 
-	public java.util.List<DropRejector> getDropRejectors();
+	public List<DropRejector> getDropRejectors();
 }

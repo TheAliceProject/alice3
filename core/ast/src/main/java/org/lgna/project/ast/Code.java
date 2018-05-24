@@ -43,13 +43,15 @@
 
 package org.lgna.project.ast;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Code extends Member {
 	public AbstractParameter[] getAllParameters();
 
-	public java.util.List<? extends AbstractParameter> getRequiredParameters();
+	public List<? extends AbstractParameter> getRequiredParameters();
 
 	public AbstractParameter getVariableLengthParameter();
 

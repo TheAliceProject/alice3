@@ -44,6 +44,8 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.lgna.story.event.CollisionEndListener;
 
+import java.util.UUID;
+
 public class EndCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
 
 	private static class SingletonHolder {
@@ -55,6 +57,6 @@ public class EndCollisionEventAdapterFillIn extends LambdaExpressionFillIn {
 	}
 
 	public EndCollisionEventAdapterFillIn() {
-		super( java.util.UUID.fromString( "d683dcd4-2449-4af2-bb0f-bfca21cbcb37" ), CollisionEndListener.class );
+		super( UUID.fromString( "d683dcd4-2449-4af2-bb0f-bfca21cbcb37" ), CollisionEndListener.class );
 	}
 }

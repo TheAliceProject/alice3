@@ -42,14 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.alice.ide.croquet.components.AbstractPropertyPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.Label;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InstancePropertyLabelView extends org.alice.ide.croquet.components.AbstractPropertyPane<edu.cmu.cs.dennisc.property.InstanceProperty<Object>, Object> {
-	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label();
+public class InstancePropertyLabelView extends AbstractPropertyPane<InstanceProperty<Object>, Object> {
+	private final Label label = new Label();
 
-	public InstancePropertyLabelView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty<Object> property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+	public InstancePropertyLabelView( AstI18nFactory factory, InstanceProperty<Object> property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 		this.addComponent( this.label );
 		this.refreshLater();
 	}

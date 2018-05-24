@@ -43,19 +43,31 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.views.Menu;
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.PopupMenu;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.event.PopupMenuEvent;
+import java.awt.event.ActionEvent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public static final StandardMenuItemPrepModel SEPARATOR = null;
 	private final Class<? extends AbstractElement> clsForI18N;
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
+	private Action action = new AbstractAction() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 		}
 	};
 
-	public AbstractMenuModel( java.util.UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
+	public AbstractMenuModel( UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
 		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
@@ -72,7 +84,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	@Override
 	protected void localize() {
 		safeSetNameAndMnemonic( this.action, this.findDefaultLocalizedText(), this.getLocalizedMnemonicKey() );
-		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
+		this.action.putValue( Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
 
 	@Override
@@ -80,24 +92,24 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		return null;
 	}
 
-	public javax.swing.Action getAction() {
+	public Action getAction() {
 		return this.action;
 	}
 
 	private String getName() {
-		return (String)this.action.getValue( javax.swing.Action.NAME );
+		return (String)this.action.getValue( Action.NAME );
 	}
 
 	public void setName( String name ) {
-		this.action.putValue( javax.swing.Action.NAME, name );
+		this.action.putValue( Action.NAME, name );
 	}
 
-	private javax.swing.Icon getSmallIcon() {
-		return (javax.swing.Icon)this.action.getValue( javax.swing.Action.SMALL_ICON );
+	private Icon getSmallIcon() {
+		return (Icon)this.action.getValue( Action.SMALL_ICON );
 	}
 
-	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	public void setSmallIcon( Icon icon ) {
+		this.action.putValue( Action.SMALL_ICON, icon );
 	}
 
 	@Override
@@ -110,65 +122,65 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.setEnabled( isEnabled );
 	}
 
-	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
+	public void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep step ) {
 	}
 
-	public void handlePopupMenuEpilogue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep step ) {
+	public void handlePopupMenuEpilogue( PopupMenu popupMenu, PopupPrepStep step ) {
 	}
 
-	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 	}
 
-	protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleHiding( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 	}
 
-	protected void handleCanceled( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleCanceled( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 	}
 
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {
-		private org.lgna.croquet.views.MenuItemContainer menuItemContainer;
+		private MenuItemContainer menuItemContainer;
 
-		public PopupMenuListener( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+		public PopupMenuListener( MenuItemContainer menuItemContainer ) {
 			this.menuItemContainer = menuItemContainer;
 		}
 
 		@Override
-		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+		public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleShowing( this.menuItemContainer, e );
 		}
 
 		@Override
-		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+		public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleHiding( this.menuItemContainer, e );
 		}
 
 		@Override
-		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+		public void popupMenuCanceled( PopupMenuEvent e ) {
 			AbstractMenuModel.this.handleCanceled( this.menuItemContainer, e );
 		}
 	}
 
 	private PopupMenuListener popupMenuListener;
 
-	public final void addPopupMenuListener( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+	public final void addPopupMenuListener( MenuItemContainer menuItemContainer ) {
 		assert this.popupMenuListener == null : this;
 		this.popupMenuListener = new PopupMenuListener( menuItemContainer );
 		menuItemContainer.addPopupMenuListener( this.popupMenuListener );
 	}
 
-	public final void removePopupMenuListener( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+	public final void removePopupMenuListener( MenuItemContainer menuItemContainer ) {
 		assert this.popupMenuListener != null : this;
 		menuItemContainer.removePopupMenuListener( this.popupMenuListener );
 		this.popupMenuListener = null;
 	}
 
-	public org.lgna.croquet.views.Menu createMenu() {
-		return new org.lgna.croquet.views.Menu( this );
+	public Menu createMenu() {
+		return new Menu( this );
 	};
 
 	@Override
-	public org.lgna.croquet.views.Menu createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-		org.lgna.croquet.views.Menu rv = this.createMenu();
+	public Menu createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
+		Menu rv = this.createMenu();
 		menuItemContainer.addMenu( rv );
 		return rv;
 	}

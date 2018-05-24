@@ -42,25 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.event.BoundEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.BoundListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements edu.cmu.cs.dennisc.scenegraph.event.BoundListener {
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSubject() {
+public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements BoundListener {
+	public Visual getSubject() {
 		return this.sgSubject;
 	}
 
-	public void setSubject( edu.cmu.cs.dennisc.scenegraph.Visual sgSubject ) {
+	public void setSubject( Visual sgSubject ) {
 		if( this.sgSubject != null ) {
 			setParent( null );
-			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.sgSubject.getGeometry();
+			Geometry sgGeometry = this.sgSubject.getGeometry();
 			if( sgGeometry != null ) {
 				sgGeometry.removeBoundListener( this );
 			}
 		}
 		this.sgSubject = sgSubject;
 		if( this.sgSubject != null ) {
-			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.sgSubject.getGeometry();
+			Geometry sgGeometry = this.sgSubject.getGeometry();
 			if( sgGeometry != null ) {
 				setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );
 				setParent( this.sgSubject.getParent() );
@@ -70,10 +75,10 @@ public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements 
 	}
 
 	@Override
-	public void boundChanged( edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e ) {
-		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = e.getTypedSource();
+	public void boundChanged( BoundEvent e ) {
+		Geometry sgGeometry = e.getTypedSource();
 		setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );
 	}
 
-	private edu.cmu.cs.dennisc.scenegraph.Visual sgSubject = null;
+	private Visual sgSubject = null;
 }

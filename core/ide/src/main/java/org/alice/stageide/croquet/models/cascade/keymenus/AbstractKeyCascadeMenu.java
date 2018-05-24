@@ -43,24 +43,37 @@
 
 package org.alice.stageide.croquet.models.cascade.keymenus;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.Key;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractKeyCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.FieldAccess> {
-	private final org.lgna.story.Key[] keys;
+public abstract class AbstractKeyCascadeMenu extends ExpressionCascadeMenu<FieldAccess> {
+	private final Key[] keys;
 
-	public AbstractKeyCascadeMenu( java.util.UUID id, org.lgna.story.Key... keys ) {
+	public AbstractKeyCascadeMenu( UUID id, Key... keys ) {
 		super( id );
 		this.keys = keys;
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.FieldAccess> context ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Key.class );
-		for( org.lgna.story.Key key : this.keys ) {
-			org.lgna.project.ast.AbstractField field = type.getDeclaredField( key.name() );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<FieldAccess> context ) {
+		AbstractType<?, ?, ?> type = JavaType.getInstance( Key.class );
+		for( Key key : this.keys ) {
+			AbstractField field = type.getDeclaredField( key.name() );
 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();
-			blankChildren.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+			blankChildren.add( StaticFieldAccessFillIn.getInstance( field ) );
 		}
 	}
 }

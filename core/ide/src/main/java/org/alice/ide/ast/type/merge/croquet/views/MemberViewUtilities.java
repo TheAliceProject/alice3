@@ -42,11 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
+import org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.HoverPopupView;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.TextField;
+import org.lgna.project.ast.Member;
+
+import javax.swing.Icon;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MemberViewUtilities {
-	public static java.awt.Color ACTION_MUST_BE_TAKEN_COLOR = new java.awt.Color( 170, 0, 0 );
+	public static Color ACTION_MUST_BE_TAKEN_COLOR = new Color( 170, 0, 0 );
 
 	//	public static org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon KEEP_ICON = new org.alice.stageide.gallerybrowser.uri.merge.views.icons.ActionStatusIcon() {
 	//		@Override
@@ -63,44 +75,44 @@ public class MemberViewUtilities {
 	//		}
 	//	};
 
-	private static org.lgna.croquet.views.AbstractLabel createMemberLabel( org.lgna.project.ast.Member member, String prefix, String postfix, javax.swing.Icon icon ) {
-		return new org.lgna.croquet.views.Label( "<html>" + prefix + member.getName() + postfix + "</html>", icon );
+	private static AbstractLabel createMemberLabel( Member member, String prefix, String postfix, Icon icon ) {
+		return new Label( "<html>" + prefix + member.getName() + postfix + "</html>", icon );
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createAddMemberLabel( org.lgna.project.ast.Member member ) {
+	public static AbstractLabel createAddMemberLabel( Member member ) {
 		return createMemberLabel( member, "", "", null );
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createDeleteMemberLabel( org.lgna.project.ast.Member member ) {
-		org.lgna.croquet.views.AbstractLabel rv = createMemberLabel( member, "<strike>", "</strike>", null );
+	public static AbstractLabel createDeleteMemberLabel( Member member ) {
+		AbstractLabel rv = createMemberLabel( member, "<strike>", "</strike>", null );
 		rv.getAwtComponent().setEnabled( false );
 		return rv;
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createReplaceMemberLabel( org.lgna.project.ast.Member member ) {
+	public static AbstractLabel createReplaceMemberLabel( Member member ) {
 		return createMemberLabel( member, "", " <em>(replace with version from class file)</em>", null );
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createKeepInsteadOfReplaceMemberLabel( org.lgna.project.ast.Member member ) {
+	public static AbstractLabel createKeepInsteadOfReplaceMemberLabel( Member member ) {
 		return createMemberLabel( member, "", " <em>(keep version already in project)</em>", null );
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createKeepIdenticalMemberLabel( org.lgna.project.ast.Member member ) {
+	public static AbstractLabel createKeepIdenticalMemberLabel( Member member ) {
 		return createMemberLabel( member, "", " <em>(identical)</em>", null );
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createKeepUniqueMemberLabel( org.lgna.project.ast.Member member ) {
+	public static AbstractLabel createKeepUniqueMemberLabel( Member member ) {
 		return createMemberLabel( member, "", "", null );
 	}
 
-	public static org.lgna.croquet.views.AbstractLabel createActionMustBeTakeMemberLabel( org.lgna.project.ast.Member member ) {
-		org.lgna.croquet.views.AbstractLabel rv = createMemberLabel( member, "", "", null );
+	public static AbstractLabel createActionMustBeTakeMemberLabel( Member member ) {
+		AbstractLabel rv = createMemberLabel( member, "", "", null );
 		rv.setForegroundColor( ACTION_MUST_BE_TAKEN_COLOR );
 		return rv;
 	}
 
-	public static org.lgna.croquet.views.TextField createTextField( org.lgna.croquet.StringState state, edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer ) {
-		org.lgna.croquet.views.TextField rv = state.createTextField();
+	public static TextField createTextField( StringState state, ColorCustomizer foregroundCustomizer ) {
+		TextField rv = state.createTextField();
 		rv.enableSelectAllWhenFocusGained();
 		rv.getAwtComponent().setForegroundCustomizer( foregroundCustomizer );
 		rv.getAwtComponent().setColumns( 24 );
@@ -112,8 +124,8 @@ public class MemberViewUtilities {
 	//		rv.getAwtComponent().setIcon( icon );
 	//		return rv;
 	//	}
-	public static org.lgna.croquet.views.HoverPopupView createPopupView( org.alice.ide.ast.type.merge.croquet.MemberPopupCoreComposite popup ) {
-		org.lgna.croquet.views.HoverPopupView rv = popup.getHoverPopupElement().createHoverPopupView();
+	public static HoverPopupView createPopupView( MemberPopupCoreComposite popup ) {
+		HoverPopupView rv = popup.getHoverPopupElement().createHoverPopupView();
 		rv.getAwtComponent().setIcon( popup.getIcon() );
 		return rv;
 	}

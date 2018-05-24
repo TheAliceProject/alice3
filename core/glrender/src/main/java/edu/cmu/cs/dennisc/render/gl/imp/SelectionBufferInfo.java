@@ -43,13 +43,22 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+import java.nio.IntBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/class SelectionBufferInfo {
-	public SelectionBufferInfo( PickContext pc, java.nio.IntBuffer intBuffer, int offset ) {
+	public SelectionBufferInfo( PickContext pc, IntBuffer intBuffer, int offset ) {
 		int nameCount = intBuffer.get( offset + 0 );
 		int zFrontAsInt = intBuffer.get( offset + 1 );
 		int zBackAsInt = intBuffer.get( offset + 2 );
@@ -100,7 +109,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 		return this.zBack;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
+	public Visual getSgVisual() {
 		if( this.visualAdapter != null ) {
 			return this.visualAdapter.getOwner();
 		} else {
@@ -116,8 +125,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 		return this.geometryIndex;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisual();
+	public Geometry getSGGeometry() {
+		Visual sgVisual = this.getSgVisual();
 		if( sgVisual != null ) {
 			if( ( 0 <= this.geometryIndex ) && ( this.geometryIndex < sgVisual.getGeometryCount() ) ) {
 				return sgVisual.getGeometryAt( this.geometryIndex );
@@ -134,7 +143,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 		return this.subElement;
 	}
 
-	public void updatePointInSource( edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource ) {
+	public void updatePointInSource( Ray ray, AffineMatrix4x4 inverseAbsoluteTransformationOfSource ) {
 		if( this.visualAdapter != null ) {
 			this.visualAdapter.getIntersectionInSource( this.pointInSource, ray, inverseAbsoluteTransformationOfSource, this.geometryIndex, this.subElement );
 		} else {
@@ -142,27 +151,27 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 		}
 	}
 
-	public void updatePointInSource( edu.cmu.cs.dennisc.math.Matrix4x4 m ) {
+	public void updatePointInSource( Matrix4x4 m ) {
 		double z = this.zFront;
 		z *= 2;
 		z -= 1;
 
-		edu.cmu.cs.dennisc.math.Vector4 v = new edu.cmu.cs.dennisc.math.Vector4( 0, 0, z, 1 );
+		Vector4 v = new Vector4( 0, 0, z, 1 );
 		m.transform( v );
 
 		this.pointInSource.set( v.x / v.w, v.y / v.w, v.z / v.w );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getPointInSource() {
+	public Point3 getPointInSource() {
 		return this.pointInSource;
 	}
 
 	private final float zFront;
 	private final float zBack;
-	private final GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter;
+	private final GlrVisual<? extends Visual> visualAdapter;
 	private final boolean isFrontFacing;
 	private final int geometryIndex;
 	private final int subElement;
 
-	private edu.cmu.cs.dennisc.math.Point3 pointInSource = edu.cmu.cs.dennisc.math.Point3.createNaN();
+	private Point3 pointInSource = Point3.createNaN();
 }

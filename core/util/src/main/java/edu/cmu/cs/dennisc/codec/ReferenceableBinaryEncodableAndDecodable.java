@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface ReferenceableBinaryEncodableAndDecodable {
-	public void decode( BinaryDecoder binaryDecoder, java.util.Map<Integer, ReferenceableBinaryEncodableAndDecodable> map );
+	public void decode( BinaryDecoder binaryDecoder, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map );
 
-	public void encode( BinaryEncoder binaryEncoder, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
+	public void encode( BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map );
 }

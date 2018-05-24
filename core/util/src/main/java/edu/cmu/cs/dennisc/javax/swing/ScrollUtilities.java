@@ -42,16 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ScrollUtilities {
-	public static void scrollToVisible( final javax.swing.JComponent c ) {
+	public static void scrollToVisible( final JComponent c ) {
 		assert c != null;
 		if( c.isValid() ) {
-			c.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( c ) );
+			c.scrollRectToVisible( SwingUtilities.getLocalBounds( c ) );
 		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					ScrollUtilities.scrollToVisible( c );

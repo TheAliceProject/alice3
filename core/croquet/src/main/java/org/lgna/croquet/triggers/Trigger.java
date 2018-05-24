@@ -43,23 +43,29 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.croquet.views.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class Trigger implements BinaryEncodableAndDecodable {
 	public Trigger() {
 	}
 
-	public Trigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Trigger( BinaryDecoder binaryDecoder ) {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 	}
 
-	public abstract org.lgna.croquet.views.ViewController<?, ?> getViewController();
+	public abstract ViewController<?, ?> getViewController();
 
-	public abstract void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu );
+	public abstract void showPopupMenu( PopupMenu popupMenu );
 
 	protected void appendReprInternal( StringBuilder repr ) {
 	}

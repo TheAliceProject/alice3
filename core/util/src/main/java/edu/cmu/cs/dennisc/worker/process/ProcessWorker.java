@@ -42,10 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.worker.process;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.worker.WorkerWithProgress;
+
+import java.io.InputStream;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWithProgress<Integer, String> {
+public abstract class ProcessWorker extends WorkerWithProgress<Integer, String> {
 	private static final String FIRST_CHUNK = "__PROCESS_WORKER_FIRST_CHUNK__acf167f6-5b8c-4ce1-a221-8eef7be26582";
 	private static final String FIRST_CHUNK_FOR_PROCESS = "__PROCESS_WORKER_FIRST_CHUNK_FOR_PROCESS__";
 	private final ProcessBuilder[] processBuilders;
@@ -67,12 +73,12 @@ public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWith
 			if( processBuilder.redirectErrorStream() ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", processBuilder );
+				Logger.outln( "NOTE: redirecting error stream", processBuilder );
 				processBuilder.redirectErrorStream( true );
 			}
 			Process process = processBuilder.start();
 			this.publish( FIRST_CHUNK_FOR_PROCESS + i );
-			java.io.InputStream standardOutAndStandardError = process.getInputStream();
+			InputStream standardOutAndStandardError = process.getInputStream();
 			byte[] buffer = new byte[ 256 ];
 			while( true ) {
 				if( this.isCancelled() ) {
@@ -99,7 +105,7 @@ public abstract class ProcessWorker extends edu.cmu.cs.dennisc.worker.WorkerWith
 	protected abstract void handleProcessStandardOutAndStandardError_onEventDispatchThread( String s );
 
 	@Override
-	protected final void handleProcess_onEventDispatchThread( java.util.List<String> chunks ) {
+	protected final void handleProcess_onEventDispatchThread( List<String> chunks ) {
 		StringBuilder sb = new StringBuilder();
 		for( String chunk : chunks ) {
 			if( chunk != null ) {

@@ -43,19 +43,33 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.BinaryOperator;
 
 /**
  * @author Dennis Cosgrove
  */
 public class JavaMethod extends AbstractMethod {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<MethodReflectionProxy, JavaMethod> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static final InitializingIfAbsentMap<MethodReflectionProxy, JavaMethod> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
-			return mapReflectionProxyToInstance.getInitializingIfAbsent( methodReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<MethodReflectionProxy, JavaMethod>() {
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( methodReflectionProxy, new InitializingIfAbsentMap.Initializer<MethodReflectionProxy, JavaMethod>() {
 				@Override
-				public org.lgna.project.ast.JavaMethod initialize( org.lgna.project.ast.MethodReflectionProxy key ) {
+				public JavaMethod initialize( MethodReflectionProxy key ) {
 					return new JavaMethod( key );
 				}
 			} );
@@ -69,7 +83,7 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	public static JavaMethod getInstance( Class<?> declaringCls, String name, Class<?>... parameterClses ) {
-		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
+		return getInstance( ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
 	}
 
 	private JavaMethod( MethodReflectionProxy methodReflectionProxy ) {
@@ -81,12 +95,12 @@ public class JavaMethod extends AbstractMethod {
 		} else {
 			N = parameterTypeReflectionProxies.length;
 		}
-		java.util.ArrayList<JavaMethodParameter> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( N );
-		java.lang.annotation.Annotation[][] parameterAnnotations = this.methodReflectionProxy.getParameterAnnotations();
+		ArrayList<JavaMethodParameter> list = Lists.newArrayListWithInitialCapacity( N );
+		Annotation[][] parameterAnnotations = this.methodReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < N; i++ ) {
 			list.add( new JavaMethodParameter( this, i, parameterAnnotations[ i ] ) );
 		}
-		this.requiredParameters = java.util.Collections.unmodifiableList( list );
+		this.requiredParameters = Collections.unmodifiableList( list );
 
 		if( this.methodReflectionProxy.isVarArgs() ) {
 			this.variableOrKeyedParameter = new JavaMethodParameter( this, N, parameterAnnotations[ N ] );
@@ -99,7 +113,7 @@ public class JavaMethod extends AbstractMethod {
 		return this.methodReflectionProxy;
 	}
 
-	public boolean isAnnotationPresent( Class<? extends java.lang.annotation.Annotation> annotationCls ) {
+	public boolean isAnnotationPresent( Class<? extends Annotation> annotationCls ) {
 		return this.getMethodReflectionProxy().getReification().isAnnotationPresent( annotationCls );
 	}
 
@@ -114,7 +128,7 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
@@ -129,7 +143,7 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
-	public java.util.List<JavaMethodParameter> getRequiredParameters() {
+	public List<JavaMethodParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
@@ -165,11 +179,11 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
+	public Visibility getVisibility() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		if( mthd != null ) {
-			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
-				org.lgna.project.annotations.MethodTemplate mthdTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
+			if( mthd.isAnnotationPresent( MethodTemplate.class ) ) {
+				MethodTemplate mthdTemplate = mthd.getAnnotation( MethodTemplate.class );
 				return mthdTemplate.visibility();
 			} else {
 				return null;
@@ -223,47 +237,47 @@ public class JavaMethod extends AbstractMethod {
 	public boolean isStatic() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
-		return java.lang.reflect.Modifier.isStatic( mthd.getModifiers() );
+		return Modifier.isStatic( mthd.getModifiers() );
 	}
 
 	@Override
 	public boolean isAbstract() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
-		return java.lang.reflect.Modifier.isAbstract( mthd.getModifiers() );
+		return Modifier.isAbstract( mthd.getModifiers() );
 	}
 
 	@Override
 	public boolean isFinal() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
-		return java.lang.reflect.Modifier.isFinal( mthd.getModifiers() );
+		return Modifier.isFinal( mthd.getModifiers() );
 	}
 
 	@Override
 	public boolean isNative() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
-		return java.lang.reflect.Modifier.isNative( mthd.getModifiers() );
+		return Modifier.isNative( mthd.getModifiers() );
 	}
 
 	@Override
 	public boolean isSynchronized() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
-		return java.lang.reflect.Modifier.isSynchronized( mthd.getModifiers() );
+		return Modifier.isSynchronized( mthd.getModifiers() );
 	}
 
 	@Override
 	public boolean isStrictFloatingPoint() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
-		return java.lang.reflect.Modifier.isStrict( mthd.getModifiers() );
+		return Modifier.isStrict( mthd.getModifiers() );
 	}
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		JavaMethod other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaMethod.class );
+		JavaMethod other = ClassUtilities.getInstance( o, JavaMethod.class );
 		if( other != null ) {
 			return this.methodReflectionProxy.equals( other.methodReflectionProxy );
 		} else {
@@ -277,6 +291,6 @@ public class JavaMethod extends AbstractMethod {
 	}
 
 	private final MethodReflectionProxy methodReflectionProxy;
-	private final java.util.List<JavaMethodParameter> requiredParameters;
+	private final List<JavaMethodParameter> requiredParameters;
 	private final JavaMethodParameter variableOrKeyedParameter;
 }

@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.border;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.CompoundBorder;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TextComponentBorder extends javax.swing.border.CompoundBorder {
+public class TextComponentBorder extends CompoundBorder {
 	public TextComponentBorder() {
-		super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
+		super( BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
 	}
 }

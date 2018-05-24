@@ -42,34 +42,55 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Sets;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.debug.tree.core.ZTreeNode;
+import org.lgna.debug.tree.croquet.views.DebugFrameView;
+
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.lgna.debug.tree.croquet.views.DebugFrameView<T>> {
-	public DebugFrame( java.util.UUID migrationId ) {
+public abstract class DebugFrame<T> extends FrameComposite<DebugFrameView<T>> {
+	public DebugFrame( UUID migrationId ) {
 		super( migrationId );
 		this.markOperation.setName( "mark" );
 		this.refreshOperation.setName( "refresh" );
 		this.isPruningDesiredState.setTextForBothTrueAndFalse( "prune?" );
 	}
 
-	public org.lgna.croquet.Operation getMarkOperation() {
+	public Operation getMarkOperation() {
 		return this.markOperation;
 	}
 
-	public org.lgna.croquet.Operation getRefreshOperation() {
+	public Operation getRefreshOperation() {
 		return this.refreshOperation;
 	}
 
-	public org.lgna.croquet.BooleanState getIsPruningDesiredState() {
+	public BooleanState getIsPruningDesiredState() {
 		return this.isPruningDesiredState;
 	}
 
-	public javax.swing.tree.TreeModel getMarkTreeModel() {
+	public TreeModel getMarkTreeModel() {
 		return this.markTreeModel;
 	}
 
-	public javax.swing.tree.TreeModel getCurrentTreeModel() {
+	public TreeModel getCurrentTreeModel() {
 		return this.currentTreeModel;
 	}
 
@@ -88,34 +109,34 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 	}
 
 	@Override
-	protected org.lgna.debug.tree.croquet.views.DebugFrameView<T> createView() {
-		return new org.lgna.debug.tree.croquet.views.DebugFrameView<T>( this );
+	protected DebugFrameView<T> createView() {
+		return new DebugFrameView<T>( this );
 	}
 
-	protected abstract org.lgna.debug.tree.core.ZTreeNode.Builder<T> capture();
+	protected abstract ZTreeNode.Builder<T> capture();
 
-	private static <T> void updateValuesToMute( java.util.Set<T> set, org.lgna.debug.tree.core.ZTreeNode<T> zTreeNode ) {
+	private static <T> void updateValuesToMute( Set<T> set, ZTreeNode<T> zTreeNode ) {
 		set.add( zTreeNode.getValue() );
 		if( zTreeNode.isLeaf() ) {
 			//pass
 		} else {
-			java.util.Enumeration<org.lgna.debug.tree.core.ZTreeNode<T>> e = zTreeNode.children();
+			Enumeration<ZTreeNode<T>> e = zTreeNode.children();
 			while( e.hasMoreElements() ) {
 				updateValuesToMute( set, e.nextElement() );
 			}
 		}
 	}
 
-	private static <T> java.util.Set<T> createValuesToMute( org.lgna.debug.tree.core.ZTreeNode<T> markRoot ) {
-		java.util.Set<T> valuesToMute = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+	private static <T> Set<T> createValuesToMute( ZTreeNode<T> markRoot ) {
+		Set<T> valuesToMute = Sets.newHashSet();
 		updateValuesToMute( valuesToMute, markRoot );
-		return java.util.Collections.unmodifiableSet( valuesToMute );
+		return Collections.unmodifiableSet( valuesToMute );
 	}
 
-	private static <T> void prune( org.lgna.debug.tree.core.ZTreeNode.Builder<T> builder, java.util.Set<T> valuesToMute ) {
-		java.util.Iterator<org.lgna.debug.tree.core.ZTreeNode.Builder<T>> iterator = builder.getChildBuildersIterator();
+	private static <T> void prune( ZTreeNode.Builder<T> builder, Set<T> valuesToMute ) {
+		Iterator<ZTreeNode.Builder<T>> iterator = builder.getChildBuildersIterator();
 		while( iterator.hasNext() ) {
-			org.lgna.debug.tree.core.ZTreeNode.Builder<T> childBuilder = iterator.next();
+			ZTreeNode.Builder<T> childBuilder = iterator.next();
 			prune( childBuilder, valuesToMute );
 			T childValue = childBuilder.getValue();
 			if( childBuilder.isEmpty() && valuesToMute.contains( childValue ) ) {
@@ -124,13 +145,13 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 		}
 	}
 
-	private final org.lgna.croquet.Operation markOperation = this.createActionOperation( "markOperation", new Action() {
+	private final Operation markOperation = this.createActionOperation( "markOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.debug.tree.core.ZTreeNode.Builder<T> builder = capture();
-			org.lgna.debug.tree.core.ZTreeNode<T> markRoot = builder.build();
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			ZTreeNode.Builder<T> builder = capture();
+			ZTreeNode<T> markRoot = builder.build();
 			markTreeModel.setRoot( markRoot );
-			java.util.Set<T> valuesToMute;
+			Set<T> valuesToMute;
 			if( isPruningDesiredState.getValue() ) {
 				currentTreeModel.setRoot( null );
 				valuesToMute = null;
@@ -142,15 +163,15 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 			return null;
 		}
 	} );
-	private final org.lgna.croquet.Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
+	private final Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.debug.tree.core.ZTreeNode<T> markRoot = (org.lgna.debug.tree.core.ZTreeNode<T>)markTreeModel.getRoot();
-			java.util.Set<T> valuesToMute = createValuesToMute( markRoot );
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			ZTreeNode<T> markRoot = (ZTreeNode<T>)markTreeModel.getRoot();
+			Set<T> valuesToMute = createValuesToMute( markRoot );
 
-			org.lgna.debug.tree.core.ZTreeNode.Builder<T> builder = capture();
+			ZTreeNode.Builder<T> builder = capture();
 
-			org.lgna.debug.tree.core.ZTreeNode<T> currentRoot;
+			ZTreeNode<T> currentRoot;
 			if( isPruningDesiredState.getValue() ) {
 				prune( builder, valuesToMute );
 				if( builder.isEmpty() && valuesToMute.contains( builder.getValue() ) ) {
@@ -168,15 +189,15 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 		}
 	} );
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> isPruningDesiredListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> isPruningDesiredListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			refreshOperation.fire();
 		}
 	};
 
-	private final org.lgna.croquet.BooleanState isPruningDesiredState = this.createBooleanState( "isPruningDesiredState", true );
+	private final BooleanState isPruningDesiredState = this.createBooleanState( "isPruningDesiredState", true );
 
-	private final javax.swing.tree.DefaultTreeModel markTreeModel = new javax.swing.tree.DefaultTreeModel( null );
-	private final javax.swing.tree.DefaultTreeModel currentTreeModel = new javax.swing.tree.DefaultTreeModel( null );
+	private final DefaultTreeModel markTreeModel = new DefaultTreeModel( null );
+	private final DefaultTreeModel currentTreeModel = new DefaultTreeModel( null );
 }

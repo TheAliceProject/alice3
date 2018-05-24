@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import javax.lang.model.element.Modifier;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,29 +64,29 @@ public abstract class AbstractMethod extends AbstractCode implements Method {
 	public abstract boolean isStrictFloatingPoint();
 
 	@Override
-	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+	public void addModifiers( Collection<Modifier> modifiers ) {
 		super.addModifiers( modifiers );
 		if( this.isFinal() ) {
-			modifiers.add( javax.lang.model.element.Modifier.FINAL );
+			modifiers.add( Modifier.FINAL );
 		} else if( this.isAbstract() ) {
-			modifiers.add( javax.lang.model.element.Modifier.ABSTRACT );
+			modifiers.add( Modifier.ABSTRACT );
 		}
 		if( this.isStatic() ) {
-			modifiers.add( javax.lang.model.element.Modifier.STATIC );
+			modifiers.add( Modifier.STATIC );
 		}
 		if( this.isNative() ) {
-			modifiers.add( javax.lang.model.element.Modifier.NATIVE );
+			modifiers.add( Modifier.NATIVE );
 		}
 		if( this.isSynchronized() ) {
-			modifiers.add( javax.lang.model.element.Modifier.SYNCHRONIZED );
+			modifiers.add( Modifier.SYNCHRONIZED );
 		}
 		if( this.isStrictFloatingPoint() ) {
-			modifiers.add( javax.lang.model.element.Modifier.STRICTFP );
+			modifiers.add( Modifier.STRICTFP );
 		}
 	}
 
 	public boolean isOverride() {
-		java.util.List<? extends AbstractParameter> parameters = this.getRequiredParameters();
+		List<? extends AbstractParameter> parameters = this.getRequiredParameters();
 		final int N = parameters.size();
 		AbstractType<?, ?, ?>[] parameterTypes = new AbstractType[ N ];
 		for( int i = 0; i < N; i++ ) {

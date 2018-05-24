@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.scenegraph.Silhouette;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
@@ -54,6 +57,8 @@ import org.lgna.story.implementation.ModelImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -162,9 +167,9 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 
 	private void setSelectedObjectSilhouetteIfAppropriate( boolean isHaloed ) {
 		if( this.sgSilhouette != null ) {
-			if( this.selectedObject instanceof org.lgna.story.implementation.ModelImp ) {
-				org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)this.selectedObject;
-				for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : modelImp.getSgVisuals() ) {
+			if( this.selectedObject instanceof ModelImp ) {
+				ModelImp modelImp = (ModelImp)this.selectedObject;
+				for( Visual sgVisual : modelImp.getSgVisuals() ) {
 					sgVisual.silouette.setValue( isHaloed ? this.sgSilhouette : null );
 				}
 			}
@@ -216,18 +221,18 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 		triggerImplementationSelection( EntityImp.getInstance( selected, AbstractTransformableImp.class ) );
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Silhouette getSgSilhouette() {
+	public Silhouette getSgSilhouette() {
 		return this.sgSilhouette;
 	}
 
-	public void setSgSilhouette( edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette ) {
+	public void setSgSilhouette( Silhouette sgSilhouette ) {
 		this.sgSilhouette = sgSilhouette;
 	}
 
-	private final java.util.List<SelectionListener> selectionListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<SelectionListener> selectionListeners = Lists.newCopyOnWriteArrayList();
 	protected final HandleManager handleManager = new HandleManager();
 	private AbstractTransformableImp toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
 	protected AbstractTransformableImp selectedObject = null;
-	private edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette;
+	private Silhouette sgSilhouette;
 }

@@ -42,10 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.texture;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class BarycentricCoordinatesf implements BinaryEncodableAndDecodable {
 	public final float t0;
 	public final float t1;
 	public final float t2;
@@ -56,7 +62,7 @@ public final class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.B
 		this.t2 = 1 - ( t0 + t1 );
 	}
 
-	private BarycentricCoordinatesf( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
+	private BarycentricCoordinatesf( Point p0, Point p1, Point p2, Point p ) {
 		this( p0.x, p0.y, 0, p1.x, p1.y, 0, p2.x, p2.y, 0, p.x, p.y, 0 );
 	}
 
@@ -67,18 +73,18 @@ public final class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.B
 		this( x0 - x2, x1 - x2, x2 - x, y0 - y2, y1 - y2, y2 - y, z0 - z2, z1 - z2, z2 - z );
 	}
 
-	public static BarycentricCoordinatesf createInstance( java.awt.Point p0, java.awt.Point p1, java.awt.Point p2, java.awt.Point p ) {
+	public static BarycentricCoordinatesf createInstance( Point p0, Point p1, Point p2, Point p ) {
 		return new BarycentricCoordinatesf( p0, p1, p2, p );
 	}
 
-	public BarycentricCoordinatesf( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BarycentricCoordinatesf( BinaryDecoder binaryDecoder ) {
 		this.t0 = binaryDecoder.decodeFloat();
 		this.t1 = binaryDecoder.decodeFloat();
 		this.t2 = binaryDecoder.decodeFloat();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( t0 );
 		binaryEncoder.encode( t1 );
 		binaryEncoder.encode( t2 );
@@ -112,7 +118,7 @@ public final class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.B
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.texture.TextureCoordinate2f createInterpolation( edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv0, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv1, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv2 ) {
+	public TextureCoordinate2f createInterpolation( TextureCoordinate2f uv0, TextureCoordinate2f uv1, TextureCoordinate2f uv2 ) {
 		float u = 0.0f;
 		float v = 0.0f;
 

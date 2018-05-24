@@ -43,13 +43,18 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.SpotLight;
+
+import java.nio.DoubleBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrSpotLight extends GlrPointLight<edu.cmu.cs.dennisc.scenegraph.SpotLight> {
+public class GlrSpotLight extends GlrPointLight<SpotLight> {
 	@Override
 	protected float[] getSpotDirection( float[] rv ) {
-		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
+		DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
 		rv[ 0 ] = (float)db.get( 8 );
 		rv[ 1 ] = (float)db.get( 9 );
 		rv[ 2 ] = (float)db.get( 10 );
@@ -66,7 +71,7 @@ public class GlrSpotLight extends GlrPointLight<edu.cmu.cs.dennisc.scenegraph.Sp
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.innerBeamAngle ) {
 		} else if( property == owner.outerBeamAngle ) {
 			this.outerBeamInDegrees = (float)owner.outerBeamAngle.getValue().getAsDegrees();

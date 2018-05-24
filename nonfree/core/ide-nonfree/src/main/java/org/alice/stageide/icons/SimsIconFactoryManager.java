@@ -42,20 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.icon.TrimmedImageIconFactory;
 import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resources.sims2.PersonResource;
 import org.lgna.story.resourceutilities.SimsThumbnailMaker;
+
+import java.awt.image.BufferedImage;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SimsIconFactoryManager {
 
-	public static org.lgna.croquet.icon.IconFactory createIconFactory( ModelResource instance ) {
-		if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
-			org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
+	public static IconFactory createIconFactory( ModelResource instance ) {
+		if( instance instanceof PersonResource ) {
+			PersonResource personResource = (PersonResource)instance;
 			try {
 				SimsThumbnailMaker thumbnailMaker = SimsThumbnailMaker.getInstance();
-				java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
+				BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
 				int width = thumbnailMaker.getWidth();
 				int height = thumbnailMaker.getHeight();
 
@@ -64,13 +71,13 @@ public class SimsIconFactoryManager {
 				//					edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
 
 				if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
-					return new org.lgna.croquet.icon.ImageIconFactory( image );
+					return new ImageIconFactory( image );
 				} else {
-					return new org.lgna.croquet.icon.TrimmedImageIconFactory( image, width, height );
+					return new TrimmedImageIconFactory( image, width, height );
 				}
 			} catch( Throwable t ) {
 				t.printStackTrace();
-				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+				return EmptyIconFactory.getInstance();
 			}
 		} else {
 			return null;

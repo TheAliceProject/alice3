@@ -42,10 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.declaration;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectStack;
+import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.AbstractType> {
+public class OtherTypesMenuModel extends CascadeMenuModel<AbstractType> {
 	private static final boolean IS_SCENE_TYPE_DESIRED = false;
 
 	private static class SingletonHolder {
@@ -57,20 +72,20 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.l
 	}
 
 	private OtherTypesMenuModel() {
-		super( java.util.UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
+		super( UUID.fromString( "909d8fb3-f1a0-4f21-9bbf-a871ea04d1a0" ) );
 	}
 
-	private org.lgna.project.ast.NamedUserType getSceneType() {
-		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+	private NamedUserType getSceneType() {
+		Project project = ProjectStack.peekProject();
 		if( project != null ) {
-			return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
+			return StoryApiSpecificAstUtilities.getSceneTypeFromProject( project );
 		} else {
 			return null;
 		}
 	}
 
 	public boolean isEmpty() {
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() > 0 ) {
+		if( IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes().size() > 0 ) {
 			return false;
 		} else {
 			if( IS_SCENE_TYPE_DESIRED ) {
@@ -82,21 +97,21 @@ public class OtherTypesMenuModel extends org.lgna.croquet.CascadeMenuModel<org.l
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<AbstractType> blankNode ) {
 		if( IS_SCENE_TYPE_DESIRED ) {
-			org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
+			NamedUserType sceneType = this.getSceneType();
 			if( sceneType != null ) {
 				blankChildren.add( TypeFillIn.getInstance( sceneType ) );
-				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				blankChildren.add( CascadeLineSeparator.getInstance() );
 			}
 		}
 
-		java.util.List<org.lgna.project.ast.JavaType> otherTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes();
-		for( org.lgna.project.ast.JavaType otherType : otherTypes ) {
+		List<JavaType> otherTypes = IDE.getActiveInstance().getApiConfigurationManager().getSecondarySelectableJavaTypes();
+		for( JavaType otherType : otherTypes ) {
 			if( otherType != null ) {
 				blankChildren.add( TypeFillIn.getInstance( otherType ) );
 			} else {
-				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				blankChildren.add( CascadeLineSeparator.getInstance() );
 			}
 		}
 	}

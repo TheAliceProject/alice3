@@ -42,21 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.render.AsynchronousPicker;
+import edu.cmu.cs.dennisc.render.PickAllObserver;
+import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrAsynchronousPicker implements edu.cmu.cs.dennisc.render.AsynchronousPicker {
+/*package-private*/class GlrAsynchronousPicker implements AsynchronousPicker {
 	public GlrAsynchronousPicker( RenderTargetImp rtImp ) {
 		this.rtImp = rtImp;
 	}
 
 	@Override
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.render.PickAllObserver observer ) {
+	public void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer ) {
 		this.rtImp.addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
 	}
 
 	@Override
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.render.PickFrontMostObserver observer ) {
+	public void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer ) {
 		this.rtImp.addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
 	}
 

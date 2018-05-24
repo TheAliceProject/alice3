@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.history.event;
 
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class FauxCompletionEvent extends CompletionEvent {
-	public FauxCompletionEvent( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public FauxCompletionEvent( CompletionStep<?> step ) {
 		super( step );
 	}
 }

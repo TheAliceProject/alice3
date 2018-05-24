@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -62,7 +64,7 @@ public class EnumConstantResourceKeyUriIteratingOperation extends ResourceKeyUri
 	}
 
 	private EnumConstantResourceKeyUriIteratingOperation() {
-		super( java.util.UUID.fromString( "bb91fc40-48a8-4452-b9b5-bb09ce439a67" ) );
+		super( UUID.fromString( "bb91fc40-48a8-4452-b9b5-bb09ce439a67" ) );
 	}
 
 	@Override
@@ -71,8 +73,8 @@ public class EnumConstantResourceKeyUriIteratingOperation extends ResourceKeyUri
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		org.alice.stageide.modelresource.EnumConstantResourceKey enumConstantResourceKey = (org.alice.stageide.modelresource.EnumConstantResourceKey)this.resourceKey;
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+		EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:
 			return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );

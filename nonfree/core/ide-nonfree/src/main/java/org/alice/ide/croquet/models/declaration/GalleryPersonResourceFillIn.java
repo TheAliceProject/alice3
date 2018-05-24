@@ -43,13 +43,26 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.TypeExpression;
+
+import javax.swing.Icon;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, GalleryPersonResourceFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class GalleryPersonResourceFillIn extends ExpressionFillInWithoutBlanks<Expression> {
+	private static Map<AbstractType<?, ?, ?>, GalleryPersonResourceFillIn> map = Maps.newHashMap();
 
-	public static synchronized GalleryPersonResourceFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static synchronized GalleryPersonResourceFillIn getInstance( AbstractType<?, ?, ?> type ) {
 		GalleryPersonResourceFillIn rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,21 +73,21 @@ public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.ca
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 
-	private GalleryPersonResourceFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( java.util.UUID.fromString( "4daa3e85-ee3a-4610-b9a1-2e8ba018e33b" ) );
+	private GalleryPersonResourceFillIn( AbstractType<?, ?, ?> type ) {
+		super( UUID.fromString( "4daa3e85-ee3a-4610-b9a1-2e8ba018e33b" ) );
 		this.type = type;
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
-		return org.alice.ide.common.TypeIcon.getInstance( type );
+	public Icon getMenuItemIcon( ItemNode<? super Expression, Void> node ) {
+		return TypeIcon.getInstance( type );
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.TypeExpression( this.type );
+	public Expression createValue( ItemNode<? super Expression, Void> node, TransactionHistory transactionHistory ) {
+		return new TypeExpression( this.type );
 		//		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
 		//		if( subStep.isValueCommitted() ) {
 		//			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getCommittedValue();
@@ -98,7 +111,7 @@ public class GalleryPersonResourceFillIn extends org.alice.ide.croquet.models.ca
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> step ) {
+	public Expression getTransientValue( ItemNode<? super Expression, Void> step ) {
 		return null;
 	}
 }

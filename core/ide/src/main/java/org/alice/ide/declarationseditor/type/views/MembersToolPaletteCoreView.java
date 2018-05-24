@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.declarationseditor.type.MembersToolPaletteCoreComposite;
+import org.lgna.croquet.views.PageAxisPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersToolPaletteCoreView extends org.lgna.croquet.views.PageAxisPanel {
-	public MembersToolPaletteCoreView( org.alice.ide.declarationseditor.type.MembersToolPaletteCoreComposite composite ) {
+public abstract class MembersToolPaletteCoreView extends PageAxisPanel {
+	public MembersToolPaletteCoreView( MembersToolPaletteCoreComposite composite ) {
 		super( composite );
 	}
 }

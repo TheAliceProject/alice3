@@ -43,6 +43,10 @@
 
 package org.lgna.croquet.views;
 
+import wrap.WrappedFlowLayout;
+
+import java.awt.FlowLayout;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,8 +63,8 @@ public class WrappedFlowPanel extends FlowPanel {
 	}
 
 	@Override
-	protected java.awt.FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
-		return new wrap.WrappedFlowLayout( alignment, hgap, vgap );
+	protected FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
+		return new WrappedFlowLayout( alignment, hgap, vgap );
 		//return new java.awt.FlowLayout(alignment, hgap, vgap);
 	}
 }

@@ -43,7 +43,11 @@
 
 package org.alice.stageide.sceneeditor.interact.handles;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.interact.event.ManipulationEvent;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle2D {
 	private static enum ControlState implements ImageBasedManipulationHandle2D.ImageState {
@@ -53,22 +57,22 @@ public class ManipulationHandle2DCameraZoom extends ImageBasedManipulationHandle
 		ZoomingOut( "images/zoomOut.png" );
 
 		private ControlState( String resourceString ) {
-			javax.swing.Icon icon;
+			Icon icon;
 			try {
-				icon = new javax.swing.ImageIcon( this.getClass().getResource( resourceString ) );
+				icon = new ImageIcon( this.getClass().getResource( resourceString ) );
 			} catch( Exception e ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot load", resourceString, this );
+				Logger.errln( "cannot load", resourceString, this );
 				icon = null;
 			}
 			this.icon = icon;
 		}
 
 		@Override
-		public javax.swing.Icon getIcon() {
+		public Icon getIcon() {
 			return this.icon;
 		}
 
-		private final javax.swing.Icon icon;
+		private final Icon icon;
 	}
 
 	public ManipulationHandle2DCameraZoom() {

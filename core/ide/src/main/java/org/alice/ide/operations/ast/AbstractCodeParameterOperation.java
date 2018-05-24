@@ -42,8 +42,12 @@
  *******************************************************************************/
 package org.alice.ide.operations.ast;
 
+import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -52,7 +56,7 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 	private UserParameter parameter;
 	private NodeListProperty<UserParameter> parametersProperty;
 
-	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
+	public AbstractCodeParameterOperation( UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
 		super( individualId );
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
@@ -62,7 +66,7 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 		return this.parametersProperty;
 	}
 
-	protected org.lgna.project.ast.UserParameter getParameter() {
+	protected UserParameter getParameter() {
 		return this.parameter;
 	}
 
@@ -75,7 +79,7 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeActionO
 	}
 
 	@Override
-	protected org.lgna.project.ast.UserCode getCode() {
-		return (org.lgna.project.ast.UserCode)this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
+	protected UserCode getCode() {
+		return (UserCode)this.parameter.getFirstAncestorAssignableTo( AbstractCode.class );
 	}
 }

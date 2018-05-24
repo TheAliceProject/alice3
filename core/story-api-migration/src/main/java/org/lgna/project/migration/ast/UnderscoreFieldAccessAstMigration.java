@@ -42,34 +42,44 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.Version;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.FieldReflectionProxy;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+
+import java.lang.reflect.Field;
+
 /**
  * @author Dennis Cosgrove
  */
-public class UnderscoreFieldAccessAstMigration extends org.lgna.project.migration.ast.FieldAccessAstMigration {
-	public UnderscoreFieldAccessAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+public class UnderscoreFieldAccessAstMigration extends FieldAccessAstMigration {
+	public UnderscoreFieldAccessAstMigration( Version minimumVersion, Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
 	@Override
-	protected void migrate( org.lgna.project.ast.FieldAccess fieldAccess ) {
-		org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-		if( field instanceof org.lgna.project.ast.JavaField ) {
-			org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
-			org.lgna.project.ast.FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
-			java.lang.reflect.Field reification = fieldReflectionProxy.getReification();
+	protected void migrate( FieldAccess fieldAccess ) {
+		AbstractField field = fieldAccess.field.getValue();
+		if( field instanceof JavaField ) {
+			JavaField javaField = (JavaField)field;
+			FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
+			Field reification = fieldReflectionProxy.getReification();
 			if( reification != null ) {
 				//pass
 			} else {
-				org.lgna.project.ast.JavaType declaringType = javaField.getDeclaringType();
+				JavaType declaringType = javaField.getDeclaringType();
 				Class<?> declaringCls = declaringType.getClassReflectionProxy().getReification();
 				if( declaringCls != null ) {
 					String previousName = fieldReflectionProxy.getName();
-					for( java.lang.reflect.Field fld : declaringCls.getFields() ) {
+					for( Field fld : declaringCls.getFields() ) {
 						String fldName = fld.getName();
 						if( fldName.replace( "_", "" ).contentEquals( fieldReflectionProxy.getName() ) ) {
-							org.lgna.project.ast.AbstractField replacementField = declaringType.findField( fldName );
+							AbstractField replacementField = declaringType.findField( fldName );
 							fieldAccess.field.setValue( replacementField );
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacing", javaField, "with", replacementField );
+							Logger.outln( "replacing", javaField, "with", replacementField );
 							break;
 						}
 					}

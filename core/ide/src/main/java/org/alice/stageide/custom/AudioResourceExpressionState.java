@@ -43,10 +43,22 @@
 
 package org.alice.stageide.custom;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.common.Resource;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.croquet.Application;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.ResourceExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceExpressionState extends org.alice.ide.croquet.models.StandardExpressionState {
+public class AudioResourceExpressionState extends StandardExpressionState {
 	private static class SingletonHolder {
 		private static AudioResourceExpressionState instance = new AudioResourceExpressionState();
 	}
@@ -56,26 +68,26 @@ public class AudioResourceExpressionState extends org.alice.ide.croquet.models.S
 	}
 
 	private AudioResourceExpressionState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "cb9c681f-3486-4be2-bdf3-f3ba8d663e3b" ), null );
+		super( Application.INHERIT_GROUP, UUID.fromString( "cb9c681f-3486-4be2-bdf3-f3ba8d663e3b" ), null );
 	}
 
 	@Override
-	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
+	protected ValueDetails<?> getValueDetails() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.lgna.project.ast.JavaType.getInstance( org.lgna.common.resources.AudioResource.class );
+	protected AbstractType<?, ?, ?> getType() {
+		return JavaType.getInstance( AudioResource.class );
 	}
 
-	public org.lgna.common.resources.AudioResource getAudioResource() {
-		org.lgna.project.ast.Expression expression = this.getValue();
-		if( expression instanceof org.lgna.project.ast.ResourceExpression ) {
-			org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)expression;
-			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
-			if( resource instanceof org.lgna.common.resources.AudioResource ) {
-				return (org.lgna.common.resources.AudioResource)resource;
+	public AudioResource getAudioResource() {
+		Expression expression = this.getValue();
+		if( expression instanceof ResourceExpression ) {
+			ResourceExpression resourceExpression = (ResourceExpression)expression;
+			Resource resource = resourceExpression.resource.getValue();
+			if( resource instanceof AudioResource ) {
+				return (AudioResource)resource;
 			} else {
 				return null;
 			}

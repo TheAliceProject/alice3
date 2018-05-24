@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddConeManagedFieldComposite;
+import org.alice.stageide.icons.ConeIconFactory;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SCone;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConeDragModel extends ShapeDragModel {
-	private static final org.lgna.story.SCone sModel = new org.lgna.story.SCone();
+	private static final SCone sModel = new SCone();
 
 	private static class SingletonHolder {
 		private static ConeDragModel instance = new ConeDragModel();
@@ -57,12 +67,12 @@ public class ConeDragModel extends ShapeDragModel {
 	}
 
 	private ConeDragModel() {
-		super( java.util.UUID.fromString( "a3745200-6936-448c-b3c1-fa40c844482a" ) );
+		super( UUID.fromString( "a3745200-6936-448c-b3c1-fa40c844482a" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +81,12 @@ public class ConeDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getLaunchOperation();
+	public Model getLeftButtonClickModel() {
+		return AddConeManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.ConeIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return ConeIconFactory.getInstance();
 	}
 }

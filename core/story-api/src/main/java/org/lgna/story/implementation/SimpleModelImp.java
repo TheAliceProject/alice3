@@ -43,11 +43,13 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SimpleModelImp extends SingleVisualModelImp {
 	public SimpleModelImp() {
-		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
+		super( new Visual() );
 	}
 }

@@ -42,18 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.lgna.croquet.ItemCodec;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ItemCodecListCellRenderer<T> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<T> {
-	private final org.lgna.croquet.ItemCodec<T> itemCodec;
+public class ItemCodecListCellRenderer<T> extends ListCellRenderer<T> {
+	private final ItemCodec<T> itemCodec;
 
-	public ItemCodecListCellRenderer( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public ItemCodecListCellRenderer( ItemCodec<T> itemCodec ) {
 		this.itemCodec = itemCodec;
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, T value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, T value, int index, boolean isSelected, boolean cellHasFocus ) {
 		StringBuilder sb = new StringBuilder();
 		this.itemCodec.appendRepresentation( sb, value );
 		rv.setText( sb.toString() );

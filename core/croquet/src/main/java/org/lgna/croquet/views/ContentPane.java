@@ -42,10 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ContentPane extends SwingComponentView<javax.swing.JPanel> {//Container<java.awt.Container> {
+public final class ContentPane extends SwingComponentView<JPanel> {//Container<java.awt.Container> {
 	private final AbstractWindow<?> window;
 
 	/* package-private */ContentPane( AbstractWindow<?> window ) {
@@ -53,28 +56,28 @@ public final class ContentPane extends SwingComponentView<javax.swing.JPanel> {/
 	}
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		return (javax.swing.JPanel)this.window.getAwtContentPane();
+	protected JPanel createAwtComponent() {
+		return (JPanel)this.window.getAwtContentPane();
 	}
 
 	public void addCenterComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, java.awt.BorderLayout.CENTER );
+		this.internalAddComponent( component, BorderLayout.CENTER );
 	}
 
 	public void addPageStartComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, java.awt.BorderLayout.PAGE_START );
+		this.internalAddComponent( component, BorderLayout.PAGE_START );
 	}
 
 	public void addPageEndComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, java.awt.BorderLayout.PAGE_END );
+		this.internalAddComponent( component, BorderLayout.PAGE_END );
 	}
 
 	public void addLineStartComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, java.awt.BorderLayout.LINE_START );
+		this.internalAddComponent( component, BorderLayout.LINE_START );
 	}
 
 	public void addLineEndComponent( AwtComponentView<?> component ) {
-		this.internalAddComponent( component, java.awt.BorderLayout.LINE_END );
+		this.internalAddComponent( component, BorderLayout.LINE_END );
 	}
 
 	public void removeComponent( AwtComponentView<?> component ) {

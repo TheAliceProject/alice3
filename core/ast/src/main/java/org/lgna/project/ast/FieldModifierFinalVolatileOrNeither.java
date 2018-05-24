@@ -43,6 +43,9 @@
 
 package org.lgna.project.ast;
 
+import java.lang.reflect.Modifier;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,8 +64,8 @@ public enum FieldModifierFinalVolatileOrNeither {
 	//		}
 	//		return rv;
 	//	}
-	FINAL( java.lang.reflect.Modifier.FINAL ),
-	VOLATILE( java.lang.reflect.Modifier.VOLATILE ),
+	FINAL( Modifier.FINAL ),
+	VOLATILE( Modifier.VOLATILE ),
 	NEITHER();
 	private int[] m_modifiers;
 
@@ -70,7 +73,7 @@ public enum FieldModifierFinalVolatileOrNeither {
 		m_modifiers = modifiers;
 	}
 
-	public java.util.Set<Integer> updateModifiers( java.util.Set<Integer> rv ) {
+	public Set<Integer> updateModifiers( Set<Integer> rv ) {
 		for( int modifier : m_modifiers ) {
 			rv.add( modifier );
 		}
@@ -79,9 +82,9 @@ public enum FieldModifierFinalVolatileOrNeither {
 
 	//todo: rename
 	public static FieldModifierFinalVolatileOrNeither get( int modifiers ) {
-		if( java.lang.reflect.Modifier.isFinal( modifiers ) ) {
+		if( Modifier.isFinal( modifiers ) ) {
 			return FieldModifierFinalVolatileOrNeither.FINAL;
-		} else if( java.lang.reflect.Modifier.isVolatile( modifiers ) ) {
+		} else if( Modifier.isVolatile( modifiers ) ) {
 			return FieldModifierFinalVolatileOrNeither.VOLATILE;
 		} else {
 			return FieldModifierFinalVolatileOrNeither.NEITHER;

@@ -43,28 +43,31 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum MoveDirection {
-	LEFT( edu.cmu.cs.dennisc.math.Vector3.createNegativeXAxis() ),
-	RIGHT( edu.cmu.cs.dennisc.math.Vector3.createPositiveXAxis() ),
-	UP( edu.cmu.cs.dennisc.math.Vector3.createPositiveYAxis() ),
-	DOWN( edu.cmu.cs.dennisc.math.Vector3.createNegativeYAxis() ),
-	FORWARD( edu.cmu.cs.dennisc.math.Vector3.createNegativeZAxis() ),
-	BACKWARD( edu.cmu.cs.dennisc.math.Vector3.createPositiveZAxis() );
+	LEFT( Vector3.createNegativeXAxis() ),
+	RIGHT( Vector3.createPositiveXAxis() ),
+	UP( Vector3.createPositiveYAxis() ),
+	DOWN( Vector3.createNegativeYAxis() ),
+	FORWARD( Vector3.createNegativeZAxis() ),
+	BACKWARD( Vector3.createPositiveZAxis() );
 
-	private final edu.cmu.cs.dennisc.math.Vector3 axis;
+	private final Vector3 axis;
 
-	private MoveDirection( edu.cmu.cs.dennisc.math.Vector3 axis ) {
+	private MoveDirection( Vector3 axis ) {
 		this.axis = axis;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.math.Vector3 getAxis() {
+	/* package-private */Vector3 getAxis() {
 		return this.axis;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.math.Point3 createTranslation( double scalar ) {
-		return new edu.cmu.cs.dennisc.math.Point3( this.axis.x * scalar, this.axis.y * scalar, this.axis.z * scalar );
+	/* package-private */Point3 createTranslation( double scalar ) {
+		return new Point3( this.axis.x * scalar, this.axis.y * scalar, this.axis.z * scalar );
 	}
 }

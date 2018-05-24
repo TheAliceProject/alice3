@@ -42,7 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
+import org.lgna.story.Color;
+import org.lgna.story.SCameraMarker;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,7 +63,7 @@ public class AddCameraMarkerFieldComposite extends AddMarkerFieldComposite {
 	}
 
 	private AddCameraMarkerFieldComposite() {
-		super( java.util.UUID.fromString( "4ba682d4-4375-4330-b809-266c1a08701e" ), org.lgna.story.SCameraMarker.class );
+		super( UUID.fromString( "4ba682d4-4375-4330-b809-266c1a08701e" ), SCameraMarker.class );
 	}
 
 	@Override
@@ -66,12 +72,12 @@ public class AddCameraMarkerFieldComposite extends AddMarkerFieldComposite {
 	}
 
 	@Override
-	protected org.lgna.story.Color getInitialMarkerColor() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewCameraMarker();
+	protected Color getInitialMarkerColor() {
+		return StageIDE.getActiveInstance().getSceneEditor().getColorForNewCameraMarker();
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInitialMarkerTransform() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewCameraMarker();
+	protected AffineMatrix4x4 getInitialMarkerTransform() {
+		return StageIDE.getActiveInstance().getSceneEditor().getTransformForNewCameraMarker();
 	}
 }

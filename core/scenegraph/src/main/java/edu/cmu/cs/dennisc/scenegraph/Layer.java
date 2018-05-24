@@ -43,6 +43,15 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 public class Layer extends Element {
 	public void addGraphic( Graphic graphic ) {
 		graphic.setParent( this );
@@ -56,27 +65,27 @@ public class Layer extends Element {
 		}
 	}
 
-	public java.util.Collection<Graphic> getGraphics() {
-		return java.util.Collections.unmodifiableCollection( this.graphics );
+	public Collection<Graphic> getGraphics() {
+		return Collections.unmodifiableCollection( this.graphics );
 	}
 
-	public void addGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
+	public void addGraphicsListener( GraphicsListener l ) {
 		this.graphicsListeners.add( l );
 	}
 
-	public void removeGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
+	public void removeGraphicsListener( GraphicsListener l ) {
 		this.graphicsListeners.remove( l );
 	}
 
-	public java.util.Collection<edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener> getGraphicsListeners() {
-		return java.util.Collections.unmodifiableCollection( this.graphicsListeners );
+	public Collection<GraphicsListener> getGraphicsListeners() {
+		return Collections.unmodifiableCollection( this.graphicsListeners );
 	}
 
 	/* package-private */void addGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.add( graphic );
 		if( this.graphicsListeners.size() > 0 ) {
-			edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent( this, graphic );
-			for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
+			GraphicAddedEvent e = new GraphicAddedEvent( this, graphic );
+			for( GraphicsListener l : this.graphicsListeners ) {
 				l.graphicAdded( e );
 			}
 		}
@@ -85,13 +94,13 @@ public class Layer extends Element {
 	/* package-private */void removeGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.remove( graphic );
 		if( this.graphicsListeners.size() > 0 ) {
-			edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent( this, graphic );
-			for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
+			GraphicRemovedEvent e = new GraphicRemovedEvent( this, graphic );
+			for( GraphicsListener l : this.graphicsListeners ) {
 				l.graphicRemoved( e );
 			}
 		}
 	}
 
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener> graphicsListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();;
-	private final java.util.List<Graphic> graphics = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<GraphicsListener> graphicsListeners = Lists.newCopyOnWriteArrayList();;
+	private final List<Graphic> graphics = Lists.newCopyOnWriteArrayList();
 }

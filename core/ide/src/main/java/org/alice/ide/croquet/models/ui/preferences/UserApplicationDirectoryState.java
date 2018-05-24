@@ -42,15 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.preferences;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.alice.ide.IDE;
+import org.lgna.croquet.Application;
+
+import java.io.File;
+import java.net.URI;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Kyle Harms, Dennis Cosgrove
  */
 public class UserApplicationDirectoryState extends DirectoryState {
 	public static final String KEY = "${user_application_documents}";
-	private static final java.util.regex.Pattern KEY_PATTERN = java.util.regex.Pattern.compile( java.util.regex.Pattern.quote( KEY ) );
+	private static final Pattern KEY_PATTERN = Pattern.compile( Pattern.quote( KEY ) );
 
 	public String substituteKeyIfNecessary( String value, String defaultValue ) {
-		java.util.regex.Matcher matcher = KEY_PATTERN.matcher( value );
+		Matcher matcher = KEY_PATTERN.matcher( value );
 		String userApplicationDirectoryValue = this.getValue();
 		try {
 			//throw new IllegalArgumentException();
@@ -69,16 +79,16 @@ public class UserApplicationDirectoryState extends DirectoryState {
 			} else if( defaultValue.startsWith( KEY ) ) {
 				return userApplicationDirectoryValue + defaultValue.substring( KEY.length() );
 			} else {
-				java.util.regex.Matcher defaultMatcher = KEY_PATTERN.matcher( defaultValue );
+				Matcher defaultMatcher = KEY_PATTERN.matcher( defaultValue );
 				return defaultMatcher.replaceAll( userApplicationDirectoryValue );
 			}
 		}
 	}
 
 	private static String getInitialValue() {
-		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-		java.io.File directory = new java.io.File( defaultDirectory, org.alice.ide.IDE.getApplicationSubPath() );
-		java.net.URI uri = directory.toURI();
+		File defaultDirectory = FileUtilities.getDefaultDirectory();
+		File directory = new File( defaultDirectory, IDE.getApplicationSubPath() );
+		URI uri = directory.toURI();
 		return uri.toString();
 	}
 
@@ -92,8 +102,8 @@ public class UserApplicationDirectoryState extends DirectoryState {
 
 	private UserApplicationDirectoryState() {
 		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "5f80de2f-5119-4131-96d0-c0b80919a589" ),
+				Application.DOCUMENT_UI_GROUP,
+				UUID.fromString( "5f80de2f-5119-4131-96d0-c0b80919a589" ),
 				getInitialValue() );
 	}
 

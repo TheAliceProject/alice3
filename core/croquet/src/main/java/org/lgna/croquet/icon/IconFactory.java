@@ -42,19 +42,22 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import javax.swing.Icon;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface IconFactory {
-	public javax.swing.Icon getIcon( java.awt.Dimension size );
+	public Icon getIcon( Dimension size );
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent );
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent );
 
-	public java.awt.Dimension getDefaultSizeForWidth( int width );
+	public Dimension getDefaultSizeForWidth( int width );
 
-	public java.awt.Dimension getDefaultSizeForHeight( int height );
+	public Dimension getDefaultSizeForHeight( int height );
 
-	public java.awt.Dimension getTrimmedSizeForWidth( int width );
+	public Dimension getTrimmedSizeForWidth( int width );
 
-	public java.awt.Dimension getTrimmedSizeForHeight( int height );
+	public Dimension getTrimmedSizeForHeight( int height );
 }

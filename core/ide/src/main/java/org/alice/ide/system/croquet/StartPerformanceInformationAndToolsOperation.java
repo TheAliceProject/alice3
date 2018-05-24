@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.system.croquet;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class StartPerformanceInformationAndToolsOperation extends org.lgna.croquet.ActionOperation {
+public final class StartPerformanceInformationAndToolsOperation extends ActionOperation {
 	private static class SingletonHolder {
 		private static StartPerformanceInformationAndToolsOperation instance = new StartPerformanceInformationAndToolsOperation();
 	}
@@ -55,15 +62,15 @@ public final class StartPerformanceInformationAndToolsOperation extends org.lgna
 	}
 
 	private StartPerformanceInformationAndToolsOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "34fb0683-dc63-4dfa-adad-0d026e831e89" ) );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "34fb0683-dc63-4dfa-adad-0d026e831e89" ) );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( "control", "/name", "Microsoft.PerformanceInformationAndTools" );
 		try {
 			Process process = processBuilder.start();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 		step.finish();

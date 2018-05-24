@@ -42,19 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Shape;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShapeIcon implements javax.swing.Icon {
-	private java.awt.Shape shape;
-	private java.awt.Paint fillPaint;
-	private java.awt.Paint drawPaint;
+public class ShapeIcon implements Icon {
+	private Shape shape;
+	private Paint fillPaint;
+	private Paint drawPaint;
 	private int top;
 	private int left;
 	private int bottom;
 	private int right;
 
-	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint, int top, int left, int bottom, int right ) {
+	public ShapeIcon( Shape shape, Paint fillPaint, Paint drawPaint, int top, int left, int bottom, int right ) {
 		this.shape = shape;
 		this.fillPaint = fillPaint;
 		this.drawPaint = drawPaint;
@@ -64,11 +72,11 @@ public class ShapeIcon implements javax.swing.Icon {
 		this.right = right;
 	}
 
-	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint, java.awt.Insets insets ) {
+	public ShapeIcon( Shape shape, Paint fillPaint, Paint drawPaint, Insets insets ) {
 		this( shape, fillPaint, drawPaint, insets.top, insets.left, insets.bottom, insets.right );
 	}
 
-	public ShapeIcon( java.awt.Shape shape, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	public ShapeIcon( Shape shape, Paint fillPaint, Paint drawPaint ) {
 		this( shape, fillPaint, drawPaint, 0, 0, 0, 0 );
 	}
 
@@ -91,12 +99,12 @@ public class ShapeIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		Graphics2D g2 = (Graphics2D)g;
 
 		g2.translate( x + this.left, y + this.top );
 
-		java.awt.Paint prevPaint = g2.getPaint();
+		Paint prevPaint = g2.getPaint();
 		if( this.fillPaint != null ) {
 			g2.setPaint( this.fillPaint );
 			g2.fill( this.shape );

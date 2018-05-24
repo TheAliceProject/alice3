@@ -42,87 +42,101 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.triggers.WindowEventTrigger;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.Frame;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class DocumentFrame {
 	public DocumentFrame() {
-		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
+		this.frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( this.windowListener );
-		this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.getFrame() );
+		this.stack = Stacks.newStack( this.getFrame() );
 	}
 
 	public abstract Document getDocument();
 
-	public org.lgna.croquet.views.Frame getFrame() {
+	public Frame getFrame() {
 		return this.frame;
 	}
 
-	public void pushWindow( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	public void pushWindow( AbstractWindow<?> window ) {
 		this.stack.push( window );
 	}
 
-	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.views.AbstractWindow<?> rv = this.stack.peek();
+	public AbstractWindow<?> popWindow() {
+		AbstractWindow<?> rv = this.stack.peek();
 		this.stack.pop();
 		return rv;
 	}
 
-	public org.lgna.croquet.views.AbstractWindow<?> peekWindow() {
+	public AbstractWindow<?> peekWindow() {
 		if( this.stack.size() > 0 ) {
 			return this.stack.peek();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "window stack is empty" );
+			Logger.severe( "window stack is empty" );
 			return null;
 		}
 	}
 
 	@Deprecated
-	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
+	public File showOpenFileDialog( File directory, String filename, String extension, boolean isSharingDesired ) {
+		return FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 
 	@Deprecated
-	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
+	public File showSaveFileDialog( File directory, String filename, String extension, boolean isSharingDesired ) {
+		return FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 
-	public java.io.File showOpenFileDialog( java.util.UUID sharingId, String dialogTitle, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
+	public File showOpenFileDialog( UUID sharingId, String dialogTitle, File initialDirectory, String initialFilename, FilenameFilter filenameFilter ) {
+		return FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
 	}
 
-	private final org.lgna.croquet.views.Frame frame = org.lgna.croquet.views.Frame.getApplicationRootFrame();
+	private final Frame frame = Frame.getApplicationRootFrame();
 	//private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.frame );
-	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+	private final WindowListener windowListener = new WindowListener() {
 		@Override
-		public void windowOpened( java.awt.event.WindowEvent e ) {
+		public void windowOpened( WindowEvent e ) {
 			Application.getActiveInstance().handleWindowOpened( e );
 		}
 
 		@Override
-		public void windowClosing( java.awt.event.WindowEvent e ) {
-			Application.getActiveInstance().handleQuit( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
+		public void windowClosing( WindowEvent e ) {
+			Application.getActiveInstance().handleQuit( WindowEventTrigger.createUserInstance( e ) );
 		}
 
 		@Override
-		public void windowClosed( java.awt.event.WindowEvent e ) {
+		public void windowClosed( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowActivated( java.awt.event.WindowEvent e ) {
+		public void windowActivated( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowDeactivated( java.awt.event.WindowEvent e ) {
+		public void windowDeactivated( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowIconified( java.awt.event.WindowEvent e ) {
+		public void windowIconified( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowDeiconified( java.awt.event.WindowEvent e ) {
+		public void windowDeiconified( WindowEvent e ) {
 		}
 	};
-	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack;
+	private final DStack<AbstractWindow<?>> stack;
 }

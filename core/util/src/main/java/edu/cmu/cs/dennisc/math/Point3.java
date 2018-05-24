@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.math.immutable.MPoint3;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class Point3 extends Tuple3 {
-	public final static edu.cmu.cs.dennisc.math.Point3 ORIGIN = edu.cmu.cs.dennisc.math.Point3.createZero();
+	public final static Point3 ORIGIN = Point3.createZero();
 
 	public Point3() {
 	}
@@ -59,7 +61,7 @@ public final class Point3 extends Tuple3 {
 		super( x, y, z );
 	}
 
-	public Point3( edu.cmu.cs.dennisc.math.immutable.MPoint3 other ) {
+	public Point3( MPoint3 other ) {
 		this( other.x, other.y, other.z );
 	}
 
@@ -128,7 +130,7 @@ public final class Point3 extends Tuple3 {
 		return Math.sqrt( calculateDistanceSquaredBetween( a, b ) );
 	}
 
-	public edu.cmu.cs.dennisc.math.immutable.MPoint3 createImmutable() {
-		return new edu.cmu.cs.dennisc.math.immutable.MPoint3( this.x, this.y, this.z );
+	public MPoint3 createImmutable() {
+		return new MPoint3( this.x, this.y, this.z );
 	}
 }

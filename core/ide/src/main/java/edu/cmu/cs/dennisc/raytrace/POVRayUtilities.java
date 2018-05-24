@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.raytrace;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Tuple3;
+import edu.cmu.cs.dennisc.pattern.VisitUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AmbientLight;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
@@ -64,19 +71,21 @@ import edu.cmu.cs.dennisc.scenegraph.TriangleFan;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
+import java.io.PrintWriter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class POVRayUtilities {
-	private static String toString( edu.cmu.cs.dennisc.color.Color4f color ) {
+	private static String toString( Color4f color ) {
 		return "color rgb <" + color.red + ", " + color.green + ", " + color.blue + ">";
 	}
 
-	private static String toString( edu.cmu.cs.dennisc.color.Color4f color, float opacity ) {
+	private static String toString( Color4f color, float opacity ) {
 		return "color rgbt <" + color.red + ", " + color.green + ", " + color.blue + ", " + ( 1.0 - ( color.alpha * opacity ) ) + ">";
 	}
 
-	private static String toString( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	private static String toString( AffineMatrix4x4 m ) {
 		return "matrix < " +
 				m.orientation.right.x + ", " + m.orientation.right.y + ", " + -m.orientation.right.z + ", " +
 				m.orientation.up.x + ", " + m.orientation.up.y + ", " + -m.orientation.up.z + ", " +
@@ -88,17 +97,17 @@ public class POVRayUtilities {
 		return "<" + x + ", " + y + ", " + -z + ">";
 	}
 
-	private static String toString( edu.cmu.cs.dennisc.math.Tuple3 t ) {
+	private static String toString( Tuple3 t ) {
 		return toString( t.x, t.y, t.z );
 	}
 
-	private static void exportBackground( java.io.PrintWriter pw, Background sgBackground ) {
+	private static void exportBackground( PrintWriter pw, Background sgBackground ) {
 		pw.println( "background {" );
 		pw.println( toString( sgBackground.color.getValue() ) );
 		pw.println( "}" );
 	}
 
-	private static void exportGeometry( java.io.PrintWriter pw, Geometry sgGeometry, Appearance sgAppearance, double reflection, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	private static void exportGeometry( PrintWriter pw, Geometry sgGeometry, Appearance sgAppearance, double reflection, AffineMatrix4x4 m ) {
 		if( sgGeometry instanceof Sphere ) {
 			Sphere sgSphere = (Sphere)sgGeometry;
 			pw.println( "sphere {" );
@@ -111,8 +120,8 @@ public class POVRayUtilities {
 		} else if( sgGeometry instanceof Cylinder ) {
 			Cylinder sgCylinder = (Cylinder)sgGeometry;
 			pw.println( "cone {" );
-			edu.cmu.cs.dennisc.math.Point3 base = sgCylinder.getCenterOfBottom();
-			edu.cmu.cs.dennisc.math.Point3 cap = sgCylinder.getCenterOfTop();
+			Point3 base = sgCylinder.getCenterOfBottom();
+			Point3 cap = sgCylinder.getCenterOfTop();
 			pw.println( toString( base ) );
 			pw.println( sgCylinder.bottomRadius.getValue() + ", " );
 			pw.println( toString( cap ) );
@@ -122,11 +131,11 @@ public class POVRayUtilities {
 				if( sgCylinder.hasBottomCap.getValue() ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
+					Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
 				}
 			} else {
 				if( sgCylinder.hasBottomCap.getValue() ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
+					Logger.todo( "UNHANDLED CYLINDER CAP STATE: " + sgCylinder );
 				} else {
 					pw.println( "open" );
 				}
@@ -139,8 +148,8 @@ public class POVRayUtilities {
 			pw.println( toString( m ) );
 		} else if( sgGeometry instanceof Box ) {
 			Box sgBox = (Box)sgGeometry;
-			edu.cmu.cs.dennisc.math.Point3 minimum = sgBox.getMinimum();
-			edu.cmu.cs.dennisc.math.Point3 maximum = sgBox.getMaximum();
+			Point3 minimum = sgBox.getMinimum();
+			Point3 maximum = sgBox.getMaximum();
 			pw.println( "box {" );
 			pw.print( toString( minimum ) );
 			pw.print( ", " );
@@ -154,7 +163,7 @@ public class POVRayUtilities {
 			Vertex[] sgVertices = sgTriangleFan.vertices.getValue();
 			for( int i = 0; i < n; i++ ) {
 				Vertex sgVertex = sgVertices[ i ];
-				edu.cmu.cs.dennisc.math.Point3 p = new edu.cmu.cs.dennisc.math.Point3( sgVertex.position );
+				Point3 p = new Point3( sgVertex.position );
 				m.transform( p );
 				pw.print( toString( p ) );
 				if( i < ( n - 1 ) ) {
@@ -164,11 +173,11 @@ public class POVRayUtilities {
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED GEOMETRY: " + sgGeometry );
+			Logger.todo( "UNHANDLED GEOMETRY: " + sgGeometry );
 			return;
 		}
 
-		edu.cmu.cs.dennisc.color.Color4f color = null;
+		Color4f color = null;
 		float opacity = Float.NaN;
 		float specular = Float.NaN;
 		if( sgAppearance instanceof TexturedAppearance ) {
@@ -197,8 +206,8 @@ public class POVRayUtilities {
 		pw.println( "}" );
 	}
 
-	private static void exportVisual( java.io.PrintWriter pw, Visual sgVisual ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgVisual.getAbsoluteTransformation();
+	private static void exportVisual( PrintWriter pw, Visual sgVisual ) {
+		AffineMatrix4x4 m = sgVisual.getAbsoluteTransformation();
 		Appearance sgAppearance = sgVisual.frontFacingAppearance.getValue();
 		double reflection;
 		if( sgVisual instanceof PlanarReflector ) {
@@ -211,12 +220,12 @@ public class POVRayUtilities {
 		}
 	}
 
-	private static void exportLight( java.io.PrintWriter pw, Light sgLight ) {
+	private static void exportLight( PrintWriter pw, Light sgLight ) {
 		if( sgLight instanceof AmbientLight ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED AMBIENT LIGHT: " + sgLight );
+			Logger.todo( "UNHANDLED AMBIENT LIGHT: " + sgLight );
 			return;
 		}
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
+		AffineMatrix4x4 m = sgLight.getAbsoluteTransformation();
 		pw.println( "light_source { " );
 		pw.println( "<" + m.translation.x + ", " + m.translation.y + ", " + -m.translation.z + ">" );
 		pw.println( toString( sgLight.color.getValue() ) );
@@ -233,12 +242,12 @@ public class POVRayUtilities {
 			pw.print( "point_at " );
 			pw.println( toString( x, y, z ) );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "UNHANDLED LIGHT: " + sgLight );
+			Logger.todo( "UNHANDLED LIGHT: " + sgLight );
 		}
 		pw.println( "}" );
 	}
 
-	public static void export( java.io.PrintWriter pw, AbstractCamera sgCamera ) {
+	public static void export( PrintWriter pw, AbstractCamera sgCamera ) {
 		//AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
 		Composite sgRoot = sgCamera.getRoot();
 		if( sgRoot instanceof Scene ) {
@@ -251,12 +260,12 @@ public class POVRayUtilities {
 			}
 			exportBackground( pw, background );
 
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
+			AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
 			pw.println( "camera {" );
 			pw.println( toString( m ) );
 			if( sgCamera instanceof SymmetricPerspectiveCamera ) {
 				SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera = (SymmetricPerspectiveCamera)sgCamera;
-				edu.cmu.cs.dennisc.math.Angle angle = sgSymmetricPerspectiveCamera.horizontalViewingAngle.getValue();
+				Angle angle = sgSymmetricPerspectiveCamera.horizontalViewingAngle.getValue();
 				double degrees;
 				if( angle.isNaN() ) {
 					//todo
@@ -269,10 +278,10 @@ public class POVRayUtilities {
 			}
 			pw.println( "}" );
 
-			for( Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgScene, Visual.class ) ) {
+			for( Visual sgVisual : VisitUtilities.getAll( sgScene, Visual.class ) ) {
 				exportVisual( pw, sgVisual );
 			}
-			for( Light sgLight : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgScene, Light.class ) ) {
+			for( Light sgLight : VisitUtilities.getAll( sgScene, Light.class ) ) {
 				exportLight( pw, sgLight );
 			}
 			pw.flush();

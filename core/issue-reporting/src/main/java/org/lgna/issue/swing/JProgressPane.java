@@ -42,37 +42,52 @@
  *******************************************************************************/
 package org.lgna.issue.swing;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.javax.swing.DocumentUtilities;
+import org.lgna.issue.IssueSubmissionProgressWorker;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.text.Document;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JProgressPane extends javax.swing.JPanel {
-	private class RunInBackgroundAction extends javax.swing.AbstractAction {
+public class JProgressPane extends JPanel {
+	private class RunInBackgroundAction extends AbstractAction {
 		public RunInBackgroundAction() {
 			super( "run in background" );
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			isBackgrounded = true;
-			javax.swing.SwingUtilities.getRoot( JProgressPane.this ).setVisible( false );
+			SwingUtilities.getRoot( JProgressPane.this ).setVisible( false );
 			worker.hideOwnerDialog();
 		}
 	}
 
-	public JProgressPane( org.lgna.issue.IssueSubmissionProgressWorker worker ) {
+	public JProgressPane( IssueSubmissionProgressWorker worker ) {
 		this.worker = worker;
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.textArea );
+		JScrollPane scrollPane = new JScrollPane( this.textArea );
 
-		this.runInBackgroundButton = new javax.swing.JButton( new RunInBackgroundAction() );
-		javax.swing.JPanel bottomPane = new javax.swing.JPanel();
-		bottomPane.setLayout( new java.awt.FlowLayout( java.awt.FlowLayout.TRAILING ) );
+		this.runInBackgroundButton = new JButton( new RunInBackgroundAction() );
+		JPanel bottomPane = new JPanel();
+		bottomPane.setLayout( new FlowLayout( FlowLayout.TRAILING ) );
 		bottomPane.add( this.runInBackgroundButton );
 
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( scrollPane, java.awt.BorderLayout.CENTER );
-		this.add( bottomPane, java.awt.BorderLayout.PAGE_END );
+		this.setLayout( new BorderLayout() );
+		this.add( scrollPane, BorderLayout.CENTER );
+		this.add( bottomPane, BorderLayout.PAGE_END );
 
-		this.setPreferredSize( edu.cmu.cs.dennisc.java.awt.DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 600 ) );
+		this.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromWidth( 600 ) );
 	}
 
 	@Override
@@ -82,17 +97,17 @@ public class JProgressPane extends javax.swing.JPanel {
 	}
 
 	public void addMessage( String message ) {
-		javax.swing.text.Document document = this.textArea.getDocument();
-		edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.appendString( document, message );
-		edu.cmu.cs.dennisc.javax.swing.DocumentUtilities.appendString( document, "\n" );
+		Document document = this.textArea.getDocument();
+		DocumentUtilities.appendString( document, message );
+		DocumentUtilities.appendString( document, "\n" );
 	}
 
 	public boolean isBackgrounded() {
 		return this.isBackgrounded;
 	}
 
-	private final org.lgna.issue.IssueSubmissionProgressWorker worker;
-	private final javax.swing.JTextArea textArea = new javax.swing.JTextArea();
-	private final javax.swing.JButton runInBackgroundButton;
+	private final IssueSubmissionProgressWorker worker;
+	private final JTextArea textArea = new JTextArea();
+	private final JButton runInBackgroundButton;
 	private boolean isBackgrounded;
 }

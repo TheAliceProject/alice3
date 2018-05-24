@@ -42,9 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
 
 /**
  * @author alice
  */
-public class GlrTexturedVisual<T extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual> extends GlrVisual<T> {
+public class GlrTexturedVisual<T extends TexturedVisual> extends GlrVisual<T> {
 }

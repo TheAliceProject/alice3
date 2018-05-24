@@ -43,10 +43,17 @@
 
 package org.alice.stageide.perspectives.scenesetup;
 
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.stageide.gallerybrowser.GalleryComposite;
+import org.alice.stageide.perspectives.scenesetup.views.SetupScenePerspectiveView;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspectiveComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.perspectives.scenesetup.views.SetupScenePerspectiveView> {
+public class SetupScenePerspectiveComposite extends SimpleComposite<SetupScenePerspectiveView> {
 	private static class SingletonHolder {
 		private static SetupScenePerspectiveComposite instance = new SetupScenePerspectiveComposite();
 	}
@@ -55,29 +62,29 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SimpleCompo
 		return SingletonHolder.instance;
 	}
 
-	private final org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite sceneLayoutComposite;
-	private final org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite;
+	private final SceneLayoutComposite sceneLayoutComposite;
+	private final GalleryComposite galleryComposite;
 
 	private SetupScenePerspectiveComposite() {
-		super( java.util.UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ) );
-		this.sceneLayoutComposite = this.registerSubComposite( new org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite() );
-		this.galleryComposite = this.registerSubComposite( new org.alice.stageide.gallerybrowser.GalleryComposite() );
+		super( UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ) );
+		this.sceneLayoutComposite = this.registerSubComposite( new SceneLayoutComposite() );
+		this.galleryComposite = this.registerSubComposite( new GalleryComposite() );
 	}
 
-	public org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite getSceneLayoutComposite() {
+	public SceneLayoutComposite getSceneLayoutComposite() {
 		return this.sceneLayoutComposite;
 	}
 
-	public org.alice.stageide.gallerybrowser.GalleryComposite getGalleryComposite() {
+	public GalleryComposite getGalleryComposite() {
 		return this.galleryComposite;
 	}
 
 	@Override
-	protected org.alice.stageide.perspectives.scenesetup.views.SetupScenePerspectiveView createView() {
-		return new org.alice.stageide.perspectives.scenesetup.views.SetupScenePerspectiveView( this );
+	protected SetupScenePerspectiveView createView() {
+		return new SetupScenePerspectiveView( this );
 	}
 
-	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
+	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
 		return this.galleryComposite.getDragModelForCls( cls );
 	}
 }

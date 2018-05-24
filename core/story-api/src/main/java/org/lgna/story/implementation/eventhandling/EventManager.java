@@ -43,13 +43,19 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import java.awt.Component;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.RuntimeDragAdapter;
 import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
@@ -125,9 +131,9 @@ public class EventManager {
 
 	public final CustomLenientMouseAdapter mouseAdapter = new CustomLenientMouseAdapter();
 
-	private class CustomLenientMouseAdapter extends edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter {
+	private class CustomLenientMouseAdapter extends LenientMouseClickAdapter {
 		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
 			inputRecorder.record( createWrapper( e ) );
 			EventManager.this.mouseHandler.handleMouseQuoteClickedUnquote( e, /* quoteClickCountUnquote, */EventManager.this.scene.getAbstraction() );
 		}
@@ -137,7 +143,7 @@ public class EventManager {
 		}
 	};
 
-	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+	private KeyListener keyAdapter = new KeyListener() {
 		@Override
 		public void keyPressed( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
@@ -153,11 +159,11 @@ public class EventManager {
 		}
 
 		@Override
-		public void keyTyped( java.awt.event.KeyEvent e ) {
+		public void keyTyped( KeyEvent e ) {
 		}
 	};
 
-	private java.awt.event.FocusListener focusAdapter = new java.awt.event.FocusListener() {
+	private FocusListener focusAdapter = new FocusListener() {
 
 		@Override public void focusGained( FocusEvent e ) {
 		}
@@ -170,7 +176,7 @@ public class EventManager {
 	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
-	private org.alice.interact.AbstractDragAdapter dragAdapter;
+	private AbstractDragAdapter dragAdapter;
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;
@@ -196,7 +202,7 @@ public class EventManager {
 	}
 
 	public void addListenersTo( OnscreenRenderTarget onscreenRenderTarget ) {
-		java.awt.Component component = onscreenRenderTarget.getAwtComponent();
+		Component component = onscreenRenderTarget.getAwtComponent();
 		component.addMouseListener( this.mouseAdapter );
 		component.addMouseMotionListener( this.mouseAdapter );
 		component.addKeyListener( this.keyAdapter );
@@ -204,7 +210,7 @@ public class EventManager {
 	}
 
 	public void removeListenersFrom( OnscreenRenderTarget onscreenRenderTarget ) {
-		java.awt.Component component = onscreenRenderTarget.getAwtComponent();
+		Component component = onscreenRenderTarget.getAwtComponent();
 		component.removeMouseListener( this.mouseAdapter );
 		component.removeMouseMotionListener( this.mouseAdapter );
 		component.removeKeyListener( this.keyAdapter );
@@ -299,7 +305,7 @@ public class EventManager {
 		if( this.dragAdapter != null ) {
 			//pass
 		} else {
-			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
+			this.dragAdapter = new RuntimeDragAdapter();
 			OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
 			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {

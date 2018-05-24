@@ -43,29 +43,39 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAtIndexAssignmentInsertCascade extends AssignmentInsertCascade {
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
+	private final AbstractType<?, ?, ?> arrayType;
 
-	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType<?, ?, ?> arrayType, org.lgna.project.annotations.ValueDetails<?> parameterDetails ) {
-		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
+	public ArrayAtIndexAssignmentInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, AbstractType<?, ?, ?> arrayType, ValueDetails<?> parameterDetails ) {
+		super( id, blockStatementIndexPair, ExpressionBlank.createBlanks( JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
 		this.arrayType = arrayType;
 	}
 
-	protected abstract org.lgna.project.ast.Expression createAccessExpression();
+	protected abstract Expression createAccessExpression();
 
 	@Override
-	protected org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions ) {
-		return new org.lgna.project.ast.ArrayAccess(
+	protected Expression createLeftHandSide( Expression... expressions ) {
+		return new ArrayAccess(
 				this.arrayType,
 				this.createAccessExpression(),
 				expressions[ 0 ] );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	protected AbstractType<?, ?, ?> getValueType() {
 		return this.arrayType.getComponentType();
 	}
 

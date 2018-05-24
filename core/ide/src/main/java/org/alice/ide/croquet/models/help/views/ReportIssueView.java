@@ -45,8 +45,11 @@ package org.alice.ide.croquet.models.help.views;
 import java.awt.Color;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 
+import org.alice.ide.IDE;
+import org.alice.ide.IdeConfiguration;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.issue.swing.views.HeaderPane;
 import org.lgna.croquet.views.BorderPanel;
@@ -55,9 +58,11 @@ import org.lgna.croquet.views.Hyperlink;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LabeledFormRow;
 import org.lgna.croquet.views.PageAxisPanel;
+import org.lgna.croquet.views.TextArea;
 import org.lgna.croquet.views.VerticalAlignment;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.lgna.issue.IssueReportingHub;
 
 /**
  * @author Matt May
@@ -67,7 +72,7 @@ public class ReportIssueView extends AbstractIssueView {
 
 	public ReportIssueView( final ReportIssueComposite composite ) {
 		super( composite );
-		final org.lgna.croquet.views.TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
+		final TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
 		//environmentTextArea.getAwtComponent().setEditable( false );
 		//environmentTextArea.setToolTipText( edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentShortDescription() );
 		FormPanel centerComponent = new FormPanel() {
@@ -97,17 +102,17 @@ public class ReportIssueView extends AbstractIssueView {
 		BorderPanel header = new BorderPanel();
 		header.addLineStartComponent( lineStartPanel );
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
-			org.alice.ide.IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
-			org.lgna.issue.IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
+			IdeConfiguration ideConfiguration = ide.getIdeConfiguration();
+			IssueReportingHub issueReportingHub = ideConfiguration.getIssueReportingHub();
 			if( issueReportingHub.isLoginSupported() ) {
 				header.addLineEndComponent( composite.getLogInOutCardComposite().getView() );
 			}
 		}
 		header.setBackgroundColor( backgroundColor );
-		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		centerComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		header.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		centerComponent.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addPageStartComponent( header );
 		this.addCenterComponent( centerComponent );

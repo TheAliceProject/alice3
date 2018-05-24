@@ -43,11 +43,17 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.data.FieldData;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldState extends FilteredMemberState<org.lgna.project.ast.UserField> {
-	public FieldState( java.util.UUID id, org.alice.ide.declarationseditor.type.data.FieldData data ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id, data );
+public abstract class FieldState extends FilteredMemberState<UserField> {
+	public FieldState( UUID id, FieldData data ) {
+		super( Application.PROJECT_GROUP, id, data );
 	}
 }

@@ -43,18 +43,23 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderUtils;
+import org.lgna.story.SProgram;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultProgramImp extends ProgramImp {
-	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private final ClockBasedAnimator animator = new ClockBasedAnimator();
 
-	public DefaultProgramImp( org.lgna.story.SProgram abstraction ) {
-		super( abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() ) );
+	public DefaultProgramImp( SProgram abstraction ) {
+		super( abstraction, RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new RenderCapabilities.Builder().build() ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.animation.ClockBasedAnimator getAnimator() {
+	public ClockBasedAnimator getAnimator() {
 		return this.animator;
 	}
 }

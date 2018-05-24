@@ -42,17 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine.events;
 
+import org.lgna.project.ast.Expression;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionEvaluationEvent extends VirtualMachineEvent {
-	public ExpressionEvaluationEvent( org.lgna.project.virtualmachine.VirtualMachine vm, org.lgna.project.ast.Expression expression, Object value ) {
+	public ExpressionEvaluationEvent( VirtualMachine vm, Expression expression, Object value ) {
 		super( vm );
 		this.expression = expression;
 		this.value = value;
 	}
 
-	public org.lgna.project.ast.Expression getExpression() {
+	public Expression getExpression() {
 		return this.expression;
 	}
 
@@ -60,6 +63,6 @@ public class ExpressionEvaluationEvent extends VirtualMachineEvent {
 		return this.value;
 	}
 
-	private final org.lgna.project.ast.Expression expression;
+	private final Expression expression;
 	private final Object value;
 }

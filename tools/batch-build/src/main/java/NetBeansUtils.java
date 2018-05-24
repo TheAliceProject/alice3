@@ -41,37 +41,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
 public class NetBeansUtils {
-	private static java.io.File userProperties6File;
-	private static java.io.File userProperties8File;
+	private static File userProperties6File;
+	private static File userProperties8File;
 
 	public static void initialize( Config config ) {
 		if( config.isPlugin6Desired() ) {
 			assert userProperties6File == null : userProperties6File;
-			userProperties6File = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".netbeans/" + config.getNetBeans6Version() + "/build.properties" );
+			userProperties6File = new File( FileUtilities.getUserDirectory(), ".netbeans/" + config.getNetBeans6Version() + "/build.properties" );
 			assert userProperties6File.exists() : userProperties6File;
 		}
 		if( config.isPlugin8Desired() ) {
 			assert userProperties8File == null : userProperties8File;
-			userProperties8File = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + config.getNetBeans8Version() + "/build.properties" );
+			userProperties8File = new File( FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + config.getNetBeans8Version() + "/build.properties" );
 			assert userProperties8File.exists() : userProperties8File;
 		}
 	}
 
-	public static java.io.File getUserProperties6File() {
+	public static File getUserProperties6File() {
 		assert userProperties6File != null : "not initialized";
 		return userProperties6File;
 	}
 
-	public static java.io.File getUserProperties8File() {
+	public static File getUserProperties8File() {
 		assert userProperties8File != null : "not initialized";
 		return userProperties8File;
 	}
 
-	public static java.io.File getUserPropertiesFile( int version ) {
+	public static File getUserPropertiesFile( int version ) {
 		switch( version ) {
 		case 6:
 			return getUserProperties6File();

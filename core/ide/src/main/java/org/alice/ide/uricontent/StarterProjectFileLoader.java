@@ -42,19 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StarterProjectFileLoader extends AbstractFileProjectLoader {
-	public StarterProjectFileLoader( java.net.URI uri ) {
+	public StarterProjectFileLoader( URI uri ) {
 		super( StarterProjectUtilities.toFile( uri ) );
 		this.uri = uri;
 	}
 
 	@Override
-	public java.net.URI getUri() {
+	public URI getUri() {
 		return this.uri;
 	}
 
-	private final java.net.URI uri;
+	private final URI uri;
 }

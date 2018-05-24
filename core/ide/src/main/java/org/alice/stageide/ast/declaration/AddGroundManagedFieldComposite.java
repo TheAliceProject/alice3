@@ -43,17 +43,23 @@
 package org.alice.stageide.ast.declaration;
 
 import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.Paint;
+import org.lgna.story.SGround;
+import org.lgna.story.SetPaint;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 import javax.swing.*;
+import java.util.UUID;
 
 /**
  * @author dculyba
  */
 public class AddGroundManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", org.lgna.story.SGround.SurfaceAppearance.GRASS, org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+	private final CustomItemState<Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", SGround.SurfaceAppearance.GRASS, SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class );
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getPaintState() {
+	public CustomItemState<Expression> getPaintState() {
 		return this.paintState;
 	}
 
@@ -71,6 +77,6 @@ public class AddGroundManagedFieldComposite extends AddPredeterminedValueTypeMan
 	}
 
 	private AddGroundManagedFieldComposite() {
-		super( java.util.UUID.fromString( "50e6e2a7-9857-4ea3-9d98-f1fa16d628f1" ), org.lgna.story.SGround.class );
+		super( UUID.fromString( "50e6e2a7-9857-4ea3-9d98-f1fa16d628f1" ), SGround.class );
 	}
 }

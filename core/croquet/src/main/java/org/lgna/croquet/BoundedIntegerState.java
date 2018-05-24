@@ -42,6 +42,14 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.SpinnerNumberModel;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +58,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 		private static class IntegerSwingModel implements SwingModel<Integer> {
 			private boolean isInTheMidstOfStateChanged = false;
 
-			private class CustomSpinnerNumberModel extends javax.swing.SpinnerNumberModel {
+			private class CustomSpinnerNumberModel extends SpinnerNumberModel {
 				public CustomSpinnerNumberModel( Details details ) {
 					super( details.initialValue, details.minimum, details.maximum, details.stepSize );
 				}
@@ -72,7 +80,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 				}
 			}
 
-			private class CustomBoundedRangeModel extends javax.swing.DefaultBoundedRangeModel {
+			private class CustomBoundedRangeModel extends DefaultBoundedRangeModel {
 				public CustomBoundedRangeModel( Details details ) {
 					super(
 							Math.min( Math.max( details.initialValue, details.minimum ), details.maximum - details.extent ),
@@ -108,12 +116,12 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 			}
 
 			@Override
-			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+			public BoundedRangeModel getBoundedRangeModel() {
 				return this.boundedRangeModel;
 			}
 
 			@Override
-			public javax.swing.SpinnerNumberModel getSpinnerModel() {
+			public SpinnerNumberModel getSpinnerModel() {
 				return this.spinnerModel;
 			}
 
@@ -157,14 +165,14 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 		}
 
 		private final Group group;
-		private final java.util.UUID id;
+		private final UUID id;
 		private int minimum = 0;
 		private int maximum = 100;
 		private int extent = 0;
 		private int stepSize = 1;
 		private int initialValue = 50;
 
-		public Details( Group group, java.util.UUID id ) {
+		public Details( Group group, UUID id ) {
 			this.group = group;
 			this.id = id;
 		}
@@ -209,12 +217,12 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 	}
 
 	@Override
-	public Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Integer decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeInt();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Integer value ) {
 		binaryEncoder.encode( value );
 	}
 

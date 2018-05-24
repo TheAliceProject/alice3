@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.shapes;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite;
+import org.alice.stageide.icons.TextModelIconFactory;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.STextModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TextModelDragModel extends ShapeDragModel {
-	private static final org.lgna.story.STextModel sModel = new org.lgna.story.STextModel();
+	private static final STextModel sModel = new STextModel();
 
 	private static class SingletonHolder {
 		private static TextModelDragModel instance = new TextModelDragModel();
@@ -57,12 +67,12 @@ public class TextModelDragModel extends ShapeDragModel {
 	}
 
 	private TextModelDragModel() {
-		super( java.util.UUID.fromString( "ac8a92e6-ebb7-49b2-bdec-6b17668e4398" ) );
+		super( UUID.fromString( "ac8a92e6-ebb7-49b2-bdec-6b17668e4398" ) );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	public AxisAlignedBox getBoundingBox() {
+		return EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
 
 	@Override
@@ -71,12 +81,12 @@ public class TextModelDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		return org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getLaunchOperation();
+	public Model getLeftButtonClickModel() {
+		return AddTextModelManagedFieldOperationComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.TextModelIconFactory.getInstance();
+	public IconFactory getIconFactory() {
+		return TextModelIconFactory.getInstance();
 	}
 }

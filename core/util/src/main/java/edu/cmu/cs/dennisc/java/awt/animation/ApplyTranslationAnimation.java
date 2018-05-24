@@ -42,40 +42,46 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.animation;
 
+import edu.cmu.cs.dennisc.math.InterpolationUtilities;
+import edu.cmu.cs.dennisc.math.Point2f;
+
+import java.awt.Component;
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ApplyTranslationAnimation extends SubjectAnimation {
-	private edu.cmu.cs.dennisc.math.Point2f m_translation = new edu.cmu.cs.dennisc.math.Point2f();
-	private edu.cmu.cs.dennisc.math.Point2f m_sum = new edu.cmu.cs.dennisc.math.Point2f();
-	private edu.cmu.cs.dennisc.math.Point2f m_interp = new edu.cmu.cs.dennisc.math.Point2f();
-	private java.awt.Point m_runtime = new java.awt.Point();
+	private Point2f m_translation = new Point2f();
+	private Point2f m_sum = new Point2f();
+	private Point2f m_interp = new Point2f();
+	private Point m_runtime = new Point();
 
 	public ApplyTranslationAnimation() {
 		m_translation.setNaN();
 		m_sum.setNaN();
 	}
 
-	public ApplyTranslationAnimation( java.awt.Component awtSubject, edu.cmu.cs.dennisc.math.Point2f translation ) {
+	public ApplyTranslationAnimation( Component awtSubject, Point2f translation ) {
 		super( awtSubject );
 		setTranslation( translation );
 		m_sum.setNaN();
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f accessTranslation() {
+	public Point2f accessTranslation() {
 		return m_translation;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getTranslation( edu.cmu.cs.dennisc.math.Point2f rv ) {
+	public Point2f getTranslation( Point2f rv ) {
 		rv.set( m_translation );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getTranslation() {
-		return getTranslation( new edu.cmu.cs.dennisc.math.Point2f() );
+	public Point2f getTranslation() {
+		return getTranslation( new Point2f() );
 	}
 
-	public void setTranslation( edu.cmu.cs.dennisc.math.Point2f translation ) {
+	public void setTranslation( Point2f translation ) {
 		m_translation.set( translation );
 	}
 
@@ -86,7 +92,7 @@ public class ApplyTranslationAnimation extends SubjectAnimation {
 
 	@Override
 	public void setPortion( double portion ) {
-		edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_interp, m_translation, portion );
+		InterpolationUtilities.interpolate( m_interp, m_translation, portion );
 
 		getSubject().getLocation( m_runtime );
 

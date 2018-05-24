@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
+import java.lang.annotation.Annotation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,12 +73,12 @@ public abstract class InvocableReflectionProxy<E> extends MemberReflectionProxy<
 	}
 
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
 		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
 			InvocableReflectionProxy<E> other = (InvocableReflectionProxy<E>)o;
 			if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
 				for( int i = 0; i < this.parameterClassReflectionProxies.length; i++ ) {
-					if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
+					if( Objects.equals( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
 						//pass
 					} else {
 						return false;
@@ -93,14 +97,14 @@ public abstract class InvocableReflectionProxy<E> extends MemberReflectionProxy<
 		return this.parameterClassReflectionProxies;
 	}
 
-	protected abstract java.lang.annotation.Annotation[][] getReifiedParameterAnnotations();
+	protected abstract Annotation[][] getReifiedParameterAnnotations();
 
-	public final java.lang.annotation.Annotation[][] getParameterAnnotations() {
-		java.lang.annotation.Annotation[][] rv = this.getReifiedParameterAnnotations();
+	public final Annotation[][] getParameterAnnotations() {
+		Annotation[][] rv = this.getReifiedParameterAnnotations();
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new java.lang.annotation.Annotation[ this.parameterClassReflectionProxies.length ][];
+			rv = new Annotation[ this.parameterClassReflectionProxies.length ][];
 		}
 		return rv;
 	}

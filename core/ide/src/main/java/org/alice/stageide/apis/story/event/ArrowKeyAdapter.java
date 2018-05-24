@@ -46,8 +46,9 @@ import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.event.ArrowKeyEvent;
+import org.lgna.story.event.ArrowKeyPressListener;
 
-public class ArrowKeyAdapter extends AbstractAdapter implements org.lgna.story.event.ArrowKeyPressListener {
+public class ArrowKeyAdapter extends AbstractAdapter implements ArrowKeyPressListener {
 	public ArrowKeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
 		super( context, lambda, userInstance );
 	}

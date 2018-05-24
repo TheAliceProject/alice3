@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Vector;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,20 +54,20 @@ public class Vectors {
 		throw new Error();
 	}
 
-	public static <E> java.util.Vector<E> newVector() {
-		return new java.util.Vector<E>();
+	public static <E> Vector<E> newVector() {
+		return new Vector<E>();
 	}
 
-	public static <E, X extends E> java.util.Vector<E> newVector( X... array ) {
-		java.util.Vector<E> rv = new java.util.Vector<E>();
+	public static <E, X extends E> Vector<E> newVector( X... array ) {
+		Vector<E> rv = new Vector<E>();
 		if( array != null ) {
-			java.util.Collections.addAll( rv, array );
+			Collections.addAll( rv, array );
 		}
 		return rv;
 	}
 
-	public static <E> java.util.Vector<E> newVector( java.util.Collection<E> other ) {
-		java.util.Vector<E> rv = new java.util.Vector<E>();
+	public static <E> Vector<E> newVector( Collection<E> other ) {
+		Vector<E> rv = new Vector<E>();
 		rv.addAll( other );
 		return rv;
 	}

@@ -44,7 +44,13 @@ package org.alice.media.audio;
 
 import javax.sound.sampled.AudioFormat;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.wustl.lookingglass.media.FFmpegProcess;
 import edu.wustl.lookingglass.media.FFmpegProcessException;
+import org.lgna.common.resources.AudioResource;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Matt May
@@ -54,24 +60,24 @@ public class AudioToWavConverter {
 	private static final float RATE_44 = 44100f;
 	public static final AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 
-	public static org.lgna.common.resources.AudioResource convertAudioIfNecessary( org.lgna.common.resources.AudioResource resource ) {
+	public static AudioResource convertAudioIfNecessary( AudioResource resource ) {
 		if( !AudioResourceConverter.needsConverting( resource, QUICKTIME_AUDIO_FORMAT_PCM ) ) {
 			return resource;
 		}
 		try {
-			java.io.File outputFile = java.io.File.createTempFile( "project-sample", ".wav" );
+			File outputFile = File.createTempFile( "project-sample", ".wav" );
 			outputFile.deleteOnExit();
-			edu.wustl.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
+			FFmpegProcess ffmpegProcess = new FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
 			ffmpegProcess.start();
 			ffmpegProcess.getProcessOutputStream().write( resource.getData() );
 			ffmpegProcess.getProcessOutputStream().flush();
 			int status = ffmpegProcess.stop();
 			if( status != 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+				Logger.severe( "encoding failed; status != 0", status );
 				throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
 			}
-			return new org.lgna.common.resources.AudioResource( outputFile );
-		} catch( java.io.IOException e ) {
+			return new AudioResource( outputFile );
+		} catch( IOException e ) {
 			throw new RuntimeException( "unable to create Temp File", e );
 		}
 	}

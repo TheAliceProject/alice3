@@ -42,12 +42,28 @@
  *******************************************************************************/
 package org.alice.stageide.custom;
 
+import org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec;
+import org.alice.stageide.custom.components.KeyViewController;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.SimpleItemState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.triggers.KeyEventTrigger;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.ComponentManager;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Key;
+
+import java.awt.event.KeyEvent;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.story.Key> {
+public final class KeyState extends SimpleItemState<Key> {
 	private static class SingletonHolder {
 		private static KeyState instance = new KeyState();
 	}
@@ -56,10 +72,10 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 		return SingletonHolder.instance;
 	}
 
-	private org.lgna.story.Key value;
+	private Key value;
 
 	private KeyState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, org.alice.stageide.apis.org.lgna.story.codecs.KeyCodec.SINGLETON );
+		super( Application.INHERIT_GROUP, UUID.fromString( "2af70d3f-d130-4649-9272-e28c5ca5bc15" ), null, KeyCodec.SINGLETON );
 	}
 
 	@Override
@@ -67,7 +83,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	@Override
-	protected org.lgna.story.Key getSwingValue() {
+	protected Key getSwingValue() {
 		return this.value;
 	}
 
@@ -78,34 +94,34 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 		} else {
 			text = null;
 		}
-		for( org.lgna.croquet.views.AwtComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.alice.stageide.custom.components.KeyViewController ) {
-				org.alice.stageide.custom.components.KeyViewController keyViewController = (org.alice.stageide.custom.components.KeyViewController)component;
+		for( AwtComponentView<?> component : ComponentManager.getComponents( this ) ) {
+			if( component instanceof KeyViewController ) {
+				KeyViewController keyViewController = (KeyViewController)component;
 				keyViewController.getAwtComponent().setText( text );
 			}
 		}
 	}
 
 	@Override
-	protected void setSwingValue( org.lgna.story.Key nextValue ) {
+	protected void setSwingValue( Key nextValue ) {
 		this.value = nextValue;
 		this.updateViewControllers();
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
-	public void handleKeyPressed( org.alice.stageide.custom.components.KeyViewController viewController, java.awt.event.KeyEvent e ) {
-		org.lgna.story.Key nextValue = org.lgna.story.EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
-		org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.KeyEventTrigger.createUserInstance( viewController, e );
+	public void handleKeyPressed( KeyViewController viewController, KeyEvent e ) {
+		Key nextValue = EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
+		Trigger trigger = KeyEventTrigger.createUserInstance( viewController, e );
 		this.value = nextValue;
 		this.changeValueFromSwing( this.value, IsAdjusting.FALSE, trigger );
 		this.updateViewControllers();
 	}
 
-	public org.alice.stageide.custom.components.KeyViewController createViewController() {
-		return new org.alice.stageide.custom.components.KeyViewController( this );
+	public KeyViewController createViewController() {
+		return new KeyViewController( this );
 	}
 }

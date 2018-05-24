@@ -42,14 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView;
+import org.alice.ide.ast.declaration.views.EditFieldView;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class EditFieldComposite extends FieldComposite {
-	private final org.lgna.project.ast.UserField field;
-	private final org.lgna.project.ast.UserField previewField = new org.lgna.project.ast.UserField();
+	private final UserField field;
+	private final UserField previewField = new UserField();
 
-	public EditFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.UserField field, ApplicabilityStatus initializerApplicabilityStatus, org.lgna.project.ast.Expression initializerInitialValue ) {
+	public EditFieldComposite( UUID migrationId, UserField field, ApplicabilityStatus initializerApplicabilityStatus, Expression initializerInitialValue ) {
 		super( migrationId, new Details()
 				.isFinal( ApplicabilityStatus.DISPLAYED, false )
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
@@ -60,31 +73,31 @@ public abstract class EditFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
-		return new org.alice.ide.ast.declaration.views.EditFieldView( this );
+	protected DeclarationLikeSubstanceView createView() {
+		return new EditFieldView( this );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		return null;
 	}
 
 	@Override
 	protected boolean isNameAvailable( String name ) {
-		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, this.field );
+		return StaticAnalysisUtilities.isAvailableFieldName( name, this.field );
 	}
 
 	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return this.field.getDeclaringType();
 	}
 
 	@Override
-	public org.lgna.project.ast.UserField getPreviewValue() {
+	public UserField getPreviewValue() {
 		if( this.getIsFinalState().getValue() ) {
-			this.previewField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			this.previewField.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
 		} else {
-			this.previewField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.NEITHER );
+			this.previewField.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.NEITHER );
 		}
 		this.previewField.valueType.setValue( this.getValueType() );
 		this.previewField.name.setValue( this.getDeclarationLikeSubstanceName() );
@@ -93,8 +106,8 @@ public abstract class EditFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.field.getValueType();
+	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+		AbstractType<?, ?, ?> valueType = this.field.getValueType();
 		if( valueType.isArray() ) {
 			return valueType.getComponentType();
 		} else {
@@ -118,7 +131,7 @@ public abstract class EditFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+	protected Expression getInitializerInitialValue() {
 		return this.field.initializer.getValue();
 	}
 }

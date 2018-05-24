@@ -43,19 +43,28 @@
 
 package org.alice.ide.croquet.components;
 
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.State;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.ItemDropDown;
+import org.lgna.project.ast.Expression;
+
+import javax.swing.SwingConstants;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionDropDown<M extends org.lgna.project.ast.Expression> extends org.lgna.croquet.views.ItemDropDown<M, org.lgna.croquet.CustomItemState<M>> {
-	private static class MainComponent extends org.lgna.croquet.views.BorderPanel {
-		private final org.alice.ide.x.AstI18nFactory factory;
-		private org.lgna.project.ast.Expression expression;
+public class ExpressionDropDown<M extends Expression> extends ItemDropDown<M, CustomItemState<M>> {
+	private static class MainComponent extends BorderPanel {
+		private final AstI18nFactory factory;
+		private Expression expression;
 
-		public MainComponent( org.alice.ide.x.AstI18nFactory factory ) {
+		public MainComponent( AstI18nFactory factory ) {
 			this.factory = factory;
 		}
 
-		private void setExpression( org.lgna.project.ast.Expression expression ) {
+		private void setExpression( Expression expression ) {
 			this.expression = expression;
 			this.refreshLater();
 		}
@@ -71,15 +80,15 @@ public class ExpressionDropDown<M extends org.lgna.project.ast.Expression> exten
 
 	private final MainComponent mainComponent;
 
-	public ExpressionDropDown( org.lgna.croquet.CustomItemState<M> model, org.alice.ide.x.AstI18nFactory factory ) {
+	public ExpressionDropDown( CustomItemState<M> model, AstI18nFactory factory ) {
 		super( model );
 		this.mainComponent = new MainComponent( factory );
 		this.setMainComponent( this.mainComponent );
-		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+		this.getAwtComponent().setHorizontalAlignment( SwingConstants.LEADING );
 	}
 
 	@Override
-	protected void handleChanged( org.lgna.croquet.State<M> state, M prevValue, M nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<M> state, M prevValue, M nextValue, boolean isAdjusting ) {
 		this.mainComponent.setExpression( nextValue );
 	}
 };

@@ -42,62 +42,73 @@
  *******************************************************************************/
 package org.alice.stageide.perspectives;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+public abstract class PerspectiveSwitchingCardOwnerComposite extends CardOwnerComposite {
+	private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
 			PerspectiveSwitchingCardOwnerComposite.this.handlePerspectiveChanged( e.getNextValue() );
 		}
 	};
 
 	public static class MapBuilder {
-		private org.lgna.croquet.Composite<?> codePerspecitiveCard;
-		private org.lgna.croquet.Composite<?> setupScenePerspecitiveCard;
+		private Composite<?> codePerspecitiveCard;
+		private Composite<?> setupScenePerspecitiveCard;
 
-		public void codePerspecitive( org.lgna.croquet.Composite<?> codePerspecitiveCard ) {
+		public void codePerspecitive( Composite<?> codePerspecitiveCard ) {
 			this.codePerspecitiveCard = codePerspecitiveCard;
 		}
 
-		public void setupScenePerspective( org.lgna.croquet.Composite<?> setupScenePerspecitiveCard ) {
+		public void setupScenePerspective( Composite<?> setupScenePerspecitiveCard ) {
 			this.setupScenePerspecitiveCard = setupScenePerspecitiveCard;
 		}
 
-		public java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> build() {
-			java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> rv = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			rv.put( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getCodePerspective(), this.codePerspecitiveCard );
-			rv.put( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective(), this.setupScenePerspecitiveCard );
+		public Map<ProjectPerspective, Composite<?>> build() {
+			Map<ProjectPerspective, Composite<?>> rv = Maps.newHashMap();
+			rv.put( IDE.getActiveInstance().getDocumentFrame().getCodePerspective(), this.codePerspecitiveCard );
+			rv.put( IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective(), this.setupScenePerspecitiveCard );
 			return rv;
 		}
 	}
 
-	private final java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> map;
+	private final Map<ProjectPerspective, Composite<?>> map;
 
-	private PerspectiveSwitchingCardOwnerComposite( java.util.UUID migrationId, java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> map ) {
+	private PerspectiveSwitchingCardOwnerComposite( UUID migrationId, Map<ProjectPerspective, Composite<?>> map ) {
 		super( migrationId );
 		this.map = map;
 	}
 
-	public PerspectiveSwitchingCardOwnerComposite( java.util.UUID migrationId, MapBuilder mapBuilder ) {
+	public PerspectiveSwitchingCardOwnerComposite( UUID migrationId, MapBuilder mapBuilder ) {
 		this( migrationId, mapBuilder.build() );
 	}
 
-	private void handlePerspectiveChanged( org.alice.ide.perspectives.ProjectPerspective nextValue ) {
-		org.lgna.croquet.Composite<?> nextCard = this.map.get( nextValue );
+	private void handlePerspectiveChanged( ProjectPerspective nextValue ) {
+		Composite<?> nextCard = this.map.get( nextValue );
 		this.showCard( nextCard );
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
+		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().removeNewSchoolValueListener( this.perspectiveListener );
+		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().removeNewSchoolValueListener( this.perspectiveListener );
 		super.handlePostDeactivation();
 	}
 

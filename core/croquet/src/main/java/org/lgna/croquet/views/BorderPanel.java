@@ -43,12 +43,19 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BorderPanel extends Panel {
 	public static class Builder {
-		private org.lgna.croquet.Composite<?> composite;
+		private Composite<?> composite;
 		private AwtComponentView<?> pageStart;
 		private AwtComponentView<?> pageEnd;
 		private AwtComponentView<?> center;
@@ -57,7 +64,7 @@ public class BorderPanel extends Panel {
 		private int hgap;
 		private int vgap;
 
-		public Builder composite( org.lgna.croquet.Composite<?> composite ) {
+		public Builder composite( Composite<?> composite ) {
 			assert this.composite == null : this.composite + " " + composite;
 			this.composite = composite;
 			return this;
@@ -132,11 +139,11 @@ public class BorderPanel extends Panel {
 	}
 
 	public enum Constraint {
-		CENTER( java.awt.BorderLayout.CENTER ),
-		PAGE_START( java.awt.BorderLayout.PAGE_START ),
-		PAGE_END( java.awt.BorderLayout.PAGE_END ),
-		LINE_START( java.awt.BorderLayout.LINE_START ),
-		LINE_END( java.awt.BorderLayout.LINE_END );
+		CENTER( BorderLayout.CENTER ),
+		PAGE_START( BorderLayout.PAGE_START ),
+		PAGE_END( BorderLayout.PAGE_END ),
+		LINE_START( BorderLayout.LINE_START ),
+		LINE_END( BorderLayout.LINE_END );
 
 		private String internal;
 
@@ -161,19 +168,19 @@ public class BorderPanel extends Panel {
 		this( null, hgap, vgap );
 	}
 
-	public BorderPanel( org.lgna.croquet.Composite<?> composite ) {
+	public BorderPanel( Composite<?> composite ) {
 		this( composite, 0, 0 );
 	}
 
-	public BorderPanel( org.lgna.croquet.Composite<?> composite, int hgap, int vgap ) {
+	public BorderPanel( Composite<?> composite, int hgap, int vgap ) {
 		super( composite );
 		this.hgap = hgap;
 		this.vgap = vgap;
 	}
 
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout( this.hgap, this.vgap );
+	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new BorderLayout( this.hgap, this.vgap );
 	}
 
 	public void addComponent( AwtComponentView<?> child, Constraint constraint ) {
@@ -201,10 +208,10 @@ public class BorderPanel extends Panel {
 	}
 
 	public AwtComponentView<?> getComponent( Constraint constraint ) {
-		javax.swing.JPanel jPanel = this.getAwtComponent();
-		java.awt.BorderLayout borderLayout = (java.awt.BorderLayout)jPanel.getLayout();
+		JPanel jPanel = this.getAwtComponent();
+		BorderLayout borderLayout = (BorderLayout)jPanel.getLayout();
 		for( AwtComponentView<?> component : this.getComponents() ) {
-			java.awt.Component awtComponent = component.getAwtComponent();
+			Component awtComponent = component.getAwtComponent();
 			if( constraint.internal.equals( borderLayout.getConstraints( awtComponent ) ) ) {
 				return component;
 			}

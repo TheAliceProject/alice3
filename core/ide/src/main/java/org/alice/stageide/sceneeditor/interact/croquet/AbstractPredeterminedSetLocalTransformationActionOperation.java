@@ -42,34 +42,41 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.lgna.croquet.Group;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.implementation.EntityImp;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPredeterminedSetLocalTransformationActionOperation extends AbstractSetLocalTransformationActionOperation {
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT;
+	private AffineMatrix4x4 prevLT;
+	private AffineMatrix4x4 nextLT;
 
-	public AbstractPredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+	public AbstractPredeterminedSetLocalTransformationActionOperation( Group group, UUID individualId, boolean isDoRequired, Animator animator, UserField field, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey ) {
 		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
 		this.prevLT = prevLT;
 		this.nextLT = nextLT;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation() {
+	protected AffineMatrix4x4 getNextLocalTransformation() {
 		return this.nextLT;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation() {
+	protected AffineMatrix4x4 getPrevLocalTransformation() {
 		return this.prevLT;
 	}
 
 	@Override
 	protected AbstractTransformable getSGTransformable() {
-		org.lgna.story.implementation.EntityImp entityImp = getEntityImp();
+		EntityImp entityImp = getEntityImp();
 		return (AbstractTransformable)entityImp.getSgComposite();
 	}
 

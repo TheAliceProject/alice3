@@ -43,27 +43,39 @@
  */
 package edu.wustl.lookingglass.media;
 
+import edu.cmu.cs.dennisc.app.ApplicationRoot;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+
 /**
  * @author Kyle J. Harms
  */
 public class FFmpegProcess {
 	public static boolean isArchitectureSpecificCommandAbsolute() {
-		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() == false;
+		return SystemUtilities.isLinux() == false;
 	}
 
 	public static String getArchitectureSpecificCommand() {
 		final String FFMPEG_COMMAND = "ffmpeg";
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+		if( SystemUtilities.isLinux() ) {
 			return FFMPEG_COMMAND;
 		} else {
-			java.io.File archDirectory = edu.cmu.cs.dennisc.app.ApplicationRoot.getArchitectureSpecificDirectory();
+			File archDirectory = ApplicationRoot.getArchitectureSpecificDirectory();
 			StringBuilder sb = new StringBuilder();
 			sb.append( "ffmpeg/" );
 			sb.append( FFMPEG_COMMAND );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			if( SystemUtilities.isWindows() ) {
 				sb.append( ".exe" );
 			}
-			java.io.File commandFile = new java.io.File( archDirectory, sb.toString() );
+			File commandFile = new File( archDirectory, sb.toString() );
 			if( commandFile.exists() ) {
 				return commandFile.getAbsolutePath();
 			} else {
@@ -77,14 +89,14 @@ public class FFmpegProcess {
 	private final ProcessBuilder processBuilder;
 
 	private Process process;
-	private java.io.OutputStream outputStream;
-	private java.io.BufferedReader errorStream;
-	private java.io.BufferedReader inputStream;
+	private OutputStream outputStream;
+	private BufferedReader errorStream;
+	private BufferedReader inputStream;
 	private StringBuilder processInput;
 	private StringBuilder processError;
 
 	public FFmpegProcess( String... args ) {
-		this.commandArgs = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( String.class, getArchitectureSpecificCommand(), args );
+		this.commandArgs = ArrayUtilities.concat( String.class, getArchitectureSpecificCommand(), args );
 		this.processBuilder = new ProcessBuilder( this.commandArgs );
 	}
 
@@ -92,17 +104,17 @@ public class FFmpegProcess {
 		try {
 			this.process = this.processBuilder.start();
 
-			this.outputStream = new java.io.BufferedOutputStream( this.process.getOutputStream() );
+			this.outputStream = new BufferedOutputStream( this.process.getOutputStream() );
 			this.outputStream.flush();
-			this.errorStream = new java.io.BufferedReader( new java.io.InputStreamReader( this.process.getErrorStream() ) );
-			this.inputStream = new java.io.BufferedReader( new java.io.InputStreamReader( this.process.getInputStream() ) );
+			this.errorStream = new BufferedReader( new InputStreamReader( this.process.getErrorStream() ) );
+			this.inputStream = new BufferedReader( new InputStreamReader( this.process.getInputStream() ) );
 
 			this.processInput = new StringBuilder();
 			this.processError = new StringBuilder();
 
 			// Windows requires that we close all other streams, otherwise the output stream for ffmpeg will lock.
 			final boolean IS_LOCKING_A_PROBLEM_ON_WINDOWS = true;
-			if( IS_LOCKING_A_PROBLEM_ON_WINDOWS && edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			if( IS_LOCKING_A_PROBLEM_ON_WINDOWS && SystemUtilities.isWindows() ) {
 				this.process.getInputStream().close();
 				this.process.getErrorStream().close();
 
@@ -111,7 +123,7 @@ public class FFmpegProcess {
 			}
 		} catch( Exception e ) {
 			this.process = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to create ffmpeg process for encoding", this.commandArgs );
+			Logger.severe( "failed to create ffmpeg process for encoding", this.commandArgs );
 			handleProcessError( e );
 		}
 		return this.process;
@@ -139,7 +151,7 @@ public class FFmpegProcess {
 		return status;
 	}
 
-	public java.io.OutputStream getProcessOutputStream() {
+	public OutputStream getProcessOutputStream() {
 		return this.outputStream;
 	}
 
@@ -157,7 +169,7 @@ public class FFmpegProcess {
 		throw new FFmpegProcessException( e, getProcessInput(), getProcessError() );
 	}
 
-	private void readStream( java.io.BufferedReader reader, StringBuilder string ) {
+	private void readStream( BufferedReader reader, StringBuilder string ) {
 		if( ( reader == null ) || ( string == null ) ) {
 			return;
 		}
@@ -166,8 +178,8 @@ public class FFmpegProcess {
 				string.append( reader.readLine() );
 				string.append( "\n" );
 			}
-		} catch( java.io.IOException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to read ffmpeg error", e );
+		} catch( IOException e ) {
+			Logger.severe( "unable to read ffmpeg error", e );
 		}
 	}
 }

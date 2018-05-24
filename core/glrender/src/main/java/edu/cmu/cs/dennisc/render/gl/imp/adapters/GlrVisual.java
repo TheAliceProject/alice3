@@ -47,15 +47,29 @@ import static com.jogamp.opengl.GL.GL_BACK;
 import static com.jogamp.opengl.GL.GL_CULL_FACE;
 import static com.jogamp.opengl.GL.GL_FRONT;
 import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
+
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+
+import java.nio.DoubleBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends GlrLeaf<T> implements edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrRenderContributor {
+public class GlrVisual<T extends Visual> extends GlrLeaf<T> implements GlrRenderContributor {
 
 	public static enum RenderType {
 		OPAQUE,
@@ -66,14 +80,14 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	}
 
 	//for tree node
-	/* package-private */GlrAppearance<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> getFrontFacingAppearanceAdapter() {
+	/* package-private */GlrAppearance<? extends Appearance> getFrontFacingAppearanceAdapter() {
 		return this.glrFrontFacingAppearance;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement ) {
 		if( ( 0 <= geometryIndex ) && ( geometryIndex < this.glrGeometries.length ) ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation();
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication( inverseAbsoluteTransformationOfSource, absoluteTransformation );
+			AffineMatrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation();
+			AffineMatrix4x4 m = AffineMatrix4x4.createMultiplication( inverseAbsoluteTransformationOfSource, absoluteTransformation );
 			this.glrGeometries[ geometryIndex ].getIntersectionInSource( rv, ray, m, subElement );
 		}
 		return rv;
@@ -127,7 +141,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 			}
 
 			synchronized( this.glrGeometries ) {
-				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries ) {
+				for( GlrGeometry<? extends Geometry> geometryAdapter : this.glrGeometries ) {
 					if( geometryAdapter.hasOpaque() ) {
 						return true;
 					}
@@ -155,7 +169,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	protected boolean isAlphaBlended() {
 		if( ( this.glrGeometries != null ) && ( this.glrGeometries.length > 0 ) ) {
 			synchronized( this.glrGeometries ) {
-				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries ) {
+				for( GlrGeometry<? extends Geometry> geometryAdapter : this.glrGeometries ) {
 					if( geometryAdapter.isAlphaBlended() ) {
 						return true;
 					}
@@ -175,7 +189,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 		return false;
 	}
 
-	private void updateScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
+	private void updateScale( Matrix3x3 m ) {
 		this.isScaleIdentity = m.isIdentity();
 		m.getAsColumnMajorArray16( this.scale );
 	}
@@ -185,7 +199,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	{
 		super.handleReleased();
 		synchronized( this.glrGeometries ) {
-			for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries ) {
+			for( GlrGeometry<? extends Geometry> geometryAdapter : this.glrGeometries ) {
 				if( geometryAdapter.owner != null )
 				{
 					geometryAdapter.handleReleased();
@@ -205,9 +219,9 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 		this.glrBackFacingAppearance = null;
 	}
 
-	protected void renderGeometry( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, RenderType renderType ) {
+	protected void renderGeometry( RenderContext rc, RenderType renderType ) {
 		synchronized( this.glrGeometries ) {
-			for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries ) {
+			for( GlrGeometry<? extends Geometry> geometryAdapter : this.glrGeometries ) {
 				geometryAdapter.render( rc, renderType );
 			}
 		}
@@ -215,19 +229,19 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 
 	private void preSilhouette( RenderContext rc ) {
 		rc.gl.glClearStencil( 0 );
-		rc.gl.glClear( com.jogamp.opengl.GL.GL_STENCIL_BUFFER_BIT );
-		rc.gl.glEnable( com.jogamp.opengl.GL.GL_STENCIL_TEST );
-		rc.gl.glStencilFunc( com.jogamp.opengl.GL.GL_ALWAYS, 1, -1 );
-		rc.gl.glStencilOp( com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_REPLACE );
+		rc.gl.glClear( GL.GL_STENCIL_BUFFER_BIT );
+		rc.gl.glEnable( GL.GL_STENCIL_TEST );
+		rc.gl.glStencilFunc( GL.GL_ALWAYS, 1, -1 );
+		rc.gl.glStencilOp( GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE );
 	}
 
 	private void postSilouette( RenderContext rc, int face ) {
-		rc.gl.glStencilFunc( com.jogamp.opengl.GL2.GL_NOTEQUAL, 1, -1 );
-		rc.gl.glStencilOp( com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_REPLACE );
+		rc.gl.glStencilFunc( GL2.GL_NOTEQUAL, 1, -1 );
+		rc.gl.glStencilOp( GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE );
 
 		this.silhouetteAdapter.setup( rc, face );
 		this.renderGeometry( rc, RenderType.SILHOUETTE );
-		rc.gl.glDisable( com.jogamp.opengl.GL.GL_STENCIL_TEST );
+		rc.gl.glDisable( GL.GL_STENCIL_TEST );
 		rc.gl.glLineWidth( 1.0f );
 	}
 
@@ -324,7 +338,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 		actuallyRender( rc, RenderType.GHOST );
 	}
 
-	protected void pickGeometry( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, boolean isSubElementActuallyRequired ) {
+	protected void pickGeometry( PickContext pc, boolean isSubElementActuallyRequired ) {
 		synchronized( this.glrGeometries ) {
 			for( int i = 0; i < this.glrGeometries.length; i++ ) {
 				pc.gl.glPushName( i );
@@ -342,11 +356,11 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 			if( isSubElementActuallyRequired ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = pc.getConformanceTestResultsPickDetails();
+				ConformanceTestResults.PickDetails pickDetails = pc.getConformanceTestResultsPickDetails();
 				if( pickDetails != null ) {
 					isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+					Logger.severe( this );
 				}
 			}
 
@@ -383,13 +397,13 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	}
 
 	protected void updateGeometryAdapters() {
-		GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>[] newAdapters = AdapterFactory.getAdaptersFor( owner.geometries.getValue(), GlrGeometry.class );
+		GlrGeometry<? extends Geometry>[] newAdapters = AdapterFactory.getAdaptersFor( owner.geometries.getValue(), GlrGeometry.class );
 		if( this.glrGeometries != null )
 		{
-			for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> oldAdapter : this.glrGeometries )
+			for( GlrGeometry<? extends Geometry> oldAdapter : this.glrGeometries )
 			{
 				boolean found = false;
-				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> newAdapter : newAdapters )
+				for( GlrGeometry<? extends Geometry> newAdapter : newAdapters )
 				{
 					if( newAdapter == oldAdapter )
 					{
@@ -407,7 +421,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.geometries ) {
 			//todo: update scene observer skin vector
 			updateGeometryAdapters();
@@ -451,7 +465,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	protected boolean isShowing = false;
 
 	private final double[] scale = new double[ 16 ];
-	private final java.nio.DoubleBuffer scaleBuffer = java.nio.DoubleBuffer.wrap( this.scale );
+	private final DoubleBuffer scaleBuffer = DoubleBuffer.wrap( this.scale );
 	private boolean isScaleIdentity = true;
 
 	protected GlrGeometry<?>[] glrGeometries = null;

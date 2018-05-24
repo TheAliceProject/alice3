@@ -43,15 +43,31 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements CascadeBlankChild<F> {
 	private transient boolean isDirty = true;
-	private transient javax.swing.JComponent menuProxy = null;
-	private transient javax.swing.Icon icon = null;
+	private transient JComponent menuProxy = null;
+	private transient Icon icon = null;
 
-	public CascadeItem( java.util.UUID id ) {
+	public CascadeItem( UUID id ) {
 		super( id );
 	}
 
@@ -61,16 +77,16 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 	}
 
 	@Override
-	public org.lgna.croquet.CascadeItem<F, B> getItemAt( int index ) {
+	public CascadeItem<F, B> getItemAt( int index ) {
 		assert index == 0;
 		return this;
 	}
 
-	public abstract F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node );
+	public abstract F getTransientValue( ItemNode<? super F, B> node );
 
-	public abstract F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node, org.lgna.croquet.history.TransactionHistory transactionHistory );
+	public abstract F createValue( ItemNode<? super F, B> node, TransactionHistory transactionHistory );
 
-	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node );
+	protected abstract JComponent createMenuItemIconProxy( ItemNode<? super F, B> node );
 
 	@Override
 	protected void localize() {
@@ -89,7 +105,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		this.isDirty = true;
 	}
 
-	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	protected JComponent getMenuProxy( ItemNode<? super F, B> node ) {
 		if( this.menuProxy != null ) {
 			//pass
 		} else {
@@ -99,24 +115,24 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 	}
 
 	//todo:
-	private static void setBoxLayoutComponentOrientationTree( java.awt.Component c, java.awt.ComponentOrientation componentOrientation ) {
-		if( c instanceof javax.swing.JPanel ) {
-			javax.swing.JPanel jPanel = (javax.swing.JPanel)c;
-			java.awt.LayoutManager layoutManager = jPanel.getLayout();
-			if( layoutManager instanceof javax.swing.BoxLayout ) {
+	private static void setBoxLayoutComponentOrientationTree( Component c, ComponentOrientation componentOrientation ) {
+		if( c instanceof JPanel ) {
+			JPanel jPanel = (JPanel)c;
+			LayoutManager layoutManager = jPanel.getLayout();
+			if( layoutManager instanceof BoxLayout ) {
 				//javax.swing.BoxLayout boxLayout = (javax.swing.BoxLayout)layoutManager;
 				c.setComponentOrientation( componentOrientation );
 			}
 		}
-		if( c instanceof java.awt.Container ) {
-			java.awt.Container container = (java.awt.Container)c;
-			for( java.awt.Component component : container.getComponents() ) {
+		if( c instanceof Container ) {
+			Container container = (Container)c;
+			for( Component component : container.getComponents() ) {
 				setBoxLayoutComponentOrientationTree( component, componentOrientation );
 			}
 		}
 	}
 
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public Icon getMenuItemIcon( ItemNode<? super F, B> node ) {
 		if( this.isDirty() ) {
 			this.icon = null;
 			this.menuProxy = null;
@@ -124,21 +140,21 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		if( this.icon != null ) {
 			//pass
 		} else {
-			javax.swing.JComponent component = this.getMenuProxy( node );
+			JComponent component = this.getMenuProxy( node );
 			if( component != null ) {
 				final boolean IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK = true;
-				java.awt.ComponentOrientation componentOrientation = component.getComponentOrientation();
+				ComponentOrientation componentOrientation = component.getComponentOrientation();
 				if( componentOrientation.isLeftToRight() ) {
 					//pass
 				} else {
 					if( IS_LEFT_TO_RIGHT_COMPONENT_ORIENTATION_REQUIRED_TO_WORK ) {
-						setBoxLayoutComponentOrientationTree( component, java.awt.ComponentOrientation.LEFT_TO_RIGHT );
+						setBoxLayoutComponentOrientationTree( component, ComponentOrientation.LEFT_TO_RIGHT );
 					}
 				}
 
-				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.invalidateTree( component );
-				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( component );
-				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( component );
+				ComponentUtilities.invalidateTree( component );
+				ComponentUtilities.doLayoutTree( component );
+				ComponentUtilities.setSizeToPreferredSizeTree( component );
 
 				if( componentOrientation.isLeftToRight() ) {
 					//pass
@@ -148,9 +164,9 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 					}
 				}
 
-				java.awt.Dimension size = component.getPreferredSize();
+				Dimension size = component.getPreferredSize();
 				if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-					this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createIcon( component );
+					this.icon = IconUtilities.createIcon( component );
 				} else {
 					this.icon = null;
 				}
@@ -162,7 +178,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		return this.icon;
 	}
 
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public String getMenuItemText( ItemNode<? super F, B> node ) {
 		return null;
 	}
 }

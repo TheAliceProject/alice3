@@ -43,11 +43,18 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.Panel;
+
+import java.util.Iterator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.views.Panel> {
-	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
+public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<Panel> {
+	public OperationWizardDialogCoreComposite( UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
 	}
 
@@ -65,11 +72,11 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return false;
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract Edit createEdit( CompletionStep<?> completionStep );
 
-	private void createAndCommitEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	private void createAndCommitEdit( CompletionStep<?> completionStep ) {
 		try {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep );
+			Edit edit = this.createEdit( completionStep );
 			if( edit != null ) {
 				completionStep.commitAndInvokeDo( edit );
 			} else {
@@ -81,7 +88,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
 		if( isCommited != null ) { // close button condition
@@ -96,10 +103,10 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
-			java.util.Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
+			Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
 			isAutoCommitDesired = true;
 			while( iterator.hasNext() ) {
 				WizardPageComposite<?, ?> page = iterator.next();

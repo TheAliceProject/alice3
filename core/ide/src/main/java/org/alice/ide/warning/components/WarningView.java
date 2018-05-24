@@ -42,37 +42,46 @@
  *******************************************************************************/
 package org.alice.ide.warning.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.warning.WarningDialogComposite;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.PageAxisPanel;
 import org.lgna.croquet.views.PlainMultiLineLabel;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.util.List;
 
-public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
-	public WarningView( org.alice.ide.warning.WarningDialogComposite composite ) {
+public class WarningView extends PageAxisPanel {
+	public WarningView( WarningDialogComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.views.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
+		this.addComponent( new Label( IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
+		this.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
 
 		PlainMultiLineLabel descriptionLabel = new PlainMultiLineLabel( getLocalizedStringByKey( "content" ) );
 		descriptionLabel.scaleFont( 1.4f );
-		descriptionLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		descriptionLabel.changeFont( TextWeight.BOLD );
 		this.addComponent( descriptionLabel );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
-		class FurtherInfoPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
+		this.addComponent( BoxUtilities.createVerticalSliver( 8 ) );
+		class FurtherInfoPane extends JRowsSpringPane {
 			public FurtherInfoPane() {
 				super( 8, 4 );
-				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+				this.setBorder( BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 
 			private Component createLabel( String key ) {
 				JLabel rv = new JLabel( getLocalizedStringByKey( key ) );
-				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+				rv.setHorizontalAlignment( SwingConstants.TRAILING );
 				return rv;
 			}
 
@@ -87,8 +96,8 @@ public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 		}
 		this.getAwtComponent().add( new FurtherInfoPane() );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
-		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBorder( BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
+		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 
 	private String getLocalizedStringByKey( String key ) {

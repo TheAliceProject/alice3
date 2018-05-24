@@ -41,6 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +53,7 @@ public class Config {
 			return this;
 		}
 
-		public Builder rootDir( java.io.File rootDir ) {
+		public Builder rootDir( File rootDir ) {
 			assert rootDir != null;
 			assert rootDir.exists() : rootDir;
 			assert rootDir.isDirectory() : rootDir;
@@ -119,7 +121,7 @@ public class Config {
 		}
 
 		private Mode mode;
-		private java.io.File rootDir;
+		private File rootDir;
 		private boolean isPlugin6Desired = true;
 		private boolean isPlugin8Desired = true;
 		private boolean isInstallerDesired = true;
@@ -169,7 +171,7 @@ public class Config {
 		return this.mode;
 	}
 
-	public java.io.File getRootDir() {
+	public File getRootDir() {
 		return this.rootDir;
 	}
 
@@ -241,7 +243,7 @@ public class Config {
 	}
 
 	private final Mode mode;
-	private final java.io.File rootDir;
+	private final File rootDir;
 	private final boolean isPlugin8Desired;
 	private final boolean isPlugin6Desired;
 	private final boolean isInstallerDesired;

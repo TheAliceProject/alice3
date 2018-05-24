@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,52 +54,52 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.render.Synch
 	}
 
 	@Override
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
+	public BufferedImage createBufferedImageForUseAsColorBuffer() {
 		return this.rtImp.createBufferedImageForUseAsColorBuffer();
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
+	public BufferedImage getColorBufferNotBotheringToFlipVertically( BufferedImage rv, boolean[] atIsUpsideDown ) {
 		return this.rtImp.getColorBuffer( rv, atIsUpsideDown );
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
+	public BufferedImage getColorBuffer( BufferedImage rv ) {
 		return this.rtImp.getColorBuffer( rv, null );
 	}
 
 	@Override
-	public final java.awt.image.BufferedImage getColorBuffer() {
+	public final BufferedImage getColorBuffer() {
 		return this.getColorBuffer( createBufferedImageForUseAsColorBuffer() );
 	}
 
 	@Override
-	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
+	public BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return this.rtImp.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 	}
 
 	@Override
-	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
+	public FloatBuffer createFloatBufferForUseAsDepthBuffer() {
 		return this.rtImp.createFloatBufferForUseAsDepthBuffer();
 	}
 
 	@Override
-	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
+	public FloatBuffer getDepthBuffer( FloatBuffer rv ) {
 		return this.rtImp.getDepthBuffer( rv );
 	}
 
 	@Override
-	public final java.nio.FloatBuffer getDepthBuffer() {
+	public final FloatBuffer getDepthBuffer() {
 		return this.getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
+	public BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer ) {
 		return this.rtImp.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
 	}
 
 	@Override
-	public final java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
+	public final BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
 		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
 

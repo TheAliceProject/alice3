@@ -42,24 +42,35 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JBorderPane;
+import org.alice.stageide.personresource.views.IngredientsView;
 import org.lgna.story.resources.sims2.LocalizedResource;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
+public enum SimpleListCellRenderer implements ListCellRenderer {
 	SINGLETON;
 
-	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-	private javax.swing.JLabel label = new javax.swing.JLabel();
+	private JBorderPane pane = new JBorderPane();
+	private JLabel label = new JLabel();
 
 	private SimpleListCellRenderer() {
-		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
+		label.setHorizontalAlignment( SwingUtilities.CENTER );
+		label.setBorder( BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
 		label.setOpaque( true );
-		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+		pane.setBorder( BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
 		pane.setOpaque( false );
-		pane.add( label, java.awt.BorderLayout.CENTER );
+		pane.add( label, BorderLayout.CENTER );
 	}
 
 	public String getLocalizedText( Object value ) {
@@ -67,7 +78,7 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 	}
 
 	@Override
-	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+	public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		String text;
 		if( value instanceof LocalizedResource ) {
 			text = ( (LocalizedResource)value ).getLocalizedDisplayText();
@@ -76,12 +87,12 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 		}
 		this.label.setText( text );
 		if( isSelected ) {
-			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
-			this.label.setForeground( java.awt.Color.BLACK );
+			this.label.setBackground( IngredientsView.SELECTED_COLOR );
+			this.label.setForeground( Color.BLACK );
 			this.label.setOpaque( true );
 		} else {
-			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.UNSELECTED_COLOR );
-			this.label.setForeground( list.isEnabled() ? java.awt.Color.BLACK : java.awt.Color.GRAY );
+			this.label.setBackground( IngredientsView.UNSELECTED_COLOR );
+			this.label.setForeground( list.isEnabled() ? Color.BLACK : Color.GRAY );
 			this.label.setOpaque( list.isEnabled() );
 		}
 		return this.pane;

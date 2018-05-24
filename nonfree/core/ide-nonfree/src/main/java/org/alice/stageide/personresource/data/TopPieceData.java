@@ -42,22 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import edu.cmu.cs.dennisc.java.lang.EnumUtilities;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.stageide.personresource.codecs.TopPieceCodec;
+import org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.TopPiece;
+import org.lgna.story.resources.sims2.TopPieceManager;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TopPieceData extends IngredientListData<org.lgna.story.resources.sims2.TopPiece> {
+public class TopPieceData extends IngredientListData<TopPiece> {
 	public TopPieceData() {
-		super( org.alice.stageide.personresource.codecs.TopPieceCodec.SINGLETON );
+		super( TopPieceCodec.SINGLETON );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.story.resources.sims2.TopPiece> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-				org.lgna.story.resources.sims2.TopPieceManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.TopPiece>() {
+	protected List<TopPiece> createValues( LifeStage lifeStage, Gender gender ) {
+		return EnumUtilities.getEnumConstants(
+				TopPieceManager.getSingleton().getImplementingClasses( lifeStage, gender ),
+				new Criterion<TopPiece>() {
 					@Override
-					public boolean accept( org.lgna.story.resources.sims2.TopPiece e ) {
-						return org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
+					public boolean accept( TopPiece e ) {
+						return TopPieceListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
 					}
 				}
 				);

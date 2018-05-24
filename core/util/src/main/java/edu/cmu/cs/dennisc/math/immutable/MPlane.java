@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.immutable;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.Tuple3;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,12 +54,12 @@ public final class MPlane {
 		assert position.isNaN() == false;
 
 		final double EPSILON = 0.01;
-		double magnitudeSquared = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( magnitudeSquared, EPSILON ) ) {
+		double magnitudeSquared = Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal );
+		if( EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( magnitudeSquared, EPSILON ) ) {
 			//pass
 		} else {
 			double magnitude = Math.sqrt( magnitudeSquared );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( magnitude, xNormal, yNormal, zNormal );
+			Logger.severe( magnitude, xNormal, yNormal, zNormal );
 			xNormal /= magnitude;
 			yNormal /= magnitude;
 			zNormal /= magnitude;

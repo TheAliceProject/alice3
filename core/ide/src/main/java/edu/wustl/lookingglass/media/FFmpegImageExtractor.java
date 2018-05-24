@@ -43,12 +43,19 @@
  */
 package edu.wustl.lookingglass.media;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * @author Kyle J. Harms
  */
 public class FFmpegImageExtractor {
 
-	public static void getFrameAt( final String videoPath, final float frameTimeSeconds, final java.io.File snapshotFile ) {
+	public static void getFrameAt( final String videoPath, final float frameTimeSeconds, final File snapshotFile ) {
 		// https://trac.ffmpeg.org/wiki/Seeking%20with%20FFmpeg
 		final Float GOP_SEEK = 10.0f * 2.0f; // GOP is typically 10 seconds, so let's double it.
 		Float fastSeek = frameTimeSeconds - GOP_SEEK;
@@ -62,25 +69,25 @@ public class FFmpegImageExtractor {
 			accurateSeek = 0.0f;
 		}
 
-		edu.wustl.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.lookingglass.media.FFmpegProcess( "-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
+		FFmpegProcess ffmpegProcess = new FFmpegProcess( "-y", "-ss", fastSeek.toString(), "-i", videoPath, "-ss", accurateSeek.toString(), "-f", "image2", "-vframes", "1", snapshotFile.getAbsolutePath() );
 		ffmpegProcess.start();
 		int status = ffmpegProcess.stop();
 		if( status != 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+			Logger.severe( "encoding failed; status != 0", status );
 			throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
 		}
 	}
 
-	public static java.awt.Image getFrameAt( final String mrl, final float seconds ) {
-		java.awt.Image snapshot = null;
+	public static Image getFrameAt( final String mrl, final float seconds ) {
+		Image snapshot = null;
 		try {
-			java.io.File snapshotFile = java.io.File.createTempFile( "snapshot", ".png" );
+			File snapshotFile = File.createTempFile( "snapshot", ".png" );
 			snapshotFile.deleteOnExit();
 			getFrameAt( mrl, seconds, snapshotFile );
-			snapshot = javax.imageio.ImageIO.read( snapshotFile );
+			snapshot = ImageIO.read( snapshotFile );
 			snapshotFile.delete();
-		} catch( java.io.IOException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( e );
+		} catch( IOException e ) {
+			Logger.severe( e );
 		}
 		return snapshot;
 	}

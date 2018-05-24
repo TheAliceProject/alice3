@@ -42,9 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.projecturi.SelectProjectUriComposite;
+import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.ValueCreator;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -52,22 +60,22 @@ import java.util.Iterator;
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
 	private final boolean isNew;
 
-	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, boolean isNew ) {
-		super( migrationId, projectDocumentFrame, org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getValueCreator() );
+	public PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, boolean isNew ) {
+		super( migrationId, projectDocumentFrame, SelectProjectUriComposite.getInstance().getValueCreator() );
 		this.isNew = isNew;
 	}
 
 	@Override
 	protected Iterator<Model> createIteratingData() {
-		java.util.Iterator<org.lgna.croquet.Model> rv = super.createIteratingData();
-		org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
+		Iterator<Model> rv = super.createIteratingData();
+		SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;
 	}
 
 	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps ) {
 		if( subSteps.size() > 0 ) {
-			return (org.alice.ide.uricontent.UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			return (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( ValueCreator.VALUE_KEY ) );
 		} else {
 			return null;
 		}

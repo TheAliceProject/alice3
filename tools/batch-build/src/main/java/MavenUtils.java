@@ -41,17 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MavenUtils {
 	public static void initialize() {
-		java.io.File mavenHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "MAVEN_HOME" );
-		mavenCommandFile = new java.io.File( mavenHomeDir, "bin/mvn.bat" );
+		File mavenHomeDir = SystemUtilities.getEnvironmentVariableDirectory( "MAVEN_HOME" );
+		mavenCommandFile = new File( mavenHomeDir, "bin/mvn.bat" );
 		assert mavenCommandFile.exists() : mavenCommandFile;
 	}
 
-	public static java.io.File getMavenCommandFile() {
+	public static File getMavenCommandFile() {
 		if( mavenCommandFile != null ) {
 			//pass
 		} else {
@@ -60,11 +65,11 @@ public class MavenUtils {
 		return mavenCommandFile;
 	}
 
-	public static java.io.File getMavenRepositoryDir() {
-		return new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
+	public static File getMavenRepositoryDir() {
+		return new File( FileUtilities.getUserDirectory(), ".m2/repository" );
 	}
 
-	private static java.io.File mavenCommandFile;
+	private static File mavenCommandFile;
 
 	private MavenUtils() {
 		throw new AssertionError();

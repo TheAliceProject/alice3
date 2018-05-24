@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
 
 /**
  * @author Dennis Cosgrove
@@ -56,12 +57,12 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
-	public org.lgna.project.ast.NodeProperty<org.lgna.project.ast.BlockStatement> getBodyProperty() {
+	public NodeProperty<BlockStatement> getBodyProperty() {
 		return this.body;
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 	}
 
 	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );

@@ -43,47 +43,63 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SThing;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<E> {
+public class SimpleExpressionFillIn<E extends Expression> extends ExpressionFillInWithoutBlanks<E> {
 	private final E transientValue;
 	private final boolean isLeadingIconDesired;
 
 	public SimpleExpressionFillIn( E value, boolean isLeadingIconDesired ) {
-		super( java.util.UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );
+		super( UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );
 		this.transientValue = value;
 		this.isLeadingIconDesired = true;
 	}
 
 	@Override
-	public E createValue( org.lgna.croquet.imp.cascade.ItemNode<? super E, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public E createValue( ItemNode<? super E, Void> node, TransactionHistory transactionHistory ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public E getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super E, Void> node ) {
+	public E getTransientValue( ItemNode<? super E, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.imp.cascade.ItemNode<? super E, Void> step ) {
+	protected Icon getLeadingIcon( ItemNode<? super E, Void> step ) {
 		if( this.isLeadingIconDesired ) {
-			if( this.transientValue instanceof org.lgna.project.ast.FieldAccess ) {
-				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue;
-				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-					org.lgna.project.ast.AbstractType<?, ?, ?> type = userField.getValueType();
+			if( this.transientValue instanceof FieldAccess ) {
+				FieldAccess fieldAccess = (FieldAccess)this.transientValue;
+				AbstractField field = fieldAccess.field.getValue();
+				if( field instanceof UserField ) {
+					UserField userField = (UserField)field;
+					AbstractType<?, ?, ?> type = userField.getValueType();
 					if( type != null ) {
-						if( type.isAssignableTo( org.lgna.story.SThing.class ) ) {
-							java.awt.Dimension size = new java.awt.Dimension( 24, 18 );
-							org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( userField );
+						if( type.isAssignableTo( SThing.class ) ) {
+							Dimension size = new Dimension( 24, 18 );
+							IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( userField );
 							if( iconFactory != null ) {
 								return iconFactory.getIcon( size );
 							} else {
-								return org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( size );
+								return EmptyIconFactory.getInstance().getIcon( size );
 							}
 						}
 					}

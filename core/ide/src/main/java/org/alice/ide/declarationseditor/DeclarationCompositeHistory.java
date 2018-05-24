@@ -42,6 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocument;
+import org.alice.ide.project.ProjectDocumentState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,17 +65,17 @@ public class DeclarationCompositeHistory {
 		return SingletonHolder.instance;
 	}
 
-	private java.util.List<DeclarationComposite<?, ?>> history = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private List<DeclarationComposite<?, ?>> history = Lists.newLinkedList();
 	private int index = -1;
-	private final org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>> declarationListener = new org.lgna.croquet.event.ValueListener<DeclarationComposite<?, ?>>() {
+	private final ValueListener<DeclarationComposite<?, ?>> declarationListener = new ValueListener<DeclarationComposite<?, ?>>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<DeclarationComposite<?, ?>> e ) {
+		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
 			DeclarationCompositeHistory.this.appendIfAppropriate( e.getNextValue() );
 		}
 	};
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument>() {
+	private final ValueListener<ProjectDocument> projectListener = new ValueListener<ProjectDocument>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
+		public void valueChanged( ValueEvent<ProjectDocument> e ) {
 			DeclarationCompositeHistory.this.resetStack();
 		}
 	};
@@ -72,8 +83,8 @@ public class DeclarationCompositeHistory {
 	private int ignoreCount = 0;
 
 	private DeclarationCompositeHistory() {
-		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationListener );
+		ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationListener );
 		this.resetStack();
 	}
 
@@ -85,13 +96,13 @@ public class DeclarationCompositeHistory {
 		this.ignoreCount--;
 	}
 
-	private void appendIfAppropriate( org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite ) {
+	private void appendIfAppropriate( DeclarationComposite<?, ?> declarationComposite ) {
 		if( this.ignoreCount == 0 ) {
 			if( declarationComposite != null ) {
 				if( this.index > 0 ) {
 					this.history = this.history.subList( this.index, this.history.size() );
 				}
-				java.util.ListIterator<DeclarationComposite<?, ?>> listIterator = this.history.listIterator();
+				ListIterator<DeclarationComposite<?, ?>> listIterator = this.history.listIterator();
 				while( listIterator.hasNext() ) {
 					DeclarationComposite current = listIterator.next();
 					if( current == declarationComposite ) {
@@ -125,7 +136,7 @@ public class DeclarationCompositeHistory {
 			original = null;
 		}
 		boolean isIndexUpdateRequired = false;
-		java.util.ListIterator<DeclarationComposite<?, ?>> iterator = this.history.listIterator();
+		ListIterator<DeclarationComposite<?, ?>> iterator = this.history.listIterator();
 		while( iterator.hasNext() ) {
 			DeclarationComposite<?, ?> composite = iterator.next();
 			if( composite.isValid() ) {
@@ -146,7 +157,7 @@ public class DeclarationCompositeHistory {
 	private void resetStack() {
 		this.history.clear();
 		this.index = -1;
-		this.appendIfAppropriate( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue() );
+		this.appendIfAppropriate( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue() );
 		this.update();
 	}
 
@@ -155,7 +166,7 @@ public class DeclarationCompositeHistory {
 		try {
 			this.index = index;
 			this.update();
-			org.alice.ide.IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( this.history.get( this.index ) );
+			IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( this.history.get( this.index ) );
 			//			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
 		} finally {
 			this.popIgnore();
@@ -174,27 +185,27 @@ public class DeclarationCompositeHistory {
 		this.setIndex( this.history.indexOf( declarationComposite ) );
 	}
 
-	public java.util.List<DeclarationComposite<?, ?>> getBackwardList() {
+	public List<DeclarationComposite<?, ?>> getBackwardList() {
 		this.update();
 		int minInclusive = this.index + 1;
 		int maxExclusive = this.history.size();
 		if( minInclusive < maxExclusive ) {
 			return this.history.subList( minInclusive, maxExclusive );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	public java.util.List<DeclarationComposite<?, ?>> getForwardList() {
+	public List<DeclarationComposite<?, ?>> getForwardList() {
 		this.update();
 		int minInclusive = 0;
 		int maxExclusive = this.index;
 		if( minInclusive < maxExclusive ) {
-			java.util.List<DeclarationComposite<?, ?>> rv = this.history.subList( minInclusive, maxExclusive );
-			java.util.Collections.reverse( rv );
+			List<DeclarationComposite<?, ?>> rv = this.history.subList( minInclusive, maxExclusive );
+			Collections.reverse( rv );
 			return rv;
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 }

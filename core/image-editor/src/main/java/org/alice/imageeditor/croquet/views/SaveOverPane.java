@@ -42,20 +42,36 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet.views;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import org.alice.imageeditor.croquet.ImageEditorFrame;
+import org.alice.imageeditor.croquet.SaveOverComposite;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Separator;
+
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SaveOverPane extends org.lgna.croquet.views.MigPanel {
+public class SaveOverPane extends MigPanel {
 	private final ImageView toBeReplacedImageView = new ImageView();
 	private final ImageView nextImageView = new ImageView();
-	private final org.lgna.croquet.views.Label toBeReplacedHeaderLabel = new org.lgna.croquet.views.Label();
-	private final org.lgna.croquet.views.Label toBeReplacedDetailsLabel = new org.lgna.croquet.views.Label();
-	private final org.lgna.croquet.views.Label nextDetailsLabel = new org.lgna.croquet.views.Label();
+	private final Label toBeReplacedHeaderLabel = new Label();
+	private final Label toBeReplacedDetailsLabel = new Label();
+	private final Label nextDetailsLabel = new Label();
 
-	public SaveOverPane( org.alice.imageeditor.croquet.SaveOverComposite composite ) {
+	public SaveOverPane( SaveOverComposite composite ) {
 		super( composite, "fill", "[50%][grow 0][50%]", "[grow 0, shrink 0][grow, shrink][grow 0,shrink 0]" );
 		this.addComponent( this.toBeReplacedHeaderLabel );
-		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingLeftFromRight(), "spany 3, growy" );
+		this.addComponent( Separator.createInstanceSeparatingLeftFromRight(), "spany 3, growy" );
 		this.addComponent( composite.getNextHeader().createLabel(), "wrap" );
 		this.addComponent( this.toBeReplacedImageView, "grow, shrink" );
 		this.addComponent( this.nextImageView, "skip 1, grow, shrink, wrap" );
@@ -66,11 +82,11 @@ public class SaveOverPane extends org.lgna.croquet.views.MigPanel {
 	}
 
 	@Override
-	public org.alice.imageeditor.croquet.SaveOverComposite getComposite() {
-		return (org.alice.imageeditor.croquet.SaveOverComposite)super.getComposite();
+	public SaveOverComposite getComposite() {
+		return (SaveOverComposite)super.getComposite();
 	}
 
-	private static String getResolutionText( java.awt.Image image ) {
+	private static String getResolutionText( Image image ) {
 		StringBuilder sb = new StringBuilder();
 		//sb.append( "(" );
 		sb.append( "resolution: " );
@@ -83,28 +99,28 @@ public class SaveOverPane extends org.lgna.croquet.views.MigPanel {
 
 	@Override
 	public void handleCompositePreActivation() {
-		org.alice.imageeditor.croquet.ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
-		java.io.File file = frame.getFile();
+		ImageEditorFrame frame = this.getComposite().getOwner().getOwner();
+		File file = frame.getFile();
 		try {
-			java.awt.Image toBeReplacedImage = edu.cmu.cs.dennisc.image.ImageUtilities.read( file );
-			java.awt.Image nextImage = frame.getView().render();
+			Image toBeReplacedImage = ImageUtilities.read( file );
+			Image nextImage = frame.getView().render();
 			this.toBeReplacedImageView.setImage( toBeReplacedImage );
 			this.nextImageView.setImage( nextImage );
 
-			java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
-			java.text.DateFormat timeFormat = java.text.DateFormat.getTimeInstance( java.text.DateFormat.SHORT, java.util.Locale.getDefault() );
-			java.util.Date date = new java.util.Date( file.lastModified() );
+			DateFormat dateFormat = DateFormat.getDateInstance( DateFormat.SHORT, Locale.getDefault() );
+			DateFormat timeFormat = DateFormat.getTimeInstance( DateFormat.SHORT, Locale.getDefault() );
+			Date date = new Date( file.lastModified() );
 			this.toBeReplacedHeaderLabel.setText( this.getComposite().getPrevHeader().getText() + " (last modified: " + dateFormat.format( date ) + " " + timeFormat.format( date ) + ")" );
 			this.toBeReplacedDetailsLabel.setText( getResolutionText( toBeReplacedImage ) );
 			this.nextDetailsLabel.setText( getResolutionText( nextImage ) );
 			super.handleCompositePreActivation();
-			org.lgna.croquet.views.AbstractWindow<?> window = this.getRoot();
-			if( window instanceof org.lgna.croquet.views.Dialog ) {
-				org.lgna.croquet.views.Dialog dialog = (org.lgna.croquet.views.Dialog)window;
+			AbstractWindow<?> window = this.getRoot();
+			if( window instanceof Dialog ) {
+				Dialog dialog = (Dialog)window;
 				dialog.setTitle( "Save Over " + file );
 				dialog.pack();
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( file.getAbsolutePath(), ioe );
 		}
 	}

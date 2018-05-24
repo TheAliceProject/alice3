@@ -42,11 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.rigidbody;
 
+import edu.cmu.cs.dennisc.animation.Animation;
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.rigidbody.TranslationAndOrientationFunction;
+import edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animation {
-	class Function extends edu.cmu.cs.dennisc.math.rigidbody.TranslationAndOrientationFunction {
+public class RigidBodyAnimation implements Animation {
+	class Function extends TranslationAndOrientationFunction {
 		private static final double TARGET_VELOCITY_MAGINITUDE = +2.0;
 
 		private static final double FORCE_FOR_ACCELERATION = +4.0;
@@ -58,9 +68,9 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 		private double m_tRemainingEstimate = Double.POSITIVE_INFINITY;
 
 		@Override
-		protected edu.cmu.cs.dennisc.math.Vector3 getForce( edu.cmu.cs.dennisc.math.Vector3 rv, double t ) {
-			edu.cmu.cs.dennisc.math.Point3 translation = accessTranslation();
-			edu.cmu.cs.dennisc.math.Vector3 velocity = accessVelocity();
+		protected Vector3 getForce( Vector3 rv, double t ) {
+			Point3 translation = accessTranslation();
+			Vector3 velocity = accessVelocity();
 
 			double dx = m_translation1.x - translation.x;
 			double dy = m_translation1.y - translation.y;
@@ -91,11 +101,11 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 		}
 
 		@Override
-		protected edu.cmu.cs.dennisc.math.Vector3 getTorque( edu.cmu.cs.dennisc.math.Vector3 rv, double t ) {
+		protected Vector3 getTorque( Vector3 rv, double t ) {
 			return rv;
 		}
 
-		public void initialize( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		public void initialize( AffineMatrix4x4 m ) {
 			setTransformation( m );
 			setMomentum( 0, 0, 0 );
 			setVelocity( 0, 0, 0 );
@@ -112,11 +122,11 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 
 	private Function m_function = new Function();
 
-	private edu.cmu.cs.dennisc.scenegraph.Transformable m_sgTransformable;
-	private edu.cmu.cs.dennisc.math.Point3 m_translation1 = edu.cmu.cs.dennisc.math.Point3.createNaN();
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_orientation1 = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
+	private Transformable m_sgTransformable;
+	private Point3 m_translation1 = Point3.createNaN();
+	private UnitQuaternion m_orientation1 = UnitQuaternion.createNaN();
 
-	public RigidBodyAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1 ) {
+	public RigidBodyAnimation( Transformable sgTransformable, AffineMatrix4x4 m1 ) {
 		m_sgTransformable = sgTransformable;
 		m_translation1.set( m1.translation );
 		m_orientation1.setValue( m1.orientation );
@@ -131,12 +141,12 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 	}
 
 	@Override
-	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		if( Double.isNaN( m_tPrev ) ) {
 			m_function.initialize( m_sgTransformable.getLocalTransformation() );
 		} else {
 			double tDelta = m_tPrev - tCurrent;
-			edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities.rk4( m_function, m_tPrev, tDelta );
+			RungeKuttaUtilities.rk4( m_function, m_tPrev, tDelta );
 			m_sgTransformable.setLocalTransformation( m_function.getTransformation() );
 		}
 		m_tPrev = tCurrent;
@@ -144,7 +154,7 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 	}
 
 	@Override
-	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		m_sgTransformable.setLocalTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( m_orientation1, m_translation1 ) );
+	public void complete( AnimationObserver animationObserver ) {
+		m_sgTransformable.setLocalTransformation( new AffineMatrix4x4( m_orientation1, m_translation1 ) );
 	}
 }

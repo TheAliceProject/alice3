@@ -45,6 +45,9 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
+import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
@@ -95,12 +98,12 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -259,7 +262,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			pickDistance = -1;
 			Vector3 cameraForward = new Vector3( cameraTransform.orientation.backward );
 			cameraForward.multiply( -1.0d );
-			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new edu.cmu.cs.dennisc.math.Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
+			Point3 pickPoint = PlaneUtilities.getPointInPlane( Plane.XZ_PLANE, new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward ) );
 			if( pickPoint != null ) {
 				pickDistance = Point3.calculateDistanceBetween( pickPoint, cameraTransform.translation );
 			}
@@ -359,8 +362,8 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			Point3 new3DPoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin );
 
 			Point3 pointInCamera = this.camera.transformFrom_New( new3DPoint, this.camera.getRoot() );
-			Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
-			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
+			Point awtPoint = PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+			RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 		} finally {
 			CursorUtilities.popAndSet( this.onscreenRenderTarget.getAwtComponent() );
 		}
@@ -375,7 +378,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	private double initialDistanceToGround;
 	private double initialCameraDotVertical;
 	private double pickDistance;
-	protected Plane orthographicPickPlane = edu.cmu.cs.dennisc.math.Plane.XZ_PLANE;
+	protected Plane orthographicPickPlane = Plane.XZ_PLANE;
 	protected Point3 orthographicOffsetToOrigin = null;
 	protected Point3 originalPosition = null;
 	protected Boolean hasMoved = false;
@@ -385,5 +388,5 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	protected boolean hidCursor = false;
 
 	protected AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 }

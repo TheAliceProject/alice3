@@ -1,7 +1,9 @@
 package Jama;
 import Jama.util.*;
 
-   /** Singular Value Decomposition.
+import java.io.Serializable;
+
+/** Singular Value Decomposition.
    <P>
    For an m-by-n matrix A with m >= n, the singular value decomposition is
    an m-by-n orthogonal matrix U, an n-by-n diagonal matrix S, and
@@ -15,7 +17,7 @@ import Jama.util.*;
    rank can be computed from this decomposition.
    */
 
-public class SingularValueDecomposition implements java.io.Serializable {
+public class SingularValueDecomposition implements Serializable {
 
 /* ------------------------
    Class variables

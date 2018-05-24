@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +53,7 @@ public class ApplyRotationAboutYAxisAnimation extends AbstractApplyRotationAnima
 	public ApplyRotationAboutYAxisAnimation() {
 	}
 
-	public ApplyRotationAboutYAxisAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
+	public ApplyRotationAboutYAxisAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle ) {
 		super( sgSubject, sgAsSeenBy, angle );
 	}
 

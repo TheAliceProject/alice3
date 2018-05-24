@@ -43,13 +43,24 @@
 
 package org.alice.ide.clipboard;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CopyFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, CopyFromClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, CopyFromClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized CopyFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized CopyFromClipboardOperation getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		CopyFromClipboardOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -61,13 +72,13 @@ public class CopyFromClipboardOperation extends FromClipboardOperation {
 		return rv;
 	}
 
-	private CopyFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair );
+	private CopyFromClipboardOperation( BlockStatementIndexPair blockStatementIndexPair ) {
+		super( UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
-		org.lgna.project.ast.Statement copy = org.alice.ide.IDE.getActiveInstance().createCopy( statement );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<CopyFromClipboardOperation>( step, this.getBlockStatementIndexPair(), copy );
+	protected Edit createEdit( CompletionStep step, Statement statement ) {
+		Statement copy = IDE.getActiveInstance().createCopy( statement );
+		return new InsertStatementEdit<CopyFromClipboardOperation>( step, this.getBlockStatementIndexPair(), copy );
 	}
 }

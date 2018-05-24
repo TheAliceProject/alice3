@@ -43,11 +43,20 @@
 
 package org.alice.ide.name.validators;
 
-public abstract class TransientNameValidator extends NodeNameValidator {
-	private final org.lgna.project.ast.UserCode code;
-	private final org.lgna.project.ast.BlockStatement block;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserParameter;
 
-	public TransientNameValidator( org.lgna.project.ast.Node node, org.lgna.project.ast.UserCode code, org.lgna.project.ast.BlockStatement block ) {
+public abstract class TransientNameValidator extends NodeNameValidator {
+	private final UserCode code;
+	private final BlockStatement block;
+
+	public TransientNameValidator( Node node, UserCode code, BlockStatement block ) {
 		super( node );
 		//		assert code != null;
 		//		assert block != null;
@@ -58,8 +67,8 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 	@Override
 	public boolean isNameAvailable( String name ) {
 		if( this.code != null ) {
-			org.lgna.project.ast.Node node = this.getNode();
-			for( org.lgna.project.ast.UserParameter parameter : this.code.getRequiredParamtersProperty() ) {
+			Node node = this.getNode();
+			for( UserParameter parameter : this.code.getRequiredParamtersProperty() ) {
 				if( parameter == node ) {
 					//pass
 				} else {
@@ -71,9 +80,9 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 			//			if( this.block != null ) {
 			//				
 			//			}
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.UserLocal> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
-			( (org.lgna.project.ast.AbstractCode)this.code ).crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			for( org.lgna.project.ast.UserLocal local : crawler.getList() ) {
+			IsInstanceCrawler<UserLocal> crawler = IsInstanceCrawler.createInstance( UserLocal.class );
+			( (AbstractCode)this.code ).crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			for( UserLocal local : crawler.getList() ) {
 				if( local == node ) {
 					//pass
 				} else {

@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.views.ListDataView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListDataComposite<T, V extends org.lgna.croquet.views.ListDataView<T>> extends AbstractComposite<V> {
-	private final org.lgna.croquet.data.ListData<T> data;
+public abstract class ListDataComposite<T, V extends ListDataView<T>> extends AbstractComposite<V> {
+	private final ListData<T> data;
 
-	public ListDataComposite( java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
+	public ListDataComposite( UUID migrationId, ListData<T> data ) {
 		super( migrationId );
 		this.data = data;
 	}
 
-	public org.lgna.croquet.data.ListData<T> getData() {
+	public ListData<T> getData() {
 		return this.data;
 	}
 }

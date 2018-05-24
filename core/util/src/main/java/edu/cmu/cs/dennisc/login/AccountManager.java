@@ -43,6 +43,10 @@
 
 package edu.cmu.cs.dennisc.login;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import java.util.Map;
+
 public class AccountManager {
 	public static AccountInformation get( String key ) {
 		return map.get( key );
@@ -60,5 +64,5 @@ public class AccountManager {
 		map.remove( key );
 	}
 
-	private static final java.util.Map<String, AccountInformation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<String, AccountInformation> map = Maps.newHashMap();
 }

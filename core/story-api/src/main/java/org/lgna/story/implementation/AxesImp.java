@@ -43,15 +43,22 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.ScaleUtilities;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
+import org.lgna.story.SAxes;
 
 /**
  * @author Dennis Cosgrove
  */
 public class AxesImp extends VisualScaleModelImp {
-	public AxesImp( org.lgna.story.SAxes abstraction ) {
+	public AxesImp( SAxes abstraction ) {
 		this.abstraction = abstraction;
 		for( Visual v : this.getSgVisuals() ) {
 			this.putInstance( v );
@@ -60,34 +67,34 @@ public class AxesImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public org.lgna.story.SAxes getAbstraction() {
+	public SAxes getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgAxes.getScaleProperty() };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.sgAxes.getScaleProperty() };
 	}
 
 	@Override
-	protected void setSgVisualsScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
+	protected void setSgVisualsScale( Matrix3x3 m ) {
 		sgAxes.setScale( m );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Matrix3x3 getSgVisualsScale() {
+	protected Matrix3x3 getSgVisualsScale() {
 		return this.sgAxes.getScale();
 	}
 
 	@Override
-	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
+	protected void applyScale( Vector3 axis, boolean isScootDesired ) {
 		if( isScootDesired ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+			AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
 			m.translation.multiply( axis );
 			this.getSgComposite().localTransformation.setValue( m );
 		}
-		edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgAxes.getScale();
-		edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
+		Matrix3x3 scale = sgAxes.getScale();
+		ScaleUtilities.applyScale( scale, axis );
 		setSgVisualsScale( scale );
 	}
 
@@ -116,6 +123,6 @@ public class AxesImp extends VisualScaleModelImp {
 		this.setScale( getScaleForSize( size ) );
 	}
 
-	private final org.lgna.story.SAxes abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0, 1.0, 2.0 );
+	private final SAxes abstraction;
+	private final ExtravagantAxes sgAxes = new ExtravagantAxes( 1.0, 1.0, 2.0 );
 }

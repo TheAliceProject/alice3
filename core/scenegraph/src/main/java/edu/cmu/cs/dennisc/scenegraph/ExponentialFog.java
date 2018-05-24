@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+
 /**
  * exponential fog affects visual elements based on their distance from a
  * camera.
@@ -63,5 +65,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public class ExponentialFog extends Fog {
 	//todo Double -> Float?
-	public final edu.cmu.cs.dennisc.property.DoubleProperty density = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 1.0 );
+	public final DoubleProperty density = new DoubleProperty( this, 1.0 );
 }

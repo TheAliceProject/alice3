@@ -42,12 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.croquet.models.sceneditor;
 
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkerFieldState extends org.lgna.croquet.MutableDataSingleSelectListState<UserField> {
+public class CameraMarkerFieldState extends MutableDataSingleSelectListState<UserField> {
 	private static class SingletonHolder {
 		private static CameraMarkerFieldState instance = new CameraMarkerFieldState();
 	}
@@ -57,6 +62,6 @@ public class CameraMarkerFieldState extends org.lgna.croquet.MutableDataSingleSe
 	}
 
 	private CameraMarkerFieldState() {
-		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
+		super( ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString( "a09eeae2-53fc-4cbe-ab09-a6d6d7975d4d" ), NodeCodec.getInstance( UserField.class ) );
 	}
 }

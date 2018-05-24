@@ -42,15 +42,22 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
 import org.alice.ide.croquet.models.help.LogInOutComposite;
 import org.alice.ide.croquet.models.help.LogInOutListener;
+import org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState;
+import org.alice.ide.video.preview.VideoComposite;
 import org.alice.media.youtube.core.YouTubeEvent;
 import org.alice.media.youtube.core.YouTubeEvent.EventType;
 import org.alice.media.youtube.core.YouTubeListener;
@@ -58,8 +65,11 @@ import org.alice.media.youtube.core.YouTubeUploader;
 import org.alice.media.youtube.croquet.views.UploadToYouTubeStatusPane;
 import org.alice.media.youtube.croquet.views.UploadView;
 import org.alice.media.youtube.login.YouTubeLoginComposite;
+import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
 
@@ -74,6 +84,8 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Matt May
@@ -81,7 +93,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 public class UploadComposite extends WizardPageComposite<UploadView, ExportToYouTubeWizardDialogComposite> {
 	private final YouTubeUploader uploader = new YouTubeUploader();
 
-	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "294cb10a-ad2f-42cf-8159-ac859c7fe792" ), new YouTubeLoginComposite( this ) );
+	private final LogInOutComposite logInOutComposite = new LogInOutComposite( UUID.fromString( "294cb10a-ad2f-42cf-8159-ac859c7fe792" ), new YouTubeLoginComposite( this ) );
 
 	private final StringState titleState = this.createStringState( "titleState", "Alice Video" );
 	private final BooleanState isPrivateState = this.createBooleanState( "isPrivateState", false );
@@ -95,12 +107,12 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	private final Status noDescriptions = createWarningStatus( "warningNoDescriptions" );
 	private final Status noTags = createWarningStatus( "warningNoTags" );
 
-	private final org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
+	private final VideoComposite videoComposite = new VideoComposite();
 	private boolean isUploaded = false;
 	private boolean categoriesEnabled = false;
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ), owner );
+		super( UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ), owner );
 		//		uploader.addYouTubeListener( this.getUploadOperation() );
 		//		this.videoCategoryState = this.createListSelectionState( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, YouTubeCategories.getCategories() );
 		this.registerSubComposite( this.videoComposite );
@@ -111,9 +123,9 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 
 	private final ActionOperation exportToFileOperation = this.createActionOperation( "exportToFileOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
 
-			File videosDirectory = org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
+			File videosDirectory = UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
 
 			String filename;
 			String title = titleState.getValue();
@@ -123,13 +135,13 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 				filename = "*.webm";
 			}
 
-			File exportFile = FileDialogUtilities.showSaveFileDialog( java.util.UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
+			File exportFile = FileDialogUtilities.showSaveFileDialog( UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
 					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
 			if( exportFile != null ) {
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
 				} catch( IOException ioe ) {
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "cannot export file: " + exportFile )
+					new OkDialog.Builder( "cannot export file: " + exportFile )
 							.buildAndShow();
 				}
 			}
@@ -149,7 +161,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		}
 	};
 
-	public org.alice.ide.video.preview.VideoComposite getVideoComposite() {
+	public VideoComposite getVideoComposite() {
 		return this.videoComposite;
 	}
 
@@ -161,7 +173,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		return this.logInOutComposite;
 	}
 
-	public org.lgna.croquet.Operation getExportToFileOperation() {
+	public Operation getExportToFileOperation() {
 		return this.exportToFileOperation;
 	}
 
@@ -203,7 +215,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus( CompletionStep<?> step ) {
 		//		if( true ) {
 		//			return IS_GOOD_TO_GO_STATUS;
 		//		}
@@ -232,10 +244,10 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	private void setEnabled( boolean isEnabled ) {
 		final boolean IS_VIEW_BASED = true; //what is this? (mmay)
 		if( IS_VIEW_BASED ) {
-			for( java.awt.Component awtComponent : this.getView().getYoutubeDetailsPanel().getAwtComponent().getComponents() ) {
+			for( Component awtComponent : this.getView().getYoutubeDetailsPanel().getAwtComponent().getComponents() ) {
 				awtComponent.setEnabled( isEnabled );
-				if( awtComponent instanceof javax.swing.JScrollPane ) {
-					javax.swing.JScrollPane jScrollPane = (javax.swing.JScrollPane)awtComponent;
+				if( awtComponent instanceof JScrollPane ) {
+					JScrollPane jScrollPane = (JScrollPane)awtComponent;
 					jScrollPane.getViewport().getView().setEnabled( isEnabled );
 				}
 				if( awtComponent instanceof JComboBox ) {
@@ -269,7 +281,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	};
 
 	public boolean tryToUpload() {
-		JFrame parent = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.getRootJFrame( getView().getAwtComponent() );
+		JFrame parent = ComponentUtilities.getRootJFrame( getView().getAwtComponent() );
 		UploadToYouTubeStatusPane statusPane = new UploadToYouTubeStatusPane( parent, uploader );
 		uploader.addYouTubeListener( listener );
 		uploader.addYouTubeListener( statusPane );

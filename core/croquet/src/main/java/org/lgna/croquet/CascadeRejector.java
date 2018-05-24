@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.edits.Edit;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface CascadeRejector {
-	public boolean isRejected( org.lgna.croquet.edits.Edit edit );
+	public boolean isRejected( Edit edit );
 }

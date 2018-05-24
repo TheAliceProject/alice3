@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.icons.ActionStatusIcon;
+import org.lgna.project.ast.Member;
+
+import javax.swing.Icon;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberHub<M extends org.lgna.project.ast.Member> extends BareBonesMemberHub<M> {
+public abstract class MemberHub<M extends Member> extends BareBonesMemberHub<M> {
 	private final MemberPopupCoreComposite popup = new MemberPopupCoreComposite( this );
-	private final javax.swing.Icon icon = new org.alice.ide.ast.type.merge.croquet.views.icons.ActionStatusIcon( this );
+	private final Icon icon = new ActionStatusIcon( this );
 
 	public MemberHub( M member, boolean initialValue ) {
 		super( member, initialValue );
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.icon;
 	}
 

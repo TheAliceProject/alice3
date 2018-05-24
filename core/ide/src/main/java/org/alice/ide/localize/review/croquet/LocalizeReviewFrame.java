@@ -42,22 +42,47 @@
  *******************************************************************************/
 package org.alice.ide.localize.review.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.LocaleUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.LocaleCodec;
 import org.alice.ide.localize.review.core.Item;
+import org.alice.ide.localize.review.core.LocalizeUtils;
+import org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
+public class LocalizeReviewFrame extends FrameComposite<LocalizeReviewFrameView> {
 	private static final String SUFFIX = ".properties";
-	private static final java.util.Map<java.util.Locale, java.util.Locale> mapLocaleToLocale;
+	private static final Map<Locale, Locale> mapLocaleToLocale;
 	static {
-		java.util.Map<java.util.Locale, java.util.Locale> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		map.put( new java.util.Locale( "pt" ), new java.util.Locale( "pt", "PT" ) );
-		mapLocaleToLocale = java.util.Collections.unmodifiableMap( map );
+		Map<Locale, Locale> map = Maps.newHashMap();
+		map.put( new Locale( "pt" ), new Locale( "pt", "PT" ) );
+		mapLocaleToLocale = Collections.unmodifiableMap( map );
 	}
 
 	public LocalizeReviewFrame() {
-		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
+		super( UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
 		this.tableModel = new LocalizationTableModel();
 	}
 
@@ -83,19 +108,19 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 	}
 
 	@Override
-	protected org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView createView() {
-		return new org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView( this );
+	protected LocalizeReviewFrameView createView() {
+		return new LocalizeReviewFrameView( this );
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> getLocaleState() {
+	public ImmutableDataSingleSelectListState<Locale> getLocaleState() {
 		return this.localeState;
 	}
 
-	public org.lgna.croquet.BooleanState getIsIncludingUntranslatedState() {
+	public BooleanState getIsIncludingUntranslatedState() {
 		return this.isIncludingUntranslatedState;
 	}
 
-	public javax.swing.table.TableModel getTableModel() {
+	public TableModel getTableModel() {
 		return this.tableModel;
 	}
 
@@ -103,76 +128,76 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		return this.tableModel.getItems().get( row ).getBundleName();
 	}
 
-	public java.net.URI createUri( int row ) {
-		java.util.Locale locale = this.getLocaleState().getValue();
+	public URI createUri( int row ) {
+		Locale locale = this.getLocaleState().getValue();
 		if( mapLocaleToLocale.containsKey( locale ) ) {
 			locale = mapLocaleToLocale.get( locale );
 		}
-		String localeTag = edu.cmu.cs.dennisc.java.util.LocaleUtilities.toLanguageTag( locale );
+		String localeTag = LocaleUtilities.toLanguageTag( locale );
 		return this.tableModel.getItems().get( row ).createUri( localeTag );
 	}
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 13,
-			new java.util.Locale( "pt" ),
-			new java.util.Locale( "pt", "BR" ),
-			new java.util.Locale( "es" ),
-			new java.util.Locale( "fr" ),
-			new java.util.Locale( "fr", "BE" ),
-			new java.util.Locale( "it" ),
-			new java.util.Locale( "nl" ),
-			new java.util.Locale( "de" ),
-			new java.util.Locale( "el" ),
-			new java.util.Locale( "ro" ),
-			new java.util.Locale( "cs" ),
-			new java.util.Locale( "sl" ),
-			new java.util.Locale( "lt" ),
-			new java.util.Locale( "ru" ),
-			new java.util.Locale( "uk" ),
-			new java.util.Locale( "tr" ),
-			new java.util.Locale( "ar" ),
-			new java.util.Locale( "iw" ),
-			new java.util.Locale( "in" ),
-			new java.util.Locale( "zh", "CN" ),
-			new java.util.Locale( "zh", "TW" ),
-			new java.util.Locale( "ko" ) );
+	private final ImmutableDataSingleSelectListState<Locale> localeState = this.createImmutableListState( "localeState", Locale.class, LocaleCodec.SINGLETON, 13,
+			new Locale( "pt" ),
+			new Locale( "pt", "BR" ),
+			new Locale( "es" ),
+			new Locale( "fr" ),
+			new Locale( "fr", "BE" ),
+			new Locale( "it" ),
+			new Locale( "nl" ),
+			new Locale( "de" ),
+			new Locale( "el" ),
+			new Locale( "ro" ),
+			new Locale( "cs" ),
+			new Locale( "sl" ),
+			new Locale( "lt" ),
+			new Locale( "ru" ),
+			new Locale( "uk" ),
+			new Locale( "tr" ),
+			new Locale( "ar" ),
+			new Locale( "iw" ),
+			new Locale( "in" ),
+			new Locale( "zh", "CN" ),
+			new Locale( "zh", "TW" ),
+			new Locale( "ko" ) );
 
-	private final org.lgna.croquet.BooleanState isIncludingUntranslatedState = this.createBooleanState( "isIncludingUntranslatedState", false );
+	private final BooleanState isIncludingUntranslatedState = this.createBooleanState( "isIncludingUntranslatedState", false );
 
-	private final org.lgna.croquet.event.ValueListener<java.util.Locale> localeListener = new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+	private final ValueListener<Locale> localeListener = new ValueListener<Locale>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
+		public void valueChanged( ValueEvent<Locale> e ) {
 			tableModel.setLocale( e.getNextValue() );
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> isIncludingUntranslatedListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> isIncludingUntranslatedListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			tableModel.setIncludingUntranslated( e.getNextValue() );
 		}
 	};
 
 	private final LocalizationTableModel tableModel;
 
-	private static class LocalizationTableModel extends javax.swing.table.AbstractTableModel {
+	private static class LocalizationTableModel extends AbstractTableModel {
 
 		public LocalizationTableModel() {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			this.allItems = org.alice.ide.localize.review.core.LocalizeUtils.getItems( ide.getClass(), "alice-ide" );
+			IDE ide = IDE.getActiveInstance();
+			this.allItems = LocalizeUtils.getItems( ide.getClass(), "alice-ide" );
 		}
 
-		public void setLocale( java.util.Locale locale ) {
-			java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		public void setLocale( Locale locale ) {
+			List<Item> _translatedItems = Lists.newLinkedList();
 			for( Item item : this.allItems ) {
-				java.util.ResourceBundle resourceBundleB = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( item.getBundleName(), locale );
+				ResourceBundle resourceBundleB = ResourceBundleUtilities.getUtf8Bundle( item.getBundleName(), locale );
 				try {
 					item.setLocalizedValue( resourceBundleB.getString( item.getKey() ) );
-				} catch( java.util.MissingResourceException mre ) {
+				} catch( MissingResourceException mre ) {
 					item.setLocalizedValue( "MissingResourceException" );
 					mre.printStackTrace();
 				}
 			}
-			this.translatedItems = java.util.Collections.unmodifiableList( _translatedItems );
+			this.translatedItems = Collections.unmodifiableList( _translatedItems );
 			this.fireTableDataChanged();
 		}
 
@@ -183,19 +208,19 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 			}
 		}
 
-		private java.util.List<Item> getItems() {
+		private List<Item> getItems() {
 			if( this.isIncludingUntranslated ) {
 				return this.allItems;
 			} else {
-				java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				List<Item> _translatedItems = Lists.newLinkedList();
 				for( Item item : this.allItems ) {
-					if( edu.cmu.cs.dennisc.java.util.Objects.equals( item.getDefaultValue(), item.getLocalizedValue() ) ) {
+					if( Objects.equals( item.getDefaultValue(), item.getLocalizedValue() ) ) {
 						//pass
 					} else {
 						_translatedItems.add( item );
 					}
 				}
-				this.translatedItems = java.util.Collections.unmodifiableList( _translatedItems );
+				this.translatedItems = Collections.unmodifiableList( _translatedItems );
 				return this.translatedItems;
 			}
 		}
@@ -221,7 +246,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 			case 2:
 				return item.getDefaultValue();
 			case 3:
-				if( edu.cmu.cs.dennisc.java.util.Objects.equals( item.getDefaultValue(), item.getLocalizedValue() ) ) {
+				if( Objects.equals( item.getDefaultValue(), item.getLocalizedValue() ) ) {
 					return null;
 				} else {
 					return item.getLocalizedValue();
@@ -233,8 +258,8 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 			}
 		}
 
-		private final java.util.List<Item> allItems;
-		private java.util.List<Item> translatedItems;
+		private final List<Item> allItems;
+		private List<Item> translatedItems;
 		private boolean isIncludingUntranslated;
 	}
 }

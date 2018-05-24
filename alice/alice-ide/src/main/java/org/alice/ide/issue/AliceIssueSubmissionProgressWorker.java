@@ -42,19 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import edu.cmu.cs.dennisc.issue.Issue;
+import org.lgna.issue.IssueSubmissionProgressWorker;
+import org.lgna.issue.swing.JSubmitPane;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIssueSubmissionProgressWorker extends org.lgna.issue.IssueSubmissionProgressWorker {
+public class AliceIssueSubmissionProgressWorker extends IssueSubmissionProgressWorker {
 	private final boolean isProjectAttachmentDesired;
 
-	public AliceIssueSubmissionProgressWorker( org.lgna.issue.swing.JSubmitPane owner, boolean isProjectAttachmentDesired ) {
+	public AliceIssueSubmissionProgressWorker( JSubmitPane owner, boolean isProjectAttachmentDesired ) {
 		super( owner );
 		this.isProjectAttachmentDesired = isProjectAttachmentDesired;
 	}
 
 	@Override
-	protected Boolean doInternal_onBackgroundThread( edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder ) throws Exception {
+	protected Boolean doInternal_onBackgroundThread( Issue.Builder issueBuilder ) throws Exception {
 		this.publish( "issueBuilder: " + issueBuilder );
 		this.publish( "attach project: " + this.isProjectAttachmentDesired );
 		for( int i = 0; i < 20; i++ ) {

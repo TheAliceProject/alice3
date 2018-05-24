@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.map.MapToMapToMap;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationMethodInvocationFactory> mapToMapToMap = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
+	private static MapToMapToMap<UserParameter, AbstractMethod, AbstractMethod, ParameterAccessMethodInvocationMethodInvocationFactory> mapToMapToMap = MapToMapToMap.newInstance();
 
-	public static synchronized ParameterAccessMethodInvocationMethodInvocationFactory getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod innerMethod, org.lgna.project.ast.AbstractMethod outerMethod ) {
+	public static synchronized ParameterAccessMethodInvocationMethodInvocationFactory getInstance( UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod ) {
 		assert parameter != null;
 		ParameterAccessMethodInvocationMethodInvocationFactory rv = mapToMapToMap.get( parameter, innerMethod, outerMethod );
 		if( rv != null ) {
@@ -60,16 +69,16 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
 		return rv;
 	}
 
-	private ParameterAccessMethodInvocationMethodInvocationFactory( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod innerMethod, org.lgna.project.ast.AbstractMethod outerMethod ) {
+	private ParameterAccessMethodInvocationMethodInvocationFactory( UserParameter parameter, AbstractMethod innerMethod, AbstractMethod outerMethod ) {
 		super( outerMethod, parameter.name );
 		this.parameter = parameter;
 		this.innerMethod = innerMethod;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		if( code != null ) {
-			if( this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) {
+			if( this.parameter.getFirstAncestorAssignableTo( AbstractCode.class ) == code ) {
 				return this.parameter.getValueType();
 			} else {
 				return null;
@@ -79,26 +88,26 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
 		}
 	}
 
-	public org.lgna.project.ast.UserParameter getParameter() {
+	public UserParameter getParameter() {
 		return this.parameter;
 	}
 
-	public org.lgna.project.ast.AbstractMethod getInnerMethod() {
+	public AbstractMethod getInnerMethod() {
 		return this.innerMethod;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+	protected Expression createTransientExpressionForMethodInvocation() {
 		//todo?
-		return new org.lgna.project.ast.MethodInvocation(
-				new org.lgna.project.ast.ParameterAccess( this.parameter ),
+		return new MethodInvocation(
+				new ParameterAccess( this.parameter ),
 				this.innerMethod );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
-		return new org.lgna.project.ast.MethodInvocation(
-				new org.lgna.project.ast.ParameterAccess( this.parameter ),
+	protected Expression createExpressionForMethodInvocation() {
+		return new MethodInvocation(
+				new ParameterAccess( this.parameter ),
 				this.innerMethod );
 	}
 
@@ -111,6 +120,6 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
-	private final org.lgna.project.ast.AbstractMethod innerMethod;
+	private final UserParameter parameter;
+	private final AbstractMethod innerMethod;
 }

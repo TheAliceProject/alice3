@@ -43,6 +43,8 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +61,7 @@ public class StateContext<T> implements Context {
 	@Override
 	public boolean isGoodToGo() {
 		T currentValue = this.getState().getValue();
-		return edu.cmu.cs.dennisc.java.util.Objects.equals( currentValue, this.value );
+		return Objects.equals( currentValue, this.value );
 	}
 
 	//	public org.lgna.croquet.history.Transaction[] createRecoveryTransactions() {

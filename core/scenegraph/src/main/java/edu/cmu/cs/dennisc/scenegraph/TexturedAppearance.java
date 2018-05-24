@@ -43,15 +43,20 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.IntegerProperty;
+import edu.cmu.cs.dennisc.texture.Texture;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TexturedAppearance extends SimpleAppearance {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.texture.Texture> diffuseColorTexture = new edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.texture.Texture>( this, null );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureAlphaBlended = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureClamped = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.texture.Texture> bumpTexture = new edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.texture.Texture>( this, null );
-	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty( this, -1 );
+	public final InstanceProperty<Texture> diffuseColorTexture = new InstanceProperty<Texture>( this, null );
+	public final BooleanProperty isDiffuseColorTextureAlphaBlended = new BooleanProperty( this, false );
+	public final BooleanProperty isDiffuseColorTextureClamped = new BooleanProperty( this, false );
+	public final InstanceProperty<Texture> bumpTexture = new InstanceProperty<Texture>( this, null );
+	public final IntegerProperty textureId = new IntegerProperty( this, -1 );
 
 	@Override
 	protected void actuallyRelease() {
@@ -74,11 +79,11 @@ public class TexturedAppearance extends SimpleAppearance {
 		this.isDiffuseColorTextureClamped.setValue( isDiffuseColorTextureClamped );
 	}
 
-	public void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+	public void setDiffuseColorTexture( Texture diffuseColorTexture ) {
 		this.diffuseColorTexture.setValue( diffuseColorTexture );
 	}
 
-	public void setDiffuseColorTextureAndInferAlphaBlend( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+	public void setDiffuseColorTextureAndInferAlphaBlend( Texture diffuseColorTexture ) {
 		boolean isDiffuseColorTextureAlphaBlended;
 		if( diffuseColorTexture != null ) {
 			isDiffuseColorTextureAlphaBlended = diffuseColorTexture.isPotentiallyAlphaBlended();
@@ -89,7 +94,7 @@ public class TexturedAppearance extends SimpleAppearance {
 		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
 	}
 
-	public void setBumpTexture( edu.cmu.cs.dennisc.texture.Texture bumpTexture ) {
+	public void setBumpTexture( Texture bumpTexture ) {
 		this.bumpTexture.setValue( bumpTexture );
 	}
 }

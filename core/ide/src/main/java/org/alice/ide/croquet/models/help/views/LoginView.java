@@ -45,9 +45,13 @@ package org.alice.ide.croquet.models.help.views;
 import java.util.List;
 
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
+import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LabeledFormRow;
+import org.lgna.croquet.views.PasswordField;
+import org.lgna.croquet.views.TextField;
 
 /**
  * @author Matt May
@@ -55,12 +59,12 @@ import org.lgna.croquet.views.LabeledFormRow;
 public class LoginView extends FormPanel {
 	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			passwordField.setExposed( e.getNextValue() );
 		}
 	};
-	private final org.lgna.croquet.views.TextField userNameField;
-	private final org.lgna.croquet.views.PasswordField passwordField;
+	private final TextField userNameField;
+	private final PasswordField passwordField;
 
 	public LoginView( AbstractLoginComposite bugLoginComposite ) {
 		super( bugLoginComposite );
@@ -75,7 +79,7 @@ public class LoginView extends FormPanel {
 		rows.add( new LabeledFormRow( loginComposite.getUserNameState().getSidekickLabel(), this.userNameField ) );
 		rows.add( new LabeledFormRow( loginComposite.getPasswordState().getSidekickLabel(), this.passwordField ) );
 		rows.add( new LabeledFormRow( null, loginComposite.getDisplayPasswordValue().createCheckBox() ) );
-		rows.add( new LabeledFormRow( null, new org.lgna.croquet.views.Label() ) );
+		rows.add( new LabeledFormRow( null, new Label() ) );
 		rows.add( new LabeledFormRow( null, loginComposite.getIsRememberingState().createCheckBox() ) );
 	}
 

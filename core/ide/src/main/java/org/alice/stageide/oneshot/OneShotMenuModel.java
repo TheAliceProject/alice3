@@ -43,13 +43,22 @@
 
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class OneShotMenuModel extends PredeterminedMenuModel {
+	private static Map<InstanceFactory, OneShotMenuModel> map = Maps.newHashMap();
 
-	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+	public static OneShotMenuModel getInstance( InstanceFactory instanceFactory ) {
 		synchronized( map ) {
 			OneShotMenuModel rv = map.get( instanceFactory );
 			if( rv != null ) {
@@ -62,7 +71,7 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		}
 	}
 
-	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
+	private OneShotMenuModel( InstanceFactory instanceFactory, List<StandardMenuItemPrepModel> models ) {
+		super( UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
 	}
 }

@@ -43,35 +43,44 @@
 
 package org.alice.ide.croquet.models.ui.preferences;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.preferences.PreferenceStringState;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryState extends org.lgna.croquet.preferences.PreferenceStringState {
+public abstract class DirectoryState extends PreferenceStringState {
 	protected static final String URI_SEPARATOR = "/"; // do not use java.io.File.separator
 
-	public DirectoryState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
+	public DirectoryState( Group group, UUID id, String initialValue ) {
 		super( group, id, initialValue );
 	}
 
 	protected abstract String getPath();
 
-	private java.io.File getDirectory() {
+	private File getDirectory() {
 		String path = this.getPath();
-		java.io.File rv;
+		File rv;
 		try {
 			//todo: account for spaces and other special characters
-			java.net.URI uri = new java.net.URI( path );
-			rv = new java.io.File( uri );
-		} catch( java.net.URISyntaxException urise ) {
+			URI uri = new URI( path );
+			rv = new File( uri );
+		} catch( URISyntaxException urise ) {
 			//throw new RuntimeException( path, urise );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( urise, "URI failure:", path );
-			rv = new java.io.File( path );
+			Logger.throwable( urise, "URI failure:", path );
+			rv = new File( path );
 		}
 		return rv;
 	}
 
-	public java.io.File getDirectoryEnsuringExistance() {
-		java.io.File rv = this.getDirectory();
+	public File getDirectoryEnsuringExistance() {
+		File rv = this.getDirectory();
 		try {
 			rv.mkdirs();
 		} catch( Throwable t ) {

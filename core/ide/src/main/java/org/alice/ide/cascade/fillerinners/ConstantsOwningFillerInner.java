@@ -42,13 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = Maps.newHashMap();
 
-	public static ConstantsOwningFillerInner getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static ConstantsOwningFillerInner getInstance( AbstractType<?, ?, ?> type ) {
 		synchronized( map ) {
 			ConstantsOwningFillerInner rv = map.get( type );
 			if( rv != null ) {
@@ -62,21 +74,21 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 	}
 
 	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
-		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
+		return getInstance( JavaType.getInstance( cls ) );
 	}
 
-	private ConstantsOwningFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private ConstantsOwningFillerInner( AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getType();
-		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		AbstractType<?, ?, ?> type = this.getType();
+		for( AbstractField field : type.getDeclaredFields() ) {
 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
 				//todo: should this be identical? to?
 				if( type.isAssignableFrom( field.getValueType() ) ) {
-					items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+					items.add( StaticFieldAccessFillIn.getInstance( field ) );
 				}
 			}
 		}

@@ -43,32 +43,41 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class LocalAccessOperation extends ProjectExpressionPropertyOperation {
+	private static MapToMap<UserLocal, ExpressionProperty, LocalAccessOperation> mapToMap = MapToMap.newInstance();
 
-	public static LocalAccessOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static LocalAccessOperation getInstance( UserLocal local, ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation>() {
+		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalAccessOperation>() {
 			@Override
-			public LocalAccessOperation initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public LocalAccessOperation initialize( UserLocal local, ExpressionProperty expressionProperty ) {
 				return new LocalAccessOperation( local, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalAccessOperation( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "e3a514b8-1414-47a1-b9ec-82cd4678417c" ), expressionProperty );
+	private LocalAccessOperation( UserLocal local, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "e3a514b8-1414-47a1-b9ec-82cd4678417c" ), expressionProperty );
 		this.local = local;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression() {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createExpression() {
+		return new LocalAccess( this.local );
 	}
 }

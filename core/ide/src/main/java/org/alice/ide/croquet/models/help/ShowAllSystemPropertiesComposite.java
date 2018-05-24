@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShowAllSystemPropertiesComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView> {
+public class ShowAllSystemPropertiesComposite extends SimpleOperationUnadornedDialogCoreComposite<ShowAllSystemPropertiesView> {
 	public ShowAllSystemPropertiesComposite() {
-		super( java.util.UUID.fromString( "17e79b9b-9a19-4edd-bef5-15685681a88e" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( UUID.fromString( "17e79b9b-9a19-4edd-bef5-15685681a88e" ), Application.INFORMATION_GROUP );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView createView() {
-		return new org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView( this );
+	protected ShowAllSystemPropertiesView createView() {
+		return new ShowAllSystemPropertiesView( this );
 	}
 }

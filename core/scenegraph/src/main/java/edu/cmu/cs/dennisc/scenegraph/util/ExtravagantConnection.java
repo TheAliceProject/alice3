@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
@@ -81,20 +88,20 @@ public class ExtravagantConnection extends Connection {
 		this.sgIQA.polygonData.setValue( quadData );
 
 		for( int d = 0; d < DISC_COUNT; d++ ) {
-			this.points[ d ] = new edu.cmu.cs.dennisc.math.Point3();
-			this.normals[ d ] = new edu.cmu.cs.dennisc.math.Vector3f();
+			this.points[ d ] = new Point3();
+			this.normals[ d ] = new Vector3f();
 		}
 		setRadius( 1.0 );
 		geometries.setValue( new Geometry[] { this.sgIQA } );
 	}
 
 	public void update() {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = getTarget().getTransformation( this );
+		AffineMatrix4x4 m = getTarget().getTransformation( this );
 		double s = m.translation.calculateMagnitude();
 		s *= 5;
-		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic xHermiteCubic = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.x, 0, -s * m.orientation.backward.x );
-		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic yHermiteCubic = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.y, 0, -s * m.orientation.backward.y );
-		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic zHermiteCubic = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.z, -1, -s * m.orientation.backward.z );
+		HermiteCubic xHermiteCubic = new HermiteCubic( 0, m.translation.x, 0, -s * m.orientation.backward.x );
+		HermiteCubic yHermiteCubic = new HermiteCubic( 0, m.translation.y, 0, -s * m.orientation.backward.y );
+		HermiteCubic zHermiteCubic = new HermiteCubic( 0, m.translation.z, -1, -s * m.orientation.backward.z );
 
 		Vertex[] vertices = this.sgIQA.vertices.getValue();
 		synchronized( vertices ) {
@@ -110,21 +117,21 @@ public class ExtravagantConnection extends Connection {
 				this.vBuffer.normalize();
 				//this.vBuffer.negate();
 
-				edu.cmu.cs.dennisc.math.Vector3 upGuide;
-				if( edu.cmu.cs.dennisc.math.Vector3.isWithinEpsilonOfPositiveOrNegativeYAxis( this.vBuffer, 0.01 ) ) {
-					upGuide = edu.cmu.cs.dennisc.math.Vector3.accessPositiveZAxis();
+				Vector3 upGuide;
+				if( Vector3.isWithinEpsilonOfPositiveOrNegativeYAxis( this.vBuffer, 0.01 ) ) {
+					upGuide = Vector3.accessPositiveZAxis();
 				} else {
-					upGuide = edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis();
+					upGuide = Vector3.accessPositiveYAxis();
 				}
 
 				//todo
-				this.mBuffer.setValue( new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( this.vBuffer, upGuide ) );
+				this.mBuffer.setValue( new ForwardAndUpGuide( this.vBuffer, upGuide ) );
 				//edu.cmu.cs.dennisc.print.PrintUtilities.printlns( this.mBuffer );        
 
 				for( int d = 0; d < DISC_COUNT; d++ ) {
 					vertices[ lcv ].position.set( this.points[ d ] );
 					this.mBuffer.transform( vertices[ lcv ].position );
-					vertices[ lcv ].position.add( new edu.cmu.cs.dennisc.math.Point3( x, y, z ) );
+					vertices[ lcv ].position.add( new Point3( x, y, z ) );
 					vertices[ lcv ].normal.set( this.normals[ d ] );
 					this.mBuffer.transform( vertices[ lcv ].normal );
 					lcv++;
@@ -156,10 +163,10 @@ public class ExtravagantConnection extends Connection {
 
 	private final IndexedQuadrilateralArray sgIQA = new IndexedQuadrilateralArray();
 
-	private final edu.cmu.cs.dennisc.math.Point3[] points = new edu.cmu.cs.dennisc.math.Point3[ DISC_COUNT ];
-	private final edu.cmu.cs.dennisc.math.Vector3f[] normals = new edu.cmu.cs.dennisc.math.Vector3f[ DISC_COUNT ];
+	private final Point3[] points = new Point3[ DISC_COUNT ];
+	private final Vector3f[] normals = new Vector3f[ DISC_COUNT ];
 
-	private final edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 mBuffer = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createNaN();
-	private final edu.cmu.cs.dennisc.math.Vector3 vBuffer = edu.cmu.cs.dennisc.math.Vector3.createNaN();
+	private final OrthogonalMatrix3x3 mBuffer = OrthogonalMatrix3x3.createNaN();
+	private final Vector3 vBuffer = Vector3.createNaN();
 	private double radius = Double.NaN;
 }

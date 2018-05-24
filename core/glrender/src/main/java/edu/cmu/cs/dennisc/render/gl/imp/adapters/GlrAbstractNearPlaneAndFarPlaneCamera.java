@@ -43,21 +43,25 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
+import edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera;
+
+import java.awt.Rectangle;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera> extends GlrAbstractCamera<T> {
-	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport, float near, float far );
+public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<T extends AbstractNearPlaneAndFarPlaneCamera> extends GlrAbstractCamera<T> {
+	protected abstract void setupProjection( Context context, Rectangle actualViewport, float near, float far );
 
 	@Override
-	protected void setupProjection( edu.cmu.cs.dennisc.render.gl.imp.Context context, java.awt.Rectangle actualViewport ) {
+	protected void setupProjection( Context context, Rectangle actualViewport ) {
 		setupProjection( context, actualViewport, this.near, this.far );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.nearClippingPlaneDistance ) {
 			this.near = owner.nearClippingPlaneDistance.getValue().floatValue();
 		} else if( property == owner.farClippingPlaneDistance ) {

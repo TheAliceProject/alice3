@@ -43,27 +43,38 @@
 
 package org.alice.ide.croquet.components;
 
+import org.alice.ide.common.TypeIcon;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.State;
+import org.lgna.croquet.views.ItemDropDown;
+import org.lgna.project.ast.AbstractType;
+
+import javax.swing.Action;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDropDown<M extends org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType>> extends org.lgna.croquet.views.ItemDropDown<org.lgna.project.ast.AbstractType, M> {
+public class TypeDropDown<M extends CustomItemState<AbstractType>> extends ItemDropDown<AbstractType, M> {
 	public TypeDropDown( M model ) {
 		super( model );
 		this.update( model.getValue() );
-		this.getAwtComponent().setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+		this.getAwtComponent().setHorizontalAlignment( SwingConstants.LEADING );
 	}
 
-	private void update( org.lgna.project.ast.AbstractType type ) {
-		this.getAwtComponent().getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
+	private void update( AbstractType type ) {
+		this.getAwtComponent().getAction().putValue( Action.SMALL_ICON, new TypeIcon( type ) {
 			@Override
-			protected java.awt.Color getTextColor( java.awt.Component c ) {
+			protected Color getTextColor( Component c ) {
 				return super.getTextColor( TypeDropDown.this.getAwtComponent() );
 			}
 		} );
 	}
 
 	@Override
-	protected void handleChanged( org.lgna.croquet.State<org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue, boolean isAdjusting ) {
 		this.update( nextValue );
 	}
 };

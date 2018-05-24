@@ -42,31 +42,41 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledImageIcon implements javax.swing.Icon {
-	private final java.awt.Image sourceImage;
+public class ScaledImageIcon implements Icon {
+	private final Image sourceImage;
 	private int width;
 	private int height;
 
-	public static javax.swing.Icon createSafeInstanceInPixels( java.awt.Image sourceImage, int width, int height ) {
+	public static Icon createSafeInstanceInPixels( Image sourceImage, int width, int height ) {
 		if( sourceImage != null ) {
-			int sourceWidth = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( sourceImage );
-			int sourceHeight = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( sourceImage );
+			int sourceWidth = ImageUtilities.getWidth( sourceImage );
+			int sourceHeight = ImageUtilities.getWidth( sourceImage );
 			if( ( sourceWidth > 0 ) && ( sourceHeight > 0 ) ) {
 				return new ScaledImageIcon( sourceImage, width, height );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "source image size is", sourceWidth, ",", sourceHeight );
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
+				Logger.severe( "source image size is", sourceWidth, ",", sourceHeight );
+				return new ColorIcon( Color.RED, width, height );
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "source image is null" );
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
+			Logger.severe( "source image is null" );
+			return new ColorIcon( Color.RED, width, height );
 		}
 	}
 
-	private ScaledImageIcon( java.awt.Image sourceImage, int width, int height ) {
+	private ScaledImageIcon( Image sourceImage, int width, int height ) {
 		assert sourceImage != null : this;
 		this.sourceImage = sourceImage;
 		this.width = width;
@@ -83,13 +93,13 @@ public class ScaledImageIcon implements javax.swing.Icon {
 		return this.height;
 	}
 
-	public java.awt.Image getSourceImage() {
+	public Image getSourceImage() {
 		return this.sourceImage;
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		Graphics2D g2 = (Graphics2D)g;
 		if( this.sourceImage != null ) {
 			int imageWidth = this.sourceImage.getWidth( c );
 			int imageHeight = this.sourceImage.getHeight( c );

@@ -43,12 +43,15 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ComponentArray extends VertexGeometry {
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		//todo
 	}
 
@@ -57,5 +60,5 @@ public class ComponentArray extends VertexGeometry {
 		//todo
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Component> component = new edu.cmu.cs.dennisc.property.InstanceProperty<Component>( this, null );
+	public final InstanceProperty<Component> component = new InstanceProperty<Component>( this, null );
 }

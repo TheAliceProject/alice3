@@ -42,28 +42,34 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.data.RefreshableListData;
+
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.RefreshableListData<T>> {
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T, RefreshableListData<T>> {
+	private final ListDataListener listDataListener = new ListDataListener() {
 		@Override
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+		public void contentsChanged( ListDataEvent e ) {
 			fireContentsChanged( e.getIndex0(), e.getIndex1() );
 		}
 
 		@Override
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+		public void intervalAdded( ListDataEvent e ) {
 			fireIntervalAdded( e.getIndex0(), e.getIndex1() );
 		}
 
 		@Override
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+		public void intervalRemoved( ListDataEvent e ) {
 			fireIntervalRemoved( e.getIndex0(), e.getIndex1() );
 		}
 	};
 
-	public RefreshableDataSingleSelectListState( Group group, java.util.UUID migrationId, int selectionIndex, org.lgna.croquet.data.RefreshableListData<T> data ) {
+	public RefreshableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, RefreshableListData<T> data ) {
 		super( group, migrationId, selectionIndex, data );
 		data.addListener( this.listDataListener );
 	}

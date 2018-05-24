@@ -43,10 +43,26 @@
 
 package org.alice.stageide.raytrace;
 
+import edu.cmu.cs.dennisc.raytrace.POVRayUtilities;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.ide.IDE;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SCamera;
+import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
+
+import java.io.PrintWriter;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
+public class ExportToPovRayOperation extends ActionOperation {
 	private static class SingletonHolder {
 		private static ExportToPovRayOperation instance = new ExportToPovRayOperation();
 	}
@@ -56,18 +72,18 @@ public class ExportToPovRayOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	private ExportToPovRayOperation() {
-		super( org.alice.ide.IDE.EXPORT_GROUP, java.util.UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
+		super( IDE.EXPORT_GROUP, UUID.fromString( "7f14ddfc-d090-4ef5-b47d-4d5036f6d784" ) );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
-		org.lgna.project.ast.UserField sceneField = sceneEditor.getActiveSceneField();
-		org.lgna.project.ast.AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
-		org.lgna.story.SCamera camera = (org.lgna.story.SCamera)sceneEditor.getInstanceInJavaVMForField( cameraField );
-		org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.EmployeesOnly.getImplementation( camera );
-		edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
-		edu.cmu.cs.dennisc.raytrace.POVRayUtilities.export( new java.io.PrintWriter( System.out ), sgCamera );
+	protected void perform( CompletionStep<?> step ) {
+		StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
+		UserField sceneField = sceneEditor.getActiveSceneField();
+		AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
+		SCamera camera = (SCamera)sceneEditor.getInstanceInJavaVMForField( cameraField );
+		SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation( camera );
+		SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
+		POVRayUtilities.export( new PrintWriter( System.out ), sgCamera );
 		step.finish();
 	}
 }

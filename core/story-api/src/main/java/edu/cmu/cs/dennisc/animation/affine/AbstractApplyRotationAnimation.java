@@ -42,6 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,17 +59,17 @@ public abstract class AbstractApplyRotationAnimation extends AffineAnimation {
 		m_sumInRadians = Double.NaN;
 	}
 
-	public AbstractApplyRotationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
+	public AbstractApplyRotationAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Angle angle ) {
 		super( sgSubject, sgAsSeenBy );
 		setAngle( angle );
 		m_sumInRadians = Double.NaN;
 	}
 
-	public edu.cmu.cs.dennisc.math.Angle getAngle() {
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( m_angleInRadians );
+	public Angle getAngle() {
+		return new AngleInRadians( m_angleInRadians );
 	}
 
-	public void setAngle( edu.cmu.cs.dennisc.math.Angle angle ) {
+	public void setAngle( Angle angle ) {
 		m_angleInRadians = angle.getAsRadians();
 	}
 

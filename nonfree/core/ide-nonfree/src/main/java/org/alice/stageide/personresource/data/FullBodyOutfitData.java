@@ -42,22 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.data;
 
+import edu.cmu.cs.dennisc.java.lang.EnumUtilities;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.stageide.personresource.codecs.FullBodyOutfitCodec;
+import org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer;
+import org.lgna.story.resources.sims2.FullBodyOutfit;
+import org.lgna.story.resources.sims2.FullBodyOutfitManager;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitData extends IngredientListData<org.lgna.story.resources.sims2.FullBodyOutfit> {
+public class FullBodyOutfitData extends IngredientListData<FullBodyOutfit> {
 	public FullBodyOutfitData() {
-		super( org.alice.stageide.personresource.codecs.FullBodyOutfitCodec.SINGLETON );
+		super( FullBodyOutfitCodec.SINGLETON );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+	protected List<FullBodyOutfit> createValues( LifeStage lifeStage, Gender gender ) {
+		return EnumUtilities.getEnumConstants(
+				FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
+				new Criterion<FullBodyOutfit>() {
 					@Override
-					public boolean accept( org.lgna.story.resources.sims2.FullBodyOutfit e ) {
-						return org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
+					public boolean accept( FullBodyOutfit e ) {
+						return FullBodyOutfitListCellRenderer.getInstance().ACCEPTABLE_HACK_AT_THIS_TIME_FOR_LIST_DATA_hasValidImageFor( e, SKIN_TONE_FOR_FILTERING );
 					}
 				}
 				);

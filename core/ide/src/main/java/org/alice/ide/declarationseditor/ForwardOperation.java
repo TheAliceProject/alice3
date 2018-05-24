@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import org.alice.ide.icons.Icons;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ForwardOperation extends org.lgna.croquet.ActionOperation {
+public class ForwardOperation extends ActionOperation {
 	private static class SingletonHolder {
 		private static ForwardOperation instance = new ForwardOperation();
 	}
@@ -55,12 +62,12 @@ public class ForwardOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	private ForwardOperation() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
-		this.setButtonIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "c5885579-bd96-496e-ba79-00a6ed263dc8" ) );
+		this.setButtonIcon( Icons.NEXT_SMALL );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		DeclarationCompositeHistory.getInstance().goForward();
 		step.finish();
 	}

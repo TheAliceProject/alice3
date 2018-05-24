@@ -41,16 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import org.alice.ide.story.AliceIde;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GenerateI18nSeed {
 
-	private static void appendGalleryNames( StringBuilder sbNames, org.alice.stageide.modelresource.ResourceNode node ) throws IllegalAccessException, java.io.IOException {
+	private static void appendGalleryNames( StringBuilder sbNames, ResourceNode node ) throws IllegalAccessException, IOException {
 		final String RESOURCE_SUFFIX = "Resource";
-		org.alice.stageide.modelresource.ResourceKey resourceKey = node.getResourceKey();
-		if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
+		ResourceKey resourceKey = node.getResourceKey();
+		if( resourceKey instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey)resourceKey;
 			Class<?> cls = classResourceKey.getModelResourceCls();
 			String clsFullName = cls.getName();
 			if( clsFullName.endsWith( RESOURCE_SUFFIX ) ) {
@@ -61,13 +76,13 @@ public class GenerateI18nSeed {
 				sbNames.append( "\n" );
 			}
 		}
-		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+		for( ResourceNode child : node.getNodeChildren() ) {
 			appendGalleryNames( sbNames, child );
 		}
 	}
 
-	private static void appendGalleryTags( java.util.Set<String> tags, org.alice.stageide.modelresource.ResourceNode node ) throws IllegalAccessException, java.io.IOException {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = node.getResourceKey();
+	private static void appendGalleryTags( Set<String> tags, ResourceNode node ) throws IllegalAccessException, IOException {
+		ResourceKey resourceKey = node.getResourceKey();
 		if( resourceKey != null ) {
 			for( String[] tagArray : new String[][] { resourceKey.getTags(), resourceKey.getGroupTags(), resourceKey.getThemeTags() } ) {
 				if( tagArray != null ) {
@@ -85,20 +100,20 @@ public class GenerateI18nSeed {
 				}
 			}
 		}
-		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+		for( ResourceNode child : node.getNodeChildren() ) {
 			appendGalleryTags( tags, child );
 		}
 	}
 
 	public static void main( String[] args ) throws Exception {
-		Object usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
+		Object usedOnlyForSideEffect = new AliceIde( null );
 		StringBuilder sbNames = new StringBuilder();
-		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
+		ResourceNode rootGalleryNode = TreeUtilities.getTreeBasedOnClassHierarchy();
 		appendGalleryNames( sbNames, rootGalleryNode );
-		java.util.Set<String> tags = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		Set<String> tags = Sets.newHashSet();
 		appendGalleryTags( tags, rootGalleryNode );
-		java.util.List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( tags );
-		java.util.Collections.sort( list );
+		List<String> list = Lists.newArrayList( tags );
+		Collections.sort( list );
 		StringBuilder sbTags = new StringBuilder();
 		for( String tag : list ) {
 			sbTags.append( tag.replaceAll( " ", "_" ) );
@@ -107,14 +122,14 @@ public class GenerateI18nSeed {
 			sbTags.append( "\n" );
 		}
 
-		java.io.File repoRoot = new java.io.File( System.getProperty( "user.dir" ), "../../../" );
-		java.io.File srcRoot = new java.io.File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );
-		java.io.File packageDirectory = new java.io.File( srcRoot, "org/lgna/story/resources" );
-		java.io.File namesFile = new java.io.File( packageDirectory, "GalleryNames.properties" );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( namesFile, sbNames.toString() );
+		File repoRoot = new File( System.getProperty( "user.dir" ), "../../../" );
+		File srcRoot = new File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );
+		File packageDirectory = new File( srcRoot, "org/lgna/story/resources" );
+		File namesFile = new File( packageDirectory, "GalleryNames.properties" );
+		TextFileUtilities.write( namesFile, sbNames.toString() );
 
-		java.io.File tagsFile = new java.io.File( packageDirectory, "GalleryTags.properties" );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tagsFile, sbTags.toString() );
+		File tagsFile = new File( packageDirectory, "GalleryTags.properties" );
+		TextFileUtilities.write( tagsFile, sbTags.toString() );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file, file.exists() );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbNames );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbTags );

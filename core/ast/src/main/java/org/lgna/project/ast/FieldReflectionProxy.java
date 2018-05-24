@@ -43,10 +43,12 @@
 
 package org.lgna.project.ast;
 
+import java.lang.reflect.Field;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.reflect.Field> {
+public final class FieldReflectionProxy extends MemberReflectionProxy<Field> {
 	private final String name;
 
 	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
@@ -54,7 +56,7 @@ public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.
 		this.name = name;
 	}
 
-	public FieldReflectionProxy( java.lang.reflect.Field fld ) {
+	public FieldReflectionProxy( Field fld ) {
 		super( fld, fld.getDeclaringClass() );
 		this.name = fld.getName();
 	}
@@ -67,7 +69,7 @@ public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.
 	}
 
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
 		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
 			FieldReflectionProxy other = (FieldReflectionProxy)o;
 			return this.name != null ? this.name.equals( other.name ) : other.name == null;
@@ -81,7 +83,7 @@ public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.
 	}
 
 	@Override
-	protected java.lang.reflect.Field reify() {
+	protected Field reify() {
 		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
 			try {

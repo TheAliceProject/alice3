@@ -42,17 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video;
 
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.video.event.MediaListener;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface VideoPlayer {
-	public java.awt.Component getVideoSurface();
+	public Component getVideoSurface();
 
-	public edu.cmu.cs.dennisc.java.awt.Painter<VideoPlayer> getPainter();
+	public Painter<VideoPlayer> getPainter();
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<VideoPlayer> painter );
+	public void setPainter( Painter<VideoPlayer> painter );
 
-	public boolean prepareMedia( java.net.URI uri );
+	public boolean prepareMedia( URI uri );
 
 	public void parse();
 
@@ -86,15 +95,15 @@ public interface VideoPlayer {
 
 	public void setVolume( float volume );
 
-	public boolean writeSnapshot( java.io.File file );
+	public boolean writeSnapshot( File file );
 
-	public java.awt.Image getSnapshot();
+	public Image getSnapshot();
 
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
+	public void addMediaListener( MediaListener listener );
 
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
+	public void removeMediaListener( MediaListener listener );
 
 	public void release();
 
-	public java.awt.Dimension getVideoSize();
+	public Dimension getVideoSize();
 }

@@ -42,12 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @author Dennis Cosgrove
  */
 
 public interface RenderFactory {
-	ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor );
+	ImageBuffer createImageBuffer( Color4f backgroundColor );
 
 	ImageBuffer createTransparentBackgroundImageBuffer();
 
@@ -63,11 +68,11 @@ public interface RenderFactory {
 
 	void releaseRenderingLock();
 
-	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener );
+	void addAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener );
 
-	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener );
+	void removeAutomaticDisplayListener( AutomaticDisplayListener automaticDisplayListener );
 
-	Iterable<edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
+	Iterable<AutomaticDisplayListener> getAutomaticDisplayListeners();
 
 	int getAutomaticDisplayCount();
 
@@ -77,7 +82,7 @@ public interface RenderFactory {
 
 	void invokeLater( Runnable runnable );
 
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
+	void invokeAndWait( Runnable runnable ) throws InterruptedException, InvocationTargetException;
 
 	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
 }

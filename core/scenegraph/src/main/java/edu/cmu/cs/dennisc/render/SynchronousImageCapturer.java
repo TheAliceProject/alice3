@@ -42,27 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface SynchronousImageCapturer {
-	java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer();
+	BufferedImage createBufferedImageForUseAsColorBuffer();
 
-	java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown );
+	BufferedImage getColorBufferNotBotheringToFlipVertically( BufferedImage rv, boolean[] atIsUpsideDown );
 
-	java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv );
+	BufferedImage getColorBuffer( BufferedImage rv );
 
-	java.awt.image.BufferedImage getColorBuffer();
+	BufferedImage getColorBuffer();
 
-	java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+	BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 
-	java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer();
+	FloatBuffer createFloatBufferForUseAsDepthBuffer();
 
-	java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv );
+	FloatBuffer getDepthBuffer( FloatBuffer rv );
 
-	java.nio.FloatBuffer getDepthBuffer();
+	FloatBuffer getDepthBuffer();
 
-	java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer );
+	BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( BufferedImage rv, FloatBuffer depthBuffer );
 
-	java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();
+	BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer();
 }

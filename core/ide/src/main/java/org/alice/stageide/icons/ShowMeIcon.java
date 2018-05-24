@@ -42,29 +42,40 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ShowMeIcon extends ShapeIcon {
-	public ShowMeIcon( java.awt.Dimension size ) {
+	public ShowMeIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.Paint paint;
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			javax.swing.ButtonModel buttonModel = button.getModel();
-			paint = buttonModel.isArmed() ? java.awt.Color.WHITE : java.awt.Color.BLACK;
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		Paint paint;
+		if( c instanceof AbstractButton ) {
+			AbstractButton button = (AbstractButton)c;
+			ButtonModel buttonModel = button.getModel();
+			paint = buttonModel.isArmed() ? Color.WHITE : Color.BLACK;
 		} else {
-			paint = java.awt.Color.BLACK;
+			paint = Color.BLACK;
 		}
 		g2.setPaint( paint );
 
-		java.awt.Font prevFont = g2.getFont();
-		g2.setFont( prevFont.deriveFont( height * 0.95f ).deriveFont( java.awt.Font.BOLD ) );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "?", 0, 0, width, height );
+		Font prevFont = g2.getFont();
+		g2.setFont( prevFont.deriveFont( height * 0.95f ).deriveFont( Font.BOLD ) );
+		GraphicsUtilities.drawCenteredText( g2, "?", 0, 0, width, height );
 		g2.setFont( prevFont );
 	}
 }

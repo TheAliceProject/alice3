@@ -43,17 +43,23 @@
 
 package org.alice.ide.declarationseditor;
 
+import org.alice.ide.declarationseditor.components.TypeEditor;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.declarationseditor.components.TypeEditor> {
+public class DeclarationsEditorComposite extends SimpleComposite<TypeEditor> {
 	public DeclarationsEditorComposite() {
-		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
+		super( UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
 		this.backwardForwardComposite = this.registerSubComposite( new BackwardForwardComposite() );
 		this.registerTabState( this.tabState );
 	}
 
-	public org.alice.ide.declarationseditor.DeclarationMenu getDeclarationMenu() {
+	public DeclarationMenu getDeclarationMenu() {
 		return this.declarationMenu;
 	}
 
@@ -61,16 +67,16 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposit
 		return this.tabState;
 	}
 
-	public org.lgna.croquet.Composite<?> getControlsComposite() {
+	public Composite<?> getControlsComposite() {
 		return this.backwardForwardComposite;
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
-		return new org.alice.ide.declarationseditor.components.TypeEditor( this );
+	protected TypeEditor createView() {
+		return new TypeEditor( this );
 	}
 
-	private final org.alice.ide.declarationseditor.DeclarationMenu declarationMenu = new org.alice.ide.declarationseditor.DeclarationMenu();
+	private final DeclarationMenu declarationMenu = new DeclarationMenu();
 	private final DeclarationTabState tabState = new DeclarationTabState();
 	private final BackwardForwardComposite backwardForwardComposite;
 }

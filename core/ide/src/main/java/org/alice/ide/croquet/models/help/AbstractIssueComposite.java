@@ -42,13 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import edu.cmu.cs.dennisc.issue.Issue;
+import edu.cmu.cs.dennisc.issue.IssueType;
+import edu.cmu.cs.dennisc.issue.ReportGenerator;
+import edu.cmu.cs.dennisc.issue.StackTraceAttachment;
+import edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment;
+import edu.cmu.cs.dennisc.jira.JIRAReport;
+import edu.cmu.cs.dennisc.jira.rpc.RPCUtilities;
+import edu.cmu.cs.dennisc.jira.soap.Authenticator;
+import edu.cmu.cs.dennisc.login.AccountInformation;
+import edu.cmu.cs.dennisc.login.AccountManager;
+import org.alice.ide.croquet.models.help.views.AbstractIssueView;
+import org.alice.ide.issue.CurrentProjectAttachment;
+import org.alice.ide.issue.ReportSubmissionConfiguration;
+import org.alice.ide.issue.SubmitReportUtilities;
+import org.alice.ide.issue.swing.views.IssueReportPane;
+import org.alice.ide.issue.swing.views.LogInStatusPane;
+import org.alice.ide.issue.swing.views.ProgressPane;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.LaunchOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.project.ProjectVersion;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcFault;
+
+import javax.swing.JOptionPane;
+import java.rmi.RemoteException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.models.help.views.AbstractIssueView> extends org.lgna.croquet.LaunchOperationUnadornedDialogCoreComposite<V> implements edu.cmu.cs.dennisc.issue.ReportGenerator {
-	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
+public abstract class AbstractIssueComposite<V extends AbstractIssueView> extends LaunchOperationUnadornedDialogCoreComposite<V> implements ReportGenerator {
+	public static final Group ISSUE_GROUP = Group.getInstance( UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
 
-	public AbstractIssueComposite( java.util.UUID migrationId, IsModal isModal ) {
+	public AbstractIssueComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal, ISSUE_GROUP );
 		this.environmentState.setEnabled( false );
 	}
@@ -57,15 +93,15 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return this.stepsState.getValue();
 	}
 
-	public org.lgna.croquet.StringState getStepsState() {
+	public StringState getStepsState() {
 		return this.stepsState;
 	}
 
-	public org.lgna.croquet.StringState getEnvironmentState() {
+	public StringState getEnvironmentState() {
 		return this.environmentState;
 	}
 
-	public org.lgna.croquet.Operation getSubmitBugOperation() {
+	public Operation getSubmitBugOperation() {
 		return this.submitBugOperation;
 	}
 
@@ -81,7 +117,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.issue.IssueType getReportType();
+	protected abstract IssueType getReportType();
 
 	protected abstract String getSummaryText();
 
@@ -98,57 +134,57 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
 	}
 
-	private edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
-		return new edu.cmu.cs.dennisc.issue.Issue.Builder()
+	private Issue.Builder createIssueBuilder() {
+		return new Issue.Builder()
 				.type( this.getReportType() )
 				.summary( this.getSummaryText() )
 				.description( this.getDescriptionText() )
-				.environment( org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentShortDescription() )
+				.environment( IssueReportPane.getEnvironmentShortDescription() )
 				.steps( this.getStepsText() )
 				.threadAndThrowable( this.getThread(), this.getThrowable() )
-				.version( org.lgna.project.ProjectVersion.getCurrentVersionText() );
+				.version( ProjectVersion.getCurrentVersionText() );
 	}
 
-	private edu.cmu.cs.dennisc.jira.JIRAReport createJiraReport() {
-		edu.cmu.cs.dennisc.issue.Issue.Builder builder = this.createIssueBuilder();
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport( builder.build(), this.getProjectKey() );
+	private JIRAReport createJiraReport() {
+		Issue.Builder builder = this.createIssueBuilder();
+		JIRAReport rv = new JIRAReport( builder.build(), this.getProjectKey() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
+	public JIRAReport generateIssueForRPC() {
+		JIRAReport rv = this.createJiraReport();
 		return rv;
 	}
 
-	protected void addAttachments( edu.cmu.cs.dennisc.jira.JIRAReport report ) {
-		report.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
+	protected void addAttachments( JIRAReport report ) {
+		report.addAttachment( new SystemPropertiesAttachment() );
 		Throwable throwable = this.getThrowable();
 		if( throwable != null ) {
-			report.addAttachment( new edu.cmu.cs.dennisc.issue.StackTraceAttachment( throwable ) );
+			report.addAttachment( new StackTraceAttachment( throwable ) );
 		}
 		if( this.isProjectAttachmentDesired() ) {
-			report.addAttachment( new org.alice.ide.issue.CurrentProjectAttachment() );
+			report.addAttachment( new CurrentProjectAttachment() );
 		}
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.createJiraReport();
+	public JIRAReport generateIssueForSOAP() {
+		JIRAReport rv = this.createJiraReport();
 		this.addAttachments( rv );
 		return rv;
 	}
 
-	private org.alice.ide.issue.ReportSubmissionConfiguration createReportSubmissionConfiguration() {
-		return new org.alice.ide.issue.ReportSubmissionConfiguration() {
+	private ReportSubmissionConfiguration createReportSubmissionConfiguration() {
+		return new ReportSubmissionConfiguration() {
 			@Override
 			public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				final AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
 						@Override
-						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
-							return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
+						public Object login( XmlRpcClient client ) throws XmlRpcException, XmlRpcFault {
+							return RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
 						}
 					};
 				} else {
@@ -157,12 +193,12 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 			}
 
 			@Override
-			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+			public Authenticator getJIRAViaSOAPAuthenticator() {
+				final AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
-					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
+					return new Authenticator() {
 						@Override
-						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
+						public String login( JiraSoapService service ) throws RemoteException {
 							return service.login( accountInformation.getID(), accountInformation.getPassword() );
 						}
 					};
@@ -173,24 +209,24 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		};
 	}
 
-	private final org.lgna.croquet.StringState stepsState = createStringState( "stepsState" );
-	private final org.lgna.croquet.StringState environmentState = createStringState( "environmentState", org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
-	private final org.lgna.croquet.Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
+	private final StringState stepsState = createStringState( "stepsState" );
+	private final StringState environmentState = createStringState( "environmentState", IssueReportPane.getEnvironmentLongDescription() );
+	private final Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
 
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
 			submitBugOperation.setEnabled( false );
 			try {
 				if( isClearedToSubmitBug() ) {
-					org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
-					org.lgna.croquet.views.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
+					ProgressPane progressPane = SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
+					AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
 					if( root != null ) {
 						if( progressPane.isDone() ) {
 							if( progressPane.isSuccessful() ) {
-								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
+								JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
 								root.setVisible( false );
 							} else {
-								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
+								JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
 							}
 						} else {
 							root.setVisible( false );

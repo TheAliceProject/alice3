@@ -42,54 +42,65 @@
  *******************************************************************************/
 package org.alice.ide.members.components.templates;
 
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel;
+import org.alice.ide.croquet.models.ast.MethodTemplateMenuModel;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractMethod method;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserParameter> parameterAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserParameter>() {
+	private AbstractMethod method;
+	private ListPropertyListener<UserParameter> parameterAdapter = new SimplifiedListPropertyAdapter<UserParameter>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserParameter> e ) {
+		protected void changing( ListPropertyEvent<UserParameter> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserParameter> e ) {
+		protected void changed( ListPropertyEvent<UserParameter> e ) {
 			ProcedureInvocationTemplate.this.refresh();
 		}
 	};
 
-	/* package-private */ProcedureInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
-		super( org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( method ) );
+	/* package-private */ProcedureInvocationTemplate( AbstractMethod method ) {
+		super( ProcedureInvocationTemplateDragModel.getInstance( method ) );
 		this.method = method;
 
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.MethodTemplateMenuModel.getInstance( (org.lgna.project.ast.UserMethod)this.method ).getPopupPrepModel() );
+		if( this.method instanceof UserMethod ) {
+			this.setPopupPrepModel( MethodTemplateMenuModel.getInstance( (UserMethod)this.method ).getPopupPrepModel() );
 		}
 	}
 
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			( (org.lgna.project.ast.UserMethod)this.method ).requiredParameters.addListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof UserMethod ) {
+			( (UserMethod)this.method ).requiredParameters.addListPropertyListener( this.parameterAdapter );
 			this.refresh();
 		}
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		if( this.method instanceof org.lgna.project.ast.UserMethod ) {
-			( (org.lgna.project.ast.UserMethod)this.method ).requiredParameters.removeListPropertyListener( this.parameterAdapter );
+		if( this.method instanceof UserMethod ) {
+			( (UserMethod)this.method ).requiredParameters.removeListPropertyListener( this.parameterAdapter );
 		}
 		super.handleUndisplayable();
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
+	protected Expression createIncompleteExpression() {
+		return IncompleteAstUtilities.createIncompleteMethodInvocation( this.method );
 	}
 }

@@ -42,19 +42,28 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.ComboBox;
+import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SingleSelectListStateComboBoxPrepModel<T, D extends org.lgna.croquet.data.ListData<T>> extends AbstractPrepModel {
+public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<T>> extends AbstractPrepModel {
 	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T, D> listSelectionState ) {
-		super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
+		super( UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
 		assert listSelectionState != null;
 		this.listSelectionState = listSelectionState;
 	}
 
 	@Override
 	public Iterable<? extends Model> getChildren() {
-		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.listSelectionState );
+		return Lists.newArrayList( this.listSelectionState );
 	}
 
 	@Override
@@ -62,7 +71,7 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends org.lgna.
 	}
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public Step<?> fire( Trigger trigger ) {
 		throw new RuntimeException();
 	}
 
@@ -80,13 +89,13 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends org.lgna.
 		this.listSelectionState.setEnabled( isEnabled );
 	}
 
-	public org.lgna.croquet.views.ComboBox<T> createComboBox() {
-		return new org.lgna.croquet.views.ComboBox<T>( this );
+	public ComboBox<T> createComboBox() {
+		return new ComboBox<T>( this );
 	}
 
-	public org.lgna.croquet.views.ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
-		org.lgna.croquet.views.ComboBox<T> rv = this.createComboBox();
-		rv.setRenderer( new org.lgna.croquet.views.renderers.ItemCodecListCellRenderer<T>( this.listSelectionState.getItemCodec() ) );
+	public ComboBox<T> createComboBoxWithItemCodecListCellRenderer() {
+		ComboBox<T> rv = this.createComboBox();
+		rv.setRenderer( new ItemCodecListCellRenderer<T>( this.listSelectionState.getItemCodec() ) );
 		return rv;
 	}
 

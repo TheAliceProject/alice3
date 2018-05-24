@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -124,8 +126,8 @@ public class InterpolationUtilities {
 		return interpolate( AffineMatrix4x4.createNaN(), a, b, portion );
 	}
 
-	public static edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f a, edu.cmu.cs.dennisc.color.Color4f b, double portion ) {
-		return edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a, b, (float)portion );
+	public static Color4f interpolate( Color4f a, Color4f b, double portion ) {
+		return Color4f.createInterpolation( a, b, (float)portion );
 	}
 
 	public static double interpolate( double a, double b, double portion ) {
@@ -145,8 +147,8 @@ public class InterpolationUtilities {
 			return interpolate( (Vector3)a, (Vector3)b, portion );
 		} else if( a instanceof UnitQuaternion ) {
 			return interpolate( (UnitQuaternion)a, (UnitQuaternion)b, portion );
-		} else if( a instanceof edu.cmu.cs.dennisc.color.Color4f ) {
-			return interpolate( (edu.cmu.cs.dennisc.color.Color4f)a, (edu.cmu.cs.dennisc.color.Color4f)b, portion );
+		} else if( a instanceof Color4f ) {
+			return interpolate( (Color4f)a, (Color4f)b, portion );
 		} else if( a instanceof Double ) {
 			return interpolate( ( (Double)a ).doubleValue(), ( (Double)b ).doubleValue(), portion );
 		} else {

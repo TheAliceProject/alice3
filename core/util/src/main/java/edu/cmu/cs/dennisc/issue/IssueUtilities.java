@@ -42,13 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IssueUtilities {
-	private static final java.util.List<String> systemPropertiesForEnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
+	private static final List<String> systemPropertiesForEnvironmentField = Collections.unmodifiableList( Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
 
-	public static java.util.List<String> getSystemPropertiesForEnvironmentField() {
+	public static List<String> getSystemPropertiesForEnvironmentField() {
 		return systemPropertiesForEnvironmentField;
 	}
 
@@ -73,7 +80,7 @@ public class IssueUtilities {
 			sb.append( System.getProperty( propertyName ) );
 			intersticial = ";";
 		}
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( SystemUtilities.isMac() ) {
 			sb.append( ";" );
 			sb.append( System.getProperty( "os.version" ) );
 		}
@@ -82,7 +89,7 @@ public class IssueUtilities {
 
 	public static final String getThrowableText( Throwable throwable ) {
 		if( throwable != null ) {
-			return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable );
+			return ThrowableUtilities.getStackTraceAsString( throwable );
 		} else {
 			return "";
 		}

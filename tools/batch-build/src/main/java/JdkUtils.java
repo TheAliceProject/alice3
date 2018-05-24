@@ -41,16 +41,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JdkUtils {
 	public static void initialize() {
-		javaHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "JAVA_HOME" );
-		jdk8HomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "JDK8_HOME" );
+		javaHomeDir = SystemUtilities.getEnvironmentVariableDirectory( "JAVA_HOME" );
+		jdk8HomeDir = SystemUtilities.getEnvironmentVariableDirectory( "JDK8_HOME" );
 	}
 
-	public static java.io.File getJavaHomeDir() {
+	public static File getJavaHomeDir() {
 		if( javaHomeDir != null ) {
 			//pass
 		} else {
@@ -59,7 +63,7 @@ public class JdkUtils {
 		return javaHomeDir;
 	}
 
-	public static java.io.File getJdk8HomeDir() {
+	public static File getJdk8HomeDir() {
 		if( jdk8HomeDir != null ) {
 			//pass
 		} else {
@@ -68,8 +72,8 @@ public class JdkUtils {
 		return jdk8HomeDir;
 	}
 
-	private static java.io.File javaHomeDir;
-	private static java.io.File jdk8HomeDir;
+	private static File javaHomeDir;
+	private static File jdk8HomeDir;
 
 	private JdkUtils() {
 		throw new AssertionError();

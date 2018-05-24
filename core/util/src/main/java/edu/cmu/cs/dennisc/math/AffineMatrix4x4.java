@@ -43,10 +43,20 @@
 package edu.cmu.cs.dennisc.math;
 
 //todo: rename?
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodableAndDecodable {
 	public final OrthogonalMatrix3x3 orientation = OrthogonalMatrix3x3.createIdentity();
 	public final Point3 translation = new Point3();
 
@@ -111,17 +121,17 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		set( other );
 	}
 
-	public AffineMatrix4x4( edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 other ) {
+	public AffineMatrix4x4( MAffineMatrix4x4 other ) {
 		this( new OrthogonalMatrix3x3( other.orientation ), new Point3( other.translation ) );
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		orientation.decode( binaryDecoder );
 		translation.decode( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		orientation.encode( binaryEncoder );
 		translation.encode( binaryEncoder );
 	}
@@ -175,7 +185,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	}
 
 	@Override
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;
 			rv.append( "+-" );
@@ -771,8 +781,8 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		} else {
 			if( o instanceof AffineMatrix4x4 ) {
 				AffineMatrix4x4 other = (AffineMatrix4x4)o;
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.orientation, other.orientation )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.translation, other.translation );
+				return Objects.equals( this.orientation, other.orientation )
+						&& Objects.equals( this.translation, other.translation );
 			} else {
 				return false;
 			}
@@ -796,7 +806,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return this.orientation.isWithinEpsilonOfIdentity( epsilon ) && this.translation.isWithinEpsilonOfZero( epsilon );
 	}
 
-	public edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 createImmutable() {
-		return new edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4( this.orientation.createImmutable(), this.translation.createImmutable() );
+	public MAffineMatrix4x4 createImmutable() {
+		return new MAffineMatrix4x4( this.orientation.createImmutable(), this.translation.createImmutable() );
 	}
 }

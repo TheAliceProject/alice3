@@ -43,13 +43,22 @@
 
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.declaration.AddProcedureComposite;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UserProceduresSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserProceduresSubComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, UserProceduresSubComposite> map = Maps.newHashMap();
 
-	public static synchronized UserProceduresSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized UserProceduresSubComposite getInstance( NamedUserType type ) {
 		assert type != null;
 		UserProceduresSubComposite rv = map.get( type );
 		if( rv != null ) {
@@ -61,14 +70,14 @@ public class UserProceduresSubComposite extends UserMethodsSubComposite {
 		return rv;
 	}
 
-	private UserProceduresSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ), type, org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getLaunchOperation() );
+	private UserProceduresSubComposite( NamedUserType type ) {
+		super( UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ), type, AddProcedureComposite.getInstance( type ).getLaunchOperation() );
 		String titleText = this.findLocalizedText( "editableProceduresTitle" );
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( titleText );
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+	protected boolean isAcceptable( AbstractMethod method ) {
 		if( method.isStatic() ) {
 			if( "main".equals( method.getName() ) ) {
 				return false;
@@ -78,7 +87,7 @@ public class UserProceduresSubComposite extends UserMethodsSubComposite {
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field ) {
+	protected AbstractMethod getGetterOrSetter( UserField field ) {
 		return field.getSetter();
 	}
 }

@@ -42,42 +42,77 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.ide.ast.code.ShiftDragStatementUtilities;
+import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+import org.alice.ide.codeeditor.StatementListBorder;
+import org.alice.ide.common.DefaultStatementPane;
+import org.alice.ide.croquet.components.AbstractListPropertyPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.MutableAstI18nFactory;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.BooleanExpressionBodyPair;
+import org.lgna.project.ast.ConditionalStatement;
+import org.lgna.project.ast.DoInOrder;
+import org.lgna.project.ast.DoTogether;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+
+import javax.swing.BoxLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StatementListPropertyView extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.StatementListProperty, org.lgna.project.ast.Statement> {
+public class StatementListPropertyView extends AbstractListPropertyPane<StatementListProperty, Statement> {
 	private static final int INDENT = 8;
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = ( INTRASTICIAL_MIDDLE * 2 ) + 1;
 
-	private final org.alice.ide.codeeditor.StatementListBorder statementListBorder;
+	private final StatementListBorder statementListBorder;
 
-	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty property, int bottom ) {
-		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
+	public StatementListPropertyView( AstI18nFactory factory, StatementListProperty property, int bottom ) {
+		super( factory, property, BoxLayout.PAGE_AXIS );
 
-		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+		Node owningNode = this.getOwningBlockStatementOwningNode();
 
 		//boolean isIf = isOwnedByIf( owningNode );
 		boolean isElse = isOwnedByElse( owningNode );
-		boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
-		boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
+		boolean isDoInOrder = owningNode instanceof DoInOrder;
+		boolean isDoTogether = owningNode instanceof DoTogether;
 
-		java.awt.Insets insets;
+		Insets insets;
 		if( bottom != 0 ) {
-			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, 0 );
+			insets = new Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, 0 );
 		} else {
 			if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
 				bottom = 8;
 			}
-			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
+			insets = new Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
 		}
 
-		org.lgna.project.ast.StatementListProperty alternateListProperty;
-		if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
-			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
+		StatementListProperty alternateListProperty;
+		if( owningNode instanceof BooleanExpressionBodyPair ) {
+			ConditionalStatement conditionalStatement = (ConditionalStatement)owningNode.getParent();
 			alternateListProperty = conditionalStatement.elseBody.getValue().statements;
-		} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
-			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
+		} else if( owningNode instanceof ConditionalStatement ) {
+			ConditionalStatement conditionalStatement = (ConditionalStatement)owningNode;
 			alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
 		} else {
 			alternateListProperty = null;
@@ -85,22 +120,22 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 		boolean isMutable;
 
-		if( factory instanceof org.alice.ide.x.MutableAstI18nFactory ) {
-			org.alice.ide.x.MutableAstI18nFactory mutableFactory = (org.alice.ide.x.MutableAstI18nFactory)factory;
+		if( factory instanceof MutableAstI18nFactory ) {
+			MutableAstI18nFactory mutableFactory = (MutableAstI18nFactory)factory;
 			isMutable = mutableFactory.isStatementListPropertyMutable( property );
 		} else {
 			isMutable = false;
 		}
-		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( isMutable, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
+		this.statementListBorder = new StatementListBorder( isMutable, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
 
 		this.setBorder( this.statementListBorder );
 	}
 
-	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
+	public StatementListPropertyView( AstI18nFactory factory, final StatementListProperty property ) {
 		this( factory, property, 0 );
 	}
 
-	public org.alice.ide.codeeditor.StatementListBorder getStatementListBorder() {
+	public StatementListBorder getStatementListBorder() {
 		return this.statementListBorder;
 	}
 
@@ -110,14 +145,14 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	@Override
 	protected int getBoxLayoutPad() {
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			if( owningNode instanceof org.lgna.project.ast.DoTogether ) {
-				java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
+		if( FormatterState.isJava() ) {
+			Node owningNode = this.getOwningBlockStatementOwningNode();
+			if( owningNode instanceof DoTogether ) {
+				Graphics g = GraphicsUtilities.getGraphics();
 				//todo:
 				//java.awt.Font font = this.getFont();
-				java.awt.Font font = g.getFont();
-				java.awt.FontMetrics fm = g.getFontMetrics( font );
+				Font font = g.getFont();
+				FontMetrics fm = g.getFontMetrics( font );
 				return fm.getHeight() + 8;
 			}
 		}
@@ -125,15 +160,15 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	@Override
-	protected final org.lgna.croquet.views.AwtComponentView<?> createInterstitial( int i, int N ) {
+	protected final AwtComponentView<?> createInterstitial( int i, int N ) {
 		return null;
 	}
 
-	private static final java.awt.Color FEEDBACK_COLOR = java.awt.Color.GREEN.darker().darker();
+	private static final Color FEEDBACK_COLOR = Color.GREEN.darker().darker();
 
 	public class FeedbackJPanel extends DefaultJPanel {
 		@Override
-		public void paint( java.awt.Graphics g ) {
+		public void paint( Graphics g ) {
 			super.paint( g );
 			int i = StatementListPropertyView.this.currentPotentialDropIndex;
 			if( i != -1 ) {
@@ -142,16 +177,16 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 					if( ( i != -1 ) && ( N > 0 ) ) {
 						int y;
 						if( i == N ) {
-							java.awt.Component lastComponent = this.getComponent( N - 1 );
+							Component lastComponent = this.getComponent( N - 1 );
 							y = lastComponent.getY();
 							y += lastComponent.getHeight();
 						} else {
-							java.awt.Component iComponent = this.getComponent( i );
+							Component iComponent = this.getComponent( i );
 							y = iComponent.getY();
 							y -= INTRASTICIAL_PAD;
 						}
 
-						java.awt.ComponentOrientation componentOrientation = this.getComponentOrientation();
+						ComponentOrientation componentOrientation = this.getComponentOrientation();
 						int x0;
 						int x1;
 						if( componentOrientation.isLeftToRight() ) {
@@ -171,8 +206,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 						int[] yPoints = new int[] { yC, y1, y0 };
 						g.setColor( FEEDBACK_COLOR );
 
-						if( isShiftDown && org.alice.ide.ast.code.ShiftDragStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
-							java.awt.Component lastComponent = this.getComponent( N - 1 );
+						if( isShiftDown && ShiftDragStatementUtilities.isCandidateForEnvelop( currentDragModel ) ) {
+							Component lastComponent = this.getComponent( N - 1 );
 							final int INDENT = 2;
 							final int BRACKET_A_WIDTH = 4;
 							final int BRACKET_B_WIDTH = 8;
@@ -202,7 +237,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		}
 
 		@Override
-		public java.awt.Dimension getMaximumSize() {
+		public Dimension getMaximumSize() {
 			return this.getPreferredSize();
 		}
 	};
@@ -222,9 +257,9 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return -1;
 	}
 
-	private java.awt.Dimension dropSize = new java.awt.Dimension( 0, 0 );
+	private Dimension dropSize = new Dimension( 0, 0 );
 	private int currentPotentialDropIndex = -1;
-	private org.lgna.croquet.DragModel currentDragModel;
+	private DragModel currentDragModel;
 	private boolean isShiftDown;
 
 	public static boolean EPIC_HACK_ignoreDrawingDesired = false;
@@ -257,10 +292,10 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return this.currentPotentialDropIndex;
 	}
 
-	public void setCurrentPotentialDropIndexAndDragStep( int currentPotentialDropIndex, org.lgna.croquet.history.DragStep dragStep ) {
+	public void setCurrentPotentialDropIndexAndDragStep( int currentPotentialDropIndex, DragStep dragStep ) {
 		if( dragStep != null ) {
 			this.currentDragModel = dragStep.getModel();
-			java.awt.event.MouseEvent e = dragStep.getLatestMouseEvent();
+			MouseEvent e = dragStep.getLatestMouseEvent();
 			if( e != null ) {
 				this.isShiftDown = e.isShiftDown();
 			} else {
@@ -276,35 +311,35 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		}
 	}
 
-	public void setDropSize( java.awt.Dimension dropSize ) {
+	public void setDropSize( Dimension dropSize ) {
 		if( dropSize != null ) {
 			this.dropSize.setSize( dropSize );
 		}
 	}
 
-	private org.lgna.project.ast.Node getOwningBlockStatementOwningNode() {
-		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = this.getProperty().getOwner();
-		if( owner instanceof org.lgna.project.ast.BlockStatement ) {
-			org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)owner;
+	private Node getOwningBlockStatementOwningNode() {
+		InstancePropertyOwner owner = this.getProperty().getOwner();
+		if( owner instanceof BlockStatement ) {
+			BlockStatement blockStatement = (BlockStatement)owner;
 			return blockStatement.getParent();
 		} else {
 			return null;
 		}
 	}
 
-	private static boolean isOwnedByIf( org.lgna.project.ast.Node owningNode ) {
-		return owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair;
+	private static boolean isOwnedByIf( Node owningNode ) {
+		return owningNode instanceof BooleanExpressionBodyPair;
 	}
 
-	private static boolean isOwnedByElse( org.lgna.project.ast.Node owningNode ) {
-		return owningNode instanceof org.lgna.project.ast.ConditionalStatement;
+	private static boolean isOwnedByElse( Node owningNode ) {
+		return owningNode instanceof ConditionalStatement;
 	}
 
-	public java.awt.Rectangle getDropBounds( org.alice.ide.common.DefaultStatementPane statementAncestor ) {
-		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+	public Rectangle getDropBounds( DefaultStatementPane statementAncestor ) {
+		Node owningNode = this.getOwningBlockStatementOwningNode();
 		boolean isIf = isOwnedByIf( owningNode );
 		boolean isElse = isOwnedByElse( owningNode );
-		java.awt.Rectangle rv = this.getBounds( statementAncestor );
+		Rectangle rv = this.getBounds( statementAncestor );
 
 		if( isIf || isElse ) {
 			final int IF_ELSE_PAD = this.getFont().getSize() / 2;
@@ -332,8 +367,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.Statement statement ) {
-		return this.getFactory().createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, getProperty() );
+	protected AwtComponentView<?> createComponent( Statement statement ) {
+		return this.getFactory().createStatementPane( StatementDragModel.getInstance( statement ), statement, getProperty() );
 	}
 
 	//	@Override
@@ -383,14 +418,14 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	private Integer getCenterYOfComponentAt( int i ) {
 		if( ( i >= 0 ) && ( i < this.getComponentCount() ) ) {
-			java.awt.Component componentI = this.getAwtComponent().getComponent( i );
+			Component componentI = this.getAwtComponent().getComponent( i );
 			return componentI.getY() + ( componentI.getHeight() / 2 );
 		} else {
 			return null;
 		}
 	}
 
-	public int calculateIndex( java.awt.Point p ) {
+	public int calculateIndex( Point p ) {
 		if( isEmpty() ) {
 			return 0;
 		} else {
@@ -441,12 +476,12 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				rv.y = null;
 				rv.yPlusHeight = 0;
 			} else if( index == N ) {
-				org.lgna.croquet.views.AwtComponentView<?> lastComponent = this.getComponent( N - 1 );
+				AwtComponentView<?> lastComponent = this.getComponent( N - 1 );
 				rv.y = lastComponent.getY() + lastComponent.getHeight();
 				rv.yPlusHeight = null;
 			} else {
 				if( index < this.getComponentCount() ) {
-					org.lgna.croquet.views.AwtComponentView<?> component = this.getComponent( index );
+					AwtComponentView<?> component = this.getComponent( index );
 					rv.y = component.getY();
 					rv.yPlusHeight = rv.y + component.getHeight();
 				}

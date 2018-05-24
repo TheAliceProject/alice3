@@ -44,13 +44,18 @@ package org.alice.ide.youtube.croquet;
 
 import java.awt.Container;
 import java.io.File;
+import java.util.UUID;
 
 import javax.swing.JDialog;
 
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import org.alice.ide.browser.ImmutableBrowserOperation;
+import org.alice.ide.help.HelpBrowserOperation;
 import org.alice.ide.youtube.croquet.views.ExecutionPermissionFailedDialogView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.MessageDialogComposite;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -58,6 +63,8 @@ import org.lgna.croquet.history.CompletionStep;
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.wustl.lookingglass.media.FFmpegProcess;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.ScrollPane;
 
 /**
  * @author Matt May
@@ -66,11 +73,11 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 
 	private final StringValue explanation = createStringValue( "explanation" );
 	private boolean isFixed = false;
-	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC + "w/page/68664600/FFmpeg_execute_permission" );
+	private final Operation browserOperation = new ImmutableBrowserOperation( UUID.fromString( "06d89886-9433-4b52-85b6-10615412eb0c" ), HelpBrowserOperation.HELP_URL_SPEC + "w/page/68664600/FFmpeg_execute_permission" );
 	private final File ffmpegFile;
 
 	public ExecutionPermissionFailedDialogComposite( File f ) {
-		super( java.util.UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR );
+		super( UUID.fromString( "d60cddc2-ec53-40bd-949b-7a445b92b43b" ), MessageType.ERROR );
 		this.ffmpegFile = f;
 	}
 
@@ -102,7 +109,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
@@ -119,7 +126,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 		return this.explanation;
 	}
 
-	public org.lgna.croquet.Operation getBrowserOperation() {
+	public Operation getBrowserOperation() {
 		return this.browserOperation;
 	}
 
@@ -128,7 +135,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	}
 
 	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		SimpleApplication app = new SimpleApplication();
 		new ExecutionPermissionFailedDialogComposite( new File( FFmpegProcess.getArchitectureSpecificCommand() ) ).getLaunchOperation().fire();
 		System.exit( 0 );
 	}

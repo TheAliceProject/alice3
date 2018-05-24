@@ -43,35 +43,48 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.glyph.GlyphVector;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
+
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Text extends Geometry {
 	private static final String DEFAULT_TEXT = "";
-	private static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
+	private static final Font DEFAULT_FONT = new Font( null, Font.PLAIN, 12 );
 
-	public edu.cmu.cs.dennisc.glyph.GlyphVector getGlyphVector() {
+	public GlyphVector getGlyphVector() {
 		return this.glyphVector;
 	}
 
 	protected void updateUnalignedBoundingBoxIfNecessary() {
 		if( this.unalignedBoundingBox.isNaN() ) {
-			java.awt.geom.Rectangle2D.Float bounds = this.glyphVector.getBounds();
+			Rectangle2D.Float bounds = this.glyphVector.getBounds();
 			this.unalignedBoundingBox.setMinimum( bounds.x, bounds.y, 0 );
 			this.unalignedBoundingBox.setMaximum( bounds.x + bounds.width, bounds.y + bounds.height, depth.getValue() );
 		}
 
 		if( this.unalignedBoundingBox.isNaN() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+			Logger.todo( this );
 			this.unalignedBoundingBox.setMinimum( 0, 0, 0 );
 			this.unalignedBoundingBox.setMaximum( 0, 0, 0 );
 		}
 	}
 
 	//todo: cache result?
-	public edu.cmu.cs.dennisc.math.Vector3 getAlignmentOffset() {
+	public Vector3 getAlignmentOffset() {
 		updateUnalignedBoundingBoxIfNecessary();
-		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = new edu.cmu.cs.dennisc.math.Vector3();
+		Vector3 alignmentOffset = new Vector3();
 
 		LeftToRightAlignment leftToRightAlignment = this.leftToRightAlignment.getValue();
 		TopToBottomAlignment topToBottomAlignment = this.topToBottomAlignment.getValue();
@@ -115,10 +128,10 @@ public class Text extends Geometry {
 	}
 
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+	protected void updateBoundingBox( AxisAlignedBox boundingBox ) {
 		updateUnalignedBoundingBoxIfNecessary();
 
-		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = getAlignmentOffset();
+		Vector3 alignmentOffset = getAlignmentOffset();
 
 		boundingBox.set( this.unalignedBoundingBox );
 		boundingBox.translate( alignmentOffset );
@@ -131,16 +144,16 @@ public class Text extends Geometry {
 	}
 
 	@Override
-	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	protected void updatePlane( Vector3 forward, Vector3 upGuide, Point3 translation ) {
 		throw new RuntimeException( "TODO" );
 	}
 
 	@Override
-	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
+	public void transform( AbstractMatrix4x4 trans ) {
 		throw new RuntimeException( "TODO" );
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, DEFAULT_TEXT ) {
+	public final StringProperty text = new StringProperty( this, DEFAULT_TEXT ) {
 		@Override
 		public void setValue( String value ) {
 			markBoundsDirty();
@@ -150,9 +163,9 @@ public class Text extends Geometry {
 			fireBoundChanged();
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font> font = new edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font>( this, DEFAULT_FONT ) {
+	public final InstanceProperty<Font> font = new InstanceProperty<Font>( this, DEFAULT_FONT ) {
 		@Override
-		public void setValue( java.awt.Font value ) {
+		public void setValue( Font value ) {
 			markBoundsDirty();
 			super.setValue( value );
 			glyphVector.setFont( value );
@@ -169,10 +182,10 @@ public class Text extends Geometry {
 		}
 	};
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<LeftToRightAlignment> leftToRightAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<LeftToRightAlignment>( this, LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT ) {
+	public final InstanceProperty<LeftToRightAlignment> leftToRightAlignment = new InstanceProperty<LeftToRightAlignment>( this, LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT ) {
 		@Override
 		public void setValue( LeftToRightAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				markBoundsDirty();
 				super.setValue( value );
 				unalignedBoundingBox.setNaN();
@@ -180,10 +193,10 @@ public class Text extends Geometry {
 			}
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<TopToBottomAlignment> topToBottomAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<TopToBottomAlignment>( this, TopToBottomAlignment.ALIGN_BASELINE ) {
+	public final InstanceProperty<TopToBottomAlignment> topToBottomAlignment = new InstanceProperty<TopToBottomAlignment>( this, TopToBottomAlignment.ALIGN_BASELINE ) {
 		@Override
 		public void setValue( TopToBottomAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				markBoundsDirty();
 				super.setValue( value );
 				unalignedBoundingBox.setNaN();
@@ -191,10 +204,10 @@ public class Text extends Geometry {
 			}
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<FrontToBackAlignment> frontToBackAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<FrontToBackAlignment>( this, FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK ) {
+	public final InstanceProperty<FrontToBackAlignment> frontToBackAlignment = new InstanceProperty<FrontToBackAlignment>( this, FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK ) {
 		@Override
 		public void setValue( FrontToBackAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			if( Objects.notEquals( value, this.getValue() ) ) {
 				markBoundsDirty();
 				super.setValue( value );
 				unalignedBoundingBox.setNaN();
@@ -203,7 +216,7 @@ public class Text extends Geometry {
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.math.AxisAlignedBox unalignedBoundingBox = edu.cmu.cs.dennisc.math.AxisAlignedBox.createNaN();
+	private final AxisAlignedBox unalignedBoundingBox = AxisAlignedBox.createNaN();
 
-	private final edu.cmu.cs.dennisc.glyph.GlyphVector glyphVector = new edu.cmu.cs.dennisc.glyph.GlyphVector( DEFAULT_TEXT, DEFAULT_FONT, -1, -1 );
+	private final GlyphVector glyphVector = new GlyphVector( DEFAULT_TEXT, DEFAULT_FONT, -1, -1 );
 }

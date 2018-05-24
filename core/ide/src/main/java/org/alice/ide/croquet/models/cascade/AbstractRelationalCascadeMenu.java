@@ -43,20 +43,27 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.RelationalInfixExpression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRelationalCascadeMenu extends ExpressionCascadeMenu<org.lgna.project.ast.RelationalInfixExpression> {
+public abstract class AbstractRelationalCascadeMenu extends ExpressionCascadeMenu<RelationalInfixExpression> {
 	private Class<? extends Number> cls;
 
-	public AbstractRelationalCascadeMenu( java.util.UUID id, Class<? extends Number> cls ) {
+	public AbstractRelationalCascadeMenu( UUID id, Class<? extends Number> cls ) {
 		super( id );
 		this.cls = cls;
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.RelationalInfixExpression> step ) {
-		for( org.lgna.project.ast.RelationalInfixExpression.Operator operator : org.lgna.project.ast.RelationalInfixExpression.Operator.values() ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<RelationalInfixExpression> step ) {
+		for( RelationalInfixExpression.Operator operator : RelationalInfixExpression.Operator.values() ) {
 			blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.cls, operator ) );
 		}
 	}

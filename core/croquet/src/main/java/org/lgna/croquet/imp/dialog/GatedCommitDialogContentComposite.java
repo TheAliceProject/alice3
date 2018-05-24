@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.dialog;
 
+import org.lgna.croquet.GatedCommitDialogCoreComposite;
+import org.lgna.croquet.imp.dialog.views.GatedCommitDialogContentPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GatedCommitDialogContentComposite<V extends org.lgna.croquet.imp.dialog.views.GatedCommitDialogContentPane> extends DialogContentComposite<V> {
-	public GatedCommitDialogContentComposite( java.util.UUID migrationId, org.lgna.croquet.GatedCommitDialogCoreComposite<?, ?> coreComposite ) {
+public abstract class GatedCommitDialogContentComposite<V extends GatedCommitDialogContentPane> extends DialogContentComposite<V> {
+	public GatedCommitDialogContentComposite( UUID migrationId, GatedCommitDialogCoreComposite<?, ?> coreComposite ) {
 		super( migrationId, coreComposite );
 	}
 }

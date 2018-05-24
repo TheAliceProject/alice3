@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PotentiallyEnvelopingStatementInsertCascade extends StatementInsertCascade {
-	public PotentiallyEnvelopingStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
+	public PotentiallyEnvelopingStatementInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, CascadeBlank<Expression>... blanks ) {
 		super( id, blockStatementIndexPair, isEnveloping, blanks );
 	}
 }

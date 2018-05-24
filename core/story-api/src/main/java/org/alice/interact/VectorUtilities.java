@@ -59,7 +59,7 @@ public class VectorUtilities {
 			angleDot = 1.0d;
 		}
 
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.acos( angleDot ) );
+		return new AngleInRadians( Math.acos( angleDot ) );
 	}
 
 	/*

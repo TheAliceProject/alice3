@@ -43,13 +43,23 @@
 
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.project.ast.Node;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceProperty<?>> implements org.lgna.croquet.ItemCodec<T> {
-	private static java.util.Map<Class<?>, PropertyOfNodeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class PropertyOfNodeCodec<T extends InstanceProperty<?>> implements ItemCodec<T> {
+	private static Map<Class<?>, PropertyOfNodeCodec<?>> map = Maps.newHashMap();
 
-	public static synchronized <T extends edu.cmu.cs.dennisc.property.InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance( Class<T> cls ) {
+	public static synchronized <T extends InstanceProperty<?>> PropertyOfNodeCodec<T> getInstance( Class<T> cls ) {
 		PropertyOfNodeCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
@@ -71,11 +81,11 @@ public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceP
 	}
 
 	@Override
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
-			org.alice.ide.croquet.codecs.NodeCodec<org.lgna.project.ast.Node> nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
-			org.lgna.project.ast.Node node = nodeCodec.decodeValue( binaryDecoder );
+			NodeCodec<Node> nodeCodec = NodeCodec.getInstance( Node.class );
+			Node node = nodeCodec.decodeValue( binaryDecoder );
 			String name = binaryDecoder.decodeString();
 			if( node != null ) {
 				return (T)node.getPropertyNamed( name );
@@ -88,14 +98,14 @@ public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceP
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
-			org.alice.ide.croquet.codecs.NodeCodec<org.lgna.project.ast.Node> nodeCodec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Node.class );
-			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)value.getOwner();
+			NodeCodec<Node> nodeCodec = NodeCodec.getInstance( Node.class );
+			Node node = (Node)value.getOwner();
 			nodeCodec.encodeValue( binaryEncoder, node );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "investigate value.getName() or node.getName()" );
+			Logger.todo( "investigate value.getName() or node.getName()" );
 			binaryEncoder.encode( node != null ? value.getName() : null );
 		}
 	}

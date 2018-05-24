@@ -43,39 +43,45 @@
 
 package org.alice.stageide.apis.org.lgna.story.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Key;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
+public enum KeyCodec implements ItemCodec<Key> {
 	SINGLETON;
 	@Override
-	public Class<org.lgna.story.Key> getValueClass() {
-		return org.lgna.story.Key.class;
+	public Class<Key> getValueClass() {
+		return Key.class;
 	}
 
 	@Override
-	public org.lgna.story.Key decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Key decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			int keyCode = binaryDecoder.decodeInt();
-			return org.lgna.story.EmployeesOnly.getKeyFromKeyCode( keyCode );
+			return EmployeesOnly.getKeyFromKeyCode( keyCode );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Key value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
-			binaryEncoder.encode( org.lgna.story.EmployeesOnly.getKeyCodeFromKey( value ) );
+			binaryEncoder.encode( EmployeesOnly.getKeyCodeFromKey( value ) );
 		} else {
 			binaryEncoder.encode( false );
 		}
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.lgna.story.Key value ) {
+	public void appendRepresentation( StringBuilder sb, Key value ) {
 		sb.append( value );
 	}
 }

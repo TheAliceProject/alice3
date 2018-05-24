@@ -42,10 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf.metal;
 
+import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
+
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener {
+public class FontMouseWheelAdapter implements MouseWheelListener {
 	private float scaleFactor = 1.0f;
 	private AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme;
 	private boolean isLookAndFeelUpdated = false;
@@ -67,9 +75,9 @@ public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener 
 	}
 
 	public void updateLookAndFeel() {
-		javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme( this.adjustableFontSizeOceanTheme );
+		MetalLookAndFeel.setCurrentTheme( this.adjustableFontSizeOceanTheme );
 		try {
-			javax.swing.UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel" );
+			UIManager.setLookAndFeel( "javax.swing.plaf.metal.MetalLookAndFeel" );
 		} catch( Exception e ) {
 			throw new RuntimeException( e );
 		}
@@ -77,15 +85,15 @@ public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener 
 	}
 
 	@Override
-	public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e ) {
-		if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
+	public void mouseWheelMoved( final MouseWheelEvent e ) {
+		if( InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 			this.adjustableFontSizeOceanTheme.adjustSizeDelta( e.getWheelRotation() * scaleFactor );
 			if( this.isLookAndFeelUpdated ) {
 				//pass
 			} else {
 				this.updateLookAndFeel();
 			}
-			javax.swing.SwingUtilities.updateComponentTreeUI( javax.swing.SwingUtilities.getRoot( e.getComponent() ) );
+			SwingUtilities.updateComponentTreeUI( SwingUtilities.getRoot( e.getComponent() ) );
 		}
 	}
 }

@@ -42,22 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.ast;
 
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class EmptyExpression extends IdeExpression {
-	public EmptyExpression( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public EmptyExpression( AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
 
 	public EmptyExpression( Class<?> cls ) {
-		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
+		this( JavaType.getInstance( cls ) );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.type;
 	}
 
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final AbstractType<?, ?, ?> type;
 }

@@ -43,13 +43,24 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.ThisExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractField, FieldAssignmentInsertCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<BlockStatementIndexPair, AbstractField, FieldAssignmentInsertCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized FieldAssignmentInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
+	public static synchronized FieldAssignmentInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
 		FieldAssignmentInsertCascade rv = mapToMap.get( blockStatementIndexPair, field );
 		if( rv != null ) {
 			//pass
@@ -60,14 +71,14 @@ public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( field.getValueType() ) );
+	private FieldAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, AbstractField field ) {
+		super( UUID.fromString( "2593d9c3-5619-4d8d-812b-481d73035fe9" ), blockStatementIndexPair, ExpressionBlank.createBlanks( field.getValueType() ) );
 		this.field = field;
 	}
 
-	public org.lgna.project.ast.AbstractField getField() {
+	public AbstractField getField() {
 		return this.field;
 	}
 
@@ -77,12 +88,12 @@ public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	protected AbstractType<?, ?, ?> getValueType() {
 		return this.field.getValueType();
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createLeftHandSide( org.lgna.project.ast.Expression... expressions ) {
-		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
+	protected Expression createLeftHandSide( Expression... expressions ) {
+		return new FieldAccess( new ThisExpression(), this.field );
 	}
 }

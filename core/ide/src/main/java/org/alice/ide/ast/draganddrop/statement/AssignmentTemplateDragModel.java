@@ -42,6 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.TemplateAssignmentInsertCascade;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.AssignmentExpression;
+import org.lgna.project.ast.ExpressionStatement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,12 +65,12 @@ public final class AssignmentTemplateDragModel extends ExpressionStatementTempla
 	}
 
 	private AssignmentTemplateDragModel() {
-		super( java.util.UUID.fromString( "c3695947-71f1-46b8-9fbc-cd1b5e7993b1" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement(), org.lgna.project.ast.AssignmentExpression.class );
+		super( UUID.fromString( "c3695947-71f1-46b8-9fbc-cd1b5e7993b1" ), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement(), AssignmentExpression.class );
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		//return org.alice.ide.croquet.models.ast.cascade.statement.AssignmentInsertMenuModel.createInstance( blockStatementIndexPair ).getPopupPrepModel();
-		return org.alice.ide.croquet.models.ast.cascade.statement.TemplateAssignmentInsertCascade.createInstance( blockStatementIndexPair );
+		return TemplateAssignmentInsertCascade.createInstance( blockStatementIndexPair );
 	}
 }

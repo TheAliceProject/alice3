@@ -42,29 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.AbstractEdit<M> {
-	private org.lgna.project.ast.Statement statement;
+public abstract class StatementEdit<M extends CompletionModel> extends AbstractEdit<M> {
+	private Statement statement;
 
-	public StatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.Statement statement ) {
+	public StatementEdit( CompletionStep<M> completionStep, Statement statement ) {
 		super( completionStep );
 		this.statement = statement;
 	}
 
-	public StatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public StatementEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.statement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).decodeValue( binaryDecoder );
+		this.statement = NodeCodec.getInstance( Statement.class ).decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).encodeValue( binaryEncoder, this.statement );
+		NodeCodec.getInstance( Statement.class ).encodeValue( binaryEncoder, this.statement );
 	}
 
-	public final org.lgna.project.ast.Statement getStatement() {
+	public final Statement getStatement() {
 		return this.statement;
 	}
 }

@@ -43,32 +43,40 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserParameter, ExpressionProperty, ParameterArrayLengthOperation> mapToMap = MapToMap.newInstance();
 
-	public static ParameterArrayLengthOperation getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static ParameterArrayLengthOperation getInstance( UserParameter parameter, ExpressionProperty expressionProperty ) {
 		assert parameter != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation>() {
+		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new MapToMap.Initializer<UserParameter, ExpressionProperty, ParameterArrayLengthOperation>() {
 			@Override
-			public ParameterArrayLengthOperation initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public ParameterArrayLengthOperation initialize( UserParameter parameter, ExpressionProperty expressionProperty ) {
 				return new ParameterArrayLengthOperation( parameter, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
+	private final UserParameter parameter;
 
-	private ParameterArrayLengthOperation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
+	private ParameterArrayLengthOperation( UserParameter parameter, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
 		this.parameter = parameter;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	protected Expression createAccessExpression() {
+		return new ParameterAccess( this.parameter );
 	}
 }

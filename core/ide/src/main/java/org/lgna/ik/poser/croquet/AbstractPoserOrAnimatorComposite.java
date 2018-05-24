@@ -47,7 +47,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.SplitPane;
 import org.lgna.ik.poser.FieldFinder;
@@ -56,8 +58,12 @@ import org.lgna.ik.poser.controllers.PoserControllerAdapter;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
+import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SProgram;
@@ -74,7 +80,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends SimpleComposite<Panel> {
 
 	private final SProgram storyProgram;
 
@@ -88,7 +94,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	private final SceneComposite sceneComposite;
 
 	private boolean isInitialized = false;
-	private final java.util.List<StatusUpdateListener> statusUpdateListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<StatusUpdateListener> statusUpdateListeners = Lists.newCopyOnWriteArrayList();
 
 	protected AbstractPoserOrAnimatorComposite( UUID migrationId, NamedUserType userType ) {
 		super( migrationId );
@@ -130,9 +136,9 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	}
 
 	private M createInstanceFromType( NamedUserType type ) {
-		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+		ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 
-		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
+		NamedUserConstructor userConstructor = type.constructors.get( 0 );
 		final int N = userConstructor.requiredParameters.size();
 		Object[] arguments = new Object[ N ];
 		switch( N ) {
@@ -142,8 +148,8 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 			UserParameter constructorParameter0 = userConstructor.requiredParameters.get( 0 );
 			AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
 			ArrayList<JointedModelResource> resourceList = FieldFinder.getInstance().getResourcesForType( type );
-			if( parameter0Type instanceof org.lgna.project.ast.JavaType ) {
-				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)parameter0Type;
+			if( parameter0Type instanceof JavaType ) {
+				JavaType javaType = (JavaType)parameter0Type;
 				Class<?> cls = javaType.getClassReflectionProxy().getReification();
 				if( cls.isEnum() ) {
 					arguments[ 0 ] = cls.getEnumConstants()[ 0 ];
@@ -157,7 +163,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 		case 2:
 			assert false : N;
 		}
-		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
+		UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		return userInstance.getJavaInstance( getModelClass() );
 	}
 
@@ -206,7 +212,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 
 	@Override
 	protected Panel createView() {
-		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
+		BorderPanel rv = new BorderPanel();
 		SplitPane view = splitComposite.getView();
 		rv.addCenterComponent( view );
 		return rv;

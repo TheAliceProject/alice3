@@ -42,21 +42,29 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.liststate;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SingleSelectListStateSwingModel {
-	public SingleSelectListStateSwingModel( javax.swing.ComboBoxModel comboBoxModel ) {
+	public SingleSelectListStateSwingModel( ComboBoxModel comboBoxModel ) {
 		this.comboBoxModel = comboBoxModel;
-		this.listSelectionModel = new javax.swing.DefaultListSelectionModel();
-		this.listSelectionModel.setSelectionMode( javax.swing.ListSelectionModel.SINGLE_SELECTION );
+		this.listSelectionModel = new DefaultListSelectionModel();
+		this.listSelectionModel.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
 	}
 
-	public javax.swing.ComboBoxModel getComboBoxModel() {
+	public ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
 
-	public javax.swing.ListSelectionModel getListSelectionModel() {
+	public ListSelectionModel getListSelectionModel() {
 		return this.listSelectionModel;
 	}
 
@@ -77,27 +85,27 @@ public class SingleSelectListStateSwingModel {
 	}
 
 	public void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-		javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-		for( javax.swing.event.ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners() ) {
+		ListSelectionEvent e = new ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
+		for( ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners() ) {
 			listener.valueChanged( e );
 		}
 	}
 
 	@Deprecated
 	public void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireContentsChanged", source, index0, index1 );
+		Logger.errln( "todo: fireContentsChanged", source, index0, index1 );
 	}
 
 	@Deprecated
 	public void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireIntervalAdded", source, index0, index1 );
+		Logger.errln( "todo: fireIntervalAdded", source, index0, index1 );
 	}
 
 	@Deprecated
 	public void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireIntervalRemoved", source, index0, index1 );
+		Logger.errln( "todo: fireIntervalRemoved", source, index0, index1 );
 	}
 
-	private final javax.swing.ComboBoxModel comboBoxModel;
-	private final javax.swing.DefaultListSelectionModel listSelectionModel;
+	private final ComboBoxModel comboBoxModel;
+	private final DefaultListSelectionModel listSelectionModel;
 }

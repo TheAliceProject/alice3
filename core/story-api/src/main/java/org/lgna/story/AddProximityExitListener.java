@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Matt May
  */
 public class AddProximityExitListener {
 
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddProximityEnterListener.class )
+	@ClassTemplate( keywordFactoryCls = AddProximityEnterListener.class )
 	public interface Detail {
 	}
 

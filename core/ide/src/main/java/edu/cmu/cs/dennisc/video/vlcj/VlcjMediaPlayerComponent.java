@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.vlcj;
 
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.video.VideoPlayer;
+import uk.co.caprica.vlcj.player.MediaPlayer;
+
+import java.awt.Component;
+
 /**
  * @author Kyle J. Harms
  */
@@ -49,13 +55,13 @@ package edu.cmu.cs.dennisc.video.vlcj;
 
 	public static final String[] CUSTOM_FACTORY_ARGS = { "--no-osd" };
 
-	public uk.co.caprica.vlcj.player.MediaPlayer getMediaPlayer();
+	public MediaPlayer getMediaPlayer();
 
-	public java.awt.Component getVideoSurface();
+	public Component getVideoSurface();
 
-	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter();
+	public Painter<VideoPlayer> getPainter();
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter );
+	public void setPainter( Painter<VideoPlayer> painter );
 
 	public void release();
 }

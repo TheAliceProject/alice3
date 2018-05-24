@@ -43,10 +43,13 @@
 
 package org.lgna.project.ast;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorReflectionProxy extends InvocableReflectionProxy<java.lang.reflect.Constructor<?>> {
+public class ConstructorReflectionProxy extends InvocableReflectionProxy<Constructor<?>> {
 	private final boolean isVarArgs;
 
 	public ConstructorReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies, boolean isVarArgs ) {
@@ -54,7 +57,7 @@ public class ConstructorReflectionProxy extends InvocableReflectionProxy<java.la
 		this.isVarArgs = isVarArgs;
 	}
 
-	public ConstructorReflectionProxy( java.lang.reflect.Constructor<?> cnstrctr ) {
+	public ConstructorReflectionProxy( Constructor<?> cnstrctr ) {
 		super( cnstrctr, cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes() );
 		this.isVarArgs = cnstrctr.isVarArgs();
 	}
@@ -64,7 +67,7 @@ public class ConstructorReflectionProxy extends InvocableReflectionProxy<java.la
 	}
 
 	@Override
-	protected java.lang.reflect.Constructor<?> reify() {
+	protected Constructor<?> reify() {
 		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
 			try {
@@ -78,8 +81,8 @@ public class ConstructorReflectionProxy extends InvocableReflectionProxy<java.la
 	}
 
 	@Override
-	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {
-		java.lang.reflect.Constructor<?> cnstrctr = this.getReification();
+	protected Annotation[][] getReifiedParameterAnnotations() {
+		Constructor<?> cnstrctr = this.getReification();
 		if( cnstrctr != null ) {
 			return cnstrctr.getParameterAnnotations();
 		} else {

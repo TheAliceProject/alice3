@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +57,7 @@ public class CompassPointSpringPanel extends CornerSpringPanel {
 		this( null );
 	}
 
-	public CompassPointSpringPanel( org.lgna.croquet.Composite composite ) {
+	public CompassPointSpringPanel( Composite composite ) {
 		super( composite );
 	}
 

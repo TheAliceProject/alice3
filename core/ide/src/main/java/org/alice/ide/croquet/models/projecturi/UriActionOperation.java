@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.ActionOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriActionOperation extends org.lgna.croquet.ActionOperation {
-	public UriActionOperation( java.util.UUID individualUUID ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
+public abstract class UriActionOperation extends ActionOperation {
+	public UriActionOperation( UUID individualUUID ) {
+		super( ProjectApplication.URI_GROUP, individualUUID );
 	}
 
-	protected org.alice.ide.ProjectApplication getProjectApplication() {
-		return org.alice.ide.ProjectApplication.getActiveInstance();
+	protected ProjectApplication getProjectApplication() {
+		return ProjectApplication.getActiveInstance();
 	}
 }

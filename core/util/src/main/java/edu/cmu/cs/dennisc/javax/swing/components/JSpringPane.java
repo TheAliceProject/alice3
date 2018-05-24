@@ -42,14 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JPanel;
+import javax.swing.Spring;
+import javax.swing.SpringLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JSpringPane extends javax.swing.JPanel {
+public class JSpringPane extends JPanel {
 	public enum Vertical {
-		NORTH( javax.swing.SpringLayout.NORTH ),
+		NORTH( SpringLayout.NORTH ),
 		CENTER( null ),
-		SOUTH( javax.swing.SpringLayout.SOUTH );
+		SOUTH( SpringLayout.SOUTH );
 		private String internal;
 
 		private Vertical( String internal ) {
@@ -62,9 +68,9 @@ public class JSpringPane extends javax.swing.JPanel {
 	}
 
 	public enum Horizontal {
-		WEST( javax.swing.SpringLayout.WEST ),
+		WEST( SpringLayout.WEST ),
 		CENTER( null ),
-		EAST( javax.swing.SpringLayout.EAST );
+		EAST( SpringLayout.EAST );
 		private String internal;
 
 		private Horizontal( String internal ) {
@@ -76,22 +82,22 @@ public class JSpringPane extends javax.swing.JPanel {
 		}
 	}
 
-	private javax.swing.SpringLayout springLayout;
+	private SpringLayout springLayout;
 
 	public JSpringPane() {
-		this.springLayout = new javax.swing.SpringLayout();
+		this.springLayout = new SpringLayout();
 		setLayout( this.springLayout );
 	}
 
-	protected javax.swing.SpringLayout getSpringLayout() {
+	protected SpringLayout getSpringLayout() {
 		return this.springLayout;
 	}
 
-	abstract class CenterSpring extends javax.swing.Spring {
-		private java.awt.Component component;
+	abstract class CenterSpring extends Spring {
+		private Component component;
 		private int offset;
 
-		public CenterSpring( java.awt.Component component, int offset ) {
+		public CenterSpring( Component component, int offset ) {
 			this.component = component;
 			this.offset = offset;
 		}
@@ -105,12 +111,12 @@ public class JSpringPane extends javax.swing.JPanel {
 		public void setValue( int value ) {
 		}
 
-		protected abstract int getValue( java.awt.Dimension dimension );
+		protected abstract int getValue( Dimension dimension );
 
 		@Override
 		public int getPreferredValue() {
 			int macro = getValue( JSpringPane.this.getSize() );
-			java.awt.Dimension size;
+			Dimension size;
 			if( this.component.isValid() ) {
 				size = this.component.getSize();
 			} else {
@@ -132,43 +138,43 @@ public class JSpringPane extends javax.swing.JPanel {
 	}
 
 	class HorizontalCenterSpring extends CenterSpring {
-		public HorizontalCenterSpring( java.awt.Component component, int offset ) {
+		public HorizontalCenterSpring( Component component, int offset ) {
 			super( component, offset );
 		}
 
 		@Override
-		protected int getValue( java.awt.Dimension dimension ) {
+		protected int getValue( Dimension dimension ) {
 			return dimension.width;
 		}
 	}
 
 	class VerticalCenterSpring extends CenterSpring {
-		public VerticalCenterSpring( java.awt.Component component, int offset ) {
+		public VerticalCenterSpring( Component component, int offset ) {
 			super( component, offset );
 		}
 
 		@Override
-		protected int getValue( java.awt.Dimension dimension ) {
+		protected int getValue( Dimension dimension ) {
 			return dimension.height;
 		}
 	}
 
-	protected void putConstraint( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+	protected void putConstraint( Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
 		String horizontalConstraint = horizontal.getInternal();
 		String verticalConstraint = vertical.getInternal();
 		if( horizontalConstraint != null ) {
 			this.springLayout.putConstraint( horizontalConstraint, component, x, horizontalConstraint, this );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component, new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this );
+			this.springLayout.putConstraint( SpringLayout.WEST, component, new HorizontalCenterSpring( component, x ), SpringLayout.WEST, this );
 		}
 		if( verticalConstraint != null ) {
 			this.springLayout.putConstraint( verticalConstraint, component, y, verticalConstraint, this );
 		} else {
-			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component, new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this );
+			this.springLayout.putConstraint( SpringLayout.NORTH, component, new VerticalCenterSpring( component, y ), SpringLayout.NORTH, this );
 		}
 	}
 
-	public void add( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+	public void add( Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
 		this.putConstraint( component, horizontal, x, vertical, y );
 		this.add( component );
 	}

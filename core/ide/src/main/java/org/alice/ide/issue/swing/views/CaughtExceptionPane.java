@@ -42,31 +42,53 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
+import edu.cmu.cs.dennisc.issue.AbstractReport;
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JMigPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane;
+import edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
+import org.alice.ide.issue.UserProgramRunningStateUtilities;
+import org.alice.ide.issue.swing.CheckForNewAliceVersionAction;
+import org.lgna.project.ProjectVersion;
+
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Color;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
 	private static final String APPLICATION_NAME = "Alice";
 	private static final float FONT_SCALE = 1.15f;
-	private static final javax.swing.Icon MEAN_QUEEN_ICON;
+	private static final Icon MEAN_QUEEN_ICON;
 
 	static {
-		javax.swing.Icon icon = null;
+		Icon icon = null;
 		try {
-			icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
+			icon = IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
 		} catch( Throwable t ) {
 			t.printStackTrace();
 		}
 		MEAN_QUEEN_ICON = icon;
 	}
 
-	private static javax.swing.JLabel createLabel( String text ) {
-		javax.swing.JLabel rv = new javax.swing.JLabel( text );
-		rv.setForeground( java.awt.Color.WHITE );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( rv, FONT_SCALE );
+	private static JLabel createLabel( String text ) {
+		JLabel rv = new JLabel( text );
+		rv.setForeground( Color.WHITE );
+		FontUtilities.setFontToScaledFont( rv, FONT_SCALE );
 		return rv;
 	}
 
@@ -75,7 +97,7 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 		sb.append( "<html>" );
 		sb.append( "An exception has been caught" );
 
-		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
+		if( UserProgramRunningStateUtilities.isUserProgramRunning() ) {
 			sb.append( " during the running of your program.<p>" );
 			sb.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
 			sb.append( APPLICATION_NAME );
@@ -84,42 +106,42 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 			sb.append( ".<p>" );
 		}
 		sb.append( "<p>Please accept our apologies and press the \"" );
-		sb.append( this.getSubmitAction().getValue( javax.swing.Action.NAME ) );
+		sb.append( this.getSubmitAction().getValue( Action.NAME ) );
 		sb.append( "\" button.<p>" );
 		sb.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
 		sb.append( "</html>" );
 
-		javax.swing.JLabel message = createLabel( sb.toString() );
+		JLabel message = createLabel( sb.toString() );
 
-		javax.swing.JButton hyperlink = new javax.swing.JButton( new org.alice.ide.issue.swing.CheckForNewAliceVersionAction() ) {
+		JButton hyperlink = new JButton( new CheckForNewAliceVersionAction() ) {
 			@Override
 			public void updateUI() {
-				edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI hyperlinkUi = new edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI();
+				HyperlinkUI hyperlinkUi = new HyperlinkUI();
 				this.setUI( hyperlinkUi );
 			}
 		};
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( hyperlink, FONT_SCALE );
-		hyperlink.setForeground( java.awt.Color.WHITE );
+		FontUtilities.setFontToScaledFont( hyperlink, FONT_SCALE );
+		hyperlink.setForeground( Color.WHITE );
 		hyperlink.setOpaque( false );
-		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		hyperlink.setBorder( BorderFactory.createEmptyBorder() );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane bottomPane = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane(
+		JPageAxisPane bottomPane = new JPageAxisPane(
 				createLabel( "Note: it is possible this bug has already been fixed." ),
-				new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane(
+				new JLineAxisPane(
 						createLabel( "Check:  " ),
 						hyperlink,
 						createLabel( "  for the latest release." )
 				)
 				);
 
-		edu.cmu.cs.dennisc.javax.swing.components.JMigPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JMigPane( "insets 16 0 0 32", "[]16[]", "[top][bottom]" );
-		pane.add( new javax.swing.JLabel( MEAN_QUEEN_ICON ), "span 1 2" );
+		JMigPane pane = new JMigPane( "insets 16 0 0 32", "[]16[]", "[top][bottom]" );
+		pane.add( new JLabel( MEAN_QUEEN_ICON ), "span 1 2" );
 		pane.add( message, "wrap, growy" );
 		pane.add( bottomPane, "wrap" );
-		pane.setBackground( java.awt.Color.DARK_GRAY );
+		pane.setBackground( Color.DARK_GRAY );
 		pane.setOpaque( true );
 
-		this.add( pane, java.awt.BorderLayout.NORTH );
+		this.add( pane, BorderLayout.NORTH );
 	}
 
 	@Override
@@ -134,24 +156,24 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() };
+		return new String[] { ProjectVersion.getCurrentVersionText() };
 	}
 
 	private boolean isClearedToAttachCurrentProject = false;
 
 	@Override
 	protected void submit() {
-		int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
-		if( option == javax.swing.JOptionPane.CANCEL_OPTION ) {
+		int option = JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", JOptionPane.YES_NO_CANCEL_OPTION );
+		if( option == JOptionPane.CANCEL_OPTION ) {
 			//pass
 		} else {
-			this.isClearedToAttachCurrentProject = option == javax.swing.JOptionPane.YES_OPTION;
+			this.isClearedToAttachCurrentProject = option == JOptionPane.YES_OPTION;
 			super.submit();
 		}
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+	protected AbstractReport addAttachments( AbstractReport rv ) {
 		rv = super.addAttachments( rv );
 		if( this.isClearedToAttachCurrentProject ) {
 			rv.addAttachment( new CurrentProjectAttachment() );
@@ -160,7 +182,7 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 	}
 
 	public static void main( String[] args ) {
-		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( true );
+		UserProgramRunningStateUtilities.setUserProgramRunning( true );
 
 		CaughtExceptionPane pane = new CaughtExceptionPane();
 
@@ -170,7 +192,7 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 			pane.setThreadAndThrowable( Thread.currentThread(), re );
 		}
 
-		javax.swing.JDialog window = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "Report Bug", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		JDialog window = JDialogUtilities.createPackedJDialog( pane, null, "Report Bug", true, WindowConstants.DISPOSE_ON_CLOSE );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );
 	}

@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -251,7 +254,7 @@ public class EulerAngles implements Orientation {
 		return rv;
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		yaw.decode( binaryDecoder );
 		pitch.decode( binaryDecoder );
 		roll.decode( binaryDecoder );
@@ -259,7 +262,7 @@ public class EulerAngles implements Orientation {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		yaw.encode( binaryEncoder );
 		pitch.encode( binaryEncoder );
 		roll.encode( binaryEncoder );

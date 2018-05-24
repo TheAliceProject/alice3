@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import javax.swing.BorderFactory;
+import javax.swing.Spring;
+import javax.swing.SpringLayout;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +64,7 @@ public class SpringUtilities {
 		Label rv = new Label( text );
 		rv.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 		rv.setVerticalAlignment( VerticalAlignment.TOP );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 0, 0, 0 ) );
+		rv.setBorder( BorderFactory.createEmptyBorder( 6, 0, 0, 0 ) );
 		return rv;
 	}
 
@@ -69,7 +73,7 @@ public class SpringUtilities {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				AwtComponentView<?> box = org.lgna.croquet.views.BoxUtilities.createRigidArea( 0, 0 );
+				AwtComponentView<?> box = BoxUtilities.createRigidArea( 0, 0 );
 				//				box.setBackground( java.awt.Color.BLUE );
 				//				if( box instanceof javax.swing.JComponent ) {
 				//					((javax.swing.JComponent)box).setOpaque( false );
@@ -108,53 +112,53 @@ public class SpringUtilities {
 				if( component != null ) {
 					rv.internalAddComponent( component );
 				} else {
-					rv.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createRigidArea( 0, 0 ) );
+					rv.internalAddComponent( BoxUtilities.createRigidArea( 0, 0 ) );
 				}
 			}
 		}
 
-		javax.swing.SpringLayout layout = (javax.swing.SpringLayout)rv.getAwtComponent().getLayout();
+		SpringLayout layout = (SpringLayout)rv.getAwtComponent().getLayout();
 
-		javax.swing.Spring xSpring = javax.swing.Spring.constant( 0 );
-		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );
+		Spring xSpring = Spring.constant( 0 );
+		Spring xPadSpring = Spring.constant( xPad );
 		for( int c = 0; c < columnCount; c++ ) {
-			javax.swing.Spring widthSpring = javax.swing.Spring.constant( 0 );
+			Spring widthSpring = Spring.constant( 0 );
 			for( AwtComponentView<?>[] componentRow : componentRows ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
-				widthSpring = javax.swing.Spring.max( widthSpring, constraints.getWidth() );
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
+				widthSpring = Spring.max( widthSpring, constraints.getWidth() );
 			}
 			for( AwtComponentView<?>[] componentRow : componentRows ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
 				constraints.setX( xSpring );
 				constraints.setWidth( widthSpring );
 			}
-			xSpring = javax.swing.Spring.sum( xSpring, widthSpring );
+			xSpring = Spring.sum( xSpring, widthSpring );
 			if( c < ( columnCount - 1 ) ) {
-				xSpring = javax.swing.Spring.sum( xSpring, xPadSpring );
+				xSpring = Spring.sum( xSpring, xPadSpring );
 			}
 		}
-		javax.swing.Spring ySpring = javax.swing.Spring.constant( 0 );
-		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );
+		Spring ySpring = Spring.constant( 0 );
+		Spring yPadSpring = Spring.constant( yPad );
 		for( int r = 0; r < rowCount; r++ ) {
 			AwtComponentView<?>[] componentRow = componentRows.get( r );
-			javax.swing.Spring heightSpring = javax.swing.Spring.constant( 0 );
+			Spring heightSpring = Spring.constant( 0 );
 			for( int c = 0; c < columnCount; c++ ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
-				heightSpring = javax.swing.Spring.max( heightSpring, constraints.getHeight() );
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
+				heightSpring = Spring.max( heightSpring, constraints.getHeight() );
 			}
 			for( int c = 0; c < columnCount; c++ ) {
-				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
+				SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
 				constraints.setY( ySpring );
 				constraints.setHeight( heightSpring );
 			}
-			ySpring = javax.swing.Spring.sum( ySpring, heightSpring );
+			ySpring = Spring.sum( ySpring, heightSpring );
 			if( r < ( rowCount - 1 ) ) {
-				ySpring = javax.swing.Spring.sum( ySpring, yPadSpring );
+				ySpring = Spring.sum( ySpring, yPadSpring );
 			}
 		}
-		javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( rv.getAwtComponent() );
-		constraints.setConstraint( javax.swing.SpringLayout.EAST, xSpring );
-		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
+		SpringLayout.Constraints constraints = layout.getConstraints( rv.getAwtComponent() );
+		constraints.setConstraint( SpringLayout.EAST, xSpring );
+		constraints.setConstraint( SpringLayout.SOUTH, ySpring );
 		return rv;
 	}
 

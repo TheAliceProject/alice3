@@ -42,16 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.ProceduresView;
+import org.lgna.project.ast.UserMethod;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ProceduresToolPalette extends MethodsToolPalette<org.alice.ide.ast.type.merge.croquet.views.ProceduresView> {
-	public ProceduresToolPalette( java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectProcedures ) {
-		super( java.util.UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ), uriForDescriptionPurposesOnly, projectProcedures );
+public final class ProceduresToolPalette extends MethodsToolPalette<ProceduresView> {
+	public ProceduresToolPalette( URI uriForDescriptionPurposesOnly, List<UserMethod> projectProcedures ) {
+		super( UUID.fromString( "ee913a3b-2bc4-4948-8c97-bfa57569a57e" ), uriForDescriptionPurposesOnly, projectProcedures );
 	}
 
 	@Override
-	protected org.alice.ide.ast.type.merge.croquet.views.ProceduresView createView() {
-		return new org.alice.ide.ast.type.merge.croquet.views.ProceduresView( this );
+	protected ProceduresView createView() {
+		return new ProceduresView( this );
 	}
 }

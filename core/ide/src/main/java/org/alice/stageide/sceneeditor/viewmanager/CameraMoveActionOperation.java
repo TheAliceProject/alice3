@@ -43,12 +43,19 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.text.MessageFormat;
+import java.util.UUID;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveAndOrientToEdit;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserField;
+import org.lgna.story.CameraMarker;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
@@ -62,7 +69,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
 	private UserField markerField;
 	private CameraMarkerImp cameraMarker;
-	private CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> camera;
+	private CameraImp<SymmetricPerspectiveCamera> camera;
 
 	private TransformableImp toMoveImp;
 	private TransformableImp toMoveToImp;
@@ -71,8 +78,8 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
 	private MoveToImageIcon imageIcon;
 
-	protected CameraMoveActionOperation( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
+	protected CameraMoveActionOperation( UUID id ) {
+		super( Application.PROJECT_GROUP, id );
 		this.markerField = null;
 		this.cameraMarker = null;
 		this.imageIcon = new MoveToImageIcon();
@@ -110,7 +117,7 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 		{
 			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
 			MessageFormat formatter = new MessageFormat( "" );
-			formatter.setLocale( javax.swing.JComponent.getDefaultLocale() );
+			formatter.setLocale( JComponent.getDefaultLocale() );
 			formatter.applyPattern( unformattedTooltipText );
 			String tooltipText = formatter.format( new Object[] { this.toMoveName, this.toMoveToName } );
 			this.setToolTipText( tooltipText );
@@ -125,17 +132,17 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 
 	}
 
-	public void setCamera( CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> camera ) {
+	public void setCamera( CameraImp<SymmetricPerspectiveCamera> camera ) {
 		this.camera = camera;
 	}
 
-	protected CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> getCamera() {
+	protected CameraImp<SymmetricPerspectiveCamera> getCamera() {
 		return this.camera;
 	}
 
 	public void setMarkerField( UserField markerField )
 	{
-		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( org.lgna.story.CameraMarker.class ) )
+		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( CameraMarker.class ) )
 		{
 			this.markerField = markerField;
 		}
@@ -161,12 +168,12 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) &&
-				( this.toMoveImp.getAbstraction() instanceof org.lgna.story.SMovableTurnable ) &&
+				( this.toMoveImp.getAbstraction() instanceof SMovableTurnable ) &&
 				( this.toMoveToImp.getAbstraction() != null ) ) {
 
-			MoveAndOrientToEdit edit = new MoveAndOrientToEdit( step, (org.lgna.story.SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction() );
+			MoveAndOrientToEdit edit = new MoveAndOrientToEdit( step, (SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction() );
 			step.commitAndInvokeDo( edit );
 		} else {
 			step.cancel();

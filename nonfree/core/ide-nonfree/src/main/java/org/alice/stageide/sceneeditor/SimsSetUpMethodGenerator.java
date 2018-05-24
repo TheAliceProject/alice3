@@ -42,21 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor;
 
+import org.alice.ide.ast.ExpressionCreator;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.story.Color;
+import org.lgna.story.resources.sims2.EyeColor;
+import org.lgna.story.resources.sims2.Face;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.Hair;
+import org.lgna.story.resources.sims2.Outfit;
+import org.lgna.story.resources.sims2.PersonResource;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SimsSetUpMethodGenerator extends SetUpMethodGenerator {
-	public static org.lgna.project.ast.InstanceCreation createSims2PersonRecourseInstanceCreation( org.lgna.story.resources.sims2.PersonResource personResource ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
+	public static InstanceCreation createSims2PersonRecourseInstanceCreation( PersonResource personResource ) throws ExpressionCreator.CannotCreateExpressionException {
 		Class<?>[] parameterClses = {
-				org.lgna.story.resources.sims2.Gender.class,
-				org.lgna.story.Color.class,
-				org.lgna.story.resources.sims2.EyeColor.class,
-				org.lgna.story.resources.sims2.Hair.class,
+				Gender.class,
+				Color.class,
+				EyeColor.class,
+				Hair.class,
 				Number.class,
-				org.lgna.story.resources.sims2.Outfit.class,
-				org.lgna.story.resources.sims2.Face.class,
+				Outfit.class,
+				Face.class,
 		};
-		org.lgna.project.ast.Expression[] arguments = {
+		Expression[] arguments = {
 				getExpressionCreator().createExpression( personResource.getGender() ),
 				getExpressionCreator().createExpression( personResource.getSkinColor() ),
 				getExpressionCreator().createExpression( personResource.getEyeColor() ),
@@ -65,6 +77,6 @@ public class SimsSetUpMethodGenerator extends SetUpMethodGenerator {
 				getExpressionCreator().createExpression( personResource.getOutfit() ),
 				getExpressionCreator().createExpression( personResource.getFace() ),
 		};
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
+		return AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
 	}
 }

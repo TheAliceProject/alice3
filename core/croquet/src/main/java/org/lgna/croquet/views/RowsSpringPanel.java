@@ -43,6 +43,11 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.Composite;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,15 +67,15 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		this( null, xPad, yPad );
 	}
 
-	public RowsSpringPanel( org.lgna.croquet.Composite composite ) {
+	public RowsSpringPanel( Composite composite ) {
 		this( composite, 12, 12 );
 	}
 
-	public RowsSpringPanel( org.lgna.croquet.Composite composite, int xPad, int yPad ) {
+	public RowsSpringPanel( Composite composite, int xPad, int yPad ) {
 		super( composite );
 		this.xPad = xPad;
 		this.yPad = yPad;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 
 	@Override
@@ -79,7 +84,7 @@ public abstract class RowsSpringPanel extends SpringPanel {
 		if( this.componentRows != null ) {
 			//pass
 		} else {
-			this.componentRows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			this.componentRows = Lists.newLinkedList();
 			this.updateComponentRows( this.componentRows );
 			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}

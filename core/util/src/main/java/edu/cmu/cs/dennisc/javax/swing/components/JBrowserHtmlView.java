@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import edu.cmu.cs.dennisc.browser.BrowserUtilities;
+
+import javax.swing.JOptionPane;
+import javax.swing.event.HyperlinkEvent;
+import java.awt.ComponentOrientation;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,18 +61,18 @@ public class JBrowserHtmlView extends JHtmlView {
 		this( "" );
 	}
 
-	protected void handleBrowseException( Exception e, java.net.URL url ) {
+	protected void handleBrowseException( Exception e, URL url ) {
 		e.printStackTrace();
-		javax.swing.JOptionPane.showMessageDialog( this, "unable to browse: " + url, "error", javax.swing.JOptionPane.ERROR_MESSAGE );
+		JOptionPane.showMessageDialog( this, "unable to browse: " + url, "error", JOptionPane.ERROR_MESSAGE );
 	}
 
 	@Override
-	protected void handleHyperlinkUpdate( javax.swing.event.HyperlinkEvent e ) {
-		javax.swing.event.HyperlinkEvent.EventType eventType = e.getEventType();
-		if( eventType == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED ) {
-			java.net.URL url = e.getURL();
+	protected void handleHyperlinkUpdate( HyperlinkEvent e ) {
+		HyperlinkEvent.EventType eventType = e.getEventType();
+		if( eventType == HyperlinkEvent.EventType.ACTIVATED ) {
+			URL url = e.getURL();
 			try {
-				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+				BrowserUtilities.browse( url );
 			} catch( Exception exc ) {
 				this.handleBrowseException( exc, url );
 			}
@@ -77,7 +84,7 @@ public class JBrowserHtmlView extends JHtmlView {
 	}
 
 	@Override
-	public void setComponentOrientation( java.awt.ComponentOrientation o ) {
+	public void setComponentOrientation( ComponentOrientation o ) {
 		if( this.isRightToLeftComponentOrientationAllowed() ) {
 			super.setComponentOrientation( o );
 		}

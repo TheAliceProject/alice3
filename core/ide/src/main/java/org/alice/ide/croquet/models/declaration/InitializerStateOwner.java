@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.declaration;
 
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface InitializerStateOwner {
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType();
+	public AbstractType<?, ?, ?> getValueType();
 }

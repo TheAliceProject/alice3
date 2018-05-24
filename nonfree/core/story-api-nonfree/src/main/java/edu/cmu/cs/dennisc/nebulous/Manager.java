@@ -43,6 +43,19 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
+import com.jogamp.opengl.GL;
+import edu.cmu.cs.dennisc.eula.EULAUtilities;
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+
+import javax.swing.JOptionPane;
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +66,7 @@ public class Manager {
 	private static boolean s_isLicensePromptDesired = true;
 	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 
-	private static java.util.List<java.io.File> s_pendingBundles;
+	private static List<File> s_pendingBundles;
 
 	private static native void setVersion( double version );
 
@@ -65,27 +78,27 @@ public class Manager {
 
 	private static native void unloadActiveModelData();
 
-	private static native void unloadUnusedTextures( com.jogamp.opengl.GL gl );
+	private static native void unloadUnusedTextures( GL gl );
 
 	public static native void setDebugDraw( boolean debugDraw );
 
 	private static void doInitializationIfNecessary() {
 		try {
 			initializeIfNecessary();
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "license rejected" );
+		} catch( LicenseRejectedException lre ) {
+			JOptionPane.showMessageDialog( null, "license rejected" );
 			//throw new RuntimeException( lre );
 		} catch( Throwable t ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "failed to initialize art assets" );
+			JOptionPane.showMessageDialog( null, "failed to initialize art assets" );
 			t.printStackTrace();
 		}
 	}
 
-	private static java.util.List<java.io.File> getPendingBundles() {
+	private static List<File> getPendingBundles() {
 		if( s_pendingBundles != null ) {
 			//pass
 		} else {
-			s_pendingBundles = new java.util.LinkedList<java.io.File>();
+			s_pendingBundles = new LinkedList<File>();
 		}
 		return s_pendingBundles;
 	}
@@ -96,7 +109,7 @@ public class Manager {
 		}
 	}
 
-	public static void unloadUnusedNebulousTextureData( com.jogamp.opengl.GL gl ) {
+	public static void unloadUnusedNebulousTextureData( GL gl ) {
 		if( isInitialized() ) {
 			try {
 				unloadUnusedTextures( gl );
@@ -106,18 +119,18 @@ public class Manager {
 		}
 	}
 
-	public static void initializeIfNecessary() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public static void initializeIfNecessary() throws LicenseRejectedException {
 		if( isInitialized() ) {
 			//pass
 		} else {
 			if( s_isLicensePromptDesired ) {
-				edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
-						edu.cmu.cs.dennisc.nebulous.License.class,
+				EULAUtilities.promptUserToAcceptEULAIfNecessary(
+						License.class,
 						IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
 						"License Agreement: The Sims (TM) 2 Art Assets",
-						edu.cmu.cs.dennisc.nebulous.License.TEXT,
+						License.TEXT,
 						"The Sims (TM) 2 Art Assets" );
-				java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
+				Preferences userPreferences = Preferences.userNodeForPackage( License.class );
 				boolean isLicenseAccepted = userPreferences.getBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false );
 				if( isLicenseAccepted ) {
 					//pass
@@ -126,25 +139,25 @@ public class Manager {
 				}
 				if( isLicenseAccepted ) {
 					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalDebugMode" ) ) {
-						edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "", "jni_nebulous", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION );
+					if( SystemUtilities.isPropertyTrue( "org.alice.ide.internalDebugMode" ) ) {
+						SystemUtilities.loadLibrary( "", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION );
 					}
 					else {
-						edu.cmu.cs.dennisc.java.lang.SystemUtilities.loadLibrary( "nebulous", "jni_nebulous", edu.cmu.cs.dennisc.java.lang.LoadLibraryReportStyle.EXCEPTION );
+						SystemUtilities.loadLibrary( "nebulous", "jni_nebulous", LoadLibraryReportStyle.EXCEPTION );
 					}
-					for( java.io.File directory : Manager.getPendingBundles() ) {
+					for( File directory : Manager.getPendingBundles() ) {
 						Manager.addBundlePath( directory.getAbsolutePath() );
 					}
 					Manager.setVersion( NEBULOUS_VERSION );
 
 					s_isInitialized = true;
 				} else {
-					throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+					throw new LicenseRejectedException();
 				}
 			}
-			edu.cmu.cs.dennisc.render.gl.imp.RenderContext.addUnusedTexturesListener( new edu.cmu.cs.dennisc.render.gl.imp.RenderContext.UnusedTexturesListener() {
+			RenderContext.addUnusedTexturesListener( new RenderContext.UnusedTexturesListener() {
 				@Override
-				public void unusedTexturesCleared( com.jogamp.opengl.GL gl ) {
+				public void unusedTexturesCleared( GL gl ) {
 					unloadUnusedNebulousTextureData( gl );
 				}
 			} );
@@ -159,12 +172,12 @@ public class Manager {
 		s_isLicensePromptDesired = true;
 	}
 
-	public static void setRawResourcePath( java.io.File file ) {
+	public static void setRawResourcePath( File file ) {
 		doInitializationIfNecessary();
 		Manager.setRawResourceDirectory( file.getAbsolutePath() );
 	}
 
-	public static void addBundle( java.io.File file ) {
+	public static void addBundle( File file ) {
 		doInitializationIfNecessary();
 		if( isInitialized() ) {
 			Manager.addBundlePath( file.getAbsolutePath() );
@@ -173,7 +186,7 @@ public class Manager {
 		}
 	}
 
-	public static void removeBundle( java.io.File file ) {
+	public static void removeBundle( File file ) {
 		doInitializationIfNecessary();
 		if( isInitialized() ) {
 			Manager.removeBundlePath( file.getAbsolutePath() );

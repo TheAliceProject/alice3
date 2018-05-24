@@ -42,24 +42,30 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.croquet.icon.AbstractIconFactory;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	private final org.alice.stageide.modelresource.ResourceKey key;
+public class ThemeIconFactory extends AbstractIconFactory {
+	private final ResourceKey key;
 
-	public ThemeIconFactory( org.alice.stageide.modelresource.ResourceKey key ) {
+	public ThemeIconFactory( ResourceKey key ) {
 		super( IsCachingDesired.TRUE );
 		this.key = key;
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new ThemeIcon( size, this.key );
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		//todo
 		return sizeIfResolutionIndependent;
 	}

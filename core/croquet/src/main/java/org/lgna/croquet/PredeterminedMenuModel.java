@@ -42,23 +42,28 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PredeterminedMenuModel extends StaticMenuModel {
 	private final StandardMenuItemPrepModel[] models;
 
-	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
+	public PredeterminedMenuModel( UUID individualId, StandardMenuItemPrepModel... models ) {
 		super( individualId );
 		this.models = models;
 	}
 
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List<StandardMenuItemPrepModel> models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( models, StandardMenuItemPrepModel.class ) );
+	public PredeterminedMenuModel( UUID individualId, List<StandardMenuItemPrepModel> models ) {
+		this( individualId, ArrayUtilities.createArray( models, StandardMenuItemPrepModel.class ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
+	protected StandardMenuItemPrepModel[] createModels() {
 		return this.models;
 	}
 }

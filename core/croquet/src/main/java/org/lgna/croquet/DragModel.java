@@ -42,11 +42,19 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class DragModel extends AbstractPrepModel {
-	public DragModel( java.util.UUID id ) {
+	public DragModel( UUID id ) {
 		super( id );
 	}
 
@@ -56,29 +64,29 @@ public abstract class DragModel extends AbstractPrepModel {
 
 	@Override
 	public Iterable<? extends Model> getChildren() {
-		return java.util.Collections.emptyList();
+		return Collections.emptyList();
 	}
 
 	@Override
-	public boolean isChild( org.lgna.croquet.Model model ) {
+	public boolean isChild( Model model ) {
 		//todo
 		return true;
 	}
 
-	public abstract java.util.List<? extends DropReceptor> createListOfPotentialDropReceptors();
+	public abstract List<? extends DropReceptor> createListOfPotentialDropReceptors();
 
-	public abstract void handleDragStarted( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragStarted( DragStep step );
 
-	public abstract void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragEnteredDropReceptor( DragStep step );
 
-	public abstract void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragExitedDropReceptor( DragStep step );
 
-	public abstract void handleDragStopped( org.lgna.croquet.history.DragStep step );
+	public abstract void handleDragStopped( DragStep step );
 
-	public abstract Model getDropModel( org.lgna.croquet.history.DragStep step, DropSite dropSite );
+	public abstract Model getDropModel( DragStep step, DropSite dropSite );
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public Step<?> fire( Trigger trigger ) {
 		throw new UnsupportedOperationException();
 	}
 }

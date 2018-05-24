@@ -42,11 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.io;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class InputStreamUtilities {
-	public static boolean drain( java.io.InputStream is, java.io.OutputStream os ) throws java.io.IOException {
+	public static boolean drain( InputStream is, OutputStream os ) throws IOException {
 		while( is.available() > 0 ) {
 			int v = is.read();
 			if( v != -1 ) {
@@ -60,13 +67,13 @@ public class InputStreamUtilities {
 		return true;
 	}
 
-	public static boolean drain( java.io.InputStream is ) throws java.io.IOException {
+	public static boolean drain( InputStream is ) throws IOException {
 		return drain( is, null );
 	}
 
-	public static byte[] getBytes( java.io.InputStream is ) throws java.io.IOException {
+	public static byte[] getBytes( InputStream is ) throws IOException {
 		byte[] buffer = null;
-		java.io.ByteArrayOutputStream baos = null;
+		ByteArrayOutputStream baos = null;
 		while( true ) {
 			int n = is.available();
 			if( buffer != null ) {
@@ -77,7 +84,7 @@ public class InputStreamUtilities {
 					// it is the second iteration
 					if( n > 0 ) {
 						// more than one buffer so we use a ByteArrayOutputStream
-						baos = new java.io.ByteArrayOutputStream();
+						baos = new ByteArrayOutputStream();
 					} else {
 						// there is one and only one buffer, so simply return it
 						return buffer;
@@ -100,8 +107,8 @@ public class InputStreamUtilities {
 		return baos.toByteArray();
 	}
 
-	public static byte[] getBytes( java.io.File file ) throws java.io.IOException {
-		java.io.FileInputStream fis = new java.io.FileInputStream( file );
+	public static byte[] getBytes( File file ) throws IOException {
+		FileInputStream fis = new FileInputStream( file );
 		try {
 			return getBytes( fis );
 		} finally {
@@ -109,8 +116,8 @@ public class InputStreamUtilities {
 		}
 	}
 
-	public static byte[] getBytes( Class<?> cls, String resourceName ) throws java.io.IOException {
-		java.io.InputStream is = cls.getResourceAsStream( resourceName );
+	public static byte[] getBytes( Class<?> cls, String resourceName ) throws IOException {
+		InputStream is = cls.getResourceAsStream( resourceName );
 		try {
 			return getBytes( is );
 		} finally {

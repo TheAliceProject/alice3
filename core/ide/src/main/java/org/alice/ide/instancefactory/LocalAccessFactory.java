@@ -43,13 +43,24 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.CurrentThisExpression;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<UserLocal, LocalAccessFactory> map = Maps.newHashMap();
 
-	public static synchronized LocalAccessFactory getInstance( org.lgna.project.ast.UserLocal local ) {
+	public static synchronized LocalAccessFactory getInstance( UserLocal local ) {
 		assert local != null;
 		LocalAccessFactory rv = map.get( local );
 		if( rv != null ) {
@@ -61,42 +72,42 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalAccessFactory( org.lgna.project.ast.UserLocal local ) {
+	private LocalAccessFactory( UserLocal local ) {
 		super( local.name );
 		this.local = local;
 	}
 
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		if( code != null ) {
-			return this.local.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code;
+			return this.local.getFirstAncestorAssignableTo( AbstractCode.class ) == code;
 		} else {
 			return false;
 		}
 	}
 
-	public org.lgna.project.ast.UserLocal getLocal() {
+	public UserLocal getLocal() {
 		return this.local;
 	}
 
-	private org.lgna.project.ast.LocalAccess createLocalAccess( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	private LocalAccess createLocalAccess( Expression expression ) {
+		return new LocalAccess( this.local );
 	}
 
 	@Override
-	public org.lgna.project.ast.LocalAccess createTransientExpression() {
-		return this.createLocalAccess( new org.alice.ide.ast.CurrentThisExpression() );
+	public LocalAccess createTransientExpression() {
+		return this.createLocalAccess( new CurrentThisExpression() );
 	}
 
 	@Override
-	public org.lgna.project.ast.LocalAccess createExpression() {
-		return this.createLocalAccess( new org.lgna.project.ast.ThisExpression() );
+	public LocalAccess createExpression() {
+		return this.createLocalAccess( new ThisExpression() );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return this.local.getValueType();
 	}
 

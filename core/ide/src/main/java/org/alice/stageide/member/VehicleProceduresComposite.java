@@ -43,10 +43,14 @@
 
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaProceduresComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class VehicleProceduresComposite extends org.alice.ide.member.NameFilteredJavaProceduresComposite {
+public class VehicleProceduresComposite extends NameFilteredJavaProceduresComposite {
 	private static class SingletonHolder {
 		private static VehicleProceduresComposite instance = new VehicleProceduresComposite();
 	}
@@ -56,6 +60,6 @@ public class VehicleProceduresComposite extends org.alice.ide.member.NameFiltere
 	}
 
 	private VehicleProceduresComposite() {
-		super( java.util.UUID.fromString( "27feec4a-33a9-4bd9-a635-2b1f7e4e6c86" ), "setVehicle" );
+		super( UUID.fromString( "27feec4a-33a9-4bd9-a635-2b1f7e4e6c86" ), "setVehicle" );
 	}
 }

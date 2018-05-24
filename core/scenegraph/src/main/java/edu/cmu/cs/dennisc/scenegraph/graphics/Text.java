@@ -43,16 +43,24 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.color.property.Color4fProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import edu.cmu.cs.dennisc.scenegraph.Graphic;
+
+import java.awt.Font;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Text extends edu.cmu.cs.dennisc.scenegraph.Graphic {
-	public Text( edu.cmu.cs.dennisc.color.Color4f textColor, java.awt.Font font ) {
-		this.textColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, textColor, false );
-		this.font = new edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font>( this, font );
+public abstract class Text extends Graphic {
+	public Text( Color4f textColor, Font font ) {
+		this.textColor = new Color4fProperty( this, textColor, false );
+		this.font = new InstanceProperty<Font>( this, font );
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty textColor;
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font> font;
+	public final StringProperty text = new StringProperty( this, "" );
+	public final Color4fProperty textColor;
+	public final InstanceProperty<Font> font;
 }

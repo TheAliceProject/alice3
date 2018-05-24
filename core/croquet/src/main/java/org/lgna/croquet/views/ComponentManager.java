@@ -43,8 +43,13 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Queues;
 import org.lgna.croquet.Manager;
 import org.lgna.croquet.Model;
+
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * @author Dennis Cosgrove
@@ -54,24 +59,24 @@ public class ComponentManager {
 		throw new AssertionError();
 	}
 
-	public static final java.util.Map<Model, java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	public static final Map<Model, Queue<SwingComponentView<?>>> map = Maps.newHashMap();
 
-	public static java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> getComponents( Model model ) {
+	public static Queue<SwingComponentView<?>> getComponents( Model model ) {
 		synchronized( map ) {
-			java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> rv = map.get( model );
+			Queue<SwingComponentView<?>> rv = map.get( model );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
+				rv = Queues.newConcurrentLinkedQueue();
 				map.put( model, rv );
 			}
 			return rv;
 		}
 	}
 
-	public static void addComponent( Model model, org.lgna.croquet.views.SwingComponentView<?> component ) {
+	public static void addComponent( Model model, SwingComponentView<?> component ) {
 		synchronized( map ) {
-			java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> components = getComponents( model );
+			Queue<SwingComponentView<?>> components = getComponents( model );
 			if( components.size() == 0 ) {
 				Manager.registerModel( model );
 			}
@@ -81,9 +86,9 @@ public class ComponentManager {
 		}
 	}
 
-	public static void removeComponent( Model model, org.lgna.croquet.views.SwingComponentView<?> component ) {
+	public static void removeComponent( Model model, SwingComponentView<?> component ) {
 		synchronized( map ) {
-			java.util.Queue<org.lgna.croquet.views.SwingComponentView<?>> components = getComponents( model );
+			Queue<SwingComponentView<?>> components = getComponents( model );
 			components.remove( component );
 			if( components.size() == 0 ) {
 				Manager.unregisterModel( model );
@@ -95,7 +100,7 @@ public class ComponentManager {
 
 	/* package-private */static void repaintAllComponents( Model model ) {
 		synchronized( map ) {
-			for( org.lgna.croquet.views.SwingComponentView<?> component : getComponents( model ) ) {
+			for( SwingComponentView<?> component : getComponents( model ) ) {
 				component.repaint();
 			}
 		}
@@ -103,19 +108,19 @@ public class ComponentManager {
 
 	public static void revalidateAndRepaintAllComponents( Model model ) {
 		synchronized( map ) {
-			for( org.lgna.croquet.views.SwingComponentView<?> component : getComponents( model ) ) {
+			for( SwingComponentView<?> component : getComponents( model ) ) {
 				component.revalidateAndRepaint();
 			}
 		}
 	}
 
 	@Deprecated
-	public static <J extends org.lgna.croquet.views.SwingComponentView<?>> J getFirstComponent( Model model, Class<J> cls, boolean isVisibleAcceptable ) {
-		Iterable<org.lgna.croquet.views.SwingComponentView<?>> components = getComponents( model );
+	public static <J extends SwingComponentView<?>> J getFirstComponent( Model model, Class<J> cls, boolean isVisibleAcceptable ) {
+		Iterable<SwingComponentView<?>> components = getComponents( model );
 
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getFirstComponent:", this );
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "count:", this.components.size() );
-		for( org.lgna.croquet.views.SwingComponentView<?> component : components ) {
+		for( SwingComponentView<?> component : components ) {
 			if( cls.isAssignableFrom( component.getClass() ) ) {
 				if( component.getAwtComponent().isShowing() ) {
 					//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
@@ -126,7 +131,7 @@ public class ComponentManager {
 			}
 		}
 		if( isVisibleAcceptable ) {
-			for( org.lgna.croquet.views.SwingComponentView<?> component : components ) {
+			for( SwingComponentView<?> component : components ) {
 				if( cls.isAssignableFrom( component.getClass() ) ) {
 					if( component.getAwtComponent().isVisible() ) {
 						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
@@ -151,17 +156,17 @@ public class ComponentManager {
 	//		return null;
 	//	}
 	@Deprecated
-	public static <J extends org.lgna.croquet.views.SwingComponentView<?>> J getFirstComponent( Model model, Class<J> cls ) {
+	public static <J extends SwingComponentView<?>> J getFirstComponent( Model model, Class<J> cls ) {
 		return getFirstComponent( model, cls, false );
 	}
 
 	@Deprecated
-	public static org.lgna.croquet.views.SwingComponentView<?> getFirstComponent( Model model, boolean isVisibleAcceptable ) {
-		return getFirstComponent( model, org.lgna.croquet.views.SwingComponentView.class, isVisibleAcceptable );
+	public static SwingComponentView<?> getFirstComponent( Model model, boolean isVisibleAcceptable ) {
+		return getFirstComponent( model, SwingComponentView.class, isVisibleAcceptable );
 	}
 
 	@Deprecated
-	public static org.lgna.croquet.views.SwingComponentView<?> getFirstComponent( Model model ) {
+	public static SwingComponentView<?> getFirstComponent( Model model ) {
 		return getFirstComponent( model, false );
 	}
 }

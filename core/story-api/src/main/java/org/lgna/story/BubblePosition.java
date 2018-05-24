@@ -42,26 +42,28 @@
  */
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
+
 /**
  * @author user
  */
 public enum BubblePosition implements
 		Say.Detail, Think.Detail
 {
-	AUTOMATIC( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.AUTOMATIC ),
-	LEFT( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.TOP_LEFT ),
-	CENTER( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.TOP_CENTER ),
-	RIGHT( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.TOP_RIGHT );
+	AUTOMATIC( Bubble.PositionPreference.AUTOMATIC ),
+	LEFT( Bubble.PositionPreference.TOP_LEFT ),
+	CENTER( Bubble.PositionPreference.TOP_CENTER ),
+	RIGHT( Bubble.PositionPreference.TOP_RIGHT );
 
 	private static final BubblePosition DEFAULT_VALUE = BubblePosition.AUTOMATIC;
 
-	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference internal;
+	private Bubble.PositionPreference internal;
 
-	BubblePosition( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference internal ) {
+	BubblePosition( Bubble.PositionPreference internal ) {
 		this.internal = internal;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference getInternal() {
+	/* package-private */Bubble.PositionPreference getInternal() {
 		return this.internal;
 	}
 

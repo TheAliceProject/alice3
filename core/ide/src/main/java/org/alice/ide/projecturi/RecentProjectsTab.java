@@ -43,6 +43,11 @@
 
 package org.alice.ide.projecturi;
 
+import org.alice.ide.projecturi.views.ListContentPanel;
+import org.alice.ide.projecturi.views.TabContentPanel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +55,7 @@ public class RecentProjectsTab extends ListUriTab {
 	private final RecentProjectsUriSingleSelectListState recentProjectsUriSelectionState = new RecentProjectsUriSingleSelectListState();
 
 	public RecentProjectsTab() {
-		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
+		super( UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
 
 	@Override
@@ -63,8 +68,8 @@ public class RecentProjectsTab extends ListUriTab {
 	}
 
 	@Override
-	protected org.alice.ide.projecturi.views.TabContentPanel createView() {
-		return new org.alice.ide.projecturi.views.ListContentPanel( this );
+	protected TabContentPanel createView() {
+		return new ListContentPanel( this );
 	}
 
 	@Override

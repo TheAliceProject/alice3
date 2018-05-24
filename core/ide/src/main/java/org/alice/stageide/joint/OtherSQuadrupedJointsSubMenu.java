@@ -43,11 +43,15 @@
 
 package org.alice.stageide.joint;
 
+import org.lgna.story.SQuadruped;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OtherSQuadrupedJointsSubMenu<FB> extends JointsSubMenu<FB> {
 	public OtherSQuadrupedJointsSubMenu() {
-		super( java.util.UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), org.lgna.story.SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
+		super( UUID.fromString( "7a8acd6d-46bb-40c6-9cb7-1099cbd28961" ), SQuadruped.class, "getSpineUpper", "getSpineMiddle", "getSpineBase", "getPelvisLowerBody", "getTail2", "getTail3", "getTail4", "getFrontLeftFoot", "getFrontLeftToe", "getFrontRightFoot", "getFrontRightToe", "getBackLeftHock", "getBackLeftFoot", "getBackLeftToe", "getBackRightHock", "getBackRightFoot", "getBackRightToe" );
 	}
 }

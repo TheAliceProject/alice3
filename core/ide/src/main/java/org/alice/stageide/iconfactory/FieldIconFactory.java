@@ -42,28 +42,35 @@
  *******************************************************************************/
 package org.alice.stageide.iconfactory;
 
+import org.lgna.croquet.icon.AbstractIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.UserField;
+
+import javax.swing.Icon;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class FieldIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
-	public FieldIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory fallbackIconFactory ) {
+/*package-private*/class FieldIconFactory extends AbstractIconFactory {
+	public FieldIconFactory( UserField field, IconFactory fallbackIconFactory ) {
 		super( IsCachingDesired.TRUE );
 		this.field = field;
 		this.fallbackIconFactory = fallbackIconFactory;
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+	protected Icon createIcon( Dimension size ) {
 		return new FieldIcon( this.field, this.fallbackIconFactory.getIcon( size ) );
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}
 
 	public void markAllIconsDirty() {
-		for( javax.swing.Icon icon : this.getMapValues() ) {
+		for( Icon icon : this.getMapValues() ) {
 			if( icon instanceof FieldIcon ) {
 				FieldIcon fieldIcon = (FieldIcon)icon;
 				fieldIcon.markDirty();
@@ -71,6 +78,6 @@ package org.alice.stageide.iconfactory;
 		}
 	}
 
-	private final org.lgna.project.ast.UserField field;
-	private final org.lgna.croquet.icon.IconFactory fallbackIconFactory;
+	private final UserField field;
+	private final IconFactory fallbackIconFactory;
 }

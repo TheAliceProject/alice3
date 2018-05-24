@@ -43,6 +43,12 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.EnumProperty;
+import org.lgna.project.annotations.Visibility;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,12 +68,12 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	}
 
 	@Override
-	public final org.lgna.project.annotations.Visibility getVisibility() {
-		return org.lgna.project.annotations.Visibility.PRIME_TIME;
+	public final Visibility getVisibility() {
+		return Visibility.PRIME_TIME;
 	}
 
 	@Override
-	public final org.lgna.project.ast.ManagementLevel getManagementLevel() {
+	public final ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
@@ -87,17 +93,17 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	}
 
 	@Override
-	public final java.util.List<UserParameter> getRequiredParameters() {
+	public final List<UserParameter> getRequiredParameters() {
 		return this.requiredParameters.getValue();
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+	public final AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+	public final AbstractParameter getKeyedParameter() {
 		return null;
 	}
 
@@ -141,13 +147,13 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		return true;
 	}
 
-	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final BooleanProperty isSynchronized = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isStrictFloatingPoint = new BooleanProperty( this, Boolean.FALSE );
 	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = DeclarationProperty.createReferenceInstance( this );
 	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
 	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
+	public final BooleanProperty isSignatureLocked = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isDeletionAllowed = new BooleanProperty( this, Boolean.TRUE );
 }

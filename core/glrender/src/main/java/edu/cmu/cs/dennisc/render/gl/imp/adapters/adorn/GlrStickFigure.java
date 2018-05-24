@@ -42,28 +42,37 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
 
+import com.jogamp.opengl.GL2;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable;
+import edu.cmu.cs.dennisc.scenegraph.adorn.StickFigure;
+
+import java.nio.DoubleBuffer;
+
 import static com.jogamp.opengl.GL.GL_LINES;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrStickFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.adorn.StickFigure> {
+public class GlrStickFigure extends GlrAdornment<StickFigure> {
 	private static final int TRANSLATION_X_INDEX = 12;
 	private static final int TRANSLATION_Y_INDEX = 13;
 	private static final int TRANSLATION_Z_INDEX = 14;
 	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f };
 
-	private static void glStickFigure( com.jogamp.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrParent ) {
+	private static void glStickFigure( GL2 gl, DoubleBuffer ltParent, GlrComposite<?> glrParent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> glrChildren = glrParent.accessChildren();
+			Iterable<GlrComponent<?>> glrChildren = glrParent.accessChildren();
 			synchronized( glrChildren ) {
-				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrChild : glrChildren ) {
-					if( glrChild instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> ) {
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> glrTransformable = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?>)glrChild;
-						java.nio.DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
+				for( GlrComponent<?> glrChild : glrChildren ) {
+					if( glrChild instanceof GlrTransformable<?> ) {
+						GlrTransformable<?> glrTransformable = (GlrTransformable<?>)glrChild;
+						DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
 						gl.glBegin( GL_LINES );
 						try {
 							gl.glVertex3d( 0, 0, 0 );
@@ -81,7 +90,7 @@ public class GlrStickFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 	}
 
 	@Override
-	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrAdornmentRoot ) {
+	protected void actuallyRender( RenderContext rc, GlrComposite<?> glrAdornmentRoot ) {
 		rc.gl.glDisable( GL_LIGHTING );
 		rc.setColor( COLOR, 1.0f );
 		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), glrAdornmentRoot );

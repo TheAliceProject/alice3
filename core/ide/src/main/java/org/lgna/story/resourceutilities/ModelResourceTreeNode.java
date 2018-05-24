@@ -42,32 +42,41 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.SModel;
 import org.lgna.story.resources.ModelResource;
+
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author dculyba
  * 
  */
-public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType>, Comparable<ModelResourceTreeNode> {
-	public ModelResourceTreeNode( NamedUserType aliceClass, Class<? extends org.lgna.story.resources.ModelResource> resourceClass, Class<? extends org.lgna.story.SModel> modelClass ) {
+public class ModelResourceTreeNode implements TreeNode<JavaType>, Comparable<ModelResourceTreeNode> {
+	public ModelResourceTreeNode( NamedUserType aliceClass, Class<? extends ModelResource> resourceClass, Class<? extends SModel> modelClass ) {
 		this.userType = aliceClass;
 		if( this.userType != null ) {
 			this.name = this.userType.getName();
 		}
 		this.resourceClass = resourceClass;
 		this.modelClass = modelClass;
-		this.resourceJavaType = org.lgna.project.ast.JavaType.getInstance( this.resourceClass );
+		this.resourceJavaType = JavaType.getInstance( this.resourceClass );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getParent() {
+	public TreeNode<JavaType> getParent() {
 		return this.parent;
 	}
 
-	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent ) {
+	public void setParent( TreeNode<JavaType> parent ) {
 		if( this.parent instanceof ModelResourceTreeNode ) {
 			ModelResourceTreeNode parentNode = (ModelResourceTreeNode)this.parent;
 			parentNode.removeChild( this );
@@ -84,32 +93,32 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return true;
 	}
 
-	private java.util.List<? extends ModelResourceTreeNode> getSortedChildren() {
+	private List<? extends ModelResourceTreeNode> getSortedChildren() {
 		if( this.isSorted ) {
 			//pass
 		} else {
-			java.util.Collections.sort( this.children );
+			Collections.sort( this.children );
 			this.isSorted = true;
 		}
 		return this.children;
 	}
 
-	public java.util.List<? extends ModelResourceTreeNode> childrenList() {
+	public List<? extends ModelResourceTreeNode> childrenList() {
 		return this.getSortedChildren();
 	}
 
 	@Override
-	public java.util.Enumeration<? extends ModelResourceTreeNode> children() {
-		return java.util.Collections.enumeration( this.getSortedChildren() );
+	public Enumeration<? extends ModelResourceTreeNode> children() {
+		return Collections.enumeration( this.getSortedChildren() );
 	}
 
 	@Override
-	public java.util.Iterator iterator() {
+	public Iterator iterator() {
 		return this.children.iterator();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getChildAt( int childIndex ) {
+	public TreeNode<JavaType> getChildAt( int childIndex ) {
 		return this.getSortedChildren().get( childIndex );
 	}
 
@@ -162,7 +171,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 
-	public ModelResourceTreeNode getChildWithJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ModelResourceTreeNode getChildWithJavaType( AbstractType<?, ?, ?> type ) {
 		for( ModelResourceTreeNode child : this.children ) {
 			if( ( type != null ) && ( child.resourceJavaType != null ) && type.isAssignableFrom( child.resourceJavaType ) ) {
 				return child;
@@ -171,7 +180,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 
-	public ModelResourceTreeNode getDescendantOfJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ModelResourceTreeNode getDescendantOfJavaType( AbstractType<?, ?, ?> type ) {
 		ModelResourceTreeNode rv = this.getChildWithJavaType( type );
 		if( rv != null ) {
 			return rv;
@@ -187,7 +196,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 
-	public ModelResourceTreeNode getChildWithUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ModelResourceTreeNode getChildWithUserType( AbstractType<?, ?, ?> type ) {
 		for( ModelResourceTreeNode child : this.children ) {
 			if( ( type != null ) && ( child.userType != null ) && child.userType.isAssignableTo( type ) ) {
 				return child;
@@ -196,7 +205,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 
-	public ModelResourceTreeNode getDescendantOfUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public ModelResourceTreeNode getDescendantOfUserType( AbstractType<?, ?, ?> type ) {
 		ModelResourceTreeNode rv = this.getChildWithUserType( type );
 		if( rv != null ) {
 			return rv;
@@ -229,11 +238,11 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.name;
 	}
 
-	public Class<? extends org.lgna.story.resources.ModelResource> getResourceClass() {
+	public Class<? extends ModelResource> getResourceClass() {
 		return this.resourceClass;
 	}
 
-	public Class<? extends org.lgna.story.SModel> getModelClass() {
+	public Class<? extends SModel> getModelClass() {
 		return this.modelClass;
 	}
 
@@ -296,14 +305,14 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 	}
 
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent;
-	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private TreeNode<JavaType> parent;
+	private List<ModelResourceTreeNode> children = Lists.newLinkedList();
 	private NamedUserType userType;
-	private Class<? extends org.lgna.story.resources.ModelResource> resourceClass;
+	private Class<? extends ModelResource> resourceClass;
 
 	private JavaType resourceJavaType;
 
-	private Class<? extends org.lgna.story.SModel> modelClass = null;
+	private Class<? extends SModel> modelClass = null;
 	private JavaField resourceJavaField = null;
 	private ModelResource modelResourceInstance = null;
 	private String name;

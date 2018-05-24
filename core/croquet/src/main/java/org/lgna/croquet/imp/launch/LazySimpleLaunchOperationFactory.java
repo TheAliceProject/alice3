@@ -42,24 +42,33 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.launch;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.OperationOwningComposite;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LazySimpleLaunchOperationFactory<C extends org.lgna.croquet.OperationOwningComposite<?>> extends LazyLaunchOperationFactory<C> {
-	public static <C extends org.lgna.croquet.OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createInstance( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy, org.lgna.croquet.Group launchGroup ) {
+public final class LazySimpleLaunchOperationFactory<C extends OperationOwningComposite<?>> extends LazyLaunchOperationFactory<C> {
+	public static <C extends OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createInstance( Class<C> cls, Lazy<C> lazy, Group launchGroup ) {
 		return new LazySimpleLaunchOperationFactory<C>( cls, lazy, launchGroup );
 	}
 
-	public static <C extends org.lgna.croquet.OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createNoArgumentConstructorInstance( Class<C> cls, org.lgna.croquet.Group launchGroup ) {
+	public static <C extends OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createNoArgumentConstructorInstance( Class<C> cls, Group launchGroup ) {
 		try {
-			final java.lang.reflect.Constructor<C> jConstructor = cls.getConstructor();
-			assert java.lang.reflect.Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
-			return createInstance( cls, new edu.cmu.cs.dennisc.pattern.Lazy<C>() {
+			final Constructor<C> jConstructor = cls.getConstructor();
+			assert Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
+			return createInstance( cls, new Lazy<C>() {
 				@Override
 				protected C create() {
 					try {
 						return jConstructor.newInstance();
-					} catch( java.lang.reflect.InvocationTargetException ite ) {
+					} catch( InvocationTargetException ite ) {
 						throw new RuntimeException( jConstructor.toString(), ite );
 					} catch( IllegalAccessException iae ) {
 						throw new RuntimeException( jConstructor.toString(), iae );
@@ -73,14 +82,14 @@ public final class LazySimpleLaunchOperationFactory<C extends org.lgna.croquet.O
 		}
 	}
 
-	private LazySimpleLaunchOperationFactory( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy, org.lgna.croquet.Group launchGroup ) {
+	private LazySimpleLaunchOperationFactory( Class<C> cls, Lazy<C> lazy, Group launchGroup ) {
 		super( cls, lazy );
 		this.launchOperation = this.createLaunchOperation( launchGroup, null, null );
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation() {
+	public Operation getLaunchOperation() {
 		return this.launchOperation;
 	}
 
-	private final org.lgna.croquet.Operation launchOperation;
+	private final Operation launchOperation;
 }

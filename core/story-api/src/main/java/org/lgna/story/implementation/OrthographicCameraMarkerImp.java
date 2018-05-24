@@ -42,12 +42,17 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.OrthographicCameraMarker;
+
 /**
  * @author dculyba
  * 
  */
 public class OrthographicCameraMarkerImp extends CameraMarkerImp {
-	public OrthographicCameraMarkerImp( org.lgna.story.OrthographicCameraMarker abstraction ) {
+	public OrthographicCameraMarkerImp( OrthographicCameraMarker abstraction ) {
 		super( abstraction );
 	}
 
@@ -56,30 +61,30 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp {
 		//Do nothing
 	}
 
-	public void setPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane picturePlane ) {
+	public void setPicturePlane( ClippedZPlane picturePlane ) {
 		this.picturePlane.set( picturePlane );
 	}
 
-	public edu.cmu.cs.dennisc.math.ClippedZPlane getPicturePlane() {
+	public ClippedZPlane getPicturePlane() {
 		return this.picturePlane;
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
+	protected final TexturedAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgOpacityAppearances() {
+	protected final TexturedAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 
-	private final edu.cmu.cs.dennisc.math.ClippedZPlane picturePlane = new edu.cmu.cs.dennisc.math.ClippedZPlane();
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = {};
-	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = {};
+	private final ClippedZPlane picturePlane = new ClippedZPlane();
+	private final TexturedAppearance[] sgAppearances = {};
+	private final Visual[] sgVisuals = {};
 }

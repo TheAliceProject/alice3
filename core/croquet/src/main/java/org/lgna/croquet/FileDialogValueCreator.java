@@ -42,23 +42,31 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.awt.Component;
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class FileDialogValueCreator<T> extends ValueCreator<T> {
-	public FileDialogValueCreator( java.util.UUID migrationId ) {
+	public FileDialogValueCreator( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	protected abstract java.io.File showFileDialog( java.awt.Component awtComponent );
+	protected abstract File showFileDialog( Component awtComponent );
 
-	protected abstract T createValueFromFile( java.io.File file );
+	protected abstract T createValueFromFile( File file );
 
 	@Override
-	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		java.awt.Component awtComponent = null; //todo
-		java.io.File file = this.showFileDialog( awtComponent );
+	protected T createValue( Transaction transaction, Trigger trigger ) {
+		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		Component awtComponent = null; //todo
+		File file = this.showFileDialog( awtComponent );
 		if( file != null ) {
 			try {
 				step.finish();

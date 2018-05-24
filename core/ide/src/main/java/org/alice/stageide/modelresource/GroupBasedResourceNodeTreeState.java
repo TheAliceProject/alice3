@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +57,7 @@ public class GroupBasedResourceNodeTreeState extends ResourceNodeTreeState {
 	}
 
 	private GroupBasedResourceNodeTreeState() {
-		super( java.util.UUID.fromString( "92417991-1b96-429c-aa2a-a4dd706732bc" ), TreeUtilities.getTreeBasedOnGroup() );
+		super( UUID.fromString( "92417991-1b96-429c-aa2a-a4dd706732bc" ), TreeUtilities.getTreeBasedOnGroup() );
 	}
 
 	@Override

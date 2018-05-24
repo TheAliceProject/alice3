@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ImmutableCascade<T> extends Cascade<T> {
-	private final java.util.List<CascadeBlank<T>> blanks;
+	private final List<CascadeBlank<T>> blanks;
 
-	public ImmutableCascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T>... blanks ) {
+	public ImmutableCascade( Group group, UUID id, Class<T> componentType, CascadeBlank<T>... blanks ) {
 		super( group, id, componentType );
-		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( blanks ) );
+		this.blanks = Collections.unmodifiableList( Lists.newArrayList( blanks ) );
 	}
 
 	@Override
-	protected java.util.List<? extends CascadeBlank<T>> getBlanks() {
+	protected List<? extends CascadeBlank<T>> getBlanks() {
 		return this.blanks;
 	}
 }

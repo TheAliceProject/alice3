@@ -42,6 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.app;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import javax.swing.JOptionPane;
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +54,7 @@ public class ApplicationRoot {
 	private static final String DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY = "org.alice.ide.rootDirectory";
 	private static final String DEFAULT_APPLICATION_NAME = "Alice";
 
-	private static java.io.File rootDirectory;
+	private static File rootDirectory;
 
 	public static void initializeIfNecessary() {
 		if( rootDirectory != null ) {
@@ -58,7 +63,7 @@ public class ApplicationRoot {
 			String rootDirectoryPath = System.getProperty( DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY );
 			//todo: fallback to System.getProperty( "user.dir" ) ???
 			if( rootDirectoryPath != null ) {
-				rootDirectory = new java.io.File( rootDirectoryPath );
+				rootDirectory = new File( rootDirectoryPath );
 				if( rootDirectory.exists() ) {
 					//pass
 				} else {
@@ -70,7 +75,7 @@ public class ApplicationRoot {
 					sb.append( " does not exist.\n" );
 					sb.append( DEFAULT_APPLICATION_NAME );
 					sb.append( " will not work until this is addressed." );
-					javax.swing.JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", javax.swing.JOptionPane.ERROR_MESSAGE );
+					JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", JOptionPane.ERROR_MESSAGE );
 					System.exit( -1 );
 				}
 			} else {
@@ -80,7 +85,7 @@ public class ApplicationRoot {
 				sb.append( " is not set.\n" );
 				sb.append( DEFAULT_APPLICATION_NAME );
 				sb.append( " will not work until this is addressed." );
-				javax.swing.JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", javax.swing.JOptionPane.ERROR_MESSAGE );
+				JOptionPane.showMessageDialog( null, sb.toString(), "Application Root Error", JOptionPane.ERROR_MESSAGE );
 				rootDirectory = null;
 				System.exit( -1 );
 			}
@@ -91,25 +96,25 @@ public class ApplicationRoot {
 		throw new AssertionError();
 	}
 
-	public static java.io.File getRootDirectory() {
+	public static File getRootDirectory() {
 		initializeIfNecessary();
 		return rootDirectory;
 	}
 
-	public static java.io.File getPlatformDirectory() {
-		return new java.io.File( getRootDirectory(), "platform" );
+	public static File getPlatformDirectory() {
+		return new File( getRootDirectory(), "platform" );
 	}
 
 	public static String getArchitectureSpecificJoglSubDirectory() {
 		StringBuilder sb = new StringBuilder( "natives/" );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( SystemUtilities.isMac() ) {
 			sb.append( "macosx-universal/" );
 		} else {
-			Integer bitCount = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBitCount();
+			Integer bitCount = SystemUtilities.getBitCount();
 			if( bitCount != null ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				if( SystemUtilities.isWindows() ) {
 					sb.append( "windows-" );
-				} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+				} else if( SystemUtilities.isLinux() ) {
 					sb.append( "linux-" );
 				} else {
 					throw new RuntimeException( System.getProperty( "os.name" ) );
@@ -132,17 +137,17 @@ public class ApplicationRoot {
 		return sb.toString();
 	}
 
-	public static java.io.File getArchitectureSpecificDirectory() {
+	public static File getArchitectureSpecificDirectory() {
 		StringBuilder sb = new StringBuilder();
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( SystemUtilities.isMac() ) {
 			sb.append( "macosx" );
 		} else {
-			Integer bitCount = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBitCount();
+			Integer bitCount = SystemUtilities.getBitCount();
 			if( bitCount != null ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				if( SystemUtilities.isWindows() ) {
 					sb.append( "win" );
 					sb.append( bitCount );
-				} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+				} else if( SystemUtilities.isLinux() ) {
 					sb.append( "linux-" );
 					switch( bitCount ) {
 					case 32:
@@ -161,7 +166,7 @@ public class ApplicationRoot {
 				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
 			}
 		}
-		return new java.io.File( getPlatformDirectory(), sb.toString() );
+		return new File( getPlatformDirectory(), sb.toString() );
 	}
 	//	public static java.io.File getCommand( String subPath ) {
 	//		StringBuilder sb = new StringBuilder();

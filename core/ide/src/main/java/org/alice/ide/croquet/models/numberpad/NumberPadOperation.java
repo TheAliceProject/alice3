@@ -42,13 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import org.lgna.croquet.ActionOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NumberPadOperation extends org.lgna.croquet.ActionOperation {
+public abstract class NumberPadOperation extends ActionOperation {
 	protected NumberModel<?> numberModel;
 
-	public NumberPadOperation( java.util.UUID individualId, NumberModel<?> numberModel ) {
+	public NumberPadOperation( UUID individualId, NumberModel<?> numberModel ) {
 		super( NumberModel.NUMBER_PAD_GROUP, individualId );
 		this.numberModel = numberModel;
 	}

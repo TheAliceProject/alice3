@@ -42,28 +42,48 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.views;
 
+import org.alice.stageide.type.croquet.ContainsTab;
+import org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.TextField;
+import org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane;
+import org.lgna.project.ast.Member;
+
+import javax.swing.BorderFactory;
+import javax.swing.KeyStroke;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
-	private final org.lgna.croquet.views.TextField filterTextField;
-	private final org.lgna.croquet.views.List<org.lgna.project.ast.Member> listView;
+public class ContainsTabPane extends MigPanel {
+	private final TextField filterTextField;
+	private final List<Member> listView;
 
-	private final java.awt.event.FocusListener focusListener = new java.awt.event.FocusListener() {
+	private final FocusListener focusListener = new FocusListener() {
 		@Override
-		public void focusGained( java.awt.event.FocusEvent e ) {
+		public void focusGained( FocusEvent e ) {
 		}
 
 		@Override
-		public void focusLost( java.awt.event.FocusEvent e ) {
+		public void focusLost( FocusEvent e ) {
 			getComposite().getMemberListState().clearSelection();
 		}
 	};
 
-	private final java.awt.event.ActionListener downAction = new java.awt.event.ActionListener() {
+	private final ActionListener downAction = new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.Member> state = getComposite().getMemberListState();
+		public void actionPerformed( ActionEvent e ) {
+			RefreshableDataSingleSelectListState<Member> state = getComposite().getMemberListState();
 			if( state.getItemCount() > 0 ) {
 				state.setSelectedIndex( 0 );
 			}
@@ -71,11 +91,11 @@ public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
 		}
 	};
 
-	private final java.awt.event.ActionListener prevUpAction;
-	private final java.awt.event.ActionListener upAction = new java.awt.event.ActionListener() {
+	private final ActionListener prevUpAction;
+	private final ActionListener upAction = new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.Member> state = getComposite().getMemberListState();
+		public void actionPerformed( ActionEvent e ) {
+			RefreshableDataSingleSelectListState<Member> state = getComposite().getMemberListState();
 			if( state.getSelectedIndex() == 0 ) {
 				state.clearSelection();
 				filterTextField.requestFocusLater();
@@ -87,33 +107,33 @@ public class ContainsTabPane extends org.lgna.croquet.views.MigPanel {
 		}
 	};
 
-	public ContainsTabPane( org.alice.stageide.type.croquet.ContainsTab tab ) {
+	public ContainsTabPane( ContainsTab tab ) {
 		super( tab, "fill", "[grow,shrink]", "[grow 0, shrink 0][grow 0, shrink 0][grow, shrink]" );
-		java.awt.Color color = new java.awt.Color( 221, 221, 255 );
+		Color color = new Color( 221, 221, 255 );
 		this.setBackgroundColor( color );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 		this.filterTextField = tab.getFilterState().createTextField();
 		this.filterTextField.enableSelectAllWhenFocusGained();
 
 		this.listView = tab.getMemberListState().createList();
-		this.listView.setCellRenderer( new org.alice.stageide.type.croquet.views.renderers.MemberCellRenderer() );
-		org.lgna.croquet.views.ScrollPane listScrollPane = new org.lgna.croquet.views.VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
+		this.listView.setCellRenderer( new MemberCellRenderer() );
+		ScrollPane listScrollPane = new VerticalScrollBarPaintOmittingWhenAppropriateScrollPane( this.listView );
 
-		this.addComponent( new org.lgna.croquet.views.Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
+		this.addComponent( new Label( "<html>Search for a procedure or function<br>whose class you would like to select.</html>" ), "wrap" );
 		this.addComponent( this.filterTextField, "growx, wrap" );
 		this.addComponent( listScrollPane, "grow" );
 
-		this.filterTextField.registerKeyboardAction( this.downAction, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 ), Condition.WHEN_FOCUSED );
+		this.filterTextField.registerKeyboardAction( this.downAction, KeyStroke.getKeyStroke( KeyEvent.VK_DOWN, 0 ), Condition.WHEN_FOCUSED );
 
-		javax.swing.KeyStroke upKeyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_UP, 0 );
+		KeyStroke upKeyStroke = KeyStroke.getKeyStroke( KeyEvent.VK_UP, 0 );
 		this.prevUpAction = this.listView.getAwtComponent().getActionForKeyStroke( upKeyStroke );
 		this.listView.registerKeyboardAction( this.upAction, upKeyStroke, Condition.WHEN_FOCUSED );
 	}
 
 	@Override
-	public org.alice.stageide.type.croquet.ContainsTab getComposite() {
-		return (org.alice.stageide.type.croquet.ContainsTab)super.getComposite();
+	public ContainsTab getComposite() {
+		return (ContainsTab)super.getComposite();
 	}
 
 	@Override

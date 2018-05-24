@@ -43,15 +43,29 @@
 
 package org.alice.ide.instancefactory.croquet;
 
+import org.alice.ide.ApiConfigurationManager;
+import org.alice.ide.ast.fieldtree.FieldNode;
+import org.alice.ide.ast.fieldtree.TypeNode;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.Icon;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeCascadeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> {
-	private final org.alice.ide.ast.fieldtree.TypeNode typeNode;
-	private final org.alice.ide.ApiConfigurationManager apiConfigurationManager;
+public class TypeCascadeMenuModel extends CascadeMenuModel<InstanceFactory> {
+	private final TypeNode typeNode;
+	private final ApiConfigurationManager apiConfigurationManager;
 
-	public TypeCascadeMenuModel( org.alice.ide.ast.fieldtree.TypeNode typeNode, org.alice.ide.ApiConfigurationManager apiConfigurationManager ) {
-		super( java.util.UUID.fromString( "2c7247f3-d788-4155-9676-97f643d15f62" ) );
+	public TypeCascadeMenuModel( TypeNode typeNode, ApiConfigurationManager apiConfigurationManager ) {
+		super( UUID.fromString( "2c7247f3-d788-4155-9676-97f643d15f62" ) );
 		this.typeNode = typeNode;
 		this.apiConfigurationManager = apiConfigurationManager;
 	}
@@ -62,16 +76,16 @@ public class TypeCascadeMenuModel extends org.lgna.croquet.CascadeMenuModel<org.
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, org.alice.ide.instancefactory.InstanceFactory> node ) {
-		return org.alice.ide.common.TypeIcon.getInstance( this.typeNode.getDeclaration() );
+	public Icon getMenuItemIcon( ItemNode<? super InstanceFactory, InstanceFactory> node ) {
+		return TypeIcon.getInstance( this.typeNode.getDeclaration() );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.alice.ide.instancefactory.InstanceFactory> blankNode ) {
-		for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : this.typeNode.getFieldNodes() ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<InstanceFactory> blankNode ) {
+		for( FieldNode fieldNode : this.typeNode.getFieldNodes() ) {
 			blankChildren.add( InstanceFactoryState.createFillInMenuComboIfNecessaryForField( this.apiConfigurationManager, fieldNode.getDeclaration() ) );
 		}
-		for( org.alice.ide.ast.fieldtree.TypeNode typeNode : this.typeNode.getTypeNodes() ) {
+		for( TypeNode typeNode : this.typeNode.getTypeNodes() ) {
 			blankChildren.add( new TypeCascadeMenuModel( typeNode, this.apiConfigurationManager ) );
 		}
 	}

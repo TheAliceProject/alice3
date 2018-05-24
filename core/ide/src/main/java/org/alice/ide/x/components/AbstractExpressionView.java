@@ -42,18 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.common.ExpressionLikeSubstance;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InfixExpression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.LogicalComplement;
+
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> extends org.alice.ide.common.ExpressionLikeSubstance {
-	private final org.alice.ide.x.AstI18nFactory factory;
+public class AbstractExpressionView<E extends Expression> extends ExpressionLikeSubstance {
+	private final AstI18nFactory factory;
 	private final E expression;
 
-	public AbstractExpressionView( org.alice.ide.x.AstI18nFactory factory, E expression ) {
-		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
+	public AbstractExpressionView( AstI18nFactory factory, E expression ) {
+		super( null, expression != null ? expression.getType() == JavaType.VOID_TYPE : false );
 		this.factory = factory;
 		this.expression = expression;
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( expression ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( expression ) );
 	}
 
 	public E getExpression() {
@@ -61,8 +73,8 @@ public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> e
 	}
 
 	@Override
-	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		java.awt.Paint validPaint = super.getBackgroundPaint( x, y, width, height );
+	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		Paint validPaint = super.getBackgroundPaint( x, y, width, height );
 		if( ( this.expression != null ) && this.expression.isValid() ) {
 			return validPaint;
 		} else {
@@ -73,7 +85,7 @@ public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> e
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.expression != null ) {
-			if( org.lgna.project.ast.AstUtilities.isKeywordExpression( expression ) ) {
+			if( AstUtilities.isKeywordExpression( expression ) ) {
 				return false;
 			} else {
 				if( isExpressionTypeFeedbackSurpressedBasedOnParentClass( this.expression ) ) {
@@ -88,18 +100,18 @@ public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> e
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
+	public AbstractType<?, ?, ?> getExpressionType() {
 		if( this.expression != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> rv = this.expression.getType();
+			AbstractType<?, ?, ?> rv = this.expression.getType();
 			return rv;
 		} else {
-			return org.lgna.project.ast.JavaType.OBJECT_TYPE;
+			return JavaType.OBJECT_TYPE;
 		}
 	}
 
 	@Override
 	protected int getInsetTop() {
-		if( ( this.expression instanceof org.lgna.project.ast.InfixExpression ) || ( this.expression instanceof org.lgna.project.ast.LogicalComplement ) ) {
+		if( ( this.expression instanceof InfixExpression ) || ( this.expression instanceof LogicalComplement ) ) {
 			return 0;
 		} else {
 			return super.getInsetTop();
@@ -108,7 +120,7 @@ public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> e
 
 	@Override
 	protected int getInsetBottom() {
-		if( ( this.expression instanceof org.lgna.project.ast.InfixExpression ) || ( this.expression instanceof org.lgna.project.ast.LogicalComplement ) ) {
+		if( ( this.expression instanceof InfixExpression ) || ( this.expression instanceof LogicalComplement ) ) {
 			return 0;
 		} else {
 			return super.getInsetTop();

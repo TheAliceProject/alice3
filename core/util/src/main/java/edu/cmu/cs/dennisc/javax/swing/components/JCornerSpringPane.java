@@ -42,25 +42,28 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.SpringLayout;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JCornerSpringPane extends JSpringPane {
-	private java.awt.Component northWestComponent;
-	private java.awt.Component northEastComponent;
-	private java.awt.Component southWestComponent;
-	private java.awt.Component southEastComponent;
+	private Component northWestComponent;
+	private Component northEastComponent;
+	private Component southWestComponent;
+	private Component southEastComponent;
 
 	protected int getPad() {
 		return 8;
 	}
 
-	public java.awt.Component getNorthWestComponent() {
+	public Component getNorthWestComponent() {
 		return this.northWestComponent;
 	}
 
-	public void setNorthWestComponent( java.awt.Component northWestComponent ) {
-		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+	public void setNorthWestComponent( Component northWestComponent ) {
+		SpringLayout springLayout = this.getSpringLayout();
 		if( this.northWestComponent != null ) {
 			springLayout.removeLayoutComponent( this.northWestComponent );
 			this.remove( this.northWestComponent );
@@ -75,12 +78,12 @@ public class JCornerSpringPane extends JSpringPane {
 		}
 	}
 
-	public java.awt.Component getNorthEastComponent() {
+	public Component getNorthEastComponent() {
 		return this.northEastComponent;
 	}
 
-	public void setNorthEastComponent( java.awt.Component northEastComponent ) {
-		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+	public void setNorthEastComponent( Component northEastComponent ) {
+		SpringLayout springLayout = this.getSpringLayout();
 		if( this.northEastComponent != null ) {
 			springLayout.removeLayoutComponent( this.northEastComponent );
 			this.remove( this.northEastComponent );
@@ -95,12 +98,12 @@ public class JCornerSpringPane extends JSpringPane {
 		}
 	}
 
-	public java.awt.Component getSouthWestComponent() {
+	public Component getSouthWestComponent() {
 		return this.southWestComponent;
 	}
 
-	public void setSouthWestComponent( java.awt.Component southWestComponent ) {
-		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+	public void setSouthWestComponent( Component southWestComponent ) {
+		SpringLayout springLayout = this.getSpringLayout();
 		if( this.southWestComponent != null ) {
 			springLayout.removeLayoutComponent( this.southWestComponent );
 			this.remove( this.southWestComponent );
@@ -115,12 +118,12 @@ public class JCornerSpringPane extends JSpringPane {
 		}
 	}
 
-	public java.awt.Component getSouthEastComponent() {
+	public Component getSouthEastComponent() {
 		return this.southEastComponent;
 	}
 
-	public void setSouthEastComponent( java.awt.Component southEastComponent ) {
-		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+	public void setSouthEastComponent( Component southEastComponent ) {
+		SpringLayout springLayout = this.getSpringLayout();
 		if( this.southEastComponent != null ) {
 			springLayout.removeLayoutComponent( this.southEastComponent );
 			this.remove( this.southEastComponent );

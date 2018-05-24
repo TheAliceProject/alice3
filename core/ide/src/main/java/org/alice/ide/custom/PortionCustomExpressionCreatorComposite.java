@@ -43,10 +43,20 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.custom.components.PortionCustomExpressionCreatorView;
+import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PortionCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.PortionCustomExpressionCreatorView> {
+public class PortionCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<PortionCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
 	}
@@ -55,38 +65,38 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
+	private final BoundedIntegerState valueState = this.createBoundedIntegerState( "valueState", new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
 
 	private PortionCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "f1d64eb4-38fd-4c43-856f-e8aa2b1708d1" ) );
+		super( UUID.fromString( "f1d64eb4-38fd-4c43-856f-e8aa2b1708d1" ) );
 	}
 
 	@Override
-	protected org.alice.ide.custom.components.PortionCustomExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.PortionCustomExpressionCreatorView( this );
+	protected PortionCustomExpressionCreatorView createView() {
+		return new PortionCustomExpressionCreatorView( this );
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getValueState() {
+	public BoundedIntegerState getValueState() {
 		return this.valueState;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		java.math.BigDecimal decimal = new java.math.BigDecimal( this.valueState.getValue() );
+	protected Expression createValue() {
+		BigDecimal decimal = new BigDecimal( this.valueState.getValue() );
 		decimal = decimal.movePointLeft( 2 );
-		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
+		return new DoubleLiteral( decimal.doubleValue() );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected void initializeToPreviousExpression( Expression expression ) {
 		double value;
-		if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
-			org.lgna.project.ast.DoubleLiteral doubleLiteral = (org.lgna.project.ast.DoubleLiteral)expression;
+		if( expression instanceof DoubleLiteral ) {
+			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
 			value = doubleLiteral.value.getValue();
 		} else {
 			value = Double.NaN;
@@ -94,7 +104,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 		if( Double.isNaN( value ) ) {
 			//pass
 		} else {
-			java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
+			BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
 			decimal = decimal.movePointRight( 2 );
 			this.valueState.setValueTransactionlessly( decimal.intValue() );
 		}

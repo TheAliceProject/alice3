@@ -42,35 +42,49 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.codecs.FileCodec;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.triggers.PropertyChangeEventTrigger;
+import org.lgna.croquet.views.FileChooser;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FileSelectionState extends ItemState<java.io.File> {
+public abstract class FileSelectionState extends ItemState<File> {
 	public static class SwingModel {
-		private final javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
+		private final JFileChooser jFileChooser = new JFileChooser();
 
 		private SwingModel() {
 			this.jFileChooser.setControlButtonsAreShown( false );
 		}
 
-		public javax.swing.JFileChooser getJFileChooser() {
+		public JFileChooser getJFileChooser() {
 			return this.jFileChooser;
 		}
 	}
 
 	private final SwingModel swingModel = new SwingModel();
-	private final org.lgna.croquet.views.FileChooser oneAndOnlyOneFileChooser = new org.lgna.croquet.views.FileChooser( this );
-	private final java.beans.PropertyChangeListener propertyChangeListener = new java.beans.PropertyChangeListener() {
+	private final FileChooser oneAndOnlyOneFileChooser = new FileChooser( this );
+	private final PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
 		@Override
-		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+		public void propertyChange( PropertyChangeEvent e ) {
 			//java.io.File prevValue = (java.io.File)e.getOldValue();
-			java.io.File nextValue = (java.io.File)e.getNewValue();
-			FileSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.PropertyChangeEventTrigger.createUserInstance( oneAndOnlyOneFileChooser, e ) );
+			File nextValue = (File)e.getNewValue();
+			FileSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, PropertyChangeEventTrigger.createUserInstance( oneAndOnlyOneFileChooser, e ) );
 		}
 	};
 
-	public FileSelectionState( Group group, java.util.UUID migrationId, java.io.File initialValue ) {
-		super( group, migrationId, initialValue, org.lgna.croquet.codecs.FileCodec.SINGLETON );
+	public FileSelectionState( Group group, UUID migrationId, File initialValue ) {
+		super( group, migrationId, initialValue, FileCodec.SINGLETON );
 		this.swingModel.jFileChooser.addPropertyChangeListener( "SelectedFileChangedProperty", this.propertyChangeListener );
 	}
 
@@ -79,17 +93,17 @@ public abstract class FileSelectionState extends ItemState<java.io.File> {
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	@Override
-	protected java.io.File getSwingValue() {
+	protected File getSwingValue() {
 		return this.swingModel.jFileChooser.getSelectedFile();
 	}
 
 	@Override
-	protected void setSwingValue( java.io.File nextValue ) {
+	protected void setSwingValue( File nextValue ) {
 		if( this.swingModel != null ) {
 			this.swingModel.jFileChooser.setSelectedFile( nextValue );
 		}
@@ -99,19 +113,19 @@ public abstract class FileSelectionState extends ItemState<java.io.File> {
 		return this.swingModel;
 	}
 
-	public org.lgna.croquet.views.FileChooser getOneAndOnlyOneFileChooser() {
+	public FileChooser getOneAndOnlyOneFileChooser() {
 		return this.oneAndOnlyOneFileChooser;
 	}
 
-	public void addChoosableFileFilter( javax.swing.filechooser.FileFilter fileFilter ) {
+	public void addChoosableFileFilter( FileFilter fileFilter ) {
 		this.swingModel.jFileChooser.addChoosableFileFilter( fileFilter );
 	}
 
-	public void removeChoosableFileFilter( javax.swing.filechooser.FileFilter fileFilter ) {
+	public void removeChoosableFileFilter( FileFilter fileFilter ) {
 		this.swingModel.jFileChooser.addChoosableFileFilter( fileFilter );
 	}
 
-	public void setFileFilter( javax.swing.filechooser.FileFilter fileFilter ) {
+	public void setFileFilter( FileFilter fileFilter ) {
 		this.swingModel.jFileChooser.setFileFilter( fileFilter );
 	}
 }

@@ -43,10 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MinMaxCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.MethodInvocation> {
+public class MinMaxCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
 	private static class SingletonHolder {
 		private static MinMaxCascadeMenu instance = new MinMaxCascadeMenu();
 	}
@@ -56,12 +65,12 @@ public class MinMaxCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	private MinMaxCascadeMenu() {
-		super( java.util.UUID.fromString( "602b183c-ab38-43f7-80d1-119a3586d9c1" ) );
+		super( UUID.fromString( "602b183c-ab38-43f7-80d1-119a3586d9c1" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "min", Double.TYPE, Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "max", Double.TYPE, Double.TYPE ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "min", Double.TYPE, Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "max", Double.TYPE, Double.TYPE ) );
 	}
 }

@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.frametitle;
 
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface IdeFrameTitleGenerator {
-	public String generateTitle( java.net.URI uri, boolean isDocumentUpToDateWithUri );
+	public String generateTitle( URI uri, boolean isDocumentUpToDateWithUri );
 }

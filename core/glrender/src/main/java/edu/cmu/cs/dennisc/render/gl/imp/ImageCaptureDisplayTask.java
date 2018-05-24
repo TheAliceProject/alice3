@@ -42,6 +42,25 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.util.awt.ImageUtil;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
+import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;
+import edu.cmu.cs.dennisc.render.RenderTask;
+
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.util.LinkedList;
+import java.util.List;
+
 import static com.jogamp.opengl.GL.GL_FLOAT;
 import static com.jogamp.opengl.GL.GL_NO_ERROR;
 import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
@@ -52,7 +71,7 @@ import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
  * @author Dennis Cosgrove
  */
 public final class ImageCaptureDisplayTask extends DisplayTask {
-	public ImageCaptureDisplayTask( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, GlrImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
+	public ImageCaptureDisplayTask( RenderTask renderTask, Rectangle viewport, GlrImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
 		this.renderTask = renderTask;
 		this.viewport = viewport;
 		this.imageBuffer = imageBuffer;
@@ -61,7 +80,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 	}
 
 	@Override
-	/*package-private*/IsFrameBufferIntact handleDisplay( edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp rtImp, com.jogamp.opengl.GLAutoDrawable drawable, com.jogamp.opengl.GL2 gl ) {
+	/*package-private*/IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, GLAutoDrawable drawable, GL2 gl ) {
 		synchronized( this.imageBuffer.getImageLock() ) {
 
 			if( this.renderTask != null ) {
@@ -82,19 +101,19 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 			} else {
 				x = 0;
 				y = 0;
-				java.awt.Dimension surfaceSize = rtImp.getRenderTarget().getSurfaceSize();
+				Dimension surfaceSize = rtImp.getRenderTarget().getSurfaceSize();
 				width = surfaceSize.width;
 				height = surfaceSize.height;
 			}
 
-			java.awt.image.BufferedImage rvImage = this.imageBuffer.acquireImage( width, height );
-			java.nio.FloatBuffer rvDepth = this.imageBuffer.acquireFloatBuffer( width, height );
+			BufferedImage rvImage = this.imageBuffer.acquireImage( width, height );
+			FloatBuffer rvDepth = this.imageBuffer.acquireFloatBuffer( width, height );
 			boolean[] atIsRightSideUp = new boolean[ 1 ];
 			try {
-				java.awt.image.DataBuffer dataBuffer = rvImage.getRaster().getDataBuffer();
+				DataBuffer dataBuffer = rvImage.getRaster().getDataBuffer();
 				if( rvDepth != null ) {
-					byte[] color = ( (java.awt.image.DataBufferByte)dataBuffer ).getData();
-					java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( color );
+					byte[] color = ( (DataBufferByte)dataBuffer ).getData();
+					ByteBuffer buffer = ByteBuffer.wrap( color );
 					gl.glReadPixels( x, y, width, height, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer );
 
 					gl.glReadPixels( x, y, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, rvDepth );
@@ -114,7 +133,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 
 				} else {
 					//java.nio.IntBuffer buffer = java.nio.IntBuffer.wrap( ((java.awt.image.DataBufferInt)dataBuffer).getData() );
-					java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( ( (java.awt.image.DataBufferByte)dataBuffer ).getData() );
+					ByteBuffer buffer = ByteBuffer.wrap( ( (DataBufferByte)dataBuffer ).getData() );
 
 					//clear error buffer if necessary
 					while( gl.glGetError() != GL_NO_ERROR ) {
@@ -130,7 +149,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 
 					gl.glReadPixels( x, y, width, height, format, type, buffer );
 
-					java.util.List<Integer> errors = null;
+					List<Integer> errors = null;
 					while( true ) {
 						int error = gl.glGetError();
 						if( error == GL_NO_ERROR ) {
@@ -139,20 +158,20 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 							if( errors != null ) {
 								//pass
 							} else {
-								errors = new java.util.LinkedList<Integer>();
+								errors = new LinkedList<Integer>();
 							}
 							errors.add( error );
 						}
 					}
 					if( errors != null ) {
-						com.jogamp.opengl.glu.GLU glu = new com.jogamp.opengl.glu.GLU();
+						GLU glu = new GLU();
 						String description = glu.gluErrorString( errors.get( 0 ) );
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to capture back buffer:", description );
+						Logger.severe( "unable to capture back buffer:", description );
 					}
 				}
-				atIsRightSideUp[ 0 ] = imageOrientationRequirement == edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
+				atIsRightSideUp[ 0 ] = imageOrientationRequirement == ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
 				if( atIsRightSideUp[ 0 ] ) {
-					com.jogamp.opengl.util.awt.ImageUtil.flipImageVertically( rvImage );
+					ImageUtil.flipImageVertically( rvImage );
 				}
 			} finally {
 				this.imageBuffer.releaseImageAndFloatBuffer( atIsRightSideUp[ 0 ] );
@@ -162,9 +181,9 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 		return IsFrameBufferIntact.FALSE;
 	}
 
-	private final edu.cmu.cs.dennisc.render.RenderTask renderTask;
-	private final java.awt.Rectangle viewport;
+	private final RenderTask renderTask;
+	private final Rectangle viewport;
 	private final GlrImageBuffer imageBuffer;
-	private final edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement;
-	private final edu.cmu.cs.dennisc.render.ImageCaptureObserver observer;
+	private final ImageOrientationRequirement imageOrientationRequirement;
+	private final ImageCaptureObserver observer;
 }

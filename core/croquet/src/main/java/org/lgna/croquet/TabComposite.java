@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.CompositeView;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface TabComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends Composite<V> {
+public interface TabComposite<V extends CompositeView<?, ?>> extends Composite<V> {
 	public boolean isCloseable();
 
 	public boolean isPotentiallyCloseable();
 
-	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button );
+	public void customizeTitleComponentAppearance( BooleanStateButton<?> button );
 }

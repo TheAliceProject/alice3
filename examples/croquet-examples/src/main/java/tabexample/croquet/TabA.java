@@ -42,18 +42,23 @@
  */
 package tabexample.croquet;
 
+import org.lgna.croquet.views.Panel;
+
+import java.awt.Color;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TabA extends AbstractTab {
 	public TabA() {
-		super( java.util.UUID.fromString( "150888c5-f938-427a-a6b3-4f1b3e6aaec8" ) );
+		super( UUID.fromString( "150888c5-f938-427a-a6b3-4f1b3e6aaec8" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		org.lgna.croquet.views.Panel rv = super.createView();
-		rv.setBackgroundColor( new java.awt.Color( 255, 255, 191 ) );
+	protected Panel createView() {
+		Panel rv = super.createView();
+		rv.setBackgroundColor( new Color( 255, 255, 191 ) );
 		return rv;
 	}
 }

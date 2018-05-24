@@ -45,29 +45,44 @@ package org.alice.stageide.modelresource;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.stageide.icons.PersonResourceIconFactory;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.ValueConverter;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.icon.TrimmedImageIconFactory;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resources.sims2.AdultPersonResource;
+import org.lgna.story.resources.sims2.ChildPersonResource;
+import org.lgna.story.resources.sims2.ElderPersonResource;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.PersonResource;
+import org.lgna.story.resources.sims2.TeenPersonResource;
+import org.lgna.story.resources.sims2.ToddlerPersonResource;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PersonResourceKey extends InstanceCreatorKey {
-	private static org.lgna.croquet.icon.IconFactory createIconFactory( String subPath ) {
-		return new org.lgna.croquet.icon.TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/" + subPath + ".png" ), 160, 120 );
+	private static IconFactory createIconFactory( String subPath ) {
+		return new TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/" + subPath + ".png" ), 160, 120 );
 	}
 
-	private static final org.lgna.croquet.icon.IconFactory ELDER_ICON_FACTORY = createIconFactory( "elder" );
-	private static final org.lgna.croquet.icon.IconFactory ADULT_ICON_FACTORY = createIconFactory( "adult" );
-	private static final org.lgna.croquet.icon.IconFactory TEEN_ICON_FACTORY = createIconFactory( "teen" );
-	private static final org.lgna.croquet.icon.IconFactory CHILD_ICON_FACTORY = createIconFactory( "child" );
-	private static final org.lgna.croquet.icon.IconFactory TODDLER_ICON_FACTORY = createIconFactory( "toddler" );
-	private static final org.lgna.croquet.icon.IconFactory PERSON_ICON_FACTORY = new org.alice.stageide.icons.PersonResourceIconFactory();
+	private static final IconFactory ELDER_ICON_FACTORY = createIconFactory( "elder" );
+	private static final IconFactory ADULT_ICON_FACTORY = createIconFactory( "adult" );
+	private static final IconFactory TEEN_ICON_FACTORY = createIconFactory( "teen" );
+	private static final IconFactory CHILD_ICON_FACTORY = createIconFactory( "child" );
+	private static final IconFactory TODDLER_ICON_FACTORY = createIconFactory( "toddler" );
+	private static final IconFactory PERSON_ICON_FACTORY = new PersonResourceIconFactory();
 
 	private static class SingletonHolder {
-		private static PersonResourceKey elderInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.ELDER );
-		private static PersonResourceKey adultInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.ADULT );
-		private static PersonResourceKey teenInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.TEEN );
-		private static PersonResourceKey childInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.CHILD );
-		private static PersonResourceKey toddlerInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.TODDLER );
+		private static PersonResourceKey elderInstance = new PersonResourceKey( LifeStage.ELDER );
+		private static PersonResourceKey adultInstance = new PersonResourceKey( LifeStage.ADULT );
+		private static PersonResourceKey teenInstance = new PersonResourceKey( LifeStage.TEEN );
+		private static PersonResourceKey childInstance = new PersonResourceKey( LifeStage.CHILD );
+		private static PersonResourceKey toddlerInstance = new PersonResourceKey( LifeStage.TODDLER );
 		private static PersonResourceKey personInstance = new PersonResourceKey( null );
 	}
 
@@ -96,50 +111,50 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	}
 
 	public static PersonResourceKey getInstanceForResourceClass( Class<?> cls ) {
-		if( cls == org.lgna.story.resources.sims2.ElderPersonResource.class ) {
+		if( cls == ElderPersonResource.class ) {
 			return getElderInstance();
-		} else if( cls == org.lgna.story.resources.sims2.AdultPersonResource.class ) {
+		} else if( cls == AdultPersonResource.class ) {
 			return getAdultInstance();
-		} else if( cls == org.lgna.story.resources.sims2.TeenPersonResource.class ) {
+		} else if( cls == TeenPersonResource.class ) {
 			return getTeenInstance();
-		} else if( cls == org.lgna.story.resources.sims2.ChildPersonResource.class ) {
+		} else if( cls == ChildPersonResource.class ) {
 			return getChildInstance();
-		} else if( cls == org.lgna.story.resources.sims2.ToddlerPersonResource.class ) {
+		} else if( cls == ToddlerPersonResource.class ) {
 			return getToddlerInstance();
 		} else {
 			return getPersonInstance();
 		}
 	}
 
-	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private final LifeStage lifeStage;
 
-	private PersonResourceKey( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	private PersonResourceKey( LifeStage lifeStage ) {
 		this.lifeStage = lifeStage;
 	}
 
-	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+	public LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
 
 	@Override
-	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
-		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
-			return org.lgna.story.resources.sims2.ElderPersonResource.class;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
-			return org.lgna.story.resources.sims2.AdultPersonResource.class;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
-			return org.lgna.story.resources.sims2.TeenPersonResource.class;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
-			return org.lgna.story.resources.sims2.ChildPersonResource.class;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
-			return org.lgna.story.resources.sims2.ToddlerPersonResource.class;
+	public Class<? extends ModelResource> getModelResourceCls() {
+		if( this.lifeStage == LifeStage.ELDER ) {
+			return ElderPersonResource.class;
+		} else if( this.lifeStage == LifeStage.ADULT ) {
+			return AdultPersonResource.class;
+		} else if( this.lifeStage == LifeStage.TEEN ) {
+			return TeenPersonResource.class;
+		} else if( this.lifeStage == LifeStage.CHILD ) {
+			return ChildPersonResource.class;
+		} else if( this.lifeStage == LifeStage.TODDLER ) {
+			return ToddlerPersonResource.class;
 		} else {
-			return org.lgna.story.resources.sims2.PersonResource.class;
+			return PersonResource.class;
 		}
 	}
 
-	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPersonResourceValueCreator() {
-		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
+	private ValueConverter<PersonResource, InstanceCreation> getPersonResourceValueCreator() {
+		return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
 	}
 
 	@Override
@@ -168,16 +183,16 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+	public IconFactory getIconFactory() {
+		if( this.lifeStage == LifeStage.ELDER ) {
 			return ELDER_ICON_FACTORY;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+		} else if( this.lifeStage == LifeStage.ADULT ) {
 			return ADULT_ICON_FACTORY;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+		} else if( this.lifeStage == LifeStage.TEEN ) {
 			return TEEN_ICON_FACTORY;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
+		} else if( this.lifeStage == LifeStage.CHILD ) {
 			return CHILD_ICON_FACTORY;
-		} else if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+		} else if( this.lifeStage == LifeStage.TODDLER ) {
 			return TODDLER_ICON_FACTORY;
 		} else {
 			return PERSON_ICON_FACTORY;
@@ -185,8 +200,8 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		return this.getPersonResourceValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+	public InstanceCreation createInstanceCreation() {
+		return this.getPersonResourceValueCreator().fireAndGetValue( NullTrigger.createUserInstance() );
 	}
 
 	@Override

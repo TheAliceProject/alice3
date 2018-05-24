@@ -42,20 +42,31 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet;
 
+import edu.cmu.cs.dennisc.animation.FrameObserver;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget;
 import org.alice.media.video.WebmRecordingAdapter;
 import org.alice.media.youtube.croquet.views.ImageRecordView;
 import org.alice.media.youtube.croquet.views.icons.IsRecordingIcon;
+import org.alice.stageide.program.VideoEncodingProgramContext;
 import org.lgna.common.RandomUtilities;
+import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.eventhandling.EventManager;
@@ -64,21 +75,26 @@ import edu.cmu.cs.dennisc.matt.eventscript.FrameBasedAnimatorWithEventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
+import javax.swing.SwingUtilities;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, ExportToYouTubeWizardDialogComposite> {
-	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
+	private VideoEncodingProgramContext programContext;
 	private WebmRecordingAdapter encoder;
 	private final BooleanState isRecordingState = this.createBooleanState( "isRecordingState", false );
 	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( "frameRateState", new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
 	private final Status errorIsRecording = createErrorStatus( "errorIsRecording" );
 	private final Status errorHasNotYetRecorded = createErrorStatus( "errorNothingIsRecorded" );
-	private java.awt.image.BufferedImage image;
+	private BufferedImage image;
 	private int imageCount;
 
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
-		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ), owner );
+		super( UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ), owner );
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
 		this.isRecordingState.addNewSchoolValueListener( this.isRecordingListener );
 		restartOperation.setEnabled( false );
@@ -86,7 +102,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			setRecording( e.getNextValue() );
 		}
 	};
@@ -94,7 +110,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
 
 		@Override
-		public org.lgna.croquet.edits.Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			programContext.getProgramImp().stopAnimator();
@@ -110,21 +126,21 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		return new ImageRecordView( this );
 	}
 
-	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
+	private final FrameObserver frameListener = new FrameObserver() {
 		@Override
 		public void update( final double tCurrent ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					getView().updateTime( tCurrent );
 				}
 			} );
-			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
-			if( renderTarget instanceof edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget ) {
-				edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
-				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget.Observer() {
+			OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
+			if( renderTarget instanceof GlrCaptureFauxOnscreenRenderTarget ) {
+				GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (GlrCaptureFauxOnscreenRenderTarget)renderTarget;
+				captureLookingGlass.captureImage( new GlrCaptureFauxOnscreenRenderTarget.Observer() {
 					@Override
-					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
+					public void handleImage( BufferedImage image, boolean isUpSideDown ) {
 						if( image != null ) {
 							if( isUpSideDown ) {
 								ImageRecordComposite.this.handleImage( image, imageCount, isUpSideDown );
@@ -134,7 +150,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 					}
 				} );
 			} else {
-				java.awt.Dimension drawableSize = renderTarget.getDrawableSize();
+				Dimension drawableSize = renderTarget.getDrawableSize();
 				if( ( drawableSize.width > 0 ) && ( drawableSize.height > 0 ) ) {
 					if( image != null ) {
 						//pass
@@ -154,10 +170,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 						}
 						imageCount++;
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
+						Logger.severe( "image is null" );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", drawableSize.width, "height:", drawableSize.height );
+					Logger.severe( "width:", drawableSize.width, "height:", drawableSize.height );
 				}
 			}
 		}
@@ -219,14 +235,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		this.getView().enableLookingGlassContainer();
 	}
 
-	private void handleImage( java.awt.image.BufferedImage image, int imageCount, boolean isUpsideDown ) {
+	private void handleImage( BufferedImage image, int imageCount, boolean isUpsideDown ) {
 		if( image != null ) {
 			encoder.addBufferedImage( image, isUpsideDown );
 		}
 	}
 
 	@Override
-	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	public Status getPageStatus( CompletionStep<?> step ) {
 		if( isRecordingState.getValue() ) {
 			return errorIsRecording;
 		} else if( imageCount == 0 ) {
@@ -239,7 +255,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		return this.isRecordingState;
 	}
 
-	public org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
+	public MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
 		return getOwner().getEventList();
 	}
 
@@ -247,18 +263,18 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		ExportToYouTubeWizardDialogComposite owner = this.getOwner();
 		restartOperation.setEnabled( false );
 		RandomUtilities.setSeed( owner.getRandomSeed() );
-		org.lgna.project.ast.NamedUserType programType = owner.getProject().getProgramType();
+		NamedUserType programType = owner.getProject().getProgramType();
 		image = null;
 		imageCount = 0;
 
-		programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRateState.getValue() );
+		programContext = new VideoEncodingProgramContext( programType, frameRateState.getValue() );
 		programContext.initializeInContainer( this.getView().getLookingGlassContainer().getAwtComponent() );
 		getView().revalidateAndRepaint();
 
 		UserInstance programInstance = programContext.getProgramInstance();
 		UserField sceneField = programInstance.getType().fields.get( 0 );
 		SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
-		SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
+		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
 		EventManager manager = sceneImp.getEventManager();
 
 		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( owner.getEventScript(), manager ) );

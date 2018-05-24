@@ -43,20 +43,27 @@
 
 package org.alice.stageide.sceneeditor;
 
+import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ThumbnailGenerator {
-	private final edu.cmu.cs.dennisc.render.OffscreenRenderTarget offscreenRenderTarget;
+	private final OffscreenRenderTarget offscreenRenderTarget;
 
 	public ThumbnailGenerator( int width, int height ) {
-		this.offscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( width, height, null, new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() );
+		this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( width, height, null, new RenderCapabilities.Builder().build() );
 	}
 
-	public java.awt.image.BufferedImage createThumbnail() {
+	public BufferedImage createThumbnail() {
 		synchronized( this.offscreenRenderTarget ) {
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
+			StorytellingSceneEditor sceneEditor = StorytellingSceneEditor.getInstance();
+			AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
 			if( sgCamera != null ) {
 				sceneEditor.preScreenCapture();
 
@@ -74,7 +81,7 @@ public final class ThumbnailGenerator {
 					offscreenRenderTarget.clearSgCameras();
 					offscreenRenderTarget.addSgCamera( sgCamera );
 				}
-				java.awt.image.BufferedImage thumbImage = offscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer();
+				BufferedImage thumbImage = offscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer();
 
 				sceneEditor.postScreenCapture();
 				return thumbImage;

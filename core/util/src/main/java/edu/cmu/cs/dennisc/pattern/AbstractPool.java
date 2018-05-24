@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import java.util.Stack;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPool<E extends Reusable> {
-	private java.util.Stack<E> available = new java.util.Stack<E>();
+	private Stack<E> available = new Stack<E>();
 
 	protected abstract E createInstance();
 

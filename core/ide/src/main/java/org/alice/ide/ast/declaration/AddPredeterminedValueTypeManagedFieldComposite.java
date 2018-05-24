@@ -42,28 +42,41 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import org.alice.ide.typemanager.TypeManager;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.icon.IconSize;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AddPredeterminedValueTypeManagedFieldComposite extends AddManagedFieldComposite {
-	private final org.lgna.project.ast.JavaType javaValueType;
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final JavaType javaValueType;
+	private AbstractType<?, ?, ?> type;
 
-	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.JavaType javaValueType ) {
+	public AddPredeterminedValueTypeManagedFieldComposite( UUID migrationId, JavaType javaValueType ) {
 		super( migrationId, new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.DISPLAYED, null )
 				.build() );
 		this.javaValueType = javaValueType;
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.javaValueType );
-		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-			this.getLaunchOperation().setButtonIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
+		IconFactory iconFactory = IconFactoryManager.getIconFactoryForType( this.javaValueType );
+		if( ( iconFactory != null ) && ( iconFactory != EmptyIconFactory.getInstance() ) ) {
+			this.getLaunchOperation().setButtonIcon( iconFactory.getIcon( IconSize.SMALL.getSize() ) );
 		}
 	}
 
-	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, Class<?> valueCls ) {
-		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
+	public AddPredeterminedValueTypeManagedFieldComposite( UUID migrationId, Class<?> valueCls ) {
+		this( migrationId, JavaType.getInstance( valueCls ) );
 	}
 
 	protected boolean isUserTypeDesired() {
@@ -71,9 +84,9 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( CompletionStep<?> step ) {
 		if( this.isUserTypeDesired() ) {
-			this.type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
+			this.type = TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
 		} else {
 			this.type = this.javaValueType;
 		}
@@ -81,18 +94,18 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		this.type = null;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
 		return this.type;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( this.type );
+	protected Expression getInitializerInitialValue() {
+		return AstUtilities.createInstanceCreation( this.type );
 	}
 }

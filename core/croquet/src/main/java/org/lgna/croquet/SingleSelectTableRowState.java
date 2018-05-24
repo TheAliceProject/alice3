@@ -43,58 +43,76 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.Table;
+
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SingleSelectTableRowState<T> extends ItemState<T> implements Iterable<T> {
 	public class SwingModel {
-		private final javax.swing.table.TableModel tableModel;
-		private final javax.swing.ListSelectionModel listSelectionModel;
-		private final javax.swing.table.TableColumnModel tableColumnModel;
+		private final TableModel tableModel;
+		private final ListSelectionModel listSelectionModel;
+		private final TableColumnModel tableColumnModel;
 
-		private SwingModel( javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+		private SwingModel( TableModel tableModel, TableColumnModel tableColumnModel, ListSelectionModel listSelectionModel ) {
 			this.tableModel = tableModel;
 			this.tableColumnModel = tableColumnModel;
 			this.listSelectionModel = listSelectionModel;
 		}
 
-		public javax.swing.table.TableModel getTableModel() {
+		public TableModel getTableModel() {
 			return this.tableModel;
 		}
 
-		public javax.swing.table.TableColumnModel getTableColumnModel() {
+		public TableColumnModel getTableColumnModel() {
 			return this.tableColumnModel;
 		}
 
-		public javax.swing.ListSelectionModel getListSelectionModel() {
+		public ListSelectionModel getListSelectionModel() {
 			return this.listSelectionModel;
 		}
 	}
 
-	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		public void valueChanged( ListSelectionEvent e ) {
 			handleListSelectionChanged( e );
 		}
 	};
 	private final SwingModel swingModel;
 
-	public SingleSelectTableRowState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel, javax.swing.ListSelectionModel listSelectionModel ) {
+	public SingleSelectTableRowState( Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel, TableColumnModel tableColumnModel, ListSelectionModel listSelectionModel ) {
 		super( group, migrationId, initialValue, itemCodec );
 		this.swingModel = new SwingModel( tableModel, tableColumnModel, listSelectionModel );
 		this.swingModel.getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
-	public SingleSelectTableRowState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel, javax.swing.table.TableColumnModel tableColumnModel ) {
-		this( group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new javax.swing.DefaultListSelectionModel() );
+	public SingleSelectTableRowState( Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel, TableColumnModel tableColumnModel ) {
+		this( group, migrationId, initialValue, itemCodec, tableModel, tableColumnModel, new DefaultListSelectionModel() );
 	}
 
-	public SingleSelectTableRowState( Group group, java.util.UUID migrationId, T initialValue, ItemCodec<T> itemCodec, javax.swing.table.TableModel tableModel ) {
+	public SingleSelectTableRowState( Group group, UUID migrationId, T initialValue, ItemCodec<T> itemCodec, TableModel tableModel ) {
 		this( group, migrationId, initialValue, itemCodec, tableModel, null ); //new javax.swing.table.DefaultTableColumnModel() );
 	}
 
-	private void handleListSelectionChanged( javax.swing.event.ListSelectionEvent e ) {
-		org.lgna.croquet.triggers.Trigger trigger = null;
+	private void handleListSelectionChanged( ListSelectionEvent e ) {
+		Trigger trigger = null;
 		this.changeValueFromSwing( this.getSwingValue(), IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
 	}
 
@@ -108,9 +126,9 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> implemen
 		return this.swingModel.tableModel.getRowCount();
 	}
 
-	public java.util.Collection<T> getItems() {
+	public Collection<T> getItems() {
 		final int N = this.getItemCount();
-		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( N );
+		List<T> rv = Lists.newArrayListWithInitialCapacity( N );
 		for( int i = 0; i < N; i++ ) {
 			rv.add( this.getItemAt( i ) );
 		}
@@ -118,13 +136,13 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> implemen
 	}
 
 	@Override
-	public java.util.Iterator<T> iterator() {
+	public Iterator<T> iterator() {
 		return this.getItems().iterator();
 	}
 
 	@Override
 	protected final T getSwingValue() {
-		javax.swing.ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
+		ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
 		int selectionIndex = listSelectionModel.getLeadSelectionIndex();
 		if( selectionIndex < 0 ) {
 			return null;
@@ -133,22 +151,22 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> implemen
 			if( selectionIndex < N ) {
 				return this.getItemAt( selectionIndex );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( selectionIndex, N, this );
+				Logger.severe( selectionIndex, N, this );
 				return null;
 			}
 		}
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
 
-	public org.lgna.croquet.views.Table<T> createTable() {
-		return new org.lgna.croquet.views.Table<T>( this );
+	public Table<T> createTable() {
+		return new Table<T>( this );
 	}
 }

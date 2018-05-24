@@ -43,10 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.color.property.Color4fProperty;
+import edu.cmu.cs.dennisc.property.FloatProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Light extends Affector {
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty color = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, edu.cmu.cs.dennisc.color.Color4f.WHITE );
-	public final edu.cmu.cs.dennisc.property.FloatProperty brightness = new edu.cmu.cs.dennisc.property.FloatProperty( this, 1.0f );
+	public final Color4fProperty color = new Color4fProperty( this, Color4f.WHITE );
+	public final FloatProperty brightness = new FloatProperty( this, 1.0f );
 }

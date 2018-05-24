@@ -48,6 +48,7 @@ import java.util.List;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 
 public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
 {
@@ -67,8 +68,8 @@ public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsol
 			}
 		}
 
-		this.weights = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createFloatArray( nonZeroWeights );
-		this.indices = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray( nonZeroIndices );
+		this.weights = ArrayUtilities.createFloatArray( nonZeroWeights );
+		this.indices = ArrayUtilities.createIntArray( nonZeroIndices );
 	}
 
 	public void setWeightsAndIndices( float[] weights, int[] indices )

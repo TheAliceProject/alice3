@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,12 +58,12 @@ public class DefaultItemCodec<T> extends AbstractItemCodec<T> {
 	}
 
 	@Override
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public T decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, T value ) {
 		throw new RuntimeException( "todo" );
 	}
 }

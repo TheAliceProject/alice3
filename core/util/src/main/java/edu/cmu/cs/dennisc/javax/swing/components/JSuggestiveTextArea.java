@@ -42,34 +42,40 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JTextArea;
+import java.awt.Graphics;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JSuggestiveTextArea extends javax.swing.JTextArea {
+public class JSuggestiveTextArea extends JTextArea {
 	private String textForBlankCondition;
 
 	public JSuggestiveTextArea( String text, String textForBlankCondition ) {
 		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
-		this.addKeyListener( new java.awt.event.KeyListener() {
+		this.addKeyListener( new KeyListener() {
 			@Override
-			public void keyPressed( java.awt.event.KeyEvent e ) {
-				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_TAB ) {
+			public void keyPressed( KeyEvent e ) {
+				if( e.getKeyCode() == KeyEvent.VK_TAB ) {
 					e.consume();
 					if( e.isShiftDown() ) {
-						java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();
+						KeyboardFocusManager.getCurrentKeyboardFocusManager().focusPreviousComponent();
 					} else {
-						java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+						KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
 					}
 				}
 			}
 
 			@Override
-			public void keyReleased( java.awt.event.KeyEvent e ) {
+			public void keyReleased( KeyEvent e ) {
 			}
 
 			@Override
-			public void keyTyped( java.awt.event.KeyEvent e ) {
+			public void keyTyped( KeyEvent e ) {
 			}
 		} );
 		if( text != null ) {
@@ -102,7 +108,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	}
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		super.paintComponent( g );
 		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}

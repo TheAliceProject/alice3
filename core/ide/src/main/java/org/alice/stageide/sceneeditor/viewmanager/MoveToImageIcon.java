@@ -43,6 +43,9 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -72,9 +75,9 @@ public class MoveToImageIcon implements Icon {
 	public MoveToImageIcon()
 	{
 		super();
-		this.arrowImage = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource( "images/moveToArrowIcon.png" ) );
+		this.arrowImage = IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/moveToArrowIcon.png" ) );
 		this.disabledArrowImage = desaturate( this.arrowImage );
-		this.unknownImage = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.sceneeditor.StorytellingSceneEditor.class.getResource( "images/unknownIcon.png" ) );
+		this.unknownImage = IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/unknownIcon.png" ) );
 		this.disabledUnknownImage = desaturate( this.unknownImage );
 	}
 
@@ -182,7 +185,7 @@ public class MoveToImageIcon implements Icon {
 			ColorConvertOp colorConvert =
 					new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
 			colorConvert.filter( imgSrc, imgSrc );
-			return new javax.swing.ImageIcon( imgSrc );
+			return new ImageIcon( imgSrc );
 		}
 		return source;
 	}

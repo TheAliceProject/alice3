@@ -42,21 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import net.miginfocom.swing.MigLayout;
+import org.alice.stageide.personresource.data.HairColorName;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.CustomRadioButtons;
+import org.lgna.croquet.views.ToggleButton;
+
+import javax.swing.Icon;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameRadioButtons extends org.lgna.croquet.views.CustomRadioButtons<org.alice.stageide.personresource.data.HairColorName> {
-	public HairColorNameRadioButtons( org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.personresource.data.HairColorName> model ) {
+public class HairColorNameRadioButtons extends CustomRadioButtons<HairColorName> {
+	public HairColorNameRadioButtons( RefreshableDataSingleSelectListState<HairColorName> model ) {
 		super( model );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.BooleanState itemSelectedState ) {
-		javax.swing.Icon icon = item.getIcon();
+	protected BooleanStateButton<?> createButtonForItemSelectedState( HairColorName item, BooleanState itemSelectedState ) {
+		Icon icon = item.getIcon();
 		itemSelectedState.initializeIfNecessary();
 		itemSelectedState.setIconForBothTrueAndFalse( icon );
 		itemSelectedState.setTextForBothTrueAndFalse( icon != null ? null : item.name() );
-		org.lgna.croquet.views.ToggleButton rv = itemSelectedState.createToggleButton();
+		ToggleButton rv = itemSelectedState.createToggleButton();
 		rv.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 		rv.setToolTipText( item.name() );
 		return rv;
@@ -67,7 +79,7 @@ public class HairColorNameRadioButtons extends org.lgna.croquet.views.CustomRadi
 	}
 
 	@Override
-	protected void addItem( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.views.BooleanStateButton<?> button ) {
+	protected void addItem( HairColorName item, BooleanStateButton<?> button ) {
 		this.internalAddComponent( button );
 	}
 
@@ -76,8 +88,8 @@ public class HairColorNameRadioButtons extends org.lgna.croquet.views.CustomRadi
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new net.miginfocom.swing.MigLayout();
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new MigLayout();
 	}
 
 	@Override

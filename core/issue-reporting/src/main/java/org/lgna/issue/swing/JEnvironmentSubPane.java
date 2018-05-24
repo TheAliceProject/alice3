@@ -42,26 +42,41 @@
  *******************************************************************************/
 package org.lgna.issue.swing;
 
+import edu.cmu.cs.dennisc.java.lang.SystemProperty;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink;
+
+import javax.swing.AbstractAction;
+import javax.swing.BoxLayout;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class JEnvironmentSubPane extends javax.swing.JPanel {
-	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
-		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
+/*package-private*/class JEnvironmentSubPane extends JPanel {
+	private static JLabel createSystemPropertyLabel( String propertyName ) {
+		return new JLabel( propertyName + ": " + System.getProperty( propertyName ) );
 	}
 
-	private class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
+	private class ShowAllSystemPropertiesAction extends AbstractAction {
 		public ShowAllSystemPropertiesAction() {
 			super( "show all system properties..." );
 		}
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			java.util.List<edu.cmu.cs.dennisc.java.lang.SystemProperty> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
+		public void actionPerformed( ActionEvent e ) {
+			List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>" );
 			sb.append( "<body>" );
-			for( edu.cmu.cs.dennisc.java.lang.SystemProperty property : propertyList ) {
+			for( SystemProperty property : propertyList ) {
 				sb.append( "<strong> " );
 				sb.append( property.getKey() );
 				sb.append( ":</strong> " );
@@ -70,26 +85,26 @@ package org.lgna.issue.swing;
 			}
 			sb.append( "</body>" );
 			sb.append( "</html>" );
-			javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane();
+			JEditorPane editorPane = new JEditorPane();
 			editorPane.setEditable( false );
 			editorPane.setContentType( "text/html" );
 			editorPane.setText( sb.toString() );
-			javax.swing.JOptionPane.showMessageDialog( JEnvironmentSubPane.this, new javax.swing.JScrollPane( editorPane ) {
+			JOptionPane.showMessageDialog( JEnvironmentSubPane.this, new JScrollPane( editorPane ) {
 				@Override
-				public java.awt.Dimension getPreferredSize() {
-					java.awt.Dimension rv = super.getPreferredSize();
+				public Dimension getPreferredSize() {
+					Dimension rv = super.getPreferredSize();
 					rv.width = Math.min( rv.width, 640 );
 					rv.height = Math.min( rv.height, 480 );
 					return rv;
 				}
-			}, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			}, "System Properties", JOptionPane.INFORMATION_MESSAGE );
 		}
 	}
 
-	private edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new ShowAllSystemPropertiesAction() );
+	private JFauxHyperlink vcShowAllSystemProperties = new JFauxHyperlink( new ShowAllSystemPropertiesAction() );
 
-	public JEnvironmentSubPane( java.util.List<String> systemPropertyNames ) {
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+	public JEnvironmentSubPane( List<String> systemPropertyNames ) {
+		this.setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
 		for( String propertyName : systemPropertyNames ) {
 			this.add( createSystemPropertyLabel( propertyName ) );
 		}

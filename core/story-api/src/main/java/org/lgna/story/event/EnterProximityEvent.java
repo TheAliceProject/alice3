@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
+import org.lgna.story.SThing;
+
 public class EnterProximityEvent extends ProximityEvent {
 
-	public EnterProximityEvent( org.lgna.story.SThing a, org.lgna.story.SThing b ) {
+	public EnterProximityEvent( SThing a, SThing b ) {
 		super( a, b );
 	}
 

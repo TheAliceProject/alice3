@@ -42,17 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
 
 /**
  * @author Dennis Cosgrove
  */
 public class NoOpAstMigrationStandIn extends AstMigration {
-	public NoOpAstMigrationStandIn( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+	public NoOpAstMigrationStandIn( Version minimumVersion, Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
 	@Override
-	public void migrate( org.lgna.project.ast.Node node, org.lgna.project.Project projectIfApplicable ) {
+	public void migrate( Node node, Project projectIfApplicable ) {
 	}
 }

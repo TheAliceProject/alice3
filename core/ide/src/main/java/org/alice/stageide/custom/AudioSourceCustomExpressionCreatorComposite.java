@@ -43,10 +43,40 @@
 
 package org.alice.stageide.custom;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import edu.cmu.cs.dennisc.media.Player;
+import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView;
+import org.lgna.common.Resource;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.project.ast.AbstractArgument;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaConstructor;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.ResourceExpression;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.story.AudioSource;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class AudioSourceCustomExpressionCreatorComposite extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView> {
+public final class AudioSourceCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<AudioSourceCustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static AudioSourceCustomExpressionCreatorComposite instance = new AudioSourceCustomExpressionCreatorComposite();
 	}
@@ -57,26 +87,26 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 
 	private static final int MARKER_MAX = 1000;
 
-	private final org.lgna.croquet.PlainStringValue resourceSidekickLabel = this.createStringValue( "resourceState.sidekickLabel" );
-	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( "volumeState", VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( "startMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
-	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( "stopMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
+	private final PlainStringValue resourceSidekickLabel = this.createStringValue( "resourceState.sidekickLabel" );
+	private final BoundedIntegerState volumeState = this.createBoundedIntegerState( "volumeState", VolumeLevelUtilities.createDetails() );
+	private final BoundedIntegerState startMarkerState = this.createBoundedIntegerState( "startMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
+	private final BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( "stopMarkerState", new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
 
-	private org.lgna.croquet.event.ValueListener<Integer> startValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
+	private ValueListener<Integer> startValueListiner = new ValueListener<Integer>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
+		public void valueChanged( ValueEvent<Integer> e ) {
 			updateStopValueIfNecessary();
 		}
 	};
-	private org.lgna.croquet.event.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
+	private ValueListener<Integer> stopValueListiner = new ValueListener<Integer>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
+		public void valueChanged( ValueEvent<Integer> e ) {
 			updateStartValueIfNecessary();
 		}
 	};
 
 	private double toDouble( int markerValue, double defaultValue ) {
-		org.lgna.common.resources.AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
+		AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
 		double duration;
 		if( audioResource != null ) {
 			duration = audioResource.getDuration();
@@ -87,7 +117,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 			return defaultValue;
 		} else {
 			double value = markerValue * 0.001 * duration;
-			value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.round( value, 3 );
+			value = DoubleUtilities.round( value, 3 );
 			return value;
 		}
 	}
@@ -144,23 +174,23 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		}
 	}
 
-	private final org.lgna.croquet.Operation testOperation = this.createActionOperation( "test", new Action() {
+	private final Operation testOperation = this.createActionOperation( "test", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.common.resources.AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
 			double volume = VolumeLevelUtilities.toDouble( getVolumeState().getValue() );
 			double startTime = getStartMarkerTime();
 			double stopTime = getStopMarkerTime();
-			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
-			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioResource, volume, startTime, stopTime );
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
+			Player player = mediaFactory.createPlayer( audioResource, volume, startTime, stopTime );
+			Trigger trigger = step.getTrigger();
 			player.test( trigger.getViewController().getAwtComponent() );
 			return null;
 		}
 	} );
 
 	private AudioSourceCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "786280be-fdba-4135-bcc4-b0548ded2e50" ) );
+		super( UUID.fromString( "786280be-fdba-4135-bcc4-b0548ded2e50" ) );
 		this.startMarkerState.addNewSchoolValueListener( this.startValueListiner );
 		this.stopMarkerState.addNewSchoolValueListener( this.stopValueListiner );
 	}
@@ -169,36 +199,36 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		return AudioResourceExpressionState.getInstance();
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getVolumeState() {
+	public BoundedIntegerState getVolumeState() {
 		return this.volumeState;
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getStartMarkerState() {
+	public BoundedIntegerState getStartMarkerState() {
 		return this.startMarkerState;
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getStopMarkerState() {
+	public BoundedIntegerState getStopMarkerState() {
 		return this.stopMarkerState;
 	}
 
-	public org.lgna.croquet.Operation getTestOperation() {
+	public Operation getTestOperation() {
 		return this.testOperation;
 	}
 
-	public org.lgna.croquet.PlainStringValue getResourceSidekickLabel() {
+	public PlainStringValue getResourceSidekickLabel() {
 		return this.resourceSidekickLabel;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		org.lgna.project.ast.ResourceExpression resourceExpression = (org.lgna.project.ast.ResourceExpression)this.getAudioResourceExpressionState().getValue();
+	protected Expression createValue() {
+		ResourceExpression resourceExpression = (ResourceExpression)this.getAudioResourceExpressionState().getValue();
 		if( resourceExpression != null ) {
-			org.lgna.common.resources.AudioResource audioResource = (org.lgna.common.resources.AudioResource)resourceExpression.resource.getValue();
-			org.lgna.project.ast.Expression arg0Expression;
+			AudioResource audioResource = (AudioResource)resourceExpression.resource.getValue();
+			Expression arg0Expression;
 			if( audioResource != null ) {
-				arg0Expression = new org.lgna.project.ast.ResourceExpression( org.lgna.common.resources.AudioResource.class, audioResource );
+				arg0Expression = new ResourceExpression( AudioResource.class, audioResource );
 			} else {
-				arg0Expression = new org.lgna.project.ast.NullLiteral();
+				arg0Expression = new NullLiteral();
 			}
 
 			double volume = VolumeLevelUtilities.toDouble( this.getVolumeState().getValue() );
@@ -206,44 +236,44 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 			double stopTime = this.getStopMarkerTime();
 
 			// apologies for the negative logic
-			boolean isNotDefaultVolume = org.lgna.story.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
-			boolean isNotDefaultStartTime = org.lgna.story.AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
-			boolean isNotDefaultStopTime = org.lgna.story.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
+			boolean isNotDefaultVolume = AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
+			boolean isNotDefaultStartTime = AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
+			boolean isNotDefaultStopTime = AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
 
 			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
-				org.lgna.project.ast.DoubleLiteral volumeLiteral = new org.lgna.project.ast.DoubleLiteral( volume );
+				DoubleLiteral volumeLiteral = new DoubleLiteral( volume );
 				if( isNotDefaultStartTime || isNotDefaultStopTime ) {
-					org.lgna.project.ast.DoubleLiteral startTimeLiteral = new org.lgna.project.ast.DoubleLiteral( startTime );
+					DoubleLiteral startTimeLiteral = new DoubleLiteral( startTime );
 					if( isNotDefaultStopTime ) {
-						org.lgna.project.ast.DoubleLiteral stopTimeLiteral = new org.lgna.project.ast.DoubleLiteral( stopTime );
+						DoubleLiteral stopTimeLiteral = new DoubleLiteral( stopTime );
 
-						org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance(
-								org.lgna.story.AudioSource.class,
-								org.lgna.common.resources.AudioResource.class,
+						JavaConstructor constructor = JavaConstructor.getInstance(
+								AudioSource.class,
+								AudioResource.class,
 								Number.class,
 								Number.class,
 								Number.class );
-						return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
+						return AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
 					} else {
-						org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance(
-								org.lgna.story.AudioSource.class,
-								org.lgna.common.resources.AudioResource.class,
+						JavaConstructor constructor = JavaConstructor.getInstance(
+								AudioSource.class,
+								AudioResource.class,
 								Number.class,
 								Number.class );
-						return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
+						return AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
 					}
 				} else {
-					org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance(
-							org.lgna.story.AudioSource.class,
-							org.lgna.common.resources.AudioResource.class,
+					JavaConstructor constructor = JavaConstructor.getInstance(
+							AudioSource.class,
+							AudioResource.class,
 							Number.class );
-					return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
+					return AstUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
 				}
 			} else {
-				org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance(
-						org.lgna.story.AudioSource.class,
-						org.lgna.common.resources.AudioResource.class );
-				return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, arg0Expression );
+				JavaConstructor constructor = JavaConstructor.getInstance(
+						AudioSource.class,
+						AudioResource.class );
+				return AstUtilities.createInstanceCreation( constructor, arg0Expression );
 			}
 		} else {
 			return null;
@@ -251,55 +281,55 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return null;
 	}
 
-	private static org.lgna.project.ast.Expression getArgumentExpressionAt( org.lgna.project.ast.InstanceCreation instanceCreation, int index ) {
+	private static Expression getArgumentExpressionAt( InstanceCreation instanceCreation, int index ) {
 		assert instanceCreation.requiredArguments.size() >= index;
-		org.lgna.project.ast.AbstractArgument arg = instanceCreation.requiredArguments.get( index );
+		AbstractArgument arg = instanceCreation.requiredArguments.get( index );
 		assert arg != null;
-		assert arg instanceof org.lgna.project.ast.SimpleArgument;
-		return ( (org.lgna.project.ast.SimpleArgument)arg ).expression.getValue();
+		assert arg instanceof SimpleArgument;
+		return ( (SimpleArgument)arg ).expression.getValue();
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		org.lgna.project.ast.ResourceExpression resourceExpression = null;
-		org.lgna.common.resources.AudioResource audioResource = null;
+	protected void initializeToPreviousExpression( Expression expression ) {
+		ResourceExpression resourceExpression = null;
+		AudioResource audioResource = null;
 		double volumeLevel = 1.0;
 		double startTime = 0.0;
 		double stopTime = Double.NaN;
 
-		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+		if( expression instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)expression;
 			int n = instanceCreation.requiredArguments.size();
 			if( n > 0 ) {
-				org.lgna.project.ast.Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
-				if( expression0 instanceof org.lgna.project.ast.ResourceExpression ) {
-					resourceExpression = (org.lgna.project.ast.ResourceExpression)expression0;
-					org.lgna.common.Resource resource = resourceExpression.resource.getValue();
-					if( resource instanceof org.lgna.common.resources.AudioResource ) {
-						audioResource = (org.lgna.common.resources.AudioResource)resource;
+				Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
+				if( expression0 instanceof ResourceExpression ) {
+					resourceExpression = (ResourceExpression)expression0;
+					Resource resource = resourceExpression.resource.getValue();
+					if( resource instanceof AudioResource ) {
+						audioResource = (AudioResource)resource;
 					}
 					if( n > 1 ) {
 						if( n > 2 ) {
 							if( n > 3 ) {
-								org.lgna.project.ast.Expression expression3 = getArgumentExpressionAt( instanceCreation, 3 );
-								if( expression3 instanceof org.lgna.project.ast.DoubleLiteral ) {
-									org.lgna.project.ast.DoubleLiteral stopTimeLiteral = (org.lgna.project.ast.DoubleLiteral)expression3;
+								Expression expression3 = getArgumentExpressionAt( instanceCreation, 3 );
+								if( expression3 instanceof DoubleLiteral ) {
+									DoubleLiteral stopTimeLiteral = (DoubleLiteral)expression3;
 									stopTime = stopTimeLiteral.value.getValue();
 								}
 							}
-							org.lgna.project.ast.Expression expression2 = getArgumentExpressionAt( instanceCreation, 2 );
-							if( expression2 instanceof org.lgna.project.ast.DoubleLiteral ) {
-								org.lgna.project.ast.DoubleLiteral startTimeLiteral = (org.lgna.project.ast.DoubleLiteral)expression2;
+							Expression expression2 = getArgumentExpressionAt( instanceCreation, 2 );
+							if( expression2 instanceof DoubleLiteral ) {
+								DoubleLiteral startTimeLiteral = (DoubleLiteral)expression2;
 								startTime = startTimeLiteral.value.getValue();
 							}
 						}
-						org.lgna.project.ast.Expression expression1 = getArgumentExpressionAt( instanceCreation, 1 );
-						if( expression1 instanceof org.lgna.project.ast.DoubleLiteral ) {
-							org.lgna.project.ast.DoubleLiteral volumeLevelLiteral = (org.lgna.project.ast.DoubleLiteral)expression1;
+						Expression expression1 = getArgumentExpressionAt( instanceCreation, 1 );
+						if( expression1 instanceof DoubleLiteral ) {
+							DoubleLiteral volumeLevelLiteral = (DoubleLiteral)expression1;
 							volumeLevel = volumeLevelLiteral.value.getValue();
 						}
 					}
@@ -311,7 +341,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	}
 
 	@Override
-	protected org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView createView() {
-		return new org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView( this );
+	protected AudioSourceCustomExpressionCreatorView createView() {
+		return new AudioSourceCustomExpressionCreatorView( this );
 	}
 }

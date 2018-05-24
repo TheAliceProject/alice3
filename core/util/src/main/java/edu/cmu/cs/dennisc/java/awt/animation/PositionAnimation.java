@@ -42,18 +42,25 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.animation;
 
+import edu.cmu.cs.dennisc.math.InterpolationUtilities;
+import edu.cmu.cs.dennisc.math.Point2f;
+
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PositionAnimation extends SubjectAsSeenByAnimation {
-	public static final edu.cmu.cs.dennisc.math.Point2f USE_EXISTING_VALUE_AT_RUN_TIME = null;
+	public static final Point2f USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private edu.cmu.cs.dennisc.math.Point2f m_posBegin = new edu.cmu.cs.dennisc.math.Point2f();
-	private edu.cmu.cs.dennisc.math.Point2f m_posEnd = new edu.cmu.cs.dennisc.math.Point2f();
+	private Point2f m_posBegin = new Point2f();
+	private Point2f m_posEnd = new Point2f();
 
-	private edu.cmu.cs.dennisc.math.Point2f m_posBeginUsedAtRuntime = new edu.cmu.cs.dennisc.math.Point2f();
+	private Point2f m_posBeginUsedAtRuntime = new Point2f();
 
-	private edu.cmu.cs.dennisc.math.Point2f m_posRuntime = new edu.cmu.cs.dennisc.math.Point2f();
+	private Point2f m_posRuntime = new Point2f();
 
 	public PositionAnimation() {
 		m_posBeginUsedAtRuntime.setNaN();
@@ -61,40 +68,40 @@ public class PositionAnimation extends SubjectAsSeenByAnimation {
 		m_posEnd.setNaN();
 	}
 
-	public PositionAnimation( java.awt.Component awtSubject, java.awt.Component awtAsSeenBy, edu.cmu.cs.dennisc.math.Point2f posBegin, edu.cmu.cs.dennisc.math.Point2f posEnd ) {
+	public PositionAnimation( Component awtSubject, Component awtAsSeenBy, Point2f posBegin, Point2f posEnd ) {
 		super( awtSubject, awtAsSeenBy );
 		m_posBeginUsedAtRuntime.setNaN();
 		setPositionBegin( posBegin );
 		setPositionEnd( posEnd );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f accessPositionBeginUsedAtRuntime() {
+	public Point2f accessPositionBeginUsedAtRuntime() {
 		return m_posBeginUsedAtRuntime;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getPositionBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.Point2f rv ) {
+	public Point2f getPositionBeginUsedAtRuntime( Point2f rv ) {
 		rv.set( m_posBeginUsedAtRuntime );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getPositionBeginUsedAtRuntime() {
-		return getPositionBeginUsedAtRuntime( new edu.cmu.cs.dennisc.math.Point2f() );
+	public Point2f getPositionBeginUsedAtRuntime() {
+		return getPositionBeginUsedAtRuntime( new Point2f() );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f accessPositionBegin() {
+	public Point2f accessPositionBegin() {
 		return m_posBegin;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getPositionBegin( edu.cmu.cs.dennisc.math.Point2f rv ) {
+	public Point2f getPositionBegin( Point2f rv ) {
 		rv.set( m_posBegin );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getPositionBegin() {
-		return getPositionBegin( new edu.cmu.cs.dennisc.math.Point2f() );
+	public Point2f getPositionBegin() {
+		return getPositionBegin( new Point2f() );
 	}
 
-	public void setPositionBegin( edu.cmu.cs.dennisc.math.Point2f posBegin ) {
+	public void setPositionBegin( Point2f posBegin ) {
 		if( posBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
 			m_posBegin.set( posBegin );
 		} else {
@@ -102,27 +109,27 @@ public class PositionAnimation extends SubjectAsSeenByAnimation {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f accessPositionEnd() {
+	public Point2f accessPositionEnd() {
 		return m_posEnd;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getPositionEnd( edu.cmu.cs.dennisc.math.Point2f rv ) {
+	public Point2f getPositionEnd( Point2f rv ) {
 		rv.set( m_posEnd );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point2f getPositionEnd() {
-		return getPositionEnd( new edu.cmu.cs.dennisc.math.Point2f() );
+	public Point2f getPositionEnd() {
+		return getPositionEnd( new Point2f() );
 	}
 
-	public void setPositionEnd( edu.cmu.cs.dennisc.math.Point2f posEnd ) {
+	public void setPositionEnd( Point2f posEnd ) {
 		m_posEnd.set( posEnd );
 	}
 
 	@Override
 	public void prologue() {
 		if( m_posBegin.isNaN() ) {
-			java.awt.Point p = javax.swing.SwingUtilities.convertPoint( getSubject().getParent(), getSubject().getX(), getSubject().getY(), getAsSeenBy() );
+			Point p = SwingUtilities.convertPoint( getSubject().getParent(), getSubject().getX(), getSubject().getY(), getAsSeenBy() );
 			m_posBeginUsedAtRuntime.set( p.x, p.y );
 		} else {
 			m_posBeginUsedAtRuntime.set( m_posBegin );
@@ -131,14 +138,14 @@ public class PositionAnimation extends SubjectAsSeenByAnimation {
 
 	@Override
 	public void setPortion( double portion ) {
-		edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_posRuntime, m_posBeginUsedAtRuntime, m_posEnd, (float)portion );
-		java.awt.Point p = javax.swing.SwingUtilities.convertPoint( getAsSeenBy(), (int)m_posRuntime.x, (int)m_posRuntime.y, getSubject().getParent() );
+		InterpolationUtilities.interpolate( m_posRuntime, m_posBeginUsedAtRuntime, m_posEnd, (float)portion );
+		Point p = SwingUtilities.convertPoint( getAsSeenBy(), (int)m_posRuntime.x, (int)m_posRuntime.y, getSubject().getParent() );
 		getSubject().setLocation( p );
 	}
 
 	@Override
 	public void epilogue() {
-		java.awt.Point p = javax.swing.SwingUtilities.convertPoint( getAsSeenBy(), (int)m_posEnd.x, (int)m_posEnd.y, getSubject().getParent() );
+		Point p = SwingUtilities.convertPoint( getAsSeenBy(), (int)m_posEnd.x, (int)m_posEnd.y, getSubject().getParent() );
 		getSubject().setLocation( p );
 		m_posBeginUsedAtRuntime.setNaN();
 	}

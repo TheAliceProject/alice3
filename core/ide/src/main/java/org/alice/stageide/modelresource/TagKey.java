@@ -42,7 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
+import javax.swing.JComponent;
 
 /**
  * @author Dennis Cosgrove
@@ -74,11 +77,11 @@ public abstract class TagKey extends ResourceKey {
 
 	@Override
 	public String getLocalizedDisplayText() {
-		return AliceResourceUtilties.getLocalizedTag( getInternalText(), javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getLocalizedTag( getInternalText(), JComponent.getDefaultLocale() );
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+	public InstanceCreation createInstanceCreation() {
 		return null;
 	}
 

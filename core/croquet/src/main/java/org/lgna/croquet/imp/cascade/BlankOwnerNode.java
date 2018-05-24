@@ -43,10 +43,12 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.CascadeBlankOwner;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlankOwnerNode<F, B, M extends org.lgna.croquet.CascadeBlankOwner<F, B>> extends AbstractItemNode<F, B, M> {
+public abstract class BlankOwnerNode<F, B, M extends CascadeBlankOwner<F, B>> extends AbstractItemNode<F, B, M> {
 	public BlankOwnerNode( M model ) {
 		super( model );
 	}

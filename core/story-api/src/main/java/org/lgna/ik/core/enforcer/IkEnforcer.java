@@ -1,10 +1,12 @@
 package org.lgna.ik.core.enforcer;
 
+import org.lgna.story.implementation.JointedModelImp;
+
 public abstract class IkEnforcer {
 
-	protected final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp;
+	protected final JointedModelImp<?, ?> jointedModelImp;
 
-	public IkEnforcer( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp ) {
+	public IkEnforcer( JointedModelImp<?, ?> jointedModelImp ) {
 		this.jointedModelImp = jointedModelImp;
 	}
 }

@@ -42,20 +42,26 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
 
 /**
  * @author Matt May
  */
 public class ChangeAnimationProcedureDialog extends AnimationProcedureDialog {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, ChangeAnimationProcedureDialog> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserMethod, ChangeAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static ChangeAnimationProcedureDialog getInstance( org.lgna.project.ast.UserMethod method ) {
-		if( org.lgna.ik.poser.croquet.AnimatorComposite.isStrictlyAnimation( method ) ) {
-			return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, ChangeAnimationProcedureDialog>() {
+	public static ChangeAnimationProcedureDialog getInstance( UserMethod method ) {
+		if( AnimatorComposite.isStrictlyAnimation( method ) ) {
+			return map.getInitializingIfAbsent( method, new InitializingIfAbsentMap.Initializer<UserMethod, ChangeAnimationProcedureDialog>() {
 				@Override
-				public ChangeAnimationProcedureDialog initialize( org.lgna.project.ast.UserMethod method ) {
+				public ChangeAnimationProcedureDialog initialize( UserMethod method ) {
 					return new ChangeAnimationProcedureDialog( method );
 				}
 			} );
@@ -64,12 +70,12 @@ public class ChangeAnimationProcedureDialog extends AnimationProcedureDialog {
 		}
 	}
 
-	private ChangeAnimationProcedureDialog( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "ec6e475b-bff3-4573-a444-37930e5fbe49" ), org.lgna.ik.poser.croquet.AnimatorComposite.getDialogForUserMethod( method ) );
+	private ChangeAnimationProcedureDialog( UserMethod method ) {
+		super( UUID.fromString( "ec6e475b-bff3-4573-a444-37930e5fbe49" ), AnimatorComposite.getDialogForUserMethod( method ) );
 	}
 
 	@Override
 	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit( completionStep, getAnimatorComposite().getMethod(), getAnimatorComposite().getControlComposite().createMethodBody() );
+		return new ChangeMethodBodyEdit( completionStep, getAnimatorComposite().getMethod(), getAnimatorComposite().getControlComposite().createMethodBody() );
 	}
 }

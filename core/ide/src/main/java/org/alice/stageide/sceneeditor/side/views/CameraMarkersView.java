@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.views;
 
+import org.alice.stageide.sceneeditor.side.CameraMarkersToolPalette;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CameraMarkersView extends MarkersView {
-	public CameraMarkersView( org.alice.stageide.sceneeditor.side.CameraMarkersToolPalette composite ) {
+	public CameraMarkersView( CameraMarkersToolPalette composite ) {
 		super( composite );
 	}
 }

@@ -43,12 +43,33 @@
 
 package org.alice.ide.resource.manager;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.event.NameEvent;
+import edu.cmu.cs.dennisc.pattern.event.NameListener;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.resource.manager.views.ResourceManagerView;
+import org.lgna.common.Resource;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.Project;
+import org.lgna.project.event.ResourceEvent;
+import org.lgna.project.event.ResourceListener;
+
+import javax.swing.ListSelectionModel;
+import javax.swing.table.TableModel;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
-	public ResourceManagerComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
+public final class ResourceManagerComposite extends LazyOperationUnadornedDialogCoreComposite<ResourceManagerView> {
+	public ResourceManagerComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
@@ -68,30 +89,30 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		return this.renameResourceComposite;
 	}
 
-	public org.lgna.croquet.Operation getRemoveResourceOperation() {
+	public Operation getRemoveResourceOperation() {
 		return this.removeResourceOperation;
 	}
 
-	public org.lgna.croquet.Operation getReloadContentOperation() {
+	public Operation getReloadContentOperation() {
 		return this.reloadContentOperation;
 	}
 
 	@Override
-	protected org.alice.ide.resource.manager.views.ResourceManagerView createView() {
-		return new org.alice.ide.resource.manager.views.ResourceManagerView( this );
+	protected ResourceManagerView createView() {
+		return new ResourceManagerView( this );
 	}
 
-	private void reloadTableModel( org.lgna.project.Project project ) {
+	private void reloadTableModel( Project project ) {
 		this.resourcesState.reloadTableModel( project );
-		java.util.Collection<org.lgna.common.Resource> currentResources = this.resourcesState.getItems();
-		for( org.lgna.common.Resource resource : this.previousResources ) {
+		Collection<Resource> currentResources = this.resourcesState.getItems();
+		for( Resource resource : this.previousResources ) {
 			if( currentResources.contains( resource ) ) {
 				//pass
 			} else {
 				resource.removeNameListener( this.nameListener );
 			}
 		}
-		for( org.lgna.common.Resource resource : currentResources ) {
+		for( Resource resource : currentResources ) {
 			if( this.previousResources.contains( resource ) ) {
 				//pass
 			} else {
@@ -101,10 +122,10 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		this.previousResources = currentResources;
 	}
 
-	private org.lgna.project.Project getProject() {
+	private Project getProject() {
 		//TODO: use this.projectDocumentFrame
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project;
+		IDE ide = IDE.getActiveInstance();
+		Project project;
 		if( ide != null ) {
 			project = ide.getProject();
 		} else {
@@ -134,14 +155,14 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 			this.projectBeingListenedTo.removeResourceListener( this.resourceListener );
 		}
 		this.resourcesState.removeNewSchoolValueListener( this.rowListener );
-		for( org.lgna.common.Resource resource : this.previousResources ) {
+		for( Resource resource : this.previousResources ) {
 			resource.removeNameListener( this.nameListener );
 		}
-		this.previousResources = java.util.Collections.emptyList();
+		this.previousResources = Collections.emptyList();
 		super.handlePostDeactivation();
 	}
 
-	private void handleSelection( org.lgna.common.Resource nextValue ) {
+	private void handleSelection( Resource nextValue ) {
 		boolean isSelected = nextValue != null;
 		String renameAndReplaceToolTipText;
 
@@ -149,8 +170,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		boolean isReferenced;
 		if( isSelected ) {
 
-			javax.swing.table.TableModel resourceTableModel = this.resourcesState.getSwingModel().getTableModel();
-			javax.swing.ListSelectionModel listSelectionModel = this.resourcesState.getSwingModel().getListSelectionModel();
+			TableModel resourceTableModel = this.resourcesState.getSwingModel().getTableModel();
+			ListSelectionModel listSelectionModel = this.resourcesState.getSwingModel().getListSelectionModel();
 
 			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
 			renameAndReplaceToolTipText = null;
@@ -173,45 +194,45 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		this.removeResourceOperation.setToolTipText( removeToolTipText );
 	}
 
-	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
+	private final ResourceListener resourceListener = new ResourceListener() {
 		@Override
-		public void resourceAdded( org.lgna.project.event.ResourceEvent e ) {
+		public void resourceAdded( ResourceEvent e ) {
 			reloadTableModel();
 		}
 
 		@Override
-		public void resourceRemoved( org.lgna.project.event.ResourceEvent e ) {
+		public void resourceRemoved( ResourceEvent e ) {
 			reloadTableModel();
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.pattern.event.NameListener nameListener = new edu.cmu.cs.dennisc.pattern.event.NameListener() {
+	private final NameListener nameListener = new NameListener() {
 		@Override
-		public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+		public void nameChanging( NameEvent nameEvent ) {
 		}
 
 		@Override
-		public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nameEvent );
+		public void nameChanged( NameEvent nameEvent ) {
+			Logger.outln( nameEvent );
 			getView().repaint();
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.event.ValueListener<org.lgna.common.Resource>() {
+	private final ValueListener<Resource> rowListener = new ValueListener<Resource>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.common.Resource> e ) {
+		public void valueChanged( ValueEvent<Resource> e ) {
 			handleSelection( e.getNextValue() );
 		}
 	};
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 	private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();
-	private final org.lgna.croquet.Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
-	private final org.lgna.croquet.Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
+	private final Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
+	private final Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
 	private final RenameResourceComposite renameResourceComposite = new RenameResourceComposite( this.resourcesState );
 	private final ImportImageResourceOperation importImageResourceOperation = new ImportImageResourceOperation();
 	private final ImportAudioResourceOperation importAudioResourceOperation = new ImportAudioResourceOperation();
 
-	private java.util.Collection<org.lgna.common.Resource> previousResources = java.util.Collections.emptyList();
-	private org.lgna.project.Project projectBeingListenedTo;
+	private Collection<Resource> previousResources = Collections.emptyList();
+	private Project projectBeingListenedTo;
 }

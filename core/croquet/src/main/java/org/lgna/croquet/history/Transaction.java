@@ -42,13 +42,29 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.Context;
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.event.AddStepEvent;
+import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Transaction extends TransactionNode<TransactionHistory> {
 
-	private static class DescendantStepIterator implements java.util.Iterator<Step<?>> {
-		private final java.util.List<Transaction> transactions = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private static class DescendantStepIterator implements Iterator<Step<?>> {
+		private final List<Transaction> transactions = Lists.newLinkedList();
 		private int transactionIndex;
 		private int stepIndex;
 
@@ -93,7 +109,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 				}
 				return rv;
 			} else {
-				throw new java.util.NoSuchElementException();
+				throw new NoSuchElementException();
 			}
 		}
 
@@ -103,7 +119,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	private final java.util.List<PrepStep<?>> prepSteps;
+	private final List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
 
 	public static Transaction createAndAddToHistory( TransactionHistory owner ) {
@@ -114,12 +130,12 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
-		this.prepSteps = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		this.prepSteps = Lists.newLinkedList();
 		this.completionStep = null;
 	}
 
 	@Override
-	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
+	protected void appendContexts( List<Context> out ) {
 		for( PrepStep<?> prepStep : this.prepSteps ) {
 			prepStep.appendContexts( out );
 		}
@@ -128,15 +144,15 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	public Iterable<org.lgna.croquet.Context> getAllContexts() {
-		java.util.List<org.lgna.croquet.Context> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public Iterable<Context> getAllContexts() {
+		List<Context> rv = Lists.newLinkedList();
 		this.appendContexts( rv );
 		return rv;
 	}
 
-	public <C extends org.lgna.croquet.Context> C findFirstContext( Step<?> step, Class<C> cls ) {
+	public <C extends Context> C findFirstContext( Step<?> step, Class<C> cls ) {
 		while( step != null ) {
-			for( org.lgna.croquet.Context context : step.getContexts() ) {
+			for( Context context : step.getContexts() ) {
 				if( cls.isAssignableFrom( context.getClass() ) ) {
 					return cls.cast( context );
 				}
@@ -150,17 +166,17 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 		CompletionStep<?> grandparent = this.getFirstAncestorAssignableTo( CompletionStep.class );
 		if( grandparent != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "note: searching outside transaction", cls );
+			Logger.info( "note: searching outside transaction", cls );
 			return grandparent.findFirstContext( cls );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls );
+			Logger.severe( cls );
 			return null;
 		}
 	}
 
-	public boolean containsPrepStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.PrepModel prepModel, Class<? extends org.lgna.croquet.history.PrepStep> cls ) {
-		Iterable<org.lgna.croquet.history.PrepStep<?>> prepSteps = transaction.getPrepSteps();
-		for( org.lgna.croquet.history.PrepStep<?> prepStep : prepSteps ) {
+	public boolean containsPrepStep( Transaction transaction, PrepModel prepModel, Class<? extends PrepStep> cls ) {
+		Iterable<PrepStep<?>> prepSteps = transaction.getPrepSteps();
+		for( PrepStep<?> prepStep : prepSteps ) {
 			if( ( cls == null ) || cls.isAssignableFrom( prepStep.getClass() ) ) {
 				if( prepStep.getModel() == prepModel ) {
 					return true;
@@ -178,22 +194,22 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	public java.util.ListIterator<PrepStep<?>> prepStepListIterator() {
+	public ListIterator<PrepStep<?>> prepStepListIterator() {
 		return this.prepSteps.listIterator();
 	}
 
-	public java.util.Iterator<Step<?>> childStepIterator() {
+	public Iterator<Step<?>> childStepIterator() {
 		return new DescendantStepIterator( this, false );
 	}
 
-	public java.util.Iterator<Step<?>> descendantStepIterator() {
+	public Iterator<Step<?>> descendantStepIterator() {
 		return new DescendantStepIterator( this, true );
 	}
 
 	public Iterable<Step<?>> getChildSteps() {
 		return new Iterable<Step<?>>() {
 			@Override
-			public java.util.Iterator<org.lgna.croquet.history.Step<?>> iterator() {
+			public Iterator<Step<?>> iterator() {
 				return Transaction.this.childStepIterator();
 			}
 		};
@@ -202,14 +218,14 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	public Iterable<Step<?>> getDescendantSteps() {
 		return new Iterable<Step<?>>() {
 			@Override
-			public java.util.Iterator<org.lgna.croquet.history.Step<?>> iterator() {
+			public Iterator<Step<?>> iterator() {
 				return Transaction.this.descendantStepIterator();
 			}
 		};
 	}
 
 	public void addMenuSelection( MenuSelection menuSelection ) {
-		java.util.ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
+		ListIterator<PrepStep<?>> iterator = this.prepSteps.listIterator( this.prepSteps.size() );
 		while( iterator.hasPrevious() ) {
 			PrepStep<?> prepStep = iterator.previous();
 			if( prepStep instanceof MenuItemSelectStep ) {
@@ -226,7 +242,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		MenuItemSelectStep.createAndAddToTransaction( this, menuSelection.getMenuBarComposite(), menuSelection.getMenuItemPrepModels(), menuSelection.getTrigger() );
 	}
 
-	public org.lgna.croquet.edits.Edit getEdit() {
+	public Edit getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
 		} else {
@@ -267,13 +283,13 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		this.prepSteps.clear();
 	}
 
-	public org.lgna.croquet.history.PrepStep<?>[] getPrepStepsAsArray() {
-		org.lgna.croquet.history.PrepStep<?>[] rv = new org.lgna.croquet.history.PrepStep[ this.prepSteps.size() ];
+	public PrepStep<?>[] getPrepStepsAsArray() {
+		PrepStep<?>[] rv = new PrepStep[ this.prepSteps.size() ];
 		return this.prepSteps.toArray( rv );
 	}
 
-	public void setPrepSteps( org.lgna.croquet.history.PrepStep<?>... prepSteps ) {
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( this.prepSteps, prepSteps );
+	public void setPrepSteps( PrepStep<?>... prepSteps ) {
+		ArrayUtilities.set( this.prepSteps, prepSteps );
 	}
 
 	public Iterable<PrepStep<?>> getPrepSteps() {
@@ -294,7 +310,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddStepEvent( this, step );
+		Event<?> e = new AddStepEvent( this, step );
 		step.fireChanging( e );
 		if( step instanceof PrepStep<?> ) {
 			this.prepSteps.add( (PrepStep<?>)step );
@@ -314,11 +330,11 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		return this.completionStep;
 	}
 
-	public <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory subTransactionHistory ) {
+	public <M extends CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, Trigger trigger, TransactionHistory subTransactionHistory ) {
 		return CompletionStep.createAndAddToTransaction( this, model, trigger, subTransactionHistory );
 	}
 
-	public <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public <M extends CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, Trigger trigger ) {
 		return this.createAndSetCompletionStep( model, trigger, null );
 	}
 

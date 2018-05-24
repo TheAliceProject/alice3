@@ -42,11 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.code.edits;
 
+import org.alice.ide.code.InsertCopiedStatementOperation;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
+import javax.swing.undo.CannotUndoException;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class InsertCopiedStatementEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.code.InsertCopiedStatementOperation> {
-	public InsertCopiedStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.code.InsertCopiedStatementOperation> step, org.lgna.project.ast.BlockStatement blockStatement, int index, org.lgna.project.ast.Statement statement ) {
+public final class InsertCopiedStatementEdit extends AbstractEdit<InsertCopiedStatementOperation> {
+	public InsertCopiedStatementEdit( CompletionStep<InsertCopiedStatementOperation> step, BlockStatement blockStatement, int index, Statement statement ) {
 		super( step );
 		this.blockStatement = blockStatement;
 		this.index = index;
@@ -56,26 +67,26 @@ public final class InsertCopiedStatementEdit extends org.lgna.croquet.edits.Abst
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	public void undoInternal() {
 		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
 			this.blockStatement.statements.remove( this.index );
-			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+			ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		} else {
-			throw new javax.swing.undo.CannotUndoException();
+			throw new CannotUndoException();
 		}
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "copy: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.statement, Application.getLocale() );
 	}
 
-	private final org.lgna.project.ast.BlockStatement blockStatement;
+	private final BlockStatement blockStatement;
 	private final int index;
-	private final org.lgna.project.ast.Statement statement;
+	private final Statement statement;
 }

@@ -42,20 +42,25 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JImageView;
+import org.lgna.croquet.views.SwingComponentView;
+
+import java.awt.Image;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.cs.dennisc.javax.swing.components.JImageView> {
+public class ImageView extends SwingComponentView<JImageView> {
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JImageView createAwtComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JImageView();
+	protected JImageView createAwtComponent() {
+		return new JImageView();
 	}
 
-	public java.awt.Image getImage() {
+	public Image getImage() {
 		return this.getAwtComponent().getImage();
 	}
 
-	public void setImage( java.awt.Image image ) {
+	public void setImage( Image image ) {
 		this.getAwtComponent().setImage( image );
 	}
 }

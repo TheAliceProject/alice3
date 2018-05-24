@@ -53,6 +53,7 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
+import org.lgna.project.virtualmachine.ReleaseVirtualMachine;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Pose;
 
@@ -65,7 +66,7 @@ import edu.cmu.cs.dennisc.pattern.Crawler;
  */
 public class AnimationParser implements Crawler {
 
-	org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+	ReleaseVirtualMachine vm = new ReleaseVirtualMachine();
 	double currentTime = 0;
 	ArrayList<KeyFrameData> dataList = Lists.newArrayList();
 	ArrayList<AnimationStyle> styleList = Lists.newArrayList();

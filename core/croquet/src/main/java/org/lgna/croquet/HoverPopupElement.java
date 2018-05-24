@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.HoverPopupView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +53,7 @@ public class HoverPopupElement extends AbstractElement { //todo
 	private final PopupCoreComposite<?> composite;
 
 	public HoverPopupElement( PopupCoreComposite<?> composite ) {
-		super( java.util.UUID.fromString( "ff26c0ef-5570-4b59-bba5-0a7030290ec5" ) );
+		super( UUID.fromString( "ff26c0ef-5570-4b59-bba5-0a7030290ec5" ) );
 		this.composite = composite;
 	}
 
@@ -61,7 +65,7 @@ public class HoverPopupElement extends AbstractElement { //todo
 	protected void localize() {
 	}
 
-	public org.lgna.croquet.views.HoverPopupView createHoverPopupView() {
-		return new org.lgna.croquet.views.HoverPopupView( this );
+	public HoverPopupView createHoverPopupView() {
+		return new HoverPopupView( this );
 	}
 }

@@ -42,16 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.InterpolationUtilities;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class OrientationAnimation extends AffineAnimation {
-	public static final edu.cmu.cs.dennisc.math.UnitQuaternion USE_EXISTING_VALUE_AT_RUN_TIME = null;
+	public static final UnitQuaternion USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_quatBegin = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_quatEnd = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
+	private UnitQuaternion m_quatBegin = UnitQuaternion.createNaN();
+	private UnitQuaternion m_quatEnd = UnitQuaternion.createNaN();
 
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_quatBeginUsedAtRuntime = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
+	private UnitQuaternion m_quatBeginUsedAtRuntime = UnitQuaternion.createNaN();
 
 	public OrientationAnimation() {
 		m_quatBeginUsedAtRuntime.setNaN();
@@ -59,40 +64,40 @@ public class OrientationAnimation extends AffineAnimation {
 		m_quatEnd.setNaN();
 	}
 
-	public OrientationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.UnitQuaternion quatBegin, edu.cmu.cs.dennisc.math.UnitQuaternion quatEnd ) {
+	public OrientationAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, UnitQuaternion quatBegin, UnitQuaternion quatEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		m_quatBeginUsedAtRuntime.setNaN();
 		setOrientationBegin( quatBegin );
 		setOrientationEnd( quatEnd );
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion accessOrientationBeginUsedAtRuntime() {
+	public UnitQuaternion accessOrientationBeginUsedAtRuntime() {
 		return m_quatBeginUsedAtRuntime;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientationBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.UnitQuaternion rv ) {
+	public UnitQuaternion getOrientationBeginUsedAtRuntime( UnitQuaternion rv ) {
 		rv.setValue( m_quatBeginUsedAtRuntime );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientationBeginUsedAtRuntime() {
-		return getOrientationBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN() );
+	public UnitQuaternion getOrientationBeginUsedAtRuntime() {
+		return getOrientationBeginUsedAtRuntime( UnitQuaternion.createNaN() );
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion accessOrientationBegin() {
+	public UnitQuaternion accessOrientationBegin() {
 		return m_quatBegin;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientationBegin( edu.cmu.cs.dennisc.math.UnitQuaternion rv ) {
+	public UnitQuaternion getOrientationBegin( UnitQuaternion rv ) {
 		rv.setValue( m_quatBegin );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientationBegin() {
-		return getOrientationBegin( edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN() );
+	public UnitQuaternion getOrientationBegin() {
+		return getOrientationBegin( UnitQuaternion.createNaN() );
 	}
 
-	public void setOrientationBegin( edu.cmu.cs.dennisc.math.UnitQuaternion quatBegin ) {
+	public void setOrientationBegin( UnitQuaternion quatBegin ) {
 		if( quatBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
 			m_quatBegin.setValue( quatBegin );
 		} else {
@@ -100,20 +105,20 @@ public class OrientationAnimation extends AffineAnimation {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion accessOrientationEnd() {
+	public UnitQuaternion accessOrientationEnd() {
 		return m_quatEnd;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientationEnd( edu.cmu.cs.dennisc.math.UnitQuaternion rv ) {
+	public UnitQuaternion getOrientationEnd( UnitQuaternion rv ) {
 		rv.setValue( m_quatEnd );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOrientationEnd() {
-		return getOrientationEnd( edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN() );
+	public UnitQuaternion getOrientationEnd() {
+		return getOrientationEnd( UnitQuaternion.createNaN() );
 	}
 
-	public void setOrientationEnd( edu.cmu.cs.dennisc.math.UnitQuaternion quatEnd ) {
+	public void setOrientationEnd( UnitQuaternion quatEnd ) {
 		m_quatEnd.setValue( quatEnd );
 	}
 
@@ -128,7 +133,7 @@ public class OrientationAnimation extends AffineAnimation {
 
 	@Override
 	public void setPortion( double portion ) {
-		getSubject().setAxesOnly( edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_quatBeginUsedAtRuntime, m_quatEnd, portion ), getAsSeenBy() );
+		getSubject().setAxesOnly( InterpolationUtilities.interpolate( m_quatBeginUsedAtRuntime, m_quatEnd, portion ), getAsSeenBy() );
 	}
 
 	@Override

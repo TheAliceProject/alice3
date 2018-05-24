@@ -43,12 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Fog;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrFog<T extends edu.cmu.cs.dennisc.scenegraph.Fog> extends GlrAffector<T> {
+public abstract class GlrFog<T extends Fog> extends GlrAffector<T> {
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		rc.setIsFogEnabled( true );
@@ -56,7 +58,7 @@ public abstract class GlrFog<T extends edu.cmu.cs.dennisc.scenegraph.Fog> extend
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.color ) {
 			owner.color.getValue().getAsArray( this.color );
 		} else {

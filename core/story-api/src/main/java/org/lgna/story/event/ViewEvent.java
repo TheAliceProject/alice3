@@ -42,14 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
-public abstract class ViewEvent extends AbstractEvent {
-	private final org.lgna.story.SModel model;
+import org.lgna.story.SModel;
 
-	public ViewEvent( org.lgna.story.SModel model ) {
+public abstract class ViewEvent extends AbstractEvent {
+	private final SModel model;
+
+	public ViewEvent( SModel model ) {
 		this.model = model;
 	}
 
-	public org.lgna.story.SModel getModel() {
+	public SModel getModel() {
 		return model;
 	}
 }

@@ -42,31 +42,39 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.PlainStringValue;
+
+import javax.swing.JTextArea;
+import javax.swing.plaf.basic.BasicTextAreaUI;
+import java.awt.Color;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextArea> {
-	public ImmutableTextArea( org.lgna.croquet.PlainStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+public class ImmutableTextArea extends ImmutableTextComponent<JTextArea> {
+	public ImmutableTextArea( PlainStringValue value, float fontScalar, TextAttribute<?>... textAttributes ) {
 		super( value, fontScalar, textAttributes );
 	}
 
 	@Override
-	protected javax.swing.JTextArea createAwtComponent() {
-		javax.swing.JTextArea rv = new javax.swing.JTextArea( this.getValue().getDocument() ) {
+	protected JTextArea createAwtComponent() {
+		JTextArea rv = new JTextArea( this.getValue().getDocument() ) {
 			@Override
-			public java.awt.Color getBackground() {
+			public Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
 
 			@Override
 			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicTextAreaUI() );
+				this.setUI( new BasicTextAreaUI() );
 			}
 		};
 		this.initializeJComponent( rv );
 		rv.setWrapStyleWord( true );
 		rv.setLineWrap( true );
-		rv.setMinimumSize( new java.awt.Dimension() );
+		rv.setMinimumSize( new Dimension() );
 		return rv;
 	}
 }

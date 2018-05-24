@@ -43,47 +43,60 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaConstructor;
+import org.lgna.project.ast.JavaConstructorParameter;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.story.resources.sims2.BottomPiece;
+import org.lgna.story.resources.sims2.Outfit;
+import org.lgna.story.resources.sims2.TopAndBottomOutfit;
+import org.lgna.story.resources.sims2.TopPiece;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SimsExpressionCreator extends ExpressionCreator {
 
-	private org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) throws CannotCreateExpressionException {
+	private Expression createOutfitExpression( Outfit outfit ) throws CannotCreateExpressionException {
 		if( outfit != null ) {
-			if( outfit instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
-				org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> topAndBottomOutfit = (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)outfit;
-				org.lgna.story.resources.sims2.TopPiece topPiece = topAndBottomOutfit.getTopPiece();
-				org.lgna.story.resources.sims2.BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
+			if( outfit instanceof TopAndBottomOutfit<?, ?> ) {
+				TopAndBottomOutfit<?, ?> topAndBottomOutfit = (TopAndBottomOutfit<?, ?>)outfit;
+				TopPiece topPiece = topAndBottomOutfit.getTopPiece();
+				BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
 
-				org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( outfit.getClass() );
-				org.lgna.project.ast.JavaConstructor constructor = type.getDeclaredConstructors().get( 0 );
-				java.util.List<org.lgna.project.ast.JavaConstructorParameter> parameters = constructor.getRequiredParameters();
+				JavaType type = JavaType.getInstance( outfit.getClass() );
+				JavaConstructor constructor = type.getDeclaredConstructors().get( 0 );
+				List<JavaConstructorParameter> parameters = constructor.getRequiredParameters();
 				if( parameters.size() == 2 ) {
 					if( parameters.get( 0 ).getValueType().isAssignableFrom( topPiece.getClass() ) ) {
 						if( parameters.get( 1 ).getValueType().isAssignableFrom( bottomPiece.getClass() ) ) {
-							org.lgna.project.ast.Expression topExpression = this.createExpression( topPiece );
-							org.lgna.project.ast.Expression bottomExpression = this.createExpression( bottomPiece );
-							return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, topExpression, bottomExpression );
+							Expression topExpression = this.createExpression( topPiece );
+							Expression bottomExpression = this.createExpression( bottomPiece );
+							return AstUtilities.createInstanceCreation( constructor, topExpression, bottomExpression );
 						}
 					}
 				}
 				throw new CannotCreateExpressionException( outfit );
 			} else {
 				if( outfit.getClass().isEnum() ) {
-					return this.createEnumExpression( (Enum<? extends org.lgna.story.resources.sims2.Outfit>)outfit );
+					return this.createEnumExpression( (Enum<? extends Outfit>)outfit );
 				} else {
 					throw new CannotCreateExpressionException( outfit );
 				}
 			}
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
-		if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
-			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
+	protected Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
+		if( value instanceof TopAndBottomOutfit<?, ?> ) {
+			return this.createOutfitExpression( (TopAndBottomOutfit<?, ?>)value );
 		} else {
 			return super.createCustomExpression( value );
 		}

@@ -42,21 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.event;
 
+import javax.swing.event.MouseInputListener;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LenientMouseClickAdapter implements javax.swing.event.MouseInputListener /* java.awt.event.MouseListener, java.awt.event.MouseMotionListener */{
+public abstract class LenientMouseClickAdapter implements MouseInputListener /* java.awt.event.MouseListener, java.awt.event.MouseMotionListener */{
 	private static final long CLICK_THRESHOLD_MILLIS = 500; //todo: query windowing system 
 	private static final long CLICK_THRESHOLD_PIXELS_SQUARED = 25; //todo: query windowing system 
 	private boolean isStillClick = false;
 	private boolean isStillUnclick = false;
-	private java.awt.event.MouseEvent ePressed = null;
-	private java.awt.event.MouseEvent eReleased = null;
+	private MouseEvent ePressed = null;
+	private MouseEvent eReleased = null;
 	private int count = 0;
 
-	protected abstract void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote );
+	protected abstract void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote );
 
-	private boolean isWithinThreshold( java.awt.event.MouseEvent eThen, java.awt.event.MouseEvent eNow ) {
+	private boolean isWithinThreshold( MouseEvent eThen, MouseEvent eNow ) {
 		if( eThen != null ) {
 			long whenDelta = eNow.getWhen() - eThen.getWhen();
 			if( whenDelta < CLICK_THRESHOLD_MILLIS ) {
@@ -72,28 +75,28 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 		}
 	}
 
-	private void updateStillClick( java.awt.event.MouseEvent eNow ) {
+	private void updateStillClick( MouseEvent eNow ) {
 		if( this.isStillClick ) {
 			this.isStillClick = this.isWithinThreshold( this.ePressed, eNow );
 		}
 	}
 
-	private void updateStillUnclick( java.awt.event.MouseEvent eNow ) {
+	private void updateStillUnclick( MouseEvent eNow ) {
 		if( this.isStillUnclick ) {
 			this.isStillUnclick = this.isWithinThreshold( this.eReleased, eNow );
 		}
 	}
 
 	@Override
-	public final void mouseEntered( java.awt.event.MouseEvent e ) {
+	public final void mouseEntered( MouseEvent e ) {
 	}
 
 	@Override
-	public final void mouseExited( java.awt.event.MouseEvent e ) {
+	public final void mouseExited( MouseEvent e ) {
 	}
 
 	@Override
-	public final void mousePressed( java.awt.event.MouseEvent e ) {
+	public final void mousePressed( MouseEvent e ) {
 		this.updateStillUnclick( e );
 		if( this.isStillUnclick ) {
 			//pass
@@ -105,7 +108,7 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 	}
 
 	@Override
-	public final void mouseReleased( java.awt.event.MouseEvent e ) {
+	public final void mouseReleased( MouseEvent e ) {
 		this.updateStillClick( e );
 		if( this.isStillClick ) {
 			this.count++;
@@ -118,16 +121,16 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 	}
 
 	@Override
-	public final void mouseClicked( java.awt.event.MouseEvent e ) {
+	public final void mouseClicked( MouseEvent e ) {
 	}
 
 	@Override
-	public final void mouseMoved( java.awt.event.MouseEvent e ) {
+	public final void mouseMoved( MouseEvent e ) {
 		this.updateStillUnclick( e );
 	}
 
 	@Override
-	public final void mouseDragged( java.awt.event.MouseEvent e ) {
+	public final void mouseDragged( MouseEvent e ) {
 		this.updateStillClick( e );
 	}
 }

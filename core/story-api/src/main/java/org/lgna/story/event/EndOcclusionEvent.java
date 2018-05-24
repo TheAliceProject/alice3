@@ -43,12 +43,14 @@
 
 package org.lgna.story.event;
 
+import org.lgna.story.SModel;
+
 /**
  * @author Matt May
  */
 public class EndOcclusionEvent extends OcclusionEvent {
 
-	public EndOcclusionEvent( org.lgna.story.SModel foreground, org.lgna.story.SModel background ) {
+	public EndOcclusionEvent( SModel foreground, SModel background ) {
 		super( foreground, background );
 	}
 

@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import org.alice.ide.declarationseditor.components.BackwardForwardView;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BackwardForwardComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.declarationseditor.components.BackwardForwardView> {
+public class BackwardForwardComposite extends SimpleComposite<BackwardForwardView> {
 	public BackwardForwardComposite() {
-		super( java.util.UUID.fromString( "47fbe002-73ba-4e9a-b415-da81acc11b4c" ) );
+		super( UUID.fromString( "47fbe002-73ba-4e9a-b415-da81acc11b4c" ) );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.components.BackwardForwardView createView() {
-		return new org.alice.ide.declarationseditor.components.BackwardForwardView( this );
+	protected BackwardForwardView createView() {
+		return new BackwardForwardView( this );
 	}
 }

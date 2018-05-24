@@ -42,16 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
+import org.alice.ide.croquet.models.help.views.AbstractIssueView;
+import org.alice.ide.croquet.models.information.RestartRequiredOperation;
+import org.alice.ide.issue.croquet.AnomalousSituationComposite;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.VerticalAlignment;
+
+import javax.swing.Icon;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.views.AbstractIssueView {
-	private static final javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( org.alice.ide.croquet.models.information.RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
+public class AnomalousSitutationView extends AbstractIssueView {
+	private static final Icon ICON = new ScaledIcon( RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
 
-	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
+	public AnomalousSitutationView( AnomalousSituationComposite composite ) {
 		super( composite );
-		org.lgna.croquet.views.Label iconLabel = new org.lgna.croquet.views.Label( ICON );
-		iconLabel.setVerticalAlignment( org.lgna.croquet.views.VerticalAlignment.TOP );
+		Label iconLabel = new Label( ICON );
+		iconLabel.setVerticalAlignment( VerticalAlignment.TOP );
 		this.addLineStartComponent( iconLabel );
 
 		Throwable throwable = composite.getThrowable();
@@ -70,15 +82,15 @@ public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.v
 		sb.append( "</body>" );
 		sb.append( "<html>" );
 
-		org.lgna.croquet.views.MigPanel centerPanel = new org.lgna.croquet.views.MigPanel();
-		centerPanel.addComponent( new org.lgna.croquet.views.Label( sb.toString() ), "wrap" );
+		MigPanel centerPanel = new MigPanel();
+		centerPanel.addComponent( new Label( sb.toString() ), "wrap" );
 		centerPanel.addComponent( createScrollPaneTextArea( composite.getStepsState() ), "wrap, growx" );
-		centerPanel.addComponent( new org.lgna.croquet.views.LineAxisPanel(
+		centerPanel.addComponent( new LineAxisPanel(
 				composite.getAreProjectAndImageAttachmentsDesired().createCheckBox(),
-				org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ),
+				BoxUtilities.createHorizontalSliver( 8 ),
 				composite.getShowApplicationContentPanelImageOperation().createHyperlink()
 				), "wrap" );
-		centerPanel.addComponent( new org.lgna.croquet.views.Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
+		centerPanel.addComponent( new Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
 
 		this.addCenterComponent( centerPanel );
 	}

@@ -43,11 +43,18 @@
 
 package org.alice.ide.projecturi;
 
+import org.alice.ide.recentprojects.RecentProjectsListData;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SingleSelectListState;
+
+import java.net.URI;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsUriSingleSelectListState extends org.lgna.croquet.SingleSelectListState<java.net.URI, org.alice.ide.recentprojects.RecentProjectsListData> {
+public class RecentProjectsUriSingleSelectListState extends SingleSelectListState<URI, RecentProjectsListData> {
 	public RecentProjectsUriSingleSelectListState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), -1, org.alice.ide.recentprojects.RecentProjectsListData.getInstance() );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), -1, RecentProjectsListData.getInstance() );
 	}
 }

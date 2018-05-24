@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.border;
 
+import java.awt.Insets;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SunkenBorder extends BevelBorder {
-	public SunkenBorder( java.awt.Insets insets ) {
+	public SunkenBorder( Insets insets ) {
 		super( insets, false );
 	}
 

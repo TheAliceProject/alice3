@@ -42,17 +42,28 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.PopupMenu;
+
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MenuModel extends AbstractMenuModel {
-	public MenuModel( java.util.UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
+	public MenuModel( UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
 		super( individualId, clsForI18N );
 	}
 
-	public MenuModel( java.util.UUID individualId ) {
+	public MenuModel( UUID individualId ) {
 		this( individualId, null );
 	}
 
@@ -60,13 +71,13 @@ public abstract class MenuModel extends AbstractMenuModel {
 		private MenuModel menuModel;
 
 		private InternalPopupPrepModel( MenuModel menuModel ) {
-			super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
+			super( UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 			this.menuModel = menuModel;
 		}
 
 		@Override
-		public Iterable<? extends org.lgna.croquet.Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( this.menuModel );
+		public Iterable<? extends Model> getChildren() {
+			return Lists.newLinkedList( this.menuModel );
 		}
 
 		@Override
@@ -79,10 +90,10 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		protected org.lgna.croquet.history.PopupPrepStep perform( final org.lgna.croquet.triggers.Trigger trigger ) {
-			final org.lgna.croquet.history.PopupPrepStep step = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
+		protected PopupPrepStep perform( final Trigger trigger ) {
+			final PopupPrepStep step = TransactionManager.addPopupPrepStep( this, trigger );
 
-			final org.lgna.croquet.views.PopupMenu popupMenu = new org.lgna.croquet.views.PopupMenu( this ) {
+			final PopupMenu popupMenu = new PopupMenu( this ) {
 				@Override
 				protected void handleDisplayable() {
 					prologue( trigger );
@@ -103,16 +114,16 @@ public abstract class MenuModel extends AbstractMenuModel {
 			//todo: investigate
 			this.menuModel.addPopupMenuListener( popupMenu );
 
-			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-				private javax.swing.event.PopupMenuEvent cancelEvent = null;
+			popupMenu.addPopupMenuListener( new PopupMenuListener() {
+				private PopupMenuEvent cancelEvent = null;
 
 				@Override
-				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+				public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
 					this.cancelEvent = null;
 				}
 
 				@Override
-				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+				public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
 					if( this.cancelEvent != null ) {
 						System.err.println( "todo: cancel" );
 						//step.getParent().cancel();
@@ -128,33 +139,33 @@ public abstract class MenuModel extends AbstractMenuModel {
 				}
 
 				@Override
-				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+				public void popupMenuCanceled( PopupMenuEvent e ) {
 					this.cancelEvent = e;
 				}
 			} );
 
-			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
+			popupMenu.addComponentListener( new ComponentListener() {
 				@Override
-				public void componentShown( java.awt.event.ComponentEvent e ) {
+				public void componentShown( ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
 
 				@Override
-				public void componentMoved( java.awt.event.ComponentEvent e ) {
+				public void componentMoved( ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
 
 				@Override
-				public void componentResized( java.awt.event.ComponentEvent e ) {
+				public void componentResized( ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 					step.handleResized( e );
 				}
 
 				@Override
-				public void componentHidden( java.awt.event.ComponentEvent e ) {
+				public void componentHidden( ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}

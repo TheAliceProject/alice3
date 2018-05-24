@@ -42,10 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.color;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class Color4f implements BinaryEncodableAndDecodable {
 	public static final Color4f BLACK = Color4f.createFromRgbInts( 0, 0, 0 );
 	public static final Color4f BLUE = Color4f.createFromRgbInts( 0, 0, 255 );
 	public static final Color4f CYAN = Color4f.createFromRgbInts( 0, 255, 255 );
@@ -82,7 +88,7 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		this( other.red, other.green, other.blue, other.alpha );
 	}
 
-	public Color4f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Color4f( BinaryDecoder binaryDecoder ) {
 		this.red = binaryDecoder.decodeFloat();
 		this.green = binaryDecoder.decodeFloat();
 		this.blue = binaryDecoder.decodeFloat();
@@ -102,7 +108,7 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.red );
 		binaryEncoder.encode( this.green );
 		binaryEncoder.encode( this.blue );
@@ -145,7 +151,7 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		return getAsArray( new float[ 4 ] );
 	}
 
-	public java.nio.FloatBuffer getAsFloatBuffer( java.nio.FloatBuffer rv ) {
+	public FloatBuffer getAsFloatBuffer( FloatBuffer rv ) {
 		rv.rewind();
 		rv.put( this.red );
 		rv.put( this.green );
@@ -155,8 +161,8 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		return rv;
 	}
 
-	public java.nio.FloatBuffer getAsFloatBuffer() {
-		return this.getAsFloatBuffer( java.nio.FloatBuffer.allocate( 4 ) );
+	public FloatBuffer getAsFloatBuffer() {
+		return this.getAsFloatBuffer( FloatBuffer.allocate( 4 ) );
 	}
 
 	@Override

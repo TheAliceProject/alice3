@@ -41,6 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -51,8 +53,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Developer tool to scan the story package and identify all methods that are marked as MethodTemplates but are
@@ -108,7 +112,7 @@ public class GenerateMethod18nProperties {
 	}
 
 	private static void listMethods() {
-		java.util.Set<String> methodNames = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		Set<String> methodNames = Sets.newHashSet();
 		try {
 			Class<?>[] classes = getClasses("org.lgna.story");
 			for (Class<?> aClass : classes) {
@@ -123,8 +127,8 @@ public class GenerateMethod18nProperties {
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-		List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( methodNames );
-		java.util.Collections.sort( list );
+		List<String> list = Lists.newArrayList( methodNames );
+		Collections.sort( list );
 		StringBuilder sb = new StringBuilder();
 		for( String methodName : list ) {
 			sb.append( methodName );

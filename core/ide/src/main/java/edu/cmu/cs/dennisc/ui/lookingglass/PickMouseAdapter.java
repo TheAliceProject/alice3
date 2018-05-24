@@ -42,49 +42,56 @@
  */
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> m_onscreenLookingGlass;
+public abstract class PickMouseAdapter implements MouseListener {
+	private OnscreenRenderTarget<?> m_onscreenLookingGlass;
 
 	public PickMouseAdapter() {
 		this( null );
 	}
 
-	public PickMouseAdapter( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public PickMouseAdapter( OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		setOnscreenLookingGlass( onscreenLookingGlass );
 	}
 
-	protected abstract void handlePickResult( edu.cmu.cs.dennisc.render.PickResult pickResult );
+	protected abstract void handlePickResult( PickResult pickResult );
 
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenLookingGlass() {
+	public OnscreenRenderTarget<?> getOnscreenLookingGlass() {
 		return m_onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public void setOnscreenLookingGlass( OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		m_onscreenLookingGlass = onscreenLookingGlass;
 	}
 
 	@Override
-	public void mousePressed( java.awt.event.MouseEvent e ) {
+	public void mousePressed( MouseEvent e ) {
 		assert m_onscreenLookingGlass != null;
-		handlePickResult( m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED ) );
+		handlePickResult( m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED ) );
 	}
 
 	@Override
-	public void mouseReleased( java.awt.event.MouseEvent e ) {
+	public void mouseReleased( MouseEvent e ) {
 	}
 
 	@Override
-	public void mouseClicked( java.awt.event.MouseEvent arg0 ) {
+	public void mouseClicked( MouseEvent arg0 ) {
 	}
 
 	@Override
-	public void mouseEntered( java.awt.event.MouseEvent e ) {
+	public void mouseEntered( MouseEvent e ) {
 	}
 
 	@Override
-	public void mouseExited( java.awt.event.MouseEvent e ) {
+	public void mouseExited( MouseEvent e ) {
 	}
 }

@@ -43,41 +43,52 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.util.awt.TextureRenderer;
+import com.jogamp.opengl.util.texture.TextureData;
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.texture.CustomTexture;
+
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrCustomTexture extends GlrTexture<edu.cmu.cs.dennisc.texture.CustomTexture> {
+public class GlrCustomTexture extends GlrTexture<CustomTexture> {
 	@Override
 	protected boolean isDirty() {
 		return owner.isAnimated() || super.isDirty();
 	}
 
-	public java.awt.Graphics2D createGraphics() {
+	public Graphics2D createGraphics() {
 		//		edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = this.sgE;
 		//		if( this.textureRenderer != null ) {
 		//			this.textureRenderer.dispose();
 		//		}
 		//		this.textureRenderer = new com.sun.opengl.util.awt.TextureRenderer( sgCustomTexture.getWidth(), sgCustomTexture.getHeight(), sgCustomTexture.isPotentiallyAlphaBlended() );
-		java.awt.Graphics2D g = this.textureRenderer.createGraphics();
+		Graphics2D g = this.textureRenderer.createGraphics();
 		//		sgCustomTexture.paint( g );
 		//this.textureRenderer.beginOrthoRendering( this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
 		return g;
 
 	}
 
-	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
+	public void commitGraphics( Graphics2D g, int x, int y, int width, int height ) {
 		//this.textureRenderer.drawOrthoRect( width, height );
 		//this.textureRenderer.sync( x, y, width, height );
 		this.textureRenderer.markDirty( x, y, width, height );
 		//this.textureRenderer.endOrthoRendering();
 	}
 
-	public java.awt.Image getImage() {
+	public Image getImage() {
 		return this.textureRenderer.getImage();
 	}
 
 	@Override
-	protected com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
 		boolean isNewTextureRendererRequired;
 		if( currentTextureData != null ) {
 			if( this.textureRenderer != null ) {
@@ -93,44 +104,44 @@ public class GlrCustomTexture extends GlrTexture<edu.cmu.cs.dennisc.texture.Cust
 			if( this.textureRenderer != null ) {
 				this.textureRenderer.dispose();
 			}
-			this.textureRenderer = new com.jogamp.opengl.util.awt.TextureRenderer( owner.getWidth(), owner.getHeight(), owner.isPotentiallyAlphaBlended() );
+			this.textureRenderer = new TextureRenderer( owner.getWidth(), owner.getHeight(), owner.isPotentiallyAlphaBlended() );
 		}
-		java.awt.Graphics2D g = this.textureRenderer.createGraphics();
+		Graphics2D g = this.textureRenderer.createGraphics();
 		owner.paint( g, this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
 		g.dispose();
 		this.textureRenderer.markDirty( 0, 0, this.textureRenderer.getWidth(), this.textureRenderer.getHeight() );
 
 		if( owner.isMipMappingDesired() ) {
-			java.awt.Image image = this.textureRenderer.getImage();
-			if( image instanceof java.awt.image.BufferedImage ) {
-				java.awt.image.BufferedImage bufferedImage = (java.awt.image.BufferedImage)image;
+			Image image = this.textureRenderer.getImage();
+			if( image instanceof BufferedImage ) {
+				BufferedImage bufferedImage = (BufferedImage)image;
 				if( owner.isPotentiallyAlphaBlended() ) {
 					//pass
 				} else {
 					try {
 						return newTextureData( gl, bufferedImage, true );
 					} catch( AssertionError ae ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
+						Logger.warning( "unable to directly generate mipmapped texture." );
 					} catch( RuntimeException re ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "unable to directly generate mipmapped texture." );
+						Logger.warning( "unable to directly generate mipmapped texture." );
 					}
 				}
-				java.awt.image.BufferedImage hackBI = new java.awt.image.BufferedImage( bufferedImage.getWidth(), bufferedImage.getHeight(), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR_PRE );
-				java.awt.Graphics2D hackG = hackBI.createGraphics();
-				hackG.drawImage( bufferedImage, 0, 0, edu.cmu.cs.dennisc.image.ImageUtilities.accessImageObserver() );
+				BufferedImage hackBI = new BufferedImage( bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_4BYTE_ABGR_PRE );
+				Graphics2D hackG = hackBI.createGraphics();
+				hackG.drawImage( bufferedImage, 0, 0, ImageUtilities.accessImageObserver() );
 				hackG.dispose();
 				bufferedImage = hackBI;
 				return newTextureData( gl, bufferedImage, true );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "textureRenderer.getTextureData()" );
+				Logger.todo( "textureRenderer.getTextureData()" );
 				return null;
 				//return this.textureRenderer.getTextureData();
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "textureRenderer.getTextureData()" );
+			Logger.todo( "textureRenderer.getTextureData()" );
 			return null;
 		}
 	}
 
-	private com.jogamp.opengl.util.awt.TextureRenderer textureRenderer = null;
+	private TextureRenderer textureRenderer = null;
 }

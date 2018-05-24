@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+
+import javax.swing.BorderFactory;
+import javax.swing.UIManager;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+import java.awt.Color;
+import java.awt.Container;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> extends SwingComponentView<J> {
-	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
+public abstract class MultiLineLabel<J extends JTextComponent> extends SwingComponentView<J> {
+	protected static Color getDesiredBackgroundColor( Container awtParent ) {
 		if( awtParent != null ) {
 			if( awtParent.isOpaque() ) {
 				return awtParent.getBackground();
@@ -54,13 +64,13 @@ public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> 
 				return getDesiredBackgroundColor( awtParent.getParent() );
 			}
 		} else {
-			return java.awt.Color.RED;
+			return Color.RED;
 		}
 	}
 
-	private final javax.swing.text.AbstractDocument document;
+	private final AbstractDocument document;
 
-	public MultiLineLabel( javax.swing.text.AbstractDocument document, String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public MultiLineLabel( AbstractDocument document, String text, float fontScalar, TextAttribute<?>... textAttributes ) {
 		this.document = document;
 		this.setText( text );
 		this.scaleFont( fontScalar );
@@ -70,7 +80,7 @@ public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> 
 	public String getText() {
 		try {
 			return this.document.getText( 0, this.document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
@@ -82,12 +92,12 @@ public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> 
 
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( text, ble );
 		}
 	}
 
-	protected abstract J createJTextComponent( javax.swing.text.AbstractDocument document );
+	protected abstract J createJTextComponent( AbstractDocument document );
 
 	@Override
 	protected final J createAwtComponent() {
@@ -96,11 +106,11 @@ public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> 
 		component.setEditable( false );
 		component.setCursor( null );
 		component.setFocusable( false );
-		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
+		component.setBorder( BorderFactory.createEmptyBorder() );
+		component.setFont( UIManager.getFont( "Label.font" ) );
 		component.setAlignmentX( 0.0f );
 		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
-		component.setDisabledTextColor( javax.swing.UIManager.getColor( disabledColorKey ) );
+		component.setDisabledTextColor( UIManager.getColor( disabledColorKey ) );
 		return component;
 	}
 

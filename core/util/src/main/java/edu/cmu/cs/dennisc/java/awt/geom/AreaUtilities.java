@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.geom.Area;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,58 +52,58 @@ public class AreaUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.awt.geom.Area createArea( java.awt.Shape shape ) {
+	public static Area createArea( java.awt.Shape shape ) {
 		if( shape != null ) {
-			return new java.awt.geom.Area( shape );
+			return new Area( shape );
 		} else {
 			//todo: return null?
-			return new java.awt.geom.Area();
+			return new Area();
 		}
 	}
 
-	public static java.awt.geom.Area createIntersection( java.awt.Shape a, java.awt.Shape b ) {
+	public static Area createIntersection( java.awt.Shape a, java.awt.Shape b ) {
 		if( a != null ) {
-			java.awt.geom.Area rv = new java.awt.geom.Area( a );
+			Area rv = new Area( a );
 			if( b != null ) {
-				rv.intersect( new java.awt.geom.Area( b ) );
+				rv.intersect( new Area( b ) );
 			} else {
 				//pass
 			}
 			return rv;
 		} else {
 			if( b != null ) {
-				return new java.awt.geom.Area( b );
+				return new Area( b );
 			} else {
 				//todo: return null?
-				return new java.awt.geom.Area();
+				return new Area();
 			}
 		}
 	}
 
-	public static java.awt.geom.Area createUnion( java.awt.Shape a, java.awt.Shape b ) {
+	public static Area createUnion( java.awt.Shape a, java.awt.Shape b ) {
 		if( a != null ) {
-			java.awt.geom.Area rv = new java.awt.geom.Area( a );
+			Area rv = new Area( a );
 			if( b != null ) {
-				rv.add( new java.awt.geom.Area( b ) );
+				rv.add( new Area( b ) );
 			} else {
 				//pass
 			}
 			return rv;
 		} else {
 			if( b != null ) {
-				return new java.awt.geom.Area( b );
+				return new Area( b );
 			} else {
 				//todo: return null?
-				return new java.awt.geom.Area();
+				return new Area();
 			}
 		}
 	}
 
-	public static java.awt.geom.Area createSubtraction( java.awt.Shape a, java.awt.Shape b ) {
+	public static Area createSubtraction( java.awt.Shape a, java.awt.Shape b ) {
 		assert a != null;
-		java.awt.geom.Area rv = new java.awt.geom.Area( a );
+		Area rv = new Area( a );
 		if( b != null ) {
-			rv.subtract( new java.awt.geom.Area( b ) );
+			rv.subtract( new Area( b ) );
 		} else {
 			//pass
 		}

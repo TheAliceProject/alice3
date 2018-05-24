@@ -42,61 +42,79 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.StringCodec;
+import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.member.views.FunctionTabView;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide.member.views.FunctionTabView> {
+public final class FunctionTabComposite extends MemberTabComposite<FunctionTabView> {
 	private static final String GROUP_BY_RETURN_TYPE_KEY = "groupByReturnType";
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ), this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ) );
+	private final ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ), this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ) );
 
 	public FunctionTabComposite() {
-		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel() );
+		super( UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel() );
 	}
 
 	@Override
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<String> getSortState() {
+	public ImmutableDataSingleSelectListState<String> getSortState() {
 		return this.sortState;
 	}
 
 	@Override
-	protected org.alice.ide.member.UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type ) {
+	protected UserMethodsSubComposite getUserMethodsSubComposite( NamedUserType type ) {
 		return UserFunctionsSubComposite.getInstance( type );
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+	protected boolean isAcceptable( AbstractMethod method ) {
 		return method.isFunction();
 	}
 
 	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryFunctionSubComposites();
+	protected List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryFunctionSubComposites();
 	}
 
 	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalFunctionSubComposites();
+	protected List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+		return IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalFunctionSubComposites();
 	}
 
-	private java.util.List<MethodsSubComposite> getByReturnTypeSubComposites() {
-		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private List<MethodsSubComposite> getByReturnTypeSubComposites() {
+		Map<AbstractType<?, ?, ?>, List<AbstractMethod>> map = Maps.newHashMap();
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+			AbstractType<?, ?, ?> type = instanceFactory.getValueType();
 			while( type != null ) {
-				for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-					org.lgna.project.ast.AbstractType<?, ?, ?> returnType = method.getReturnType();
-					if( returnType == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+				for( AbstractMethod method : type.getDeclaredMethods() ) {
+					AbstractType<?, ?, ?> returnType = method.getReturnType();
+					if( returnType == JavaType.VOID_TYPE ) {
 						//pass
 					} else {
 						if( isInclusionDesired( method ) ) {
-							java.util.List<org.lgna.project.ast.AbstractMethod> list = map.get( returnType );
+							List<AbstractMethod> list = map.get( returnType );
 							if( list != null ) {
 								//pass
 							} else {
-								list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+								list = Lists.newLinkedList();
 								map.put( returnType, list );
 							}
 							list.add( method );
@@ -111,10 +129,10 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 			}
 		}
 
-		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( map.keySet() );
-		java.util.Collections.sort( types, org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
-		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( types.size() );
-		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
+		List<AbstractType<?, ?, ?>> types = Lists.newArrayList( map.keySet() );
+		Collections.sort( types, IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
+		List<MethodsSubComposite> rv = Lists.newArrayListWithInitialCapacity( types.size() );
+		for( AbstractType<?, ?, ?> type : types ) {
 			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
 			subComposite.setMethods( map.get( type ) );
 			rv.add( subComposite );
@@ -123,7 +141,7 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	}
 
 	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
+	public List<MethodsSubComposite> getSubComposites() {
 		if( this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ).equals( this.getSortState().getValue() ) ) {
 			return this.getByReturnTypeSubComposites();
 		} else {
@@ -132,8 +150,8 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	}
 
 	@Override
-	protected org.alice.ide.member.views.FunctionTabView createView() {
-		return new org.alice.ide.member.views.FunctionTabView( this );
+	protected FunctionTabView createView() {
+		return new FunctionTabView( this );
 	}
 
 	@Override

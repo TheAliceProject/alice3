@@ -42,21 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.preferences.recursion;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
+public final class IsRecursionAllowedPreferenceDialogComposite extends LazyOperationUnadornedDialogCoreComposite<IsRecursionAllowedPreferenceView> {
 	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
-		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
+		super( UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
 		this.depth = index;
-		this.next = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
-				org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite.class,
-				new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite>() {
+		this.next = LazySimpleLaunchOperationFactory.createInstance(
+				IsRecursionAllowedPreferenceDialogComposite.class,
+				new Lazy<IsRecursionAllowedPreferenceDialogComposite>() {
 					@Override
-					protected org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite create() {
-						return new org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite( depth + 1 );
+					protected IsRecursionAllowedPreferenceDialogComposite create() {
+						return new IsRecursionAllowedPreferenceDialogComposite( depth + 1 );
 					}
-				}, org.lgna.croquet.Application.APPLICATION_UI_GROUP ).getLaunchOperation();
+				}, Application.APPLICATION_UI_GROUP ).getLaunchOperation();
 	}
 
 	public IsRecursionAllowedPreferenceDialogComposite() {
@@ -64,24 +74,24 @@ public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.
 	}
 
 	@Override
-	protected org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView createView() {
-		return new org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView( this );
+	protected IsRecursionAllowedPreferenceView createView() {
+		return new IsRecursionAllowedPreferenceView( this );
 	}
 
-	public org.lgna.croquet.PlainStringValue getDescriptionText() {
+	public PlainStringValue getDescriptionText() {
 		return this.descriptionText;
 	}
 
-	public org.lgna.croquet.PlainStringValue getRecursiveButtonText() {
+	public PlainStringValue getRecursiveButtonText() {
 		return this.recursiveButtonText;
 	}
 
-	public org.lgna.croquet.Operation getNext() {
+	public Operation getNext() {
 		return this.next;
 	}
 
-	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
-	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
+	private final PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
+	private final PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
 	private final int depth;
-	private final org.lgna.croquet.Operation next;
+	private final Operation next;
 }

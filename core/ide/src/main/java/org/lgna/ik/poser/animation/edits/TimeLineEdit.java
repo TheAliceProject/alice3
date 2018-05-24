@@ -42,13 +42,14 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
+import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.animation.TimeLine;
 
 /**
  * @author Matt May
  */
-public abstract class TimeLineEdit extends org.lgna.croquet.edits.AbstractEdit {
+public abstract class TimeLineEdit extends AbstractEdit {
 
 	private final TimeLine timeLine;
 

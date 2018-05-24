@@ -42,21 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.ast.resource.AudioResourceImportValueCreator;
+import org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.project.ast.ResourceExpression;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceFillerInner extends ResourceFillerInner<org.lgna.common.resources.AudioResource> {
+public class AudioResourceFillerInner extends ResourceFillerInner<AudioResource> {
 	public AudioResourceFillerInner() {
-		super( org.lgna.common.resources.AudioResource.class );
+		super( AudioResource.class );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getResourceExpressionFillIn( org.lgna.common.resources.AudioResource resource ) {
-		return org.alice.ide.croquet.models.ast.cascade.resource.AudioResourceExpressionFillIn.getInstance( resource );
+	protected CascadeFillIn<ResourceExpression, ?> getResourceExpressionFillIn( AudioResource resource ) {
+		return AudioResourceExpressionFillIn.getInstance( resource );
 	}
 
 	@Override
-	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.ResourceExpression, ?> getImportNewResourceFillIn() {
-		return org.alice.ide.ast.resource.AudioResourceImportValueCreator.getInstance().getFillIn();
+	protected CascadeFillIn<ResourceExpression, ?> getImportNewResourceFillIn() {
+		return AudioResourceImportValueCreator.getInstance().getFillIn();
 	}
 }

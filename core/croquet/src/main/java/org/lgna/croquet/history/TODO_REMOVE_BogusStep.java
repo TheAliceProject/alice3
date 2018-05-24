@@ -43,11 +43,13 @@
 
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TODO_REMOVE_BogusStep extends PrepStep {
-	public TODO_REMOVE_BogusStep( Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	public TODO_REMOVE_BogusStep( Transaction transaction, Trigger trigger ) {
 		super( transaction, null, trigger );
 	}
 }

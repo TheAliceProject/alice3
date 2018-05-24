@@ -42,9 +42,11 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.TransformableVisual;
+
 /**
  * @author dculyba
  */
-public class GlrTransformableVisual<T extends edu.cmu.cs.dennisc.scenegraph.TransformableVisual> extends GlrVisual<T> {
+public class GlrTransformableVisual<T extends TransformableVisual> extends GlrVisual<T> {
 
 }

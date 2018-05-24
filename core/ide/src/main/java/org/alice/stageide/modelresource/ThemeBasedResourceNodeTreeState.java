@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +57,7 @@ public final class ThemeBasedResourceNodeTreeState extends ResourceNodeTreeState
 	}
 
 	private ThemeBasedResourceNodeTreeState() {
-		super( java.util.UUID.fromString( "a17403a2-da1f-46e8-8d3d-c7dd819c98c8" ), TreeUtilities.getTreeBasedOnTheme() );
+		super( UUID.fromString( "a17403a2-da1f-46e8-8d3d-c7dd819c98c8" ), TreeUtilities.getTreeBasedOnTheme() );
 	}
 
 	@Override

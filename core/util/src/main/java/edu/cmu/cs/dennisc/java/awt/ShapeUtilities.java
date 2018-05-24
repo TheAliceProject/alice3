@@ -42,40 +42,51 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.PathIterator;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ShapeUtilities {
-	private static java.awt.geom.GeneralPath s_generalPath = new java.awt.geom.GeneralPath( java.awt.geom.GeneralPath.WIND_NON_ZERO, 2 );
+	private static GeneralPath s_generalPath = new GeneralPath( GeneralPath.WIND_NON_ZERO, 2 );
 
-	public static void paintBorder( java.awt.Graphics2D g2, java.awt.Shape shape, java.awt.Color a, java.awt.Color b, int width ) {
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		java.awt.Stroke stroke = g2.getStroke();
+	public static void paintBorder( Graphics2D g2, Shape shape, Color a, Color b, int width ) {
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		Stroke stroke = g2.getStroke();
 		int width2 = width * 2;
 		for( int i = width2; i >= 2; i -= 2 ) {
 			float portion = (float)( width2 - i ) / ( width2 );
-			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( a, b, portion ) );
-			g2.setStroke( new java.awt.BasicStroke( i ) );
+			g2.setColor( ColorUtilities.interpolate( a, b, portion ) );
+			g2.setStroke( new BasicStroke( i ) );
 			g2.draw( shape );
 		}
 		g2.setStroke( stroke );
 	}
 
-	public static void paintBorder( java.awt.Graphics2D g2, java.awt.Shape shape, java.awt.Color a, java.awt.Color b, int width, int alphaRule ) {
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		java.awt.Stroke stroke = g2.getStroke();
+	public static void paintBorder( Graphics2D g2, Shape shape, Color a, Color b, int width, int alphaRule ) {
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+		Stroke stroke = g2.getStroke();
 		int width2 = width * 2;
 		for( int i = width2; i >= 2; i -= 2 ) {
 			float portion = (float)( width2 - i ) / ( width2 );
-			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( a, b, portion ) );
-			g2.setComposite( java.awt.AlphaComposite.getInstance( alphaRule, portion ) );
-			g2.setStroke( new java.awt.BasicStroke( i ) );
+			g2.setColor( ColorUtilities.interpolate( a, b, portion ) );
+			g2.setComposite( AlphaComposite.getInstance( alphaRule, portion ) );
+			g2.setStroke( new BasicStroke( i ) );
 			g2.draw( shape );
 		}
 		g2.setStroke( stroke );
 	}
 
-	private static void drawShadedLine( java.awt.Graphics2D g2, float x0, float y0, float x1, float y1, java.awt.Paint topLeftPaint, java.awt.Paint otherPaint, java.awt.Paint bottomRightPaint, java.awt.geom.GeneralPath buffer ) {
+	private static void drawShadedLine( Graphics2D g2, float x0, float y0, float x1, float y1, Paint topLeftPaint, Paint otherPaint, Paint bottomRightPaint, GeneralPath buffer ) {
 		//		float xDelta = x1-x0;
 		//		float yDelta = y1-y0;
 		float xDelta = x0 - x1;
@@ -112,16 +123,16 @@ public class ShapeUtilities {
 		//g2.drawLine( (int)( x0+0.5f ), (int)( y0+0.5f ), (int)( x1+0.5f ), (int)( y1+0.5f ) );
 	}
 
-	public static void paint( java.awt.Graphics2D g2, java.awt.Shape shape, BevelState bevelState ) {
+	public static void paint( Graphics2D g2, Shape shape, BevelState bevelState ) {
 		g2.fill( shape );
 		if( bevelState != null ) {
-			java.awt.Paint paintPrev = g2.getPaint();
+			Paint paintPrev = g2.getPaint();
 			if( bevelState == BevelState.FLUSH ) {
-				g2.setPaint( java.awt.Color.GRAY );
+				g2.setPaint( Color.GRAY );
 				g2.draw( shape );
 			} else {
-				java.awt.Stroke strokePrev = g2.getStroke();
-				g2.setStroke( new java.awt.BasicStroke( 1, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND ) );
+				Stroke strokePrev = g2.getStroke();
+				g2.setStroke( new BasicStroke( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND ) );
 
 				//g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
@@ -134,10 +145,10 @@ public class ShapeUtilities {
 				float xCurr;
 				float yCurr;
 
-				java.awt.Paint highlightPaint = new java.awt.Color( 255, 255, 255, 255 );
-				java.awt.Paint shadowPaint = new java.awt.Color( 0, 0, 0, 255 );
-				java.awt.Paint topLeftPaint;
-				java.awt.Paint bottomRightPaint;
+				Paint highlightPaint = new Color( 255, 255, 255, 255 );
+				Paint shadowPaint = new Color( 0, 0, 0, 255 );
+				Paint topLeftPaint;
+				Paint bottomRightPaint;
 				if( bevelState == BevelState.RAISED ) {
 					topLeftPaint = highlightPaint;
 					bottomRightPaint = shadowPaint;
@@ -145,17 +156,17 @@ public class ShapeUtilities {
 					topLeftPaint = shadowPaint;
 					bottomRightPaint = highlightPaint;
 				}
-				java.awt.Paint inBetweenPaint = new java.awt.Color( 128, 128, 128, 255 );
+				Paint inBetweenPaint = new Color( 128, 128, 128, 255 );
 
 				synchronized( s_generalPath ) {
-					java.awt.geom.PathIterator pathIterator = shape.getPathIterator( null, FLATNESS );
+					PathIterator pathIterator = shape.getPathIterator( null, FLATNESS );
 					while( pathIterator.isDone() == false ) {
 						switch( pathIterator.currentSegment( segment ) ) {
-						case java.awt.geom.PathIterator.SEG_MOVETO:
+						case PathIterator.SEG_MOVETO:
 							x0 = xPrev = segment[ 0 ];
 							y0 = yPrev = segment[ 1 ];
 							break;
-						case java.awt.geom.PathIterator.SEG_LINETO:
+						case PathIterator.SEG_LINETO:
 							xCurr = segment[ 0 ];
 							yCurr = segment[ 1 ];
 							assert Float.isNaN( xPrev ) == false;
@@ -164,15 +175,15 @@ public class ShapeUtilities {
 							xPrev = xCurr;
 							yPrev = yCurr;
 							break;
-						case java.awt.geom.PathIterator.SEG_CLOSE:
+						case PathIterator.SEG_CLOSE:
 							drawShadedLine( g2, xPrev, yPrev, x0, y0, topLeftPaint, inBetweenPaint, bottomRightPaint, s_generalPath );
 							x0 = xPrev = Float.NaN;
 							y0 = yPrev = Float.NaN;
 							break;
 
-						case java.awt.geom.PathIterator.SEG_QUADTO:
+						case PathIterator.SEG_QUADTO:
 							throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-						case java.awt.geom.PathIterator.SEG_CUBICTO:
+						case PathIterator.SEG_CUBICTO:
 							throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
 						default:
 							throw new RuntimeException( "unhandled segment: should not occur" );

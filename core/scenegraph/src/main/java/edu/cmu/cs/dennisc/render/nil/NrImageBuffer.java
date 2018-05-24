@@ -42,21 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.render.ImageBuffer;
+
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuffer {
-	public NrImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor ) {
+/*package-private*/class NrImageBuffer implements ImageBuffer {
+	public NrImageBuffer( Color4f backgroundColor ) {
 		this.backgroundColor = backgroundColor;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.color.Color4f getBackgroundColor() {
+	public Color4f getBackgroundColor() {
 		return this.backgroundColor;
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getImage() {
+	public BufferedImage getImage() {
 		return null;
 	}
 
@@ -71,5 +76,5 @@ package edu.cmu.cs.dennisc.render.nil;
 	}
 
 	private final Object imageLock = "imageLock";
-	private final edu.cmu.cs.dennisc.color.Color4f backgroundColor;
+	private final Color4f backgroundColor;
 }

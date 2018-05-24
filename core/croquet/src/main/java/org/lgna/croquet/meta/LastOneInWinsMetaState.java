@@ -42,26 +42,32 @@
  *******************************************************************************/
 package org.lgna.croquet.meta;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.State;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class LastOneInWinsMetaState<T> extends MetaState<T> {
-	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
 		@Override
-		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changing( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
 
 		@Override
-		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 			handleStateChanged( state, nextValue );
 		}
 	};
 
-	private final java.util.List<org.lgna.croquet.State<T>> states;
+	private final List<State<T>> states;
 
-	public LastOneInWinsMetaState( org.lgna.croquet.State<T>... states ) {
-		this.states = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( states ) );
-		for( org.lgna.croquet.State<T> state : this.states ) {
+	public LastOneInWinsMetaState( State<T>... states ) {
+		this.states = Collections.unmodifiableList( Lists.newArrayList( states ) );
+		for( State<T> state : this.states ) {
 			state.addValueListener( this.valueListener );
 		}
 		this.setPrevValue( this.states.get( this.states.size() - 1 ).getValue() );
@@ -69,14 +75,14 @@ public final class LastOneInWinsMetaState<T> extends MetaState<T> {
 
 	private boolean isInTheMidstOfChanged = false;
 
-	private void handleStateChanged( org.lgna.croquet.State<T> lastOneInState, T nextValue ) {
+	private void handleStateChanged( State<T> lastOneInState, T nextValue ) {
 		if( nextValue != null ) {
 			if( isInTheMidstOfChanged ) {
 				//pass
 			} else {
 				this.isInTheMidstOfChanged = true;
 				try {
-					for( org.lgna.croquet.State<T> state : this.states ) {
+					for( State<T> state : this.states ) {
 						if( lastOneInState == state ) {
 							//pass
 						} else {
@@ -92,7 +98,7 @@ public final class LastOneInWinsMetaState<T> extends MetaState<T> {
 
 	@Override
 	public T getValue() {
-		for( org.lgna.croquet.State<T> state : this.states ) {
+		for( State<T> state : this.states ) {
 			T value = state.getValue();
 			if( value != null ) {
 				return value;

@@ -42,25 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
+import com.jogamp.opengl.GLException;
+import edu.cmu.cs.dennisc.issue.AbstractReport;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.ide.issue.GraphicsPropertiesAttachment;
+import org.alice.ide.issue.ReportSubmissionConfiguration;
+import org.alice.ide.issue.croquet.GlExceptionComposite;
+import org.lgna.project.ProjectVersion;
+
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+public class CaughtGlExceptionPane extends AbstractCaughtExceptionPane {
 	public CaughtGlExceptionPane() {
 	}
 
 	@Override
 	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
-		if( throwable instanceof com.jogamp.opengl.GLException ) {
-			com.jogamp.opengl.GLException glException = (com.jogamp.opengl.GLException)throwable;
-			this.add( new org.alice.ide.issue.croquet.GlExceptionComposite( glException ).getView().getAwtComponent(), java.awt.BorderLayout.NORTH );
+		if( throwable instanceof GLException ) {
+			GLException glException = (GLException)throwable;
+			this.add( new GlExceptionComposite( glException ).getView().getAwtComponent(), BorderLayout.NORTH );
 		}
 		super.setThreadAndThrowable( thread, throwable );
 	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-		return new org.alice.ide.issue.ReportSubmissionConfiguration();
+		return new ReportSubmissionConfiguration();
 	}
 
 	@Override
@@ -68,7 +78,7 @@ public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.Abstr
 		StringBuilder sb = new StringBuilder();
 		sb.append( super.getEnvironmentText() );
 		sb.append( ";" );
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
+		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
 			sb.append( sharedDetails.getRenderer() );
 		} else {
@@ -84,13 +94,13 @@ public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.Abstr
 
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() };
+		return new String[] { ProjectVersion.getCurrentVersionText() };
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+	protected AbstractReport addAttachments( AbstractReport rv ) {
 		rv = super.addAttachments( rv );
-		rv.addAttachment( new org.alice.ide.issue.GraphicsPropertiesAttachment() );
+		rv.addAttachment( new GraphicsPropertiesAttachment() );
 		return rv;
 	}
 }

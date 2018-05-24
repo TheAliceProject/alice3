@@ -43,30 +43,39 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BooleanState;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.plaf.metal.MetalToggleButtonUI;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PushButton extends BooleanStateButton<javax.swing.JButton> {
-	private java.awt.Color selectedColor = java.awt.Color.YELLOW;
+public class PushButton extends BooleanStateButton<JButton> {
+	private Color selectedColor = Color.YELLOW;
 
-	public PushButton( org.lgna.croquet.BooleanState model ) {
+	public PushButton( BooleanState model ) {
 		super( model );
 	}
 
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
+	protected JButton createAwtComponent() {
+		JButton rv = new JButton() {
 			@Override
 			public void updateUI() {
 				super.updateUI();
-				this.setUI( new javax.swing.plaf.metal.MetalToggleButtonUI() {
+				this.setUI( new MetalToggleButtonUI() {
 					@Override
-					protected java.awt.Color getSelectColor() {
+					protected Color getSelectColor() {
 						return PushButton.this.getSelectedColor();
 					}
 
 					@Override
-					protected void paintFocus( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle viewRect, java.awt.Rectangle textRect, java.awt.Rectangle iconRect ) {
+					protected void paintFocus( Graphics g, javax.swing.AbstractButton b, Rectangle viewRect, Rectangle textRect, Rectangle iconRect ) {
 					}
 				} );
 			}
@@ -81,15 +90,15 @@ public class PushButton extends BooleanStateButton<javax.swing.JButton> {
 			//				}
 			//			}
 		};
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		rv.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		return rv;
 	}
 
-	public java.awt.Color getSelectedColor() {
+	public Color getSelectedColor() {
 		return this.selectedColor;
 	}
 
-	public void setSelectedColor( java.awt.Color selectedColor ) {
+	public void setSelectedColor( Color selectedColor ) {
 		this.selectedColor = selectedColor;
 		this.repaint();
 	}

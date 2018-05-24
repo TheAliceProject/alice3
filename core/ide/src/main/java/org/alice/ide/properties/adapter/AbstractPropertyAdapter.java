@@ -46,9 +46,14 @@ package org.alice.ide.properties.adapter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 public abstract class AbstractPropertyAdapter<P, O> {
 	public static interface ValueChangeObserver<P> {
@@ -63,7 +68,7 @@ public abstract class AbstractPropertyAdapter<P, O> {
 	protected StandardExpressionState expressionState;
 
 	public static String getLocalizedString( String key ) {
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( AbstractPropertyAdapter.class.getPackage().getName() + ".propertyNames" );
+		ResourceBundle resourceBundle = ResourceBundle.getBundle( AbstractPropertyAdapter.class.getPackage().getName() + ".propertyNames" );
 		if( key != null ) {
 			try {
 				key = resourceBundle.getString( key );
@@ -183,7 +188,7 @@ public abstract class AbstractPropertyAdapter<P, O> {
 	protected void setExpressionValue( P value ) {
 		if( this.expressionState != null ) {
 			try {
-				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( this.getValue() );
+				Expression expressionValue = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( this.getValue() );
 				this.expressionState.setValueTransactionlessly( expressionValue );
 
 			} catch( CannotCreateExpressionException e ) {
@@ -196,9 +201,9 @@ public abstract class AbstractPropertyAdapter<P, O> {
 		this.setValue( (P)value );
 	}
 
-	protected Object evaluateExpression( org.lgna.project.ast.Expression expression ) {
-		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getVirtualMachine();
-		Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
+	protected Object evaluateExpression( Expression expression ) {
+		VirtualMachine vm = StorytellingSceneEditor.getInstance().getVirtualMachine();
+		Object[] values = vm.ENTRY_POINT_evaluate( null, new Expression[] { expression } );
 		assert values.length == 1;
 		return values[ 0 ];
 	}

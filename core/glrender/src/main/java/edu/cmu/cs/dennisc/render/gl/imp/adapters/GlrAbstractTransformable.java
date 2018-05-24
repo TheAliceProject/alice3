@@ -42,12 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL2;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
-public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends GlrComposite<T> {
+import java.nio.DoubleBuffer;
+
+public abstract class GlrAbstractTransformable<T extends AbstractTransformable> extends GlrComposite<T> {
 	private static final int X_X = 0;
 	private static final int X_Y = 1;
 	private static final int X_Z = 2;
@@ -76,14 +83,14 @@ public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scen
 		boolean isUnscaling = this.isUnscalingDesired( c );
 		if( isUnscaling ) {
 			synchronized( unscalingBuffer ) {
-				c.gl.glGetDoublev( com.jogamp.opengl.GL2.GL_MODELVIEW_MATRIX, unscalingBuffer );
-				double xScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ X_X ], unscaling[ X_Y ], unscaling[ X_Z ] );
-				double yScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ Y_X ], unscaling[ Y_Y ], unscaling[ Y_Z ] );
-				double zScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ Z_X ], unscaling[ Z_Y ], unscaling[ Z_Z ] );
+				c.gl.glGetDoublev( GL2.GL_MODELVIEW_MATRIX, unscalingBuffer );
+				double xScale = Tuple3.calculateMagnitude( unscaling[ X_X ], unscaling[ X_Y ], unscaling[ X_Z ] );
+				double yScale = Tuple3.calculateMagnitude( unscaling[ Y_X ], unscaling[ Y_Y ], unscaling[ Y_Z ] );
+				double zScale = Tuple3.calculateMagnitude( unscaling[ Z_X ], unscaling[ Z_Y ], unscaling[ Z_Z ] );
 
-				if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( xScale, 1.0 ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( yScale, 1.0 ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( zScale, 1.0 ) ) {
+				if( EpsilonUtilities.isWithinReasonableEpsilon( xScale, 1.0 ) && EpsilonUtilities.isWithinReasonableEpsilon( yScale, 1.0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zScale, 1.0 ) ) {
 					//pass
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+					Logger.severe( this );
 					isUnscaling = false;
 				} else {
 					xScale = 1 / xScale;
@@ -179,9 +186,9 @@ public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scen
 	}
 
 	private static final double[] unscaling = new double[ 16 ];
-	private static final java.nio.DoubleBuffer unscalingBuffer = java.nio.DoubleBuffer.wrap( unscaling );
+	private static final DoubleBuffer unscalingBuffer = DoubleBuffer.wrap( unscaling );
 
 	//public abstract double[] accessLocalTransformation();
 
-	public abstract java.nio.DoubleBuffer accessLocalTransformationAsBuffer();
+	public abstract DoubleBuffer accessLocalTransformationAsBuffer();
 }

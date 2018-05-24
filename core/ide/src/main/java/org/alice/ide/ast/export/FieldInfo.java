@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldInfo extends MemberInfo<org.lgna.project.ast.UserField> {
-	public FieldInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserField field ) {
+public class FieldInfo extends MemberInfo<UserField> {
+	public FieldInfo( ProjectInfo projectInfo, UserField field ) {
 		super( projectInfo, field );
 	}
 }

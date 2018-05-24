@@ -42,7 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.IconFactory;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -50,10 +60,10 @@ import org.alice.nonfree.NebulousIde;
 public abstract class ResourceNode extends ResourceGalleryDragModel implements Comparable<ResourceNode> {
 	private ResourceNode parent;
 	private final ResourceKey resourceKey;
-	private final java.util.List<ResourceNode> children;
-	private final org.lgna.croquet.CascadeBlankChild<ResourceNode> blankChild;
+	private final List<ResourceNode> children;
+	private final CascadeBlankChild<ResourceNode> blankChild;
 
-	public ResourceNode( java.util.UUID migrationId, ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
+	public ResourceNode( UUID migrationId, ResourceKey resourceKey, List<ResourceNode> children ) {
 		super( migrationId );
 		this.resourceKey = resourceKey;
 		for( ResourceNode child : children ) {
@@ -81,7 +91,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public java.util.List<ResourceNode> getNodeChildren() {
+	public List<ResourceNode> getNodeChildren() {
 		return this.children;
 	}
 
@@ -96,11 +106,11 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+	public IconFactory getIconFactory() {
 		return this.resourceKey.getIconFactory();
 	}
 
-	public org.lgna.croquet.CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
+	public CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
 		if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 			if( classResourceKey.isLeaf() ) {
@@ -111,10 +121,10 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+	public Model getDropModel( DragStep step, DropSite dropSite ) {
 		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
-			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
+			AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = AddResourceKeyManagedFieldComposite.getInstance();
 			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, true );
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
 		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
@@ -147,7 +157,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
+	public Model getLeftButtonClickModel() {
 		if( ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
 			return null;
 		} else {
@@ -182,7 +192,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+	public AxisAlignedBox getBoundingBox() {
 		InstanceCreatorKey key = getInstanceCreatorKey();
 		return (key != null) ? key.getBoundingBox() : null;
 	}
@@ -194,7 +204,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {
+	public int compareTo( ResourceNode other ) {
 		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
 	}
 

@@ -42,26 +42,56 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.imp.booleanstate.BooleanStateImp;
+import org.lgna.croquet.triggers.ItemEventTrigger;
+import org.lgna.croquet.views.CheckBox;
+import org.lgna.croquet.views.OperationButton;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.PushButton;
+import org.lgna.croquet.views.RadioButton;
+import org.lgna.croquet.views.ToggleButton;
+import org.lgna.croquet.views.ToggleButtonLabelCombo;
+
+import javax.swing.Action;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
+import java.awt.LayoutManager;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class BooleanState extends SimpleValueState<Boolean> {
-	protected BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
+	protected BooleanState( Group group, UUID id, boolean initialValue, ButtonModel buttonModel ) {
 		super( group, id, initialValue );
-		this.imp = new org.lgna.croquet.imp.booleanstate.BooleanStateImp( this, initialValue, buttonModel );
+		this.imp = new BooleanStateImp( this, initialValue, buttonModel );
 		this.imp.getSwingModel().getButtonModel().addItemListener( this.itemListener );
 	}
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
-		this( group, id, initialValue, new javax.swing.JToggleButton.ToggleButtonModel() );
+	public BooleanState( Group group, UUID id, boolean initialValue ) {
+		this( group, id, initialValue, new JToggleButton.ToggleButtonModel() );
 	}
 
-	public org.lgna.croquet.imp.booleanstate.BooleanStateImp getImp() {
+	public BooleanStateImp getImp() {
 		return this.imp;
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		return this.imp.getPotentialPrepModelPaths( edit );
 	}
 
@@ -71,12 +101,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	@Override
-	public Boolean decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Boolean decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeBoolean();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Boolean value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Boolean value ) {
 		binaryEncoder.encode( value );
 	}
 
@@ -95,12 +125,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.imp.setEnabled( isEnabled );
 	}
 
-	protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+	protected void handleItemStateChanged( ItemEvent e ) {
 		if( this.isItemStateChangedToBeIgnored ) {
 			//pass
 		} else {
-			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-			this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+			boolean nextValue = e.getStateChange() == ItemEvent.SELECTED;
+			this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, ItemEventTrigger.createUserInstance( e ) );
 		}
 	}
 
@@ -125,13 +155,13 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 
 	@Override
 	protected Boolean getSwingValue() {
-		javax.swing.ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
+		ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
 		return buttonModel.isSelected();
 	}
 
 	@Override
 	protected void setSwingValue( Boolean nextValue ) {
-		javax.swing.ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
+		ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
 		if( buttonModel.isSelected() == nextValue ) {
 			//pass
 		} else {
@@ -166,23 +196,23 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.updateNameAndIcon();
 	}
 
-	public final javax.swing.Icon getIconFor( boolean value ) {
+	public final Icon getIconFor( boolean value ) {
 		return value ? this.getTrueIcon() : this.getFalseIcon();
 	}
 
-	public javax.swing.Icon getTrueIcon() {
+	public Icon getTrueIcon() {
 		return this.trueIcon;
 	}
 
-	public javax.swing.Icon getFalseIcon() {
+	public Icon getFalseIcon() {
 		return this.falseIcon;
 	}
 
-	public void setIconForBothTrueAndFalse( javax.swing.Icon icon ) {
+	public void setIconForBothTrueAndFalse( Icon icon ) {
 		this.setIconForTrueAndIconForFalse( icon, icon );
 	}
 
-	public void setIconForTrueAndIconForFalse( javax.swing.Icon trueIcon, javax.swing.Icon falseIcon ) {
+	public void setIconForTrueAndIconForFalse( Icon trueIcon, Icon falseIcon ) {
 		this.trueIcon = trueIcon;
 		this.falseIcon = falseIcon;
 		this.updateNameAndIcon();
@@ -191,12 +221,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	//public javax.swing.KeyStroke getAcceleratorKey() {
 	//	return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 	//}
-	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.imp.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	private void setAcceleratorKey( KeyStroke acceleratorKey ) {
+		this.imp.getSwingModel().getAction().putValue( Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	private void setShortDescription( String shortDescription ) {
-		this.imp.getSwingModel().getAction().putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+		this.imp.getSwingModel().getAction().putValue( Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
 	public void setToolTipText( String toolTipText ) {
@@ -213,25 +243,25 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.imp.updateNameAndIcon( this.getValue(), possiblyModifiedTrueText, this.trueIcon, possiblyModifiedFalseText, this.falseIcon );
 	}
 
-	public org.lgna.croquet.views.RadioButton createRadioButton() {
-		return new org.lgna.croquet.views.RadioButton( this );
+	public RadioButton createRadioButton() {
+		return new RadioButton( this );
 	}
 
-	public org.lgna.croquet.views.CheckBox createCheckBox() {
-		return new org.lgna.croquet.views.CheckBox( this );
+	public CheckBox createCheckBox() {
+		return new CheckBox( this );
 	}
 
-	public org.lgna.croquet.views.ToggleButton createToggleButton() {
-		return new org.lgna.croquet.views.ToggleButton( this );
+	public ToggleButton createToggleButton() {
+		return new ToggleButton( this );
 	}
 
-	public org.lgna.croquet.views.ToggleButtonLabelCombo createToggleButtonLabelCombo() {
-		return new org.lgna.croquet.views.ToggleButtonLabelCombo( this );
+	public ToggleButtonLabelCombo createToggleButtonLabelCombo() {
+		return new ToggleButtonLabelCombo( this );
 	}
 
 	@Deprecated
-	public org.lgna.croquet.views.PushButton createPushButton() {
-		return new org.lgna.croquet.views.PushButton( this );
+	public PushButton createPushButton() {
+		return new PushButton( this );
 	}
 
 	public Operation getSetToTrueOperation() {
@@ -250,42 +280,42 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return this.imp.getMenuItemPrepModel();
 	}
 
-	private static final class InternalRadioButton extends org.lgna.croquet.views.OperationButton<javax.swing.JRadioButton, Operation> {
+	private static final class InternalRadioButton extends OperationButton<JRadioButton, Operation> {
 		public InternalRadioButton( Operation operation ) {
 			super( operation );
 		}
 
 		@Override
-		protected javax.swing.JRadioButton createAwtComponent() {
-			return new javax.swing.JRadioButton();
+		protected JRadioButton createAwtComponent() {
+			return new JRadioButton();
 		}
 	}
 
-	private static final class InternalToggleButton extends org.lgna.croquet.views.OperationButton<javax.swing.JToggleButton, Operation> {
+	private static final class InternalToggleButton extends OperationButton<JToggleButton, Operation> {
 		public InternalToggleButton( Operation operation ) {
 			super( operation );
 		}
 
 		@Override
-		protected javax.swing.JToggleButton createAwtComponent() {
-			return new javax.swing.JToggleButton();
+		protected JToggleButton createAwtComponent() {
+			return new JToggleButton();
 		}
 	}
 
-	private abstract class AbstractToggleButtonsPanel extends org.lgna.croquet.views.Panel {
-		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-		private final org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> trueButton;
-		private final org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton;
+	private abstract class AbstractToggleButtonsPanel extends Panel {
+		private final ButtonGroup buttonGroup = new ButtonGroup();
+		private final OperationButton<? extends JToggleButton, Operation> trueButton;
+		private final OperationButton<? extends JToggleButton, Operation> falseButton;
 		private final int axis;
-		private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
 			@Override
-			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
+			public void valueChanged( ValueEvent<Boolean> e ) {
 				handleChanged( e.getNextValue() );
 			}
 		};
 
-		public AbstractToggleButtonsPanel( boolean isVertical, boolean isTrueFirst, org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> trueButton, org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton ) {
-			this.axis = isVertical ? javax.swing.BoxLayout.PAGE_AXIS : javax.swing.BoxLayout.LINE_AXIS;
+		public AbstractToggleButtonsPanel( boolean isVertical, boolean isTrueFirst, OperationButton<? extends JToggleButton, Operation> trueButton, OperationButton<? extends JToggleButton, Operation> falseButton ) {
+			this.axis = isVertical ? BoxLayout.PAGE_AXIS : BoxLayout.LINE_AXIS;
 			this.trueButton = trueButton;
 			this.falseButton = falseButton;
 			if( isTrueFirst ) {
@@ -300,12 +330,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 
 		@Override
-		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-			return new javax.swing.BoxLayout( jPanel, axis );
+		protected LayoutManager createLayoutManager( JPanel jPanel ) {
+			return new BoxLayout( jPanel, axis );
 		}
 
 		private void handleChanged( Boolean nextValue ) {
-			org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> selected = nextValue ? this.trueButton : this.falseButton;
+			OperationButton<? extends JToggleButton, Operation> selected = nextValue ? this.trueButton : this.falseButton;
 			this.buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
 		}
 
@@ -334,49 +364,49 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 	}
 
-	public org.lgna.croquet.views.Panel createVerticalRadioButtons( boolean isTrueFirst ) {
+	public Panel createVerticalRadioButtons( boolean isTrueFirst ) {
 		return new RadioButtonsPanel( true, isTrueFirst );
 	}
 
-	public org.lgna.croquet.views.Panel createHorizontalRadioButtons( boolean isTrueFirst ) {
+	public Panel createHorizontalRadioButtons( boolean isTrueFirst ) {
 		return new RadioButtonsPanel( false, isTrueFirst );
 	}
 
-	public org.lgna.croquet.views.Panel createVerticalRadioButtons() {
+	public Panel createVerticalRadioButtons() {
 		return this.createVerticalRadioButtons( true );
 	}
 
-	public org.lgna.croquet.views.Panel createHorizontalRadioButtons() {
+	public Panel createHorizontalRadioButtons() {
 		return this.createHorizontalRadioButtons( true );
 	}
 
-	public org.lgna.croquet.views.Panel createVerticalToggleButtons( boolean isTrueFirst ) {
+	public Panel createVerticalToggleButtons( boolean isTrueFirst ) {
 		return new ToggleButtonsPanel( true, isTrueFirst );
 	}
 
-	public org.lgna.croquet.views.Panel createHorizontalToggleButtons( boolean isTrueFirst ) {
+	public Panel createHorizontalToggleButtons( boolean isTrueFirst ) {
 		return new ToggleButtonsPanel( false, isTrueFirst );
 	}
 
-	public org.lgna.croquet.views.Panel createVerticalToggleButtons() {
+	public Panel createVerticalToggleButtons() {
 		return this.createVerticalToggleButtons( true );
 	}
 
-	public org.lgna.croquet.views.Panel createHorizontalToggleButtons() {
+	public Panel createHorizontalToggleButtons() {
 		return this.createHorizontalToggleButtons( true );
 	}
 
-	private final org.lgna.croquet.imp.booleanstate.BooleanStateImp imp;
+	private final BooleanStateImp imp;
 	private String trueText;
 	private String falseText;
-	private javax.swing.Icon trueIcon;
-	private javax.swing.Icon falseIcon;
+	private Icon trueIcon;
+	private Icon falseIcon;
 
 	private boolean isItemStateChangedToBeIgnored = false;
 
-	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+	private final ItemListener itemListener = new ItemListener() {
 		@Override
-		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+		public void itemStateChanged( ItemEvent e ) {
 			BooleanState.this.handleItemStateChanged( e );
 		}
 	};

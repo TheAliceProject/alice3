@@ -42,31 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.delete.references.croquet;
 
+import org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane;
+import org.lgna.croquet.AbstractSeverityStatusComposite;
+import org.lgna.croquet.Element;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.UserField;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Matt May
  */
-public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationInputDialogCoreComposite<org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane> {
+public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationInputDialogCoreComposite<ReferencesToFieldPreventingDeletionPane> {
 
 	private final UserField field;
-	private final java.util.List<org.lgna.project.ast.FieldAccess> references;
+	private final List<FieldAccess> references;
 
 	private final StringValue singlularDescriptionText = this.createStringValue( "singlularDescriptionText" );
 	private final StringValue pluralDescriptionText = this.createStringValue( "pluralDescriptionText" );
 
-	public ReferencesToFieldPreventingDeletionDialog( UserField field, java.util.List<org.lgna.project.ast.FieldAccess> references ) {
-		super( java.util.UUID.fromString( "e6ba357c-6490-4e88-a406-ba6567a4cc71" ), null );
+	public ReferencesToFieldPreventingDeletionDialog( UserField field, List<FieldAccess> references ) {
+		super( UUID.fromString( "e6ba357c-6490-4e88-a406-ba6567a4cc71" ), null );
 		this.field = field;
 		this.references = references;
 	}
 
 	@Override
-	protected String modifyLocalizedText( org.lgna.croquet.Element element, String localizedText ) {
+	protected String modifyLocalizedText( Element element, String localizedText ) {
 		localizedText = super.modifyLocalizedText( element, localizedText );
 		if( element == this.pluralDescriptionText ) {
 			localizedText = localizedText.replaceAll( "</referenceCount/>", Integer.toString( this.references.size() ) );
@@ -80,8 +87,8 @@ public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationIn
 	}
 
 	@Override
-	protected org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane createView() {
-		return new org.alice.ide.delete.references.croquet.views.ReferencesToFieldPreventingDeletionPane( this );
+	protected ReferencesToFieldPreventingDeletionPane createView() {
+		return new ReferencesToFieldPreventingDeletionPane( this );
 	}
 
 	public UserField getField() {
@@ -102,7 +109,7 @@ public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationIn
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return null;
 	}
 }

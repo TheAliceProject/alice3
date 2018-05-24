@@ -46,11 +46,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.lgna.common.ComponentExecutor;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.event.AbstractEvent;
 
 /**
  * @author Matt May
  */
-public abstract class AbstractBinaryEventHandler<L, E extends org.lgna.story.event.AbstractEvent> extends TransformationChangedHandler<L, E> {
+public abstract class AbstractBinaryEventHandler<L, E extends AbstractEvent> extends TransformationChangedHandler<L, E> {
 
 	protected void fireEvent( final L listener, final E event, final Object one, final Object two ) {
 		//		final Object o = object == null ? NULL_OBJECT : object;
@@ -64,7 +65,7 @@ public abstract class AbstractBinaryEventHandler<L, E extends org.lgna.story.eve
 			isFiringMap.get( listener ).put( two, false );
 		}
 		if( shouldFire ) {
-			ComponentExecutor thread = new org.lgna.common.ComponentExecutor( new Runnable() {
+			ComponentExecutor thread = new ComponentExecutor( new Runnable() {
 				@Override
 				public void run() {
 					fire( listener, event );

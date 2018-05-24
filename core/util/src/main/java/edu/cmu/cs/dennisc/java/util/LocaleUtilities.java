@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.Comparator;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,19 +52,19 @@ public abstract class LocaleUtilities {
 	private LocaleUtilities() {
 	}
 
-	private static java.util.Comparator<java.util.Locale> displayNameComparator = new java.util.Comparator<java.util.Locale>() {
+	private static Comparator<Locale> displayNameComparator = new Comparator<Locale>() {
 		@Override
-		public int compare( java.util.Locale o1, java.util.Locale o2 ) {
+		public int compare( Locale o1, Locale o2 ) {
 			return o1.getDisplayName().compareTo( o2.getDisplayName() );
 		}
 	};
 
-	public static java.util.Locale[] alphabetizeByDisplayName( java.util.Locale[] rv ) {
+	public static Locale[] alphabetizeByDisplayName( Locale[] rv ) {
 		java.util.Arrays.sort( rv, displayNameComparator );
 		return rv;
 	}
 
-	public static String toLanguageTag( java.util.Locale locale ) {
+	public static String toLanguageTag( Locale locale ) {
 		if( locale != null ) {
 			String text = locale.toString();
 			text = text.replaceAll( "_", "-" );

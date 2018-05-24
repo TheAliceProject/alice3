@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.nonfree;
 
+import edu.cmu.cs.dennisc.nebulous.NebulousTexture;
+import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.NebulousStorytellingResources;
@@ -64,9 +66,9 @@ public class StoryApiNonfree extends NebulousStoryApi {
 	}
 
 	@Override
-	public void setMipMappingDesiredOnNebulousTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		if( texture instanceof edu.cmu.cs.dennisc.nebulous.NebulousTexture ) {
-			edu.cmu.cs.dennisc.nebulous.NebulousTexture nebulousTexture = (edu.cmu.cs.dennisc.nebulous.NebulousTexture)texture;
+	public void setMipMappingDesiredOnNebulousTexture( Texture texture ) {
+		if( texture instanceof NebulousTexture ) {
+			NebulousTexture nebulousTexture = (NebulousTexture)texture;
 			nebulousTexture.setMipMappingDesired( true );
 		}
 	}

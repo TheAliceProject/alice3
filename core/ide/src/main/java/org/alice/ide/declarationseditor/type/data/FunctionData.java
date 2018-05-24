@@ -43,16 +43,19 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionData extends MethodData {
-	public FunctionData( org.lgna.project.ast.NamedUserType type ) {
+	public FunctionData( NamedUserType type ) {
 		super( type );
 	}
 
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
+	protected boolean isAcceptableItem( UserMethod value ) {
 		return super.isAcceptableItem( value ) && value.isFunction();
 	}
 }

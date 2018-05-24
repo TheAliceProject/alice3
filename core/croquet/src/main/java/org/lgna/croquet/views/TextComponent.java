@@ -43,33 +43,44 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder;
+import org.lgna.croquet.StringState;
+
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.text.JTextComponent;
+import java.awt.Color;
+import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController<J, org.lgna.croquet.StringState> {
-	private final javax.swing.border.BevelBorder outsideBorder = new javax.swing.border.BevelBorder( javax.swing.border.BevelBorder.LOWERED );
-	private final edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
-	private final javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
+public abstract class TextComponent<J extends JTextComponent> extends ViewController<J, StringState> {
+	private final BevelBorder outsideBorder = new BevelBorder( BevelBorder.LOWERED );
+	private final EmptyBorder insideBorder = new EmptyBorder();
+	private final CompoundBorder border = new CompoundBorder( outsideBorder, insideBorder );
 
-	private final java.awt.event.FocusListener selectAllFocusListener = new java.awt.event.FocusListener() {
+	private final FocusListener selectAllFocusListener = new FocusListener() {
 		@Override
-		public void focusGained( java.awt.event.FocusEvent e ) {
+		public void focusGained( FocusEvent e ) {
 			getAwtComponent().selectAll();
 		}
 
 		@Override
-		public void focusLost( java.awt.event.FocusEvent e ) {
+		public void focusLost( FocusEvent e ) {
 		}
 	};
 
-	public TextComponent( org.lgna.croquet.StringState model ) {
+	public TextComponent( StringState model ) {
 		super( model );
 		J jTextComponent = this.getAwtComponent();
 		model.getSwingModel().install( this );
 		jTextComponent.setBorder( this.border );
 		jTextComponent.setEnabled( model.isEnabled() );
-		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
-		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
+		this.setMargin( new Insets( 4, 4, 2, 2 ) );
+		this.setBackgroundColor( new Color( 255, 255, 221 ) );
 	}
 
 	public boolean isEditable() {
@@ -89,12 +100,12 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 		this.getAwtComponent().removeFocusListener( this.selectAllFocusListener );
 	}
 
-	public java.awt.Insets getMargin() {
+	public Insets getMargin() {
 		//return this.getAwtComponent().getMargin();
 		return this.insideBorder.getBorderInsets();
 	}
 
-	public void setMargin( java.awt.Insets margin ) {
+	public void setMargin( Insets margin ) {
 		this.checkEventDispatchThread();
 		//this.getAwtComponent().setMargin( margin );
 		this.insideBorder.setBorderInsets( margin );

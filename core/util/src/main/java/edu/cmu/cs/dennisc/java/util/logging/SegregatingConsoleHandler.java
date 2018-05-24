@@ -43,16 +43,21 @@
 
 package edu.cmu.cs.dennisc.java.util.logging;
 
+import java.io.PrintStream;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SegregatingConsoleHandler extends java.util.logging.Handler {
-	private static java.util.logging.Level ERROR_LEVEL = java.util.logging.Level.SEVERE;
+public class SegregatingConsoleHandler extends Handler {
+	private static Level ERROR_LEVEL = Level.SEVERE;
 
-	private final java.io.PrintStream out;
-	private final java.io.PrintStream err;
+	private final PrintStream out;
+	private final PrintStream err;
 
-	public SegregatingConsoleHandler( java.io.PrintStream out, java.io.PrintStream err ) {
+	public SegregatingConsoleHandler( PrintStream out, PrintStream err ) {
 		this.out = out;
 		this.err = err;
 	}
@@ -62,8 +67,8 @@ public class SegregatingConsoleHandler extends java.util.logging.Handler {
 	}
 
 	@Override
-	public void publish( java.util.logging.LogRecord record ) {
-		java.io.PrintStream os;
+	public void publish( LogRecord record ) {
+		PrintStream os;
 		if( record.getLevel().intValue() >= ERROR_LEVEL.intValue() ) {
 			os = this.err;
 		} else {
@@ -78,6 +83,6 @@ public class SegregatingConsoleHandler extends java.util.logging.Handler {
 	}
 
 	@Override
-	public void close() throws java.lang.SecurityException {
+	public void close() throws SecurityException {
 	}
 }

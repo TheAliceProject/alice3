@@ -43,10 +43,31 @@
 
 package org.alice.stageide.custom;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.ExpressionCreator;
+import org.alice.ide.custom.CustomExpressionCreatorComposite;
+import org.alice.ide.custom.components.CustomExpressionCreatorView;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.triggers.ChangeEventTrigger;
+import org.lgna.croquet.views.SwingAdapter;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.Color;
+import org.lgna.story.EmployeesOnly;
+
+import javax.swing.JColorChooser;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.CustomExpressionCreatorComposite<org.alice.ide.custom.components.CustomExpressionCreatorView> {
+public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<CustomExpressionCreatorView> {
 	private static class SingletonHolder {
 		private static ColorCustomExpressionCreatorComposite instance = new ColorCustomExpressionCreatorComposite();
 	}
@@ -55,75 +76,75 @@ public class ColorCustomExpressionCreatorComposite extends org.alice.ide.custom.
 		return SingletonHolder.instance;
 	}
 
-	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+	private final JColorChooser jColorChooser = new JColorChooser();
+	private final ChangeListener changeListener = new ChangeListener() {
 		@Override
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
+		public void stateChanged( ChangeEvent e ) {
+			TransactionManager.TODO_REMOVE_fireEvent( ChangeEventTrigger.createUserInstance( e ) );
 		}
 	};
 
 	private ColorCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "6a187cbd-d41f-4513-aa5e-e8750d1d921f" ) );
+		super( UUID.fromString( "6a187cbd-d41f-4513-aa5e-e8750d1d921f" ) );
 	}
 
 	@Override
-	protected org.alice.ide.custom.components.CustomExpressionCreatorView createView() {
-		class ColorCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
+	protected CustomExpressionCreatorView createView() {
+		class ColorCustomExpressionCreatorView extends CustomExpressionCreatorView {
 			public ColorCustomExpressionCreatorView( ColorCustomExpressionCreatorComposite composite ) {
 				super( composite );
 			}
 
 			@Override
-			protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
-				return new org.lgna.croquet.views.SwingAdapter( jColorChooser );
+			protected SwingComponentView<?> createMainComponent() {
+				return new SwingAdapter( jColorChooser );
 			}
 		}
 		return new ColorCustomExpressionCreatorView( this );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
+	protected Expression createValue() {
 		java.awt.Color awtColor = this.jColorChooser.getColor();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.ast.ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
-		org.lgna.story.Color color = org.lgna.story.EmployeesOnly.createColor( awtColor );
+		IDE ide = IDE.getActiveInstance();
+		ExpressionCreator expressionCreator = ide.getApiConfigurationManager().getExpressionCreator();
+		Color color = EmployeesOnly.createColor( awtColor );
 		try {
 			return expressionCreator.createExpression( color );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee, color );
+		} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
+			Logger.throwable( ccee, color );
 			return null;
 		}
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
+	protected void initializeToPreviousExpression( Expression expression ) {
 		if( expression != null ) {
 			try {
-				org.lgna.story.Color color = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression, org.lgna.story.Color.class );
+				Color color = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression, Color.class );
 				if( color != null ) {
-					edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.EmployeesOnly.getColor4f( color );
-					this.jColorChooser.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( color4f ) );
+					Color4f color4f = EmployeesOnly.getColor4f( color );
+					this.jColorChooser.setColor( ColorUtilities.toAwtColor( color4f ) );
 				}
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, expression );
+				Logger.throwable( t, expression );
 			}
 		}
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( CompletionStep<?> step ) {
 		super.handlePreShowDialog( step );
 		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		this.jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
 		super.handlePostHideDialog( completionStep );
 	}

@@ -43,8 +43,13 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.EnumProperty;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.project.virtualmachine.VirtualMachine;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -64,7 +69,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
+	public ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
@@ -79,11 +84,11 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
+	public Visibility getVisibility() {
 		return this.visibility;
 	}
 
-	public void setVisibility( org.lgna.project.annotations.Visibility visibility ) {
+	public void setVisibility( Visibility visibility ) {
 		this.visibility = visibility;
 	}
 
@@ -103,7 +108,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	public java.util.List<UserParameter> getRequiredParameters() {
+	public List<UserParameter> getRequiredParameters() {
 		return this.requiredParameters.getValue();
 	}
 
@@ -118,11 +123,11 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>( this );
-	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
+	public final EnumProperty<ManagementLevel> managementLevel = new EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
+	public final BooleanProperty isSignatureLocked = new BooleanProperty( this, Boolean.FALSE );
+	public final BooleanProperty isDeletionAllowed = new BooleanProperty( this, Boolean.FALSE );
 
-	private org.lgna.project.annotations.Visibility visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
+	private Visibility visibility = Visibility.PRIME_TIME;
 }

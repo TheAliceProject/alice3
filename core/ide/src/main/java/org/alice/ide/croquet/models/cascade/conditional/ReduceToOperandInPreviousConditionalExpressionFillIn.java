@@ -43,11 +43,17 @@
 
 package org.alice.ide.croquet.models.cascade.conditional;
 
+import org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks;
+import org.lgna.project.ast.ConditionalInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.Expression> {
-	public ReduceToOperandInPreviousConditionalExpressionFillIn( java.util.UUID id ) {
+public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<Expression> {
+	public ReduceToOperandInPreviousConditionalExpressionFillIn( UUID id ) {
 		super( id );
 	}
 
@@ -55,12 +61,12 @@ public abstract class ReduceToOperandInPreviousConditionalExpressionFillIn exten
 	//	protected final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.Expression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
 	//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
 	//	}
-	protected abstract org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ConditionalInfixExpression previousConditional );
+	protected abstract Expression getOperand( ConditionalInfixExpression previousConditional );
 
 	@Override
-	protected final org.lgna.project.ast.Expression createValue( org.lgna.project.ast.Expression previousExpression ) {
-		assert previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
-		org.lgna.project.ast.ConditionalInfixExpression previousConditional = (org.lgna.project.ast.ConditionalInfixExpression)previousExpression;
+	protected final Expression createValue( Expression previousExpression ) {
+		assert previousExpression instanceof ConditionalInfixExpression;
+		ConditionalInfixExpression previousConditional = (ConditionalInfixExpression)previousExpression;
 		return this.getOperand( previousConditional );
 	}
 }

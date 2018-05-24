@@ -42,20 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.projecturi;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class DirectoryUriListTab extends RefreshableListUriTab {
-	private final java.io.File directory;
+	private final File directory;
 
-	public DirectoryUriListTab( java.util.UUID migrationId, java.io.File directory ) {
+	public DirectoryUriListTab( UUID migrationId, File directory ) {
 		super( migrationId, new DirectoryUriListData( directory ) );
 		this.directory = directory;
 	}
 
 	@Override
 	public final String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.directory );
+		String path = FileUtilities.getCanonicalPathIfPossible( this.directory );
 		return "there are no projects in " + path;
 	}
 }

@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.scenegraph.TexturedVisual;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,9 +55,9 @@ public class TexturedPaintUtilities {
 		throw new AssertionError();
 	}
 
-	protected static void setPaint( edu.cmu.cs.dennisc.scenegraph.TexturedVisual sgTexturedVisual, org.lgna.story.Paint paint ) {
+	protected static void setPaint( TexturedVisual sgTexturedVisual, Paint paint ) {
 		//sgTexturedVisual.setPaint( paint );
-		sgTexturedVisual.getAppearance().setDiffuseColor( org.lgna.story.EmployeesOnly.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
-		sgTexturedVisual.setTexture( org.lgna.story.EmployeesOnly.getTexture( paint, null ) );
+		sgTexturedVisual.getAppearance().setDiffuseColor( EmployeesOnly.getColor4f( paint, Color4f.WHITE ) );
+		sgTexturedVisual.setTexture( EmployeesOnly.getTexture( paint, null ) );
 	}
 }

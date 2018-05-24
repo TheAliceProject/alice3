@@ -42,22 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> {
-	public UnadornedDialogCoreComposite( java.util.UUID migrationId, IsModal isModal ) {
+public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>> extends AbstractDialogComposite<V> {
+	public UnadornedDialogCoreComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.CompositeView<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected CompositeView<?, ?> allocateView( CompletionStep<?> step ) {
 		//todo
 		return this.getView();
 	}
 
 	@Override
-	protected void releaseView( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.CompositeView<?, ?> view ) {
+	protected void releaseView( CompletionStep<?> step, CompositeView<?, ?> view ) {
 		super.releaseView();
 		//todo
 	}
@@ -69,17 +74,17 @@ public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.vi
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( CompletionStep<?> step ) {
 		this.handlePreActivation();
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePostHideDialog( CompletionStep<?> step ) {
 		this.handlePostDeactivation();
 		step.finish();
 	}
 
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
 		this.showDialog( completionStep );
 	}
 

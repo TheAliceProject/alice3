@@ -43,12 +43,17 @@
 
 package org.alice.stageide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.views.AddManagedFieldView;
+import org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.SwingComponentView;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.views.AddManagedFieldView {
-	private static class SidePanel extends org.lgna.croquet.views.MigPanel {
-		public SidePanel( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
+public class AddBillboardManagedFieldView extends AddManagedFieldView {
+	private static class SidePanel extends MigPanel {
+		public SidePanel( AddBillboardManagedFieldComposite composite ) {
 			this.addComponent( composite.getPaintState().getSidekickLabel().createLabel() );
 			this.addComponent( composite.getBackPaintState().getSidekickLabel().createLabel(), "wrap" );
 			this.addComponent( new PaintView( composite.getPaintState() ) );
@@ -58,13 +63,13 @@ public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.
 
 	private final SidePanel sidePanel;
 
-	public AddBillboardManagedFieldView( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
+	public AddBillboardManagedFieldView( AddBillboardManagedFieldComposite composite ) {
 		super( composite );
 		this.sidePanel = new SidePanel( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> getSideView() {
+	protected SwingComponentView<?> getSideView() {
 		return this.sidePanel;
 	}
 }

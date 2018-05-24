@@ -42,10 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MouseFocusEventQueue extends java.awt.EventQueue {
+public class MouseFocusEventQueue extends EventQueue {
 	private static MouseFocusEventQueue singleton;
 
 	public static MouseFocusEventQueue getSingleton() {
@@ -57,12 +65,12 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 		return singleton;
 	}
 
-	private java.awt.Component componentWithMouseFocus = null;
+	private Component componentWithMouseFocus = null;
 
-	public void pushComponentWithMouseFocus( java.awt.Component componentWithMouseFocus ) {
+	public void pushComponentWithMouseFocus( Component componentWithMouseFocus ) {
 		assert this.componentWithMouseFocus == null;
 		this.componentWithMouseFocus = componentWithMouseFocus;
-		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 
 		//sadly, this breaks opengl on for some video card drivers
@@ -71,9 +79,9 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 	}
 
-	public java.awt.Component popComponentWithMouseFocus() {
+	public Component popComponentWithMouseFocus() {
 		assert this.componentWithMouseFocus != null;
-		java.awt.Component rv = this.componentWithMouseFocus;
+		Component rv = this.componentWithMouseFocus;
 		this.componentWithMouseFocus = null;
 		//java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
@@ -83,16 +91,16 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 	}
 
 	@Override
-	protected void dispatchEvent( java.awt.AWTEvent e ) {
+	protected void dispatchEvent( AWTEvent e ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "dispatchEvent", e );
 		if( this.componentWithMouseFocus != null ) {
-			if( e instanceof java.awt.event.MouseEvent ) {
-				java.awt.event.MouseEvent me = (java.awt.event.MouseEvent)e;
-				java.awt.Component curr = me.getComponent();
+			if( e instanceof MouseEvent ) {
+				MouseEvent me = (MouseEvent)e;
+				Component curr = me.getComponent();
 				if( curr == this.componentWithMouseFocus ) {
 					//pass
 				} else {
-					e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( curr, me, this.componentWithMouseFocus );
+					e = MouseEventUtilities.convertMouseEvent( curr, me, this.componentWithMouseFocus );
 				}
 			}
 		}

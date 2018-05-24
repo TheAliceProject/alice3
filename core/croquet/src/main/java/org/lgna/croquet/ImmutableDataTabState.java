@@ -42,15 +42,19 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.data.ImmutableListData;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImmutableDataTabState<T extends TabComposite<?>> extends TabState<T, org.lgna.croquet.data.ImmutableListData<T>> {
-	public ImmutableDataTabState( Group group, java.util.UUID migrationId, int selectionIndex, org.lgna.croquet.data.ImmutableListData<T> data ) {
+public class ImmutableDataTabState<T extends TabComposite<?>> extends TabState<T, ImmutableListData<T>> {
+	public ImmutableDataTabState( Group group, UUID migrationId, int selectionIndex, ImmutableListData<T> data ) {
 		super( group, migrationId, selectionIndex, data );
 	}
 
-	public ImmutableDataTabState( Group group, java.util.UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
-		this( group, migrationId, selectionIndex, new org.lgna.croquet.data.ImmutableListData<T>( itemCodec, values ) );
+	public ImmutableDataTabState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
+		this( group, migrationId, selectionIndex, new ImmutableListData<T>( itemCodec, values ) );
 	}
 }

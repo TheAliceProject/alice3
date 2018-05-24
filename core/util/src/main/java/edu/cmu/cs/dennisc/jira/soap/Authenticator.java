@@ -42,9 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.jira.soap;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+
+import java.rmi.RemoteException;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Authenticator {
-	public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException;
+	public String login( JiraSoapService service ) throws RemoteException;
 }

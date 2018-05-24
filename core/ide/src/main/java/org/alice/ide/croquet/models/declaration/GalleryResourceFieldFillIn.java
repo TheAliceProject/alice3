@@ -43,13 +43,25 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.TypeExpression;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, GalleryResourceFieldFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class GalleryResourceFieldFillIn extends ExpressionFillInWithoutBlanks<Expression> {
+	private static Map<AbstractField, GalleryResourceFieldFillIn> map = Maps.newHashMap();
 
-	public static synchronized GalleryResourceFieldFillIn getInstance( org.lgna.project.ast.AbstractField field ) {
+	public static synchronized GalleryResourceFieldFillIn getInstance( AbstractField field ) {
 		GalleryResourceFieldFillIn rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -60,26 +72,26 @@ public class GalleryResourceFieldFillIn extends org.alice.ide.croquet.models.cas
 		return rv;
 	}
 
-	private final org.lgna.project.ast.FieldAccess transientValue;
+	private final FieldAccess transientValue;
 
-	private GalleryResourceFieldFillIn( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "a45b7262-4553-4b3f-ad1f-7be7871a1d86" ) );
+	private GalleryResourceFieldFillIn( AbstractField field ) {
+		super( UUID.fromString( "a45b7262-4553-4b3f-ad1f-7be7871a1d86" ) );
 		this.transientValue = createValue( field );
 	}
 
-	private static org.lgna.project.ast.FieldAccess createValue( org.lgna.project.ast.AbstractField field ) {
-		return new org.lgna.project.ast.FieldAccess(
-				new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ),
+	private static FieldAccess createValue( AbstractField field ) {
+		return new FieldAccess(
+				new TypeExpression( field.getDeclaringType() ),
 				field );
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public Expression createValue( ItemNode<? super Expression, Void> node, TransactionHistory transactionHistory ) {
 		return createValue( this.transientValue.field.getValue() );
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, Void> node ) {
+	public Expression getTransientValue( ItemNode<? super Expression, Void> node ) {
 		return this.transientValue;
 	}
 }

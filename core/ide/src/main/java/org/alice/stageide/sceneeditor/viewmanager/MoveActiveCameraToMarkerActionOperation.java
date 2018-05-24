@@ -44,9 +44,13 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.IDE;
+import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.TransformableImp;
+
+import javax.swing.Icon;
+import java.util.UUID;
 
 public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOperation {
 
@@ -59,7 +63,7 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
 	}
 
 	private MoveActiveCameraToMarkerActionOperation() {
-		super( java.util.UUID.fromString( "8d1cbb1e-3f58-4f48-99ed-350f2decb203" ) );
+		super( UUID.fromString( "8d1cbb1e-3f58-4f48-99ed-350f2decb203" ) );
 	}
 
 	@Override
@@ -67,11 +71,11 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
 		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation( markerField );
 		String markerName = markerField != null ? markerField.getName() : "";
 
-		org.lgna.croquet.icon.IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarker( markerField );
-		javax.swing.Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+		IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarker( markerField );
+		Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
 
-		org.lgna.croquet.icon.IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp( cameraMarkerImp );
-		javax.swing.Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+		IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp( cameraMarkerImp );
+		Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
 
 		this.setToMoveToImp( markerImp, moveToIcon, markerName );
 		this.setToMoveImp( this.getCamera(), toMoveIcon, MarkerUtilities.getNameForCameraImp( cameraMarkerImp ) );

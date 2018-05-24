@@ -43,13 +43,29 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.javax.swing.LabelUtilities;
+import edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder;
+import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.ImmutableCascadeFillIn;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression, B> extends org.lgna.croquet.ImmutableCascadeFillIn<F, B> {
+public abstract class ExpressionFillIn<F extends Expression, B> extends ImmutableCascadeFillIn<F, B> {
 	private String text;
 
-	public ExpressionFillIn( java.util.UUID id, org.lgna.croquet.CascadeBlank<B>... blanks ) {
+	public ExpressionFillIn( UUID id, CascadeBlank<B>... blanks ) {
 		super( id, blanks );
 	}
 
@@ -59,30 +75,30 @@ public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression
 		this.text = this.findDefaultLocalizedText();
 	}
 
-	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> step ) {
+	protected Icon getLeadingIcon( ItemNode<? super F, B> step ) {
 		return null;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> step ) {
-		org.lgna.project.ast.Expression expression = this.getTransientValue( step );
+	protected JComponent createMenuItemIconProxy( ItemNode<? super F, B> step ) {
+		Expression expression = this.getTransientValue( step );
 
-		javax.swing.Icon leadingIcon = this.getLeadingIcon( step );
-		javax.swing.JLabel trailingLabel;
+		Icon leadingIcon = this.getLeadingIcon( step );
+		JLabel trailingLabel;
 		if( ( this.text != null ) && ( this.text.length() > 0 ) ) {
-			trailingLabel = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+			trailingLabel = LabelUtilities.createLabel( this.text, TextPosture.OBLIQUE, TextWeight.LIGHT );
 		} else {
 			trailingLabel = null;
 		}
-		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+		JComponent expressionPane = PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
 		if( ( leadingIcon != null ) || ( trailingLabel != null ) ) {
-			edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
+			JLineAxisPane rv = new JLineAxisPane();
 			if( leadingIcon != null ) {
-				rv.add( new javax.swing.JLabel( leadingIcon ) );
+				rv.add( new JLabel( leadingIcon ) );
 			}
 			rv.add( expressionPane );
 			if( trailingLabel != null ) {
-				trailingLabel.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder( 0, 16, 0, 0 ) );
+				trailingLabel.setBorder( new EmptyBorder( 0, 16, 0, 0 ) );
 				rv.add( trailingLabel );
 			}
 			return rv;

@@ -42,25 +42,28 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ByteArrayBinaryEncoder extends OutputStreamBinaryEncoder {
-	private final java.io.ByteArrayOutputStream baos;
+	private final ByteArrayOutputStream baos;
 
-	private ByteArrayBinaryEncoder( java.io.ByteArrayOutputStream baos ) {
+	private ByteArrayBinaryEncoder( ByteArrayOutputStream baos ) {
 		super( baos );
 		this.baos = baos;
 	}
 
 	public ByteArrayBinaryEncoder() {
-		this( new java.io.ByteArrayOutputStream() );
+		this( new ByteArrayOutputStream() );
 	}
 
 	public BinaryDecoder createDecoder() {
 		this.flush();
 		byte[] data = this.baos.toByteArray();
-		InputStreamBinaryDecoder decoder = new InputStreamBinaryDecoder( new java.io.ByteArrayInputStream( data ) );
+		InputStreamBinaryDecoder decoder = new InputStreamBinaryDecoder( new ByteArrayInputStream( data ) );
 		return decoder;
 	}
 }

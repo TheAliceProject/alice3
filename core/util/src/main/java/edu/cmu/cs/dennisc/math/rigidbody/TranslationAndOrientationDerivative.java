@@ -42,10 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.rigidbody;
 
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TranslationAndOrientationDerivative extends TranslationDerivative {
-	public edu.cmu.cs.dennisc.math.UnitQuaternion spin = edu.cmu.cs.dennisc.math.UnitQuaternion.createIdentity();
-	public edu.cmu.cs.dennisc.math.Vector3 torque = new edu.cmu.cs.dennisc.math.Vector3();
+	public UnitQuaternion spin = UnitQuaternion.createIdentity();
+	public Vector3 torque = new Vector3();
 }

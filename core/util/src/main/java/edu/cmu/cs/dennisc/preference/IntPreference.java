@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,12 +53,12 @@ public class IntPreference extends Preference<Integer> {
 	}
 
 	@Override
-	protected Integer getValue( java.util.prefs.Preferences utilPrefs, String key, Integer defaultValue ) {
+	protected Integer getValue( Preferences utilPrefs, String key, Integer defaultValue ) {
 		return utilPrefs.getInt( key, defaultValue );
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, Integer nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, Integer nextValue ) {
 		utilPrefs.putInt( key, nextValue );
 	}
 }

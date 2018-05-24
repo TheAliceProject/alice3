@@ -41,25 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.timing.Timer;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+
+import java.io.File;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Build {
 	public static void main( String[] args ) throws Exception {
-		org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
-		options.addOption( new org.apache.commons.cli.Option( "isDev", "mode=Mode.DEV" ) );
-		options.addOption( new org.apache.commons.cli.Option( "skipPlugin6", "isPlugin6Desired=false" ) );
-		options.addOption( new org.apache.commons.cli.Option( "skipPlugin8", "isPlugin8Desired=false" ) );
-		options.addOption( new org.apache.commons.cli.Option( "skipInstaller", "isInstallerDesired=false" ) );
-		options.addOption( new org.apache.commons.cli.Option( "skipClean", "isCleanDesired=false" ) );
-		options.addOption( new org.apache.commons.cli.Option( "skipJavaDocs", "isJavaDocGenerationDesired=false" ) );
+		Options options = new Options();
+		options.addOption( new Option( "isDev", "mode=Mode.DEV" ) );
+		options.addOption( new Option( "skipPlugin6", "isPlugin6Desired=false" ) );
+		options.addOption( new Option( "skipPlugin8", "isPlugin8Desired=false" ) );
+		options.addOption( new Option( "skipInstaller", "isInstallerDesired=false" ) );
+		options.addOption( new Option( "skipClean", "isCleanDesired=false" ) );
+		options.addOption( new Option( "skipJavaDocs", "isJavaDocGenerationDesired=false" ) );
 
-		org.apache.commons.cli.CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
-		org.apache.commons.cli.CommandLine commandLine = parser.parse( options, args );
+		CommandLineParser parser = new DefaultParser();
+		CommandLine commandLine = parser.parse( options, args );
 
 		// @formatter:off
 		Config config = new Config.Builder()
-				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Projects/Alice/Code" ) )
+				.rootDir( new File( FileUtilities.getDefaultDirectory(), "Projects/Alice/Code" ) )
 				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
 
 		.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
@@ -98,14 +110,14 @@ public class Build {
 			repo = buildRepo;
 		}
 
-		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "build" );
+		Timer timer = new Timer( "build" );
 		timer.start();
 		buildRepo.compileJars();
 		timer.mark( "compileJars" );
 
-		java.util.List<Plugin> plugins = repo.getPlugins();
+		List<Plugin> plugins = repo.getPlugins();
 		if( plugins.size() > 0 ) {
-			java.io.File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
+			File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
 			timer.mark( "generateJavaDocs" );
 
 			for( Plugin plugin : repo.getPlugins() ) {
@@ -156,28 +168,28 @@ public class Build {
 			}
 		}
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		Logger.outln();
+		Logger.outln();
 
 		timer.stopAndPrintResults();
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
+		Logger.outln();
+		Logger.outln();
+		Logger.outln( config );
+		Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
+		Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
+		Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
 		if( config.isPlugin6Desired() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
+			Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
 		}
 		if( config.isPlugin8Desired() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
+			Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
 		}
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
+		Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
+		Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );
+		Logger.outln();
+		Logger.outln();
+		Logger.outln( "done" );
 	}
 }

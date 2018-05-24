@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.booleanstate;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/final class BooleanStateSetToValueOperation extends org.lgna.croquet.ActionOperation {
-	private final org.lgna.croquet.BooleanState state;
+/*package-private*/final class BooleanStateSetToValueOperation extends ActionOperation {
+	private final BooleanState state;
 	private final boolean value;
 
-	/*package-private*/BooleanStateSetToValueOperation( org.lgna.croquet.BooleanState state, boolean value ) {
-		super( state.getGroup(), java.util.UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
+	/*package-private*/BooleanStateSetToValueOperation( BooleanState state, boolean value ) {
+		super( state.getGroup(), UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
 		assert state != null;
 		this.state = state;
 		this.value = value;
@@ -70,7 +76,7 @@ package org.lgna.croquet.imp.booleanstate;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		this.state.setValueTransactionlessly( this.value );
 		step.finish();
 	}

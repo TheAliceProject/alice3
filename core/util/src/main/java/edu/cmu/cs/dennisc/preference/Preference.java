@@ -42,6 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import edu.cmu.cs.dennisc.preference.event.PreferenceEvent;
+import edu.cmu.cs.dennisc.preference.event.PreferenceListener;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +58,7 @@ public abstract class Preference<E> {
 	private E defaultValue;
 	private boolean isTransient;
 	private E currentValueIfTransient;
-	private java.util.List<edu.cmu.cs.dennisc.preference.event.PreferenceListener<E>> preferenceListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.preference.event.PreferenceListener<E>>();
+	private List<PreferenceListener<E>> preferenceListeners = new LinkedList<PreferenceListener<E>>();
 
 	public Preference( E defaultValue ) {
 		this.defaultValue = defaultValue;
@@ -78,22 +85,22 @@ public abstract class Preference<E> {
 		return this.defaultValue;
 	}
 
-	protected abstract E getValue( java.util.prefs.Preferences utilPrefs, String key, E defaultValue );
+	protected abstract E getValue( Preferences utilPrefs, String key, E defaultValue );
 
-	protected abstract void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, E nextValue );
+	protected abstract void setAndCommitValue( Preferences utilPrefs, String key, E nextValue );
 
 	public final E getValue() {
 		if( this.isTransient ) {
 			return this.currentValueIfTransient;
 		} else {
-			java.util.prefs.Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
+			Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
 			return this.getValue( utilPrefs, this.key, this.defaultValue );
 		}
 	}
 
 	public final void setAndCommitValue( E nextValue ) {
-		java.util.prefs.Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
-		edu.cmu.cs.dennisc.preference.event.PreferenceEvent<E> e;
+		Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
+		PreferenceEvent<E> e;
 		if( this.preferenceListeners != null ) {
 			E prevValue;
 			if( this.isTransient ) {
@@ -101,7 +108,7 @@ public abstract class Preference<E> {
 			} else {
 				prevValue = this.getValue( utilPrefs, this.key, this.defaultValue );
 			}
-			e = new edu.cmu.cs.dennisc.preference.event.PreferenceEvent<E>( this, prevValue, nextValue );
+			e = new PreferenceEvent<E>( this, prevValue, nextValue );
 		} else {
 			e = null;
 		}
@@ -118,36 +125,36 @@ public abstract class Preference<E> {
 		}
 	}
 
-	public void addPropertyListener( edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> propertyListener ) {
+	public void addPropertyListener( PreferenceListener<E> propertyListener ) {
 		synchronized( this.preferenceListeners ) {
 			this.preferenceListeners.add( propertyListener );
 		}
 	}
 
-	public void removePropertyListener( edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> propertyListener ) {
+	public void removePropertyListener( PreferenceListener<E> propertyListener ) {
 		synchronized( this.preferenceListeners ) {
 			this.preferenceListeners.remove( propertyListener );
 		}
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.preference.event.PreferenceListener<E>> getPropertyListeners() {
+	public Iterable<PreferenceListener<E>> getPropertyListeners() {
 		return this.preferenceListeners;
 	}
 
-	private void firePropertyChanging( edu.cmu.cs.dennisc.preference.event.PreferenceEvent<E> e ) {
+	private void firePropertyChanging( PreferenceEvent<E> e ) {
 		if( this.preferenceListeners != null ) {
 			synchronized( this.preferenceListeners ) {
-				for( edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> propertyListener : this.preferenceListeners ) {
+				for( PreferenceListener<E> propertyListener : this.preferenceListeners ) {
 					propertyListener.valueChanging( e );
 				}
 			}
 		}
 	}
 
-	private void firePropertyChanged( edu.cmu.cs.dennisc.preference.event.PreferenceEvent<E> e ) {
+	private void firePropertyChanged( PreferenceEvent<E> e ) {
 		if( this.preferenceListeners != null ) {
 			synchronized( this.preferenceListeners ) {
-				for( edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> propertyListener : this.preferenceListeners ) {
+				for( PreferenceListener<E> propertyListener : this.preferenceListeners ) {
 					propertyListener.valueChanged( e );
 				}
 			}

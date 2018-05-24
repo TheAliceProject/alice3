@@ -43,6 +43,9 @@
 
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.ScaleUtilities;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
@@ -65,6 +68,8 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
+
+import java.util.List;
 
 public class SnapUtilities {
 	public static final double SNAP_LINE_VISUAL_HEIGHT = .01d;
@@ -178,14 +183,14 @@ public class SnapUtilities {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( AbstractTransformable t ) {
-		edu.cmu.cs.dennisc.math.Matrix3x3 returnScale;
+	public static Matrix3x3 getTransformableScale( AbstractTransformable t ) {
+		Matrix3x3 returnScale;
 		Visual objectVisual = getSGVisualForTransformable( t );
 		if( objectVisual != null ) {
-			returnScale = new edu.cmu.cs.dennisc.math.Matrix3x3();
+			returnScale = new Matrix3x3();
 			returnScale.setValue( objectVisual.scale.getValue() );
 		} else {
-			returnScale = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
+			returnScale = ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
 		}
 		return returnScale;
 
@@ -195,8 +200,8 @@ public class SnapUtilities {
 		AxisAlignedBox boundingBox = null;
 		if( t != null ) {
 			Object bbox = t.getBonusDataFor( AbstractDragAdapter.BOUNDING_BOX_KEY );
-			if( bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox ) {
-				boundingBox = new AxisAlignedBox( (edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox );
+			if( bbox instanceof AxisAlignedBox ) {
+				boundingBox = new AxisAlignedBox( (AxisAlignedBox)bbox );
 				if( boundingBox.isNaN() ) {
 					boundingBox = null;
 				}
@@ -402,8 +407,8 @@ public class SnapUtilities {
 		return snapPosition;
 	}
 
-	private static java.util.List<Vector3> getSnapVectors( Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapAmount ) {
-		java.util.List<Vector3> snapVectors = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private static List<Vector3> getSnapVectors( Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapAmount ) {
+		List<Vector3> snapVectors = Lists.newLinkedList();
 		OrthogonalMatrix3x3 rotationMatrix = OrthogonalMatrix3x3.createFromForwardAndUpGuide( guideForwardAxis, guideUpAxis );
 		double currentAngle = 0;
 		while( currentAngle < 360d ) {
@@ -415,7 +420,7 @@ public class SnapUtilities {
 	}
 
 	private static Vector3 snapAxis( Vector3 inputAxis, Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapDegrees ) {
-		java.util.List<Vector3> snapVectors = getSnapVectors( guideForwardAxis, guideUpAxis, snapDegrees );
+		List<Vector3> snapVectors = getSnapVectors( guideForwardAxis, guideUpAxis, snapDegrees );
 		for( Vector3 snapVector : snapVectors )
 		{
 			AngleInRadians angleBetween = VectorUtilities.getAngleBetweenVectors( inputAxis, snapVector );

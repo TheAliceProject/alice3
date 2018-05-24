@@ -42,10 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help;
 
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.ide.browser.BrowserOperation;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Locale;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.BrowserOperation {
+public class SearchForGraphicsDriversOperation extends BrowserOperation {
 	private static class SingletonHolder {
 		private static SearchForGraphicsDriversOperation instance = new SearchForGraphicsDriversOperation();
 	}
@@ -55,11 +63,11 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 	}
 
 	private SearchForGraphicsDriversOperation() {
-		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea" ) );
+		super( UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea" ) );
 	}
 
 	private static String getRendererSearchTerm( String renderer ) {
-		if( renderer.toLowerCase( java.util.Locale.ENGLISH ).contains( "geforce" ) ) {
+		if( renderer.toLowerCase( Locale.ENGLISH ).contains( "geforce" ) ) {
 			return "GeForce";
 		} else {
 			return renderer;
@@ -67,10 +75,10 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 	}
 
 	@Override
-	protected java.net.URL getUrl() {
+	protected URL getUrl() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "http://www.google.com/search?q=+graphics+driver" );
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
+		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
 			String renderer = sharedDetails.getRenderer();
 			if( renderer != null ) {
@@ -82,8 +90,8 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 		String spec = sb.toString();
 		this.setToolTipText( spec );
 		try {
-			return new java.net.URL( spec );
-		} catch( java.net.MalformedURLException murle ) {
+			return new URL( spec );
+		} catch( MalformedURLException murle ) {
 			throw new RuntimeException( spec, murle );
 		}
 	}

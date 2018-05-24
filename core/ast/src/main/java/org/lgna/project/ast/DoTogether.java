@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,7 +57,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendLocalizedText( DoTogether.class, "do together" );
 		super.appendRepr( localizer );
 	}

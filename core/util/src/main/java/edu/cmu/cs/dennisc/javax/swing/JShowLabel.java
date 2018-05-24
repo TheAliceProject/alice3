@@ -42,10 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.JLabel;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JShowLabel extends javax.swing.JLabel {
+public class JShowLabel extends JLabel {
 	private boolean isShowing = true;
 
 	@Override
@@ -59,7 +62,7 @@ public class JShowLabel extends javax.swing.JLabel {
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
+	public void paint( Graphics g ) {
 		if( this.isShowing ) {
 			super.paint( g );
 		}

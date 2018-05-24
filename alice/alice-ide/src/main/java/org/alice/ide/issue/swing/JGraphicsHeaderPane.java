@@ -42,21 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import net.miginfocom.swing.MigLayout;
+import org.alice.ide.help.HelpBrowserOperation;
+import org.alice.ide.issue.croquet.views.GlExceptionView;
+import org.lgna.issue.ApplicationIssueConfiguration;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JGraphicsHeaderPane extends javax.swing.JPanel {
+public class JGraphicsHeaderPane extends JPanel {
 	private static String getRendererSearchTerm( String renderer ) {
-		if( renderer.toLowerCase( java.util.Locale.ENGLISH ).contains( "geforce" ) ) {
+		if( renderer.toLowerCase( Locale.ENGLISH ).contains( "geforce" ) ) {
 			return "GeForce";
 		} else {
 			return renderer;
 		}
 	}
 
-	public JGraphicsHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config ) {
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+	public JGraphicsHeaderPane( ApplicationIssueConfiguration config ) {
+		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+		ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 		StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
 		sbSearchGraphicsDriverUrlSpec.append( "http://www.google.com/search?q=+graphics+driver" );
 		if( sharedDetails != null ) {
@@ -70,13 +84,13 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		String searchGraphicsDriverUrlSpec = sbSearchGraphicsDriverUrlSpec.toString();
 
 		StringBuilder sbGraphicsHelpUrlSpec = new StringBuilder();
-		sbGraphicsHelpUrlSpec.append( org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC );
+		sbGraphicsHelpUrlSpec.append( HelpBrowserOperation.HELP_URL_SPEC );
 		sbGraphicsHelpUrlSpec.append( "w/page/" );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+		if( SystemUtilities.isWindows() ) {
 			sbGraphicsHelpUrlSpec.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
-		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		} else if( SystemUtilities.isMac() ) {
 			sbGraphicsHelpUrlSpec.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
-		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+		} else if( SystemUtilities.isLinux() ) {
 			sbGraphicsHelpUrlSpec.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
 		} else {
 			sbGraphicsHelpUrlSpec.append( "54959364/Updating%20Video%20Drivers" );
@@ -141,13 +155,13 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		sb.append( "." );
 		sb.append( "</html>" );
 
-		this.setLayout( new net.miginfocom.swing.MigLayout( "fill", "[grow 0][grow 0][grow]" ) );
-		this.add( new javax.swing.JLabel( edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon() ), "aligny top" );
-		this.add( new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHtmlView( sb.toString() ), "grow" );
-		this.add( new javax.swing.JLabel( org.alice.ide.issue.croquet.views.GlExceptionView.ICON ), "wrap" );
+		this.setLayout( new MigLayout( "fill", "[grow 0][grow 0][grow]" ) );
+		this.add( new JLabel( IconUtilities.getErrorIcon() ), "aligny top" );
+		this.add( new JBrowserHtmlView( sb.toString() ), "grow" );
+		this.add( new JLabel( GlExceptionView.ICON ), "wrap" );
 
-		this.add( new javax.swing.JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>" + config.getSubmitActionName() + "</em>\" button.<html>" ), "span 3" );
-		this.setBackground( java.awt.Color.WHITE );
+		this.add( new JLabel( "<html>If you have updated your video drivers and this problem still persists then please press the \"<em>" + config.getSubmitActionName() + "</em>\" button.<html>" ), "span 3" );
+		this.setBackground( Color.WHITE );
 
 		//		this.add( new org.lgna.croquet.components.Label( "Alice has encountered a graphics problem", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
 		//		this.addComponent( new org.alice.ide.croquet.models.help.views.GraphicsHelpView(), "wrap" );

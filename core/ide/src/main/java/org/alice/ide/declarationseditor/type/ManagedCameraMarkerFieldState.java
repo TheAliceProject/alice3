@@ -42,14 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author dculyba
  * 
  */
 public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedCameraMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, ManagedCameraMarkerFieldState> map = Maps.newHashMap();
 
-	public static synchronized ManagedCameraMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized ManagedCameraMarkerFieldState getInstance( NamedUserType type ) {
 		ManagedCameraMarkerFieldState rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,7 +67,7 @@ public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
 		return rv;
 	}
 
-	private ManagedCameraMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), new org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData( type ) );
+	private ManagedCameraMarkerFieldState( NamedUserType type ) {
+		super( UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), new ManagedCameraMarkerFieldData( type ) );
 	}
 }

@@ -42,23 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.croquet.icon.AbstractIcon;
+
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeIcon extends org.lgna.croquet.icon.AbstractIcon {
-	private final javax.swing.ImageIcon icon;
+public class ThemeIcon extends AbstractIcon {
+	private final ImageIcon icon;
 
-	public ThemeIcon( java.awt.Dimension size, org.alice.stageide.modelresource.ResourceKey key ) {
+	public ThemeIcon( Dimension size, ResourceKey key ) {
 		super( size );
-		this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ThemeIcon.class.getResource( "themes/" + key.getInternalText() + ".png" ) );
+		this.icon = IconUtilities.createImageIcon( ThemeIcon.class.getResource( "themes/" + key.getInternalText() + ".png" ) );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	protected void paintIcon( Component c, Graphics2D g2 ) {
 		if( this.icon != null ) {
 			g2.drawImage( this.icon.getImage(), 0, 0, this.getIconWidth(), this.getIconHeight(), c );
 		} else {
-			g2.setColor( java.awt.Color.RED );
+			g2.setColor( Color.RED );
 			g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
 		}
 	}

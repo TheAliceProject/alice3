@@ -42,32 +42,45 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public abstract class GlrTitle<T extends edu.cmu.cs.dennisc.scenegraph.graphics.Title> extends GlrShapeEnclosedText<T> {
+import edu.cmu.cs.dennisc.java.awt.MultilineText;
+import edu.cmu.cs.dennisc.java.awt.TextAlignment;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.graphics.Title;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
+
+public abstract class GlrTitle<T extends Title> extends GlrShapeEnclosedText<T> {
 	protected static final float VERTICAL_MARGIN_TIMES_2 = 20.0f;
-	private java.awt.geom.Rectangle2D.Float backgroundBounds = new java.awt.geom.Rectangle2D.Float();
+	private Rectangle2D.Float backgroundBounds = new Rectangle2D.Float();
 
 	@Override
-	protected float getWrapWidth( java.awt.Rectangle actualViewport ) {
+	protected float getWrapWidth( Rectangle actualViewport ) {
 		return (float)( actualViewport.getWidth() * 0.9 );
 	}
 
-	protected abstract java.awt.geom.Rectangle2D.Float getFillBounds( java.awt.geom.Rectangle2D.Float rv, java.awt.Rectangle actualViewport, java.awt.geom.Dimension2D multilineTextSize );
+	protected abstract Rectangle2D.Float getFillBounds( Rectangle2D.Float rv, Rectangle actualViewport, Dimension2D multilineTextSize );
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.render.Graphics2D g2,
-			edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-			java.awt.Rectangle actualViewport,
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
-			java.awt.Font font,
-			java.awt.Color textColor,
+			Graphics2D g2,
+			RenderTarget renderTarget,
+			Rectangle actualViewport,
+			AbstractCamera camera,
+			MultilineText multilineText,
+			Font font,
+			Color textColor,
 			float wrapWidth,
-			java.awt.Color fillColor,
-			java.awt.Color outlineColor ) {
+			Color fillColor,
+			Color outlineColor ) {
 		synchronized( this.backgroundBounds ) {
 			g2.setFont( font );
-			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
+			Dimension2D size = multilineText.getDimension( g2, wrapWidth );
 			this.getFillBounds( this.backgroundBounds, actualViewport, size );
 			if( fillColor != null ) {
 				g2.setColor( fillColor );
@@ -80,7 +93,7 @@ public abstract class GlrTitle<T extends edu.cmu.cs.dennisc.scenegraph.graphics.
 			if( textColor != null ) {
 				g2.setColor( textColor );
 				g2.setFont( font );
-				multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.CENTER, this.backgroundBounds );
+				multilineText.paint( g2, wrapWidth, TextAlignment.CENTER, this.backgroundBounds );
 				//				float x = this.backgroundBounds.x - (float)textBounds.getX() + this.backgroundBounds.width * 0.5f - (float)textBounds.getWidth() * 0.5f;
 				//				float y = this.backgroundBounds.y - (float)textBounds.getY() + this.backgroundBounds.height * 0.5f - (float)textBounds.getHeight() * 0.5f;
 				//				g2.setFont( font );

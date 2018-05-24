@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.interact.event;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+
+import java.util.List;
+
 /**
  * @author David Culyba
  */
@@ -56,7 +61,7 @@ public class EventCriteriaManager {
 		this.manipulationConditions.remove( condition );
 	}
 
-	public void setTargetTransformable( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable transformable ) {
+	public void setTargetTransformable( AbstractTransformable transformable ) {
 		this.targetTransformable = transformable;
 	}
 
@@ -71,6 +76,6 @@ public class EventCriteriaManager {
 		return false;
 	}
 
-	private final java.util.List<ManipulationEventCriteria> manipulationConditions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable targetTransformable;
+	private final List<ManipulationEventCriteria> manipulationConditions = Lists.newCopyOnWriteArrayList();
+	private AbstractTransformable targetTransformable;
 }

@@ -42,28 +42,45 @@
  *******************************************************************************/
 package org.lgna.issue.swing;
 
+import edu.cmu.cs.dennisc.issue.Issue;
+import edu.cmu.cs.dennisc.issue.IssueType;
+import edu.cmu.cs.dennisc.issue.IssueUtilities;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea;
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField;
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.text.JTextComponent;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JInsightPane extends javax.swing.JPanel {
+public class JInsightPane extends JPanel {
 	//private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
 	private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
 	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
 	private static final String NAME_SUGGESTIVE_TEXT = "(optional)";//"please fill in your name (optional)";
 	private static final String EMAIL_SUGGESTIVE_TEXT = "(optional)";//"please fill in your e-mail address (optional)";
 
-	private static javax.swing.text.JTextComponent createTextArea( String text, String suggestiveText ) {
-		javax.swing.JTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea( text, suggestiveText );
+	private static JTextComponent createTextArea( String text, String suggestiveText ) {
+		JTextArea rv = new JSuggestiveTextArea( text, suggestiveText );
 		rv.setLineWrap( true );
 		rv.setWrapStyleWord( true );
 		return rv;
 	}
 
-	private static javax.swing.JScrollPane createScrollPane( javax.swing.text.JTextComponent view ) {
-		javax.swing.JScrollPane rv = new javax.swing.JScrollPane( view, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
+	private static JScrollPane createScrollPane( JTextComponent view ) {
+		JScrollPane rv = new JScrollPane( view, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
+			public Dimension getPreferredSize() {
+				return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
 			}
 		};
 		return rv;
@@ -74,32 +91,32 @@ public class JInsightPane extends javax.swing.JPanel {
 		this.exceptionSubPane = new JExceptionSubPane( thread, originalThrowable, originalThrowableOrTarget );
 		this.descriptionTextArea = createTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
 		this.stepsTextArea = createTextArea( "", STEPS_SUGGESTIVE_TEXT );
-		this.reportedByTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
-		this.emailAddressTextField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
+		this.reportedByTextField = new JSuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
+		this.emailAddressTextField = new JSuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
 
 		String textAreaConstraint = "aligny top, gaptop 8";
 		String panelConstraint = "aligny top";
-		this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0", "[align right, grow 0][]", "4[grow, shrink][grow, shrink][grow 0][grow 0][grow 0][grow 0][grow 0]" ) );
+		this.setLayout( new MigLayout( "fill, insets 0", "[align right, grow 0][]", "4[grow, shrink][grow, shrink][grow 0][grow 0][grow 0][grow 0][grow 0]" ) );
 		//this.add( new javax.swing.JLabel( "summary:" ) );
 		//this.add( summaryTextField, "growx, wrap" );
-		this.add( new javax.swing.JLabel( "description:" ), textAreaConstraint );
+		this.add( new JLabel( "description:" ), textAreaConstraint );
 		this.add( createScrollPane( descriptionTextArea ), "grow, wrap" );
-		this.add( new javax.swing.JLabel( "steps:" ), textAreaConstraint );
+		this.add( new JLabel( "steps:" ), textAreaConstraint );
 		this.add( createScrollPane( stepsTextArea ), "grow, wrap" );
-		this.add( new javax.swing.JLabel( "reported by:" ) );
+		this.add( new JLabel( "reported by:" ) );
 		this.add( reportedByTextField, "growx, wrap" );
-		this.add( new javax.swing.JLabel( "e-mail address:" ) );
+		this.add( new JLabel( "e-mail address:" ) );
 		this.add( emailAddressTextField, "growx, wrap" );
-		this.add( new javax.swing.JSeparator( javax.swing.SwingConstants.HORIZONTAL ), "growx, span 2, wrap" );
-		this.add( new javax.swing.JLabel( "exception:" ), panelConstraint );
+		this.add( new JSeparator( SwingConstants.HORIZONTAL ), "growx, span 2, wrap" );
+		this.add( new JLabel( "exception:" ), panelConstraint );
 		this.add( this.exceptionSubPane, "wrap" );
-		this.add( new javax.swing.JLabel( "environment:" ), panelConstraint );
+		this.add( new JLabel( "environment:" ), panelConstraint );
 		this.add( this.environmentSubPane, "wrap" );
 	}
 
-	public edu.cmu.cs.dennisc.issue.Issue.Builder createIssueBuilder() {
-		edu.cmu.cs.dennisc.issue.Issue.Builder rv = new edu.cmu.cs.dennisc.issue.Issue.Builder();
-		rv.type( edu.cmu.cs.dennisc.issue.IssueType.BUG );
+	public Issue.Builder createIssueBuilder() {
+		Issue.Builder rv = new Issue.Builder();
+		rv.type( IssueType.BUG );
 		rv.description( this.descriptionTextArea.getText() );
 		rv.steps( this.stepsTextArea.getText() );
 		rv.reportedBy( this.reportedByTextField.getText() );
@@ -120,20 +137,20 @@ public class JInsightPane extends javax.swing.JPanel {
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
+	public Dimension getPreferredSize() {
 		if( isExpanded ) {
 			return super.getPreferredSize();
 		} else {
-			return new java.awt.Dimension( 0, 0 );
+			return new Dimension( 0, 0 );
 		}
 	}
 
-	private final javax.swing.text.JTextComponent descriptionTextArea;
-	private final javax.swing.text.JTextComponent stepsTextArea;
-	private final javax.swing.text.JTextComponent reportedByTextField;
-	private final javax.swing.text.JTextComponent emailAddressTextField;
+	private final JTextComponent descriptionTextArea;
+	private final JTextComponent stepsTextArea;
+	private final JTextComponent reportedByTextField;
+	private final JTextComponent emailAddressTextField;
 
 	private final JExceptionSubPane exceptionSubPane;
-	private final JEnvironmentSubPane environmentSubPane = new JEnvironmentSubPane( edu.cmu.cs.dennisc.issue.IssueUtilities.getSystemPropertiesForEnvironmentField() );
+	private final JEnvironmentSubPane environmentSubPane = new JEnvironmentSubPane( IssueUtilities.getSystemPropertiesForEnvironmentField() );
 	private boolean isExpanded;
 }

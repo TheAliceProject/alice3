@@ -43,13 +43,21 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThisMethodInvocationFactory extends MethodInvocationFactory {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<AbstractMethod, ThisMethodInvocationFactory> map = Maps.newHashMap();
 
-	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized ThisMethodInvocationFactory getInstance( AbstractMethod method ) {
 		assert method != null;
 		if( method.getRequiredParameters().size() == 0 ) {
 			ThisMethodInvocationFactory rv = map.get( method );
@@ -65,22 +73,22 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 		}
 	}
 
-	private ThisMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
+	private ThisMethodInvocationFactory( AbstractMethod method ) {
 		super( method );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		return type;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+	protected Expression createTransientExpressionForMethodInvocation() {
 		return createTransientThisExpression();
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
+	protected Expression createExpressionForMethodInvocation() {
 		return createThisExpression();
 	}
 

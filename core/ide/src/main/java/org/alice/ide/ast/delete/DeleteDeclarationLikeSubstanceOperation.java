@@ -43,14 +43,24 @@
 
 package org.alice.ide.ast.delete;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Node;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna.project.ast.Node> extends org.lgna.croquet.ActionOperation {
+public abstract class DeleteDeclarationLikeSubstanceOperation<N extends Node> extends ActionOperation {
 	private final N node;
 
-	public DeleteDeclarationLikeSubstanceOperation( java.util.UUID migrationId, N node ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
+	public DeleteDeclarationLikeSubstanceOperation( UUID migrationId, N node ) {
+		super( Application.PROJECT_GROUP, migrationId );
 		this.node = node;
 	}
 
@@ -58,26 +68,26 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 		return this.node;
 	}
 
-	protected abstract org.lgna.croquet.Operation getAlertModelIfNotAllowedToDelete();
+	protected abstract Operation getAlertModelIfNotAllowedToDelete();
 
-	protected abstract org.lgna.croquet.BooleanState getFindModel();
+	protected abstract BooleanState getFindModel();
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract Edit createEdit( CompletionStep<?> completionStep );
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
+	protected void perform( CompletionStep<?> step ) {
+		Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
 		if( failedToClearOperation != null ) {
 			step.cancel();
-			org.lgna.croquet.history.CompletionStep<?> subCompletionStep = failedToClearOperation.fire();
+			CompletionStep<?> subCompletionStep = failedToClearOperation.fire();
 			if( subCompletionStep.isSuccessfullyCompleted() ) {
-				org.lgna.croquet.BooleanState findFrameState = this.getFindModel();
+				BooleanState findFrameState = this.getFindModel();
 				if( findFrameState != null ) {
 					findFrameState.setValueTransactionlessly( true );
 				}
 			}
 		} else {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( step );
+			Edit edit = this.createEdit( step );
 			assert edit != null : this;
 			step.commitAndInvokeDo( edit );
 		}

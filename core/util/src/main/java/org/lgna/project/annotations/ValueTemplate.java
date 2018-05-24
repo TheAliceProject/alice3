@@ -43,11 +43,15 @@
 
 package org.lgna.project.annotations;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * @author Dennis Cosgrove
  */
-@java.lang.annotation.Documented
-@java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
+@Documented
+@Retention( RetentionPolicy.RUNTIME )
 public @interface ValueTemplate {
 	Class<? extends Enum<? extends ValueDetails<?>>> detailsEnumCls();
 }

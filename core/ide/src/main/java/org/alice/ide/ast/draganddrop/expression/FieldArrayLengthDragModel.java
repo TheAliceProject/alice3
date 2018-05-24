@@ -43,31 +43,43 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation;
+import org.lgna.croquet.Model;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<AbstractField, FieldArrayLengthDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel>() {
+	public static FieldArrayLengthDragModel getInstance( AbstractField field ) {
+		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldArrayLengthDragModel>() {
 			@Override
-			public FieldArrayLengthDragModel initialize( org.lgna.project.ast.AbstractField field ) {
+			public FieldArrayLengthDragModel initialize( AbstractField field ) {
 				return new FieldArrayLengthDragModel( field );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldArrayLengthDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );
+	private FieldArrayLengthDragModel( AbstractField field ) {
+		super( UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );
 		this.field = field;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE;
+	public AbstractType<?, ?, ?> getType() {
+		return JavaType.INTEGER_OBJECT_TYPE;
 	}
 
 	@Override
@@ -76,12 +88,12 @@ public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	protected Model getDropModel( BlockStatementIndexPair blockStatementIndexPair ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
+	protected Model getDropModel( ExpressionProperty expressionProperty ) {
+		return FieldArrayLengthOperation.getInstance( this.field, expressionProperty );
 	}
 }

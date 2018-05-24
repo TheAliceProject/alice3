@@ -43,6 +43,9 @@
 
 package org.alice.ide.ast;
 
+import org.alice.ide.IDE;
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +54,7 @@ public class CurrentThisExpression extends IdeExpression {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+	public AbstractType<?, ?, ?> getType() {
+		return IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 	}
 }

@@ -42,21 +42,34 @@
  *******************************************************************************/
 package org.alice.ide.testing.framesize.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+
+import javax.swing.KeyStroke;
+import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
-	private static java.awt.Dimension[] sizes = new java.awt.Dimension[] {
-			new java.awt.Dimension( 1024, 768 ),
-			new java.awt.Dimension( 1366, 768 ),
-			new java.awt.Dimension( 1280, 720 )
+public class CycleFrameSizeOperation extends ActionOperation {
+	private static Dimension[] sizes = new Dimension[] {
+			new Dimension( 1024, 768 ),
+			new Dimension( 1366, 768 ),
+			new Dimension( 1280, 720 )
 	};
 
 	private int index;
 
 	public CycleFrameSizeOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "fce834d4-4665-405e-9fae-2461613e3412" ) );
-		this.getImp().setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "fce834d4-4665-405e-9fae-2461613e3412" ) );
+		this.getImp().setAcceleratorKey( KeyStroke.getKeyStroke( KeyEvent.VK_F9, InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK ) );
 	}
 
 	@Override
@@ -66,19 +79,19 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		java.awt.Dimension maximumWindowSize = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
+	protected void perform( CompletionStep<?> step ) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension maximumWindowSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
 		int heightDelta = screenSize.height - maximumWindowSize.height;
 
 		int i = index % sizes.length;
 		int w = sizes[ i ].width;
 		int h = sizes[ i ].height - heightDelta;
 
-		org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame().setSize( w, h );
+		Application.getActiveInstance().getDocumentFrame().getFrame().setSize( w, h );
 		index++;
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );
+		Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );
 		step.finish();
 	}
 }

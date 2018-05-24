@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -84,17 +86,17 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+	public SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
 
@@ -137,7 +139,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.method.getValue() );
 		localizer.appendText( "(" );
 		String separator = "";

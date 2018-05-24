@@ -42,19 +42,23 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.Node;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface MigrationManager {
 	public static final String NO_REPLACEMENT = null;
 
-	public org.lgna.project.Version getCurrentVersion();
+	public Version getCurrentVersion();
 
 	public boolean isDevoidOfVersionIndependentMigrations();
 
-	public String migrate( String source, org.lgna.project.Version version );
+	public String migrate( String source, Version version );
 
-	public void migrate( org.lgna.project.ast.Node root, org.lgna.project.Project projectIfApplicable, org.lgna.project.Version version );
+	public void migrate( Node root, Project projectIfApplicable, Version version );
 
 	public void addVersionIndependentMigration( Migration migration );
 

@@ -42,23 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ProjectDifferentSignatureCardOwner extends org.lgna.croquet.CardOwnerComposite {
+public final class ProjectDifferentSignatureCardOwner extends CardOwnerComposite {
 	private final DifferentSignature<?> differentSignature;
-	private final org.lgna.croquet.Composite<?> keepCard;
-	private final org.lgna.croquet.Composite<?> renameCard;
+	private final Composite<?> keepCard;
+	private final Composite<?> renameCard;
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			updateCard();
 		}
 	};
 
 	public ProjectDifferentSignatureCardOwner( DifferentSignature<?> differentSignature ) {
-		super( java.util.UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
+		super( UUID.fromString( "ff22d54f-05fc-487d-b1c5-a8e4459c6a6a" ) );
 		this.differentSignature = differentSignature;
 		this.keepCard = new KeepSignatureCard( differentSignature );
 		this.renameCard = new RenameCard( differentSignature.getProjectHub(), differentSignature.getForegroundCustomizer() );

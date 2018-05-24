@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
+public abstract class ExpressionCreatorPane extends ExpressionLikeSubstance {
+	public ExpressionCreatorPane( AbstractExpressionDragModel model ) {
 		super( model );
 	}
 
@@ -56,14 +60,14 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
-		return ( (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel() ).getType();
+	public final AbstractType<?, ?, ?> getExpressionType() {
+		return ( (AbstractExpressionDragModel)this.getModel() ).getType();
 	}
 
 	@Override
 	protected void handleMouseQuoteEnteredUnquote() {
 		super.handleMouseQuoteEnteredUnquote();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.showDropReceptorsStencilOver( this, getExpressionType() );
 		}
@@ -71,7 +75,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 
 	@Override
 	protected void handleMouseQuoteExitedUnquote() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.hideDropReceptorsStencil();
 		}

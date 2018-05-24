@@ -42,14 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.views.MembersToolPaletteCoreView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersToolPaletteCoreComposite<MC extends MembersComposite<?>> extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.declarationseditor.type.views.MembersToolPaletteCoreView> {
+public abstract class MembersToolPaletteCoreComposite<MC extends MembersComposite<?>> extends ToolPaletteCoreComposite<MembersToolPaletteCoreView> {
 	private final MC membersComposite;
 
-	public MembersToolPaletteCoreComposite( java.util.UUID migrationId, boolean initialValue, MC membersComposite ) {
-		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
+	public MembersToolPaletteCoreComposite( UUID migrationId, boolean initialValue, MC membersComposite ) {
+		super( migrationId, Application.DOCUMENT_UI_GROUP, initialValue );
 		this.membersComposite = membersComposite;
 	}
 
@@ -57,12 +65,12 @@ public abstract class MembersToolPaletteCoreComposite<MC extends MembersComposit
 		return this.membersComposite;
 	}
 
-	public org.lgna.project.ast.NamedUserType getType() {
+	public NamedUserType getType() {
 		return this.membersComposite.getType();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

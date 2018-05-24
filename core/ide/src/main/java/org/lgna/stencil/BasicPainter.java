@@ -42,31 +42,40 @@
  *******************************************************************************/
 package org.lgna.stencil;
 
+import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
+
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BasicPainter implements Painter {
-	private final java.awt.BasicStroke stroke;
-	private final java.awt.Paint paint;
+	private final BasicStroke stroke;
+	private final Paint paint;
 
-	public BasicPainter( java.awt.BasicStroke stroke, java.awt.Paint paint ) {
+	public BasicPainter( BasicStroke stroke, Paint paint ) {
 		this.stroke = stroke;
 		this.paint = paint;
 	}
 
 	@Override
-	public java.awt.Rectangle getBounds( java.awt.Shape shape ) {
-		java.awt.Rectangle bounds = shape.getBounds();
+	public Rectangle getBounds( Shape shape ) {
+		Rectangle bounds = shape.getBounds();
 		//todo?
 		int pad = (int)( this.stroke.getLineWidth() * 0.5 ) + 1;
-		edu.cmu.cs.dennisc.java.awt.RectangleUtilities.grow( bounds, pad );
+		RectangleUtilities.grow( bounds, pad );
 		return bounds;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
-		java.awt.Paint prevPaint = g2.getPaint();
+	public void paint( Graphics2D g2, Shape shape ) {
+		Stroke prevStroke = g2.getStroke();
+		Paint prevPaint = g2.getPaint();
 
 		try {
 			g2.setStroke( this.stroke );

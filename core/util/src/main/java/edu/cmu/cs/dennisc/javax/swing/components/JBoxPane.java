@@ -42,12 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JBoxPane extends JPane {
 	public JBoxPane( int axis ) {
-		javax.swing.BoxLayout boxLayout = new javax.swing.BoxLayout( this, axis );
+		BoxLayout boxLayout = new BoxLayout( this, axis );
 		setLayout( boxLayout );
 	}
 }

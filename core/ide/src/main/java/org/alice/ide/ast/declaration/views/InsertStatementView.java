@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.declaration.InsertStatementComposite;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
 public class InsertStatementView extends DeclarationLikeSubstanceView {
-	public InsertStatementView( org.alice.ide.ast.declaration.InsertStatementComposite<?> composite ) {
+	public InsertStatementView( InsertStatementComposite<?> composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.Statement.class ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( Statement.class ) );
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.InsertStatementComposite<?> composite = (org.alice.ide.ast.declaration.InsertStatementComposite<?>)this.getComposite();
-		org.lgna.project.ast.Statement statement = composite.getPreviewValue();
-		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( statement );
+	public SwingComponentView<?> createPreviewSubComponent() {
+		InsertStatementComposite<?> composite = (InsertStatementComposite<?>)this.getComposite();
+		Statement statement = composite.getPreviewValue();
+		return PreviewAstI18nFactory.getInstance().createStatementPane( statement );
 	}
 }

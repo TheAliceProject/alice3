@@ -42,19 +42,28 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProcessUtilities {
-	public static int startAndDrainStandardOutAndStandardError( ProcessBuilder processBuilder, StringBuilder sb ) throws ProcessStartException, java.io.IOException {
+	public static int startAndDrainStandardOutAndStandardError( ProcessBuilder processBuilder, StringBuilder sb ) throws ProcessStartException, IOException {
 		if( processBuilder.redirectErrorStream() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "NOTE: redirecting error stream", processBuilder );
+			Logger.outln( "NOTE: redirecting error stream", processBuilder );
 			processBuilder.redirectErrorStream( true );
 		}
 		Process process = processBuilder.start();
-		java.io.InputStream standardOutAndStandardError = process.getInputStream();
+		InputStream standardOutAndStandardError = process.getInputStream();
 		byte[] buffer = new byte[ 256 ];
 
 		while( true ) {
@@ -70,13 +79,13 @@ public class ProcessUtilities {
 		return process.exitValue();
 	}
 
-	public static int startAndDrainStandardOutAndStandardError( ProcessBuilder processBuilder ) throws ProcessStartException, java.io.IOException {
+	public static int startAndDrainStandardOutAndStandardError( ProcessBuilder processBuilder ) throws ProcessStartException, IOException {
 		return startAndDrainStandardOutAndStandardError( processBuilder, null );
 	}
 
-	private static int startAndWaitFor( ProcessBuilder processBuilder, DrainInputStreamThread.LineAppender outLineAppender, DrainInputStreamThread.LineAppender errLineAppender ) throws java.io.IOException, InterruptedException {
+	private static int startAndWaitFor( ProcessBuilder processBuilder, DrainInputStreamThread.LineAppender outLineAppender, DrainInputStreamThread.LineAppender errLineAppender ) throws IOException, InterruptedException {
 		Process process = processBuilder.start();
-		java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 3 );
+		CyclicBarrier barrier = new CyclicBarrier( 3 );
 		DrainInputStreamThread outputHandler = new DrainInputStreamThread( process.getInputStream(), outLineAppender, barrier );
 		outputHandler.start();
 		DrainInputStreamThread errorHandler = new DrainInputStreamThread( process.getErrorStream(), errLineAppender, barrier );
@@ -84,17 +93,17 @@ public class ProcessUtilities {
 		int rv = process.waitFor();
 		try {
 			barrier.await();
-		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+		} catch( BrokenBarrierException bbe ) {
 			throw new RuntimeException( bbe );
 		}
 		return rv;
 	}
 
-	public static int startAndWaitFor( ProcessBuilder processBuilder, java.io.PrintStream out, java.io.PrintStream err ) throws java.io.IOException, InterruptedException {
+	public static int startAndWaitFor( ProcessBuilder processBuilder, PrintStream out, PrintStream err ) throws IOException, InterruptedException {
 		return startAndWaitFor( processBuilder, out != null ? new DrainInputStreamThread.PrintStreamLineAppender( out ) : null, err != null ? new DrainInputStreamThread.PrintStreamLineAppender( err ) : null );
 	}
 
-	public static int startAndWaitFor( ProcessBuilder processBuilder, java.util.List<String> out, java.util.List<String> err ) throws java.io.IOException, InterruptedException {
+	public static int startAndWaitFor( ProcessBuilder processBuilder, List<String> out, List<String> err ) throws IOException, InterruptedException {
 		return startAndWaitFor( processBuilder, out != null ? new DrainInputStreamThread.StringListLineAppender( out ) : null, err != null ? new DrainInputStreamThread.StringListLineAppender( err ) : null );
 	}
 }

@@ -43,28 +43,41 @@
 
 package org.alice.ide.x;
 
+import org.alice.ide.ast.CurrentThisExpression;
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.ast.IdeExpression;
+import org.alice.ide.ast.PreviousValueExpression;
+import org.alice.ide.ast.SelectedInstanceFactoryExpression;
+import org.alice.ide.common.EmptyExpressionPane;
+import org.alice.ide.common.PreviousValueExpressionPane;
+import org.alice.ide.common.SelectedInstanceFactoryExpressionPanel;
+import org.alice.ide.x.components.ThisExpressionLikeView;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class IdeAstI18nFactory extends AstI18nFactory {
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
-		if( ideExpression instanceof org.alice.ide.ast.EmptyExpression ) {
-			return new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)ideExpression );
-		} else if( ideExpression instanceof org.alice.ide.ast.PreviousValueExpression ) {
-			return new org.alice.ide.common.PreviousValueExpressionPane( this, (org.alice.ide.ast.PreviousValueExpression)ideExpression );
-		} else if( ideExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
-			return new org.alice.ide.x.components.ThisExpressionLikeView( this, (org.alice.ide.ast.CurrentThisExpression)ideExpression );
-		} else if( ideExpression instanceof org.alice.ide.ast.SelectedInstanceFactoryExpression ) {
+	protected SwingComponentView<?> createIdeExpressionPane( IdeExpression ideExpression ) {
+		if( ideExpression instanceof EmptyExpression ) {
+			return new EmptyExpressionPane( (EmptyExpression)ideExpression );
+		} else if( ideExpression instanceof PreviousValueExpression ) {
+			return new PreviousValueExpressionPane( this, (PreviousValueExpression)ideExpression );
+		} else if( ideExpression instanceof CurrentThisExpression ) {
+			return new ThisExpressionLikeView( this, (CurrentThisExpression)ideExpression );
+		} else if( ideExpression instanceof SelectedInstanceFactoryExpression ) {
 			//rv = new org.alice.ide.common.SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedInstanceFactoryExpression)expression );
-			return new org.alice.ide.common.SelectedInstanceFactoryExpressionPanel( this );
+			return new SelectedInstanceFactoryExpressionPanel( this );
 		} else {
 			throw new RuntimeException( ideExpression.toString() );
 		}
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public SwingComponentView<?> createExpressionPropertyPane( ExpressionProperty expressionProperty, AbstractType<?, ?, ?> type ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
 	}
 }

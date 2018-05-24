@@ -43,25 +43,36 @@
 
 package org.alice.stageide.oneshot.edits;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.STurnable;
+import org.lgna.story.implementation.AbstractTransformableImp;
+import org.lgna.story.implementation.AsSeenBy;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalTransformationEdit extends MethodInvocationEdit {
-	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
-	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+	private transient AbstractTransformableImp transformable;
+	private transient AffineMatrix4x4 m;
 
-	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public LocalTransformationEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.STurnable ) {
-			org.lgna.story.STurnable turnable = (org.lgna.story.STurnable)instance;
-			this.transformable = org.lgna.story.EmployeesOnly.getImplementation( turnable );
+		if( instance instanceof STurnable ) {
+			STurnable turnable = (STurnable)instance;
+			this.transformable = EmployeesOnly.getImplementation( turnable );
 			this.m = this.transformable.getLocalTransformation();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+			Logger.severe( instance );
 			this.transformable = null;
 			this.m = null;
 		}
@@ -70,7 +81,7 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 	@Override
 	protected void undoInternal() {
 		if( ( this.transformable != null ) && ( this.m != null ) ) {
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
+			this.transformable.animateTransformation( AsSeenBy.PARENT, this.m );
 		}
 	}
 }

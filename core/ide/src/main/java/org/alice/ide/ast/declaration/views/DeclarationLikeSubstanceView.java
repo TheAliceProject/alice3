@@ -42,40 +42,60 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
+import org.alice.ide.croquet.components.ExpressionDropDown;
+import org.alice.ide.croquet.components.ExpressionStateView;
+import org.alice.ide.croquet.components.TypeDropDown;
+import org.alice.ide.croquet.components.TypeView;
+import org.alice.ide.preview.components.PanelWithPreview;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TextField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import javax.swing.SwingUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview.components.PanelWithPreview {
-	private org.lgna.croquet.views.TextField nameTextField;
+public abstract class DeclarationLikeSubstanceView extends PanelWithPreview {
+	private TextField nameTextField;
 
-	public DeclarationLikeSubstanceView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite ) {
+	public DeclarationLikeSubstanceView( DeclarationLikeSubstanceComposite<?> composite ) {
 		super( composite );
 		this.setMinimumPreferredWidth( 480 );
 	}
 
-	public void handleInitializerChanged( org.lgna.project.ast.Expression expression ) {
+	public void handleInitializerChanged( Expression expression ) {
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> createPageStartComponent() {
-		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( null, "", "[align right]12[]24[]" );
-		org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
+	protected SwingComponentView<?> createPageStartComponent() {
+		final DeclarationLikeSubstanceComposite<?> composite = (DeclarationLikeSubstanceComposite<?>)this.getComposite();
+		MigPanel rv = new MigPanel( null, "", "[align right]12[]24[]" );
+		AstI18nFactory factory = PreviewAstI18nFactory.getInstance();
 
-		org.lgna.croquet.BooleanState isFinalState = composite.getIsFinalState();
+		BooleanState isFinalState = composite.getIsFinalState();
 		if( isFinalState != null ) {
 			rv.addComponent( isFinalState.getSidekickLabel().createLabel() );
 			rv.addComponent( isFinalState.createVerticalRadioButtons( false ), "wrap" );
 		}
 
 		if( composite.isValueComponentTypeDisplayed() ) {
-			org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
-			org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
+			CustomItemState<AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
+			BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
 			if( valueComponentTypeState != null ) {
-				org.lgna.croquet.views.SwingComponentView<?> component;
+				SwingComponentView<?> component;
 				if( valueComponentTypeState.isEnabled() ) {
-					org.alice.ide.croquet.components.TypeDropDown typeDropDown = new org.alice.ide.croquet.components.TypeDropDown( valueComponentTypeState );
+					TypeDropDown typeDropDown = new TypeDropDown( valueComponentTypeState );
 					if( composite.isValueIsArrayTypeStateDisplayed() ) {
-						component = new org.lgna.croquet.views.BorderPanel.Builder()
+						component = new BorderPanel.Builder()
 								.center( typeDropDown )
 								.lineEnd( valueIsArrayTypeState.createCheckBox() )
 								.build();
@@ -83,14 +103,14 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 						component = typeDropDown;
 					}
 				} else {
-					component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
+					component = new TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
 				}
 				rv.addComponent( valueComponentTypeState.getSidekickLabel().createLabel() );
 				rv.addComponent( component, "wrap" );
 			}
 		}
 
-		org.lgna.croquet.StringState nameState = composite.getNameState();
+		StringState nameState = composite.getNameState();
 		if( nameState != null ) {
 			nameTextField = nameState.createTextField();
 			nameTextField.enableSelectAllWhenFocusGained();
@@ -100,13 +120,13 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 		}
 
 		if( composite.isInitializerDisplayed() ) {
-			org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState = composite.getInitializerState();
+			CustomItemState<Expression> initializerState = composite.getInitializerState();
 			if( initializerState != null ) {
-				org.lgna.croquet.views.SwingComponentView<?> component;
+				SwingComponentView<?> component;
 				if( initializerState.isEnabled() ) {
-					component = new org.alice.ide.croquet.components.ExpressionDropDown( initializerState, factory );
+					component = new ExpressionDropDown( initializerState, factory );
 				} else {
-					component = new org.alice.ide.croquet.components.ExpressionStateView( initializerState, factory );
+					component = new ExpressionStateView( initializerState, factory );
 				}
 				rv.addComponent( initializerState.getSidekickLabel().createLabel() );
 				rv.addComponent( component, "wrap" );
@@ -116,8 +136,8 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 	}
 
 	@Override
-	protected org.lgna.croquet.views.BorderPanel createMainComponent() {
-		return new org.lgna.croquet.views.BorderPanel.Builder()
+	protected BorderPanel createMainComponent() {
+		return new BorderPanel.Builder()
 				.pageStart( this.createPageStartComponent() )
 				.build();
 
@@ -127,7 +147,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
 		if( this.nameTextField != null ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					nameTextField.requestFocus();

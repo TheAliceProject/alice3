@@ -42,19 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import com.jogamp.opengl.GLException;
+import org.alice.ide.issue.swing.JGraphicsHeaderPane;
+import org.alice.ide.issue.swing.JStandardHeaderPane;
+import org.lgna.issue.ApplicationIssueConfiguration;
+
+import javax.swing.JPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeIssueConfiguration implements org.lgna.issue.ApplicationIssueConfiguration {
+public abstract class IdeIssueConfiguration implements ApplicationIssueConfiguration {
 	@Override
 	public String getSubmitActionName() {
 		return "submit bug report";
 	}
 
 	@Override
-	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
-		return originalThrowableOrTarget instanceof com.jogamp.opengl.GLException
-				? new org.alice.ide.issue.swing.JGraphicsHeaderPane( this )
-				: new org.alice.ide.issue.swing.JStandardHeaderPane( this );
+	public JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
+		return originalThrowableOrTarget instanceof GLException
+				? new JGraphicsHeaderPane( this )
+				: new JStandardHeaderPane( this );
 	}
 }

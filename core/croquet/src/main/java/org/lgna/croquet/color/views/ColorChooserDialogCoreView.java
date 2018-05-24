@@ -42,11 +42,19 @@
  *******************************************************************************/
 package org.lgna.croquet.color.views;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import org.lgna.croquet.color.ColorChooserDialogCoreComposite;
+import org.lgna.croquet.views.CompositeView;
+
+import javax.swing.JColorChooser;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ColorChooserDialogCoreView extends org.lgna.croquet.views.CompositeView<javax.swing.JColorChooser, org.lgna.croquet.color.ColorChooserDialogCoreComposite> {
-	public ColorChooserDialogCoreView( org.lgna.croquet.color.ColorChooserDialogCoreComposite composite ) {
+public class ColorChooserDialogCoreView extends CompositeView<JColorChooser, ColorChooserDialogCoreComposite> {
+	public ColorChooserDialogCoreView( ColorChooserDialogCoreComposite composite ) {
 		super( composite );
 		//		javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.getAwtComponent().getChooserPanels();
 		//		for( javax.swing.colorchooser.AbstractColorChooserPanel colorChooserPanel : colorChooserPanels ) {
@@ -56,22 +64,22 @@ public class ColorChooserDialogCoreView extends org.lgna.croquet.views.Composite
 	}
 
 	@Override
-	protected javax.swing.JColorChooser createAwtComponent() {
-		return new javax.swing.JColorChooser();
+	protected JColorChooser createAwtComponent() {
+		return new JColorChooser();
 	}
 
-	public java.awt.Color getSelectedColor() {
+	public Color getSelectedColor() {
 		return this.getAwtComponent().getColor();
 	}
 
-	public void setSelectedColor( java.awt.Color selectedColor ) {
+	public void setSelectedColor( Color selectedColor ) {
 		this.getAwtComponent().setColor( selectedColor );
 	}
 
 	public void addColorChooserTabView( ColorChooserTabView view ) {
 		final boolean IS_PREPEND_DESIRED = true; //todo
 		if( IS_PREPEND_DESIRED ) {
-			this.getAwtComponent().setChooserPanels( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( javax.swing.colorchooser.AbstractColorChooserPanel.class, view.getAwtComponent(), this.getAwtComponent().getChooserPanels() ) );
+			this.getAwtComponent().setChooserPanels( ArrayUtilities.concat( AbstractColorChooserPanel.class, view.getAwtComponent(), this.getAwtComponent().getChooserPanels() ) );
 		} else {
 			this.getAwtComponent().addChooserPanel( view.getAwtComponent() );
 		}

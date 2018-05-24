@@ -42,56 +42,67 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.ScaleUtilities;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.animation.Vector3Animation;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VisualScaleModelImp extends ModelImp {
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.getSgVisuals()[ 0 ].scale };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.getSgVisuals()[ 0 ].scale };
 	}
 
-	protected void setSgVisualsScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+	protected void setSgVisualsScale( Matrix3x3 m ) {
+		for( Visual sgVisual : this.getSgVisuals() ) {
 			sgVisual.scale.setValue( m );
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.math.Matrix3x3 getSgVisualsScale() {
+	protected Matrix3x3 getSgVisualsScale() {
 		return this.getSgVisuals()[ 0 ].scale.getValue();
 	}
 
-	protected void applyScale( edu.cmu.cs.dennisc.math.Vector3 axis, boolean isScootDesired ) {
+	protected void applyScale( Vector3 axis, boolean isScootDesired ) {
 		if( isScootDesired ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
+			AffineMatrix4x4 m = this.getSgComposite().localTransformation.getValue();
 			m.translation.multiply( axis );
 			this.getSgComposite().localTransformation.setValue( m );
 		}
-		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
-			edu.cmu.cs.dennisc.math.Matrix3x3 scale = sgVisual.scale.getValue();
-			edu.cmu.cs.dennisc.math.ScaleUtilities.applyScale( scale, axis );
+		for( Visual sgVisual : this.getSgVisuals() ) {
+			Matrix3x3 scale = sgVisual.scale.getValue();
+			ScaleUtilities.applyScale( scale, axis );
 			sgVisual.scale.setValue( scale );
 		}
 	}
 
 	@Override
-	public void animateSetScale( edu.cmu.cs.dennisc.math.Dimension3 scale, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
-			private final edu.cmu.cs.dennisc.math.Vector3 vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
-			private final edu.cmu.cs.dennisc.math.Vector3 vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
+	public void animateSetScale( Dimension3 scale, double duration, Style style ) {
+		class ScaleAnimation extends Vector3Animation {
+			private final Vector3 vPrev = new Vector3( 1, 1, 1 );
+			private final Vector3 vBuffer = new Vector3();
 
 			private final VisualScaleModelImp subject;
 			private final VisualScaleModelImp[] scoots;
 
-			public ScaleAnimation( double duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Vector3 axis, VisualScaleModelImp subject, VisualScaleModelImp[] scoots ) {
-				super( duration, style, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
+			public ScaleAnimation( double duration, Style style, Vector3 axis, VisualScaleModelImp subject, VisualScaleModelImp[] scoots ) {
+				super( duration, style, new Vector3( 1, 1, 1 ), axis );
 				this.subject = subject;
 				this.scoots = scoots;
 			}
 
 			@Override
-			protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
-				edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( this.vBuffer, v, this.vPrev );
+			protected void updateValue( Vector3 v ) {
+				Vector3.setReturnValueToDivision( this.vBuffer, v, this.vPrev );
 				this.subject.applyScale( this.vBuffer, false );
 				for( VisualScaleModelImp model : this.scoots ) {
 					model.applyScale( this.vBuffer, true );
@@ -103,8 +114,8 @@ public abstract class VisualScaleModelImp extends ModelImp {
 		double actualDuration = adjustDurationIfNecessary( duration );
 		VisualScaleModelImp[] scoots = {};
 		//		edu.cmu.cs.dennisc.math.Vector3 newScaleVec = new edu.cmu.cs.dennisc.math.Vector3(scale);
-		edu.cmu.cs.dennisc.math.Dimension3 currentScale = this.getScale();
-		edu.cmu.cs.dennisc.math.Vector3 appliedScaleVec = new edu.cmu.cs.dennisc.math.Vector3( scale.x / currentScale.x, scale.y / currentScale.y, scale.z / currentScale.z );
+		Dimension3 currentScale = this.getScale();
+		Vector3 appliedScaleVec = new Vector3( scale.x / currentScale.x, scale.y / currentScale.y, scale.z / currentScale.z );
 		if( Double.isNaN( appliedScaleVec.x ) || Double.isInfinite( appliedScaleVec.x )) {
 			appliedScaleVec.x = 1;
 		}
@@ -114,7 +125,7 @@ public abstract class VisualScaleModelImp extends ModelImp {
 		if( Double.isNaN( appliedScaleVec.z ) || Double.isInfinite( appliedScaleVec.z )) {
 			appliedScaleVec.z = 1;
 		}
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
+		if( EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
 			this.applyScale( appliedScaleVec, false );
 			for( VisualScaleModelImp model : scoots ) {
 				model.applyScale( appliedScaleVec, true );
@@ -125,14 +136,14 @@ public abstract class VisualScaleModelImp extends ModelImp {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.math.Matrix3x3 scale = this.getSgVisualsScale();
-		return new edu.cmu.cs.dennisc.math.Dimension3( scale.right.x, scale.up.y, scale.backward.z );
+	public Dimension3 getScale() {
+		Matrix3x3 scale = this.getSgVisualsScale();
+		return new Dimension3( scale.right.x, scale.up.y, scale.backward.z );
 	}
 
 	@Override
-	public void setScale( edu.cmu.cs.dennisc.math.Dimension3 scale ) {
-		edu.cmu.cs.dennisc.math.Matrix3x3 m = edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity();
+	public void setScale( Dimension3 scale ) {
+		Matrix3x3 m = Matrix3x3.createIdentity();
 		m.right.x = scale.x;
 		m.up.y = scale.y;
 		m.backward.z = scale.z;

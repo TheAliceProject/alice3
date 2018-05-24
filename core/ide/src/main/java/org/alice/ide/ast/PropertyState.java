@@ -42,41 +42,52 @@
  *******************************************************************************/
 package org.alice.ide.ast;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.croquet.Group;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaMethodParameter;
+import org.lgna.project.ast.NullLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private final org.lgna.project.ast.JavaMethod setter;
+public abstract class PropertyState extends StandardExpressionState {
+	private final JavaMethod setter;
 
-	public PropertyState( org.lgna.croquet.Group group, java.util.UUID migrationId, org.lgna.project.ast.JavaMethod setter ) {
+	public PropertyState( Group group, UUID migrationId, JavaMethod setter ) {
 		super( group, migrationId, null );
 		this.setter = setter;
 	}
 
-	public org.lgna.project.ast.JavaMethod getSetter() {
+	public JavaMethod getSetter() {
 		return this.setter;
 	}
 
-	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
-		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
+	private JavaMethodParameter getParameter0() {
+		return (JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	protected AbstractType<?, ?, ?> getType() {
 		return this.getParameter0().getValueType();
 	}
 
 	@Override
-	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
+	protected ValueDetails<?> getValueDetails() {
 		return this.getParameter0().getDetails();
 	}
 
-	public org.lgna.project.ast.Expression getValueOrNullLiteral() {
-		org.lgna.project.ast.Expression rv = this.getValue();
+	public Expression getValueOrNullLiteral() {
+		Expression rv = this.getValue();
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.lgna.project.ast.NullLiteral();
+			rv = new NullLiteral();
 		}
 		return rv;
 	}

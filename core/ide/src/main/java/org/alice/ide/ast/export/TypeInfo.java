@@ -42,63 +42,75 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.UserConstructor;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> {
-	private final java.util.Map<org.lgna.project.ast.UserConstructor, ConstructorInfo> constructorInfoMap;
-	private final java.util.Map<org.lgna.project.ast.UserMethod, MethodInfo> methodInfoMap;
-	private final java.util.Map<org.lgna.project.ast.UserField, FieldInfo> fieldInfoMap;
+public class TypeInfo extends DeclarationInfo<UserType<?>> {
+	private final Map<UserConstructor, ConstructorInfo> constructorInfoMap;
+	private final Map<UserMethod, MethodInfo> methodInfoMap;
+	private final Map<UserField, FieldInfo> fieldInfoMap;
 
-	public TypeInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserType<?> type ) {
+	public TypeInfo( ProjectInfo projectInfo, UserType<?> type ) {
 		super( projectInfo, type );
-		java.util.Map<org.lgna.project.ast.UserConstructor, ConstructorInfo> mapC = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( org.lgna.project.ast.UserConstructor constructor : type.getDeclaredConstructors() ) {
+		Map<UserConstructor, ConstructorInfo> mapC = Maps.newHashMap();
+		for( UserConstructor constructor : type.getDeclaredConstructors() ) {
 			mapC.put( constructor, new ConstructorInfo( projectInfo, constructor ) );
 		}
-		this.constructorInfoMap = java.util.Collections.unmodifiableMap( mapC );
-		java.util.Map<org.lgna.project.ast.UserMethod, MethodInfo> mapM = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( org.lgna.project.ast.UserMethod method : type.methods ) {
+		this.constructorInfoMap = Collections.unmodifiableMap( mapC );
+		Map<UserMethod, MethodInfo> mapM = Maps.newHashMap();
+		for( UserMethod method : type.methods ) {
 			mapM.put( method, new MethodInfo( projectInfo, method ) );
 		}
-		this.methodInfoMap = java.util.Collections.unmodifiableMap( mapM );
-		java.util.Map<org.lgna.project.ast.UserField, FieldInfo> mapF = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( org.lgna.project.ast.UserField field : type.fields ) {
+		this.methodInfoMap = Collections.unmodifiableMap( mapM );
+		Map<UserField, FieldInfo> mapF = Maps.newHashMap();
+		for( UserField field : type.fields ) {
 			mapF.put( field, new FieldInfo( projectInfo, field ) );
 		}
-		this.fieldInfoMap = java.util.Collections.unmodifiableMap( mapF );
+		this.fieldInfoMap = Collections.unmodifiableMap( mapF );
 	}
 
 	public TypeInfo getSuperTypeInfo() {
-		org.lgna.project.ast.AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
-		if( superType instanceof org.lgna.project.ast.UserType<?> ) {
-			return this.getProjectInfo().getInfoForType( (org.lgna.project.ast.UserType<?>)superType );
+		AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
+		if( superType instanceof UserType<?> ) {
+			return this.getProjectInfo().getInfoForType( (UserType<?>)superType );
 		} else {
 			return null;
 		}
 	}
 
-	public java.util.Collection<ConstructorInfo> getConstructorInfos() {
+	public Collection<ConstructorInfo> getConstructorInfos() {
 		return this.constructorInfoMap.values();
 	}
 
-	public java.util.Collection<MethodInfo> getMethodInfos() {
+	public Collection<MethodInfo> getMethodInfos() {
 		return this.methodInfoMap.values();
 	}
 
-	public java.util.Collection<FieldInfo> getFieldInfos() {
+	public Collection<FieldInfo> getFieldInfos() {
 		return this.fieldInfoMap.values();
 	}
 
-	public ConstructorInfo getInfoForConstructor( org.lgna.project.ast.UserConstructor constructor ) {
+	public ConstructorInfo getInfoForConstructor( UserConstructor constructor ) {
 		return this.constructorInfoMap.get( constructor );
 	}
 
-	public MethodInfo getInfoForMethod( org.lgna.project.ast.UserMethod method ) {
+	public MethodInfo getInfoForMethod( UserMethod method ) {
 		return this.methodInfoMap.get( method );
 	}
 
-	public FieldInfo getInfoForField( org.lgna.project.ast.UserField field ) {
+	public FieldInfo getInfoForField( UserField field ) {
 		return this.fieldInfoMap.get( field );
 	}
 
@@ -115,7 +127,7 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 	}
 
 	@Override
-	public void appendDesired( java.util.List<org.alice.ide.ast.export.DeclarationInfo<?>> desired ) {
+	public void appendDesired( List<DeclarationInfo<?>> desired ) {
 		super.appendDesired( desired );
 		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
 			info.appendDesired( desired );

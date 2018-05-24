@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.interact.debug;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,6 +51,6 @@ public class DebugInteractUtilities {
 	private static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode"; //todo: change
 
 	public static boolean isDebugEnabled() {
-		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( DEBUG_PROPERTY_KEY );
+		return SystemUtilities.isPropertyTrue( DEBUG_PROPERTY_KEY );
 	}
 }

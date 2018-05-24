@@ -42,13 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.UnmanagedFieldData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UnmanagedFieldsComposite extends FieldsComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UnmanagedFieldsComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, UnmanagedFieldsComposite> map = Maps.newHashMap();
 
-	public static synchronized UnmanagedFieldsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized UnmanagedFieldsComposite getInstance( NamedUserType type ) {
 		UnmanagedFieldsComposite rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -59,7 +66,7 @@ public class UnmanagedFieldsComposite extends FieldsComposite {
 		return rv;
 	}
 
-	private UnmanagedFieldsComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "12be3d8b-2cd5-4e83-b6cc-8a0980a79ce1" ), new org.alice.ide.declarationseditor.type.data.UnmanagedFieldData( type ) );
+	private UnmanagedFieldsComposite( NamedUserType type ) {
+		super( UUID.fromString( "12be3d8b-2cd5-4e83-b6cc-8a0980a79ce1" ), new UnmanagedFieldData( type ) );
 	}
 }

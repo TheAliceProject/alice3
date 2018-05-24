@@ -42,21 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.IteratingOperation;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.StencilModel;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StencilsIteratingOperation extends org.lgna.croquet.IteratingOperation {
-	private final org.lgna.croquet.StencilModel[] stencilModels;
+public abstract class StencilsIteratingOperation extends IteratingOperation {
+	private final StencilModel[] stencilModels;
 
-	public StencilsIteratingOperation( java.util.UUID id, org.lgna.croquet.StencilModel... stencilModels ) {
-		super( org.lgna.croquet.Application.INFORMATION_GROUP, id );
+	public StencilsIteratingOperation( UUID id, StencilModel... stencilModels ) {
+		super( Application.INFORMATION_GROUP, id );
 		this.stencilModels = stencilModels;
 	}
 
@@ -66,7 +72,7 @@ public abstract class StencilsIteratingOperation extends org.lgna.croquet.Iterat
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		int i = subSteps.size();
 		if( i < this.stencilModels.length ) {
 			return this.stencilModels[ i ];
@@ -76,12 +82,12 @@ public abstract class StencilsIteratingOperation extends org.lgna.croquet.Iterat
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 		step.finish();
 	}
 
 	@Override
-	protected final void perform( final org.lgna.croquet.history.Transaction transaction, final org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void perform( final Transaction transaction, final Trigger trigger ) {
 		new Thread() {
 			@Override
 			public void run() {

@@ -43,28 +43,32 @@
 
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.MenuItemPrepModel;
+import org.lgna.croquet.triggers.ChangeEventTrigger;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MenuItemSelectStep extends PrepStep<org.lgna.croquet.MenuItemPrepModel> {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
+public class MenuItemSelectStep extends PrepStep<MenuItemPrepModel> {
+	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, MenuBarComposite menuBarComposite, MenuItemPrepModel[] menuItemPrepModels, ChangeEventTrigger trigger ) {
 		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
 	}
 
-	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
-	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
+	private final MenuBarComposite menuBarComposite;
+	private final MenuItemPrepModel[] menuItemPrepModels;
 
-	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
+	private MenuItemSelectStep( Transaction parent, MenuBarComposite menuBarComposite, MenuItemPrepModel[] menuItemPrepModels, ChangeEventTrigger trigger ) {
 		super( parent, menuItemPrepModels[ menuItemPrepModels.length - 1 ], trigger );
 		this.menuBarComposite = menuBarComposite;
 		this.menuItemPrepModels = menuItemPrepModels;
 	}
 
-	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
+	public MenuBarComposite getMenuBarComposite() {
 		return this.menuBarComposite;
 	}
 
-	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {
+	public MenuItemPrepModel[] getMenuItemPrepModels() {
 		return this.menuItemPrepModels;
 	}
 }

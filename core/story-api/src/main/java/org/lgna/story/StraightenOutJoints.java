@@ -43,11 +43,13 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StraightenOutJoints extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = StraightenOutJoints.class )
+	@ClassTemplate( keywordFactoryCls = StraightenOutJoints.class )
 	public static interface Detail {
 	}
 

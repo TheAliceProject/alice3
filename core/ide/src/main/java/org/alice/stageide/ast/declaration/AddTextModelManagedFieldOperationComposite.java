@@ -45,6 +45,11 @@ package org.alice.stageide.ast.declaration;
 
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.alice.stageide.gallerybrowser.shapes.TextModelDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.STextModel;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -58,17 +63,17 @@ public class AddTextModelManagedFieldOperationComposite extends AddModelManagedF
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> valueState = this.createInitialPropertyValueExpressionState( "valueState", "hello", org.lgna.story.STextModel.class, "setValue", String.class, null );
+	private final CustomItemState<Expression> valueState = this.createInitialPropertyValueExpressionState( "valueState", "hello", STextModel.class, "setValue", String.class, null );
 
 	private AddTextModelManagedFieldOperationComposite() {
-		super( java.util.UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ), org.lgna.story.STextModel.class );
+		super( UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ), STextModel.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return TextModelDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getValueState() {
+	public CustomItemState<Expression> getValueState() {
 		return this.valueState;
 	}
 }

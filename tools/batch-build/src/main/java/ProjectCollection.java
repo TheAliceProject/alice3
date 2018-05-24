@@ -41,6 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -48,7 +53,7 @@ public class ProjectCollection {
 	public static class Builder {
 		public Builder( String dirName ) {
 			this.dirName = dirName;
-			this.projectNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			this.projectNames = Lists.newLinkedList();
 		}
 
 		public Builder addProjectNames( String... projectNames ) {
@@ -63,23 +68,23 @@ public class ProjectCollection {
 		}
 
 		private final String dirName;
-		private final java.util.List<String> projectNames;
+		private final List<String> projectNames;
 	}
 
 	private ProjectCollection( Builder builder ) {
 		this.dirName = builder.dirName;
-		this.projectNames = java.util.Collections.unmodifiableList( builder.projectNames );
+		this.projectNames = Collections.unmodifiableList( builder.projectNames );
 	}
 
 	public String getDirName() {
 		return this.dirName;
 	}
 
-	public java.util.List<String> getProjectNames() {
+	public List<String> getProjectNames() {
 		return this.projectNames;
 	}
 
 	private final String dirName;
-	private final java.util.List<String> projectNames;
+	private final List<String> projectNames;
 
 }

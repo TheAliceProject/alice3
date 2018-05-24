@@ -42,37 +42,44 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class DifferentImplementationCardOwner extends org.lgna.croquet.CardOwnerComposite {
+public final class DifferentImplementationCardOwner extends CardOwnerComposite {
 	public static class Builder {
 		private final DifferentImplementation<?> differentImplementation;
-		private org.lgna.croquet.Composite<?> neitherCard;
-		private org.lgna.croquet.Composite<?> replaceCard;
-		private org.lgna.croquet.Composite<?> keepCard;
-		private org.lgna.croquet.Composite<?> renameCard;
+		private Composite<?> neitherCard;
+		private Composite<?> replaceCard;
+		private Composite<?> keepCard;
+		private Composite<?> renameCard;
 
 		public Builder( DifferentImplementation<?> differentImplementation ) {
 			this.differentImplementation = differentImplementation;
 		}
 
-		public Builder neither( org.lgna.croquet.Composite<?> neitherCard ) {
+		public Builder neither( Composite<?> neitherCard ) {
 			this.neitherCard = neitherCard;
 			return this;
 		}
 
-		public Builder replace( org.lgna.croquet.Composite<?> replaceCard ) {
+		public Builder replace( Composite<?> replaceCard ) {
 			this.replaceCard = replaceCard;
 			return this;
 		}
 
-		public Builder keep( org.lgna.croquet.Composite<?> keepCard ) {
+		public Builder keep( Composite<?> keepCard ) {
 			this.keepCard = keepCard;
 			return this;
 		}
 
-		public Builder rename( org.lgna.croquet.Composite<?> renameCard ) {
+		public Builder rename( Composite<?> renameCard ) {
 			this.renameCard = renameCard;
 			return this;
 		}
@@ -83,20 +90,20 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 	}
 
 	private final DifferentImplementation<?> differentImplementation;
-	private final org.lgna.croquet.Composite<?> neitherCard;
-	private final org.lgna.croquet.Composite<?> replaceCard;
-	private final org.lgna.croquet.Composite<?> keepCard;
-	private final org.lgna.croquet.Composite<?> renameCard;
+	private final Composite<?> neitherCard;
+	private final Composite<?> replaceCard;
+	private final Composite<?> keepCard;
+	private final Composite<?> renameCard;
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			updateCard();
 		}
 	};
 
-	private DifferentImplementationCardOwner( DifferentImplementation<?> differentImplementation, org.lgna.croquet.Composite<?> neitherCard, org.lgna.croquet.Composite<?> replaceCard, org.lgna.croquet.Composite<?> keepCard, org.lgna.croquet.Composite<?> renameCard ) {
-		super( java.util.UUID.fromString( "e49e92f7-1eac-4571-bbef-b53970b11b3d" ) );
+	private DifferentImplementationCardOwner( DifferentImplementation<?> differentImplementation, Composite<?> neitherCard, Composite<?> replaceCard, Composite<?> keepCard, Composite<?> renameCard ) {
+		super( UUID.fromString( "e49e92f7-1eac-4571-bbef-b53970b11b3d" ) );
 		this.differentImplementation = differentImplementation;
 		this.neitherCard = neitherCard;
 		this.replaceCard = replaceCard;
@@ -123,7 +130,7 @@ public final class DifferentImplementationCardOwner extends org.lgna.croquet.Car
 	private void updateCard() {
 		boolean isAddDesired = this.differentImplementation.getImportHub().getIsDesiredState().getValue();
 		boolean isKeepDesired = this.differentImplementation.getProjectHub().getIsDesiredState().getValue();
-		org.lgna.croquet.Composite<?> card;
+		Composite<?> card;
 		if( isKeepDesired ) {
 			if( isAddDesired ) {
 				card = this.renameCard;

@@ -43,30 +43,39 @@
 
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectExpressionPropertyOperation extends org.lgna.croquet.ActionOperation {
-	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+public abstract class ProjectExpressionPropertyOperation extends ActionOperation {
+	private final ExpressionProperty expressionProperty;
 
-	public ProjectExpressionPropertyOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id );
+	public ProjectExpressionPropertyOperation( UUID id, ExpressionProperty expressionProperty ) {
+		super( Application.PROJECT_GROUP, id );
 		this.expressionProperty = expressionProperty;
 	}
 
-	public final org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
+	public final ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 
-	private org.lgna.project.ast.Expression getPreviousExpression() {
+	private Expression getPreviousExpression() {
 		return this.expressionProperty.getValue();
 	}
 
-	protected abstract org.lgna.project.ast.Expression createExpression();
+	protected abstract Expression createExpression();
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.project.ast.Expression value = this.createExpression();
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), value ) );
+	protected void perform( CompletionStep<?> step ) {
+		Expression value = this.createExpression();
+		step.commitAndInvokeDo( new ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), value ) );
 	}
 }

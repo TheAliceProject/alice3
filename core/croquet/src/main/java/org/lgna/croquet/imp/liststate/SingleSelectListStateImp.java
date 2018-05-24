@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.liststate;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.data.ListData;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateImp<T, D extends org.lgna.croquet.data.ListData<T>> {
-	public SingleSelectListStateImp( org.lgna.croquet.SingleSelectListState<T, D> state, SingleSelectListStateSwingModel swingModel ) {
+public class SingleSelectListStateImp<T, D extends ListData<T>> {
+	public SingleSelectListStateImp( SingleSelectListState<T, D> state, SingleSelectListStateSwingModel swingModel ) {
 		this.state = state;
 		this.swingModel = swingModel;
 	}
@@ -55,15 +60,15 @@ public class SingleSelectListStateImp<T, D extends org.lgna.croquet.data.ListDat
 		return this.swingModel;
 	}
 
-	public org.lgna.croquet.MenuModel getMenuModel() {
+	public MenuModel getMenuModel() {
 		return this.menuModelLazy.get();
 	}
 
-	private final org.lgna.croquet.SingleSelectListState<T, D> state;
+	private final SingleSelectListState<T, D> state;
 	private final SingleSelectListStateSwingModel swingModel;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.MenuModel> menuModelLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.MenuModel>() {
+	private final Lazy<MenuModel> menuModelLazy = new Lazy<MenuModel>() {
 		@Override
-		protected org.lgna.croquet.MenuModel create() {
+		protected MenuModel create() {
 			return new SingleSelectListStateMenuModel<T, D>( state );
 		}
 	};

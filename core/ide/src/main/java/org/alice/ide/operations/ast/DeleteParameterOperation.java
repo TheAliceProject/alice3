@@ -42,34 +42,50 @@
  *******************************************************************************/
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.edits.ast.DeleteParameterEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	public DeleteParameterOperation( NodeListProperty<UserParameter> parametersProperty, org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
+	public DeleteParameterOperation( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
+		super( UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
 		this.setName( "Delete" );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		final org.lgna.project.ast.UserMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.UserMethod.class );
+	protected void perform( CompletionStep<?> step ) {
+		final UserMethod method = ClassUtilities.getInstance( this.getCode(), UserMethod.class );
 		final int index = method.requiredParameters.indexOf( this.getParameter() );
 		if( ( method != null ) && ( index >= 0 ) ) {
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ParameterAccess> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ParameterAccess>( org.lgna.project.ast.ParameterAccess.class ) {
+			IsInstanceCrawler<ParameterAccess> crawler = new IsInstanceCrawler<ParameterAccess>( ParameterAccess.class ) {
 				@Override
-				protected boolean isAcceptable( org.lgna.project.ast.ParameterAccess parameterAccess ) {
+				protected boolean isAcceptable( ParameterAccess parameterAccess ) {
 					return parameterAccess.parameter.getValue() == getParameter();
 				}
 			};
-			method.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-			java.util.List<org.lgna.project.ast.ParameterAccess> parameterAccesses = crawler.getList();
+			method.crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			List<ParameterAccess> parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 
-			java.util.List<org.lgna.project.ast.MethodInvocation> methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
+			List<MethodInvocation> methodInvocations = IDE.getActiveInstance().getMethodInvocations( method );
 			final int N_INVOCATIONS = methodInvocations.size();
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
@@ -88,7 +104,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					sb.append( "accesses" );
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
+				new OkDialog.Builder( sb.toString() )
 						.buildAndShow();
 				step.cancel();
 			} else {
@@ -117,10 +133,10 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( sb.toString() )
+					YesNoCancelResult result = new YesNoCancelDialog.Builder( sb.toString() )
 							.title( "Delete Parameter" )
 							.buildAndShow();
-					if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
+					if( result == YesNoCancelResult.YES ) {
 						//pass
 					} else {
 						step.cancel();
@@ -130,10 +146,10 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( step.isCanceled() ) {
 				//pass
 			} else {
-				step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeleteParameterEdit( step, this.getCode(), this.getParameter() ) );
+				step.commitAndInvokeDo( new DeleteParameterEdit( step, this.getCode(), this.getParameter() ) );
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "cancel" );
+			Logger.todo( "cancel" );
 			step.cancel();
 		}
 	}

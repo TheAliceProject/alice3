@@ -41,17 +41,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AntUtils {
 	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
+		File antHomeDir = SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
+		antCommandFile = new File( antHomeDir, "bin/ant.bat" );
 		assert antCommandFile.exists() : antCommandFile;
 	}
 
-	public static java.io.File getAntCommandFile() {
+	public static File getAntCommandFile() {
 		if( antCommandFile != null ) {
 			//pass
 		} else {
@@ -60,7 +64,7 @@ public class AntUtils {
 		return antCommandFile;
 	}
 
-	private static java.io.File antCommandFile;
+	private static File antCommandFile;
 
 	private AntUtils() {
 		throw new AssertionError();

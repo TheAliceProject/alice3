@@ -42,22 +42,39 @@
  *******************************************************************************/
 package org.alice.stageide.run;
 
+import org.alice.ide.IDE;
+import org.alice.stageide.program.RunProgramContext;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.virtualmachine.events.CountLoopIterationEvent;
+import org.lgna.project.virtualmachine.events.EachInTogetherItemEvent;
+import org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent;
+import org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent;
+import org.lgna.project.virtualmachine.events.StatementExecutionEvent;
+import org.lgna.project.virtualmachine.events.VirtualMachineListener;
+import org.lgna.project.virtualmachine.events.WhileLoopIterationEvent;
+import org.lgna.story.implementation.ProgramImp;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FastForwardToStatementOperation extends org.lgna.croquet.Operation {
-	public FastForwardToStatementOperation( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "7b7bef33-917d-47a9-b8a8-9e43153dc4a4" ) );
+public class FastForwardToStatementOperation extends Operation {
+	public FastForwardToStatementOperation( Statement statement ) {
+		super( IDE.RUN_GROUP, UUID.fromString( "7b7bef33-917d-47a9-b8a8-9e43153dc4a4" ) );
 		this.statement = statement;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void perform( Transaction transaction, Trigger trigger ) {
 		RunComposite.getInstance().setFastForwardToStatementOperation( this );
 		RunComposite.getInstance().getLaunchOperation().fire();
 	}
 
-	public void pre( org.alice.stageide.program.RunProgramContext runProgramContext ) {
+	public void pre( RunProgramContext runProgramContext ) {
 		this.runProgramContext = runProgramContext;
 		this.runProgramContext.getVirtualMachine().addVirtualMachineListener( this.virtualMachineListener );
 		this.runProgramContext.getProgramImp().setSimulationSpeedFactor( 10.0 );
@@ -71,12 +88,12 @@ public class FastForwardToStatementOperation extends org.lgna.croquet.Operation 
 		}
 	}
 
-	private final org.lgna.project.virtualmachine.events.VirtualMachineListener virtualMachineListener = new org.lgna.project.virtualmachine.events.VirtualMachineListener() {
+	private final VirtualMachineListener virtualMachineListener = new VirtualMachineListener() {
 		@Override
-		public void statementExecuting( org.lgna.project.virtualmachine.events.StatementExecutionEvent statementExecutionEvent ) {
+		public void statementExecuting( StatementExecutionEvent statementExecutionEvent ) {
 			if( statementExecutionEvent.getStatement() == statement ) {
 				if( runProgramContext != null ) {
-					org.lgna.story.implementation.ProgramImp programImp = runProgramContext.getProgramImp();
+					ProgramImp programImp = runProgramContext.getProgramImp();
 					if( programImp != null ) {
 						programImp.setSimulationSpeedFactor( 1.0 );
 					}
@@ -89,46 +106,46 @@ public class FastForwardToStatementOperation extends org.lgna.croquet.Operation 
 		}
 
 		@Override
-		public void statementExecuted( org.lgna.project.virtualmachine.events.StatementExecutionEvent statementExecutionEvent ) {
+		public void statementExecuted( StatementExecutionEvent statementExecutionEvent ) {
 		}
 
 		@Override
-		public void whileLoopIterating( org.lgna.project.virtualmachine.events.WhileLoopIterationEvent whileLoopIterationEvent ) {
+		public void whileLoopIterating( WhileLoopIterationEvent whileLoopIterationEvent ) {
 		}
 
 		@Override
-		public void whileLoopIterated( org.lgna.project.virtualmachine.events.WhileLoopIterationEvent whileLoopIterationEvent ) {
+		public void whileLoopIterated( WhileLoopIterationEvent whileLoopIterationEvent ) {
 		}
 
 		@Override
-		public void countLoopIterating( org.lgna.project.virtualmachine.events.CountLoopIterationEvent countLoopIterationEvent ) {
+		public void countLoopIterating( CountLoopIterationEvent countLoopIterationEvent ) {
 		}
 
 		@Override
-		public void countLoopIterated( org.lgna.project.virtualmachine.events.CountLoopIterationEvent countLoopIterationEvent ) {
+		public void countLoopIterated( CountLoopIterationEvent countLoopIterationEvent ) {
 		}
 
 		@Override
-		public void forEachLoopIterating( org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent forEachLoopIterationEvent ) {
+		public void forEachLoopIterating( ForEachLoopIterationEvent forEachLoopIterationEvent ) {
 		}
 
 		@Override
-		public void forEachLoopIterated( org.lgna.project.virtualmachine.events.ForEachLoopIterationEvent forEachLoopIterationEvent ) {
+		public void forEachLoopIterated( ForEachLoopIterationEvent forEachLoopIterationEvent ) {
 		}
 
 		@Override
-		public void eachInTogetherItemExecuting( org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherItemEvent ) {
+		public void eachInTogetherItemExecuting( EachInTogetherItemEvent eachInTogetherItemEvent ) {
 		}
 
 		@Override
-		public void eachInTogetherItemExecuted( org.lgna.project.virtualmachine.events.EachInTogetherItemEvent eachInTogetherItemEvent ) {
+		public void eachInTogetherItemExecuted( EachInTogetherItemEvent eachInTogetherItemEvent ) {
 		}
 
 		@Override
-		public void expressionEvaluated( org.lgna.project.virtualmachine.events.ExpressionEvaluationEvent expressionEvaluationEvent ) {
+		public void expressionEvaluated( ExpressionEvaluationEvent expressionEvaluationEvent ) {
 		}
 	};
 
-	private final org.lgna.project.ast.Statement statement;
-	private org.alice.stageide.program.RunProgramContext runProgramContext;
+	private final Statement statement;
+	private RunProgramContext runProgramContext;
 }

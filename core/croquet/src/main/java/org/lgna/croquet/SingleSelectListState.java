@@ -42,23 +42,51 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.imp.liststate.SingleSelectListStateImp;
+import org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.DefaultRadioButtons;
+import org.lgna.croquet.views.ItemSelectable;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.TrackableShape;
+import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.ListData<T>> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
-	private class DataIndexPair implements javax.swing.ComboBoxModel {
+public abstract class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
+	private class DataIndexPair implements ComboBoxModel {
 		public DataIndexPair( D data, int index ) {
 			this.data = data;
 			this.index = index;
 		}
 
 		@Override
-		public void addListDataListener( javax.swing.event.ListDataListener listDataListener ) {
+		public void addListDataListener( ListDataListener listDataListener ) {
 			this.data.addListener( listDataListener );
 		}
 
 		@Override
-		public void removeListDataListener( javax.swing.event.ListDataListener listDataListener ) {
+		public void removeListDataListener( ListDataListener listDataListener ) {
 			this.data.removeListener( listDataListener );
 		}
 
@@ -97,12 +125,12 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		private int index;
 	}
 
-	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
+	private static <T> T getItemAt( ListData<T> data, int index ) {
 		if( index != -1 ) {
 			if( index < data.getItemCount() ) {
 				return data.getItemAt( index );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "note: index out of bounds", index, data.getItemCount(), data );
+				Logger.errln( "note: index out of bounds", index, data.getItemCount(), data );
 				return null;
 			}
 		} else {
@@ -110,14 +138,14 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public SingleSelectListState( Group group, java.util.UUID id, int selectionIndex, D data ) {
+	public SingleSelectListState( Group group, UUID id, int selectionIndex, D data ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
-		this.imp = new org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D>( this, new org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel( this.dataIndexPair ) );
+		this.imp = new SingleSelectListStateImp<T, D>( this, new SingleSelectListStateSwingModel( this.dataIndexPair ) );
 		this.imp.getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
-	public org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D> getImp() {
+	public SingleSelectListStateImp<T, D> getImp() {
 		return this.imp;
 	}
 
@@ -153,9 +181,9 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		//todo:
-		return java.util.Collections.emptyList();
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -182,7 +210,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 				if( ( -1 <= index ) && ( index < this.dataIndexPair.data.getItemCount() ) ) {
 					//pass.getLeadSelectionIndex()
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "indices do not match", index, this.dataIndexPair.index, nextValue, this );
+					Logger.severe( "indices do not match", index, this.dataIndexPair.index, nextValue, this );
 					index = this.dataIndexPair.index;
 				}
 			}
@@ -213,7 +241,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		final int N = this.getItemCount();
 		int i;
 		if( N > 0 ) {
-			java.util.Random random = new java.util.Random();
+			Random random = new Random();
 			i = random.nextInt( N );
 		} else {
 			i = -1;
@@ -246,7 +274,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	}
 
 	@Override
-	public final java.util.Iterator<T> iterator() {
+	public final Iterator<T> iterator() {
 		return this.dataIndexPair.data.iterator();
 	}
 
@@ -306,13 +334,13 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public final void setItems( java.util.Collection<T> items ) {
+	public final void setItems( Collection<T> items ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
-			java.util.Set<T> previous = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( this.toArray() );
-			java.util.Set<T> next = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( items );
-			java.util.List<T> added = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.List<T> removed = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			Set<T> previous = Sets.newHashSet( this.toArray() );
+			Set<T> next = Sets.newHashSet( items );
+			java.util.List<T> added = Lists.newLinkedList();
+			java.util.List<T> removed = Lists.newLinkedList();
 
 			for( T item : previous ) {
 				if( next.contains( item ) ) {
@@ -346,11 +374,11 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	}
 
 	public final void setItems( T... items ) {
-		this.setItems( java.util.Arrays.asList( items ) );
+		this.setItems( Arrays.asList( items ) );
 	}
 
 	public void clear() {
-		java.util.Collection<T> items = java.util.Collections.emptyList();
+		Collection<T> items = Collections.emptyList();
 		this.setListData( -1, items );
 	}
 
@@ -366,7 +394,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	}
 
 	@Deprecated
-	public void setListData( int selectedIndex, java.util.Collection<T> items ) {
+	public void setListData( int selectedIndex, Collection<T> items ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.setItems( items );
@@ -376,26 +404,26 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public org.lgna.croquet.views.List<T> createList() {
-		return new org.lgna.croquet.views.List<T>( this );
+	public List<T> createList() {
+		return new List<T>( this );
 	}
 
-	public org.lgna.croquet.views.List<T> createListWithItemCodecListCellRenderer() {
-		org.lgna.croquet.views.List<T> rv = this.createList();
-		rv.setCellRenderer( new org.lgna.croquet.views.renderers.ItemCodecListCellRenderer<T>( this.getItemCodec() ) );
+	public List<T> createListWithItemCodecListCellRenderer() {
+		List<T> rv = this.createList();
+		rv.setCellRenderer( new ItemCodecListCellRenderer<T>( this.getItemCodec() ) );
 		return rv;
 	}
 
-	public org.lgna.croquet.views.DefaultRadioButtons<T> createVerticalDefaultRadioButtons() {
-		return new org.lgna.croquet.views.DefaultRadioButtons<T>( this, true );
+	public DefaultRadioButtons<T> createVerticalDefaultRadioButtons() {
+		return new DefaultRadioButtons<T>( this, true );
 	}
 
-	public org.lgna.croquet.views.DefaultRadioButtons<T> createHorizontalDefaultRadioButtons() {
-		return new org.lgna.croquet.views.DefaultRadioButtons<T>( this, false );
+	public DefaultRadioButtons<T> createHorizontalDefaultRadioButtons() {
+		return new DefaultRadioButtons<T>( this, false );
 	}
 
-	public org.lgna.croquet.views.TrackableShape getTrackableShapeFor( T item ) {
-		org.lgna.croquet.views.ItemSelectable<?, T, ?> itemSelectable = org.lgna.croquet.views.ComponentManager.getFirstComponent( this, org.lgna.croquet.views.ItemSelectable.class );
+	public TrackableShape getTrackableShapeFor( T item ) {
+		ItemSelectable<?, T, ?> itemSelectable = ComponentManager.getFirstComponent( this, ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
@@ -409,11 +437,11 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 
 	private class EmptyConditionText extends PlainStringValue {
 		public EmptyConditionText() {
-			super( java.util.UUID.fromString( "c71e2755-d05a-4676-87db-99b3baec044d" ) );
+			super( UUID.fromString( "c71e2755-d05a-4676-87db-99b3baec044d" ) );
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return SingleSelectListState.this.getClassUsedForLocalization();
 		}
 
@@ -431,11 +459,11 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	}
 
 	private final DataIndexPair dataIndexPair;
-	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D> imp;
+	private final SingleSelectListStateImp<T, D> imp;
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
-	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		public void valueChanged( ListSelectionEvent e ) {
 			if( isInTheMidstOfSettingSwingValue ) {
 				//pass
 			} else {
@@ -446,14 +474,14 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 				} else {
 					nextValue = null;
 				}
-				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), NullTrigger.createUserInstance() );
 			}
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<SingleSelectListStateComboBoxPrepModel<T, D>> comboBoxPrepModelLazy = new edu.cmu.cs.dennisc.pattern.Lazy<SingleSelectListStateComboBoxPrepModel<T, D>>() {
+	private final Lazy<SingleSelectListStateComboBoxPrepModel<T, D>> comboBoxPrepModelLazy = new Lazy<SingleSelectListStateComboBoxPrepModel<T, D>>() {
 		@Override
-		protected org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, D> create() {
+		protected SingleSelectListStateComboBoxPrepModel<T, D> create() {
 			return new SingleSelectListStateComboBoxPrepModel<T, D>( SingleSelectListState.this );
 		}
 	};

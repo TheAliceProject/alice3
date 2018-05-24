@@ -43,13 +43,24 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.CurrentThisExpression;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ParameterAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<UserParameter, ParameterAccessFactory> map = Maps.newHashMap();
 
-	public static synchronized ParameterAccessFactory getInstance( org.lgna.project.ast.UserParameter parameter ) {
+	public static synchronized ParameterAccessFactory getInstance( UserParameter parameter ) {
 		assert parameter != null;
 		ParameterAccessFactory rv = map.get( parameter );
 		if( rv != null ) {
@@ -61,42 +72,42 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
+	private final UserParameter parameter;
 
-	private ParameterAccessFactory( org.lgna.project.ast.UserParameter parameter ) {
+	private ParameterAccessFactory( UserParameter parameter ) {
 		super( parameter.name );
 		this.parameter = parameter;
 	}
 
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected boolean isValid( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		if( code != null ) {
-			return this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code;
+			return this.parameter.getFirstAncestorAssignableTo( AbstractCode.class ) == code;
 		} else {
 			return false;
 		}
 	}
 
-	public org.lgna.project.ast.UserParameter getParameter() {
+	public UserParameter getParameter() {
 		return this.parameter;
 	}
 
-	private org.lgna.project.ast.ParameterAccess createParameterAccess( org.lgna.project.ast.Expression expression ) {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	private ParameterAccess createParameterAccess( Expression expression ) {
+		return new ParameterAccess( this.parameter );
 	}
 
 	@Override
-	public org.lgna.project.ast.ParameterAccess createTransientExpression() {
-		return this.createParameterAccess( new org.alice.ide.ast.CurrentThisExpression() );
+	public ParameterAccess createTransientExpression() {
+		return this.createParameterAccess( new CurrentThisExpression() );
 	}
 
 	@Override
-	public org.lgna.project.ast.ParameterAccess createExpression() {
-		return this.createParameterAccess( new org.lgna.project.ast.ThisExpression() );
+	public ParameterAccess createExpression() {
+		return this.createParameterAccess( new ThisExpression() );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return this.parameter.getValueType();
 	}
 

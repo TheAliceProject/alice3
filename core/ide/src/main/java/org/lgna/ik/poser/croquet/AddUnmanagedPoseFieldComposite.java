@@ -42,27 +42,45 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.declaration.AddFieldComposite;
+import org.alice.ide.ast.declaration.views.AddFieldView;
+import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
+import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
+import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+import org.lgna.story.Pose;
+
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
-public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaration.AddFieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, AddUnmanagedPoseFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public class AddUnmanagedPoseFieldComposite extends AddFieldComposite {
+	private static InitializingIfAbsentMap<NamedUserType, AddUnmanagedPoseFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddUnmanagedPoseFieldComposite getInstance( org.lgna.project.ast.NamedUserType declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, AddUnmanagedPoseFieldComposite>() {
+	public static AddUnmanagedPoseFieldComposite getInstance( NamedUserType declaringType ) {
+		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, AddUnmanagedPoseFieldComposite>() {
 			@Override
-			public AddUnmanagedPoseFieldComposite initialize( org.lgna.project.ast.NamedUserType declaringType ) {
+			public AddUnmanagedPoseFieldComposite initialize( NamedUserType declaringType ) {
 				return new AddUnmanagedPoseFieldComposite( declaringType );
 			}
 		} );
 	}
 
-	private AddUnmanagedPoseFieldComposite( org.lgna.project.ast.NamedUserType declaringType ) {
+	private AddUnmanagedPoseFieldComposite( NamedUserType declaringType ) {
 		super(
-				java.util.UUID.fromString( "882dc293-d176-48c6-9b42-abc15c734779" ),
+				UUID.fromString( "882dc293-d176-48c6-9b42-abc15c734779" ),
 				new FieldDetailsBuilder()
 						.isFinal( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-						.valueComponentType( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Pose.class ) )
+						.valueComponentType( ApplicabilityStatus.DISPLAYED, JavaType.getInstance( Pose.class ) )
 						.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 						.initializer( ApplicabilityStatus.EDITABLE, null )
 						.build() );
@@ -71,20 +89,20 @@ public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaratio
 
 	@Override
 	protected boolean isNullAllowedForInitializer() {
-		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getValue();
+		return IsNullAllowedForFieldInitializers.getInstance().getValue();
 	}
 
 	@Override
-	public org.lgna.project.ast.NamedUserType getDeclaringType() {
+	public NamedUserType getDeclaringType() {
 		return this.declaringType;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+	protected Expression getInitializerInitialValue() {
 		return this.initializerInitialValue;
 	}
 
-	public void setInitializerInitialValue( org.lgna.project.ast.Expression initializerInitialValue ) {
+	public void setInitializerInitialValue( Expression initializerInitialValue ) {
 		this.initializerInitialValue = initializerInitialValue;
 	}
 
@@ -94,20 +112,20 @@ public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaratio
 	}
 
 	@Override
-	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
-		return org.lgna.project.ast.ManagementLevel.NONE;
+	protected ManagementLevel getManagementLevel() {
+		return ManagementLevel.NONE;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit( step, declaringType, field );
+	protected DeclareFieldEdit createEdit( CompletionStep<?> step, UserType<?> declaringType, UserField field ) {
+		return new DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.AddFieldView createView() {
-		return new org.alice.ide.ast.declaration.views.AddFieldView( this );
+	protected AddFieldView createView() {
+		return new AddFieldView( this );
 	}
 
-	private final org.lgna.project.ast.NamedUserType declaringType;
-	private org.lgna.project.ast.Expression initializerInitialValue;
+	private final NamedUserType declaringType;
+	private Expression initializerInitialValue;
 }

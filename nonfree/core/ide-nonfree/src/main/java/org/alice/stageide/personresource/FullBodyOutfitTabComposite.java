@@ -43,32 +43,40 @@
 
 package org.alice.stageide.personresource;
 
+import org.alice.stageide.personresource.data.FullBodyOutfitData;
+import org.alice.stageide.personresource.views.FullBodyOutfitTabView;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.story.resources.sims2.FullBodyOutfit;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitTabComposite extends OutfitTabComposite<org.alice.stageide.personresource.views.FullBodyOutfitTabView> {
-	private final org.alice.stageide.personresource.data.FullBodyOutfitData fullBodyOutfitData = new org.alice.stageide.personresource.data.FullBodyOutfitData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitState = this.createRefreshableListState( "fullBodyOutfitState", this.fullBodyOutfitData, -1 );
+public class FullBodyOutfitTabComposite extends OutfitTabComposite<FullBodyOutfitTabView> {
+	private final FullBodyOutfitData fullBodyOutfitData = new FullBodyOutfitData();
+	private final RefreshableDataSingleSelectListState<FullBodyOutfit> fullBodyOutfitState = this.createRefreshableListState( "fullBodyOutfitState", this.fullBodyOutfitData, -1 );
 
 	public FullBodyOutfitTabComposite() {
-		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
+		super( UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.FullBodyOutfitTabView createView() {
-		return new org.alice.stageide.personresource.views.FullBodyOutfitTabView( this );
+	protected FullBodyOutfitTabView createView() {
+		return new FullBodyOutfitTabView( this );
 	}
 
-	public org.alice.stageide.personresource.data.FullBodyOutfitData getFullBodyOutfitData() {
+	public FullBodyOutfitData getFullBodyOutfitData() {
 		return this.fullBodyOutfitData;
 	}
 
-	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
+	public RefreshableDataSingleSelectListState<FullBodyOutfit> getFullBodyOutfitState() {
 		return this.fullBodyOutfitState;
 	}
 

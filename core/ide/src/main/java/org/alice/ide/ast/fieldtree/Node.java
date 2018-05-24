@@ -43,10 +43,12 @@
 
 package org.alice.ide.ast.fieldtree;
 
+import org.lgna.project.ast.AbstractDeclaration;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node<N extends org.lgna.project.ast.AbstractDeclaration> implements Comparable<Node<N>> {
+public abstract class Node<N extends AbstractDeclaration> implements Comparable<Node<N>> {
 	private final TypeNode parent;
 	private final N declaration;
 

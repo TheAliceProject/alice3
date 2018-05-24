@@ -41,31 +41,42 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.common.Resource;
+import org.lgna.project.Project;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ListProjectResources {
-	protected void handle( java.io.File inFile ) {
+	protected void handle( File inFile ) {
 		try {
-			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
-			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
+			Project project = IoUtilities.readProject( inFile );
+			Set<Resource> resources = project.getResources();
 			if( resources.size() > 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
-				for( org.lgna.common.Resource resource : resources ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\t", resource.getData().length, resource );
+				Logger.outln( inFile );
+				for( Resource resource : resources ) {
+					Logger.outln( "\t", resource.getData().length, resource );
 				}
 			}
-		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+		} catch( VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( inFile.toString(), ioe );
 		}
 	}
 
 	public void process( String inRootPath, String inExt, String outExt ) {
-		java.io.File inRoot = new java.io.File( inRootPath );
-		java.io.File[] inFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( inRoot, inExt );
-		for( java.io.File inFile : inFiles ) {
+		File inRoot = new File( inRootPath );
+		File[] inFiles = FileUtilities.listDescendants( inRoot, inExt );
+		for( File inFile : inFiles ) {
 			handle( inFile );
 		}
 	}

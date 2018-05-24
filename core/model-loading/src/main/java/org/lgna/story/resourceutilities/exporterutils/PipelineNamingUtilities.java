@@ -6,6 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 
@@ -18,7 +23,7 @@ public class PipelineNamingUtilities {
 	
 	public static Map<Class<?>, String[]> sJointsToSuppressByClass = new HashMap<Class<?>, String[]>();
 	static {
-		sJointsToSuppressByClass.put(org.lgna.story.SBiped.class, 
+		sJointsToSuppressByClass.put(SBiped.class,
 			new String[] {
 			"LEFT_THUMB_TIP",
 			"LEFT_INDEX_FINGER_TIP",
@@ -56,7 +61,7 @@ public class PipelineNamingUtilities {
 			"LEFT_EAR_TIP", 
 			"RIGHT_EAR_TIP",
 		});
-		sJointsToSuppressByClass.put(org.lgna.story.SFlyer.class, 
+		sJointsToSuppressByClass.put(SFlyer.class,
 				new String[] {
 				"LEFT_TOE",
 				"RIGHT_TOE",
@@ -64,7 +69,7 @@ public class PipelineNamingUtilities {
 //				"RIGHT_EYELID",
 //				"LEFT_EYELID",
 			});
-		sJointsToSuppressByClass.put(org.lgna.story.SQuadruped.class, 
+		sJointsToSuppressByClass.put(SQuadruped.class,
 				new String[] {
 				"LEFT_TOE",
 				"RIGHT_TOE",
@@ -77,7 +82,7 @@ public class PipelineNamingUtilities {
 				"JAW_TIP",
 				"MOUTH_TIP",
 			});
-		sJointsToSuppressByClass.put(org.lgna.story.SSwimmer.class, 
+		sJointsToSuppressByClass.put(SSwimmer.class,
 				new String[] {
 				"FRONT_LEFT_FIN_TIP",
 				"FRONT_RIGHT_FIN_TIP",
@@ -251,7 +256,7 @@ public class PipelineNamingUtilities {
 	public static String getAliceEnumNameForMayaJoint( String modelJointName )
 	{
 		List<String> nameParts = new LinkedList<String>();
-		String[] parts = org.lgna.story.implementation.alice.AliceResourceClassUtilities.fullStringSplit(modelJointName);
+		String[] parts = AliceResourceClassUtilities.fullStringSplit(modelJointName);
 		boolean hasRight = false;
 		boolean hasLeft = false;
 		boolean hasBack = false;
@@ -354,7 +359,7 @@ public class PipelineNamingUtilities {
 			}
 		}
 		else {
-			String[] parts = org.lgna.story.implementation.alice.AliceResourceClassUtilities.fullStringSplit(mayaName);
+			String[] parts = AliceResourceClassUtilities.fullStringSplit(mayaName);
 			aliceName = getEnumNameForNameParts(parts);
 			System.out.println("Preserving name for " + mayaName
 					+ ", autogen name: " + aliceName);

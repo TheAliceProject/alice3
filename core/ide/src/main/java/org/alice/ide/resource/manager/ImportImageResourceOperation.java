@@ -43,11 +43,16 @@
 
 package org.alice.ide.resource.manager;
 
+import org.alice.ide.ast.importers.ImageResourceImporter;
+import org.lgna.common.resources.ImageResource;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportImageResourceOperation extends ImportResourceOperation<org.lgna.common.resources.ImageResource> {
+public final class ImportImageResourceOperation extends ImportResourceOperation<ImageResource> {
 	public ImportImageResourceOperation() {
-		super( java.util.UUID.fromString( "4896b154-99e1-4664-9258-86501510a6e0" ), org.alice.ide.ast.importers.ImageResourceImporter.getInstance() );
+		super( UUID.fromString( "4896b154-99e1-4664-9258-86501510a6e0" ), ImageResourceImporter.getInstance() );
 	}
 }

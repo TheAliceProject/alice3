@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class HierarchyEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.scenegraph.Component> {
-	public HierarchyEvent( edu.cmu.cs.dennisc.scenegraph.Component source ) {
+public class HierarchyEvent extends Event<Component> {
+	public HierarchyEvent( Component source ) {
 		super( source );
 	}
 }

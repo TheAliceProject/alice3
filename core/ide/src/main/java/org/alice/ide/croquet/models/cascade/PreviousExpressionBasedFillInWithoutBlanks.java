@@ -43,22 +43,29 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.IDE;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends org.lgna.project.ast.Expression> extends ExpressionFillInWithoutBlanks<F> {
-	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
+public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends Expression> extends ExpressionFillInWithoutBlanks<F> {
+	public PreviousExpressionBasedFillInWithoutBlanks( UUID id ) {
 		super( id );
 	}
 
-	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+	private Expression getPreviousExpression() {
+		return IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 	}
 
-	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
-		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
+	private Expression createCopyOfPreviousExpression() {
+		Expression prevExpression = this.getPreviousExpression();
 		if( prevExpression != null ) {
-			return org.alice.ide.IDE.getActiveInstance().createCopy( prevExpression );
+			return IDE.getActiveInstance().createCopy( prevExpression );
 		} else {
 			return null;
 		}
@@ -70,7 +77,7 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends org.l
 	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
 	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
 	//	}
-	private org.lgna.project.ast.Expression cleanExpression;
+	private Expression cleanExpression;
 
 	@Override
 	protected void markClean() {
@@ -84,15 +91,15 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends org.l
 		return super.isDirty() || isPrevExpressionChanged;
 	}
 
-	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
+	protected abstract F createValue( Expression previousExpression );
 
 	@Override
-	public final F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final F createValue( ItemNode<? super F, Void> node, TransactionHistory transactionHistory ) {
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 
 	@Override
-	public final F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, Void> node ) {
+	public final F getTransientValue( ItemNode<? super F, Void> node ) {
 		//todo?
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}

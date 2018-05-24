@@ -43,13 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NumberArithmeticExpressionRightOperandOnlyFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionRightOperandOnlyFillIn {
-	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, NumberArithmeticExpressionRightOperandOnlyFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class NumberArithmeticExpressionRightOperandOnlyFillIn extends ArithmeticExpressionRightOperandOnlyFillIn {
+	private static Map<ArithmeticInfixExpression.Operator, NumberArithmeticExpressionRightOperandOnlyFillIn> map = Maps.newHashMap();
 
-	public static NumberArithmeticExpressionRightOperandOnlyFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
+	public static NumberArithmeticExpressionRightOperandOnlyFillIn getInstance( ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			NumberArithmeticExpressionRightOperandOnlyFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -62,7 +69,7 @@ public class NumberArithmeticExpressionRightOperandOnlyFillIn extends org.alice.
 		}
 	}
 
-	private NumberArithmeticExpressionRightOperandOnlyFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Double.class, Number.class, operator, Number.class );
+	private NumberArithmeticExpressionRightOperandOnlyFillIn( ArithmeticInfixExpression.Operator operator ) {
+		super( UUID.fromString( "7caac1c5-db6b-4f5a-9d9b-ca22b972e6ef" ), Double.class, Number.class, operator, Number.class );
 	}
 }

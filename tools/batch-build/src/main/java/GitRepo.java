@@ -41,6 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -48,7 +54,7 @@ public abstract class GitRepo {
 	public GitRepo( Config config, String name ) {
 		this.config = config;
 
-		this.rootDir = new java.io.File( config.getRootDir(), name );
+		this.rootDir = new File( config.getRootDir(), name );
 		assert this.rootDir.exists() : this.rootDir;
 		assert this.rootDir.isDirectory() : this.rootDir;
 
@@ -60,19 +66,19 @@ public abstract class GitRepo {
 		return this.config;
 	}
 
-	public java.io.File getRootDir() {
+	public File getRootDir() {
 		return this.rootDir;
 	}
 
-	public java.util.List<Plugin> getPlugins() {
-		java.util.List<Plugin> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public List<Plugin> getPlugins() {
+		List<Plugin> list = Lists.newLinkedList();
 		if( this.config.isPlugin8Desired() ) {
 			list.add( this.plugin8 );
 		}
 		if( this.config.isPlugin6Desired() ) {
 			list.add( this.plugin6 );
 		}
-		return java.util.Collections.unmodifiableList( list );
+		return Collections.unmodifiableList( list );
 	}
 
 	public Plugin8 getPlugin8() {
@@ -80,7 +86,7 @@ public abstract class GitRepo {
 	}
 
 	private final Config config;
-	private final java.io.File rootDir;
+	private final File rootDir;
 	private final Plugin8 plugin8;
 	private final Plugin6 plugin6;
 }

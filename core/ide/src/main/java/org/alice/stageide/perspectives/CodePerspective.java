@@ -43,38 +43,49 @@
 
 package org.alice.stageide.perspectives;
 
+import edu.cmu.cs.dennisc.pattern.Lazy;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.preferences.IsToolBarShowing;
+import org.alice.stageide.perspectives.code.CodePerspectiveComposite;
+import org.alice.stageide.perspectives.code.CodeToolBarComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.ToolBarComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CodePerspective extends AbstractCodePerspective {
-	public CodePerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
+	public CodePerspective( ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
+		super( UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), projectDocumentFrame, menuBar );
 	}
 
 	@Override
-	public org.lgna.croquet.Composite<?> getMainComposite() {
+	public Composite<?> getMainComposite() {
 		return this.mainCompositeLazy.get();
 	}
 
 	@Override
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+	public ToolBarComposite getToolBarComposite() {
+		if( IsToolBarShowing.getValue() ) {
 			return this.toolBarLazy.get();
 		} else {
 			return null;
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.ToolBarComposite> toolBarLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.ToolBarComposite>() {
+	private final Lazy<ToolBarComposite> toolBarLazy = new Lazy<ToolBarComposite>() {
 		@Override
-		protected org.lgna.croquet.ToolBarComposite create() {
-			return new org.alice.stageide.perspectives.code.CodeToolBarComposite( getProjectDocumentFrame() );
+		protected ToolBarComposite create() {
+			return new CodeToolBarComposite( getProjectDocumentFrame() );
 		}
 	};
-	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.Composite<?>> mainCompositeLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.Composite<?>>() {
+	private final Lazy<Composite<?>> mainCompositeLazy = new Lazy<Composite<?>>() {
 		@Override
-		protected org.lgna.croquet.Composite<?> create() {
-			return new org.alice.stageide.perspectives.code.CodePerspectiveComposite( getProjectDocumentFrame() );
+		protected Composite<?> create() {
+			return new CodePerspectiveComposite( getProjectDocumentFrame() );
 		}
 	};
 }

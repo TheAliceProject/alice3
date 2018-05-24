@@ -42,15 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.custom;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.ide.custom.components.ArrayCustomExpressionCreatorView;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.data.MutableListData;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayInstanceCreation;
+import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.awt.Dimension;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<org.alice.ide.custom.components.ArrayCustomExpressionCreatorView> {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite<ArrayCustomExpressionCreatorView> {
+	private static Map<AbstractType<?, ?, ?>, ArrayCustomExpressionCreatorComposite> map = Maps.newHashMap();
 
-	public static ArrayCustomExpressionCreatorComposite getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType ) {
+	public static ArrayCustomExpressionCreatorComposite getInstance( AbstractType<?, ?, ?> arrayType ) {
 		synchronized( map ) {
 			ArrayCustomExpressionCreatorComposite rv = map.get( arrayType );
 			if( rv != null ) {
@@ -63,20 +88,20 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		}
 	}
 
-	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( "arrayTypeLabel" );
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
+	private final PlainStringValue arrayTypeLabel = this.createStringValue( "arrayTypeLabel" );
+	private final AbstractType<?, ?, ?> arrayType;
 
-	private final org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data = new org.lgna.croquet.data.MutableListData<Expression>( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
+	private final MutableListData<Expression> data = new MutableListData<Expression>( NodeCodec.getInstance( Expression.class ) );
 
-	private final org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> addItemCascade = this.createCascadeWithInternalBlank( "addItemCascade", org.lgna.project.ast.Expression.class, new CascadeCustomizer<org.lgna.project.ast.Expression>() {
+	private final Cascade<Expression> addItemCascade = this.createCascadeWithInternalBlank( "addItemCascade", Expression.class, new CascadeCustomizer<Expression>() {
 		@Override
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		public void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
+			IDE ide = IDE.getActiveInstance();
 			ide.getExpressionCascadeManager().appendItems( rv, blankNode, arrayType.getComponentType(), null );
 		}
 
 		@Override
-		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
+		public Edit createEdit( CompletionStep completionStep, Expression[] values ) {
 			assert values.length == 1;
 			data.internalAddItem( values[ 0 ] );
 			getView().updatePreview();
@@ -84,51 +109,51 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		}
 	} );
 
-	private ArrayCustomExpressionCreatorComposite( org.lgna.project.ast.AbstractType<?, ?, ?> arrayType ) {
-		super( java.util.UUID.fromString( "187d56c4-cc05-4157-a5fc-55943ca5b099" ) );
+	private ArrayCustomExpressionCreatorComposite( AbstractType<?, ?, ?> arrayType ) {
+		super( UUID.fromString( "187d56c4-cc05-4157-a5fc-55943ca5b099" ) );
 		assert arrayType.isArray() : arrayType;
 		this.arrayType = arrayType;
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
+	public AbstractType<?, ?, ?> getArrayType() {
 		return this.arrayType;
 	}
 
-	public org.lgna.croquet.PlainStringValue getArrayTypeLabel() {
+	public PlainStringValue getArrayTypeLabel() {
 		return this.arrayTypeLabel;
 	}
 
-	public org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> getData() {
+	public MutableListData<Expression> getData() {
 		return this.data;
 	}
 
-	public org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> getAddItemCascade() {
+	public Cascade<Expression> getAddItemCascade() {
 		return this.addItemCascade;
 	}
 
 	@Override
-	protected org.alice.ide.custom.components.ArrayCustomExpressionCreatorView createView() {
-		return new org.alice.ide.custom.components.ArrayCustomExpressionCreatorView( this );
+	protected ArrayCustomExpressionCreatorView createView() {
+		return new ArrayCustomExpressionCreatorView( this );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createValue() {
-		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.data.toArray() );
+	protected Expression createValue() {
+		return AstUtilities.createArrayInstanceCreation( this.arrayType, this.data.toArray() );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		java.util.List<org.lgna.project.ast.Expression> items = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
-			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
+	protected void initializeToPreviousExpression( Expression expression ) {
+		List<Expression> items = Lists.newLinkedList();
+		if( expression instanceof ArrayInstanceCreation ) {
+			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)expression;
 			if( this.arrayType.isAssignableFrom( arrayInstanceCreation.getType() ) ) {
-				for( org.lgna.project.ast.Expression itemExpression : arrayInstanceCreation.expressions ) {
-					items.add( org.alice.ide.IDE.getActiveInstance().createCopy( itemExpression ) );
+				for( Expression itemExpression : arrayInstanceCreation.expressions ) {
+					items.add( IDE.getActiveInstance().createCopy( itemExpression ) );
 				}
 			}
 		}
@@ -136,17 +161,17 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		return new java.awt.Dimension( 400, 500 );
+	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
+		return new Dimension( 400, 500 );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		//new org.alice.stageide.StageIDE();
 		try {
-			org.lgna.croquet.triggers.Trigger trigger = null;
-			ArrayCustomExpressionCreatorComposite.getInstance( org.lgna.project.ast.JavaType.getInstance( String[].class ) ).getValueCreator().fire( trigger );
-		} catch( org.lgna.croquet.CancelException ce ) {
+			Trigger trigger = null;
+			ArrayCustomExpressionCreatorComposite.getInstance( JavaType.getInstance( String[].class ) ).getValueCreator().fire( trigger );
+		} catch( CancelException ce ) {
 			//pass
 		}
 		System.exit( 0 );

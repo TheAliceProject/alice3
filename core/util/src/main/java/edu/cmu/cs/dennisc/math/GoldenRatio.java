@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,19 +62,19 @@ public class GoldenRatio {
 		return (int)( shorterSideLength * PHI );
 	}
 
-	public static java.awt.Dimension createWiderSizeFromWidth( int width ) {
-		return new java.awt.Dimension( width, getShorterSideLength( width ) );
+	public static Dimension createWiderSizeFromWidth( int width ) {
+		return new Dimension( width, getShorterSideLength( width ) );
 	}
 
-	public static java.awt.Dimension createWiderSizeFromHeight( int height ) {
-		return new java.awt.Dimension( getLongerSideLength( height ), height );
+	public static Dimension createWiderSizeFromHeight( int height ) {
+		return new Dimension( getLongerSideLength( height ), height );
 	}
 
-	public static java.awt.Dimension createTallerSizeFromWidth( int width ) {
-		return new java.awt.Dimension( width, getLongerSideLength( width ) );
+	public static Dimension createTallerSizeFromWidth( int width ) {
+		return new Dimension( width, getLongerSideLength( width ) );
 	}
 
-	public static java.awt.Dimension createTallerSizeFromHeight( int height ) {
-		return new java.awt.Dimension( getShorterSideLength( height ), height );
+	public static Dimension createTallerSizeFromHeight( int height ) {
+		return new Dimension( getShorterSideLength( height ), height );
 	}
 }

@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.Component;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,14 +56,14 @@ public class JOptionPaneUtilities {
 		throw new Error();
 	}
 
-	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
-		assert ( messageType == javax.swing.JOptionPane.ERROR_MESSAGE ) || ( messageType == javax.swing.JOptionPane.INFORMATION_MESSAGE ) || ( messageType == javax.swing.JOptionPane.WARNING_MESSAGE ) || ( messageType == javax.swing.JOptionPane.PLAIN_MESSAGE );
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( text );
+	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
+		assert ( messageType == JOptionPane.ERROR_MESSAGE ) || ( messageType == JOptionPane.INFORMATION_MESSAGE ) || ( messageType == JOptionPane.WARNING_MESSAGE ) || ( messageType == JOptionPane.PLAIN_MESSAGE );
+		JTextArea textArea = new JTextArea( text );
 		textArea.setEditable( false );
-		javax.swing.JOptionPane.showMessageDialog( owner, new javax.swing.JScrollPane( textArea ) {
+		JOptionPane.showMessageDialog( owner, new JScrollPane( textArea ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				java.awt.Dimension rv = super.getPreferredSize();
+			public Dimension getPreferredSize() {
+				Dimension rv = super.getPreferredSize();
 				rv.width = Math.min( rv.width, maxPreferredWidth );
 				rv.height = Math.min( rv.height, maxPreferredHeight );
 				return rv;
@@ -65,7 +71,7 @@ public class JOptionPaneUtilities {
 		}, title, messageType );
 	}
 
-	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType ) {
+	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType ) {
 		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
 	}
 }

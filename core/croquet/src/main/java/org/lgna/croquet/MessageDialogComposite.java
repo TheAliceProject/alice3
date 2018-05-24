@@ -42,21 +42,29 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.Panel;
+
+import javax.swing.JOptionPane;
+import java.awt.Component;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType;
+public abstract class MessageDialogComposite<V extends Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
+	private final MessageType messageType;
 	private String title;
 
 	private final OwnedByCompositeOperation launchOperation;
 
-	public MessageDialogComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType ) {
+	public MessageDialogComposite( UUID migrationId, MessageType messageType ) {
 		super( migrationId );
 		this.messageType = messageType;
 		String text = null;
-		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this, text );
-		this.launchOperation = new org.lgna.croquet.OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey, null );
+		OwnedByCompositeOperationSubKey subKey = new OwnedByCompositeOperationSubKey( this, text );
+		this.launchOperation = new OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey, null );
 	}
 
 	@Override
@@ -65,7 +73,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
+	public Operation getLaunchOperation( String subKeyText ) {
 		if( subKeyText != null ) {
 			throw new RuntimeException( "todo" );
 		} else {
@@ -74,15 +82,15 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 	}
 
 	@Deprecated
-	public org.lgna.croquet.Operation getLaunchOperation() {
+	public Operation getLaunchOperation() {
 		return this.launchOperation;
 	}
 
 	@Override
-	public final void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
+	public final void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
+		Component awtComponent = null; //todo
 		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
+		JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
 		completionStep.finish();
 	}
 

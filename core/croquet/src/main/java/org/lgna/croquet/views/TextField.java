@@ -43,15 +43,21 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StringState;
+
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
-	public TextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
+public class TextField extends AbstractTextField<JSuggestiveTextField> {
+	public TextField( StringState model, Operation operation ) {
 		super( model, operation );
 	}
 
-	public TextField( org.lgna.croquet.StringState model ) {
+	public TextField( StringState model ) {
 		this( model, null );
 	}
 
@@ -61,15 +67,15 @@ public class TextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
+	protected JSuggestiveTextField createAwtComponent() {
+		JSuggestiveTextField rv = new JSuggestiveTextField() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
+			public Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
+			public Dimension getMaximumSize() {
 				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
 					return this.getPreferredSize();
 				} else {

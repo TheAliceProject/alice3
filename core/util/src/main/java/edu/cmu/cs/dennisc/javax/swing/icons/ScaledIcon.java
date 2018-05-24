@@ -42,13 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ScaledIcon extends AbstractScaledIcon {
-	private final javax.swing.Icon sourceIcon;
+	private final Icon sourceIcon;
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, int width, int height ) {
+	public ScaledIcon( Icon sourceIcon, int width, int height ) {
 		super( width, height );
 		if( sourceIcon == null ) {
 			System.out.println( "" );
@@ -57,13 +61,13 @@ public class ScaledIcon extends AbstractScaledIcon {
 		this.sourceIcon = sourceIcon;
 	}
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, float factor ) {
+	public ScaledIcon( Icon sourceIcon, float factor ) {
 		super( factor );
 		assert sourceIcon != null;
 		this.sourceIcon = sourceIcon;
 	}
 
-	public javax.swing.Icon getSourceIcon() {
+	public Icon getSourceIcon() {
 		return this.sourceIcon;
 	}
 
@@ -78,7 +82,7 @@ public class ScaledIcon extends AbstractScaledIcon {
 	}
 
 	@Override
-	protected void paintSource( java.awt.Component c, java.awt.Graphics g ) {
+	protected void paintSource( Component c, Graphics g ) {
 		this.sourceIcon.paintIcon( c, g, 0, 0 );
 	}
 }

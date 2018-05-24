@@ -42,10 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.locale;
 
+import org.alice.ide.croquet.codecs.LocaleCodec;
+import org.alice.ide.croquet.models.information.RestartRequiredOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.preferences.PreferenceMutableDataSingleSelectListState;
+
+import java.util.Locale;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableDataSingleSelectListState<java.util.Locale> {
+public class LocaleState extends PreferenceMutableDataSingleSelectListState<Locale> {
 	private static class SingletonHolder {
 		private static LocaleState instance = new LocaleState();
 	}
@@ -56,39 +66,39 @@ public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableD
 
 	private LocaleState() {
 		super(
-				org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ),
+				Application.APPLICATION_UI_GROUP, UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ),
 				0,
-				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
-				new java.util.Locale( "en", "US" ),
+				LocaleCodec.SINGLETON,
+				new Locale( "en", "US" ),
 				//				new java.util.Locale( "pt" ),
-				new java.util.Locale( "pt", "BR" ),
-				new java.util.Locale( "es" ),
+				new Locale( "pt", "BR" ),
+				new Locale( "es" ),
 				//				new java.util.Locale( "fr" ),
 				//				new java.util.Locale( "fr", "BE" ),
 				//				new java.util.Locale( "it" ),
 				//				new java.util.Locale( "nl" ),
 				//				new java.util.Locale( "de" ),
-				new java.util.Locale( "el" ),
-				new java.util.Locale( "ro" ),
+				new Locale( "el" ),
+				new Locale( "ro" ),
 				//				new java.util.Locale( "cs" ),
-				new java.util.Locale( "sl" ),
+				new Locale( "sl" ),
 				//				new java.util.Locale( "lt" ),
-				new java.util.Locale( "ru" ),
-				new java.util.Locale( "uk" ),
-				new java.util.Locale( "tr" ),
-				new java.util.Locale( "ar" ),
+				new Locale( "ru" ),
+				new Locale( "uk" ),
+				new Locale( "tr" ),
+				new Locale( "ar" ),
 				//				new java.util.Locale( "iw" ),
 				//				new java.util.Locale( "in" ),
-				new java.util.Locale( "zh", "CN" ),
-				new java.util.Locale( "ja" ),
-				new java.util.Locale( "bg" )
+				new Locale( "zh", "CN" ),
+				new Locale( "ja" ),
+				new Locale( "bg" )
 		//				new java.util.Locale( "zh", "TW" ),
 		//				new java.util.Locale( "ko" ) 
 		);
-		this.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+		this.addNewSchoolValueListener( new ValueListener<Locale>() {
 			@Override
-			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
-				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
+			public void valueChanged( ValueEvent<Locale> e ) {
+				RestartRequiredOperation.getInstance().fire();
 			}
 		} );
 	}

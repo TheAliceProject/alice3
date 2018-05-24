@@ -43,6 +43,11 @@
 
 package org.lgna.croquet.views;
 
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyBoundsListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,15 +56,15 @@ public interface TrackableShape {
 
 	public ScrollPane getScrollPaneAncestor();
 
-	public java.awt.Shape getShape( ScreenElement asSeenBy, java.awt.Insets insets );
+	public Shape getShape( ScreenElement asSeenBy, Insets insets );
 
-	public java.awt.Shape getVisibleShape( ScreenElement asSeenBy, java.awt.Insets insets );
+	public Shape getVisibleShape( ScreenElement asSeenBy, Insets insets );
 
-	public void addComponentListener( java.awt.event.ComponentListener listener );
+	public void addComponentListener( ComponentListener listener );
 
-	public void removeComponentListener( java.awt.event.ComponentListener listener );
+	public void removeComponentListener( ComponentListener listener );
 
-	public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
+	public void addHierarchyBoundsListener( HierarchyBoundsListener listener );
 
-	public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener );
+	public void removeHierarchyBoundsListener( HierarchyBoundsListener listener );
 }

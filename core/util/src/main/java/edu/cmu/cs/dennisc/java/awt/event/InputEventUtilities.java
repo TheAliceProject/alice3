@@ -42,17 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.event;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+
+import java.awt.event.InputEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class InputEventUtilities {
-	public static int getCompleteModifiers( java.awt.event.InputEvent e ) {
+	public static int getCompleteModifiers( InputEvent e ) {
 		return e.getModifiers() | e.getModifiersEx();
 	}
 
 	public static int performPlatformModifiersFilter( int originalModifiers ) {
 		int rv;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		if( SystemUtilities.isMac() ) {
 			//todo
 			rv = originalModifiers;
 		} else {
@@ -62,15 +66,15 @@ public class InputEventUtilities {
 	}
 
 	public static int getAcceleratorMask() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			return java.awt.event.InputEvent.META_MASK;
+		if( SystemUtilities.isMac() ) {
+			return InputEvent.META_MASK;
 		} else {
-			return java.awt.event.InputEvent.CTRL_MASK;
+			return InputEvent.CTRL_MASK;
 		}
 	}
 
-	public static boolean isQuoteControlUnquoteDown( java.awt.event.InputEvent e ) {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+	public static boolean isQuoteControlUnquoteDown( InputEvent e ) {
+		if( SystemUtilities.isMac() ) {
 			return e.isAltDown();
 		} else {
 			return e.isControlDown();

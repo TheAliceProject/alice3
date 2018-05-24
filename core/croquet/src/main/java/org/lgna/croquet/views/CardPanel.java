@@ -43,50 +43,62 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.Composite;
+
+import javax.swing.JPanel;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
-	private class CustomPreferredSizeCardLayout extends java.awt.CardLayout {
+	private class CustomPreferredSizeCardLayout extends CardLayout {
 		public CustomPreferredSizeCardLayout( int hgap, int vgap ) {
 			super( hgap, vgap );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+		public Dimension preferredLayoutSize( Container parent ) {
 			synchronized( parent.getTreeLock() ) {
-				org.lgna.croquet.CardOwnerComposite cardOwner = (org.lgna.croquet.CardOwnerComposite)getComposite();
+				CardOwnerComposite cardOwner = (CardOwnerComposite)getComposite();
 
 				int widthMax = 0;
 				int heightMax = 0;
 
-				for( org.lgna.croquet.Composite<?> card : cardOwner.getCards() ) {
+				for( Composite<?> card : cardOwner.getCards() ) {
 					if( cardOwner.isCardAccountedForInPreferredSizeCalculation( card ) ) {
-						java.awt.Component awtChild = card.getRootComponent().getAwtComponent();
-						java.awt.Dimension awtChildPreferredSize = awtChild.getPreferredSize();
+						Component awtChild = card.getRootComponent().getAwtComponent();
+						Dimension awtChildPreferredSize = awtChild.getPreferredSize();
 						widthMax = Math.max( widthMax, awtChildPreferredSize.width );
 						heightMax = Math.max( heightMax, awtChildPreferredSize.height );
 					}
 				}
-				java.awt.Insets insets = parent.getInsets();
+				Insets insets = parent.getInsets();
 				int hgap = this.getHgap();
 				int vgap = this.getVgap();
-				return new java.awt.Dimension(
+				return new Dimension(
 						hgap + insets.left + widthMax + insets.right + hgap,
 						vgap + insets.top + heightMax + insets.bottom + vgap );
 			}
 		}
 	}
 
-	private final java.awt.CardLayout cardLayout;
+	private final CardLayout cardLayout;
 
-	public CardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
+	public CardPanel( CardOwnerComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new CustomPreferredSizeCardLayout( hgap, vgap );
-		java.awt.Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
+		Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
 		if( composite != null ) {
-			java.util.List<org.lgna.croquet.Composite<?>> cards = composite.getCards();
-			for( org.lgna.croquet.Composite<?> card : cards ) {
+			java.util.List<Composite<?>> cards = composite.getCards();
+			for( Composite<?> card : cards ) {
 				this.addComposite( card );
 			}
 			if( cards.size() > 0 ) {
@@ -96,12 +108,12 @@ public class CardPanel extends Panel {
 		this.setBackgroundColor( color );
 	}
 
-	public CardPanel( org.lgna.croquet.CardOwnerComposite composite ) {
+	public CardPanel( CardOwnerComposite composite ) {
 		this( composite, 0, 0 );
 	}
 
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final LayoutManager createLayoutManager( JPanel jPanel ) {
 		return this.cardLayout;
 	}
 
@@ -109,25 +121,25 @@ public class CardPanel extends Panel {
 
 	private Label nullLabel;
 
-	private static String getKey( org.lgna.croquet.Composite<?> composite ) {
+	private static String getKey( Composite<?> composite ) {
 		return composite != null ? composite.getCardId().toString() : NULL_KEY;
 	}
 
-	public void addComposite( org.lgna.croquet.Composite<?> composite ) {
+	public void addComposite( Composite<?> composite ) {
 		assert composite != null : this;
 		synchronized( this.getTreeLock() ) {
 			this.internalAddComponent( composite.getRootComponent(), getKey( composite ) );
 		}
 	}
 
-	public void removeComposite( org.lgna.croquet.Composite<?> composite ) {
+	public void removeComposite( Composite<?> composite ) {
 		assert composite != null : this;
 		synchronized( this.getTreeLock() ) {
 			this.internalRemoveComponent( composite.getRootComponent() );
 		}
 	}
 
-	public void showComposite( org.lgna.croquet.Composite<?> composite ) {
+	public void showComposite( Composite<?> composite ) {
 		if( composite != null ) {
 			//pass
 		} else {

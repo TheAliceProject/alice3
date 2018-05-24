@@ -43,13 +43,23 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractMethod, ProcedureInvocationInsertCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<BlockStatementIndexPair, AbstractMethod, ProcedureInvocationInsertCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized ProcedureInvocationInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method ) {
 		ProcedureInvocationInsertCascade rv = mapToMap.get( blockStatementIndexPair, method );
 		if( rv != null ) {
 			//pass
@@ -60,19 +70,19 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		return rv;
 	}
 
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 
-	private ProcedureInvocationInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+	private ProcedureInvocationInsertCascade( BlockStatementIndexPair blockStatementIndexPair, AbstractMethod method ) {
+		super( UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}
 
-	public org.lgna.project.ast.AbstractMethod getMethod() {
+	public AbstractMethod getMethod() {
 		return this.method;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions ) {
-		return org.lgna.project.ast.AstUtilities.createMethodInvocation( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions );
+	protected Expression createExpression( Expression... expressions ) {
+		return AstUtilities.createMethodInvocation( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions );
 	}
 }

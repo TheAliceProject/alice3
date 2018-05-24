@@ -43,12 +43,14 @@
 
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum YesNoResult {
-	YES( javax.swing.JOptionPane.YES_OPTION ),
-	NO( javax.swing.JOptionPane.NO_OPTION );
+	YES( JOptionPane.YES_OPTION ),
+	NO( JOptionPane.NO_OPTION );
 	private final int internal;
 
 	YesNoResult( int internal ) {

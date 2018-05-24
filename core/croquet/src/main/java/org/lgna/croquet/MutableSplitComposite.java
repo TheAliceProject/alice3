@@ -42,14 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.HorizontalMutableSplitPane;
+import org.lgna.croquet.views.MutableSplitPane;
+import org.lgna.croquet.views.VerticalMutableSplitPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableSplitComposite extends AbstractSplitComposite<org.lgna.croquet.views.MutableSplitPane> {
+public abstract class MutableSplitComposite extends AbstractSplitComposite<MutableSplitPane> {
 	private Composite<?> leadingComposite;
 	private Composite<?> trailingComposite;
 
-	public MutableSplitComposite( java.util.UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
+	public MutableSplitComposite( UUID id, Composite<?> leadingComposite, Composite<?> trailingComposite ) {
 		super( id );
 		this.setLeadingComposite( leadingComposite );
 		this.setTrailingComposite( trailingComposite );
@@ -80,12 +86,12 @@ public abstract class MutableSplitComposite extends AbstractSplitComposite<org.l
 	}
 
 	@Override
-	protected org.lgna.croquet.views.HorizontalMutableSplitPane createHorizontalSplitPane() {
-		return new org.lgna.croquet.views.HorizontalMutableSplitPane( this );
+	protected HorizontalMutableSplitPane createHorizontalSplitPane() {
+		return new HorizontalMutableSplitPane( this );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.VerticalMutableSplitPane createVerticalSplitPane() {
-		return new org.lgna.croquet.views.VerticalMutableSplitPane( this );
+	protected VerticalMutableSplitPane createVerticalSplitPane() {
+		return new VerticalMutableSplitPane( this );
 	}
 }

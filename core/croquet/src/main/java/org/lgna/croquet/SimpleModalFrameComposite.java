@@ -42,11 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleModalFrameComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends ModalFrameComposite<V> {
-	public SimpleModalFrameComposite( java.util.UUID id, Group launchOperationGroup ) {
+public abstract class SimpleModalFrameComposite<V extends CompositeView<?, ?>> extends ModalFrameComposite<V> {
+	public SimpleModalFrameComposite( UUID id, Group launchOperationGroup ) {
 		super( id, launchOperationGroup );
 		this.getImp().createAndRegisterNullKeyLaunchOperation();
 	}
@@ -57,7 +61,7 @@ public abstract class SimpleModalFrameComposite<V extends org.lgna.croquet.views
 		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation() {
+	public Operation getLaunchOperation() {
 		return this.getImp().getLaunchOperation( null );
 	}
 }

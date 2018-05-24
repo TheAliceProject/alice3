@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import javax.swing.Icon;
+import javax.swing.JOptionPane;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,11 +55,11 @@ public class OkDialog extends OptionDialog {
 			this.message = message;
 		}
 
-		public Builder( java.awt.Component message ) {
+		public Builder( Component message ) {
 			this.message = message;
 		}
 
-		public Builder parentComponent( java.awt.Component parentComponent ) {
+		public Builder parentComponent( Component parentComponent ) {
 			this.parentComponent = parentComponent;
 			return this;
 		}
@@ -70,7 +74,7 @@ public class OkDialog extends OptionDialog {
 			return this;
 		}
 
-		public Builder icon( javax.swing.Icon icon ) {
+		public Builder icon( Icon icon ) {
 			this.icon = icon;
 			return this;
 		}
@@ -83,11 +87,11 @@ public class OkDialog extends OptionDialog {
 			this.build().show();
 		}
 
-		private java.awt.Component parentComponent;
+		private Component parentComponent;
 		private Object message;
 		private String title;
 		private MessageType messageType = MessageType.INFORMATION;
-		private javax.swing.Icon icon;
+		private Icon icon;
 	}
 
 	private OkDialog( Builder builder ) {
@@ -99,11 +103,11 @@ public class OkDialog extends OptionDialog {
 	}
 
 	public void show() {
-		javax.swing.JOptionPane.showMessageDialog( this.getParentComponent(), message, title, messageType.getInternal(), icon );
+		JOptionPane.showMessageDialog( this.getParentComponent(), message, title, messageType.getInternal(), icon );
 	}
 
 	private final Object message;
 	private final String title;
 	private final MessageType messageType;
-	private final javax.swing.Icon icon;
+	private final Icon icon;
 }

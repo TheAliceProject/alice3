@@ -43,29 +43,41 @@
 
 package org.alice.ide.controlflow.components;
 
+import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
+import org.alice.ide.controlflow.ControlFlowComposite;
+import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Panel;
+import wrap.WrappedFlowLayout;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowPanel extends org.lgna.croquet.views.Panel {
-	public ControlFlowPanel( org.alice.ide.controlflow.ControlFlowComposite composite ) {
+public class ControlFlowPanel extends Panel {
+	public ControlFlowPanel( ControlFlowComposite composite ) {
 		super( composite );
-		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : composite.getModels() ) {
+		for( StatementTemplateDragModel dragModel : composite.getModels() ) {
 			if( dragModel != null ) {
 				this.internalAddComponent( new MiniControlFlowStatementTemplate( dragModel ) );
 			} else {
-				this.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+				this.internalAddComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 			}
 		}
 		this.setBackgroundColor( null );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			return new wrap.WrappedFlowLayout( wrap.WrappedFlowLayout.LEADING, 1, 0 );
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			return new WrappedFlowLayout( WrappedFlowLayout.LEADING, 1, 0 );
 		} else {
-			return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+			return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
 		}
 	}
 }

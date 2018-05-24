@@ -42,13 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.rename.RenameParameterComposite;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.project.ast.UserParameter;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccessMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ParameterAccessMenuModel extends PredeterminedMenuModel {
+	private static Map<UserParameter, ParameterAccessMenuModel> map = Maps.newHashMap();
 
-	public static synchronized ParameterAccessMenuModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
+	public static synchronized ParameterAccessMenuModel getInstance( UserParameter parameter ) {
 		ParameterAccessMenuModel rv = map.get( parameter );
 		if( rv != null ) {
 			//pass
@@ -59,8 +67,8 @@ public class ParameterAccessMenuModel extends org.lgna.croquet.PredeterminedMenu
 		return rv;
 	}
 
-	private ParameterAccessMenuModel( org.lgna.project.ast.UserParameter parameter ) {
-		super( java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ),
-				org.alice.ide.ast.rename.RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
+	private ParameterAccessMenuModel( UserParameter parameter ) {
+		super( UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ),
+				RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
 	}
 }

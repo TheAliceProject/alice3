@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.story.AddCollisionEndListener;
 import org.lgna.story.AddCollisionStartListener;
@@ -76,6 +77,8 @@ import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.ViewEnterListener;
 import org.lgna.story.event.ViewExitListener;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -96,7 +99,7 @@ public class EventListenerMethodUtilities {
 			SScene.class,
 			"addNumberKeyPressListener",
 			NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final java.util.List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS );
+	public static final List<JavaMethod> ALL_KEYBOARD_EVENT_METHODS = Lists.newArrayList( ADD_KEY_LISTENER_METHOD, ADD_ARROW_KEY_PRESS_LISTENER, ADD_NUNBER_KEY_LISTENER_METHOD, MOVE_WITH_ARROWS );
 
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
@@ -109,7 +112,7 @@ public class EventListenerMethodUtilities {
 	public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance(
 			SScene.class,
 			"addDefaultModelManipulation" );
-	public static final java.util.List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR );
+	public static final List<JavaMethod> ALL_MOUSE_CLICK_EVENT_METHODS = Lists.newArrayList( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD, ADD_DEFAULT_MODEL_MANIPULATOR );
 
 	public static final JavaMethod ADD_SCENE_ACTIVATION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,

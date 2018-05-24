@@ -42,19 +42,26 @@
  *******************************************************************************/
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointId;
 
-public class JointImplementation extends org.lgna.story.implementation.JointImp {
+public class JointImplementation extends JointImp {
 	private NebulousJoint sgJoint;
 
-	public JointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, NebulousJoint sgJoint ) {
+	public JointImplementation( JointedModelImp<?, ?> jointedModelImplementation, NebulousJoint sgJoint ) {
 		super( jointedModelImplementation );
 		this.sgJoint = sgJoint;
 		putInstance( this.sgJoint );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId getJointId() {
+	public JointId getJointId() {
 		return this.sgJoint.getJointId();
 	}
 
@@ -82,18 +89,18 @@ public class JointImplementation extends org.lgna.story.implementation.JointImp 
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
+	public UnitQuaternion getOriginalOrientation() {
 		return this.sgJoint.getOriginalLocalTransformation().orientation.createUnitQuaternion();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
+	public AffineMatrix4x4 getOriginalTransformation() {
 		return this.sgJoint.getOriginalLocalTransformation();
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox jointBBox = this.sgJoint.getAxisAlignedBoundingBox();
+	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
+		AxisAlignedBox jointBBox = this.sgJoint.getAxisAlignedBoundingBox();
 		rv.addBoundingBox( jointBBox, trans );
 		return rv;
 	}

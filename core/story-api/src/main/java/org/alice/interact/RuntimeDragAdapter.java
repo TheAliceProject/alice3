@@ -44,10 +44,13 @@ package org.alice.interact;
 
 import java.awt.event.MouseEvent;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraMoveDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraPanDragManipulator;
@@ -69,26 +72,26 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 
 	private void setUpControls() {
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
-		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		MouseDragCondition moveableObject = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 		mouseTranslateObject.addCondition( moveableObject );
 		this.addManipulatorConditionSet( mouseTranslateObject );
 
 		ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
-		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
+		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 		this.addManipulatorConditionSet( mouseUpDownTranslateObject );
 
 		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
-		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
 
 		//Camera mouse control
-		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
-		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
-		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
-		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		MouseDragCondition leftAndShift = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
+		MouseDragCondition leftAndControl = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
+		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
 
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 		//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
@@ -123,7 +126,7 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
+	protected void handleMouseMoved( MouseEvent e ) {
 		//Overridden to prevent picking every frame since there is no need for rollover events
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.fireStateChange();
@@ -150,12 +153,12 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI / 16.0 );
+	public Angle getRotationSnapAngle() {
+		return new AngleInRadians( Math.PI / 16.0 );
 	}
 
 	@Override
-	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
+	public void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
 	}
 
 }

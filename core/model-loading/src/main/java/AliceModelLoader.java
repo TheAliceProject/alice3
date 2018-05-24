@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.DoubleBuffer;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
@@ -134,10 +135,10 @@ public class AliceModelLoader {
 			rootTransform.translation.z += translation.z;
 			sv.skeleton.getValue().localTransformation.setValue(rootTransform);
 		}
-		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
-			if (g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh) {
-				edu.cmu.cs.dennisc.scenegraph.Mesh mesh = (edu.cmu.cs.dennisc.scenegraph.Mesh) g;
-				java.nio.DoubleBuffer xyzs = mesh.vertexBuffer.getValue();
+		for (Geometry g : sv.geometries.getValue()) {
+			if (g instanceof Mesh) {
+				Mesh mesh = (Mesh) g;
+				DoubleBuffer xyzs = mesh.vertexBuffer.getValue();
 				double[] new_xyzs = new double[xyzs.capacity()];
 				final int N = xyzs.limit();
 				for (int i = 0; i < N; i += 3) {
@@ -163,7 +164,7 @@ public class AliceModelLoader {
 		Field[] fields = resourceClass.getDeclaredFields();
 		List<Field> jointFields = new ArrayList<Field>();
 		for (Field f : fields) {
-			if (org.lgna.story.resources.JointId.class.isAssignableFrom(f.getType())) { 
+			if (JointId.class.isAssignableFrom(f.getType())) {
 				jointFields.add(f);
 			}
 		}
@@ -171,7 +172,7 @@ public class AliceModelLoader {
 	}
 	
 	public static SkeletonVisual addMissingJoints(SkeletonVisual sv, Class<?> resourceClass) throws PipelineException{
-		
+
 		List<Field> requiredJointFields = getJointIdFields(resourceClass);
 		
 		if (sv.skeleton.getValue() == null) {
@@ -186,13 +187,13 @@ public class AliceModelLoader {
 		
 		System.out.println("\nCHECKING FOR MISSING JOINTS ON "+sv.getName());
 		
-		List<org.lgna.story.resources.JointId> missingJoints = new LinkedList<org.lgna.story.resources.JointId>();
+		List<JointId> missingJoints = new LinkedList<JointId>();
 		Field[] fields = resourceClass.getDeclaredFields();
 		for (Field f : requiredJointFields) {
 			String fieldName = f.getName();
 			if (sv.skeleton.getValue().getJoint(fieldName) == null) {
 				try {
-					org.lgna.story.resources.JointId id = (org.lgna.story.resources.JointId) f.get(null);
+					JointId id = (JointId) f.get(null);
 					missingJoints.add(id);
 				} catch (IllegalAccessException iae) {
 					iae.printStackTrace();

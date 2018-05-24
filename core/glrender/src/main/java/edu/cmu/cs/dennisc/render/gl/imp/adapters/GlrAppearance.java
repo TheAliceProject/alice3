@@ -44,11 +44,12 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Appearance;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAppearance<T extends edu.cmu.cs.dennisc.scenegraph.Appearance> extends GlrElement<T> {
+public abstract class GlrAppearance<T extends Appearance> extends GlrElement<T> {
 	public abstract boolean isActuallyShowing();
 
 	public abstract boolean isAlphaBlended();

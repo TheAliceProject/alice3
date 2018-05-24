@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Component;
+import java.awt.Toolkit;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,18 +55,18 @@ public class ToolkitUtilities {
 	}
 
 	public static boolean isDynamicLayoutSupported() {
-		return "true".equals( java.awt.Toolkit.getDefaultToolkit().getDesktopProperty( "awt.dynamicLayoutSupported" ) );
+		return "true".equals( Toolkit.getDefaultToolkit().getDesktopProperty( "awt.dynamicLayoutSupported" ) );
 	}
 
-	private static int getScreenResolution( java.awt.Toolkit toolkit ) {
+	private static int getScreenResolution( Toolkit toolkit ) {
 		return toolkit.getScreenResolution();
 	}
 
-	public static int getScreenResolution( java.awt.Component awtComponent ) {
+	public static int getScreenResolution( Component awtComponent ) {
 		return getScreenResolution( awtComponent.getToolkit() );
 	}
 
 	public static int getScreenResolution() {
-		return getScreenResolution( java.awt.Toolkit.getDefaultToolkit() );
+		return getScreenResolution( Toolkit.getDefaultToolkit() );
 	}
 }

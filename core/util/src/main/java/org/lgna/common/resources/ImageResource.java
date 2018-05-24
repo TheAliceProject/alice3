@@ -42,8 +42,20 @@
  *******************************************************************************/
 package org.lgna.common.resources;
 
-public class ImageResource extends org.lgna.common.Resource {
-	private static java.util.Map<String, String> extensionToContentTypeMap;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.lgna.common.Resource;
+import org.w3c.dom.Element;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+
+public class ImageResource extends Resource {
+	private static Map<String, String> extensionToContentTypeMap;
 
 	private static final String PNG_MIME_TYPE = "image/png";
 	private static final String JPEG_MIME_TYPE = "image/jpeg";
@@ -51,7 +63,7 @@ public class ImageResource extends org.lgna.common.Resource {
 	private static final String GIF_MIME_TYPE = "image/gif";
 
 	static {
-		ImageResource.extensionToContentTypeMap = new java.util.HashMap<String, String>();
+		ImageResource.extensionToContentTypeMap = new HashMap<String, String>();
 		ImageResource.extensionToContentTypeMap.put( "png", PNG_MIME_TYPE );
 		ImageResource.extensionToContentTypeMap.put( "jpg", JPEG_MIME_TYPE );
 		ImageResource.extensionToContentTypeMap.put( "jpeg", JPEG_MIME_TYPE );
@@ -60,11 +72,11 @@ public class ImageResource extends org.lgna.common.Resource {
 	}
 
 	public static String getContentType( String path ) {
-		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
-		return extension != null ? ImageResource.extensionToContentTypeMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) ) : null;
+		String extension = FileUtilities.getExtension( path );
+		return extension != null ? ImageResource.extensionToContentTypeMap.get( extension.toLowerCase( Locale.ENGLISH ) ) : null;
 	}
 
-	public static String getContentType( java.io.File file ) {
+	public static String getContentType( File file ) {
 		return getContentType( file.getName() );
 	}
 
@@ -72,11 +84,11 @@ public class ImageResource extends org.lgna.common.Resource {
 		return ImageResource.extensionToContentTypeMap.containsValue( contentType );
 	}
 
-	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
-		return new java.io.FilenameFilter() {
+	public static FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
+		return new FilenameFilter() {
 			@Override
-			public boolean accept( java.io.File dir, String name ) {
-				java.io.File file = new java.io.File( dir, name );
+			public boolean accept( File dir, String name ) {
+				File file = new File( dir, name );
 				if( file.isDirectory() ) {
 					return areDirectoriesAccepted;
 				} else {
@@ -86,9 +98,9 @@ public class ImageResource extends org.lgna.common.Resource {
 		};
 	}
 
-	private static java.util.Map<java.util.UUID, ImageResource> uuidToResourceMap = new java.util.HashMap<java.util.UUID, ImageResource>();
+	private static Map<UUID, ImageResource> uuidToResourceMap = new HashMap<UUID, ImageResource>();
 
-	private static ImageResource get( java.util.UUID uuid ) {
+	private static ImageResource get( UUID uuid ) {
 		ImageResource rv = uuidToResourceMap.get( uuid );
 		if( rv != null ) {
 			//pass
@@ -100,13 +112,13 @@ public class ImageResource extends org.lgna.common.Resource {
 	}
 
 	public static ImageResource valueOf( String s ) {
-		return get( java.util.UUID.fromString( s ) );
+		return get( UUID.fromString( s ) );
 	}
 
 	private int width = -1;
 	private int height = -1;
 
-	public ImageResource( java.util.UUID uuid ) {
+	public ImageResource( UUID uuid ) {
 		super( uuid );
 	}
 
@@ -119,12 +131,12 @@ public class ImageResource extends org.lgna.common.Resource {
 		this( cls, resourceName, getContentType( resourceName ) );
 	}
 
-	public ImageResource( java.io.File file, String contentType ) throws java.io.IOException {
+	public ImageResource( File file, String contentType ) throws IOException {
 		super( file, contentType );
 		uuidToResourceMap.put( this.getId(), this );
 	}
 
-	public ImageResource( java.io.File file ) throws java.io.IOException {
+	public ImageResource( File file ) throws IOException {
 		this( file, getContentType( file ) );
 	}
 
@@ -148,14 +160,14 @@ public class ImageResource extends org.lgna.common.Resource {
 	private static String XML_HEIGHT_ATTRIBUTE = "height";
 
 	@Override
-	public void encodeAttributes( org.w3c.dom.Element xmlElement ) {
+	public void encodeAttributes( Element xmlElement ) {
 		super.encodeAttributes( xmlElement );
 		xmlElement.setAttribute( XML_WIDTH_ATTRIBUTE, Integer.toString( this.width ) );
 		xmlElement.setAttribute( XML_HEIGHT_ATTRIBUTE, Integer.toString( this.height ) );
 	}
 
 	@Override
-	public void decodeAttributes( org.w3c.dom.Element xmlElement, byte[] data ) {
+	public void decodeAttributes( Element xmlElement, byte[] data ) {
 		super.decodeAttributes( xmlElement, data );
 		this.width = Integer.parseInt( xmlElement.getAttribute( XML_WIDTH_ATTRIBUTE ) );
 		this.height = Integer.parseInt( xmlElement.getAttribute( XML_HEIGHT_ATTRIBUTE ) );

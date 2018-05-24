@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.project.find.croquet.tree;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.Icon;
 
@@ -68,7 +69,7 @@ public class FindReferencesTreeState extends CustomSingleSelectTreeState<SearchT
 	private final static ItemCodec<SearchTreeNode> SEARCH_TREE_NODE_CODEC = DefaultItemCodec.createInstance( SearchTreeNode.class );
 
 	public FindReferencesTreeState() {
-		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, java.util.UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, SEARCH_TREE_NODE_CODEC );
+		super( AbstractFindComposite.FIND_COMPOSITE_GROUP, UUID.fromString( "88fc8668-1de6-4976-9f3b-5c9688675e2b" ), root, SEARCH_TREE_NODE_CODEC );
 	}
 
 	@Override

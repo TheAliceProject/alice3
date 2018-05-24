@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.stats.croquet;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFlowControlFrequencyView;
 import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.SimpleTabComposite;
@@ -54,14 +60,15 @@ import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.SProgram;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
 	private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
-	private final MutableDataSingleSelectListState<UserMethod> userMethodList = createMutableListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final MutableDataSingleSelectListState<UserMethod> userMethodList = createMutableListState( "userMethodList", UserMethod.class, NodeCodec.getInstance( UserMethod.class ), -1 );
 	public final static UserMethod root = new UserMethod();
 
 	public StatisticsFlowControlFrequencyComposite() {
-		super( java.util.UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ), IsCloseable.FALSE );
+		super( UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ), IsCloseable.FALSE );
 		root.setName( "Project" );
 		refresh();
 	}
@@ -79,17 +86,17 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		return this.userMethodList;
 	}
 
-	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private class StatementCountCrawler implements Crawler {
+		private Map<Class<? extends Statement>, Integer> map = Maps.newHashMap();
 
 		@Override
-		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-			if( crawlable instanceof org.lgna.project.ast.Statement ) {
-				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
+		public void visit( Crawlable crawlable ) {
+			if( crawlable instanceof Statement ) {
+				Statement statement = (Statement)crawlable;
 				UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
 				if( ( method != null ) && !method.getManagementLevel().isGenerated()
 						// This condition prevents counting methods of the Program class (e.g., main method) which a user cannot edit
-						&& !( method.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class ) ) && statement.isEnabled.getValue() ) {
+						&& !( method.getDeclaringType().isAssignableTo( SProgram.class ) ) && statement.isEnabled.getValue() ) {
 					if( !methodToConstructMap.keySet().contains( method ) ) {
 						methodToConstructMap.put( method, new LinkedList<Statement>() );
 					}
@@ -139,14 +146,14 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 	private void refresh() {
 		userMethodList.clear();
 		methodToConstructMap.clear();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		StatementCountCrawler crawler = new StatementCountCrawler();
 		ide.crawlFilteredProgramType( crawler );
 		List<UserMethod> methodContainingConstructList = new LinkedList<UserMethod>();
 		for( UserMethod method : methodToConstructMap.keySet() ) {
 			methodContainingConstructList.add( method );
 		}
-		java.util.Collections.sort( methodContainingConstructList, new Comparator<UserMethod>() {
+		Collections.sort( methodContainingConstructList, new Comparator<UserMethod>() {
 			@Override
 			public int compare( UserMethod o1, UserMethod o2 ) {
 				return o1.getName().compareTo( o2.getName() );

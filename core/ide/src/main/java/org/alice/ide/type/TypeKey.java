@@ -43,12 +43,14 @@
 
 package org.alice.ide.type;
 
+import org.lgna.project.ast.NamedUserType;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TypeKey {
-	public final org.lgna.project.ast.NamedUserType createType() {
-		org.lgna.project.ast.NamedUserType rv = new org.lgna.project.ast.NamedUserType();
+	public final NamedUserType createType() {
+		NamedUserType rv = new NamedUserType();
 		//todo
 		return rv;
 	}

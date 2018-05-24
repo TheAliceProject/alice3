@@ -43,29 +43,40 @@
 
 package org.alice.ide.croquet.models.cascade.array;
 
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.annotations.ArrayIndexDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArrayAccess;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayAccessFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.ArrayAccess> {
-	private final org.lgna.project.ast.ArrayAccess transientValue;
+public class ArrayAccessFillIn extends ExpressionFillInWithExpressionBlanks<ArrayAccess> {
+	private final ArrayAccess transientValue;
 
-	public ArrayAccessFillIn( org.lgna.project.ast.Expression arrayExpression ) {
-		super( java.util.UUID.fromString( "a626aca1-094f-4618-af7b-2dcb4f63fa96" ),
-				org.alice.ide.croquet.models.cascade.ExpressionBlank.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ) );
-		this.transientValue = new org.lgna.project.ast.ArrayAccess();
-		org.lgna.project.ast.AbstractType<?, ?, ?> arrayType = arrayExpression.getType();
+	public ArrayAccessFillIn( Expression arrayExpression ) {
+		super( UUID.fromString( "a626aca1-094f-4618-af7b-2dcb4f63fa96" ),
+				ExpressionBlank.getBlankForType( Integer.class, ArrayIndexDetails.SINGLETON ) );
+		this.transientValue = new ArrayAccess();
+		AbstractType<?, ?, ?> arrayType = arrayExpression.getType();
 		this.transientValue.arrayType.setValue( arrayType );
 		this.transientValue.array.setValue( arrayExpression );
-		this.transientValue.index.setValue( new org.alice.ide.ast.EmptyExpression( Integer.class ) );
+		this.transientValue.index.setValue( new EmptyExpression( Integer.class ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.ArrayAccess createValue( org.lgna.project.ast.Expression[] expressions ) {
-		return new org.lgna.project.ast.ArrayAccess( this.transientValue.arrayType.getValue(), this.transientValue.array.getValue(), expressions[ 0 ] );
+	protected ArrayAccess createValue( Expression[] expressions ) {
+		return new ArrayAccess( this.transientValue.arrayType.getValue(), this.transientValue.array.getValue(), expressions[ 0 ] );
 	}
 
 	@Override
-	public org.lgna.project.ast.ArrayAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.ArrayAccess, org.lgna.project.ast.Expression> step ) {
+	public ArrayAccess getTransientValue( ItemNode<? super ArrayAccess, Expression> step ) {
 		return this.transientValue;
 	}
 }

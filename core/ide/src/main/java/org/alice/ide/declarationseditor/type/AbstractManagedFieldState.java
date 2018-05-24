@@ -43,11 +43,15 @@
 
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.data.AbstractManagedFieldData;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractManagedFieldState extends FieldState {
-	public AbstractManagedFieldState( java.util.UUID id, org.alice.ide.declarationseditor.type.data.AbstractManagedFieldData data ) {
+	public AbstractManagedFieldState( UUID id, AbstractManagedFieldData data ) {
 		super( id, data );
 	}
 }

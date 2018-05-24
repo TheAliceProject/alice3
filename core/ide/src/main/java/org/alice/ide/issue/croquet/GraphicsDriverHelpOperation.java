@@ -42,10 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.issue.croquet;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import org.alice.ide.browser.ImmutableBrowserOperation;
+import org.alice.ide.help.HelpBrowserOperation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+public class GraphicsDriverHelpOperation extends ImmutableBrowserOperation {
 	private static class SingletonHolder {
 		private static GraphicsDriverHelpOperation instance = new GraphicsDriverHelpOperation();
 	}
@@ -56,13 +62,13 @@ public class GraphicsDriverHelpOperation extends org.alice.ide.browser.Immutable
 
 	private static String getSpec() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC );
+		sb.append( HelpBrowserOperation.HELP_URL_SPEC );
 		sb.append( "w/page/" );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+		if( SystemUtilities.isWindows() ) {
 			sb.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
-		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+		} else if( SystemUtilities.isMac() ) {
 			sb.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
-		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+		} else if( SystemUtilities.isLinux() ) {
 			sb.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
 		} else {
 			sb.append( "54959364/Updating%20Video%20Drivers" );
@@ -71,6 +77,6 @@ public class GraphicsDriverHelpOperation extends org.alice.ide.browser.Immutable
 	}
 
 	private GraphicsDriverHelpOperation() {
-		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), getSpec() );
+		super( UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), getSpec() );
 	}
 }

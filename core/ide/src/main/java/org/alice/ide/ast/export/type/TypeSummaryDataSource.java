@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.ast.export.type;
 
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.w3c.dom.Document;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeSummaryDataSource implements edu.cmu.cs.dennisc.java.util.zip.DataSource {
+public class TypeSummaryDataSource implements DataSource {
 	public static final String FILENAME = "typeSummary.xml";
 	private final TypeSummary typeSummary;
 
@@ -59,8 +66,8 @@ public class TypeSummaryDataSource implements edu.cmu.cs.dennisc.java.util.zip.D
 	}
 
 	@Override
-	public void write( java.io.OutputStream os ) throws java.io.IOException {
-		org.w3c.dom.Document xmlDocument = TypeXmlUtitlities.encode( this.typeSummary );
-		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );
+	public void write( OutputStream os ) throws IOException {
+		Document xmlDocument = TypeXmlUtitlities.encode( this.typeSummary );
+		XMLUtilities.write( xmlDocument, os );
 	}
 }

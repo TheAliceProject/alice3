@@ -43,11 +43,16 @@
 
 package org.alice.ide.croquet.models.cascade.literals;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DoubleLiteralFillIn extends AbstractDoubleLiteralFillIn {
-	private static java.util.Map<Double, DoubleLiteralFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<Double, DoubleLiteralFillIn> map = Maps.newHashMap();
 
 	public static DoubleLiteralFillIn getInstance( double value ) {
 		synchronized( map ) {
@@ -63,6 +68,6 @@ public class DoubleLiteralFillIn extends AbstractDoubleLiteralFillIn {
 	}
 
 	private DoubleLiteralFillIn( double value ) {
-		super( java.util.UUID.fromString( "5ecebce8-0957-404e-9168-38eb06f7866c" ), value );
+		super( UUID.fromString( "5ecebce8-0957-404e-9168-38eb06f7866c" ), value );
 	}
 }

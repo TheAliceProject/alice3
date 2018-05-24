@@ -42,25 +42,60 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.declaration.AddFunctionComposite;
+import org.alice.ide.ast.declaration.AddProcedureComposite;
+import org.alice.ide.ast.declaration.AddUnmanagedFieldComposite;
+import org.alice.ide.ast.declaration.ManagedEditFieldComposite;
+import org.alice.ide.ast.declaration.UnmanagedEditFieldComposite;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
+import org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.data.ListData;
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
+import org.lgna.croquet.views.ViewController;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.UIManager;
+import javax.swing.event.PopupMenuEvent;
+import java.awt.Font;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeMenu extends org.lgna.croquet.MenuModel {
-	private static final java.awt.Font TYPE_FONT;
-	private static final java.awt.Font BONUS_FONT;
+public class TypeMenu extends MenuModel {
+	private static final Font TYPE_FONT;
+	private static final Font BONUS_FONT;
 	static {
-		java.awt.Font defaultFont = javax.swing.UIManager.getFont( "defaultFont" );
+		Font defaultFont = UIManager.getFont( "defaultFont" );
 		if( defaultFont != null ) {
 			//pass
 		} else {
-			defaultFont = new java.awt.Font( "SansSerif", java.awt.Font.PLAIN, 12 );
+			defaultFont = new Font( "SansSerif", Font.PLAIN, 12 );
 		}
 		TYPE_FONT = defaultFont.deriveFont( 18.0f );
-		BONUS_FONT = defaultFont.deriveFont( java.awt.Font.ITALIC );
+		BONUS_FONT = defaultFont.deriveFont( Font.ITALIC );
 	}
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeMenu> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, TypeMenu> map = Maps.newHashMap();
 
-	public static synchronized TypeMenu getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized TypeMenu getInstance( NamedUserType type ) {
 		TypeMenu rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -71,33 +106,33 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.NamedUserType type;
+	private final NamedUserType type;
 
-	private TypeMenu( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "d4ea32ce-d9d6-452e-8d99-2d8078c01251" ) );
+	private TypeMenu( NamedUserType type ) {
+		super( UUID.fromString( "d4ea32ce-d9d6-452e-8d99-2d8078c01251" ) );
 		this.type = type;
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true, TYPE_FONT, BONUS_FONT ) );
+		this.setSmallIcon( new TypeIcon( this.type, true, TYPE_FONT, BONUS_FONT ) );
 	}
 
 	@Override
-	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
+		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> managedFieldModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> unmanagedFieldModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> procedureModels = Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> functionModels = Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> managedFieldModels = Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> unmanagedFieldModels = Lists.newLinkedList();
 
-		org.lgna.croquet.data.ListData<DeclarationComposite<?, ?>> data = declarationTabState.getData();
-		final java.util.Set<org.lgna.croquet.StandardMenuItemPrepModel> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-		for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
-				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForMethod( method ).getMenuItemPrepModel();
+		ListData<DeclarationComposite<?, ?>> data = declarationTabState.getData();
+		final Set<StandardMenuItemPrepModel> set = Sets.newHashSet();
+		for( UserMethod method : this.type.methods ) {
+			if( method.managementLevel.getValue() == ManagementLevel.NONE ) {
+				StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForMethod( method ).getMenuItemPrepModel();
 				if( data.contains( DeclarationComposite.getInstance( method ) ) ) {
 					set.add( model );
 				}
@@ -110,16 +145,16 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		}
 
 		final boolean EDIT = false;
-		for( org.lgna.project.ast.UserField field : this.type.fields ) {
-			if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+		for( UserField field : this.type.fields ) {
+			if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
 				if( EDIT ) {
-					managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
+					managedFieldModels.add( ManagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
 				} else {
 					managedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 				}
 			} else {
 				if( EDIT ) {
-					unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
+					unmanagedFieldModels.add( UnmanagedEditFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
 				} else {
 					unmanagedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 				}
@@ -133,12 +168,12 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			functionModels.add( 0, FunctionsSeparator.getInstance() );
 		}
 
-		procedureModels.add( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
-		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
+		procedureModels.add( AddProcedureComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
+		functionModels.add( AddFunctionComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
 
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 
-		org.lgna.croquet.Operation operation = declarationTabState.getItemSelectionOperationForType( type );
+		Operation operation = declarationTabState.getItemSelectionOperationForType( type );
 		operation.setName( type.getName() );
 
 		if( data.contains( DeclarationComposite.getInstance( type ) ) ) {
@@ -146,10 +181,10 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		}
 		models.add( operation.getMenuItemPrepModel() );
 
-		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
+		if( IsIncludingConstructors.getInstance().getValue() ) {
 			models.add( SEPARATOR );
-			for( org.lgna.project.ast.NamedUserConstructor constructor : type.getDeclaredConstructors() ) {
-				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor( constructor ).getMenuItemPrepModel();
+			for( NamedUserConstructor constructor : type.getDeclaredConstructors() ) {
+				StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor( constructor ).getMenuItemPrepModel();
 				if( data.contains( DeclarationComposite.getInstance( constructor ) ) ) {
 					set.add( model );
 				}
@@ -162,7 +197,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		models.add( SEPARATOR );
 		models.addAll( functionModels );
 
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+		if( IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
 			models.add( SEPARATOR );
 			if( managedFieldModels.size() > 0 ) {
 				models.add( ManagedFieldsSeparator.getInstance() );
@@ -170,9 +205,9 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			}
 			final boolean IS_SHOW_ME_HOW_PREFERRED = false;
 			if( IS_SHOW_ME_HOW_PREFERRED ) {
-				models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
+				models.add( ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
 			} else {
-				models.add( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
+				models.add( AddResourceKeyManagedFieldComposite.getInstance().getLaunchOperation().getMenuItemPrepModel() );
 			}
 		}
 
@@ -185,19 +220,19 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			}
 			models.addAll( unmanagedFieldModels );
 		}
-		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().getMenuItemPrepModel() );
+		models.add( AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().getMenuItemPrepModel() );
 		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
 
-		org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver() {
+		MenuItemContainerUtilities.MenuElementObserver observer = new MenuItemContainerUtilities.MenuElementObserver() {
 			@Override
-			public void update( org.lgna.croquet.views.MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, org.lgna.croquet.views.ViewController<?, ?> menuElement ) {
+			public void update( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel model, ViewController<?, ?> menuElement ) {
 				if( menuElement != null ) {
-					edu.cmu.cs.dennisc.java.awt.font.TextWeight textWeight = set.contains( model ) ? edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD : edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT;
+					TextWeight textWeight = set.contains( model ) ? TextWeight.BOLD : TextWeight.LIGHT;
 					menuElement.changeFont( textWeight );
 				}
 			}
 		};
-		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models, observer );
+		MenuItemContainerUtilities.setMenuElements( menuItemContainer, models, observer );
 
 		super.handleShowing( menuItemContainer, e );
 	}

@@ -42,14 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.swing.CellRendererPane;
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AsynchronousIcon implements javax.swing.Icon {
-	protected static java.awt.Component getComponentToRepaint( java.awt.Component c ) {
-		java.awt.Container parent = c.getParent();
-		if( parent instanceof javax.swing.CellRendererPane ) {
-			java.awt.Container grandparent = parent.getParent();
+public abstract class AsynchronousIcon implements Icon {
+	protected static Component getComponentToRepaint( Component c ) {
+		Container parent = c.getParent();
+		if( parent instanceof CellRendererPane ) {
+			Container grandparent = parent.getParent();
 			return grandparent;
 		} else {
 			return c;
@@ -60,13 +69,13 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 
 	protected abstract int getIconHeightFallback();
 
-	protected abstract void paintIconFallback( java.awt.Component c, java.awt.Graphics g, int x, int y );
+	protected abstract void paintIconFallback( Component c, Graphics g, int x, int y );
 
-	protected abstract javax.swing.Icon getResult( boolean isPaint );
+	protected abstract Icon getResult( boolean isPaint );
 
 	@Override
 	public final int getIconWidth() {
-		javax.swing.Icon icon = this.getResult( false );
+		Icon icon = this.getResult( false );
 		if( icon != null ) {
 			return icon.getIconWidth();
 		} else {
@@ -76,7 +85,7 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 
 	@Override
 	public final int getIconHeight() {
-		javax.swing.Icon icon = this.getResult( false );
+		Icon icon = this.getResult( false );
 		if( icon != null ) {
 			return icon.getIconHeight();
 		} else {
@@ -85,12 +94,12 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		javax.swing.Icon icon = this.getResult( true );
+	public final void paintIcon( Component c, Graphics g, int x, int y ) {
+		Icon icon = this.getResult( true );
 		if( icon != null ) {
 			icon.paintIcon( c, g, x, y );
 		} else {
-			java.awt.Component componentToRepaint = getComponentToRepaint( c );
+			Component componentToRepaint = getComponentToRepaint( c );
 			if( this.componentsToRepaint != null ) {
 				if( this.componentsToRepaint.contains( componentToRepaint ) ) {
 					//pass
@@ -98,7 +107,7 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 					this.componentsToRepaint.add( componentToRepaint );
 				}
 			} else {
-				this.componentsToRepaint = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( componentToRepaint );
+				this.componentsToRepaint = Lists.newLinkedList( componentToRepaint );
 				//this.worker.execute();
 			}
 			this.paintIconFallback( c, g, x, y );
@@ -107,12 +116,12 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 
 	protected void repaintComponentsIfNecessary() {
 		if( this.componentsToRepaint != null ) {
-			for( java.awt.Component component : this.componentsToRepaint ) {
+			for( Component component : this.componentsToRepaint ) {
 				component.repaint();
 			}
 			this.componentsToRepaint = null;
 		}
 	}
 
-	private java.util.List<java.awt.Component> componentsToRepaint;
+	private List<Component> componentsToRepaint;
 }

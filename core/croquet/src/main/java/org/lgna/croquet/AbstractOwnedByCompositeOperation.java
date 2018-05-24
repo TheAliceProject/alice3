@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends Operation {
-	public AbstractOwnedByCompositeOperation( Group group, java.util.UUID migrationId, org.lgna.croquet.Initializer<C> initializer ) {
+	public AbstractOwnedByCompositeOperation( Group group, UUID migrationId, Initializer<C> initializer ) {
 		super( group, migrationId );
 		this.initializer = initializer;
 	}
@@ -61,10 +68,10 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 	@Override
 	protected abstract String getSubKeyForLocalization();
 
-	private org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfDesired( C composite ) {
-		org.lgna.croquet.history.TransactionHistory transactionHistory;
+	private TransactionHistory createTransactionHistoryIfDesired( C composite ) {
+		TransactionHistory transactionHistory;
 		if( composite.isSubTransactionHistoryRequired() ) {
-			transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+			transactionHistory = new TransactionHistory();
 		} else {
 			transactionHistory = null;
 		}
@@ -72,9 +79,9 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void perform( Transaction transaction, Trigger trigger ) {
 		C composite = this.getComposite();
-		org.lgna.croquet.history.CompletionStep<AbstractOwnedByCompositeOperation<C>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfDesired( composite ) );
+		CompletionStep<AbstractOwnedByCompositeOperation<C>> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfDesired( composite ) );
 		if( this.initializer != null ) {
 			this.initializer.initialize( composite );
 		}
@@ -82,5 +89,5 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 		composite.perform( subKey, completionStep );
 	}
 
-	private final org.lgna.croquet.Initializer<C> initializer;
+	private final Initializer<C> initializer;
 }

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.print;
 
+import java.awt.print.PageFormat;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +52,7 @@ public class PageFormatUtilities {
 		throw new AssertionError();
 	}
 
-	public static double calculateScale( java.awt.print.PageFormat pageFormat, int width, int height ) {
+	public static double calculateScale( PageFormat pageFormat, int width, int height ) {
 		double imageableHeight = pageFormat.getImageableHeight();
 		double imageableWidth = pageFormat.getImageableWidth();
 		double xScale = width / imageableWidth;

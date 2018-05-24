@@ -37,6 +37,7 @@ import edu.cmu.cs.dennisc.scenegraph.SparseInverseAbsoluteTransformationWeightsP
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.WeightInfo;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import edu.cmu.cs.dennisc.texture.Texture;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.resources.ImplementationAndVisualType;
@@ -428,7 +429,7 @@ public class AliceColladaModelLoader {
 
 	private static Texture getAliceTexture(BufferedImage image) {
 		boolean flipImage = true;
-		edu.cmu.cs.dennisc.texture.BufferedImageTexture aliceTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+		BufferedImageTexture aliceTexture = new BufferedImageTexture();
 		BufferedImage tex;
 		if (flipImage) {
 			try {
@@ -476,9 +477,9 @@ public class AliceColladaModelLoader {
 		return aliceTexture;
 	}
 
-	private static List<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance> createAliceMaterialsFromCollada( Collada colladaModel, File rootPath, List<Mesh> aliceMeshes ) throws ModelLoadingException {
+	private static List<TexturedAppearance> createAliceMaterialsFromCollada( Collada colladaModel, File rootPath, List<Mesh> aliceMeshes ) throws ModelLoadingException {
 		List<Material> materials = colladaModel.getLibraryMaterials().getMaterials();
-		List<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance> textureAppearances = new LinkedList<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance>();
+		List<TexturedAppearance> textureAppearances = new LinkedList<TexturedAppearance>();
 		for (Material material : materials) {
 			int id = getMaterialIdForMaterialName( material.getName(), colladaModel );
 			boolean isUsed = false;
@@ -497,7 +498,7 @@ public class AliceColladaModelLoader {
 				} catch( IOException e) {
 					throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+" not found.", e);
 				}
-				edu.cmu.cs.dennisc.scenegraph.TexturedAppearance m_sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
+				TexturedAppearance m_sgAppearance = new TexturedAppearance();
 				m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
 				m_sgAppearance.textureId.setValue(id);
 				textureAppearances.add(m_sgAppearance);
@@ -839,7 +840,7 @@ public class AliceColladaModelLoader {
 		flipAliceModel( skeletonVisual );
 
 
-		List<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance> sgTextureAppearances = createAliceMaterialsFromCollada( colladaModel, rootPath, aliceMeshes );
+		List<TexturedAppearance> sgTextureAppearances = createAliceMaterialsFromCollada( colladaModel, rootPath, aliceMeshes );
 		skeletonVisual.textures.setValue(sgTextureAppearances.toArray(new TexturedAppearance[sgTextureAppearances.size()]));
 
 		UtilitySkeletonVisualAdapter skeletonVisualAdapter = new UtilitySkeletonVisualAdapter();
@@ -852,7 +853,7 @@ public class AliceColladaModelLoader {
 		if (skeletonVisual.geometries.getValue() != null) {
 			for (edu.cmu.cs.dennisc.scenegraph.Geometry g : skeletonVisual.geometries
 					.getValue()) {
-				edu.cmu.cs.dennisc.math.AxisAlignedBox b = g
+				AxisAlignedBox b = g
 						.getAxisAlignedMinimumBoundingBox();
 				absoluteBBox.union(b);
 			}

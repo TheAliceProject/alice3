@@ -43,14 +43,21 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder> {
+public class GlrCylinder extends GlrShape<Cylinder> {
 	//todo: add scenegraph hint
 	private static final int SLICE_COUNT = 50;
 	private static final int STACK_COUNT = 1;
@@ -65,17 +72,17 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 		}
 		c.gl.glPushMatrix();
 		try {
-			if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_X ) {
+			if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_X ) {
 				c.gl.glRotated( +90, 0, 1, 0 );
-			} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_Y ) {
+			} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Y ) {
 				c.gl.glRotated( -90, 1, 0, 0 );
-			} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_Z ) {
+			} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Z ) {
 				//pass
-			} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_X ) {
+			} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_X ) {
 				c.gl.glRotated( -90, 0, 1, 0 );
-			} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_Y ) {
+			} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Y ) {
 				c.gl.glRotated( +90, 1, 0, 0 );
-			} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_Z ) {
+			} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Z ) {
 				c.gl.glRotated( 180, 1, 0, 0 );
 			} else {
 				//todo?
@@ -83,11 +90,11 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 			}
 
 			double z;
-			if( this.originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.BOTTOM ) {
+			if( this.originAlignment == Cylinder.OriginAlignment.BOTTOM ) {
 				z = 0;
-			} else if( this.originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.CENTER ) {
+			} else if( this.originAlignment == Cylinder.OriginAlignment.CENTER ) {
 				z = -this.length * 0.5;
-			} else if( this.originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.TOP ) {
+			} else if( this.originAlignment == Cylinder.OriginAlignment.TOP ) {
 				z = -this.length;
 			} else {
 				//todo?
@@ -133,16 +140,16 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		double bottomValue;
 		double topValue;
-		if( this.originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.BOTTOM ) {
+		if( this.originAlignment == Cylinder.OriginAlignment.BOTTOM ) {
 			bottomValue = 0;
 			topValue = this.length;
-		} else if( this.originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.CENTER ) {
+		} else if( this.originAlignment == Cylinder.OriginAlignment.CENTER ) {
 			bottomValue = -this.length * 0.5;
 			topValue = +this.length * 0.5;
-		} else if( this.originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.TOP ) {
+		} else if( this.originAlignment == Cylinder.OriginAlignment.TOP ) {
 			bottomValue = this.length;
 			topValue = 0;
 		} else {
@@ -150,31 +157,31 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 			throw new RuntimeException();
 		}
 
-		edu.cmu.cs.dennisc.math.Point3 cylinderPosition = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
-		edu.cmu.cs.dennisc.math.Vector3 cylinderDirection = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
+		Point3 cylinderPosition = new Point3( 0, 0, 0 );
+		Vector3 cylinderDirection = new Vector3( 0, 0, 0 );
 
-		edu.cmu.cs.dennisc.math.Point3 cylinderTopPosition = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
-		if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_X ) {
+		Point3 cylinderTopPosition = new Point3( 0, 0, 0 );
+		if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_X ) {
 			cylinderDirection.x = 1;
 			cylinderPosition.x = bottomValue;
 			cylinderTopPosition.x = topValue;
-		} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_Y ) {
+		} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Y ) {
 			cylinderDirection.y = 1;
 			cylinderPosition.y = bottomValue;
 			cylinderTopPosition.y = topValue;
-		} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_Z ) {
+		} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.POSITIVE_Z ) {
 			cylinderDirection.z = 1;
 			cylinderPosition.z = bottomValue;
 			cylinderTopPosition.z = topValue;
-		} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_X ) {
+		} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_X ) {
 			cylinderDirection.x = -1;
 			cylinderPosition.x = -bottomValue;
 			cylinderTopPosition.x = -topValue;
-		} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_Y ) {
+		} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Y ) {
 			cylinderDirection.y = -1;
 			cylinderPosition.y = -bottomValue;
 			cylinderTopPosition.y = -topValue;
-		} else if( this.bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_Z ) {
+		} else if( this.bottomToTopAxis == Cylinder.BottomToTopAxis.NEGATIVE_Z ) {
 			cylinderDirection.z = -1;
 			cylinderPosition.z = -bottomValue;
 			cylinderTopPosition.z = -topValue;
@@ -190,21 +197,21 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 		double t = Double.NaN;
 		final double THRESHOLD = 0.01;
 		if( HANDLE_CONES_SEPARATELY && ( Math.abs( this.bottomRadius - this.topRadius ) < THRESHOLD ) ) {
-			edu.cmu.cs.dennisc.math.Vector3 originToOrigin = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( ray.accessOrigin(), cylinderPosition );
-			edu.cmu.cs.dennisc.math.Vector3 rayDirection_X_cylinderDirection = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( ray.accessDirection(), cylinderDirection );
+			Vector3 originToOrigin = Vector3.createSubtraction( ray.accessOrigin(), cylinderPosition );
+			Vector3 rayDirection_X_cylinderDirection = Vector3.createCrossProduct( ray.accessDirection(), cylinderDirection );
 
 			double magnitude = rayDirection_X_cylinderDirection.calculateMagnitude();
 
-			if( magnitude > edu.cmu.cs.dennisc.math.EpsilonUtilities.REASONABLE_EPSILON ) {
+			if( magnitude > EpsilonUtilities.REASONABLE_EPSILON ) {
 				rayDirection_X_cylinderDirection.normalize();
-				double d = Math.abs( edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( originToOrigin, rayDirection_X_cylinderDirection ) );
+				double d = Math.abs( Vector3.calculateDotProduct( originToOrigin, rayDirection_X_cylinderDirection ) );
 				if( d <= maxRadius ) {
-					edu.cmu.cs.dennisc.math.Vector3 originToOrigin_X_cylinderDirection = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( originToOrigin, cylinderDirection );
-					double a = -edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( originToOrigin_X_cylinderDirection, rayDirection_X_cylinderDirection ) / magnitude;
+					Vector3 originToOrigin_X_cylinderDirection = Vector3.createCrossProduct( originToOrigin, cylinderDirection );
+					double a = -Vector3.calculateDotProduct( originToOrigin_X_cylinderDirection, rayDirection_X_cylinderDirection ) / magnitude;
 
-					edu.cmu.cs.dennisc.math.Vector3 rayDirection_X_CylinderDirection___X_cylinderDirection = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( rayDirection_X_cylinderDirection, cylinderDirection );
+					Vector3 rayDirection_X_CylinderDirection___X_cylinderDirection = Vector3.createCrossProduct( rayDirection_X_cylinderDirection, cylinderDirection );
 					rayDirection_X_CylinderDirection___X_cylinderDirection.normalize();
-					double b = Math.abs( Math.sqrt( ( maxRadius * maxRadius ) - ( d * d ) ) / edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( ray.accessDirection(), rayDirection_X_CylinderDirection___X_cylinderDirection ) );
+					double b = Math.abs( Math.sqrt( ( maxRadius * maxRadius ) - ( d * d ) ) / Vector3.calculateDotProduct( ray.accessDirection(), rayDirection_X_CylinderDirection___X_cylinderDirection ) );
 
 					t = a - b;
 				}
@@ -220,16 +227,16 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 
 		if( rv.isNaN() ) {
 			//todo: check to see if hit cap
-			edu.cmu.cs.dennisc.math.Point3 pTopCap;
-			edu.cmu.cs.dennisc.math.Point3 pBottomCap;
+			Point3 pTopCap;
+			Point3 pBottomCap;
 			if( this.hasBottomCap && ( this.bottomRadius > 0 ) ) {
-				pBottomCap = new edu.cmu.cs.dennisc.math.Point3();
+				pBottomCap = new Point3();
 				GlrGeometry.getIntersectionInSourceFromPlaneInLocal( pBottomCap, ray, m, cylinderPosition, cylinderDirection );
 			} else {
 				pBottomCap = null;
 			}
 			if( this.hasTopCap && ( this.topRadius > 0 ) ) {
-				pTopCap = new edu.cmu.cs.dennisc.math.Point3();
+				pTopCap = new Point3();
 				GlrGeometry.getIntersectionInSourceFromPlaneInLocal( pTopCap, ray, m, cylinderTopPosition, cylinderDirection );
 			} else {
 				pTopCap = null;
@@ -250,7 +257,7 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.length ) {
 			this.length = owner.length.getValue();
 			setIsGeometryChanged( true );
@@ -282,6 +289,6 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 	private double topRadius;
 	private boolean hasBottomCap;
 	private boolean hasTopCap;
-	private edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment originAlignment;
-	private edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis bottomToTopAxis;
+	private Cylinder.OriginAlignment originAlignment;
+	private Cylinder.BottomToTopAxis bottomToTopAxis;
 }

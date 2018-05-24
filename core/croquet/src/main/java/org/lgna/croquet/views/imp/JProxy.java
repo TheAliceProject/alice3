@@ -42,44 +42,58 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import org.lgna.croquet.views.DragComponent;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.JPanel;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JProxy extends javax.swing.JPanel {
-	private static java.awt.image.BufferedImage image;
+public abstract class JProxy extends JPanel {
+	private static BufferedImage image;
 
-	private static java.awt.image.BufferedImage getOffscreenImage( int width, int height ) {
+	private static BufferedImage getOffscreenImage( int width, int height ) {
 		if( ( image == null ) || ( image.getWidth() != width ) || ( image.getHeight() != height ) ) {
-			image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+			image = new BufferedImage( width, height, BufferedImage.TYPE_4BYTE_ABGR );
 			//image = getGraphicsConfiguration().createCompatibleImage( width, height, java.awt.Transparency.TRANSLUCENT );
 		}
 		return image;
 	}
 
-	private org.lgna.croquet.views.DragComponent<?> dragComponent;
+	private DragComponent<?> dragComponent;
 	private boolean isOverDropAcceptor = false;
 	private boolean isCopyDesired = false;
 
-	public JProxy( org.lgna.croquet.views.DragComponent<?> dragComponent ) {
+	public JProxy( DragComponent<?> dragComponent ) {
 		this.dragComponent = dragComponent;
 		this.setOpaque( false );
 	}
 
-	protected org.lgna.croquet.views.DragComponent<?> getDragComponent() {
+	protected DragComponent<?> getDragComponent() {
 		return this.dragComponent;
 	}
 
-	protected org.lgna.croquet.views.SwingComponentView<?> getSubject() {
+	protected SwingComponentView<?> getSubject() {
 		return this.dragComponent.getSubject();
 	}
 
-	public java.awt.Dimension getProxySize() {
-		java.awt.Component subject = this.getSubject().getAwtComponent();
+	public Dimension getProxySize() {
+		Component subject = this.getSubject().getAwtComponent();
 		if( subject.getParent() != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.doLayoutTree( subject );
-			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.setSizeToPreferredSizeTree( subject );
+			ComponentUtilities.doLayoutTree( subject );
+			ComponentUtilities.setSizeToPreferredSizeTree( subject );
 		}
 		return subject.getSize();
 	}
@@ -91,8 +105,8 @@ public abstract class JProxy extends javax.swing.JPanel {
 	//		return this.getSubject().getHeight();
 	//	}
 
-	protected void fillBounds( java.awt.Graphics2D g2 ) {
-		org.lgna.croquet.views.SwingComponentView<?> subject = this.getSubject();
+	protected void fillBounds( Graphics2D g2 ) {
+		SwingComponentView<?> subject = this.getSubject();
 		int x = 0;
 		int y = 0;
 		int width = subject.getWidth();
@@ -100,32 +114,32 @@ public abstract class JProxy extends javax.swing.JPanel {
 		g2.fillRect( x, y, width, height );
 	}
 
-	protected abstract void paintProxy( java.awt.Graphics2D g2 );
+	protected abstract void paintProxy( Graphics2D g2 );
 
 	protected abstract float getAlpha();
 
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
+	protected void paintComponent( Graphics g ) {
 		super.paintComponent( g );
-		java.awt.Dimension size = this.getProxySize();
+		Dimension size = this.getProxySize();
 		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-			java.awt.image.BufferedImage image = JProxy.getOffscreenImage( size.width, size.height );
+			BufferedImage image = JProxy.getOffscreenImage( size.width, size.height );
 			//todo: synchronize
 			//if( LayeredPaneProxy.image == null || LayeredPaneProxy.image.getWidth() < width || LayeredPaneProxy.image.getHeight() < height ) {
-			java.awt.Graphics2D g2Image = (java.awt.Graphics2D)image.getGraphics();
-			g2Image.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			Graphics2D g2Image = (Graphics2D)image.getGraphics();
+			g2Image.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 			this.paintProxy( g2Image );
 			g2Image.dispose();
 
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			Graphics2D g2 = (Graphics2D)g;
 
-			java.awt.Composite prevComposite = g2.getComposite();
+			Composite prevComposite = g2.getComposite();
 
 			//g2.setComposite( java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.CLEAR, 0.0f ) );
 			//g2.clearRect( 0, 0, width, height );
 			float alpha = this.getAlpha();
 			if( alpha < 0.99f ) {
-				g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, this.getAlpha() ) );
+				g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, this.getAlpha() ) );
 			}
 			//java.awt.Color bgColor = new java.awt.Color( 0, 0, 0, 0 );
 			//g2.drawImage( LayeredPaneimage, 0, 0, width, height, 0, 0, width, height, bgColor, this );

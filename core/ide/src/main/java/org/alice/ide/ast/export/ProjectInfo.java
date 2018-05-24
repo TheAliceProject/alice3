@@ -42,52 +42,68 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.tree.DefaultNode;
+import edu.cmu.cs.dennisc.tree.Node;
+import org.lgna.project.Project;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserType;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProjectInfo {
-	private final java.util.Map<org.lgna.project.ast.UserType<?>, TypeInfo> typeInfoMap;
-	private final edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> root = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( null, TypeInfo.class );
+	private final Map<UserType<?>, TypeInfo> typeInfoMap;
+	private final DefaultNode<TypeInfo> root = DefaultNode.createUnsafeInstance( null, TypeInfo.class );
 	private boolean isInTheMidstOfChange;
 
-	public ProjectInfo( org.lgna.project.Project project ) {
-		java.util.Set<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		java.util.Map<org.lgna.project.ast.UserType<?>, TypeInfo> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		for( org.lgna.project.ast.NamedUserType type : types ) {
+	public ProjectInfo( Project project ) {
+		Set<NamedUserType> types = project.getNamedUserTypes();
+		Map<UserType<?>, TypeInfo> map = Maps.newHashMap();
+		for( NamedUserType type : types ) {
 			map.put( type, new TypeInfo( this, type ) );
 		}
-		this.typeInfoMap = java.util.Collections.unmodifiableMap( map );
+		this.typeInfoMap = Collections.unmodifiableMap( map );
 
-		java.util.Map<TypeInfo, edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>> mapInfoToNode = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		java.util.Collection<TypeInfo> typeInfos = this.getTypeInfos();
+		Map<TypeInfo, DefaultNode<TypeInfo>> mapInfoToNode = Maps.newHashMap();
+		Collection<TypeInfo> typeInfos = this.getTypeInfos();
 		for( TypeInfo typeInfo : typeInfos ) {
 			typeInfo.updateDependencies();
-			mapInfoToNode.put( typeInfo, edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( typeInfo, TypeInfo.class ) );
+			mapInfoToNode.put( typeInfo, DefaultNode.createUnsafeInstance( typeInfo, TypeInfo.class ) );
 		}
 		mapInfoToNode.put( null, this.root );
 		for( TypeInfo typeInfo : typeInfos ) {
-			edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> node = mapInfoToNode.get( typeInfo );
-			edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> parent = mapInfoToNode.get( typeInfo.getSuperTypeInfo() );
+			DefaultNode<TypeInfo> node = mapInfoToNode.get( typeInfo );
+			DefaultNode<TypeInfo> parent = mapInfoToNode.get( typeInfo.getSuperTypeInfo() );
 			parent.addChild( node );
 		}
 
-		java.util.Collections.sort( this.root.getChildren(), new java.util.Comparator<edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo>>() {
+		Collections.sort( this.root.getChildren(), new Comparator<DefaultNode<TypeInfo>>() {
 			@Override
-			public int compare( edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o1, edu.cmu.cs.dennisc.tree.DefaultNode<TypeInfo> o2 ) {
+			public int compare( DefaultNode<TypeInfo> o1, DefaultNode<TypeInfo> o2 ) {
 				return o1.getValue().getDeclaration().getName().compareTo( o2.getValue().getDeclaration().getName() );
 			}
 		} );
 	}
 
-	public edu.cmu.cs.dennisc.tree.Node<TypeInfo> getTypeInfosAsTree() {
+	public Node<TypeInfo> getTypeInfosAsTree() {
 		return this.root;
 	}
 
-	public java.util.Collection<TypeInfo> getTypeInfos() {
+	public Collection<TypeInfo> getTypeInfos() {
 		return this.typeInfoMap.values();
 	}
 
-	public TypeInfo getInfoForType( org.lgna.project.ast.UserType<?> type ) {
+	public TypeInfo getInfoForType( UserType<?> type ) {
 		return this.typeInfoMap.get( type );
 	}
 
@@ -101,11 +117,11 @@ public class ProjectInfo {
 			for( TypeInfo typeInfo : this.getTypeInfos() ) {
 				typeInfo.resetRequired();
 			}
-			java.util.List<DeclarationInfo<?>> desired = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<DeclarationInfo<?>> desired = Lists.newLinkedList();
 			for( TypeInfo typeInfo : this.getTypeInfos() ) {
 				typeInfo.appendDesired( desired );
 			}
-			java.util.Set<DeclarationInfo<?>> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+			Set<DeclarationInfo<?>> set = Sets.newHashSet();
 			for( DeclarationInfo<?> declarationInfo : desired ) {
 				declarationInfo.updateRequired( set );
 			}

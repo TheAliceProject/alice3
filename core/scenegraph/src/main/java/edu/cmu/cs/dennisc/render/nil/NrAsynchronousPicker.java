@@ -42,15 +42,21 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.AsynchronousPicker;
+import edu.cmu.cs.dennisc.render.PickAllObserver;
+import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.VisualInclusionCriterion;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrAsynchronousPicker implements edu.cmu.cs.dennisc.render.AsynchronousPicker {
+/*package-private*/class NrAsynchronousPicker implements AsynchronousPicker {
 	@Override
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.render.PickAllObserver observer ) {
+	public void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer ) {
 	}
 
 	@Override
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.render.PickFrontMostObserver observer ) {
+	public void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer ) {
 	}
 }

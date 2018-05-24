@@ -42,25 +42,31 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.frame;
 
+import org.lgna.croquet.Element;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.Group;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class IsFrameShowingState extends AbstractIsFrameShowingState {
-	public IsFrameShowingState( org.lgna.croquet.Group group, org.lgna.croquet.FrameComposite<?> frameComposite ) {
-		super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ) );
+	public IsFrameShowingState( Group group, FrameComposite<?> frameComposite ) {
+		super( group, UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ) );
 		this.frameComposite = frameComposite;
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		//return this.frameComposite.getClassUsedForLocalization();
 		return this.frameComposite.getClass();
 	}
 
 	@Override
-	public org.lgna.croquet.FrameComposite<?> getFrameComposite() {
+	public FrameComposite<?> getFrameComposite() {
 		return this.frameComposite;
 	}
 
-	private final org.lgna.croquet.FrameComposite<?> frameComposite;
+	private final FrameComposite<?> frameComposite;
 }

@@ -42,19 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectStack;
+import org.alice.ide.ast.type.merge.core.MergeUtilities;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Member;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import java.net.URI;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final java.net.URI uriForDescriptionPurposesOnly;
-	private final org.lgna.project.ast.NamedUserType existingType;
-	private final java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd;
-	private final java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove;
-	private final java.util.List<org.lgna.project.ast.UserField> fieldsToAdd;
-	private final java.util.List<org.lgna.project.ast.UserField> fieldsToRemove;
-	private final java.util.List<RenameMemberData> renames;
+public class ImportTypeEdit extends AbstractEdit {
+	private final URI uriForDescriptionPurposesOnly;
+	private final NamedUserType existingType;
+	private final List<UserMethod> methodsToAdd;
+	private final List<UserMethod> methodsToRemove;
+	private final List<UserField> fieldsToAdd;
+	private final List<UserField> fieldsToRemove;
+	private final List<RenameMemberData> renames;
 
-	public ImportTypeEdit( org.lgna.croquet.history.CompletionStep completionStep, java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType existingType, java.util.List<org.lgna.project.ast.UserMethod> methodsToAdd, java.util.List<org.lgna.project.ast.UserMethod> methodsToRemove, java.util.List<org.lgna.project.ast.UserField> fieldsToAdd, java.util.List<org.lgna.project.ast.UserField> fieldsToRemove, java.util.List<RenameMemberData> renames ) {
+	public ImportTypeEdit( CompletionStep completionStep, URI uriForDescriptionPurposesOnly, NamedUserType existingType, List<UserMethod> methodsToAdd, List<UserMethod> methodsToRemove, List<UserField> fieldsToAdd, List<UserField> fieldsToRemove, List<RenameMemberData> renames ) {
 		super( completionStep );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.existingType = existingType;
@@ -65,9 +84,9 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.AbstractEdit {
 		this.renames = renames;
 	}
 
-	public ImportTypeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public ImportTypeEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "decode", this );
+		Logger.todo( "decode", this );
 		this.uriForDescriptionPurposesOnly = null;
 		this.existingType = null;
 		this.methodsToAdd = null;
@@ -78,31 +97,31 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.AbstractEdit {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "encode", this );
+		Logger.todo( "encode", this );
 	}
 
-	private static <M extends org.lgna.project.ast.Member> void add( org.lgna.project.ast.NodeListProperty<M> property, M member ) {
+	private static <M extends Member> void add( NodeListProperty<M> property, M member ) {
 		property.add( member );
 	}
 
-	private static <M extends org.lgna.project.ast.Member> void remove( org.lgna.project.ast.NodeListProperty<M> property, M member ) {
+	private static <M extends Member> void remove( NodeListProperty<M> property, M member ) {
 		property.remove( property.indexOf( member ) );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		for( org.lgna.project.ast.UserMethod method : this.methodsToAdd ) {
+		for( UserMethod method : this.methodsToAdd ) {
 			add( this.existingType.methods, method );
 		}
-		for( org.lgna.project.ast.UserField field : this.fieldsToAdd ) {
+		for( UserField field : this.fieldsToAdd ) {
 			add( this.existingType.fields, field );
 		}
-		for( org.lgna.project.ast.UserMethod method : this.methodsToRemove ) {
+		for( UserMethod method : this.methodsToRemove ) {
 			remove( this.existingType.methods, method );
 		}
-		for( org.lgna.project.ast.UserField field : this.fieldsToRemove ) {
+		for( UserField field : this.fieldsToRemove ) {
 			remove( this.existingType.fields, field );
 		}
 		for( RenameMemberData renameData : this.renames ) {
@@ -110,28 +129,28 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.AbstractEdit {
 			renameData.getMember().setName( renameData.getNextName() );
 		}
 
-		org.lgna.project.ast.NamedUserType programType = org.alice.ide.ProjectStack.peekProject().getProgramType();
+		NamedUserType programType = ProjectStack.peekProject().getProgramType();
 		if( programType != null ) {
-			org.alice.ide.ast.type.merge.core.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
+			MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
 		}
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		declarationTabState.removeAllOrphans();
 	}
 
 	@Override
 	protected final void undoInternal() {
-		for( org.lgna.project.ast.UserMethod method : this.methodsToAdd ) {
+		for( UserMethod method : this.methodsToAdd ) {
 			remove( this.existingType.methods, method );
 		}
-		for( org.lgna.project.ast.UserField field : this.fieldsToAdd ) {
+		for( UserField field : this.fieldsToAdd ) {
 			remove( this.existingType.fields, field );
 		}
-		for( org.lgna.project.ast.UserMethod method : this.methodsToRemove ) {
+		for( UserMethod method : this.methodsToRemove ) {
 			add( this.existingType.methods, method );
 		}
-		for( org.lgna.project.ast.UserField field : this.fieldsToRemove ) {
+		for( UserField field : this.fieldsToRemove ) {
 			add( this.existingType.fields, field );
 		}
 
@@ -139,14 +158,14 @@ public class ImportTypeEdit extends org.lgna.croquet.edits.AbstractEdit {
 			renameData.getMember().setName( renameData.getPrevName() );
 		}
 
-		org.lgna.project.ast.NamedUserType programType = org.alice.ide.ProjectStack.peekProject().getProgramType();
+		NamedUserType programType = ProjectStack.peekProject().getProgramType();
 		if( programType != null ) {
-			org.alice.ide.ast.type.merge.core.MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
+			MergeUtilities.mendMethodInvocationsAndFieldAccesses( programType );
 		}
 
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		DeclarationTabState declarationTabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		declarationTabState.removeAllOrphans();
 	}
 

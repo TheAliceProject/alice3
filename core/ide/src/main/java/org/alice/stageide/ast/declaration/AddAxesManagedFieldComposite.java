@@ -42,13 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.alice.stageide.gallerybrowser.shapes.AxesDragModel;
+import org.lgna.story.SAxes;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddAxesManagedFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
+public class AddAxesManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
 	private static class SingletonHolder {
 		private static AddAxesManagedFieldComposite instance = new AddAxesManagedFieldComposite();
 	}
@@ -58,7 +62,7 @@ public class AddAxesManagedFieldComposite extends org.alice.ide.ast.declaration.
 	}
 
 	private AddAxesManagedFieldComposite() {
-		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ), org.lgna.story.SAxes.class );
+		super( UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ), SAxes.class );
 	}
 
 	@Override

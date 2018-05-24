@@ -42,78 +42,103 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea;
+import org.alice.ide.IDE;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.common.AbstractStatementPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.SwingAdapter;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.StatementListProperty;
+
+import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Dennis Cosgrove
  */
-class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea {
+class CommentLine extends JSuggestiveTextArea {
 	//class CommentLine extends javax.swing.JTextArea {
-	private org.lgna.project.ast.Comment comment;
+	private Comment comment;
 
-	public CommentLine( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment ) {
+	public CommentLine( AstI18nFactory factory, Comment comment ) {
 		this.setText( comment.text.getValue() );
 		String localizedSuggestion = ResourceBundleUtilities
 						.getStringForKey( "commentHint", "org.alice.ide.codeeditor.CodeEditor");
 		this.setTextForBlankCondition( localizedSuggestion );
 		this.comment = comment;
-		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+		this.getDocument().addDocumentListener( new DocumentListener() {
 			@Override
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			public void changedUpdate( DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
 
 			@Override
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			public void insertUpdate( DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
 
 			@Override
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			public void removeUpdate( DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
 		} );
-		this.setBackground( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.Comment.class ) );
-		this.setForeground( org.alice.ide.ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
+		this.setBackground( ThemeUtilities.getActiveTheme().getColorFor( Comment.class ) );
+		this.setForeground( ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
 		//this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
 		if( factory.isCommentMutable( comment ) ) {
-			if( org.alice.ide.IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			if( IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {
+				SwingUtilities.invokeLater( new Runnable() {
 					@Override
 					public void run() {
 						CommentLine.this.requestFocus();
-						org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( null );
+						IDE.getActiveInstance().setCommentThatWantsFocus( null );
 					}
 				} );
 			}
 			//todo: remove?
-			this.addKeyListener( new java.awt.event.KeyListener() {
+			this.addKeyListener( new KeyListener() {
 				@Override
-				public void keyPressed( java.awt.event.KeyEvent e ) {
-					if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
+				public void keyPressed( KeyEvent e ) {
+					if( e.getKeyCode() == KeyEvent.VK_ESCAPE ) {
 						CommentLine.this.transferFocus();
 					}
 				}
 
 				@Override
-				public void keyReleased( java.awt.event.KeyEvent e ) {
+				public void keyReleased( KeyEvent e ) {
 				}
 
 				@Override
-				public void keyTyped( java.awt.event.KeyEvent e ) {
+				public void keyTyped( KeyEvent e ) {
 				}
 			} );
 
-			this.addFocusListener( new java.awt.event.FocusListener() {
+			this.addFocusListener( new FocusListener() {
 				@Override
-				public void focusGained( java.awt.event.FocusEvent e ) {
+				public void focusGained( FocusEvent e ) {
 					CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
 					//CommentLine.this.repaint();
 				}
 
 				@Override
-				public void focusLost( java.awt.event.FocusEvent e ) {
+				public void focusLost( FocusEvent e ) {
 					CommentLine.this.setToolTipText( null );
 					//CommentLine.this.repaint();
 				}
@@ -135,14 +160,14 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 	}
 
 	private void updateBorder() {
-		java.awt.Graphics g = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics( this.getFont() );
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth() + 2, 0, 0 ) );
+		Graphics g = GraphicsUtilities.getGraphics();
+		FontMetrics fm = g.getFontMetrics( this.getFont() );
+		Rectangle2D bounds = fm.getStringBounds( "//", g );
+		this.setBorder( BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth() + 2, 0, 0 ) );
 	}
 
 	@Override
-	public void setFont( java.awt.Font f ) {
+	public void setFont( Font f ) {
 		super.setFont( f );
 		this.updateBorder();
 	}
@@ -154,23 +179,23 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension rv = super.getPreferredSize();
-		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, 256 );
-		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumHeight( rv, this.getMinimumSize().height );
+	public Dimension getPreferredSize() {
+		Dimension rv = super.getPreferredSize();
+		rv = DimensionUtilities.constrainToMinimumWidth( rv, 256 );
+		rv = DimensionUtilities.constrainToMaximumHeight( rv, this.getMinimumSize().height );
 		return rv;
 	}
 
 	@Override
-	public java.awt.Dimension getMaximumSize() {
-		java.awt.Dimension rv = super.getMaximumSize();
-		java.awt.Dimension preferredSize = this.getPreferredSize();
+	public Dimension getMaximumSize() {
+		Dimension rv = super.getMaximumSize();
+		Dimension preferredSize = this.getPreferredSize();
 		rv.height = preferredSize.height;
 		return rv;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
+	public void paint( Graphics g ) {
 		super.paint( g );
 		g.setColor( this.getForeground() );
 		final int ROW_HEIGHT = this.getRowHeight();
@@ -186,10 +211,10 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 /**
  * @author Dennis Cosgrove
  */
-public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
-	public CommentPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment, org.lgna.project.ast.StatementListProperty owner ) {
+public class CommentPane extends AbstractStatementPane {
+	public CommentPane( DragModel model, AstI18nFactory factory, Comment comment, StatementListProperty owner ) {
 		super( model, factory, comment, owner );
 		CommentLine commentLine = new CommentLine( factory, comment );
-		this.addComponent( new org.lgna.croquet.views.SwingAdapter( commentLine ) );
+		this.addComponent( new SwingAdapter( commentLine ) );
 	}
 }

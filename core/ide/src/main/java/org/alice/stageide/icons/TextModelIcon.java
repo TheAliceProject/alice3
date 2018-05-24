@@ -42,32 +42,41 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.font.GlyphVector;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TextModelIcon extends ShapeIcon {
-	private final java.awt.Font font;
+	private final Font font;
 
-	public TextModelIcon( java.awt.Dimension size ) {
+	public TextModelIcon( Dimension size ) {
 		super( size );
-		this.font = new java.awt.Font( null, java.awt.Font.ITALIC, ( size.height * 4 ) / 5 );
+		this.font = new Font( null, Font.ITALIC, ( size.height * 4 ) / 5 );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.Font prevFont = g2.getFont();
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		Font prevFont = g2.getFont();
 		g2.setFont( font );
 
 		String text = "A";
-		java.awt.FontMetrics fm = g2.getFontMetrics();
+		FontMetrics fm = g2.getFontMetrics();
 		int messageWidth = fm.stringWidth( text );
 		int ascent = fm.getMaxAscent();
 		int descent = fm.getMaxDescent();
 		int x = ( width / 2 ) - ( messageWidth / 2 );
 		int y = ( ( height / 2 ) + ( ascent / 2 ) ) - ( descent / 2 );
 
-		java.awt.font.GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
-		java.awt.Shape outline = glyphVector.getOutline( x, y );
+		GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
+		Shape outline = glyphVector.getOutline( x, y );
 		g2.setPaint( drawPaint );
 		g2.draw( outline );
 

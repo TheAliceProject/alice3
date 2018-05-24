@@ -43,6 +43,7 @@
 package edu.cmu.cs.dennisc.java.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * @author Dennis Cosgrove
@@ -52,7 +53,7 @@ public class Iterators {
 		throw new AssertionError();
 	}
 
-	private static enum EmptyIterator implements java.util.Iterator<Object> {
+	private static enum EmptyIterator implements Iterator<Object> {
 		INSTANCE;
 		@Override
 		public boolean hasNext() {
@@ -61,7 +62,7 @@ public class Iterators {
 
 		@Override
 		public Object next() {
-			throw new java.util.NoSuchElementException();
+			throw new NoSuchElementException();
 		}
 
 		@Override

@@ -43,6 +43,14 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.alice.stageide.sceneeditor.View;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.OrthographicCameraMarkerImp;
@@ -59,7 +67,9 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
-public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.event.ValueListener<org.alice.stageide.sceneeditor.View>
+import java.util.Map;
+
+public class CameraMarkerTracker implements PropertyListener, ValueListener<View>
 {
 	private SymmetricPerspectiveCamera perspectiveCamera = null;
 	private OrthographicCamera orthographicCamera = null;
@@ -67,28 +77,28 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 	private PointOfViewAnimation pointOfViewAnimation = null;
 	private CameraMarkerImp markerToUpdate = null;
 	private boolean shouldAnimate = true;
-	private org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
+	private StorytellingSceneEditor sceneEditor;
 	private CameraMarkerImp activeMarker = null;
 
-	private java.util.Map<org.alice.stageide.sceneeditor.View, CameraMarkerImp> mapViewToMarker = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private java.util.Map<CameraMarkerImp, org.alice.stageide.sceneeditor.View> mapMarkerToView = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private Map<View, CameraMarkerImp> mapViewToMarker = Maps.newHashMap();
+	private Map<CameraMarkerImp, View> mapMarkerToView = Maps.newHashMap();
 
-	public CameraMarkerTracker( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor, Animator animator )
+	public CameraMarkerTracker( StorytellingSceneEditor sceneEditor, Animator animator )
 	{
 		this.sceneEditor = sceneEditor;
 		this.animator = animator;
 	}
 
-	public void mapViewToMarkerAndViceVersa( org.alice.stageide.sceneeditor.View view, CameraMarkerImp cameraMarker ) {
+	public void mapViewToMarkerAndViceVersa( View view, CameraMarkerImp cameraMarker ) {
 		this.mapViewToMarker.put( view, cameraMarker );
 		this.mapMarkerToView.put( cameraMarker, view );
 	}
 
-	public CameraMarkerImp getCameraMarker( org.alice.stageide.sceneeditor.View view ) {
+	public CameraMarkerImp getCameraMarker( View view ) {
 		return this.mapViewToMarker.get( view );
 	}
 
-	public org.alice.stageide.sceneeditor.View getView( CameraMarker cameraMarker ) {
+	public View getView( CameraMarker cameraMarker ) {
 		return this.mapMarkerToView.get( cameraMarker );
 	}
 
@@ -139,8 +149,8 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 
 	private void animateToTargetView()
 	{
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = this.perspectiveCamera.getAbsoluteTransformation();
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransform = this.activeMarker.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
+		AffineMatrix4x4 currentTransform = this.perspectiveCamera.getAbsoluteTransformation();
+		AffineMatrix4x4 targetTransform = this.activeMarker.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
 
 		if( this.pointOfViewAnimation != null )
 		{
@@ -155,7 +165,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		else
 		{
 			Transformable cameraParent = (Transformable)this.perspectiveCamera.getParent();
-			this.pointOfViewAnimation = new PointOfViewAnimation( cameraParent, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE, currentTransform, targetTransform )
+			this.pointOfViewAnimation = new PointOfViewAnimation( cameraParent, AsSeenBy.SCENE, currentTransform, targetTransform )
 			{
 				@Override
 				protected void epilogue()
@@ -181,7 +191,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 	}
 
 	@Override
-	public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.View> e ) {
+	public void valueChanged( ValueEvent<View> e ) {
 		if( ( this.perspectiveCamera == null ) || ( this.orthographicCamera == null ) )
 		{
 			return;
@@ -201,7 +211,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		}
 	}
 
-	public void startTrackingCameraView( org.alice.stageide.sceneeditor.View view ) {
+	public void startTrackingCameraView( View view ) {
 		if( ( this.perspectiveCamera == null ) || ( this.orthographicCamera == null ) )
 		{
 			return;
@@ -247,11 +257,11 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		if( this.markerToUpdate != null )
 		{
 			Transformable cameraParent = (Transformable)camera.getParent();
-			edu.cmu.cs.dennisc.scenegraph.Composite root = cameraParent.getRoot();
+			Composite root = cameraParent.getRoot();
 			if( root != null ) {
 				cameraParent.setTransformation( this.markerToUpdate.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ), root );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cameraParent );
+				Logger.severe( cameraParent );
 			}
 			this.markerToUpdate.setShowing( false );
 			this.markerToUpdate.setLocalTransformation( AffineMatrix4x4.accessIdentity() );
@@ -266,7 +276,7 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.e
 		{
 			AffineMatrix4x4 previousMarkerTransform = this.markerToUpdate.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
 			this.markerToUpdate.getSgComposite().setParent( this.markerToUpdate.getSgComposite().getRoot() );
-			this.markerToUpdate.getSgComposite().setTransformation( previousMarkerTransform, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+			this.markerToUpdate.getSgComposite().setTransformation( previousMarkerTransform, AsSeenBy.SCENE );
 			this.markerToUpdate.setShowing( true );
 			this.sceneEditor.setHandleVisibilityForObject( this.markerToUpdate, true );
 		}

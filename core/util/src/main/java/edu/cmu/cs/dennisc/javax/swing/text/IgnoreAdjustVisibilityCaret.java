@@ -42,12 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.text;
 
+import javax.swing.text.DefaultCaret;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IgnoreAdjustVisibilityCaret extends javax.swing.text.DefaultCaret {
+public class IgnoreAdjustVisibilityCaret extends DefaultCaret {
 	@Override
-	protected void adjustVisibility( java.awt.Rectangle nloc ) {
+	protected void adjustVisibility( Rectangle nloc ) {
 		//super.adjustVisibility( nloc );
 	}
 

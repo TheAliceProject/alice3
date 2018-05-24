@@ -42,10 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.recentprojects;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.croquet.codecs.UriCodec;
+import org.alice.ide.projecturi.RecentProjectCountState;
+import org.lgna.croquet.data.AbstractMutableListData;
+import org.lgna.croquet.preferences.PreferenceManager;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutableListData<java.net.URI> {
+public class RecentProjectsListData extends AbstractMutableListData<URI> {
 	private static class SingletonHolder {
 		private static RecentProjectsListData instance = new RecentProjectsListData();
 	}
@@ -54,33 +68,33 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<java.net.URI> values;
+	private final List<URI> values;
 
 	private RecentProjectsListData() {
-		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
-		java.net.URI[] array = org.lgna.croquet.preferences.PreferenceManager.decodeListData( this.getPreferenceKey(), this.getItemCodec(), new java.net.URI[] {} );
+		super( UriCodec.SINGLETON );
+		URI[] array = PreferenceManager.decodeListData( this.getPreferenceKey(), this.getItemCodec(), new URI[] {} );
 
-		java.util.List<java.net.URI> existingFileUris = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( java.net.URI uri : array ) {
+		List<URI> existingFileUris = Lists.newLinkedList();
+		for( URI uri : array ) {
 			try {
-				java.io.File file = new java.io.File( uri );
+				File file = new File( uri );
 				if( file.exists() ) {
 					existingFileUris.add( uri );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "file does not exist for:", uri );
+					Logger.errln( "file does not exist for:", uri );
 				}
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, uri );
+				Logger.throwable( t, uri );
 				//note: do not throw
 			}
 		}
 
-		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( existingFileUris );
-		org.lgna.croquet.preferences.PreferenceManager.registerListData( this );
+		this.values = Lists.newCopyOnWriteArrayList( existingFileUris );
+		PreferenceManager.registerListData( this );
 	}
 
 	@Override
-	public boolean contains( java.net.URI item ) {
+	public boolean contains( URI item ) {
 		return this.values.contains( item );
 	}
 
@@ -90,50 +104,50 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 	}
 
 	@Override
-	public java.net.URI getItemAt( int index ) {
+	public URI getItemAt( int index ) {
 		return this.values.get( index );
 	}
 
 	@Override
-	public java.util.Iterator<java.net.URI> iterator() {
+	public Iterator<URI> iterator() {
 		return this.values.iterator();
 	}
 
 	@Override
-	public void internalAddItem( int index, java.net.URI item ) {
+	public void internalAddItem( int index, URI item ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void internalRemoveItem( java.net.URI item ) {
+	public void internalRemoveItem( URI item ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void internalSetAllItems( java.util.Collection<java.net.URI> items ) {
+	public void internalSetAllItems( Collection<URI> items ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void internalSetItemAt( int index, java.net.URI item ) {
+	public void internalSetItemAt( int index, URI item ) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public int indexOf( java.net.URI item ) {
+	public int indexOf( URI item ) {
 		return this.values.indexOf( item );
 	}
 
 	@Override
-	public java.net.URI[] toArray( Class<java.net.URI> componentType ) {
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
+	public URI[] toArray( Class<URI> componentType ) {
+		return ArrayUtilities.createArray( this.values, componentType );
 	}
 
-	private void addFile( java.io.File file ) {
+	private void addFile( File file ) {
 		if( file != null ) {
-			final int N = org.alice.ide.projecturi.RecentProjectCountState.getInstance().getValue();
+			final int N = RecentProjectCountState.getInstance().getValue();
 			if( N > 0 ) {
-				java.net.URI uri = file.toURI();
+				URI uri = file.toURI();
 				if( this.values.contains( uri ) ) {
 					this.values.remove( uri );
 				}
@@ -146,15 +160,15 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 			}
 			this.fireContentsChanged();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( file );
+			Logger.severe( file );
 		}
 	}
 
-	public void handleOpen( java.io.File file ) {
+	public void handleOpen( File file ) {
 		this.addFile( file );
 	}
 
-	public void handleSave( java.io.File file ) {
+	public void handleSave( File file ) {
 		this.addFile( file );
 	}
 }

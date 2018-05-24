@@ -43,14 +43,21 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	public LocalArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, local.getValueType(), null );
+	public LocalArrayAtIndexAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair, UserLocal local ) {
+		super( UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, local.getValueType(), null );
 		this.local = local;
 	}
 
@@ -60,7 +67,7 @@ public class LocalArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssign
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createAccessExpression() {
+		return new LocalAccess( this.local );
 	}
 }

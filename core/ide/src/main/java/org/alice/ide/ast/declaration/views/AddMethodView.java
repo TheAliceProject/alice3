@@ -42,17 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ast.declaration.AddMethodComposite;
+import org.alice.ide.codeeditor.MethodHeaderPane;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodView extends DeclarationView<org.lgna.project.ast.UserMethod> {
-	public AddMethodView( org.alice.ide.ast.declaration.AddMethodComposite composite ) {
+public abstract class AddMethodView extends DeclarationView<UserMethod> {
+	public AddMethodView( AddMethodComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> createPreviewSubComponent() {
-		org.alice.ide.ast.declaration.AddMethodComposite composite = (org.alice.ide.ast.declaration.AddMethodComposite)this.getComposite();
-		return new org.alice.ide.codeeditor.MethodHeaderPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), composite.getPreviewValue(), true );
+	public SwingComponentView<?> createPreviewSubComponent() {
+		AddMethodComposite composite = (AddMethodComposite)this.getComposite();
+		return new MethodHeaderPane( PreviewAstI18nFactory.getInstance(), composite.getPreviewValue(), true );
 	}
 }

@@ -43,22 +43,30 @@
 
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
-	private final org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
-	private final org.lgna.project.ast.Statement[] doStatements;
-	private final org.lgna.project.ast.Statement[] undoStatements;
+	private final AbstractSceneEditor sceneEditor;
+	private final Statement[] doStatements;
+	private final Statement[] undoStatements;
 
-	public DeclareGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
+	public DeclareGalleryFieldEdit( CompletionStep step, AbstractSceneEditor sceneEditor, UserType<?> declaringType, UserField field, Statement[] doStatements, Statement[] undoStatements ) {
 		super( step, declaringType, field );
 		this.sceneEditor = sceneEditor;
 		this.doStatements = doStatements;
 		this.undoStatements = undoStatements;
 	}
 
-	public DeclareGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DeclareGalleryFieldEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		assert false : "todo";
 		this.sceneEditor = null;
@@ -67,7 +75,7 @@ public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		assert false : this;
 	}

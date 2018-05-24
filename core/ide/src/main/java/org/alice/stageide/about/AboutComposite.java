@@ -43,30 +43,36 @@
 
 package org.alice.stageide.about;
 
+import org.alice.ide.IdeApp;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.about.views.AboutView;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+import org.lgna.croquet.Operation;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AboutComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
+public final class AboutComposite extends LazyOperationUnadornedDialogCoreComposite<AboutView> {
 	public AboutComposite() {
-		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ) );
+		super( UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ) );
 	}
 
-	public org.lgna.croquet.Operation[] getEulaDialogLaunchOperations() {
+	public Operation[] getEulaDialogLaunchOperations() {
 		if( NebulousIde.nonfree.isNonFreeEnabled() ) {
-			return new org.lgna.croquet.Operation[] { org.alice.ide.IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation(), org.alice.ide.IdeApp.INSTANCE.getSimsArtEulaDialogLaunchOperation() };
+			return new Operation[] { IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation(), IdeApp.INSTANCE.getSimsArtEulaDialogLaunchOperation() };
 		} else {
-			return new org.lgna.croquet.Operation[] { org.alice.ide.IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation() };
+			return new Operation[] { IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation() };
 		}
 	}
 
-	public org.lgna.croquet.Operation getCreditsDialogLaunchOperation() {
-		return org.alice.ide.IdeApp.INSTANCE.getCreditsDialogLaunchOperation();
+	public Operation getCreditsDialogLaunchOperation() {
+		return IdeApp.INSTANCE.getCreditsDialogLaunchOperation();
 	}
 
 	@Override
-	protected org.alice.stageide.about.views.AboutView createView() {
-		return new org.alice.stageide.about.views.AboutView( this );
+	protected AboutView createView() {
+		return new AboutView( this );
 	}
 }

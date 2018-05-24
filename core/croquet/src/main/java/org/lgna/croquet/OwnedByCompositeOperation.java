@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends AbstractOwnedByCompositeOperation<C> {
-	public OwnedByCompositeOperation( Group group, C composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<C> initializer ) {
-		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ), initializer );
+	public OwnedByCompositeOperation( Group group, C composite, OwnedByCompositeOperationSubKey subKey, Initializer<C> initializer ) {
+		super( group, UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ), initializer );
 		assert subKey != null : composite;
 		this.composite = composite;
 		this.subKey = subKey;
@@ -70,7 +72,7 @@ public final class OwnedByCompositeOperation<C extends OperationOwningComposite<
 	}
 
 	@Override
-	protected org.lgna.croquet.OwnedByCompositeOperationSubKey getSubKey() {
+	protected OwnedByCompositeOperationSubKey getSubKey() {
 		return this.subKey;
 	}
 

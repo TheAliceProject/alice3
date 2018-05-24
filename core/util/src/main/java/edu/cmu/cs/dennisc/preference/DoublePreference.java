@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,12 +53,12 @@ public class DoublePreference extends Preference<Double> {
 	}
 
 	@Override
-	protected Double getValue( java.util.prefs.Preferences utilPrefs, String key, Double defaultValue ) {
+	protected Double getValue( Preferences utilPrefs, String key, Double defaultValue ) {
 		return utilPrefs.getDouble( key, defaultValue );
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, Double nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, Double nextValue ) {
 		utilPrefs.putDouble( key, nextValue );
 	}
 }

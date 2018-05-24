@@ -43,16 +43,21 @@
 
 package org.alice.ide.croquet.models.ui;
 
+import edu.cmu.cs.dennisc.memory.MemoryUsagePanel;
+import org.lgna.croquet.FrameComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MemoryUsageComposite extends org.lgna.croquet.FrameComposite<edu.cmu.cs.dennisc.memory.MemoryUsagePanel> {
+public class MemoryUsageComposite extends FrameComposite<MemoryUsagePanel> {
 	public MemoryUsageComposite() {
-		super( java.util.UUID.fromString( "1169c7f0-076e-43b8-85ae-41d466969db5" ) );
+		super( UUID.fromString( "1169c7f0-076e-43b8-85ae-41d466969db5" ) );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.memory.MemoryUsagePanel createView() {
-		return new edu.cmu.cs.dennisc.memory.MemoryUsagePanel();
+	protected MemoryUsagePanel createView() {
+		return new MemoryUsagePanel();
 	}
 }

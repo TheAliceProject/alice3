@@ -43,30 +43,41 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade;
+import org.lgna.croquet.Model;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<AbstractMethod, FunctionInvocationDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
-		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel>() {
+	public static FunctionInvocationDragModel getInstance( AbstractMethod method ) {
+		return map.getInitializingIfAbsent( method, new InitializingIfAbsentMap.Initializer<AbstractMethod, FunctionInvocationDragModel>() {
 			@Override
-			public FunctionInvocationDragModel initialize( org.lgna.project.ast.AbstractMethod method ) {
+			public FunctionInvocationDragModel initialize( AbstractMethod method ) {
 				return new FunctionInvocationDragModel( method );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 
-	private FunctionInvocationDragModel( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "ba2ea332-c7e1-4153-b8d9-39d524b19362" ) );
+	private FunctionInvocationDragModel( AbstractMethod method ) {
+		super( UUID.fromString( "ba2ea332-c7e1-4153-b8d9-39d524b19362" ) );
 		this.method = method;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.method.getReturnType();
 	}
 
@@ -76,12 +87,12 @@ public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	protected Model getDropModel( BlockStatementIndexPair blockStatementIndexPair ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FunctionInvocationCascade.getInstance( this.method, expressionProperty );
+	protected Model getDropModel( ExpressionProperty expressionProperty ) {
+		return FunctionInvocationCascade.getInstance( this.method, expressionProperty );
 	}
 }

@@ -43,27 +43,33 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AngleInRevolutions;
+import edu.cmu.cs.dennisc.scenegraph.DirectionalLight;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+import org.lgna.story.SSun;
+
 /**
  * @author Dennis Cosgrove
  */
 @Deprecated
 public class SunImp extends TransformableImp {
-	public SunImp( org.lgna.story.SSun abstraction ) {
+	public SunImp( SSun abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgComposite().addComponent( this.sgSun );
-		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( -0.25 ) );
+		this.getSgComposite().applyRotationAboutXAxis( new AngleInRevolutions( -0.25 ) );
 	}
 
 	@Override
-	public org.lgna.story.SSun getAbstraction() {
+	public SSun getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
 		return rv;
 	}
 
-	private final org.lgna.story.SSun abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
+	private final SSun abstraction;
+	private final DirectionalLight sgSun = new DirectionalLight();
 }

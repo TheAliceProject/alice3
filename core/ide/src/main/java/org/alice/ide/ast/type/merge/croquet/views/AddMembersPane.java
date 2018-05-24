@@ -42,33 +42,46 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
+import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
+import org.alice.ide.common.TypeIcon;
+import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.ToolPaletteView;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AddMembersPane extends org.lgna.croquet.views.MigPanel {
-	private void addToolPaletteViewIfAppropriate( org.alice.ide.ast.type.merge.croquet.MembersToolPalette<?, ?> composite, org.lgna.croquet.views.MigPanel panel ) {
+public class AddMembersPane extends MigPanel {
+	private void addToolPaletteViewIfAppropriate( MembersToolPalette<?, ?> composite, MigPanel panel ) {
 		if( composite.getTotalCount() > 0 ) {
-			org.lgna.croquet.views.ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
+			ToolPaletteView toolPaletteView = composite.getOuterComposite().getView();
 			toolPaletteView.getTitle().setInert( true );
-			toolPaletteView.getTitle().setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
+			toolPaletteView.getTitle().setBackgroundColor( ColorUtilities.scaleHSB( composite.getView().getBackgroundColor(), 1.0, 0.90, 0.85 ) );
 			//toolPaletteView.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-			toolPaletteView.getTitle().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+			toolPaletteView.getTitle().setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 			panel.addComponent( toolPaletteView, "grow, shrink, gap 16, wrap" );
 		}
 	}
 
-	public AddMembersPane( org.alice.ide.ast.type.merge.croquet.AddMembersPage composite ) {
+	public AddMembersPane( AddMembersPage composite ) {
 		super( composite, "fillx" );
-		org.lgna.croquet.views.Label classLabel = new org.lgna.croquet.views.Label( "class", org.alice.ide.common.TypeIcon.getInstance( composite.getDstType() ) );
-		classLabel.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.LEADING );
+		Label classLabel = new Label( "class", TypeIcon.getInstance( composite.getDstType() ) );
+		classLabel.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
 		this.addComponent( classLabel, "wrap" );
 
-		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel( null, "fill, insets 0" );
+		MigPanel panel = new MigPanel( null, "fill, insets 0" );
 		this.addToolPaletteViewIfAppropriate( composite.getAddProceduresComposite(), panel );
 		this.addToolPaletteViewIfAppropriate( composite.getAddFunctionsComposite(), panel );
 		this.addToolPaletteViewIfAppropriate( composite.getAddFieldsComposite(), panel );
 
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( panel );
+		ScrollPane scrollPane = new ScrollPane( panel );
 		this.addComponent( scrollPane, "grow, shrink, wrap" );
 
 		if( composite.isContainingDifferentImplementations() ) {
@@ -78,7 +91,7 @@ public class AddMembersPane extends org.lgna.croquet.views.MigPanel {
 			this.addComponent( composite.getRejectAllDifferentImplementationsOperation().createButton() );
 		}
 
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getTypeColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getTypeColor() );
 		panel.setBackgroundColor( this.getBackgroundColor() );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		this.setMinimumPreferredWidth( 800 );

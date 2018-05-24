@@ -42,18 +42,27 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.croquet.components.AbstractListPropertyPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractArgumentListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument> {
-	public AbstractArgumentListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane<SimpleArgumentListProperty, SimpleArgument> {
+	public AbstractArgumentListPropertyPane( AstI18nFactory factory, SimpleArgumentListProperty property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createInterstitial( int i, final int N ) {
+	protected AwtComponentView<?> createInterstitial( int i, final int N ) {
 		if( i < ( N - 1 ) ) {
-			return new org.lgna.croquet.views.Label( ", " );
+			return new Label( ", " );
 		} else {
 			return null;
 		}

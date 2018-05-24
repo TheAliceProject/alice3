@@ -42,11 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import java.awt.Canvas;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrHeavyweightOnscreenRenderTarget extends NrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget {
-	public NrHeavyweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-		super( requestedCapabilities, new java.awt.Canvas() );
+/*package-private*/class NrHeavyweightOnscreenRenderTarget extends NrOnscreenRenderTarget<Component> implements HeavyweightOnscreenRenderTarget {
+	public NrHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
+		super( requestedCapabilities, new Canvas() );
 	}
 }

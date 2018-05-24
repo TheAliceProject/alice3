@@ -42,22 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ManagedEditFieldComposite extends EditFieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, ManagedEditFieldComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserField, ManagedEditFieldComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static synchronized ManagedEditFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, ManagedEditFieldComposite>() {
+	public static synchronized ManagedEditFieldComposite getInstance( UserField field ) {
+		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, ManagedEditFieldComposite>() {
 			@Override
-			public ManagedEditFieldComposite initialize( org.lgna.project.ast.UserField field ) {
+			public ManagedEditFieldComposite initialize( UserField field ) {
 				return new ManagedEditFieldComposite( field );
 			}
 		} );
 	}
 
-	public ManagedEditFieldComposite( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "4a72134c-1a1e-4a3a-9334-1176eff9e963" ), field, /* todo: remove */ApplicabilityStatus.DISPLAYED, field.initializer.getValue() );
+	public ManagedEditFieldComposite( UserField field ) {
+		super( UUID.fromString( "4a72134c-1a1e-4a3a-9334-1176eff9e963" ), field, /* todo: remove */ApplicabilityStatus.DISPLAYED, field.initializer.getValue() );
 	}
 }

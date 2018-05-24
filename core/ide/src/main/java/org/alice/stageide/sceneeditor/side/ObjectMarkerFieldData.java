@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SThingMarker;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ObjectMarkerFieldData extends MarkerFieldData {
 	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( org.lgna.story.SThingMarker.class );
+	protected boolean isAcceptableItem( UserField value ) {
+		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( SThingMarker.class );
 	}
 }

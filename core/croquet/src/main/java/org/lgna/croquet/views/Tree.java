@@ -43,44 +43,55 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Sets;
+import org.lgna.croquet.SingleSelectTreeState;
+
+import javax.swing.JTree;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.Rectangle;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.SingleSelectTreeState<E>> {
-	public Tree( org.lgna.croquet.SingleSelectTreeState<E> model ) {
+public class Tree<E> extends ViewController<JTree, SingleSelectTreeState<E>> {
+	public Tree( SingleSelectTreeState<E> model ) {
 		super( model );
 		this.setSwingTreeModel( model.getTreeModel() );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
 
-	private void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {
+	private void setSwingTreeModel( TreeModel treeModel ) {
 		this.getAwtComponent().setModel( treeModel );
 	}
 
-	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
+	private void setSwingTreeSelectionModel( TreeSelectionModel treeSelectionModel ) {
 		this.getAwtComponent().setSelectionModel( treeSelectionModel );
 	}
 
 	@Override
-	protected javax.swing.JTree createAwtComponent() {
-		return new javax.swing.JTree();
+	protected JTree createAwtComponent() {
+		return new JTree();
 	}
 
-	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
+	public TreeCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}
 
-	public void setCellRenderer( javax.swing.tree.TreeCellRenderer cellRenderer ) {
+	public void setCellRenderer( TreeCellRenderer cellRenderer ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setCellRenderer( cellRenderer );
 	}
 
 	public void expandEachRowOnce() {
 		this.checkEventDispatchThread();
-		java.util.Set<E> alreadyExpanded = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-		javax.swing.JTree jTree = this.getAwtComponent();
+		Set<E> alreadyExpanded = Sets.newHashSet();
+		JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
-			javax.swing.tree.TreePath treePath = jTree.getPathForRow( i );
+			TreePath treePath = jTree.getPathForRow( i );
 			Object item = treePath.getLastPathComponent();
 			if( alreadyExpanded.contains( item ) ) {
 				jTree.collapsePath( treePath );
@@ -92,14 +103,14 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 	}
 
 	public void expandAllRows() {
-		javax.swing.JTree jTree = this.getAwtComponent();
+		JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
 			jTree.expandRow( i );
 		}
 	}
 
 	public void collapseAllRows() {
-		javax.swing.JTree jTree = this.getAwtComponent();
+		JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
 			jTree.collapseRow( i );
 		}
@@ -110,21 +121,21 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 	}
 
 	public void collapseNode( E node ) {
-		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		TreePath path = this.getModel().getTreeModel().getTreePath( node );
 		this.getAwtComponent().collapsePath( path );
 	}
 
 	public void expandNode( E node ) {
-		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		TreePath path = this.getModel().getTreeModel().getTreePath( node );
 		this.getAwtComponent().expandPath( path );
 	}
 
-	public void scrollPathToVisible( javax.swing.tree.TreePath treePath ) {
+	public void scrollPathToVisible( TreePath treePath ) {
 		final boolean IS_ALIGN_LEFT_DESIRED = true;
 		if( IS_ALIGN_LEFT_DESIRED ) {
 			if( treePath != null ) {
 				this.getAwtComponent().makeVisible( treePath );
-				java.awt.Rectangle bounds = this.getAwtComponent().getPathBounds( treePath );
+				Rectangle bounds = this.getAwtComponent().getPathBounds( treePath );
 				if( bounds != null ) {
 					bounds.width += bounds.x;
 					bounds.x = 0;
@@ -136,7 +147,7 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 		}
 	}
 
-	public javax.swing.tree.TreePath getSelectionPath() {
+	public TreePath getSelectionPath() {
 		return this.getAwtComponent().getSelectionPath();
 	}
 }

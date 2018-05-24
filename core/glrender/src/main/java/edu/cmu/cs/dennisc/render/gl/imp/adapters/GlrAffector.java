@@ -44,10 +44,11 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Affector;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAffector<T extends edu.cmu.cs.dennisc.scenegraph.Affector> extends GlrLeaf<T> {
+public abstract class GlrAffector<T extends Affector> extends GlrLeaf<T> {
 	public abstract void setupAffectors( RenderContext rc );
 }

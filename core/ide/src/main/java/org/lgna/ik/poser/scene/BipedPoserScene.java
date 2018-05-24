@@ -42,8 +42,10 @@
  */
 package org.lgna.ik.poser.scene;
 
+import java.util.List;
 import java.util.Map;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.SBiped;
@@ -59,8 +61,8 @@ public class BipedPoserScene extends AbstractPoserScene<SBiped> {
 	}
 
 	@Override
-	protected Map<Limb, java.util.List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( SBiped model ) {
-		Map<Limb, java.util.List<JointSelectionSphere>> rv = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	protected Map<Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( SBiped model ) {
+		Map<Limb, List<JointSelectionSphere>> rv = Maps.newHashMap();
 		JointSelectionSphere a = createJSS( model.getRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getRightKnee(), a );
 		JointSelectionSphere c = createJSS( model.getRightAnkle(), b );

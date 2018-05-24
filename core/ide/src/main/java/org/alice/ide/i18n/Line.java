@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.i18n;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Line {
 	private static final String PREFIX = "</";
 	private static final String POSTFIX = "/>";
-	private static final java.util.regex.Pattern TAG_PATTERN = java.util.regex.Pattern.compile( PREFIX + "[A-Za-z_0-9()]*" + POSTFIX );
+	private static final Pattern TAG_PATTERN = Pattern.compile( PREFIX + "[A-Za-z_0-9()]*" + POSTFIX );
 
 	private int indentCount;
 	private Chunk[] array;
@@ -56,7 +61,7 @@ public class Line {
 
 	public Line( String s ) {
 		this.isLoop = "\t loop".equals( s );
-		java.util.List<Chunk> chunks = new java.util.LinkedList<Chunk>();
+		List<Chunk> chunks = new LinkedList<Chunk>();
 		this.indentCount = 0;
 		for( byte b : s.getBytes() ) {
 			if( b == '\t' ) {
@@ -65,7 +70,7 @@ public class Line {
 				break;
 			}
 		}
-		java.util.regex.Matcher matcher = TAG_PATTERN.matcher( s );
+		Matcher matcher = TAG_PATTERN.matcher( s );
 		int iEnd = this.indentCount;
 		while( matcher.find() ) {
 			int iStart = matcher.start();

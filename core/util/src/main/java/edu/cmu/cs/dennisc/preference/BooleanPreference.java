@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,12 +53,12 @@ public class BooleanPreference extends Preference<Boolean> {
 	}
 
 	@Override
-	protected Boolean getValue( java.util.prefs.Preferences utilPrefs, String key, Boolean defaultValue ) {
+	protected Boolean getValue( Preferences utilPrefs, String key, Boolean defaultValue ) {
 		return utilPrefs.getBoolean( key, defaultValue );
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, Boolean nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, Boolean nextValue ) {
 		utilPrefs.putBoolean( key, nextValue );
 	}
 }

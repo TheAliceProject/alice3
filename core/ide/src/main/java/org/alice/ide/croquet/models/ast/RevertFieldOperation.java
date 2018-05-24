@@ -42,14 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.edits.ast.RevertFieldEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author dculyba
  * 
  */
-public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.UserField, RevertFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class RevertFieldOperation extends ActionOperation {
+	private static Map<UserField, RevertFieldOperation> map = Maps.newHashMap();
 
-	public static synchronized RevertFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
+	public static synchronized RevertFieldOperation getInstance( UserField field ) {
 		RevertFieldOperation rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -60,19 +70,19 @@ public class RevertFieldOperation extends org.lgna.croquet.ActionOperation {
 		return rv;
 	}
 
-	private org.lgna.project.ast.UserField field;
+	private UserField field;
 
-	public RevertFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
+	public RevertFieldOperation( UserField field ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "84645a6e-e17f-4d64-b4a1-8182fdc1a546" ) );
 		this.field = field;
 	}
 
-	public org.lgna.project.ast.UserField getField() {
+	public UserField getField() {
 		return this.field;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.RevertFieldEdit( step, this.getField() ) );
+	protected void perform( CompletionStep<?> step ) {
+		step.commitAndInvokeDo( new RevertFieldEdit( step, this.getField() ) );
 	}
 }

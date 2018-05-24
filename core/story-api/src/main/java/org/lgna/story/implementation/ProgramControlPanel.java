@@ -42,23 +42,49 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextFamily;
+
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.BoundedRangeModel;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JToggleButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProgramControlPanel extends javax.swing.JPanel {
+public class ProgramControlPanel extends JPanel {
 	public ProgramControlPanel( final ProgramImp programImp ) {
-		final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+		final ButtonModel buttonModel = new JToggleButton.ToggleButtonModel();
 		buttonModel.setSelected( true );
-		buttonModel.addChangeListener( new javax.swing.event.ChangeListener() {
+		buttonModel.addChangeListener( new ChangeListener() {
 			@Override
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			public void stateChanged( ChangeEvent e ) {
 				programImp.getAnimator().setSpeedFactor( buttonModel.isSelected() ? 1.0 : 0.0 );
 			}
 		} );
 
-		javax.swing.JButton playPauseButton = new javax.swing.JButton();
+		JButton playPauseButton = new JButton();
 		playPauseButton.setModel( buttonModel );
-		playPauseButton.setIcon( new javax.swing.Icon() {
+		playPauseButton.setIcon( new Icon() {
 			@Override
 			public int getIconWidth() {
 				return 12;
@@ -70,44 +96,44 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 			}
 
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				javax.swing.AbstractButton toggleButton = (javax.swing.AbstractButton)c;
-				javax.swing.ButtonModel buttonModel = toggleButton.getModel();
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
+				AbstractButton toggleButton = (AbstractButton)c;
+				ButtonModel buttonModel = toggleButton.getModel();
 				if( buttonModel.isSelected() ) {
 					g.fillRect( x + 1, y + 1, 3, 10 );
 					g.fillRect( x + 7, y + 1, 3, 10 );
 				} else {
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, 12, 12 );
+					GraphicsUtilities.fillTriangle( g, GraphicsUtilities.Heading.EAST, x, y, 12, 12 );
 				}
 			}
 		} );
 
 		final int PAD_X = 12;
 		final int PAD_Y = 8;
-		playPauseButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
+		playPauseButton.setBorder( BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
 
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+		FontUtilities.setFontToDerivedFont( label, TextFamily.MONOSPACED );
 
 		boundedRangeModel.setMinimum( 1 );
 		boundedRangeModel.setMaximum( 8 );
-		boundedRangeModel.addChangeListener( new javax.swing.event.ChangeListener() {
+		boundedRangeModel.addChangeListener( new ChangeListener() {
 			@Override
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			public void stateChanged( ChangeEvent e ) {
 				ProgramControlPanel.this.updateLabel(programImp.getSpeedFormat());
 				programImp.handleSpeedChange( boundedRangeModel.getValue() );
 			}
 		} );
 		this.updateLabel(programImp.getSpeedFormat());
 
-		javax.swing.JSlider slider = new javax.swing.JSlider( boundedRangeModel );
-		slider.addMouseListener( new java.awt.event.MouseListener() {
+		JSlider slider = new JSlider( boundedRangeModel );
+		slider.addMouseListener( new MouseListener() {
 			@Override
-			public void mousePressed( java.awt.event.MouseEvent e ) {
+			public void mousePressed( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
-				if( edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
+			public void mouseReleased( MouseEvent e ) {
+				if( InputEventUtilities.isQuoteControlUnquoteDown( e ) ) {
 					//pass
 				} else {
 					ProgramControlPanel.this.boundedRangeModel.setValue( 1 );
@@ -115,24 +141,24 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 			}
 
 			@Override
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			public void mouseClicked( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
+			public void mouseEntered( MouseEvent e ) {
 			}
 
 			@Override
-			public void mouseExited( java.awt.event.MouseEvent e ) {
+			public void mouseExited( MouseEvent e ) {
 			}
 		} );
 
 		final int LARGE_PAD = 8;
 		final int SMALL_PAD = 2;
-		this.setLayout( new java.awt.GridBagLayout() );
+		this.setLayout( new GridBagLayout() );
 
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 0.0;
 		this.add( playPauseButton, gbc );
 		gbc.insets.left = LARGE_PAD;
@@ -142,17 +168,17 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		this.add( slider, gbc );
 		gbc.weightx = 0.0;
 		gbc.insets.left = LARGE_PAD;
-		javax.swing.Action restartAction = programImp.getRestartAction();
+		Action restartAction = programImp.getRestartAction();
 		if( restartAction != null ) {
-			this.add( new javax.swing.JButton( restartAction ), gbc );
+			this.add( new JButton( restartAction ), gbc );
 		}
-		javax.swing.Action toggleFullScreenAction = programImp.getToggleFullScreenAction();
+		Action toggleFullScreenAction = programImp.getToggleFullScreenAction();
 		if( toggleFullScreenAction != null ) {
 			gbc.insets.left = 0;//SMALL_PAD;
-			this.add( new javax.swing.JToggleButton( toggleFullScreenAction ), gbc );
+			this.add( new JToggleButton( toggleFullScreenAction ), gbc );
 		}
 
-		for( java.awt.Component awtComponent : this.getComponents() ) {
+		for( Component awtComponent : this.getComponents() ) {
 			awtComponent.setFocusable( false );
 		}
 	}
@@ -161,6 +187,6 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		label.setText(String.format(speedFormat, boundedRangeModel.getValue()));
 	}
 
-	private final javax.swing.JLabel label = new javax.swing.JLabel();
-	private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+	private final JLabel label = new JLabel();
+	private final BoundedRangeModel boundedRangeModel = new DefaultBoundedRangeModel();
 }

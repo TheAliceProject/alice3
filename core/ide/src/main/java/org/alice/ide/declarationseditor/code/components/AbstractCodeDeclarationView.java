@@ -42,28 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.code.components;
 
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.alice.ide.ast.draganddrop.CodeDragModel;
+import org.alice.ide.code.UserFunctionStatusComposite;
+import org.alice.ide.codedrop.CodePanelWithDropReceptor;
+import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
+import org.alice.ide.controlflow.ControlFlowComposite;
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.alice.ide.declarationseditor.components.DeclarationView;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.HierarchyUtilities;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+
+import java.awt.print.Printable;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
-	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite, org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor ) {
+public abstract class AbstractCodeDeclarationView extends DeclarationView {
+	public AbstractCodeDeclarationView( CodeComposite composite, CodePanelWithDropReceptor codePanelWithDropReceptor ) {
 		super( composite );
 		this.codePanelWithDropReceptor = codePanelWithDropReceptor;
 
-		org.lgna.project.ast.AbstractCode code = composite.getDeclaration();
+		AbstractCode code = composite.getDeclaration();
 
-		org.lgna.croquet.views.SwingComponentView<?> controlFlowComponent;
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			controlFlowComponent = org.alice.ide.controlflow.ControlFlowComposite.getInstance( code ).getView();
+		SwingComponentView<?> controlFlowComponent;
+		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			controlFlowComponent = ControlFlowComposite.getInstance( code ).getView();
 		} else {
 			controlFlowComponent = null;
 		}
 
-		org.alice.ide.code.UserFunctionStatusComposite userFunctionStatusComposite = composite.getUserFunctionStatusComposite();
-		org.lgna.croquet.views.SwingComponentView<?> pageEndComponent;
+		UserFunctionStatusComposite userFunctionStatusComposite = composite.getUserFunctionStatusComposite();
+		SwingComponentView<?> pageEndComponent;
 		if( userFunctionStatusComposite != null ) {
 			if( controlFlowComponent != null ) {
-				pageEndComponent = new org.lgna.croquet.views.BorderPanel.Builder()
+				pageEndComponent = new BorderPanel.Builder()
 						.center( userFunctionStatusComposite.getView() )
 						.pageEnd( controlFlowComponent )
 						.build();
@@ -85,27 +106,27 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 	}
 
 	@Deprecated
-	public final org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
+	public final CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
 		return this.codePanelWithDropReceptor;
 	}
 
 	@Override
-	public java.awt.print.Printable getPrintable() {
+	public Printable getPrintable() {
 		return this.getCodePanelWithDropReceptor().getPrintable();
 	}
 
 	@Override
-	public void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		if( dragModel instanceof org.alice.ide.ast.draganddrop.CodeDragModel ) {
-			org.alice.ide.ast.draganddrop.CodeDragModel codeDragModel = (org.alice.ide.ast.draganddrop.CodeDragModel)dragModel;
-			final org.lgna.project.ast.AbstractType<?, ?, ?> type = codeDragModel.getType();
-			if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+	public void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
+		if( dragModel instanceof CodeDragModel ) {
+			CodeDragModel codeDragModel = (CodeDragModel)dragModel;
+			final AbstractType<?, ?, ?> type = codeDragModel.getType();
+			if( type == JavaType.VOID_TYPE ) {
 				//pass
 			} else {
-				java.util.List<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane> list = org.lgna.croquet.views.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane>() {
+				List<ExpressionPropertyDropDownPane> list = HierarchyUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new Criterion<ExpressionPropertyDropDownPane>() {
 					@Override
-					public boolean accept( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-						org.lgna.project.ast.AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+					public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
+						AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 						assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
 						if( expressionType.isAssignableFrom( type ) ) {
 							return true;
@@ -125,12 +146,12 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 						return false;
 					}
 				} );
-				for( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane pane : list ) {
+				for( ExpressionPropertyDropDownPane pane : list ) {
 					out.add( pane.getDropReceptor() );
 				}
 			}
-			org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = this.getCodePanelWithDropReceptor();
-			org.lgna.croquet.DropReceptor dropReceptor = codePanelWithDropReceptor.getDropReceptor();
+			CodePanelWithDropReceptor codePanelWithDropReceptor = this.getCodePanelWithDropReceptor();
+			DropReceptor dropReceptor = codePanelWithDropReceptor.getDropReceptor();
 			if( dropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
 				out.add( dropReceptor );
 			}
@@ -143,5 +164,5 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		this.codePanelWithDropReceptor.setJavaCodeOnTheSide( value, isFirstTime );
 	}
 
-	private final org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor;
+	private final CodePanelWithDropReceptor codePanelWithDropReceptor;
 }

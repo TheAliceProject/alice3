@@ -42,13 +42,31 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.alice.ide.x.components.StatementListPropertyView;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.imp.JDragView;
+import org.lgna.project.ast.DoTogether;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultStatementPane extends AbstractStatementPane {
 	private int maxYForIfBlock = -1;
 
-	public DefaultStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
+	public DefaultStatementPane( DragModel model, AstI18nFactory factory, Statement statement, StatementListProperty owner ) {
 		super( model, factory, statement, owner );
 		this.addComponent( factory.createComponent( statement ) );
 	}
@@ -62,25 +80,25 @@ public class DefaultStatementPane extends AbstractStatementPane {
 	}
 
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected void paintEpilogue( Graphics2D g2, int x, int y, int width, int height ) {
 		super.paintEpilogue( g2, x, y, width, height );
-		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-			org.lgna.project.ast.Statement statement = this.getStatement();
-			if( statement instanceof org.lgna.project.ast.DoTogether ) {
-				org.lgna.croquet.views.imp.JDragView jDragView = this.getAwtComponent();
-				org.alice.ide.x.components.StatementListPropertyView.FeedbackJPanel feedbackJPanel = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findFirstMatch( jDragView, org.alice.ide.x.components.StatementListPropertyView.FeedbackJPanel.class );
+		if( FormatterState.isJava() ) {
+			Statement statement = this.getStatement();
+			if( statement instanceof DoTogether ) {
+				JDragView jDragView = this.getAwtComponent();
+				StatementListPropertyView.FeedbackJPanel feedbackJPanel = ComponentUtilities.findFirstMatch( jDragView, StatementListPropertyView.FeedbackJPanel.class );
 				if( feedbackJPanel != null ) {
-					java.awt.Insets insets = this.getInsets();
-					edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g2 );
+					Insets insets = this.getInsets();
+					GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
 					gc.pushAndSetTextAntialiasing( true );
 					gc.pushPaint();
-					g2.setColor( java.awt.Color.BLACK );
+					g2.setColor( Color.BLACK );
 					try {
 						final int N = feedbackJPanel.getComponentCount();
 						for( int i = 1; i < N; i++ ) {
-							java.awt.Component componentI = feedbackJPanel.getComponent( i );
-							java.awt.Point p = new java.awt.Point( 0, 0 );
-							java.awt.Point pThis = javax.swing.SwingUtilities.convertPoint( componentI, p, jDragView );
+							Component componentI = feedbackJPanel.getComponent( i );
+							Point p = new Point( 0, 0 );
+							Point pThis = SwingUtilities.convertPoint( componentI, p, jDragView );
 							g2.drawString( "}, () -> {", insets.left + x, pThis.y - 6 );
 						}
 					} finally {

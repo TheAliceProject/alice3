@@ -43,29 +43,43 @@
 package edu.cmu.cs.dennisc.eula;
 
 import edu.cmu.cs.dennisc.eula.swing.JEulaPane;
+import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.JDialogBuilder;
+import edu.cmu.cs.dennisc.javax.swing.WindowStack;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 /**
  * @author Dennis Cosgrove
  */
 public class EULAUtilities {
-	private static java.util.List<Class<?>> alreadyClearedPreferences;
+	private static List<Class<?>> alreadyClearedPreferences;
 
 	public static void promptUserToAcceptEULAIfNecessary( Class<?> preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
-		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+		Preferences userPreferences = Preferences.userNodeForPackage( preferencesCls );
+		if( SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			if( alreadyClearedPreferences != null ) {
 				//pass
 			} else {
-				alreadyClearedPreferences = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				alreadyClearedPreferences = Lists.newLinkedList();
 			}
 			if( alreadyClearedPreferences.contains( preferencesCls ) ) {
 				//pass
 			} else {
 				alreadyClearedPreferences.add( preferencesCls );
 				try {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "clearing", userPreferences );
+					Logger.outln( "clearing", userPreferences );
 					userPreferences.clear();
-				} catch( java.util.prefs.BackingStoreException bse ) {
+				} catch( BackingStoreException bse ) {
 					throw new RuntimeException( bse );
 				}
 			}
@@ -75,22 +89,22 @@ public class EULAUtilities {
 			//pass
 		} else {
 			JEulaPane eulaPane = new JEulaPane( license );
-			java.awt.Component owner = edu.cmu.cs.dennisc.javax.swing.WindowStack.peek();
+			Component owner = WindowStack.peek();
 			//			if( owner.isVisible() ) {
 			//				//pass
 			//			} else {
 			//				owner.setVisible( true );
 			//			}
 			while( true ) {
-				javax.swing.JDialog dialog = new edu.cmu.cs.dennisc.javax.swing.JDialogBuilder()
+				JDialog dialog = new JDialogBuilder()
 						.owner( owner )
 						.isModal( true )
 						.title( title )
 						.build();
-				dialog.getContentPane().add( eulaPane, java.awt.BorderLayout.CENTER );
+				dialog.getContentPane().add( eulaPane, BorderLayout.CENTER );
 				dialog.pack();
 				if( ( owner != null ) && owner.isVisible() ) {
-					edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, owner );
+					WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, owner );
 				}
 				dialog.setVisible( true );
 				isLicenseAccepted = eulaPane.isAccepted();
@@ -98,7 +112,7 @@ public class EULAUtilities {
 					break;
 				} else {
 					String message = "You must accept the license agreement in order to use " + name + ".\n\nWould you like to return to the license agreement?";
-					if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, "Return to license agreement?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
+					if( JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( owner, message, "Return to license agreement?", JOptionPane.YES_NO_OPTION ) ) {
 						//pass
 					} else {
 						break;
@@ -109,7 +123,7 @@ public class EULAUtilities {
 		if( isLicenseAccepted ) {
 			userPreferences.putBoolean( preferencesKey, true );
 		} else {
-			throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+			throw new LicenseRejectedException();
 		}
 	}
 }

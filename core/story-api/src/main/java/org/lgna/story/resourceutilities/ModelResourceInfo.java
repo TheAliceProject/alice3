@@ -43,9 +43,11 @@
 package org.lgna.story.resourceutilities;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -66,7 +68,7 @@ public class ModelResourceInfo {
 	private final boolean isDeprecated;
 	private final boolean placeOnGround;
 	private final ModelResourceInfo parentInfo;
-	private final java.util.List<ModelResourceInfo> subResources = new java.util.LinkedList<ModelResourceInfo>();
+	private final List<ModelResourceInfo> subResources = new LinkedList<ModelResourceInfo>();
 
 	private final String[] tags;
 	private final String[] groupTags;
@@ -185,11 +187,11 @@ public class ModelResourceInfo {
 		this.placeOnGround = placeOnGround;
 	}
 
-	private static java.util.List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
-		java.util.List<Element> elements = new LinkedList<Element>();
+	private static List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
+		List<Element> elements = new LinkedList<Element>();
 		NodeList children = node.getChildNodes();
 		for( int i = 0; i < children.getLength(); i++ ) {
-			org.w3c.dom.Node child = children.item( i );
+			Node child = children.item( i );
 			if( ( child instanceof Element ) && child.getNodeName().equals( tagName ) ) {
 				elements.add( (Element)child );
 			}
@@ -203,7 +205,7 @@ public class ModelResourceInfo {
 			modelElement = XMLUtilities.getSingleChildElementByTagName( xmlDoc.getDocumentElement(), "AliceModel" );
 		}
 		assert modelElement != null;
-		java.util.List<Element> bboxNodeList = getImmediateChildElementsByTagName( modelElement, "BoundingBox" );
+		List<Element> bboxNodeList = getImmediateChildElementsByTagName( modelElement, "BoundingBox" );
 		if( bboxNodeList.size() > 0 ) {
 			this.boundingBox = getBoundingBoxFromXML( bboxNodeList.get( 0 ) );
 		}
@@ -234,9 +236,9 @@ public class ModelResourceInfo {
 		this.placeOnGround = placeOnGroundTemp;
 
 		LinkedList<String> tagList = new LinkedList<String>();
-		java.util.List<Element> tagsElementList = getImmediateChildElementsByTagName( modelElement, "Tags" );
+		List<Element> tagsElementList = getImmediateChildElementsByTagName( modelElement, "Tags" );
 		for( Element tagsElement : tagsElementList ) {
-			java.util.List<Element> tagElementList = getImmediateChildElementsByTagName( tagsElement, "Tag" );
+			List<Element> tagElementList = getImmediateChildElementsByTagName( tagsElement, "Tag" );
 			for( Element tagElement : tagElementList ) {
 				tagList.add( tagElement.getTextContent() );
 			}
@@ -244,9 +246,9 @@ public class ModelResourceInfo {
 		this.tags = tagList.toArray( new String[ tagList.size() ] );
 
 		LinkedList<String> groupTagList = new LinkedList<String>();
-		java.util.List<Element> groupTagsElementList = getImmediateChildElementsByTagName( modelElement, "GroupTags" );
+		List<Element> groupTagsElementList = getImmediateChildElementsByTagName( modelElement, "GroupTags" );
 		for( Element groupTagsElement : groupTagsElementList ) {
-			java.util.List<Element> groupTagElementList = getImmediateChildElementsByTagName( groupTagsElement, "GroupTag" );
+			List<Element> groupTagElementList = getImmediateChildElementsByTagName( groupTagsElement, "GroupTag" );
 			for( Element grouptagElement : groupTagElementList ) {
 				groupTagList.add( grouptagElement.getTextContent() );
 			}
@@ -254,16 +256,16 @@ public class ModelResourceInfo {
 		this.groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
 
 		LinkedList<String> themeTagList = new LinkedList<String>();
-		java.util.List<Element> themeTagsElementList = getImmediateChildElementsByTagName( modelElement, "ThemeTags" );
+		List<Element> themeTagsElementList = getImmediateChildElementsByTagName( modelElement, "ThemeTags" );
 		for( Element themeTagsElement : themeTagsElementList ) {
-			java.util.List<Element> themeTagElementList = getImmediateChildElementsByTagName( themeTagsElement, "ThemeTag" );
+			List<Element> themeTagElementList = getImmediateChildElementsByTagName( themeTagsElement, "ThemeTag" );
 			for( Element themeTagElement : themeTagElementList ) {
 				themeTagList.add( themeTagElement.getTextContent() );
 			}
 		}
 		this.themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
 
-		java.util.List<Element> subResourcesList = getImmediateChildElementsByTagName( modelElement, "Resource" );
+		List<Element> subResourcesList = getImmediateChildElementsByTagName( modelElement, "Resource" );
 		for( Element subResourceElement : subResourcesList ) {
 			ModelResourceInfo subResource = getSubResourceFromXML( subResourceElement, this );
 			if( subResource != null ) {

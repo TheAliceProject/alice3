@@ -44,9 +44,17 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -58,7 +66,7 @@ public class PickContext extends Context {
 		this.isSynchronous = isSynchronous;
 	}
 
-	public int getPickNameForVisualAdapter( GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
+	public int getPickNameForVisualAdapter( GlrVisual<? extends Visual> visualAdapter ) {
 		synchronized( m_pickNameMap ) {
 			int name = m_pickNameMap.size();
 			m_pickNameMap.put( new Integer( name ), visualAdapter );
@@ -66,15 +74,15 @@ public class PickContext extends Context {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails getConformanceTestResultsPickDetails() {
+	public ConformanceTestResults.PickDetails getConformanceTestResultsPickDetails() {
 		if( this.isSynchronous ) {
-			return edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+			return ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 		} else {
-			return edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getAsynchronousPickDetails();
+			return ConformanceTestResults.SINGLETON.getAsynchronousPickDetails();
 		}
 	}
 
-	public GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
+	public GlrVisual<? extends Visual> getPickVisualAdapterForName( int name ) {
 		synchronized( m_pickNameMap ) {
 			return m_pickNameMap.get( name );
 		}
@@ -88,11 +96,11 @@ public class PickContext extends Context {
 	protected void disableNormalize() {
 	}
 
-	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+	public void pickVertex( Vertex vertex ) {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
 
-	public void pickScene( GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, GlrScene sceneAdapter, PickParameters pickParameters ) {
+	public void pickScene( GlrAbstractCamera<? extends AbstractCamera> cameraAdapter, GlrScene sceneAdapter, PickParameters pickParameters ) {
 		gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
@@ -110,6 +118,6 @@ public class PickContext extends Context {
 	public void setAppearanceIndex( int index ) {
 	}
 
-	private final java.util.Map<Integer, GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Map<Integer, GlrVisual<? extends Visual>> m_pickNameMap = Maps.newHashMap();
 	private final boolean isSynchronous;
 }

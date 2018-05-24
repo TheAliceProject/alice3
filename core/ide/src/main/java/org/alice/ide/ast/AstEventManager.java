@@ -43,6 +43,10 @@
 
 package org.alice.ide.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +55,7 @@ public class AstEventManager {
 		public void typeHierarchyHasPotentiallyChanged();
 	}
 
-	private static final java.util.List<TypeHierarchyListener> typeHierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private static final List<TypeHierarchyListener> typeHierarchyListeners = Lists.newCopyOnWriteArrayList();
 
 	private AstEventManager() {
 		throw new AssertionError();

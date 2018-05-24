@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.PopupMenu;
+import org.lgna.croquet.views.ViewController;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,17 +57,17 @@ public class AutomaticCompletionTrigger extends Trigger {
 	private AutomaticCompletionTrigger() {
 	}
 
-	public AutomaticCompletionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public AutomaticCompletionTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	public org.lgna.croquet.views.ViewController<?, ?> getViewController() {
+	public ViewController<?, ?> getViewController() {
 		return null;
 	}
 
 	@Override
-	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
+	public void showPopupMenu( PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
 	}
 }

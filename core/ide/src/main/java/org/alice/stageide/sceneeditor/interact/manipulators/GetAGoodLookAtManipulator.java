@@ -43,15 +43,29 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.ide.IDE;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
+import org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SCamera;
+import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.lgna.story.implementation.StandInImp;
+import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 
 public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator {
 	@Override
@@ -81,49 +95,49 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	public void doClickManipulator( InputState endInput, InputState previousInput ) {
 		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
 		if( ( toLookAt != null ) && ( this.camera != null ) ) {
-			org.lgna.story.SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement( toLookAt );
-			org.lgna.story.SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement( this.camera );
+			SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement( toLookAt );
+			SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement( this.camera );
 
-			if( ( cameraAbstraction instanceof org.lgna.story.SCamera ) && ( this.camera instanceof edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera ) &&
+			if( ( cameraAbstraction instanceof SCamera ) && ( this.camera instanceof SymmetricPerspectiveCamera ) &&
 					( toLookAtEntity != cameraAbstraction ) ) {
-				org.lgna.story.SCamera storytellingCamera = (org.lgna.story.SCamera)cameraAbstraction;
+				SCamera storytellingCamera = (SCamera)cameraAbstraction;
 
-				if( org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOperation.IsValidOperation( storytellingCamera, toLookAtEntity ) ) {
+				if( GetAGoodLookAtActionOperation.IsValidOperation( storytellingCamera, toLookAtEntity ) ) {
 
 					//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
-					int transactionCount = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
+					int transactionCount = IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
 					if( transactionCount > 0 ) {
-						org.lgna.croquet.history.Transaction lastTransaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt( transactionCount - 1 );
-						org.lgna.croquet.edits.Edit lastEdit = lastTransaction.getEdit();
-						if( lastEdit instanceof org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit ) {
-							org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit edit = (org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit)lastEdit;
+						Transaction lastTransaction = IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt( transactionCount - 1 );
+						Edit lastEdit = lastTransaction.getEdit();
+						if( lastEdit instanceof GetAGoodLookAtEdit ) {
+							GetAGoodLookAtEdit edit = (GetAGoodLookAtEdit)lastEdit;
 							if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {
-								org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getUndoOperation().fire();
+								IDE.getActiveInstance().getDocumentFrame().getUndoOperation().fire();
 								return;
 							}
 						}
 					}
 
 					//Check to see if we're already at a "good look" position of the target. If so, don't do anything
-					org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.EmployeesOnly.getImplementation( storytellingCamera );
-					org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn( org.lgna.story.EmployeesOnly.getImplementation( toLookAtEntity ) );
-					edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
-					edu.cmu.cs.dennisc.math.AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
+					SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation( storytellingCamera );
+					StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn( EmployeesOnly.getImplementation( toLookAtEntity ) );
+					AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
+					AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
 					if( currentTransform.orientation.isWithinReasonableEpsilonOf( goalTransform.orientation ) && currentTransform.translation.isWithinReasonableEpsilonOf( goalTransform.translation ) ) {
 						//Do nothing since we're already where we're supposed to be
 						return;
 					}
 
 					//Actually "get a good look at" the target
-					org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
+					GetAGoodLookAtActionOperation lookAtOperation = new GetAGoodLookAtActionOperation( Application.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
 					lookAtOperation.fire();
 				}
 				else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Invlalid operation: " + storytellingCamera + ".GetAGoodLookAt( " + toLookAtEntity + " )" );
+					Logger.warning( "Invlalid operation: " + storytellingCamera + ".GetAGoodLookAt( " + toLookAtEntity + " )" );
 				}
 			}
 			else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "Implement GetAGoodLookAt for orthographic cameras" );
+				Logger.todo( "Implement GetAGoodLookAt for orthographic cameras" );
 			}
 		}
 	}

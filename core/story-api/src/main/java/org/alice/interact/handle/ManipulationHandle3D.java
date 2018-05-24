@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
@@ -109,7 +112,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		private boolean isActive = true;
 		private Color4f target;
 
-		public Color4fInterruptibleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Color4f d0, Color4f d1 ) {
+		public Color4fInterruptibleAnimation( Number duration, Style style, Color4f d0, Color4f d1 ) {
 			super( duration, style, d0, d1 );
 			this.isActive = true;
 			this.target = d1;
@@ -148,7 +151,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		private boolean isActive = true;
 		private double target;
 
-		public DoubleInterruptibleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Double d0, Double d1 ) {
+		public DoubleInterruptibleAnimation( Number duration, Style style, Double d0, Double d1 ) {
 			super( duration, style, d0, d1 );
 			this.isActive = true;
 			this.target = d1;
@@ -200,7 +203,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.state = new HandleState( handle.state );
 		this.handleSet.clear();
 		this.handleSet.addSet( handle.handleSet );
-		this.localTransformation.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( handle.localTransformation.getValue() ) );
+		this.localTransformation.setValue( new AffineMatrix4x4( handle.localTransformation.getValue() ) );
 		this.criteriaManager = handle.criteriaManager;
 		this.handleManager = handle.handleManager;
 		this.manipulation = handle.manipulation;
@@ -289,7 +292,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.setCurrentColorInternal();
 	}
 
-	protected void setTransformableScale( AbstractTransformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix ) {
+	protected void setTransformableScale( AbstractTransformable t, Matrix3x3 scaleMatrix ) {
 		Visual objectVisual = getSGVisualForTransformable( t );
 		objectVisual.scale.setValue( scaleMatrix );
 	}
@@ -577,23 +580,23 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getParentTransformable() {
+	protected AbstractTransformable getParentTransformable() {
 		if( this.manipulatedObject == null ) {
 			return null;
 		}
 		Composite parent = this.getParent();
-		if( parent instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) {
-			return (edu.cmu.cs.dennisc.scenegraph.AbstractTransformable)parent;
+		if( parent instanceof AbstractTransformable ) {
+			return (AbstractTransformable)parent;
 		}
 		if( parent != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Unknown parent type for handle: " + parent );
+			Logger.severe( "Unknown parent type for handle: " + parent );
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NULL parent for handle." );
+		Logger.severe( "NULL parent for handle." );
 		return null;
 	}
 
 	protected AxisAlignedBox getManipulatedObjectBox() {
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedObject = this.getManipulatedObject();
+		AbstractTransformable manipulatedObject = this.getManipulatedObject();
 		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject, false );
 		if( boundingBox == null ) {
 			boundingBox = new AxisAlignedBox( new Point3( -1, 0, -1 ), new Point3( 1, 1, 1 ) );

@@ -43,6 +43,9 @@
 
 package edu.cmu.cs.dennisc.java.net;
 
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,10 +54,10 @@ public class UriUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.io.File getFile( java.net.URI uri ) {
+	public static File getFile( URI uri ) {
 		if( uri != null ) {
 			if( uri.getScheme().equalsIgnoreCase( "file" ) ) {
-				return new java.io.File( uri );
+				return new File( uri );
 			} else {
 				return null;
 			}

@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.recentprojects;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.AwtContainerView;
 import org.lgna.croquet.views.CascadeMenu;
@@ -49,13 +56,24 @@ import org.lgna.croquet.views.CascadeMenuItem;
 import org.lgna.croquet.views.CheckBoxMenuItem;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuItem;
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.MenuTextSeparator;
 import org.lgna.croquet.views.ViewController;
+
+import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import java.awt.Component;
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
+public class RecentProjectsMenuModel extends MenuModel {
 	private static class SingletonHolder {
 		private static RecentProjectsMenuModel instance = new RecentProjectsMenuModel();
 	}
@@ -65,25 +83,25 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	}
 
 	private RecentProjectsMenuModel() {
-		super( java.util.UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
+		super( UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
 	}
 
-	private void setChildren( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.net.URI currentUri = ide.getUri();
-		java.net.URI[] uris = RecentProjectsListData.getInstance().toArray();
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( java.net.URI uri : uris ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.equals( uri, currentUri ) ) {
+	private void setChildren( MenuItemContainer menuItemContainer ) {
+		IDE ide = IDE.getActiveInstance();
+		URI currentUri = ide.getUri();
+		URI[] uris = RecentProjectsListData.getInstance().toArray();
+		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
+		for( URI uri : uris ) {
+			if( Objects.equals( uri, currentUri ) ) {
 				//pass
 			} else {
-				models.add( org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( uri ).getMenuItemPrepModel() );
+				models.add( OpenRecentProjectOperation.getInstance( uri ).getMenuItemPrepModel() );
 			}
 		}
 		if( models.size() == 0 ) {
 			models.add( NoRecentUrisSeparatorModel.getInstance() );
 		}
-		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
+		MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
 	}
 
 	//	@Override
@@ -100,29 +118,29 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
 	//	}
 	@Override
-	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
 		Object src = e.getSource();
-		if( src instanceof javax.swing.JPopupMenu ) {
-			final javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
-			this.setChildren( new org.lgna.croquet.views.MenuItemContainer() {
+		if( src instanceof JPopupMenu ) {
+			final JPopupMenu jPopupMenu = (JPopupMenu)e.getSource();
+			this.setChildren( new MenuItemContainer() {
 				@Override
 				public ViewController<?, ?> getViewController() {
 					return null;
 				}
 
 				@Override
-				public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+				public void addPopupMenuListener( PopupMenuListener listener ) {
 				}
 
 				@Override
-				public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+				public void removePopupMenuListener( PopupMenuListener listener ) {
 				}
 
 				@Override
 				public AwtComponentView<?> getMenuComponent( int i ) {
-					javax.swing.MenuElement menuElement = jPopupMenu.getSubElements()[ i ];
-					if( menuElement instanceof java.awt.Component ) {
-						java.awt.Component awtComponent = (java.awt.Component)menuElement;
+					MenuElement menuElement = jPopupMenu.getSubElements()[ i ];
+					if( menuElement instanceof Component ) {
+						Component awtComponent = (Component)menuElement;
 						return AwtComponentView.lookup( awtComponent );
 					} else {
 						return null;
@@ -168,7 +186,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				}
 
 				@Override
-				public void addCascadeCombo( org.lgna.croquet.views.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.views.CascadeMenu cascadeMenu ) {
+				public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu ) {
 					this.addCascadeMenuItem( cascadeMenuItem );
 					this.addCascadeMenu( cascadeMenu );
 				}
@@ -189,7 +207,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 
 				@Override
 				public void forgetAndRemoveAllMenuItems() {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
+					Logger.todo();
 					this.removeAllMenuItems();
 				}
 

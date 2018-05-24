@@ -47,13 +47,15 @@ import org.lgna.ik.poser.scene.BipedPoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SBiped;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class BipedPoser extends PoserComposite<SBiped> {
 
 	public BipedPoser( NamedUserType valueType ) {
-		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), valueType );
+		super( UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), valueType );
 	}
 
 	@Override

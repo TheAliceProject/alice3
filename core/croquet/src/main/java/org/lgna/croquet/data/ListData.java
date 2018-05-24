@@ -42,7 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.data;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.ItemCodec;
+
+import javax.swing.event.ListDataListener;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Dennis Cosgrove
@@ -59,9 +64,9 @@ public abstract class ListData<T> implements Iterable<T> {
 		return this.getClass().getName();
 	}
 
-	public abstract void addListener( javax.swing.event.ListDataListener listener );
+	public abstract void addListener( ListDataListener listener );
 
-	public abstract void removeListener( javax.swing.event.ListDataListener listener );
+	public abstract void removeListener( ListDataListener listener );
 
 	public final ItemCodec<T> getItemCodec() {
 		return this.itemCodec;
@@ -83,16 +88,16 @@ public abstract class ListData<T> implements Iterable<T> {
 
 	public abstract void internalRemoveItem( T item );
 
-	public abstract void internalSetAllItems( java.util.Collection<T> items );
+	public abstract void internalSetAllItems( Collection<T> items );
 
 	public final void internalSetAllItems( T[] items ) {
-		this.internalSetAllItems( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( items ) );
+		this.internalSetAllItems( Lists.newArrayList( items ) );
 	}
 
 	public abstract void internalSetItemAt( int index, T item );
 
 	@Override
-	public abstract java.util.Iterator<T> iterator();
+	public abstract Iterator<T> iterator();
 
 	protected abstract T[] toArray( Class<T> componentType );
 

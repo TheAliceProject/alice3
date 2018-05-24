@@ -43,6 +43,22 @@
 
 package org.alice.stageide.personresource;
 
+import org.lgna.common.RandomUtilities;
+import org.lgna.story.Color;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.resources.sims2.BaseEyeColor;
+import org.lgna.story.resources.sims2.BaseFace;
+import org.lgna.story.resources.sims2.BaseSkinTone;
+import org.lgna.story.resources.sims2.EyeColor;
+import org.lgna.story.resources.sims2.Face;
+import org.lgna.story.resources.sims2.FullBodyOutfitManager;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.Hair;
+import org.lgna.story.resources.sims2.HairManager;
+import org.lgna.story.resources.sims2.LifeStage;
+import org.lgna.story.resources.sims2.Outfit;
+import org.lgna.story.resources.sims2.PersonResource;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,14 +69,14 @@ public class RandomPersonUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.story.resources.sims2.Hair getRandomHair( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+	public static Hair getRandomHair( LifeStage lifeStage, Gender gender ) {
 		while( true ) {
-			Class<? extends org.lgna.story.resources.sims2.Hair> hairCls = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomClass( lifeStage, gender );
+			Class<? extends Hair> hairCls = HairManager.getSingleton().getRandomClass( lifeStage, gender );
 			if( hairCls.isEnum() ) {
-				org.lgna.story.resources.sims2.Hair[] hairs = hairCls.getEnumConstants();
-				if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
-					for( org.lgna.story.resources.sims2.Hair hair : hairs ) {
-						Enum<? extends org.lgna.story.resources.sims2.Hair> hairEnum = (Enum<? extends org.lgna.story.resources.sims2.Hair>)hair;
+				Hair[] hairs = hairCls.getEnumConstants();
+				if( lifeStage == LifeStage.ELDER ) {
+					for( Hair hair : hairs ) {
+						Enum<? extends Hair> hairEnum = (Enum<? extends Hair>)hair;
 						if( ELDER_HAIR_COLOR.equals( hairEnum.name() ) ) {
 							return hair;
 						}
@@ -70,28 +86,28 @@ public class RandomPersonUtilities {
 					if( ELDER_HAIR_COLOR.equals( hairEnum.name() ) ) {
 						//pass
 					} else {
-						return (org.lgna.story.resources.sims2.Hair)hairEnum;
+						return (Hair)hairEnum;
 					}
 				}
 			}
 		}
 	}
 
-	public static org.lgna.story.resources.sims2.PersonResource createRandomResource( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	public static PersonResource createRandomResource( LifeStage lifeStage ) {
 		if( lifeStage != null ) {
 			//pass
 		} else {
-			org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ELDER, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER };
-			lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+			LifeStage[] potentialLifeStages = { LifeStage.ELDER, LifeStage.ADULT, LifeStage.TEEN, LifeStage.CHILD, LifeStage.TODDLER };
+			lifeStage = RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		}
-		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
-		org.lgna.story.resources.sims2.BaseSkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
-		org.lgna.story.Color skinColor = org.lgna.story.EmployeesOnly.createColor( skinTone.getColor() );
-		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
-		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
-		org.lgna.story.resources.sims2.Hair hair = getRandomHair( lifeStage, gender );
-		org.lgna.story.resources.sims2.Face face = org.lgna.story.resources.sims2.BaseFace.getRandom();
-		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
+		Gender gender = Gender.getRandom();
+		BaseSkinTone skinTone = BaseSkinTone.getRandom();
+		Color skinColor = EmployeesOnly.createColor( skinTone.getColor() );
+		EyeColor eyeColor = BaseEyeColor.getRandom();
+		Outfit outfit = FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		Hair hair = getRandomHair( lifeStage, gender );
+		Face face = BaseFace.getRandom();
+		double obesityLevel = RandomUtilities.nextDouble();
 		return lifeStage.createResource( gender, skinColor, eyeColor, hair, obesityLevel, outfit, face );
 	}
 }

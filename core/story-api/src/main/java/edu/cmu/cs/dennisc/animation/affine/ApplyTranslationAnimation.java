@@ -42,40 +42,45 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.InterpolationUtilities;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ApplyTranslationAnimation extends AffineAnimation {
-	private edu.cmu.cs.dennisc.math.Point3 m_translation = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_sum = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_interp = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_delta = new edu.cmu.cs.dennisc.math.Point3();
+	private Point3 m_translation = new Point3();
+	private Point3 m_sum = new Point3();
+	private Point3 m_interp = new Point3();
+	private Point3 m_delta = new Point3();
 
 	public ApplyTranslationAnimation() {
 		m_translation.setNaN();
 		m_sum.setNaN();
 	}
 
-	public ApplyTranslationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	public ApplyTranslationAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, Point3 translation ) {
 		super( sgSubject, sgAsSeenBy );
 		setTranslation( translation );
 		m_sum.setNaN();
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessTranslation() {
+	public Point3 accessTranslation() {
 		return m_translation;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTranslation( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getTranslation( Point3 rv ) {
 		rv.set( m_translation );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTranslation() {
-		return getTranslation( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getTranslation() {
+		return getTranslation( new Point3() );
 	}
 
-	public void setTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
+	public void setTranslation( Point3 translation ) {
 		m_translation.set( translation );
 	}
 
@@ -86,7 +91,7 @@ public class ApplyTranslationAnimation extends AffineAnimation {
 
 	@Override
 	public void setPortion( double portion ) {
-		edu.cmu.cs.dennisc.math.InterpolationUtilities.interpolate( m_interp, m_translation, portion );
+		InterpolationUtilities.interpolate( m_interp, m_translation, portion );
 		m_delta.setToSubtraction( m_interp, m_sum );
 		getSubject().applyTranslation( m_delta, getAsSeenBy() );
 		m_sum.set( m_interp );

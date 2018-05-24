@@ -43,24 +43,31 @@
 
 package org.alice.ide.croquet.models.cascade.literals;
 
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.DoubleLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDoubleLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.DoubleLiteral> {
-	private final org.lgna.project.ast.DoubleLiteral transientValue;
+public abstract class AbstractDoubleLiteralFillIn extends ExpressionFillInWithoutBlanks<DoubleLiteral> {
+	private final DoubleLiteral transientValue;
 
-	public AbstractDoubleLiteralFillIn( java.util.UUID id, double value ) {
+	public AbstractDoubleLiteralFillIn( UUID id, double value ) {
 		super( id );
-		this.transientValue = new org.lgna.project.ast.DoubleLiteral( value );
+		this.transientValue = new DoubleLiteral( value );
 	}
 
 	@Override
-	public org.lgna.project.ast.DoubleLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node ) {
+	public DoubleLiteral getTransientValue( ItemNode<? super DoubleLiteral, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.DoubleLiteral createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.DoubleLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return new org.lgna.project.ast.DoubleLiteral( this.transientValue.value.getValue() );
+	public DoubleLiteral createValue( ItemNode<? super DoubleLiteral, Void> node, TransactionHistory transactionHistory ) {
+		return new DoubleLiteral( this.transientValue.value.getValue() );
 	}
 }

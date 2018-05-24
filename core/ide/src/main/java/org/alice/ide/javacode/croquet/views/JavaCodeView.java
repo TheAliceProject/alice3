@@ -42,10 +42,47 @@
  *******************************************************************************/
 package org.alice.ide.javacode.croquet.views;
 
+import de.java2html.converter.JavaSource2HTMLConverter;
+import de.java2html.javasource.JavaSource;
+import de.java2html.javasource.JavaSourceParser;
+import de.java2html.javasource.JavaSourceType;
+import de.java2html.options.JavaSourceConversionOptions;
+import de.java2html.options.JavaSourceStyleEntry;
+import de.java2html.options.JavaSourceStyleTable;
+import de.java2html.util.RGB;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocument;
+import org.lgna.croquet.undo.UndoHistory;
+import org.lgna.croquet.undo.event.HistoryClearEvent;
+import org.lgna.croquet.undo.event.HistoryInsertionIndexEvent;
+import org.lgna.croquet.undo.event.HistoryListener;
+import org.lgna.croquet.undo.event.HistoryPushEvent;
+import org.lgna.croquet.views.HtmlView;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.JavaCodeGenerator;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserConstructor;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.code.CodeFormatter;
+import org.lgna.story.ast.JavaCodeUtilities;
+
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.io.IOException;
+import java.io.StringWriter;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
+public class JavaCodeView extends HtmlView {
 	private static final boolean IS_LAMBDA_TOGGLE_ENABLED = true;
 	private static final boolean IS_MOUSE_WHEEL_FONT_ADJUSTMENT_DESIRED = false;
 
@@ -53,26 +90,26 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		this( null );
 	}
 
-	public JavaCodeView( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	public JavaCodeView( AbstractDeclaration declaration ) {
 		this.setDeclaration( declaration );
-		this.setCaret( new edu.cmu.cs.dennisc.javax.swing.text.IgnoreAdjustVisibilityCaret() ); // avoid scrolling on setText
+		this.setCaret( new IgnoreAdjustVisibilityCaret() ); // avoid scrolling on setText
 	}
 
-	public org.lgna.project.ast.AbstractDeclaration getDeclaration() {
+	public AbstractDeclaration getDeclaration() {
 		return this.declaration;
 	}
 
-	public void setDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
+	public void setDeclaration( AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateHtml();
 	}
 
-	private static org.lgna.croquet.undo.UndoHistory getProjectUndoHistory() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	private static UndoHistory getProjectUndoHistory() {
+		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
-			org.alice.ide.ProjectDocument document = ide.getDocumentFrame().getDocument();
+			ProjectDocument document = ide.getDocumentFrame().getDocument();
 			if( document != null ) {
-				return document.getUndoHistory( org.alice.ide.IDE.PROJECT_GROUP );
+				return document.getUndoHistory( IDE.PROJECT_GROUP );
 			}
 		}
 		return null;
@@ -111,41 +148,41 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 
 	private void updateHtml() {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "updateHtml", this.declaration );
-		org.lgna.project.ast.JavaCodeGenerator.Builder javaCodeGeneratorBuilder = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGeneratorBuilder();
+		JavaCodeGenerator.Builder javaCodeGeneratorBuilder = JavaCodeUtilities.createJavaCodeGeneratorBuilder();
 		javaCodeGeneratorBuilder.isLambdaSupported( this.isLambdaSupported );
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = javaCodeGeneratorBuilder.build();
+		JavaCodeGenerator javaCodeGenerator = javaCodeGeneratorBuilder.build();
 		//org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = org.lgna.story.ast.JavaCodeUtilities.createJavaCodeGenerator();
 		String code;
-		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
+		if( this.declaration instanceof UserMethod ) {
+			UserMethod method = (UserMethod)this.declaration;
 			code = method.generateCode( javaCodeGenerator );
-		} else if( this.declaration instanceof org.lgna.project.ast.UserConstructor ) {
-			org.lgna.project.ast.UserConstructor constructor = (org.lgna.project.ast.UserConstructor)this.declaration;
+		} else if( this.declaration instanceof UserConstructor ) {
+			UserConstructor constructor = (UserConstructor)this.declaration;
 			code = constructor.generateCode( javaCodeGenerator );
-		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ) {
-			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)this.declaration;
+		} else if( this.declaration instanceof NamedUserType ) {
+			NamedUserType type = (NamedUserType)this.declaration;
 			code = type.generateCode( javaCodeGenerator );
 		} else {
 			code = null;
 		}
 		if( code != null ) {
-			code = org.lgna.project.code.CodeFormatter.format( code );
-			de.java2html.options.JavaSourceStyleTable javaSourceStyleTable = de.java2html.options.JavaSourceStyleTable.getDefault().getClone();
+			code = CodeFormatter.format( code );
+			JavaSourceStyleTable javaSourceStyleTable = JavaSourceStyleTable.getDefault().getClone();
 
-			de.java2html.util.RGB keywordRGB = new de.java2html.util.RGB( 0, 0, 230 );
-			de.java2html.util.RGB commentRGB = new de.java2html.util.RGB( 150, 150, 150 );
-			de.java2html.util.RGB stringRGB = new de.java2html.util.RGB( 206, 123, 0 );
-			de.java2html.util.RGB blackRGB = new de.java2html.util.RGB( 0, 0, 0 );
+			RGB keywordRGB = new RGB( 0, 0, 230 );
+			RGB commentRGB = new RGB( 150, 150, 150 );
+			RGB stringRGB = new RGB( 206, 123, 0 );
+			RGB blackRGB = new RGB( 0, 0, 0 );
 
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.KEYWORD, new de.java2html.options.JavaSourceStyleEntry( keywordRGB ) );
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.CODE_TYPE, new de.java2html.options.JavaSourceStyleEntry( keywordRGB ) );
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.STRING, new de.java2html.options.JavaSourceStyleEntry( stringRGB ) );
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.CHAR_CONSTANT, new de.java2html.options.JavaSourceStyleEntry( stringRGB ) );
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.COMMENT_LINE, new de.java2html.options.JavaSourceStyleEntry( commentRGB ) );
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.COMMENT_BLOCK, new de.java2html.options.JavaSourceStyleEntry( commentRGB ) );
-			javaSourceStyleTable.put( de.java2html.javasource.JavaSourceType.NUM_CONSTANT, new de.java2html.options.JavaSourceStyleEntry( blackRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.KEYWORD, new JavaSourceStyleEntry( keywordRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.CODE_TYPE, new JavaSourceStyleEntry( keywordRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.STRING, new JavaSourceStyleEntry( stringRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.CHAR_CONSTANT, new JavaSourceStyleEntry( stringRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.COMMENT_LINE, new JavaSourceStyleEntry( commentRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.COMMENT_BLOCK, new JavaSourceStyleEntry( commentRGB ) );
+			javaSourceStyleTable.put( JavaSourceType.NUM_CONSTANT, new JavaSourceStyleEntry( blackRGB ) );
 
-			de.java2html.options.JavaSourceConversionOptions javaSourceConversionOptions = de.java2html.options.JavaSourceConversionOptions.getDefault().getClone();
+			JavaSourceConversionOptions javaSourceConversionOptions = JavaSourceConversionOptions.getDefault().getClone();
 			javaSourceConversionOptions.setStyleTable( javaSourceStyleTable );
 			final boolean IS_TAB_SIZE_WORKING = false;
 			if( IS_TAB_SIZE_WORKING ) {
@@ -154,16 +191,16 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 				code = code.replaceAll( "\t", "    " );
 			}
 			//javaSourceConversionOptions.setShowLineNumbers( true );
-			de.java2html.javasource.JavaSource javaSource = new de.java2html.javasource.JavaSourceParser().parse( code );
-			de.java2html.converter.JavaSource2HTMLConverter javaSource2HTMLConverter = new de.java2html.converter.JavaSource2HTMLConverter();
-			java.io.StringWriter stringWriter = new java.io.StringWriter();
+			JavaSource javaSource = new JavaSourceParser().parse( code );
+			JavaSource2HTMLConverter javaSource2HTMLConverter = new JavaSource2HTMLConverter();
+			StringWriter stringWriter = new StringWriter();
 			stringWriter.write( "<html><head><style type=\"text/css\">code { font-size:" + this.fontSize + "px; }</style></head><body>" );
 			try {
 				javaSource2HTMLConverter.convert( javaSource, javaSourceConversionOptions, stringWriter );
 				stringWriter.write( "</body></html>" );
 				stringWriter.flush();
 				code = stringWriter.toString();
-			} catch( java.io.IOException ioe ) {
+			} catch( IOException ioe ) {
 				code = "";
 			}
 		} else {
@@ -172,21 +209,21 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		this.setText( code );
 	}
 
-	private final org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+	private final HistoryListener historyListener = new HistoryListener() {
 		@Override
-		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		public void clearing( HistoryClearEvent e ) {
 		}
 
 		@Override
-		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		public void cleared( HistoryClearEvent e ) {
 		}
 
 		@Override
-		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanging( HistoryInsertionIndexEvent e ) {
 		}
 
 		@Override
-		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanged( HistoryInsertionIndexEvent e ) {
 			//check not necessary
 			//if( e.getTypedSource().getGroup() == org.alice.ide.IDE.PROJECT_GROUP ) {
 			updateHtml();
@@ -194,46 +231,46 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		}
 
 		@Override
-		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+		public void operationPushed( HistoryPushEvent e ) {
 		}
 
 		@Override
-		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+		public void operationPushing( HistoryPushEvent e ) {
 		}
 	};
 
-	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+	private final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 		@Override
-		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+		public void mouseWheelMoved( MouseWheelEvent e ) {
+			Logger.outln( e );
 			if( e.isControlDown() ) {
 				fontSize += e.getWheelRotation();
 				updateHtml();
 			} else {
-				java.awt.Component src = e.getComponent();
-				java.awt.Container parent = src.getParent();
-				parent.dispatchEvent( javax.swing.SwingUtilities.convertMouseEvent( src, e, parent ) );
+				Component src = e.getComponent();
+				Container parent = src.getParent();
+				parent.dispatchEvent( SwingUtilities.convertMouseEvent( src, e, parent ) );
 			}
 		}
 	};
-	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+	private final KeyListener keyListener = new KeyListener() {
 		@Override
-		public void keyPressed( java.awt.event.KeyEvent e ) {
+		public void keyPressed( KeyEvent e ) {
 		}
 
 		@Override
-		public void keyReleased( java.awt.event.KeyEvent e ) {
+		public void keyReleased( KeyEvent e ) {
 			int keyCode = e.getKeyCode();
 			switch( keyCode ) {
-			case java.awt.event.KeyEvent.VK_EQUALS: //plus
+			case KeyEvent.VK_EQUALS: //plus
 				fontSize++;
 				updateHtml();
 				break;
-			case java.awt.event.KeyEvent.VK_MINUS: //minus
+			case KeyEvent.VK_MINUS: //minus
 				fontSize--;
 				updateHtml();
 				break;
-			case java.awt.event.KeyEvent.VK_SPACE:
+			case KeyEvent.VK_SPACE:
 				if( IS_LAMBDA_TOGGLE_ENABLED ) {
 					if( e.isControlDown() && e.isShiftDown() ) {
 						isLambdaSupported = !isLambdaSupported;
@@ -245,13 +282,13 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		}
 
 		@Override
-		public void keyTyped( java.awt.event.KeyEvent e ) {
+		public void keyTyped( KeyEvent e ) {
 		}
 	};
 
-	private org.lgna.croquet.undo.UndoHistory undoHistory;
-	private org.lgna.project.ast.AbstractDeclaration declaration;
-	private int fontSize = edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.getDefaultFontSize();
+	private UndoHistory undoHistory;
+	private AbstractDeclaration declaration;
+	private int fontSize = UIManagerUtilities.getDefaultFontSize();
 
 	private boolean isLambdaSupported = true;
 }

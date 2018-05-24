@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import java.awt.Dimension;
 import java.awt.Point;
 
 import org.lgna.story.EmployeesOnly;
@@ -70,7 +71,7 @@ public class IsInViewDetector {
 	}
 
 	private static boolean isInView( CameraImp camera, Point[] awtPoints, Point3[] relativeToCamera ) {
-		java.awt.Dimension surfaceSize = camera.getScene().getProgram().getOnscreenRenderTarget().getSurfaceSize();
+		Dimension surfaceSize = camera.getScene().getProgram().getOnscreenRenderTarget().getSurfaceSize();
 		boolean leftOf = false;
 		boolean rightOf = false;
 		boolean above = false;

@@ -42,21 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ast.type.merge.croquet.MemberHub;
+import org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState;
+import org.alice.ide.codeeditor.MethodHeaderPane;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHubHeaderView extends org.alice.ide.codeeditor.MethodHeaderPane {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub;
+public class MethodHubHeaderView extends MethodHeaderPane {
+	private final MemberHub<UserMethod> methodHub;
 
-	public MethodHubHeaderView( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
-		super( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
+	public MethodHubHeaderView( MemberHub<UserMethod> methodHub ) {
+		super( PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
 		this.methodHub = methodHub;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
-		if( this.methodHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
-			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> methodHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)methodHub;
+	protected SwingComponentView<?> createNameLabel() {
+		if( this.methodHub instanceof MemberHubWithNameState<?> ) {
+			MemberHubWithNameState<?> methodHubWithNameState = (MemberHubWithNameState<?>)methodHub;
 			return new MemberHubNameLabel( methodHubWithNameState );
 		} else {
 			return super.createNameLabel();

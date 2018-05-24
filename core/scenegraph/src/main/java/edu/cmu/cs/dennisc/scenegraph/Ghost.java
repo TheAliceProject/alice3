@@ -43,9 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.FloatProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Ghost extends Transformable {
-	public final edu.cmu.cs.dennisc.property.FloatProperty opacity = new edu.cmu.cs.dennisc.property.FloatProperty( this, 1.0f );
+	public final FloatProperty opacity = new FloatProperty( this, 1.0f );
 }

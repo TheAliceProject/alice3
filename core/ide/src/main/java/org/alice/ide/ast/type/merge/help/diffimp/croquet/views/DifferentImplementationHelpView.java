@@ -42,27 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.help.diffimp.croquet.views;
 
+import org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView;
+import org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice;
+import org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.RadioButton;
+
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice>() {
+public class DifferentImplementationHelpView extends PotentialNameChangerHelpView {
+	private final ValueListener<DifferentImplementationChoice> valueListener = new ValueListener<DifferentImplementationChoice>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
+		public void valueChanged( ValueEvent<DifferentImplementationChoice> e ) {
 			handleTopLevelChanged( e.getNextValue() );
 		}
 	};
 
-	public DifferentImplementationHelpView( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite ) {
+	public DifferentImplementationHelpView( DifferentImplementationHelpComposite<?> composite ) {
 		super( composite );
-		org.lgna.croquet.views.RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
+		RadioButton keepBothRadioButton = composite.getChoiceState().getItemSelectedState( DifferentImplementationChoice.ADD_AND_RETAIN_BOTH ).createRadioButton();
 
-		org.lgna.croquet.views.MigPanel panel = new org.lgna.croquet.views.MigPanel();
+		MigPanel panel = new MigPanel();
 		panel.addComponent( keepBothRadioButton, "gap top 16, wrap" );
 		panel.addComponent( this.getKeepBothPanel(), "gap 32, wrap" );
 
-		org.lgna.croquet.views.RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ).createRadioButton();
-		org.lgna.croquet.views.RadioButton selectProjectRadioButton = composite.getChoiceState().getItemSelectedState( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
+		RadioButton selectOneRadioButton = composite.getChoiceState().getItemSelectedState( DifferentImplementationChoice.ONLY_ADD_VERSION_IN_CLASS_FILE ).createRadioButton();
+		RadioButton selectProjectRadioButton = composite.getChoiceState().getItemSelectedState( DifferentImplementationChoice.ONLY_RETAIN_VERSION_ALREADY_IN_PROJECT ).createRadioButton();
 		panel.addComponent( composite.getSelectOneHeader().createLabel(), "gap top 16, wrap" );
 		panel.addComponent( selectOneRadioButton, "gap 32, wrap" );
 		panel.addComponent( selectProjectRadioButton, "gap 32, wrap" );
@@ -71,7 +81,7 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 
 	@Override
 	public void handleCompositePreActivation() {
-		org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?>)this.getComposite();
+		DifferentImplementationHelpComposite<?> composite = (DifferentImplementationHelpComposite<?>)this.getComposite();
 		composite.getChoiceState().addAndInvokeNewSchoolValueListener( this.valueListener );
 		super.handleCompositePreActivation();
 	}
@@ -79,13 +89,13 @@ public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merg
 	@Override
 	public void handleCompositePostDeactivation() {
 		super.handleCompositePostDeactivation();
-		org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?> composite = (org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite<?>)this.getComposite();
+		DifferentImplementationHelpComposite<?> composite = (DifferentImplementationHelpComposite<?>)this.getComposite();
 		composite.getChoiceState().removeNewSchoolValueListener( this.valueListener );
 	}
 
-	private void handleTopLevelChanged( org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice nextValue ) {
-		boolean isKeepBoth = nextValue == org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
-		for( java.awt.Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
+	private void handleTopLevelChanged( DifferentImplementationChoice nextValue ) {
+		boolean isKeepBoth = nextValue == DifferentImplementationChoice.ADD_AND_RETAIN_BOTH;
+		for( Component awtComponent : this.getKeepBothPanel().getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( isKeepBoth );
 		}
 	}

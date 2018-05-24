@@ -42,15 +42,30 @@
  *******************************************************************************/
 package org.lgna.debug.tree.croquet;
 
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
+import edu.cmu.cs.dennisc.scenegraph.Scene;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.debug.tree.core.ZTreeNode;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SScene;
+import org.lgna.story.implementation.SceneImp;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class GlrDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> {
-	public static org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> createBuilder( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrComponent ) {
-		org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> rv = new org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>>( glrComponent, glrComponent instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf<?> );
-		if( glrComponent instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> ) {
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrComposite = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?>)glrComponent;
-			for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrChild : glrComposite.accessChildren() ) {
+public class GlrDebugFrame extends DebugFrame<GlrComponent<?>> {
+	public static ZTreeNode.Builder<GlrComponent<?>> createBuilder( GlrComponent<?> glrComponent ) {
+		ZTreeNode.Builder<GlrComponent<?>> rv = new ZTreeNode.Builder<GlrComponent<?>>( glrComponent, glrComponent instanceof GlrLeaf<?> );
+		if( glrComponent instanceof GlrComposite<?> ) {
+			GlrComposite<?> glrComposite = (GlrComposite<?>)glrComponent;
+			for( GlrComponent<?> glrChild : glrComposite.accessChildren() ) {
 				rv.addChildBuilder( createBuilder( glrChild ) );
 			}
 		}
@@ -58,16 +73,16 @@ public class GlrDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.render.gl.imp.a
 	}
 
 	public GlrDebugFrame() {
-		super( java.util.UUID.fromString( "502e2f7e-cd4a-4ae5-a06d-20890d8e1eb6" ) );
+		super( UUID.fromString( "502e2f7e-cd4a-4ae5-a06d-20890d8e1eb6" ) );
 	}
 
 	@Override
-	protected org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> capture() {
-		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
-		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
-		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
-		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene glrScene = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
+	protected ZTreeNode.Builder<GlrComponent<?>> capture() {
+		UserInstance sceneUserInstance = StorytellingSceneEditor.getInstance().getActiveSceneInstance();
+		SScene scene = sceneUserInstance.getJavaInstance( SScene.class );
+		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
+		Scene sgScene = sceneImp.getSgComposite();
+		GlrScene glrScene = AdapterFactory.getAdapterFor( sgScene );
 		return createBuilder( glrScene );
 	}
 }

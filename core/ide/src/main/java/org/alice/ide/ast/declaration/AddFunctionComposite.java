@@ -42,23 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.declaration.views.AddFunctionView;
+import org.lgna.project.ast.UserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class AddFunctionComposite extends AddMethodComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddFunctionComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<UserType<?>, AddFunctionComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddFunctionComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddFunctionComposite>() {
+	public static AddFunctionComposite getInstance( UserType<?> declaringType ) {
+		return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<UserType<?>, AddFunctionComposite>() {
 			@Override
-			public AddFunctionComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+			public AddFunctionComposite initialize( UserType<?> declaringType ) {
 				return new AddFunctionComposite( declaringType );
 			}
 		} );
 	}
 
-	private AddFunctionComposite( org.lgna.project.ast.UserType<?> declaringType ) {
-		super( java.util.UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
+	private AddFunctionComposite( UserType<?> declaringType ) {
+		super( UUID.fromString( "a035d3f7-1858-497b-9af7-c1c84ce79801" ), new Details()
 				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
 				.name( ApplicabilityStatus.EDITABLE )
@@ -66,7 +73,7 @@ public final class AddFunctionComposite extends AddMethodComposite {
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.AddFunctionView createView() {
-		return new org.alice.ide.ast.declaration.views.AddFunctionView( this );
+	protected AddFunctionView createView() {
+		return new AddFunctionView( this );
 	}
 }

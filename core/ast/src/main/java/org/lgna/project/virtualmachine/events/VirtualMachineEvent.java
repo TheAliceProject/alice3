@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine.events;
 
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachineEvent {
-	public VirtualMachineEvent( org.lgna.project.virtualmachine.VirtualMachine vm ) {
+	public VirtualMachineEvent( VirtualMachine vm ) {
 		this.vm = vm;
 	}
 
-	public org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
+	public VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
 
-	private final org.lgna.project.virtualmachine.VirtualMachine vm;
+	private final VirtualMachine vm;
 
 }

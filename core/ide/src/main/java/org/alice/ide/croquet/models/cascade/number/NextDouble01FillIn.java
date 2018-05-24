@@ -43,10 +43,22 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.common.RandomUtilities;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.TypeExpression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.MethodInvocation> {
+public class NextDouble01FillIn extends ExpressionFillInWithoutBlanks<MethodInvocation> {
 	private static class SingletonHolder {
 		private static NextDouble01FillIn instance = new NextDouble01FillIn();
 	}
@@ -55,23 +67,23 @@ public class NextDouble01FillIn extends org.alice.ide.croquet.models.cascade.Exp
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private final MethodInvocation transientValue;
 
 	private NextDouble01FillIn() {
-		super( java.util.UUID.fromString( "4d6ae280-3a3b-413b-b73e-437d513e9cc0" ) );
+		super( UUID.fromString( "4d6ae280-3a3b-413b-b73e-437d513e9cc0" ) );
 		this.transientValue = this.createValue( null, null );
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public MethodInvocation createValue( ItemNode<? super MethodInvocation, Void> node, TransactionHistory transactionHistory ) {
 		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
-		org.lgna.project.ast.JavaType RANDOM_UTILITIES_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.common.RandomUtilities.class );
-		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( RANDOM_UTILITIES_TYPE );
-		return org.lgna.project.ast.AstUtilities.createMethodInvocation( typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new org.lgna.project.ast.DoubleLiteral( 0.0 ), new org.lgna.project.ast.DoubleLiteral( 1.0 ) );
+		JavaType RANDOM_UTILITIES_TYPE = JavaType.getInstance( RandomUtilities.class );
+		TypeExpression typeExpression = new TypeExpression( RANDOM_UTILITIES_TYPE );
+		return AstUtilities.createMethodInvocation( typeExpression, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new DoubleLiteral( 0.0 ), new DoubleLiteral( 1.0 ) );
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, Void> node ) {
+	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Void> node ) {
 		return this.transientValue;
 	}
 }

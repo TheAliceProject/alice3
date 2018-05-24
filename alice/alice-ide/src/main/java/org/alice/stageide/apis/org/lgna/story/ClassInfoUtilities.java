@@ -42,6 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.apis.org.lgna.story;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.reflect.ClassInfoManager;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,12 +65,12 @@ public class ClassInfoUtilities {
 				//pass
 			} else {
 				isAlreadyAttempted = true;
-				java.io.InputStream is = ClassInfoUtilities.class.getResourceAsStream( "classinfos.zip" );
+				InputStream is = ClassInfoUtilities.class.getResourceAsStream( "classinfos.zip" );
 				if( is != null ) {
 					try {
-						org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom( is );
-					} catch( java.io.IOException ioe ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe );
+						ClassInfoManager.addClassInfosFrom( is );
+					} catch( IOException ioe ) {
+						Logger.throwable( ioe );
 					}
 				}
 			}

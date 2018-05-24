@@ -43,11 +43,15 @@
 
 package org.alice.ide.resource.manager.edits;
 
+import edu.cmu.cs.dennisc.pattern.NameableUtilities;
+import org.lgna.common.Resource;
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class RemoveResourceEdit extends AddOrRemoveResourceEdit {
-	public RemoveResourceEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.common.Resource resource ) {
+	public RemoveResourceEdit( CompletionStep<?> completionStep, Resource resource ) {
 		super( completionStep, resource );
 	}
 
@@ -64,6 +68,6 @@ public final class RemoveResourceEdit extends AddOrRemoveResourceEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "remove resource" );
-		rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( this.getResource() ) );
+		rv.append( NameableUtilities.safeGetName( this.getResource() ) );
 	}
 }

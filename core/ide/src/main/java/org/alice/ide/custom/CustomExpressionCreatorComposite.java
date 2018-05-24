@@ -43,33 +43,43 @@
 
 package org.alice.ide.custom;
 
+import org.alice.ide.IDE;
+import org.alice.ide.cascade.ExpressionCascadeManager;
+import org.alice.ide.custom.components.CustomExpressionCreatorView;
+import org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V, org.lgna.project.ast.Expression> {
-	private final org.lgna.croquet.PlainStringValue valueLabel = this.createStringValue( "valueLabel" );
+public abstract class CustomExpressionCreatorComposite<V extends CustomExpressionCreatorView> extends PreviewContainingValueCreatorInputDialogCoreComposite<V, Expression> {
+	private final PlainStringValue valueLabel = this.createStringValue( "valueLabel" );
 
-	public CustomExpressionCreatorComposite( java.util.UUID id ) {
+	public CustomExpressionCreatorComposite( UUID id ) {
 		super( id );
 	}
 
-	public org.lgna.croquet.PlainStringValue getValueLabel() {
+	public PlainStringValue getValueLabel() {
 		return this.valueLabel;
 	}
 
-	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );
+	protected abstract void initializeToPreviousExpression( Expression expression );
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.cascade.ExpressionCascadeManager expressionCascadeManager = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager();
+	protected void handlePreShowDialog( CompletionStep<?> step ) {
+		ExpressionCascadeManager expressionCascadeManager = IDE.getActiveInstance().getExpressionCascadeManager();
 		this.initializeToPreviousExpression( expressionCascadeManager.getPreviousExpression() );
 		expressionCascadeManager.pushNullContext();
 		super.handlePreShowDialog( step );
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckNullContext();
+		IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckNullContext();
 	}
 }

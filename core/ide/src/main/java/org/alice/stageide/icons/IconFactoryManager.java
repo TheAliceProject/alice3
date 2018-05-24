@@ -42,39 +42,89 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.icon.ImageIconFactory;
+import org.lgna.croquet.icon.MultipleSourceImageIconFactory;
+import org.lgna.croquet.icon.TrimmedImageIconFactory;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ConstructorInvocationStatement;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.SimpleArgument;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.UserConstructor;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.Color;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.AircraftResource;
+import org.lgna.story.resources.AutomobileResource;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.FishResource;
+import org.lgna.story.resources.FlyerResource;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.MarineMammalResource;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resources.PropResource;
+import org.lgna.story.resources.QuadrupedResource;
+import org.lgna.story.resources.SlithererResource;
+import org.lgna.story.resources.SwimmerResource;
+import org.lgna.story.resources.TrainResource;
+import org.lgna.story.resources.TransportResource;
+import org.lgna.story.resources.WatercraftResource;
+
+import javax.swing.ImageIcon;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Dennis Cosgrove
  */
 public class IconFactoryManager {
 	private static interface ResourceDeclaration {
-		public org.lgna.croquet.icon.IconFactory createIconFactory();
+		public IconFactory createIconFactory();
 	}
 
 	// @formatter:off
-	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Sets.newHashSet(
-			org.lgna.story.resources.BipedResource.class,
-			org.lgna.story.resources.FishResource.class,
-			org.lgna.story.resources.FlyerResource.class,
-			org.lgna.story.resources.PropResource.class,
-			org.lgna.story.resources.QuadrupedResource.class,
-			org.lgna.story.resources.SwimmerResource.class,
-			org.lgna.story.resources.SlithererResource.class,
-			org.lgna.story.resources.MarineMammalResource.class,
-			org.lgna.story.resources.TransportResource.class,
-			org.lgna.story.resources.AutomobileResource.class,
-			org.lgna.story.resources.AircraftResource.class,
-			org.lgna.story.resources.WatercraftResource.class,
-			org.lgna.story.resources.TrainResource.class );
+	private static Set<Class<? extends JointedModelResource>> setOfClassesWithIcons = Sets.newHashSet(
+			BipedResource.class,
+			FishResource.class,
+			FlyerResource.class,
+			PropResource.class,
+			QuadrupedResource.class,
+			SwimmerResource.class,
+			SlithererResource.class,
+			MarineMammalResource.class,
+			TransportResource.class,
+			AutomobileResource.class,
+			AircraftResource.class,
+			WatercraftResource.class,
+			TrainResource.class );
 
 	// @formatter:on
 
-	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {
+	public static Set<Class<? extends JointedModelResource>> getSetOfClassesWithIcons() {
 		return setOfClassesWithIcons;
 	}
 
-	private static javax.swing.ImageIcon getIcon( Class<?> cls, boolean isSmall ) {
+	private static ImageIcon getIcon( Class<?> cls, boolean isSmall ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
 		sb.append( cls.getName().replace( ".", "/" ) );
@@ -82,25 +132,25 @@ public class IconFactoryManager {
 			sb.append( "_small" );
 		}
 		sb.append( ".png" );
-		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ) );
+		return IconUtilities.createImageIcon( GalleryDragModel.class.getResource( sb.toString() ) );
 	}
 
 	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
-		protected abstract Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass();
+		protected abstract Class<? extends ModelResource> getModelResourceClass();
 
 		protected abstract String getModelResourceName();
 
 		@Override
-		public final org.lgna.croquet.icon.IconFactory createIconFactory() {
-			Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = this.getModelResourceClass();
+		public final IconFactory createIconFactory() {
+			Class<? extends ModelResource> modelResourceCls = this.getModelResourceClass();
 			String modelResourceName = this.getModelResourceName();
 			if( modelResourceName != null ) {
 				//pass
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-					javax.swing.ImageIcon smallIcon = getIcon( modelResourceCls, true );
-					javax.swing.ImageIcon largeIcon = getIcon( modelResourceCls, false );
-					return new org.lgna.croquet.icon.MultipleSourceImageIconFactory( 1, smallIcon, largeIcon );
+					ImageIcon smallIcon = getIcon( modelResourceCls, true );
+					ImageIcon largeIcon = getIcon( modelResourceCls, false );
+					return new MultipleSourceImageIconFactory( 1, smallIcon, largeIcon );
 					//return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
 			}
@@ -131,14 +181,14 @@ public class IconFactoryManager {
 			//					}
 			//				}
 			//			}
-			java.net.URL url;
+			URL url;
 			if( modelResourceCls != null ) {
-				url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
+				url = AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
 			} else {
 				url = null;
 			}
 			if( url != null ) {
-				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
+				return new TrimmedImageIconFactory( url, 160, 120 );
 			} else {
 				//				if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( modelResourceCls ) ) {
 				//					org.alice.stageide.modelresource.PersonResourceKey personResourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( modelResourceCls );
@@ -149,25 +199,25 @@ public class IconFactoryManager {
 				//						return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				//					}
 				//				} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.getClass(), modelResourceCls, modelResourceName );
-				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+				Logger.severe( this, this.getClass(), modelResourceCls, modelResourceName );
+				return EmptyIconFactory.getInstance();
 				//				}
 			}
 		}
 	}
 
 	private static final class ResourceEnumConstant extends UrlResourceDeclaration {
-		private final Enum<? extends org.lgna.story.resources.ModelResource> enm;
+		private final Enum<? extends ModelResource> enm;
 
-		public ResourceEnumConstant( Enum<? extends org.lgna.story.resources.ModelResource> enm ) {
+		public ResourceEnumConstant( Enum<? extends ModelResource> enm ) {
 			assert enm != null;
 			this.enm = enm;
 		}
 
 		@Override
-		protected Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass() {
+		protected Class<? extends ModelResource> getModelResourceClass() {
 			//todo?
-			return (Class<? extends org.lgna.story.resources.ModelResource>)this.enm.getClass();
+			return (Class<? extends ModelResource>)this.enm.getClass();
 		}
 
 		@Override
@@ -194,15 +244,15 @@ public class IconFactoryManager {
 	}
 
 	private static final class ResourceType extends UrlResourceDeclaration {
-		private final Class<? extends org.lgna.story.resources.ModelResource> cls;
+		private final Class<? extends ModelResource> cls;
 
-		public ResourceType( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
+		public ResourceType( Class<? extends ModelResource> cls ) {
 			assert cls != null;
 			this.cls = cls;
 		}
 
 		@Override
-		protected Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass() {
+		protected Class<? extends ModelResource> getModelResourceClass() {
 			return this.cls;
 		}
 
@@ -230,15 +280,15 @@ public class IconFactoryManager {
 	}
 
 	private static final class ResourceInstance implements ResourceDeclaration {
-		private final org.lgna.story.resources.ModelResource instance;
+		private final ModelResource instance;
 
-		public ResourceInstance( org.lgna.story.resources.ModelResource instance ) {
+		public ResourceInstance( ModelResource instance ) {
 			assert instance != null;
 			this.instance = instance;
 		}
 
 		@Override
-		public org.lgna.croquet.icon.IconFactory createIconFactory() {
+		public IconFactory createIconFactory() {
 			return NebulousIde.nonfree.createIconFactory( this.instance );
 		}
 
@@ -260,44 +310,44 @@ public class IconFactoryManager {
 		}
 	}
 
-	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.croquet.icon.IconFactory> mapTypeToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<ResourceDeclaration, org.lgna.croquet.icon.IconFactory> mapResourceDeclarationToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.lgna.story.Color, org.lgna.croquet.icon.IconFactory> mapColorToCameraMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.lgna.story.Color, org.lgna.croquet.icon.IconFactory> mapColorToObjectMarkerIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
+	private static Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
+	private static Map<Color, IconFactory> mapColorToCameraMarkerIconFactory = Maps.newHashMap();
+	private static Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
 
 	private IconFactoryManager() {
 	}
 
-	public static void registerIconFactory( org.lgna.project.ast.JavaType javaType, org.lgna.croquet.icon.IconFactory iconFactory ) {
+	public static void registerIconFactory( JavaType javaType, IconFactory iconFactory ) {
 		mapTypeToIconFactory.put( javaType, iconFactory );
 	}
 
-	public static void registerIconFactory( Class<?> cls, org.lgna.croquet.icon.IconFactory iconFactory ) {
-		registerIconFactory( org.lgna.project.ast.JavaType.getInstance( cls ), iconFactory );
+	public static void registerIconFactory( Class<?> cls, IconFactory iconFactory ) {
+		registerIconFactory( JavaType.getInstance( cls ), iconFactory );
 	}
 
-	private static ResourceDeclaration createResourceDeclarationFromRequiredArguments( org.lgna.project.ast.SimpleArgumentListProperty requiredArguments ) {
+	private static ResourceDeclaration createResourceDeclarationFromRequiredArguments( SimpleArgumentListProperty requiredArguments ) {
 		if( requiredArguments.size() == 1 ) {
-			org.lgna.project.ast.SimpleArgument arg0 = requiredArguments.get( 0 );
-			org.lgna.project.ast.Expression expression0 = arg0.expression.getValue();
-			if( expression0 instanceof org.lgna.project.ast.InstanceCreation ) {
-				Object instance = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression0 );
-				if( instance instanceof org.lgna.story.resources.ModelResource ) {
-					org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource)instance;
+			SimpleArgument arg0 = requiredArguments.get( 0 );
+			Expression expression0 = arg0.expression.getValue();
+			if( expression0 instanceof InstanceCreation ) {
+				Object instance = StageIDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( expression0 );
+				if( instance instanceof ModelResource ) {
+					ModelResource modelResource = (ModelResource)instance;
 					return new ResourceInstance( modelResource );
 				}
 			}
 		}
-		org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getField( requiredArguments );
+		JavaField argumentField = ConstructorArgumentUtilities.getField( requiredArguments );
 		if( argumentField != null ) {
 			if( argumentField.isStatic() ) {
-				java.lang.reflect.Field fld = argumentField.getFieldReflectionProxy().getReification();
+				Field fld = argumentField.getFieldReflectionProxy().getReification();
 				try {
 					Object o = fld.get( null );
 					if( o != null ) {
-						if( o instanceof org.lgna.story.resources.ModelResource ) {
+						if( o instanceof ModelResource ) {
 							if( o.getClass().isEnum() ) {
-								Enum<? extends org.lgna.story.resources.ModelResource> e = (Enum<? extends org.lgna.story.resources.ModelResource>)o;
+								Enum<? extends ModelResource> e = (Enum<? extends ModelResource>)o;
 								return new ResourceEnumConstant( e );
 							}
 						}
@@ -312,27 +362,27 @@ public class IconFactoryManager {
 		return null;
 	}
 
-	private static int getRequiredArgumentsInInitializer( org.lgna.project.ast.UserField userField ) {
-		org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
-		if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+	private static int getRequiredArgumentsInInitializer( UserField userField ) {
+		Expression initializer = userField.initializer.getValue();
+		if( initializer instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)initializer;
 			return instanceCreation.requiredArguments.size();
 		}
 		return -1;
 	}
 
-	private static ResourceDeclaration createResourceDeclarationFromField( org.lgna.project.ast.UserField userField ) {
-		org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
-		if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+	private static ResourceDeclaration createResourceDeclarationFromField( UserField userField ) {
+		Expression initializer = userField.initializer.getValue();
+		if( initializer instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)initializer;
 			return createResourceDeclarationFromRequiredArguments( instanceCreation.requiredArguments );
 		}
 		return null;
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getRegisteredIconFactory( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static IconFactory getRegisteredIconFactory( AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
-			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			JavaType javaType = type.getFirstEncounteredJavaType();
 			if( mapTypeToIconFactory.containsKey( javaType ) ) {
 				return mapTypeToIconFactory.get( javaType );
 			}
@@ -340,9 +390,9 @@ public class IconFactoryManager {
 		return null;
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForResourceCls( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
+	public static IconFactory getIconFactoryForResourceCls( Class<? extends ModelResource> cls ) {
 		ResourceType resourceType = new ResourceType( cls );
-		org.lgna.croquet.icon.IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceType );
+		IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceType );
 		if( iconFactory != null ) {
 			//pass
 		} else {
@@ -352,15 +402,15 @@ public class IconFactoryManager {
 		return iconFactory;
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForResourceInstance( org.lgna.story.resources.ModelResource modelResource ) {
+	public static IconFactory getIconFactoryForResourceInstance( ModelResource modelResource ) {
 		ResourceDeclaration resourceDeclaration;
 		if( modelResource.getClass().isEnum() ) {
-			Enum<? extends org.lgna.story.resources.ModelResource> e = (Enum<? extends org.lgna.story.resources.ModelResource>)modelResource;
+			Enum<? extends ModelResource> e = (Enum<? extends ModelResource>)modelResource;
 			resourceDeclaration = new ResourceEnumConstant( e );
 		} else {
 			resourceDeclaration = new ResourceInstance( modelResource );
 		}
-		org.lgna.croquet.icon.IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
+		IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
 		if( iconFactory != null ) {
 			//pass
 		} else {
@@ -370,29 +420,29 @@ public class IconFactoryManager {
 		return iconFactory;
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		org.lgna.croquet.icon.IconFactory iconFactory = getRegisteredIconFactory( type );
+	public static IconFactory getIconFactoryForType( AbstractType<?, ?, ?> type ) {
+		IconFactory iconFactory = getRegisteredIconFactory( type );
 		if( iconFactory != null ) {
 			return iconFactory;
 		} else {
 			ResourceDeclaration resourceDeclaration = null;
-			org.lgna.project.ast.AbstractConstructor constructor0 = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0( type );
+			AbstractConstructor constructor0 = ConstructorArgumentUtilities.getContructor0( type );
 			if( constructor0 != null ) {
-				java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor0.getRequiredParameters();
+				List<? extends AbstractParameter> parameters = constructor0.getRequiredParameters();
 				switch( parameters.size() ) {
 				case 0:
-					if( constructor0 instanceof org.lgna.project.ast.UserConstructor ) {
-						org.lgna.project.ast.NamedUserConstructor userConstructor0 = (org.lgna.project.ast.NamedUserConstructor)constructor0;
-						org.lgna.project.ast.ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
+					if( constructor0 instanceof UserConstructor ) {
+						NamedUserConstructor userConstructor0 = (NamedUserConstructor)constructor0;
+						ConstructorInvocationStatement constructorInvocationStatement = userConstructor0.body.getValue().constructorInvocationStatement.getValue();
 						resourceDeclaration = createResourceDeclarationFromRequiredArguments( constructorInvocationStatement.requiredArguments );
 					}
 					break;
 				case 1:
-					org.lgna.project.ast.AbstractParameter parameter0 = parameters.get( 0 );
-					org.lgna.project.ast.AbstractType<?, ?, ?> parameter0Type = parameter0.getValueType();
+					AbstractParameter parameter0 = parameters.get( 0 );
+					AbstractType<?, ?, ?> parameter0Type = parameter0.getValueType();
 					if( parameter0Type != null ) {
-						if( parameter0Type.isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
-							Class<? extends org.lgna.story.resources.ModelResource> cls = (Class<? extends org.lgna.story.resources.ModelResource>)parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+						if( parameter0Type.isAssignableTo( ModelResource.class ) ) {
+							Class<? extends ModelResource> cls = (Class<? extends ModelResource>)parameter0Type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
 							resourceDeclaration = new ResourceType( cls );
 						}
 					}
@@ -410,12 +460,12 @@ public class IconFactoryManager {
 				}
 			}
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+		return EmptyIconFactory.getInstance();
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForField( org.lgna.project.ast.UserField userField ) {
+	public static IconFactory getIconFactoryForField( UserField userField ) {
 		if( userField != null ) {
-			org.lgna.croquet.icon.IconFactory iconFactory = getRegisteredIconFactory( userField.getValueType() );
+			IconFactory iconFactory = getRegisteredIconFactory( userField.getValueType() );
 			if( iconFactory != null ) {
 				return iconFactory;
 			}
@@ -432,33 +482,33 @@ public class IconFactoryManager {
 			}
 			int requiredArgumentCount = getRequiredArgumentsInInitializer( userField );
 			if( requiredArgumentCount != 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "Note: non-zero initializer detected, but no resource specific icon found. Falling back to type for icon for", userField );
+				Logger.outln( "Note: non-zero initializer detected, but no resource specific icon found. Falling back to type for icon for", userField );
 			}
 			return getIconFactoryForType( userField.getValueType() );
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+		return EmptyIconFactory.getInstance();
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker( org.lgna.story.Color color ) {
-		org.lgna.croquet.icon.IconFactory rv = mapColorToCameraMarkerIconFactory.get( color );
+	public static IconFactory getIconFactoryForCameraMarker( Color color ) {
+		IconFactory rv = mapColorToCameraMarkerIconFactory.get( color );
 		if( rv != null ) {
 			//pass
 		} else {
-			javax.swing.ImageIcon imageIcon = org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getCameraMarkIconForColor( color ); //todo
-			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+			ImageIcon imageIcon = MarkerUtilities.getCameraMarkIconForColor( color ); //todo
+			rv = new ImageIconFactory( imageIcon );
 			mapColorToCameraMarkerIconFactory.put( color, rv );
 		}
 		return rv;
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForObjectMarker( org.lgna.story.Color color ) {
-		org.lgna.croquet.icon.IconFactory rv = mapColorToObjectMarkerIconFactory.get( color );
+	public static IconFactory getIconFactoryForObjectMarker( Color color ) {
+		IconFactory rv = mapColorToObjectMarkerIconFactory.get( color );
 		if( rv != null ) {
 			//pass
 		} else {
-			javax.swing.ImageIcon imageIcon = org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getObjectMarkIconForColor( color );
+			ImageIcon imageIcon = MarkerUtilities.getObjectMarkIconForColor( color );
 			//todo
-			rv = new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+			rv = new ImageIconFactory( imageIcon );
 			mapColorToObjectMarkerIconFactory.put( color, rv );
 		}
 		return rv;

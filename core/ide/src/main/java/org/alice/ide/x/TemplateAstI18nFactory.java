@@ -43,6 +43,14 @@
 
 package org.alice.ide.x;
 
+import org.alice.ide.IDE;
+import org.alice.ide.members.components.ArgumentListPropertyPane;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.KeyedArgumentListProperty;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,17 +67,17 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getType();
+	protected AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
+		return IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getType();
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty ) {
-		return new org.alice.ide.members.components.ArgumentListPropertyPane( this, argumentListProperty );
+	protected SwingComponentView<?> createSimpleArgumentListPropertyPane( SimpleArgumentListProperty argumentListProperty ) {
+		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createKeyedArgumentListPropertyPane( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty ) {
-		return new org.lgna.croquet.views.Label();
+	protected SwingComponentView<?> createKeyedArgumentListPropertyPane( KeyedArgumentListProperty argumentListProperty ) {
+		return new Label();
 	}
 }

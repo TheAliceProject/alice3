@@ -42,19 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.resource.manager;
 
+import org.lgna.common.Resource;
+import org.lgna.croquet.ItemState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class SelectedResourceOperation extends ResourceOperation {
-	public SelectedResourceOperation( java.util.UUID migrationId, org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState ) {
+	public SelectedResourceOperation( UUID migrationId, ItemState<Resource> resourceState ) {
 		super( migrationId );
 		this.resourceState = resourceState;
 	}
 
 	@Override
-	protected final org.lgna.common.Resource getResource() {
+	protected final Resource getResource() {
 		return this.resourceState.getValue();
 	}
 
-	private final org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState;
+	private final ItemState<Resource> resourceState;
 }

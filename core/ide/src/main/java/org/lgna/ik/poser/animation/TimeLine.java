@@ -43,6 +43,7 @@
 package org.lgna.ik.poser.animation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -119,7 +120,7 @@ public class TimeLine {
 	public void moveExistingKeyFrameData( KeyFrameData data, double newTime ) {
 		if( ( newTime > 0 ) && ( newTime < endTime ) ) {
 			data.setTime( newTime );
-			java.util.Collections.sort( datas, new Comparator<KeyFrameData>() {
+			Collections.sort( datas, new Comparator<KeyFrameData>() {
 				@Override
 				public int compare( KeyFrameData o1, KeyFrameData o2 ) {
 					return new Double( o1.getEventTime() ).compareTo( o2.getEventTime() );

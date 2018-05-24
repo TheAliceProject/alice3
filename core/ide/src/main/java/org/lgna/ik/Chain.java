@@ -43,22 +43,31 @@
 
 package org.lgna.ik;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointId;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Chain {
-	public static Chain createInstance( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp, org.lgna.story.resources.JointId anchorId, org.lgna.story.resources.JointId endId, boolean isLinearEnabled, boolean isAngularEnabled ) {
-		java.util.List<org.lgna.ik.core.solver.Bone.Direction> directions = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-		java.util.List<org.lgna.story.implementation.JointImp> jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId, directions );
+	public static Chain createInstance( JointedModelImp<?, ?> jointedModelImp, JointId anchorId, JointId endId, boolean isLinearEnabled, boolean isAngularEnabled ) {
+		List<org.lgna.ik.core.solver.Bone.Direction> directions = Lists.newArrayList();
+		List<JointImp> jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId, directions );
 		return new Chain( jointImps, isLinearEnabled, isAngularEnabled );
 	}
 
-	private final java.util.List<org.lgna.story.implementation.JointImp> jointImps;
+	private final List<JointImp> jointImps;
 	private final Bone[] bones;
-	private final edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorLinearVelocity;
-	private final edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorAngularVelocity;
+	private final Vector3 desiredEndEffectorLinearVelocity;
+	private final Vector3 desiredEndEffectorAngularVelocity;
 
-	private Chain( java.util.List<org.lgna.story.implementation.JointImp> jointImps, boolean isLinearEnabled, boolean isAngularEnabled ) {
+	private Chain( List<JointImp> jointImps, boolean isLinearEnabled, boolean isAngularEnabled ) {
 		this.jointImps = jointImps;
 		final int N = this.jointImps.size();
 		this.bones = new Bone[ N - 1 ];
@@ -66,12 +75,12 @@ public class Chain {
 			this.bones[ i ] = new Bone( this, i, isLinearEnabled, isAngularEnabled );
 		}
 		if( isLinearEnabled ) {
-			this.desiredEndEffectorLinearVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			this.desiredEndEffectorLinearVelocity = Vector3.createZero();
 		} else {
 			this.desiredEndEffectorLinearVelocity = null;
 		}
 		if( isAngularEnabled ) {
-			this.desiredEndEffectorAngularVelocity = edu.cmu.cs.dennisc.math.Vector3.createZero();
+			this.desiredEndEffectorAngularVelocity = Vector3.createZero();
 		} else {
 			this.desiredEndEffectorAngularVelocity = null;
 		}
@@ -81,7 +90,7 @@ public class Chain {
 		return this.bones;
 	}
 
-	public org.lgna.story.implementation.JointImp getJointImpAt( int index ) {
+	public JointImp getJointImpAt( int index ) {
 		return this.jointImps.get( index );
 	}
 
@@ -93,27 +102,27 @@ public class Chain {
 		return this.desiredEndEffectorAngularVelocity != null;
 	}
 
-	public void setDesiredEndEffectorLinearVelocity( edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorLinearVelocity ) {
+	public void setDesiredEndEffectorLinearVelocity( Vector3 desiredEndEffectorLinearVelocity ) {
 		this.desiredEndEffectorLinearVelocity.set( desiredEndEffectorLinearVelocity );
 	}
 
-	public void setDesiredEndEffectorAngularVelocity( edu.cmu.cs.dennisc.math.Vector3 desiredEndEffectorAngularVelocity ) {
+	public void setDesiredEndEffectorAngularVelocity( Vector3 desiredEndEffectorAngularVelocity ) {
 		this.desiredEndEffectorAngularVelocity.set( desiredEndEffectorAngularVelocity );
 	}
 
-	private edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
+	private Point3 getAnchorPosition() {
 		throw new RuntimeException( "todo" );
 	}
 
-	private edu.cmu.cs.dennisc.math.Point3 getEndEffectorPosition() {
+	private Point3 getEndEffectorPosition() {
 		throw new RuntimeException( "todo" );
 	}
 
 	private void computeVelocityContributions() {
-		edu.cmu.cs.dennisc.math.Point3 endEffectorPos = this.getEndEffectorPosition();
+		Point3 endEffectorPos = this.getEndEffectorPosition();
 		for( Bone bone : this.bones ) {
 			if( this.isLinearVelocityEnabled() ) {
-				edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction(
+				Vector3 v = Vector3.createSubtraction(
 						endEffectorPos,
 						this.getAnchorPosition() );
 				bone.updateLinearContributions( v );

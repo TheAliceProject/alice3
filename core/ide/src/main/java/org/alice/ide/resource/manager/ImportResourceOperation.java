@@ -43,13 +43,21 @@
 
 package org.alice.ide.resource.manager;
 
+import org.alice.ide.resource.manager.edits.AddResourceEdit;
+import org.lgna.common.Resource;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.importer.Importer;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImportResourceOperation<R extends org.lgna.common.Resource> extends ResourceOperation {
-	private final org.lgna.croquet.importer.Importer<R> importer;
+public abstract class ImportResourceOperation<R extends Resource> extends ResourceOperation {
+	private final Importer<R> importer;
 
-	public ImportResourceOperation( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer ) {
+	public ImportResourceOperation( UUID migrationId, Importer<R> importer ) {
 		super( migrationId );
 		this.importer = importer;
 	}
@@ -60,7 +68,7 @@ public abstract class ImportResourceOperation<R extends org.lgna.common.Resource
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
-		return new org.alice.ide.resource.manager.edits.AddResourceEdit( step, resource );
+	protected Edit createEdit( CompletionStep<?> step, Resource resource ) {
+		return new AddResourceEdit( step, resource );
 	}
 }

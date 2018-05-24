@@ -42,11 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property.event;
 
+import edu.cmu.cs.dennisc.pattern.event.Event;
+import edu.cmu.cs.dennisc.property.ListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListPropertyEvent<E> extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.property.ListProperty<E>> {
-	public ListPropertyEvent( edu.cmu.cs.dennisc.property.ListProperty<E> source ) {
+public abstract class ListPropertyEvent<E> extends Event<ListProperty<E>> {
+	public ListPropertyEvent( ListProperty<E> source ) {
 		super( source );
 	}
 }

@@ -43,10 +43,15 @@
 
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.preferences.PreferenceBooleanState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsIncludingProtectedUserMethods extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsIncludingProtectedUserMethods extends PreferenceBooleanState {
 	private static class SingletonHolder {
 		private static IsIncludingProtectedUserMethods instance = new IsIncludingProtectedUserMethods();
 	}
@@ -56,6 +61,6 @@ public class IsIncludingProtectedUserMethods extends org.lgna.croquet.preference
 	}
 
 	private IsIncludingProtectedUserMethods() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "07fcbb04-a1f1-4e6a-8bd4-7489a8c6dcfc" ), true );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "07fcbb04-a1f1-4e6a-8bd4-7489a8c6dcfc" ), true );
 	}
 }

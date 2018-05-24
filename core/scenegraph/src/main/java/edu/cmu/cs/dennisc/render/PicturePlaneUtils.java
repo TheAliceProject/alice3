@@ -44,11 +44,21 @@
 package edu.cmu.cs.dennisc.render;
 
 //todo: unify w/ scenegraph.util.TransformationUtilities?
+
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector4;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera;
+
+import java.awt.Point;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PicturePlaneUtils {
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromAWTToViewport( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, java.awt.Rectangle actualViewport ) {
+	private static Vector4 transformFromAWTToViewport( Vector4 rv, Point p, double z, Rectangle actualViewport ) {
 		rv.x = p.x;
 		rv.y = actualViewport.height - p.y;
 		rv.z = z;
@@ -56,32 +66,32 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	private static java.awt.Point transformFromViewportToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, java.awt.Rectangle actualViewport ) {
+	private static Point transformFromViewportToAWT( Point rv, Vector4 xyzw, Rectangle actualViewport ) {
 		rv.x = (int)( xyzw.x / xyzw.w );
 		rv.y = (int)( xyzw.y / xyzw.w );
 		rv.y = actualViewport.height - rv.y;
 		return rv;
 	}
 
-	private static double getNear( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		if( sgCamera instanceof edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera ) {
-			return ( (edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera)sgCamera ).nearClippingPlaneDistance.getValue();
+	private static double getNear( AbstractCamera sgCamera ) {
+		if( sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera ) {
+			return ( (AbstractNearPlaneAndFarPlaneCamera)sgCamera ).nearClippingPlaneDistance.getValue();
 		} else {
 			//todo?
 			return Double.NaN;
 		}
 	}
 
-	private static double getFar( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		if( sgCamera instanceof edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera ) {
-			return ( (edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera)sgCamera ).farClippingPlaneDistance.getValue();
+	private static double getFar( AbstractCamera sgCamera ) {
+		if( sgCamera instanceof AbstractNearPlaneAndFarPlaneCamera ) {
+			return ( (AbstractNearPlaneAndFarPlaneCamera)sgCamera ).farClippingPlaneDistance.getValue();
 		} else {
 			//todo?
 			return Double.NaN;
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromViewportToProjection_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle actualViewport ) {
+	private static Vector4 transformFromViewportToProjection_AffectReturnValuePassedIn( Vector4 rv, AbstractCamera sgCamera, Rectangle actualViewport ) {
 		rv.multiply( 1.0 / rv.w );
 
 		rv.x = ( rv.x - actualViewport.x ) / actualViewport.width;
@@ -98,7 +108,7 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromProjectionToViewport_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle actualViewport ) {
+	private static Vector4 transformFromProjectionToViewport_AffectReturnValuePassedIn( Vector4 rv, AbstractCamera sgCamera, Rectangle actualViewport ) {
 		rv.multiply( 1.0 / rv.w );
 
 		rv.x = ( rv.x * 0.5 ) + 0.5;
@@ -114,9 +124,9 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	private static edu.cmu.cs.dennisc.math.Matrix4x4 s_actualProjectionBuffer = new edu.cmu.cs.dennisc.math.Matrix4x4();
+	private static Matrix4x4 s_actualProjectionBuffer = new Matrix4x4();
 
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromProjectionToCamera_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	private static Vector4 transformFromProjectionToCamera_AffectReturnValuePassedIn( Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		rv.multiply( 1.0 / rv.w );
 		synchronized( s_actualProjectionBuffer ) {
 			renderTarget.getActualProjectionMatrix( s_actualProjectionBuffer, sgCamera );
@@ -126,7 +136,7 @@ public class PicturePlaneUtils {
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromCameraToProjection_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	private static Vector4 transformFromCameraToProjection_AffectReturnValuePassedIn( Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		rv.multiply( 1.0 / rv.w );
 		synchronized( s_actualProjectionBuffer ) {
 			renderTarget.getActualProjectionMatrix( s_actualProjectionBuffer, sgCamera );
@@ -135,21 +145,21 @@ public class PicturePlaneUtils {
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle actualViewport ) {
+	private static Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn( Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera, Rectangle actualViewport ) {
 		transformFromViewportToProjection_AffectReturnValuePassedIn( rv, sgCamera, actualViewport );
 		transformFromProjectionToCamera_AffectReturnValuePassedIn( rv, renderTarget, sgCamera );
 		return rv;
 	}
 
-	private static edu.cmu.cs.dennisc.math.Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle actualViewport ) {
+	private static Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn( Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera, Rectangle actualViewport ) {
 		transformFromCameraToProjection_AffectReturnValuePassedIn( rv, renderTarget, sgCamera );
 		transformFromProjectionToViewport_AffectReturnValuePassedIn( rv, sgCamera, actualViewport );
 		return rv;
 	}
 
-	private static java.awt.Rectangle s_actualViewportBuffer = new java.awt.Rectangle();
+	private static Rectangle s_actualViewportBuffer = new Rectangle();
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn( Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		synchronized( s_actualViewportBuffer ) {
 			renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 			transformFromViewportToCamera_AffectReturnValuePassedIn( rv, renderTarget, sgCamera, s_actualViewportBuffer );
@@ -157,7 +167,7 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn( Vector4 rv, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		synchronized( s_actualViewportBuffer ) {
 			renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 			transformFromCameraToViewport_AffectReturnValuePassedIn( rv, renderTarget, sgCamera, s_actualViewportBuffer );
@@ -165,25 +175,25 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromViewportToCamera( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static Vector4 transformFromViewportToCamera( Vector4 rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		rv.set( xyzw );
 		return transformFromViewportToCamera_AffectReturnValuePassedIn( rv, renderTarget, sgCamera );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromCameraToViewport( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static Vector4 transformFromCameraToViewport( Vector4 rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		rv.set( xyzw );
 		return transformFromCameraToViewport_AffectReturnValuePassedIn( rv, renderTarget, sgCamera );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromViewportToCamera_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return transformFromViewportToCamera( new edu.cmu.cs.dennisc.math.Vector4(), xyzw, renderTarget, sgCamera );
+	public static Vector4 transformFromViewportToCamera_New( Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
+		return transformFromViewportToCamera( new Vector4(), xyzw, renderTarget, sgCamera );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromCameraToViewport_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return transformFromCameraToViewport( new edu.cmu.cs.dennisc.math.Vector4(), xyzw, renderTarget, sgCamera );
+	public static Vector4 transformFromCameraToViewport_New( Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
+		return transformFromCameraToViewport( new Vector4(), xyzw, renderTarget, sgCamera );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromAWTToCamera( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static Vector4 transformFromAWTToCamera( Vector4 rv, Point p, double z, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		synchronized( s_actualViewportBuffer ) {
 			renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 			transformFromAWTToViewport( rv, p, z, s_actualViewportBuffer );
@@ -192,9 +202,9 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	private static edu.cmu.cs.dennisc.math.Vector4 s_vector4dBuffer = new edu.cmu.cs.dennisc.math.Vector4();
+	private static Vector4 s_vector4dBuffer = new Vector4();
 
-	public static java.awt.Point transformFromCameraToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public static Point transformFromCameraToAWT( Point rv, Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
 		synchronized( s_vector4dBuffer ) {
 			s_vector4dBuffer.set( xyzw );
 			synchronized( s_actualViewportBuffer ) {
@@ -206,21 +216,21 @@ public class PicturePlaneUtils {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.Point3 transformFromAWTToCamera_NewPoint3d( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		edu.cmu.cs.dennisc.math.Vector4 xyzw = transformFromAWTToCamera( new edu.cmu.cs.dennisc.math.Vector4(), p, z, renderTarget, sgCamera );
-		return new edu.cmu.cs.dennisc.math.Point3( xyzw.x / xyzw.w, xyzw.y / xyzw.w, xyzw.z / xyzw.w );
+	public static Point3 transformFromAWTToCamera_NewPoint3d( Point p, double z, RenderTarget renderTarget, AbstractCamera sgCamera ) {
+		Vector4 xyzw = transformFromAWTToCamera( new Vector4(), p, z, renderTarget, sgCamera );
+		return new Point3( xyzw.x / xyzw.w, xyzw.y / xyzw.w, xyzw.z / xyzw.w );
 	}
 
-	public static edu.cmu.cs.dennisc.math.Vector4 transformFromAWTToCamera_NewVector4d( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return transformFromAWTToCamera( new edu.cmu.cs.dennisc.math.Vector4(), p, z, renderTarget, sgCamera );
+	public static Vector4 transformFromAWTToCamera_NewVector4d( Point p, double z, RenderTarget renderTarget, AbstractCamera sgCamera ) {
+		return transformFromAWTToCamera( new Vector4(), p, z, renderTarget, sgCamera );
 	}
 
-	public static java.awt.Point transformFromCameraToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return transformFromCameraToAWT( new java.awt.Point(), xyzw, renderTarget, sgCamera );
+	public static Point transformFromCameraToAWT_New( Vector4 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
+		return transformFromCameraToAWT( new Point(), xyzw, renderTarget, sgCamera );
 	}
 
-	public static java.awt.Point transformFromCameraToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return transformFromCameraToAWT( new java.awt.Point(), new edu.cmu.cs.dennisc.math.Vector4( xyzw.x, xyzw.y, xyzw.z, 1.0 ), renderTarget, sgCamera );
+	public static Point transformFromCameraToAWT_New( Point3 xyzw, RenderTarget renderTarget, AbstractCamera sgCamera ) {
+		return transformFromCameraToAWT( new Point(), new Vector4( xyzw.x, xyzw.y, xyzw.z, 1.0 ), renderTarget, sgCamera );
 	}
 
 	//	public static edu.cmu.cs.dennisc.math.Vector4d transformFromAWTToViewport( edu.cmu.cs.dennisc.math.Vector4d rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.Camera sgCamera ) {

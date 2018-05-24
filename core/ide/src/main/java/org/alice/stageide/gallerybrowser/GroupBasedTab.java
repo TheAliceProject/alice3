@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.modelresource.GroupBasedResourceNodeTreeState;
+import org.alice.stageide.modelresource.ResourceNodeTreeState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GroupBasedTab extends TreeOwningGalleryTab {
 	public GroupBasedTab() {
-		super( java.util.UUID.fromString( "94127e69-57c8-42bd-8936-1038e6a127b0" ) );
+		super( UUID.fromString( "94127e69-57c8-42bd-8936-1038e6a127b0" ) );
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.ResourceNodeTreeState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.GroupBasedResourceNodeTreeState.getInstance();
+	public ResourceNodeTreeState getResourceNodeTreeSelectionState() {
+		return GroupBasedResourceNodeTreeState.getInstance();
 	}
 }

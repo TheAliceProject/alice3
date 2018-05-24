@@ -42,6 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.print;
 
+import edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.views.Frame;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,22 +66,22 @@ public class PrintAllOperation extends PrintOperation {
 	}
 
 	private PrintAllOperation() {
-		super( java.util.UUID.fromString( "6a205070-e8e0-48a7-a059-fff15b7350a3" ) );
+		super( UUID.fromString( "6a205070-e8e0-48a7-a059-fff15b7350a3" ) );
 	}
 
 	@Override
-	protected java.awt.print.Printable getPrintable() {
-		return new java.awt.print.Printable() {
+	protected Printable getPrintable() {
+		return new Printable() {
 			@Override
-			public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+			public int print( Graphics g, PageFormat pageFormat, int pageIndex ) throws PrinterException {
 				if( pageIndex > 0 ) {
 					return NO_SUCH_PAGE;
 				} else {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					org.lgna.croquet.views.Frame frame = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame();
+					Graphics2D g2 = (Graphics2D)g;
+					Frame frame = Application.getActiveInstance().getDocumentFrame().getFrame();
 					int width = frame.getWidth();
 					int height = frame.getHeight();
-					double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
+					double scale = PageFormatUtilities.calculateScale( pageFormat, width, height );
 					g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 					if( scale > 1.0 ) {
 						g2.scale( 1.0 / scale, 1.0 / scale );

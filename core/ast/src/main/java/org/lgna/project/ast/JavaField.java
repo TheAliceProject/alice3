@@ -43,19 +43,30 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.function.BinaryOperator;
 
 /**
  * @author Dennis Cosgrove
  */
 public class JavaField extends AbstractField {
-	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static final InitializingIfAbsentMap<FieldReflectionProxy, JavaField> mapReflectionProxyToInstance = Maps.newInitializingIfAbsentHashMap();
 
 	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {
-			return mapReflectionProxyToInstance.getInitializingIfAbsent( fieldReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( fieldReflectionProxy, new InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
 				@Override
-				public org.lgna.project.ast.JavaField initialize( org.lgna.project.ast.FieldReflectionProxy key ) {
+				public JavaField initialize( FieldReflectionProxy key ) {
 					return new JavaField( key );
 				}
 			} );
@@ -64,12 +75,12 @@ public class JavaField extends AbstractField {
 		}
 	}
 
-	public static JavaField getInstance( java.lang.reflect.Field fld ) {
+	public static JavaField getInstance( Field fld ) {
 		return getInstance( new FieldReflectionProxy( fld ) );
 	}
 
 	public static JavaField getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( declaringCls, name ) );
+		return getInstance( ReflectionUtilities.getField( declaringCls, name ) );
 	}
 
 	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
@@ -79,13 +90,13 @@ public class JavaField extends AbstractField {
 			if( this.fieldReflectionProxy.getReification() != null ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+				Logger.severe( this.fieldReflectionProxy );
 			}
 		}
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
 
@@ -99,11 +110,11 @@ public class JavaField extends AbstractField {
 	}
 
 	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+	public Visibility getVisibility() {
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			if( fld.isAnnotationPresent( org.lgna.project.annotations.FieldTemplate.class ) ) {
-				org.lgna.project.annotations.FieldTemplate propertyFieldTemplate = fld.getAnnotation( org.lgna.project.annotations.FieldTemplate.class );
+			if( fld.isAnnotationPresent( FieldTemplate.class ) ) {
+				FieldTemplate propertyFieldTemplate = fld.getAnnotation( FieldTemplate.class );
 				return propertyFieldTemplate.visibility();
 			} else {
 				return null;
@@ -120,79 +131,79 @@ public class JavaField extends AbstractField {
 
 	@Override
 	public boolean isValid() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		return fld != null;
 	}
 
 	@Override
 	public JavaType getValueType() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
 			return JavaType.getInstance( fld.getType() );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			Logger.severe( this.fieldReflectionProxy );
 			return JavaType.OBJECT_TYPE;
 		}
 	}
 
 	@Override
 	public AccessLevel getAccessLevel() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
 			return AccessLevel.getValueFromModifiers( fld.getModifiers() );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			Logger.severe( this.fieldReflectionProxy );
 			return AccessLevel.PRIVATE;
 		}
 	}
 
 	@Override
 	public boolean isStatic() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
+			return Modifier.isStatic( fld.getModifiers() );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			Logger.severe( this.fieldReflectionProxy );
 			return false;
 		}
 	}
 
 	@Override
 	public boolean isFinal() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			return java.lang.reflect.Modifier.isFinal( fld.getModifiers() );
+			return Modifier.isFinal( fld.getModifiers() );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			Logger.severe( this.fieldReflectionProxy );
 			return false;
 		}
 	}
 
 	@Override
 	public boolean isVolatile() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			return java.lang.reflect.Modifier.isVolatile( fld.getModifiers() );
+			return Modifier.isVolatile( fld.getModifiers() );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			Logger.severe( this.fieldReflectionProxy );
 			return false;
 		}
 	}
 
 	@Override
 	public boolean isTransient() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
+		Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
-			return java.lang.reflect.Modifier.isTransient( fld.getModifiers() );
+			return Modifier.isTransient( fld.getModifiers() );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			Logger.severe( this.fieldReflectionProxy );
 			return false;
 		}
 	}
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		JavaField other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaField.class );
+		JavaField other = ClassUtilities.getInstance( o, JavaField.class );
 		if( other != null ) {
 			return this.fieldReflectionProxy.equals( other.fieldReflectionProxy );
 		} else {

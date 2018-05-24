@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.Composite;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class FormPanel extends MigPanel {
 	private java.util.List<LabeledFormRow> rows;
 
-	public FormPanel( org.lgna.croquet.Composite<?> composite ) {
+	public FormPanel( Composite<?> composite ) {
 		super( composite, "", "[right][left,grow]", "" );
 	}
 
@@ -64,7 +67,7 @@ public abstract class FormPanel extends MigPanel {
 		if( this.rows != null ) {
 			//pass
 		} else {
-			this.rows = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			this.rows = Lists.newLinkedList();
 			this.appendRows( this.rows );
 			for( FormRow row : rows ) {
 				row.addComponents( this );

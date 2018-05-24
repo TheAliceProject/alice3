@@ -42,20 +42,42 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.EventObjectTrigger;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.Frame;
+import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.util.EventObject;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.croquet.views.Panel> {
+public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
 	private class LaunchFocusWindowOperation extends Operation {
-		private final org.lgna.croquet.views.Frame window = new org.lgna.croquet.views.Frame();
-		private final java.awt.event.WindowFocusListener windowFocusListener = new java.awt.event.WindowFocusListener() {
+		private final Frame window = new Frame();
+		private final WindowFocusListener windowFocusListener = new WindowFocusListener() {
 			@Override
-			public void windowGainedFocus( java.awt.event.WindowEvent e ) {
+			public void windowGainedFocus( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowLostFocus( java.awt.event.WindowEvent e ) {
-				javax.swing.JFrame window = (javax.swing.JFrame)e.getComponent();
+			public void windowLostFocus( WindowEvent e ) {
+				JFrame window = (JFrame)e.getComponent();
 				if( window.isUndecorated() ) {
 					//note: dialog operations or browser operations will need to be addressed 
 					e.getComponent().setVisible( false );
@@ -63,45 +85,45 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 			}
 		};
 
-		private final java.awt.event.ActionListener decoratedListener = new java.awt.event.ActionListener() {
+		private final ActionListener decoratedListener = new ActionListener() {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
+			public void actionPerformed( ActionEvent e ) {
 				window.setUndecorated( window.isUndecorated() == false );
 			}
 		};
 
 		public LaunchFocusWindowOperation() {
-			super( Application.INFORMATION_GROUP, java.util.UUID.fromString( "91cee3e8-4f91-4eb2-be0e-fb86498a2031" ) );
+			super( Application.INFORMATION_GROUP, UUID.fromString( "91cee3e8-4f91-4eb2-be0e-fb86498a2031" ) );
 			window.getAwtComponent().addWindowFocusListener( this.windowFocusListener );
 			window.getAwtComponent().setUndecorated( true );
-			window.getAwtComponent().getRootPane().registerKeyboardAction( this.decoratedListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
+			window.getAwtComponent().getRootPane().registerKeyboardAction( this.decoratedListener, KeyStroke.getKeyStroke( KeyEvent.VK_F2, 0 ), JComponent.WHEN_IN_FOCUSED_WINDOW );
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return FocusWindowComposite.this.getClassUsedForLocalization();
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.views.SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
+		protected void perform( Transaction transaction, Trigger trigger ) {
+			SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
 			if( view.getParent() == null ) {
 				window.getContentPane().addCenterComponent( view );
 			}
 			window.pack();
-			if( trigger instanceof org.lgna.croquet.triggers.EventObjectTrigger ) {
-				org.lgna.croquet.triggers.EventObjectTrigger<java.util.EventObject> eventObjectTrigger = (org.lgna.croquet.triggers.EventObjectTrigger<java.util.EventObject>)trigger;
-				java.util.EventObject eventObject = eventObjectTrigger.getEvent();
+			if( trigger instanceof EventObjectTrigger ) {
+				EventObjectTrigger<EventObject> eventObjectTrigger = (EventObjectTrigger<EventObject>)trigger;
+				EventObject eventObject = eventObjectTrigger.getEvent();
 				Object source = eventObject.getSource();
-				if( source instanceof java.awt.Component ) {
-					java.awt.Component awtSource = (java.awt.Component)source;
+				if( source instanceof Component ) {
+					Component awtSource = (Component)source;
 					window.setLocation( calculateLocationOnScreenForFocusWindow( awtSource, window ) );
 				}
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( trigger );
+				Logger.outln( trigger );
 			}
 			window.setVisible( true );
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			SwingUtilities.invokeLater( new Runnable() {
 				@Override
 				public void run() {
 					window.getAwtComponent().getRootPane().requestFocus();
@@ -112,7 +134,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 
 	private final LaunchFocusWindowOperation launchOperation = new LaunchFocusWindowOperation();
 
-	public FocusWindowComposite( java.util.UUID migrationId ) {
+	public FocusWindowComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -120,9 +142,9 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 		return this.launchOperation;
 	}
 
-	protected java.awt.Point calculateLocationOnScreenForFocusWindow( java.awt.Component awtSource, org.lgna.croquet.views.Frame focusWindow ) {
-		java.awt.Point p = awtSource.getLocationOnScreen();
+	protected Point calculateLocationOnScreenForFocusWindow( Component awtSource, Frame focusWindow ) {
+		Point p = awtSource.getLocationOnScreen();
 		final int PAD = 8;
-		return new java.awt.Point( p.x + awtSource.getWidth() + PAD, p.y );
+		return new Point( p.x + awtSource.getWidth() + PAD, p.y );
 	}
 }

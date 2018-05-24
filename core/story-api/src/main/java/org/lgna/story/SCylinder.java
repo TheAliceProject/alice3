@@ -44,15 +44,16 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.CylinderImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SCylinder extends SShape {
-	private final org.lgna.story.implementation.CylinderImp implementation = new org.lgna.story.implementation.CylinderImp( this );
+	private final CylinderImp implementation = new CylinderImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.CylinderImp getImplementation() {
+	/* package-private */CylinderImp getImplementation() {
 		return this.implementation;
 	}
 

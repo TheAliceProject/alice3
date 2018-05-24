@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.nebulous;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.util.texture.TextureData;
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
@@ -50,12 +52,12 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
  * @author alice
  * 
  */
-public class NebulousTextureAdapter extends GlrTexture<edu.cmu.cs.dennisc.nebulous.NebulousTexture> {
+public class NebulousTextureAdapter extends GlrTexture<NebulousTexture> {
 
 	private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
 
 	@Override
-	protected com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+	protected TextureData newTextureData( GL gl, TextureData currentTextureData ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
 

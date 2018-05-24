@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.capture.ImageCaptureComposite;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class CaptureMenuModel extends PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static CaptureMenuModel instance = new CaptureMenuModel();
 	}
@@ -55,10 +60,10 @@ public class CaptureMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	}
 
 	private CaptureMenuModel() {
-		super( java.util.UUID.fromString( "e21b65a4-1989-4b66-a5c8-81795cac3fba" ),
+		super( UUID.fromString( "e21b65a4-1989-4b66-a5c8-81795cac3fba" ),
 				//org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureEntireWindowOperation().getMenuItemPrepModel(),
-				org.alice.ide.capture.ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(),
+				ImageCaptureComposite.getInstance().getCaptureRectangleOperation().getMenuItemPrepModel(),
 				SEPARATOR,
-				org.alice.ide.capture.ImageCaptureComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+				ImageCaptureComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
 	}
 }

@@ -42,30 +42,36 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BooleanState;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ToggleButtonLabelCombo extends org.lgna.croquet.views.Panel {
-	private final org.lgna.croquet.views.ToggleButton toggleButton;
-	private final org.lgna.croquet.views.AbstractLabel label;
+public class ToggleButtonLabelCombo extends Panel {
+	private final ToggleButton toggleButton;
+	private final AbstractLabel label;
 
-	public ToggleButtonLabelCombo( org.lgna.croquet.BooleanState state ) {
+	public ToggleButtonLabelCombo( BooleanState state ) {
 		this.toggleButton = state.createToggleButton();
 		this.label = state.getSidekickLabel().createLabel();
 		this.internalAddComponent( this.toggleButton );
 		this.internalAddComponent( this.label );
 	}
 
-	public org.lgna.croquet.views.ToggleButton getToggleButton() {
+	public ToggleButton getToggleButton() {
 		return this.toggleButton;
 	}
 
-	public org.lgna.croquet.views.AbstractLabel getLabel() {
+	public AbstractLabel getLabel() {
 		return this.label;
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new BoxLayout( jPanel, BoxLayout.PAGE_AXIS );
 	}
 }

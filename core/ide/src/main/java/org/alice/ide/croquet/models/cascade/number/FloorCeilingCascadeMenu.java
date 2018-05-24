@@ -43,10 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FloorCeilingCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
+public class FloorCeilingCascadeMenu extends ExpressionCascadeMenu<Expression> {
 	private static class SingletonHolder {
 		private static FloorCeilingCascadeMenu instance = new FloorCeilingCascadeMenu();
 	}
@@ -56,14 +65,14 @@ public class FloorCeilingCascadeMenu extends org.alice.ide.croquet.models.cascad
 	}
 
 	private FloorCeilingCascadeMenu() {
-		super( java.util.UUID.fromString( "08742482-baf4-4b41-851a-b00e4af231ce" ) );
+		super( UUID.fromString( "08742482-baf4-4b41-851a-b00e4af231ce" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "rint", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "ceil", Double.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "floor", Double.TYPE ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "rint", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "ceil", Double.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "floor", Double.TYPE ) );
 	}
 }

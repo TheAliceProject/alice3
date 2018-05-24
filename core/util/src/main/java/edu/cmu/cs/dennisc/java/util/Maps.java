@@ -42,6 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,12 +55,12 @@ public class Maps {
 		throw new Error();
 	}
 
-	public static <K, V> java.util.HashMap<K, V> newHashMap() {
-		return new java.util.HashMap<K, V>();
+	public static <K, V> HashMap<K, V> newHashMap() {
+		return new HashMap<K, V>();
 	}
 
-	public static <K, V> java.util.WeakHashMap<K, V> newWeakHashMap() {
-		return new java.util.WeakHashMap<K, V>();
+	public static <K, V> WeakHashMap<K, V> newWeakHashMap() {
+		return new WeakHashMap<K, V>();
 	}
 
 	public static <K, V> InitializingIfAbsentMap<K, V> newInitializingIfAbsentHashMap() {
@@ -70,8 +75,8 @@ public class Maps {
 		return new InitializingIfAbsentMapHashMap<K, K2, E2>();
 	}
 
-	public static <A, B> java.util.HashMap<B, A> newInverseHashMap( java.util.Map<A, B> map ) {
-		java.util.HashMap<B, A> rv = newHashMap();
+	public static <A, B> HashMap<B, A> newInverseHashMap( Map<A, B> map ) {
+		HashMap<B, A> rv = newHashMap();
 		for( A a : map.keySet() ) {
 			B b = map.get( a );
 			rv.put( b, a );
@@ -79,7 +84,7 @@ public class Maps {
 		return rv;
 	}
 
-	public static <K, V> java.util.concurrent.ConcurrentHashMap<K, V> newConcurrentHashMap() {
-		return new java.util.concurrent.ConcurrentHashMap<K, V>();
+	public static <K, V> ConcurrentHashMap<K, V> newConcurrentHashMap() {
+		return new ConcurrentHashMap<K, V>();
 	}
 }

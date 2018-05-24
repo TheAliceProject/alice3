@@ -42,16 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ui.imageeditor;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImagePane extends javax.swing.JPanel {
-	private java.awt.Image m_image = null;
+public class ImagePane extends JPanel {
+	private Image m_image = null;
 	public final int UNSPECIFIED = -1;
 	private int m_desiredWidth = UNSPECIFIED;
 	private int m_desiredHeight = UNSPECIFIED;
 
-	protected void paintImage( java.awt.Graphics g, int x, int y, int width, int height ) {
+	protected void paintImage( Graphics g, int x, int y, int width, int height ) {
 		if( m_image != null ) {
 			g.drawImage( m_image, x, y, width, height, this );
 		} else {
@@ -63,7 +70,7 @@ public class ImagePane extends javax.swing.JPanel {
 	private int getDesiredImageWidth() {
 		if( m_desiredWidth == UNSPECIFIED ) {
 			if( m_image != null ) {
-				return edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( m_image );
+				return ImageUtilities.getWidth( m_image );
 			} else {
 				return 512;
 			}
@@ -75,7 +82,7 @@ public class ImagePane extends javax.swing.JPanel {
 	private int getDesiredImageHeight() {
 		if( m_desiredHeight == UNSPECIFIED ) {
 			if( m_image != null ) {
-				return edu.cmu.cs.dennisc.image.ImageUtilities.getHeight( m_image );
+				return ImageUtilities.getHeight( m_image );
 			} else {
 				return 512;
 			}
@@ -90,9 +97,9 @@ public class ImagePane extends javax.swing.JPanel {
 	}
 
 	@Override
-	public final void paintComponent( java.awt.Graphics g ) {
+	public final void paintComponent( Graphics g ) {
 		g.setColor( getBackground() );
-		java.awt.Rectangle r = g.getClipBounds();
+		Rectangle r = g.getClipBounds();
 		g.fillRect( r.x, r.y, r.width, r.height );
 
 		int componentWidth = getWidth();
@@ -106,11 +113,11 @@ public class ImagePane extends javax.swing.JPanel {
 		paintImage( g, imageX, imageY, imageWidth, imageHeight );
 	}
 
-	public java.awt.Image accessImage() {
+	public Image accessImage() {
 		return m_image;
 	}
 
-	public void setImage( java.awt.Image image ) {
+	public void setImage( Image image ) {
 		m_image = image;
 		repaint();
 	}

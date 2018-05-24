@@ -42,16 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.croquet.components.AbstractListPropertyPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.NodeListProperty;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode>, org.lgna.project.ast.AbstractNode> {
-	public DefaultNodeListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.AbstractNode> property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+public class DefaultNodeListPropertyPane extends AbstractListPropertyPane<NodeListProperty<AbstractNode>, AbstractNode> {
+	public DefaultNodeListPropertyPane( AstI18nFactory factory, NodeListProperty<AbstractNode> property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( org.lgna.project.ast.AbstractNode node ) {
+	protected AwtComponentView<?> createComponent( AbstractNode node ) {
 		return this.getFactory().createComponent( node );
 	}
 }

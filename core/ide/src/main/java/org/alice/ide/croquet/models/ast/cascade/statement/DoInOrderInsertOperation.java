@@ -43,15 +43,23 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> mapEnveloping = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> mapInsert = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, DoInOrderInsertOperation> mapEnveloping = Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, DoInOrderInsertOperation> mapInsert = Maps.newHashMap();
 
-	public static synchronized DoInOrderInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
+	public static synchronized DoInOrderInsertOperation getInstance( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		Map<BlockStatementIndexPair, DoInOrderInsertOperation> map = isEnveloping ? mapEnveloping : mapInsert;
 		assert blockStatementIndexPair != null;
 		DoInOrderInsertOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -63,12 +71,12 @@ public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
 		return rv;
 	}
 
-	private DoInOrderInsertOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		super( java.util.UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair, isEnveloping );
+	private DoInOrderInsertOperation( BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		super( UUID.fromString( "6f297fb3-8618-4d6c-bfdc-63c8320471f7" ), blockStatementIndexPair, isEnveloping );
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
-		return org.lgna.project.ast.AstUtilities.createDoInOrder();
+	protected final Statement createStatement() {
+		return AstUtilities.createDoInOrder();
 	}
 }

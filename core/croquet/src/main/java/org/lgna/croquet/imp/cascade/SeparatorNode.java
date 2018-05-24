@@ -43,15 +43,17 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.CascadeSeparator;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SeparatorNode extends AbstractItemNode<Void, Void, org.lgna.croquet.CascadeSeparator> {
-	public static SeparatorNode createInstance( org.lgna.croquet.CascadeSeparator model ) {
+public class SeparatorNode extends AbstractItemNode<Void, Void, CascadeSeparator> {
+	public static SeparatorNode createInstance( CascadeSeparator model ) {
 		return new SeparatorNode( model );
 	}
 
-	private SeparatorNode( org.lgna.croquet.CascadeSeparator model ) {
+	private SeparatorNode( CascadeSeparator model ) {
 		super( model );
 	}
 

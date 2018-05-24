@@ -42,35 +42,46 @@
  */
 package focuswindow;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import focuswindow.views.ExampleMainPane;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public class ExampleMainComposite extends SimpleComposite<Panel> {
 	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
-	private final org.lgna.croquet.BooleanState questionState = this.createBooleanState( "questionState", true );
+	private final BooleanState questionState = this.createBooleanState( "questionState", true );
 
 	public ExampleMainComposite() {
-		super( java.util.UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
+		super( UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
 	}
 
 	public ExampleFocusWindowComposite getFocusWindow() {
 		return this.focusWindow;
 	}
 
-	public org.lgna.croquet.BooleanState getQuestionState() {
+	public BooleanState getQuestionState() {
 		return this.questionState;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new focuswindow.views.ExampleMainPane( this );
+	protected Panel createView() {
+		return new ExampleMainPane( this );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		SimpleApplication app = new SimpleApplication();
+		DocumentFrame documentFrame = app.getDocumentFrame();
+		Frame frame = documentFrame.getFrame();
 		frame.setMainComposite( new ExampleMainComposite() );
 		frame.pack();
 		frame.setVisible( true );

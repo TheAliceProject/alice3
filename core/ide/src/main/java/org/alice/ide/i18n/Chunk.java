@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.i18n;
 
+import edu.cmu.cs.dennisc.java.lang.AbstractObjectWithRevealingToString;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Chunk extends edu.cmu.cs.dennisc.java.lang.AbstractObjectWithRevealingToString {
+public abstract class Chunk extends AbstractObjectWithRevealingToString {
 }

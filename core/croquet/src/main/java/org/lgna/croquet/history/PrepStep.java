@@ -42,20 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Step<M> {
-	public PrepStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
+public abstract class PrepStep<M extends PrepModel> extends Step<M> {
+	public PrepStep( Transaction parent, M model, Trigger trigger ) {
 		super( parent, model, trigger );
 		if( parent != null ) {
 			parent.addPrepStep( this );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "PrepStep transaction is null" );
+			Logger.severe( "PrepStep transaction is null" );
 		}
 	}
 
-	public void cancelTransaction( org.lgna.croquet.triggers.Trigger trigger ) {
+	public void cancelTransaction( Trigger trigger ) {
 		CompletionStep step = CompletionStep.createAndAddToTransaction( this.getOwner(), null, trigger, null );
 		step.cancel();
 	}

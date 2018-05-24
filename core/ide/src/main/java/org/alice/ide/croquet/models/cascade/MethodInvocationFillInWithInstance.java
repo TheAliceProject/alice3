@@ -42,23 +42,39 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AbstractParameter;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks<MethodInvocation> {
+	private static InitializingIfAbsentMap<JavaMethod, MethodInvocationFillInWithInstance> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static MethodInvocationFillInWithInstance getInstance( org.lgna.project.ast.JavaMethod code ) {
-		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance>() {
+	public static MethodInvocationFillInWithInstance getInstance( JavaMethod code ) {
+		return map.getInitializingIfAbsent( code, new InitializingIfAbsentMap.Initializer<JavaMethod, MethodInvocationFillInWithInstance>() {
 			@Override
-			public MethodInvocationFillInWithInstance initialize( org.lgna.project.ast.JavaMethod key ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = key.getDeclaringType();
-				java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = key.getRequiredParameters();
-				org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks = new org.lgna.croquet.CascadeBlank[ 1 + parameters.size() ];
+			public MethodInvocationFillInWithInstance initialize( JavaMethod key ) {
+				AbstractType<?, ?, ?> type = key.getDeclaringType();
+				List<? extends AbstractParameter> parameters = key.getRequiredParameters();
+				CascadeBlank<Expression>[] blanks = new CascadeBlank[ 1 + parameters.size() ];
 				blanks[ 0 ] = ExpressionBlank.getBlankForType( type );
 				int i = 1;
-				for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
-					blanks[ i ] = org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter );
+				for( AbstractParameter parameter : parameters ) {
+					blanks[ i ] = ParameterBlank.getInstance( parameter );
 					i++;
 				}
 				return new MethodInvocationFillInWithInstance( key, blanks );
@@ -66,23 +82,23 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
 		} );
 	}
 
-	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private final MethodInvocation transientValue;
 
-	private MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod method, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( java.util.UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ), blanks );
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = method.getDeclaringType();
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( new org.alice.ide.ast.EmptyExpression( type ), method );
+	private MethodInvocationFillInWithInstance( JavaMethod method, CascadeBlank<Expression>... blanks ) {
+		super( UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ), blanks );
+		AbstractType<?, ?, ?> type = method.getDeclaringType();
+		this.transientValue = IncompleteAstUtilities.createIncompleteMethodInvocation( new EmptyExpression( type ), method );
 	}
 
 	@Override
-	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
-		org.lgna.project.ast.Expression[] argumentExpressions = new org.lgna.project.ast.Expression[ expressions.length - 1 ];
+	protected MethodInvocation createValue( Expression[] expressions ) {
+		Expression[] argumentExpressions = new Expression[ expressions.length - 1 ];
 		System.arraycopy( expressions, 1, argumentExpressions, 0, argumentExpressions.length );
-		return org.lgna.project.ast.AstUtilities.createMethodInvocation( expressions[ 0 ], this.transientValue.method.getValue(), argumentExpressions );
+		return AstUtilities.createMethodInvocation( expressions[ 0 ], this.transientValue.method.getValue(), argumentExpressions );
 	}
 
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
+	public MethodInvocation getTransientValue( ItemNode<? super MethodInvocation, Expression> step ) {
 		return this.transientValue;
 	}
 }

@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.preferences;
 
+import org.lgna.croquet.Application;
+
+import java.util.UUID;
+
 /**
  * @author Kyle Harms, Dennis Cosgrove
  */
@@ -58,8 +62,8 @@ public class UserProjectsDirectoryState extends DirectoryState {
 
 	private UserProjectsDirectoryState() {
 		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ),
+				Application.DOCUMENT_UI_GROUP,
+				UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ),
 				DEFAULT_VALUE );
 	}
 

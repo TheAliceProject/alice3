@@ -45,108 +45,138 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.codec.BufferUtilities;
+import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 //todo: clean up
-public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
+public abstract class Element implements InstancePropertyOwner, ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
-	private java.util.List<InstanceProperty<?>> m_properties = null;
+	private List<InstanceProperty<?>> m_properties = null;
 
-	private java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> m_propertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.PropertyListener>();
-	private java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> m_listPropertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>>();
+	private List<PropertyListener> m_propertyListeners = new LinkedList<PropertyListener>();
+	private List<ListPropertyListener<?>> m_listPropertyListeners = new LinkedList<ListPropertyListener<?>>();
 
-	public void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+	public void addPropertyListener( PropertyListener propertyListener ) {
 		m_propertyListeners.add( propertyListener );
 	}
 
-	public void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+	public void removePropertyListener( PropertyListener propertyListener ) {
 		m_propertyListeners.remove( propertyListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener> accessPropertyListeners() {
+	public Iterable<PropertyListener> accessPropertyListeners() {
 		return m_propertyListeners;
 	}
 
 	@Override
-	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
+	public void firePropertyChanging( PropertyEvent e ) {
+		for( PropertyListener propertyListener : m_propertyListeners ) {
 			propertyListener.propertyChanging( e );
 		}
 	}
 
 	@Override
-	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
+	public void firePropertyChanged( PropertyEvent e ) {
+		for( PropertyListener propertyListener : m_propertyListeners ) {
 			propertyListener.propertyChanged( e );
 		}
 	}
 
-	public void addListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> listPropertyListener ) {
+	public void addListPropertyListener( ListPropertyListener<?> listPropertyListener ) {
 		m_listPropertyListeners.add( listPropertyListener );
 	}
 
-	public void removeListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> listPropertyListener ) {
+	public void removeListPropertyListener( ListPropertyListener<?> listPropertyListener ) {
 		m_listPropertyListeners.remove( listPropertyListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> accessListPropertyListeners() {
+	public Iterable<ListPropertyListener<?>> accessListPropertyListeners() {
 		return m_listPropertyListeners;
 	}
 
 	@Override
-	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireAdding( AddListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.adding( e );
 		}
 	}
 
 	@Override
-	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireAdded( AddListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.added( e );
 		}
 	}
 
 	@Override
-	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireClearing( ClearListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.clearing( e );
 		}
 	}
 
 	@Override
-	public void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireCleared( ClearListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.cleared( e );
 		}
 	}
 
 	@Override
-	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireRemoving( RemoveListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.removing( e );
 		}
 	}
 
 	@Override
-	public void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireRemoved( RemoveListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.removed( e );
 		}
 	}
 
 	@Override
-	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireSetting( SetListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.setting( e );
 		}
 	}
 
 	@Override
-	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+	public void fireSet( SetListPropertyEvent e ) {
+		for( ListPropertyListener<?> l : m_listPropertyListeners ) {
 			l.set( e );
 		}
 	}
@@ -156,26 +186,26 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 		//todo: remove
 		name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
 		try {
-			java.lang.reflect.Field field = getClass().getField( name );
-			return (InstanceProperty<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+			Field field = getClass().getField( name );
+			return (InstanceProperty<?>)ReflectionUtilities.get( field, this );
 		} catch( NoSuchFieldException nsfe ) {
 			return null;
 		}
 	}
 
 	@Override
-	public java.util.List<InstanceProperty<?>> getProperties() {
-		Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();
+	public List<InstanceProperty<?>> getProperties() {
+		Class<? extends InstancePropertyOwner> cls = getClass();
 		if( m_properties == null ) {
-			m_properties = new java.util.LinkedList<InstanceProperty<?>>();
-			for( java.lang.reflect.Field field : cls.getFields() ) {
+			m_properties = new LinkedList<InstanceProperty<?>>();
+			for( Field field : cls.getFields() ) {
 				int modifiers = field.getModifiers();
-				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+				if( Modifier.isPublic( modifiers ) ) {
+					if( Modifier.isStatic( modifiers ) ) {
 						//pass
 					} else {
 						if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
-							InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+							InstanceProperty instanceProperty = (InstanceProperty)ReflectionUtilities.get( field, this );
 							assert instanceProperty.getOwner() == this;
 							m_properties.add( instanceProperty );
 						}
@@ -188,14 +218,14 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 
 	@Override
 	public String lookupNameFor( InstanceProperty<?> instanceProperty ) {
-		for( java.lang.reflect.Field field : getClass().getFields() ) {
+		for( Field field : getClass().getFields() ) {
 			if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
 				int modifiers = field.getModifiers();
-				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+				if( Modifier.isPublic( modifiers ) ) {
+					if( Modifier.isStatic( modifiers ) ) {
 						//pass
 					} else {
-						if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this ) == instanceProperty ) {
+						if( ReflectionUtilities.get( field, this ) == instanceProperty ) {
 							return field.getName();
 						}
 					}
@@ -205,26 +235,26 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 		return null;
 	}
 
-	private Object decodeObject( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Class valueCls, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map ) {
+	private Object decodeObject( BinaryDecoder binaryDecoder, Class valueCls, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
 		Object rv;
-		if( edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
+		if( BinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 			rv = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
+		} else if( ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
 			rv = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map );
-		} else if( java.nio.ByteBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeByteBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-		} else if( java.nio.CharBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeCharBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-		} else if( java.nio.ShortBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeShortBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-		} else if( java.nio.IntBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeIntBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-		} else if( java.nio.LongBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeLongBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-		} else if( java.nio.FloatBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeFloatBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-		} else if( java.nio.DoubleBuffer.class.isAssignableFrom( valueCls ) ) {
-			rv = edu.cmu.cs.dennisc.codec.BufferUtilities.decodeDoubleBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( ByteBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeByteBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( CharBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeCharBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( ShortBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeShortBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( IntBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeIntBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( LongBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeLongBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( FloatBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeFloatBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+		} else if( DoubleBuffer.class.isAssignableFrom( valueCls ) ) {
+			rv = BufferUtilities.decodeDoubleBuffer( binaryDecoder, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 		} else if( Boolean.class == valueCls ) {
 			rv = binaryDecoder.decodeBoolean();
 		} else if( Byte.class == valueCls ) {
@@ -253,7 +283,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 	}
 
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map ) {
+	public void decode( BinaryDecoder binaryDecoder, Map<Integer, ReferenceableBinaryEncodableAndDecodable> map ) {
 		while( true ) {
 			String propertyName = binaryDecoder.decodeString();
 			if( propertyName.length() > 0 ) {
@@ -265,7 +295,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 				if( valueClsName.equals( "" ) ) {
 					value = null;
 				} else {
-					Class valueCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( valueClsName );
+					Class valueCls = ReflectionUtilities.getClassForName( valueClsName );
 					if( valueCls.isArray() ) {
 						if( boolean[].class == valueCls ) {
 							value = binaryDecoder.decodeBooleanArray();
@@ -287,23 +317,23 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 							value = binaryDecoder.decodeStringArray();
 						} else if( Enum[].class.isAssignableFrom( valueCls ) ) {
 							value = binaryDecoder.decodeEnumArray( valueCls.getComponentType() );
-						} else if( edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
+						} else if( BinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
 							value = binaryDecoder.decodeBinaryEncodableAndDecodableArray( valueCls.getComponentType() );
-						} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
+						} else if( ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
 							value = binaryDecoder.decodeReferenceableBinaryEncodableAndDecodableArray( valueCls.getComponentType(), map );
 						} else {
 							int length = binaryDecoder.decodeInt();
-							value = java.lang.reflect.Array.newInstance( valueCls.getComponentType(), length );
+							value = Array.newInstance( valueCls.getComponentType(), length );
 							for( int i = 0; i < length; i++ ) {
-								java.lang.reflect.Array.set( value, i, decodeObject( binaryDecoder, valueCls.getComponentType(), map ) );
+								Array.set( value, i, decodeObject( binaryDecoder, valueCls.getComponentType(), map ) );
 							}
 						}
-					} else if( java.util.Collection.class.isAssignableFrom( valueCls ) ) {
+					} else if( Collection.class.isAssignableFrom( valueCls ) ) {
 						int size = binaryDecoder.decodeInt();
-						java.util.Collection collection = (java.util.Collection)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( valueCls );
+						Collection collection = (Collection)ReflectionUtilities.newInstance( valueCls );
 						for( int i = 0; i < size; i++ ) {
 							String componentTypeName = binaryDecoder.decodeString();
-							Class<?> componentType = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( componentTypeName );
+							Class<?> componentType = ReflectionUtilities.getClassForName( componentTypeName );
 							collection.add( decodeObject( binaryDecoder, componentType, map ) );
 						}
 						value = null;
@@ -318,28 +348,28 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 		}
 	}
 
-	private void encodeObject( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object value, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
+	private void encodeObject( BinaryEncoder binaryEncoder, Object value, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		if( value != null ) {
 			Class<?> valueCls = value.getClass();
 
-			if( edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
-				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable)value );
-			} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
-				binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable)value, map );
-			} else if( java.nio.ByteBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.ByteBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-			} else if( java.nio.CharBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.CharBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-			} else if( java.nio.ShortBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.ShortBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-			} else if( java.nio.IntBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.IntBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-			} else if( java.nio.LongBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.LongBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-			} else if( java.nio.FloatBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.FloatBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
-			} else if( java.nio.DoubleBuffer.class.isAssignableFrom( valueCls ) ) {
-				edu.cmu.cs.dennisc.codec.BufferUtilities.encode( binaryEncoder, (java.nio.DoubleBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			if( BinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
+				binaryEncoder.encode( (BinaryEncodableAndDecodable)value );
+			} else if( ReferenceableBinaryEncodableAndDecodable.class.isAssignableFrom( valueCls ) ) {
+				binaryEncoder.encode( (ReferenceableBinaryEncodableAndDecodable)value, map );
+			} else if( ByteBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (ByteBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			} else if( CharBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (CharBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			} else if( ShortBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (ShortBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			} else if( IntBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (IntBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			} else if( LongBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (LongBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			} else if( FloatBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (FloatBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
+			} else if( DoubleBuffer.class.isAssignableFrom( valueCls ) ) {
+				BufferUtilities.encode( binaryEncoder, (DoubleBuffer)value, IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS );
 			} else if( Boolean.class == valueCls ) {
 				binaryEncoder.encode( (Boolean)value );
 			} else if( Byte.class == valueCls ) {
@@ -369,7 +399,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
+	public void encode( BinaryEncoder binaryEncoder, Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		for( InstanceProperty<?> property : getProperties() ) {
 			// todo?
 			// if( property.isTransient() ) {
@@ -401,19 +431,19 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 						binaryEncoder.encode( (String[])value );
 					} else if( Enum[].class.isAssignableFrom( valueCls ) ) {
 						binaryEncoder.encode( (Enum[])value );
-					} else if( edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
-						binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable[])value );
-					} else if( edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
-						binaryEncoder.encode( (edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable[])value, map );
+					} else if( BinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
+						binaryEncoder.encode( (BinaryEncodableAndDecodable[])value );
+					} else if( ReferenceableBinaryEncodableAndDecodable[].class.isAssignableFrom( valueCls ) ) {
+						binaryEncoder.encode( (ReferenceableBinaryEncodableAndDecodable[])value, map );
 					} else {
-						int length = java.lang.reflect.Array.getLength( value );
+						int length = Array.getLength( value );
 						binaryEncoder.encode( length );
 						for( int i = 0; i < length; i++ ) {
-							encodeObject( binaryEncoder, java.lang.reflect.Array.get( value, i ), map );
+							encodeObject( binaryEncoder, Array.get( value, i ), map );
 						}
 					}
-				} else if( java.util.Collection.class.isAssignableFrom( valueCls ) ) {
-					java.util.Collection<?> collection = (java.util.Collection<?>)value;
+				} else if( Collection.class.isAssignableFrom( valueCls ) ) {
+					Collection<?> collection = (Collection<?>)value;
 					int size = collection.size();
 					binaryEncoder.encode( size );
 					for( Object o : collection ) {
@@ -450,7 +480,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 									return false;
 								}
 							} else {
-								if( edu.cmu.cs.dennisc.java.util.Objects.equals( thisValue, otherValue ) ) {
+								if( Objects.equals( thisValue, otherValue ) ) {
 									//pass
 								} else {
 									return false;
@@ -461,7 +491,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 						}
 						propertyCount++;
 					} catch( Exception e ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, this, other );
+						Logger.throwable( e, this, other );
 						return false;
 					}
 				}

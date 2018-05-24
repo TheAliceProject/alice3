@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.integer;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.common.RandomUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.MethodInvocation> {
+public class RandomCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
 	private static class SingletonHolder {
 		private static RandomCascadeMenu instance = new RandomCascadeMenu();
 	}
@@ -56,13 +66,13 @@ public class RandomCascadeMenu extends org.alice.ide.croquet.models.cascade.Expr
 	}
 
 	private RandomCascadeMenu() {
-		super( java.util.UUID.fromString( "d0b0e182-e766-49ba-8e10-239df62def0a" ) );
+		super( UUID.fromString( "d0b0e182-e766-49ba-8e10-239df62def0a" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextIntegerFrom0ToNExclusive", Integer.class ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextIntegerFromAToBExclusive", Integer.class, Integer.class ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( RandomUtilities.class, "nextIntegerFromAToBInclusive", Integer.class, Integer.class ) );
 	}
 }

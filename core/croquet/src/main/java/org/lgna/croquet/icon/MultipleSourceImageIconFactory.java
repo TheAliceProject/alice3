@@ -42,33 +42,44 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageIconFactory {
-	public MultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
+	public MultipleSourceImageIconFactory( int defaultIndex, ImageIcon... imageIcons ) {
 		super( defaultIndex, imageIcons );
 	}
 
-	public MultipleSourceImageIconFactory( int defaultIndex, java.net.URL... resources ) {
-		this( defaultIndex, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcons( resources ) );
+	public MultipleSourceImageIconFactory( int defaultIndex, URL... resources ) {
+		this( defaultIndex, IconUtilities.createImageIcons( resources ) );
 	}
 
-	public MultipleSourceImageIconFactory( int defaultIndex, java.awt.Image... images ) {
-		this( defaultIndex, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcons( images ) );
+	public MultipleSourceImageIconFactory( int defaultIndex, Image... images ) {
+		this( defaultIndex, IconUtilities.createImageIcons( images ) );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon( size );
+	protected Icon createIcon( Dimension size ) {
+		ImageIcon imageIcon = this.getSourceImageIcon( size );
 		if( imageIcon != null ) {
 			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
 				return imageIcon;
 			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
+				return new ScaledIcon( imageIcon, size.width, size.height );
 			}
 		} else {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
+			return new ColorIcon( Color.RED, size.width, size.height );
 		}
 	}
 }

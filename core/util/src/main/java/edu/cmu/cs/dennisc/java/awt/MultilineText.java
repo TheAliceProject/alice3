@@ -42,34 +42,49 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextAttribute;
+import java.awt.font.TextLayout;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MultilineText {
 	private class Line {
 		private String paragraph;
-		private java.awt.font.TextLayout textLayout;
+		private TextLayout textLayout;
 		private int startIndex;
 		private int endIndex;
 
-		public Line( String paragraph, java.awt.font.TextLayout textLayout, int startIndex, int endIndex ) {
+		public Line( String paragraph, TextLayout textLayout, int startIndex, int endIndex ) {
 			this.paragraph = paragraph;
 			this.textLayout = textLayout;
 			this.startIndex = startIndex;
 			this.endIndex = endIndex;
 		}
 
-		public void draw( java.awt.Graphics2D g2, float x, float y ) {
+		public void draw( Graphics2D g2, float x, float y ) {
 			g2.drawString( this.paragraph.substring( this.startIndex, this.endIndex ), x, y );
 		}
 	}
 
 	private String text;
 	private String[] paragraphs;
-	private java.awt.FontMetrics fm;
+	private FontMetrics fm;
 	private float wrapWidth;
-	private java.util.List<Line> lines;
-	private java.awt.geom.Dimension2D aggregateSize;
+	private List<Line> lines;
+	private Dimension2D aggregateSize;
 
 	public MultilineText( String text ) {
 		assert text != null;
@@ -81,32 +96,32 @@ public class MultilineText {
 		return this.text;
 	}
 
-	private void updateBoundsIfNecessary( java.awt.Graphics g, float wrapWidth ) {
+	private void updateBoundsIfNecessary( Graphics g, float wrapWidth ) {
 		assert Float.isNaN( wrapWidth ) == false;
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.font.FontRenderContext frc = g2.getFontRenderContext();
-		java.awt.FontMetrics fm = g.getFontMetrics();
+		Graphics2D g2 = (Graphics2D)g;
+		FontRenderContext frc = g2.getFontRenderContext();
+		FontMetrics fm = g.getFontMetrics();
 		if( ( this.lines == null ) || ( this.aggregateSize == null ) || ( this.fm != fm ) || ( this.wrapWidth != wrapWidth ) ) {
-			this.lines = new java.util.LinkedList<Line>();
+			this.lines = new LinkedList<Line>();
 			for( String paragraph : paragraphs ) {
 				if( paragraph.length() > 0 ) {
-					java.text.AttributedString as = new java.text.AttributedString( paragraph );
-					as.addAttribute( java.awt.font.TextAttribute.FONT, g.getFont() );
-					java.text.AttributedCharacterIterator aci = as.getIterator();
+					AttributedString as = new AttributedString( paragraph );
+					as.addAttribute( TextAttribute.FONT, g.getFont() );
+					AttributedCharacterIterator aci = as.getIterator();
 
-					java.awt.font.LineBreakMeasurer lineBreakMeasurer = new java.awt.font.LineBreakMeasurer( aci, frc );
+					LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer( aci, frc );
 					while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
 						int start = lineBreakMeasurer.getPosition();
-						java.awt.font.TextLayout textLayout = lineBreakMeasurer.nextLayout( wrapWidth );
+						TextLayout textLayout = lineBreakMeasurer.nextLayout( wrapWidth );
 						int end = lineBreakMeasurer.getPosition();
 						this.lines.add( new Line( paragraph, textLayout, start, end ) );
 					}
 				}
 			}
-			this.aggregateSize = new java.awt.Dimension( 1, 1 );
+			this.aggregateSize = new Dimension( 1, 1 );
 			if( this.lines.size() > 0 ) {
 				for( Line line : this.lines ) {
-					java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
+					Rectangle2D rect = line.textLayout.getBounds();
 					double width = Math.max( aggregateSize.getWidth(), rect.getWidth() );
 					double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
 					aggregateSize.setSize( width, height );
@@ -117,21 +132,21 @@ public class MultilineText {
 		}
 	}
 
-	public java.awt.geom.Dimension2D getDimension( java.awt.Graphics g, float wrapWidth ) {
+	public Dimension2D getDimension( Graphics g, float wrapWidth ) {
 		this.updateBoundsIfNecessary( g, wrapWidth );
 		return this.aggregateSize;
 	}
 
-	public void paint( java.awt.Graphics g, float wrapWidth, TextAlignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
+	public void paint( Graphics g, float wrapWidth, TextAlignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
 		this.updateBoundsIfNecessary( g, wrapWidth );
-		java.awt.geom.Dimension2D size = this.getDimension( g, wrapWidth );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		Dimension2D size = this.getDimension( g, wrapWidth );
+		Graphics2D g2 = (Graphics2D)g;
 		float x = (float)xBound;
 		float y = (float)( yBound + ( ( heightBound - size.getHeight() ) * 0.5 ) );
 		for( Line line : this.lines ) {
 			y += line.textLayout.getAscent();
 
-			java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
+			Rectangle2D rect = line.textLayout.getBounds();
 			//			float xPixel = (float)(x - rect.getX());
 			//			float yPixel = (float)(y - rect.getY());
 			float xPixel = x;
@@ -148,7 +163,7 @@ public class MultilineText {
 		assert alignment != null;
 	}
 
-	public void paint( java.awt.Graphics g, float wrapWidth, TextAlignment alignment, java.awt.geom.Rectangle2D bounds ) {
+	public void paint( Graphics g, float wrapWidth, TextAlignment alignment, Rectangle2D bounds ) {
 		double x;
 		double y;
 		double width;
@@ -161,7 +176,7 @@ public class MultilineText {
 		} else {
 			x = 0;
 			y = 0;
-			java.awt.geom.Dimension2D size = this.getDimension( g, wrapWidth );
+			Dimension2D size = this.getDimension( g, wrapWidth );
 			width = size.getWidth();
 			height = size.getHeight();
 		}

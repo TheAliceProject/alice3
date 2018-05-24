@@ -42,14 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import edu.cmu.cs.dennisc.pattern.event.NameListener;
+
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
 
 public interface NameChangeListenable {
-	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener );
+	public void addNameListener( NameListener nameListener );
 
-	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener );
+	public void removeNameListener( NameListener nameListener );
 
-	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners();
+	public Collection<NameListener> getNameListeners();
 }

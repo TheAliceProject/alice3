@@ -73,17 +73,17 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
+	public SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
+	public SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
 	@Override
-	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
+	public KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
 

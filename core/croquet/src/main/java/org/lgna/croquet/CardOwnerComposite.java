@@ -43,20 +43,28 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.views.CardPanel;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croquet.views.CardPanel> {
-	private final java.util.List<Composite<?>> cards;
+public abstract class CardOwnerComposite extends AbstractComposite<CardPanel> {
+	private final List<Composite<?>> cards;
 	private Composite<?> showingCard;
 
-	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
+	public CardOwnerComposite( UUID id, Composite<?>... cards ) {
 		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( cards );
+		this.cards = Lists.newCopyOnWriteArrayList( cards );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
@@ -70,7 +78,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 			//pass
 		} else {
 			this.cards.add( card );
-			org.lgna.croquet.views.CardPanel view = this.peekView();
+			CardPanel view = this.peekView();
 			if( view != null ) {
 				view.addComposite( card );
 			}
@@ -90,7 +98,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	}
 
 	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
+	public final boolean contains( Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {
@@ -104,13 +112,13 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		}
 	}
 
-	public java.util.List<Composite<?>> getCards() {
+	public List<Composite<?>> getCards() {
 		return this.cards;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.CardPanel createView() {
-		return new org.lgna.croquet.views.CardPanel( this );
+	protected CardPanel createView() {
+		return new CardPanel( this );
 	}
 
 	@Override
@@ -122,7 +130,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	}
 
 	private synchronized void showCard( Composite<?> card, boolean isActivationDesired ) {
-		org.lgna.croquet.Composite<?> prevCard = this.getShowingCard();
+		Composite<?> prevCard = this.getShowingCard();
 		if( prevCard != card ) {
 			if( isActivationDesired ) {
 				if( this.showingCard != null ) {
@@ -136,7 +144,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 			if( this.cards.contains( this.showingCard ) ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "note: problems may result from showing a card that has not been added:", this.showingCard );
+				Logger.severe( "note: problems may result from showing a card that has not been added:", this.showingCard );
 			}
 		}
 
@@ -170,7 +178,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 
 	@Override
 	public void handlePostDeactivation() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this, this.showingCard );
+		Logger.outln( this, this.showingCard );
 		if( this.showingCard != null ) {
 			this.showingCard.handlePostDeactivation();
 		}

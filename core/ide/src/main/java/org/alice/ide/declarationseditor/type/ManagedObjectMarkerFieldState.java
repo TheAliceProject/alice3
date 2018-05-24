@@ -42,14 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.declarationseditor.type.data.ManagedObjectMarkerFieldData;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author dculyba
  * 
  */
 public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NamedUserType, ManagedObjectMarkerFieldState> map = Maps.newHashMap();
 
-	public static synchronized ManagedObjectMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized ManagedObjectMarkerFieldState getInstance( NamedUserType type ) {
 		ManagedObjectMarkerFieldState rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,7 +67,7 @@ public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
 		return rv;
 	}
 
-	private ManagedObjectMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), new org.alice.ide.declarationseditor.type.data.ManagedObjectMarkerFieldData( type ) );
+	private ManagedObjectMarkerFieldState( NamedUserType type ) {
+		super( UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), new ManagedObjectMarkerFieldData( type ) );
 	}
 }

@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Animation;
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -75,7 +78,7 @@ public abstract class PropertyOwnerImp {
 		return duration;
 	}
 
-	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	protected void perform( Animation animation, AnimationObserver animationObserver ) {
 		ProgramImp programImplementation = this.getProgram();
 		if( programImplementation != null ) {
 			programImplementation.perform( animation, animationObserver );
@@ -84,7 +87,7 @@ public abstract class PropertyOwnerImp {
 		}
 	}
 
-	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
+	protected final void perform( Animation animation ) {
 		this.perform( animation, null );
 	}
 }

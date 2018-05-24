@@ -43,9 +43,12 @@
 
 package edu.cmu.cs.dennisc.print;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Printable {
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException;
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException;
 }

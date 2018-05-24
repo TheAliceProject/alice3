@@ -43,45 +43,53 @@
 package org.alice.ide.issue;
 
 import edu.cmu.cs.dennisc.issue.Attachment;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GraphicsPropertiesAttachment implements Attachment {
-	private static org.w3c.dom.Element createXmlElement( org.w3c.dom.Document xmlDocument, String name, String value ) {
-		org.w3c.dom.Element rv = xmlDocument.createElement( name );
+	private static Element createXmlElement( Document xmlDocument, String name, String value ) {
+		Element rv = xmlDocument.createElement( name );
 		rv.appendChild( xmlDocument.createTextNode( value ) );
 		return rv;
 	}
 
-	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
-		org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "graphicsProperties" );
+	private static ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Document xmlDocument = XMLUtilities.createDocument();
+		Element xmlRootElement = xmlDocument.createElement( "graphicsProperties" );
 		xmlDocument.appendChild( xmlRootElement );
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+		ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 		if( sharedDetails != null ) {
-			org.w3c.dom.Element xmlSharedElement = xmlDocument.createElement( "sharedProperties" );
+			Element xmlSharedElement = xmlDocument.createElement( "sharedProperties" );
 			xmlRootElement.appendChild( xmlSharedElement );
 
 			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "renderer", sharedDetails.getRenderer() ) );
 			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "vendor", sharedDetails.getVendor() ) );
 			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "version", sharedDetails.getVersion() ) );
-			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "extensions", java.util.Arrays.toString( sharedDetails.getExtensions() ) ) );
+			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "extensions", Arrays.toString( sharedDetails.getExtensions() ) ) );
 		}
 		if( synchronousPickDetails != null ) {
-			org.w3c.dom.Element xmlPickElement = xmlDocument.createElement( "pickProperties" );
+			Element xmlPickElement = xmlDocument.createElement( "pickProperties" );
 			xmlRootElement.appendChild( xmlPickElement );
 
 			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickFunctioningCorrectly", Boolean.toString( synchronousPickDetails.isPickFunctioningCorrectly() ) ) );
 			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isReportingPickCanBeHardwareAccelerated", Boolean.toString( synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ) ) );
 			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickActuallyHardwareAccelerated", Boolean.toString( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) ) );
 		}
-		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, baos );
+		XMLUtilities.write( xmlDocument, baos );
 		try {
 			baos.flush();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 		return baos;

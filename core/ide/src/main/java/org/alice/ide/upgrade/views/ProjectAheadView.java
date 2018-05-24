@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.upgrade.views;
 
+import org.alice.ide.IDE;
+import org.alice.ide.upgrade.ProjectAheadDialog;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.project.Version;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectAheadView extends org.lgna.croquet.views.BorderPanel {
-	public ProjectAheadView( org.alice.ide.upgrade.ProjectAheadDialog composite ) {
+public class ProjectAheadView extends BorderPanel {
+	public ProjectAheadView( ProjectAheadDialog composite ) {
 		super( composite );
-		org.lgna.project.Version projectVersion = composite.getProjectVersion();
-		org.lgna.project.Version applicationVersion = composite.getApplicationVersion();
+		Version projectVersion = composite.getProjectVersion();
+		Version applicationVersion = composite.getApplicationVersion();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
 		sb.append( "This project appears to have been created with a newer version of " );
-		sb.append( org.alice.ide.IDE.getApplicationName() );
+		sb.append( IDE.getApplicationName() );
 		sb.append( " than your installed version:" );
 		sb.append( "<ul>" );
 		sb.append( "<li>project version: " );
@@ -66,6 +72,6 @@ public class ProjectAheadView extends org.lgna.croquet.views.BorderPanel {
 		sb.append( "You can attempt to load this project anyway, but we warned there may be problems.<p>" );
 		sb.append( "</html>" );
 
-		this.addPageStartComponent( new org.lgna.croquet.views.Label( sb.toString() ) );
+		this.addPageStartComponent( new Label( sb.toString() ) );
 	}
 }

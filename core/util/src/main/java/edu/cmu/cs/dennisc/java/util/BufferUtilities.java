@@ -43,12 +43,21 @@
 
 package edu.cmu.cs.dennisc.java.util;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+
 public class BufferUtilities {
 	private BufferUtilities() {
 		throw new AssertionError();
 	}
 
-	public static byte[] convertByteBufferToArray( java.nio.ByteBuffer buf ) {
+	public static byte[] convertByteBufferToArray( ByteBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -62,7 +71,7 @@ public class BufferUtilities {
 		}
 	}
 
-	public static char[] convertCharBufferToArray( java.nio.CharBuffer buf ) {
+	public static char[] convertCharBufferToArray( CharBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -76,7 +85,7 @@ public class BufferUtilities {
 		}
 	}
 
-	public static short[] convertShortBufferToArray( java.nio.ShortBuffer buf ) {
+	public static short[] convertShortBufferToArray( ShortBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -90,7 +99,7 @@ public class BufferUtilities {
 		}
 	}
 
-	public static int[] convertIntBufferToArray( java.nio.IntBuffer buf ) {
+	public static int[] convertIntBufferToArray( IntBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -104,7 +113,7 @@ public class BufferUtilities {
 		}
 	}
 
-	public static long[] convertLongBufferToArray( java.nio.LongBuffer buf ) {
+	public static long[] convertLongBufferToArray( LongBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -118,7 +127,7 @@ public class BufferUtilities {
 		}
 	}
 
-	public static float[] convertFloatBufferToArray( java.nio.FloatBuffer buf ) {
+	public static float[] convertFloatBufferToArray( FloatBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -132,7 +141,7 @@ public class BufferUtilities {
 		}
 	}
 
-	public static double[] convertDoubleBufferToArray( java.nio.DoubleBuffer buf ) {
+	public static double[] convertDoubleBufferToArray( DoubleBuffer buf ) {
 		if( buf.hasArray() ) {
 			return buf.array();
 		} else {
@@ -146,136 +155,136 @@ public class BufferUtilities {
 		}
 	}
 
-	public static java.nio.DoubleBuffer createDirectDoubleBuffer( double[] data ) {
+	public static DoubleBuffer createDirectDoubleBuffer( double[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.DoubleBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Double.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asDoubleBuffer();
+		DoubleBuffer buf = ByteBuffer.allocateDirect( ( Double.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() ).asDoubleBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.DoubleBuffer copyDoubleBuffer( java.nio.DoubleBuffer data ) {
+	public static DoubleBuffer copyDoubleBuffer( DoubleBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.DoubleBuffer buf = createDirectDoubleBuffer( convertDoubleBufferToArray( data ) );
+		DoubleBuffer buf = createDirectDoubleBuffer( convertDoubleBufferToArray( data ) );
 		return buf;
 	}
 
-	public static java.nio.FloatBuffer createDirectFloatBuffer( float[] data ) {
+	public static FloatBuffer createDirectFloatBuffer( float[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.FloatBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Float.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asFloatBuffer();
+		FloatBuffer buf = ByteBuffer.allocateDirect( ( Float.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() ).asFloatBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.FloatBuffer copyFloatBuffer( java.nio.FloatBuffer data ) {
+	public static FloatBuffer copyFloatBuffer( FloatBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.FloatBuffer buf = createDirectFloatBuffer( convertFloatBufferToArray( data ) );
+		FloatBuffer buf = createDirectFloatBuffer( convertFloatBufferToArray( data ) );
 		return buf;
 	}
 
-	public static java.nio.IntBuffer createDirectIntBuffer( int[] data ) {
+	public static IntBuffer createDirectIntBuffer( int[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.IntBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Integer.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asIntBuffer();
+		IntBuffer buf = ByteBuffer.allocateDirect( ( Integer.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() ).asIntBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.IntBuffer copyIntBuffer( java.nio.IntBuffer data ) {
+	public static IntBuffer copyIntBuffer( IntBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.IntBuffer buf = createDirectIntBuffer( convertIntBufferToArray( data ) );
+		IntBuffer buf = createDirectIntBuffer( convertIntBufferToArray( data ) );
 		return buf;
 	}
 
-	public static java.nio.LongBuffer createDirectLongBuffer( long[] data ) {
+	public static LongBuffer createDirectLongBuffer( long[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.LongBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Long.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asLongBuffer();
+		LongBuffer buf = ByteBuffer.allocateDirect( ( Long.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() ).asLongBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.LongBuffer copyLongBuffer( java.nio.LongBuffer data ) {
+	public static LongBuffer copyLongBuffer( LongBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.LongBuffer buf = createDirectLongBuffer( convertLongBufferToArray( data ) );
+		LongBuffer buf = createDirectLongBuffer( convertLongBufferToArray( data ) );
 		return buf;
 	}
 
-	public static java.nio.ByteBuffer createDirectByteBuffer( byte[] data ) {
+	public static ByteBuffer createDirectByteBuffer( byte[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Byte.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() );
+		ByteBuffer buf = ByteBuffer.allocateDirect( ( Byte.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() );
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.ByteBuffer copyByteBuffer( java.nio.ByteBuffer data ) {
+	public static ByteBuffer copyByteBuffer( ByteBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.ByteBuffer buf = createDirectByteBuffer( convertByteBufferToArray( data ) );
+		ByteBuffer buf = createDirectByteBuffer( convertByteBufferToArray( data ) );
 		return buf;
 	}
 
-	public static java.nio.CharBuffer createDirectCharBuffer( char[] data ) {
+	public static CharBuffer createDirectCharBuffer( char[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.CharBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Character.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asCharBuffer();
+		CharBuffer buf = ByteBuffer.allocateDirect( ( Character.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() ).asCharBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.CharBuffer copyCharBuffer( java.nio.CharBuffer data ) {
+	public static CharBuffer copyCharBuffer( CharBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.CharBuffer buf = createDirectCharBuffer( convertCharBufferToArray( data ) );
+		CharBuffer buf = createDirectCharBuffer( convertCharBufferToArray( data ) );
 		return buf;
 	}
 
-	public static java.nio.ShortBuffer createDirectShortBuffer( short[] data ) {
+	public static ShortBuffer createDirectShortBuffer( short[] data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.ShortBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Short.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asShortBuffer();
+		ShortBuffer buf = ByteBuffer.allocateDirect( ( Short.SIZE / 8 ) * data.length ).order( ByteOrder.nativeOrder() ).asShortBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
 		return buf;
 	}
 
-	public static java.nio.ShortBuffer copyShortBuffer( java.nio.ShortBuffer data ) {
+	public static ShortBuffer copyShortBuffer( ShortBuffer data ) {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.ShortBuffer buf = createDirectShortBuffer( convertShortBufferToArray( data ) );
+		ShortBuffer buf = createDirectShortBuffer( convertShortBufferToArray( data ) );
 		return buf;
 	}
 }

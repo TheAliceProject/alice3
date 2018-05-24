@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import javax.swing.ImageIcon;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSingleSourceImageIconFactory extends AbstractIconFactory {
-	private final javax.swing.ImageIcon sourceImageIcon;
+	private final ImageIcon sourceImageIcon;
 
-	public AbstractSingleSourceImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+	public AbstractSingleSourceImageIconFactory( ImageIcon imageIcon ) {
 		super( IsCachingDesired.FALSE );
 		this.sourceImageIcon = imageIcon;
 	}
 
-	public javax.swing.ImageIcon getSourceImageIcon() {
+	public ImageIcon getSourceImageIcon() {
 		return this.sourceImageIcon;
 	}
 

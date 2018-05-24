@@ -42,23 +42,45 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.memory;
 
-class MemoryUsageGraph extends org.lgna.croquet.views.SwingComponentView<javax.swing.JComponent> {
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.JComponent;
+import javax.swing.Timer;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.GeneralPath;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
+import java.util.List;
+import java.util.UUID;
+
+class MemoryUsageGraph extends SwingComponentView<JComponent> {
 	private static final long K = 1024;
 	//private static final long M = K*K;
-	private java.util.List<java.lang.management.MemoryUsage> samples = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private List<MemoryUsage> samples = Lists.newLinkedList();
 
 	public MemoryUsageGraph() {
-		this.setBackgroundColor( java.awt.Color.BLACK );
-		this.setForegroundColor( java.awt.Color.WHITE );
+		this.setBackgroundColor( Color.BLACK );
+		this.setForegroundColor( Color.WHITE );
 	}
 
-	public void addSample( java.lang.management.MemoryUsage heapUsage ) {
+	public void addSample( MemoryUsage heapUsage ) {
 		this.samples.add( heapUsage );
 		this.repaint();
 	}
 
-	private void paintComponent( java.awt.Graphics2D g2 ) {
-		java.awt.geom.GeneralPath path = null;
+	private void paintComponent( Graphics2D g2 ) {
+		GeneralPath path = null;
 		final int xDelta = 10;
 		float x = 0.0f;
 		int width = this.getWidth();
@@ -68,13 +90,13 @@ class MemoryUsageGraph extends org.lgna.croquet.views.SwingComponentView<javax.s
 		final int N = this.samples.size();
 		int i0 = Math.max( N - sampleCount, 0 );
 		for( int i = i0; i < N; i++ ) {
-			java.lang.management.MemoryUsage sample = this.samples.get( i );
+			MemoryUsage sample = this.samples.get( i );
 			double portion = sample.getUsed() / K / (double)( sample.getMax() / K );
 			float y = (float)( ( 1.0 - portion ) * height );
 			if( path != null ) {
 				path.lineTo( x, y );
 			} else {
-				path = new java.awt.geom.GeneralPath();
+				path = new GeneralPath();
 				path.moveTo( x, y );
 			}
 			x += xDelta;
@@ -85,12 +107,12 @@ class MemoryUsageGraph extends org.lgna.croquet.views.SwingComponentView<javax.s
 	}
 
 	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		javax.swing.JComponent rv = new javax.swing.JComponent() {
+	protected JComponent createAwtComponent() {
+		JComponent rv = new JComponent() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
+			protected void paintComponent( Graphics g ) {
 				//super.paintComponent( g );
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Graphics2D g2 = (Graphics2D)g;
 				g2.setColor( this.getBackground() );
 				g2.fill( g.getClipBounds() );
 				g2.setColor( this.getForeground() );
@@ -98,8 +120,8 @@ class MemoryUsageGraph extends org.lgna.croquet.views.SwingComponentView<javax.s
 			}
 
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( 640, 480 );
+			public Dimension getPreferredSize() {
+				return new Dimension( 640, 480 );
 			}
 		};
 		rv.setOpaque( false );
@@ -107,29 +129,29 @@ class MemoryUsageGraph extends org.lgna.croquet.views.SwingComponentView<javax.s
 	}
 };
 
-class GarbageCollectAction extends org.lgna.croquet.ActionOperation {
-	private static final org.lgna.croquet.Group SYSTEM_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "7261a372-2b8d-4862-9669-852ba5e217e6" ), "SYSTEM_GROUP" );
+class GarbageCollectAction extends ActionOperation {
+	private static final Group SYSTEM_GROUP = Group.getInstance( UUID.fromString( "7261a372-2b8d-4862-9669-852ba5e217e6" ), "SYSTEM_GROUP" );
 
 	public GarbageCollectAction() {
-		super( SYSTEM_GROUP, java.util.UUID.fromString( "04dd2f4c-31d8-400e-8467-22a810e089b4" ) );
+		super( SYSTEM_GROUP, UUID.fromString( "04dd2f4c-31d8-400e-8467-22a810e089b4" ) );
 		this.setName( "garbage collect" );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		System.gc();
 		step.finish();
 	}
 }
 
-public class MemoryUsagePanel extends org.lgna.croquet.views.BorderPanel {
+public class MemoryUsagePanel extends BorderPanel {
 	private GarbageCollectAction garbageCollectAction = new GarbageCollectAction();
 	private MemoryUsageGraph memoryUsageGraph = new MemoryUsageGraph();
-	private javax.swing.Timer timer = new javax.swing.Timer( 500, new java.awt.event.ActionListener() {
+	private Timer timer = new Timer( 500, new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			java.lang.management.MemoryMXBean memory = java.lang.management.ManagementFactory.getMemoryMXBean();
-			java.lang.management.MemoryUsage heapUsage = memory.getHeapMemoryUsage();
+		public void actionPerformed( ActionEvent e ) {
+			MemoryMXBean memory = ManagementFactory.getMemoryMXBean();
+			MemoryUsage heapUsage = memory.getHeapMemoryUsage();
 			MemoryUsagePanel.this.memoryUsageGraph.addSample( heapUsage );
 		}
 	} );

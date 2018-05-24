@@ -42,16 +42,35 @@
  *******************************************************************************/
 package org.lgna.debug.pick.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.debug.pick.croquet.views.PickDebugFrameView;
+
+import java.awt.Component;
+import java.awt.Cursor;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class PickDebugFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug.pick.croquet.views.PickDebugFrameView> {
+public final class PickDebugFrame extends FrameComposite<PickDebugFrameView> {
 	public PickDebugFrame() {
-		super( java.util.UUID.fromString( "946cd0cd-8b61-4b57-b398-c926e8c6a343" ) );
+		super( UUID.fromString( "946cd0cd-8b61-4b57-b398-c926e8c6a343" ) );
 		this.refreshOperation.setName( "refresh" );
 	}
 
-	public org.lgna.croquet.Operation getRefreshOperation() {
+	public Operation getRefreshOperation() {
 		return this.refreshOperation;
 	}
 
@@ -62,22 +81,22 @@ public final class PickDebugFrame extends org.lgna.croquet.FrameComposite<org.lg
 	//	}
 
 	@Override
-	protected org.lgna.debug.pick.croquet.views.PickDebugFrameView createView() {
-		return new org.lgna.debug.pick.croquet.views.PickDebugFrameView( this );
+	protected PickDebugFrameView createView() {
+		return new PickDebugFrameView( this );
 	}
 
-	private final org.lgna.croquet.Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
+	private final Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			java.awt.Component awtComponent = getView().getAwtComponent();//org.alice.stageide.StageIDE.getActiveInstance().getDocumentFrame().getFrame().getContentPane().getAwtComponent();
-			edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSet( awtComponent, java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.WAIT_CURSOR ) );
+		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+			Component awtComponent = getView().getAwtComponent();//org.alice.stageide.StageIDE.getActiveInstance().getDocumentFrame().getFrame().getContentPane().getAwtComponent();
+			CursorUtilities.pushAndSet( awtComponent, Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
 			try {
-				final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getOnscreenRenderTarget();
+				final OnscreenRenderTarget<?> onscreenRenderTarget = StageIDE.getActiveInstance().getSceneEditor().getOnscreenRenderTarget();
 				final int PIXELS_PER_PICK = 10;
-				final edu.cmu.cs.dennisc.render.PickResult[][] pickResults = new edu.cmu.cs.dennisc.render.PickResult[ onscreenRenderTarget.getSurfaceHeight() / PIXELS_PER_PICK ][ onscreenRenderTarget.getSurfaceWidth() / PIXELS_PER_PICK ];
+				final PickResult[][] pickResults = new PickResult[ onscreenRenderTarget.getSurfaceHeight() / PIXELS_PER_PICK ][ onscreenRenderTarget.getSurfaceWidth() / PIXELS_PER_PICK ];
 				final boolean IS_ASYCH = false;
 				if( IS_ASYCH ) {
-					final java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch( pickResults.length * pickResults[ 0 ].length );
+					final CountDownLatch latch = new CountDownLatch( pickResults.length * pickResults[ 0 ].length );
 					for( int y = 0; y < pickResults.length; y++ ) {
 						int yPixel = y * PIXELS_PER_PICK;
 						final int _y = y;
@@ -85,9 +104,9 @@ public final class PickDebugFrame extends org.lgna.croquet.FrameComposite<org.lg
 							int xPixel = x * PIXELS_PER_PICK;
 							//pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
 							final int _x = x;
-							onscreenRenderTarget.getAsynchronousPicker().pickFrontMost( xPixel, yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, null, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+							onscreenRenderTarget.getAsynchronousPicker().pickFrontMost( xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED, null, new PickFrontMostObserver() {
 								@Override
-								public void done( edu.cmu.cs.dennisc.render.PickResult result ) {
+								public void done( PickResult result ) {
 									pickResults[ _y ][ _x ] = result;
 									latch.countDown();
 								}
@@ -104,13 +123,13 @@ public final class PickDebugFrame extends org.lgna.croquet.FrameComposite<org.lg
 						int yPixel = y * PIXELS_PER_PICK;
 						for( int x = 0; x < pickResults[ y ].length; x++ ) {
 							int xPixel = x * PIXELS_PER_PICK;
-							pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
+							pickResults[ y ][ x ] = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( xPixel, yPixel, PickSubElementPolicy.NOT_REQUIRED );
 						}
 					}
 				}
 				getView().setPickResults( pickResults );
 			} finally {
-				edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( awtComponent );
+				CursorUtilities.popAndSet( awtComponent );
 			}
 			return null;
 		}

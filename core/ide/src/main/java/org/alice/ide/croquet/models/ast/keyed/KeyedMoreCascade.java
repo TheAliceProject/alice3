@@ -43,13 +43,25 @@
 
 package org.alice.ide.croquet.models.ast.keyed;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.ImmutableCascade;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.ArgumentOwner;
+import org.lgna.project.ast.JavaKeyedArgument;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedMoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.JavaKeyedArgument> {
-	private static java.util.Map<org.lgna.project.ast.ArgumentOwner, KeyedMoreCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class KeyedMoreCascade extends ImmutableCascade<JavaKeyedArgument> {
+	private static Map<ArgumentOwner, KeyedMoreCascade> map = Maps.newHashMap();
 
-	public static synchronized KeyedMoreCascade getInstance( org.lgna.project.ast.ArgumentOwner argumentOwner ) {
+	public static synchronized KeyedMoreCascade getInstance( ArgumentOwner argumentOwner ) {
 		KeyedMoreCascade rv = map.get( argumentOwner );
 		if( rv != null ) {
 			//pass
@@ -60,17 +72,17 @@ public class KeyedMoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna
 		return rv;
 	}
 
-	private final org.lgna.project.ast.ArgumentOwner argumentOwner;
+	private final ArgumentOwner argumentOwner;
 
-	private KeyedMoreCascade( org.lgna.project.ast.ArgumentOwner argumentOwner ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), org.lgna.project.ast.JavaKeyedArgument.class, KeyedBlank.getInstance( argumentOwner.getKeyedArgumentsProperty() ) );
+	private KeyedMoreCascade( ArgumentOwner argumentOwner ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "bd6e2ff6-f27a-4197-88a2-af25111eab40" ), JavaKeyedArgument.class, KeyedBlank.getInstance( argumentOwner.getKeyedArgumentsProperty() ) );
 		this.argumentOwner = argumentOwner;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.JavaKeyedArgument>> completionStep, org.lgna.project.ast.JavaKeyedArgument[] values ) {
-		org.lgna.project.ast.JavaKeyedArgument javaKeyedArgument = values[ 0 ];
+	protected AddKeyedArgumentEdit createEdit( CompletionStep<Cascade<JavaKeyedArgument>> completionStep, JavaKeyedArgument[] values ) {
+		JavaKeyedArgument javaKeyedArgument = values[ 0 ];
 		javaKeyedArgument.parameter.setValue( this.argumentOwner.getParameterOwnerProperty().getValue().getKeyedParameter() );
-		return new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, this.argumentOwner, javaKeyedArgument );
+		return new AddKeyedArgumentEdit( completionStep, this.argumentOwner, javaKeyedArgument );
 	}
 }

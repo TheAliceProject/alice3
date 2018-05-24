@@ -42,13 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThrowableUtilities {
-	private static java.io.ByteArrayOutputStream getStackTraceAsByteArrayOutputStream( Throwable throwable ) {
-		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-		java.io.PrintWriter pw = new java.io.PrintWriter( baos );
+	private static ByteArrayOutputStream getStackTraceAsByteArrayOutputStream( Throwable throwable ) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintWriter pw = new PrintWriter( baos );
 		throwable.printStackTrace( pw );
 		pw.flush();
 		return baos;

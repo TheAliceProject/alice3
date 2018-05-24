@@ -43,26 +43,32 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import java.util.Collections;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeSeparator extends CascadeItem<Void, Void> {
-	public CascadeSeparator( java.util.UUID id ) {
+	public CascadeSeparator( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	public final Void createValue( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final Void createValue( ItemNode<? super Void, Void> node, TransactionHistory transactionHistory ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	public final Void getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> node ) {
+	public final Void getTransientValue( ItemNode<? super Void, Void> node ) {
 		throw new AssertionError();
 	}
 
 	@Override
 	public Iterable<? extends Model> getChildren() {
-		return java.util.Collections.emptyList();
+		return Collections.emptyList();
 	}
 }

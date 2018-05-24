@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.ast.localizer.AstLocalizer;
+
+import java.util.Set;
 import java.util.function.BinaryOperator;
 
 /**
@@ -52,10 +56,10 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	public abstract boolean isUserAuthored();
 
 	@Override
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
+	public abstract StringProperty getNamePropertyIfItExists();
 
 	@Override
-	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
+	protected Set<AbstractDeclaration> fillInDeclarationSet( Set<AbstractDeclaration> rv, Set<AbstractNode> nodes ) {
 		rv.add( this );
 		return super.fillInDeclarationSet( rv, nodes );
 	}
@@ -66,7 +70,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 
 	@Override
 	public String getName() {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
+		StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
 			return nameProperty.getValue();
 		} else {
@@ -76,7 +80,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 
 	@Override
 	public void setName( String name ) {
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
+		StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
 			nameProperty.setValue( name );
 		} else {
@@ -85,7 +89,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendDeclaration( this );
 	}
 

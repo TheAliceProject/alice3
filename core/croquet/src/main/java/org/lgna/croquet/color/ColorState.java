@@ -42,34 +42,50 @@
  *******************************************************************************/
 package org.lgna.croquet.color;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.ItemState;
 import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.codecs.ColorCodec;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.triggers.MouseEventTrigger;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.triggers.Trigger;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Color> {
+public abstract class ColorState extends ItemState<Color> {
 
 	public class SwingModel {
-		private java.awt.Color value;
+		private Color value;
 
-		private final java.util.List<javax.swing.event.ChangeListener> changeListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+		private final List<ChangeListener> changeListeners = Lists.newCopyOnWriteArrayList();
 
-		public SwingModel( java.awt.Color initialValue ) {
+		public SwingModel( Color initialValue ) {
 			this.value = initialValue;
 		}
 
-		public java.awt.Color getValue() {
+		public Color getValue() {
 			return this.value;
 		}
 
-		public void setValue( java.awt.Color nextValue, java.awt.event.MouseEvent e ) {
+		public void setValue( Color nextValue, MouseEvent e ) {
 			if( this.value.equals( nextValue ) ) {
 				//pass
 			} else {
 				this.value = nextValue;
 				IsAdjusting isAdjusting;
 				if( e != null ) {
-					isAdjusting = e.getID() != java.awt.event.MouseEvent.MOUSE_RELEASED ? IsAdjusting.TRUE : IsAdjusting.FALSE;
+					isAdjusting = e.getID() != MouseEvent.MOUSE_RELEASED ? IsAdjusting.TRUE : IsAdjusting.FALSE;
 				} else {
 					isAdjusting = IsAdjusting.FALSE;
 				}
@@ -77,28 +93,28 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 				//todo
 				isAdjusting = IsAdjusting.FALSE;
 
-				org.lgna.croquet.triggers.Trigger trigger;
+				Trigger trigger;
 				if( e != null ) {
-					trigger = org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e );
+					trigger = MouseEventTrigger.createUserInstance( e );
 				} else {
-					trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
+					trigger = NullTrigger.createUserInstance();
 				}
 				changeValueFromSwing( this.value, isAdjusting, trigger );
 				if( this.changeListeners.size() > 0 ) {
 					Object source = e != null ? e.getSource() : this;
-					javax.swing.event.ChangeEvent changeEvent = new javax.swing.event.ChangeEvent( source );
-					for( javax.swing.event.ChangeListener changeListener : this.changeListeners ) {
+					ChangeEvent changeEvent = new ChangeEvent( source );
+					for( ChangeListener changeListener : this.changeListeners ) {
 						changeListener.stateChanged( changeEvent );
 					}
 				}
 			}
 		}
 
-		public void addChangeListener( javax.swing.event.ChangeListener changeListener ) {
+		public void addChangeListener( ChangeListener changeListener ) {
 			this.changeListeners.add( changeListener );
 		}
 
-		public void removeChangeListener( javax.swing.event.ChangeListener changeListener ) {
+		public void removeChangeListener( ChangeListener changeListener ) {
 			this.changeListeners.remove( changeListener );
 		}
 	}
@@ -107,8 +123,8 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 
 	private final ColorChooserDialogCoreComposite chooserDialogCoreComposite;
 
-	public ColorState( org.lgna.croquet.Group group, java.util.UUID id, java.awt.Color initialValue ) {
-		super( group, id, initialValue, org.lgna.croquet.codecs.ColorCodec.SINGLETON );
+	public ColorState( Group group, UUID id, Color initialValue ) {
+		super( group, id, initialValue, ColorCodec.SINGLETON );
 		this.swingModel = new SwingModel( initialValue );
 		this.chooserDialogCoreComposite = new ColorChooserDialogCoreComposite( this );
 	}
@@ -128,25 +144,25 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	}
 
 	@Override
-	protected java.awt.Color getSwingValue() {
+	protected Color getSwingValue() {
 		return this.swingModel.value;
 	}
 
 	@Override
-	protected void setSwingValue( java.awt.Color nextValue ) {
+	protected void setSwingValue( Color nextValue ) {
 		this.swingModel.value = nextValue;
 		if( this.swingModel.changeListeners.size() > 0 ) {
 			Object source = this;
-			javax.swing.event.ChangeEvent changeEvent = new javax.swing.event.ChangeEvent( source );
-			for( javax.swing.event.ChangeListener changeListener : this.swingModel.changeListeners ) {
+			ChangeEvent changeEvent = new ChangeEvent( source );
+			for( ChangeListener changeListener : this.swingModel.changeListeners ) {
 				changeListener.stateChanged( changeEvent );
 			}
 		}
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	public ColorChooserDialogCoreComposite getChooserDialogCoreComposite() {

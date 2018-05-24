@@ -43,37 +43,46 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserLocal, ExpressionProperty, LocalArrayAccessCascade> mapToMap = MapToMap.newInstance();
 
-	public static LocalArrayAccessCascade getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static LocalArrayAccessCascade getInstance( UserLocal local, ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade>() {
+		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new MapToMap.Initializer<UserLocal, ExpressionProperty, LocalArrayAccessCascade>() {
 			@Override
-			public LocalArrayAccessCascade initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public LocalArrayAccessCascade initialize( UserLocal local, ExpressionProperty expressionProperty ) {
 				return new LocalArrayAccessCascade( local, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalArrayAccessCascade( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
+	private LocalArrayAccessCascade( UserLocal local, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
 		this.local = local;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createAccessExpression() {
+		return new LocalAccess( this.local );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
+	protected AbstractType<?, ?, ?> getArrayType() {
 		return this.local.getValueType();
 	}
 }

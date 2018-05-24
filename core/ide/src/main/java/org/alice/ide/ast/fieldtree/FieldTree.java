@@ -42,26 +42,43 @@
  *******************************************************************************/
 package org.alice.ide.ast.fieldtree;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SProp;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.SShape;
+import org.lgna.story.SSwimmer;
+import org.lgna.story.SThing;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldTree {
 	public static class TypeCollapseThresholdData {
-		private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+		private final AbstractType<?, ?, ?> type;
 		private final int collapseThreshold;
 		private final int collapseThresholdForDescendants;
 
-		public TypeCollapseThresholdData( org.lgna.project.ast.AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
+		public TypeCollapseThresholdData( AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
 			this.type = type;
 			this.collapseThreshold = collapseThreshold;
 			this.collapseThresholdForDescendants = collapseThresholdForDescendants;
 		}
 
 		public TypeCollapseThresholdData( Class<?> cls, int collapseThreshold, int collapseThresholdForDescendants ) {
-			this( org.lgna.project.ast.JavaType.getInstance( cls ), collapseThreshold, collapseThresholdForDescendants );
+			this( JavaType.getInstance( cls ), collapseThreshold, collapseThresholdForDescendants );
 		}
 
-		public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+		public AbstractType<?, ?, ?> getType() {
 			return this.type;
 		}
 
@@ -75,7 +92,7 @@ public class FieldTree {
 	}
 
 	private static class Data {
-		private final java.util.Map<org.lgna.project.ast.AbstractType, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		private final Map<AbstractType, TypeNode> map = Maps.newHashMap();
 		private final RootNode root = new RootNode();
 
 		public Data( TypeCollapseThresholdData[] topLevels ) {
@@ -86,7 +103,7 @@ public class FieldTree {
 			}
 		}
 
-		private TypeNode getTypeNode( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		private TypeNode getTypeNode( AbstractType<?, ?, ?> type ) {
 			if( type != null ) {
 				TypeNode typeNode = map.get( type );
 				if( typeNode != null ) {
@@ -103,7 +120,7 @@ public class FieldTree {
 			}
 		}
 
-		public void insertField( org.lgna.project.ast.UserField field ) {
+		public void insertField( UserField field ) {
 			FieldNode.createAndAddToParent( getTypeNode( field.getValueType() ), field );
 		}
 
@@ -116,9 +133,9 @@ public class FieldTree {
 		throw new AssertionError();
 	}
 
-	public static RootNode createTreeFor( Iterable<org.lgna.project.ast.UserField> fields, TypeCollapseThresholdData... topLevels ) {
+	public static RootNode createTreeFor( Iterable<UserField> fields, TypeCollapseThresholdData... topLevels ) {
 		Data data = new Data( topLevels );
-		for( org.lgna.project.ast.UserField field : fields ) {
+		for( UserField field : fields ) {
 			data.insertField( field );
 		}
 		RootNode root = data.getRoot();
@@ -143,19 +160,19 @@ public class FieldTree {
 	}
 
 	public static void main( String[] args ) throws Exception {
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
-		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
+		Project project = IoUtilities.readProject( args[ 0 ] );
+		NamedUserType sceneType = (NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
 
 		RootNode root = createTreeFor(
 				sceneType.fields,
-				createFirstClassThreshold( org.lgna.story.SBiped.class ),
-				createFirstClassThreshold( org.lgna.story.SQuadruped.class ),
-				createFirstClassThreshold( org.lgna.story.SSwimmer.class ),
-				createFirstClassThreshold( org.lgna.story.SFlyer.class ),
+				createFirstClassThreshold( SBiped.class ),
+				createFirstClassThreshold( SQuadruped.class ),
+				createFirstClassThreshold( SSwimmer.class ),
+				createFirstClassThreshold( SFlyer.class ),
 
-				createSecondClassThreshold( org.lgna.story.SProp.class ),
-				createSecondClassThreshold( org.lgna.story.SShape.class ),
-				createSecondClassThreshold( org.lgna.story.SThing.class ),
+				createSecondClassThreshold( SProp.class ),
+				createSecondClassThreshold( SShape.class ),
+				createSecondClassThreshold( SThing.class ),
 				createSecondClassThreshold( Object.class )
 				);
 		StringBuilder sb = new StringBuilder();

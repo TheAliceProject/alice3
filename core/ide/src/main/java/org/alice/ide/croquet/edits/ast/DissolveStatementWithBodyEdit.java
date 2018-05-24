@@ -43,71 +43,85 @@
 
 package org.alice.ide.croquet.edits.ast;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractStatementWithBody;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DissolveStatementWithBodyEdit extends BlockStatementEdit<org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation> {
+public class DissolveStatementWithBodyEdit extends BlockStatementEdit<DissolveStatementWithBodyOperation> {
 	//todo:
-	private static org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation getModel( org.lgna.croquet.history.CompletionStep<org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation> completionStep ) {
+	private static DissolveStatementWithBodyOperation getModel( CompletionStep<DissolveStatementWithBodyOperation> completionStep ) {
 		return completionStep.getModel();
 	}
 
 	private final int index;
-	private final org.lgna.project.ast.Statement[] statements;
+	private final Statement[] statements;
 
-	public DissolveStatementWithBodyEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
-		super( completionStep, (org.lgna.project.ast.BlockStatement)( getModel( completionStep ).getStatementWithBody().getParent() ) );
-		org.lgna.project.ast.BlockStatement blockStatement = this.getBlockStatement();
-		org.lgna.project.ast.AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+	public DissolveStatementWithBodyEdit( CompletionStep completionStep ) {
+		super( completionStep, (BlockStatement)( getModel( completionStep ).getStatementWithBody().getParent() ) );
+		BlockStatement blockStatement = this.getBlockStatement();
+		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 		this.index = blockStatement.statements.indexOf( statementWithBody );
-		this.statements = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statementWithBody.body.getValue().statements.getValue(), org.lgna.project.ast.Statement.class );
+		this.statements = ArrayUtilities.createArray( statementWithBody.body.getValue().statements.getValue(), Statement.class );
 	}
 
-	public DissolveStatementWithBodyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public DissolveStatementWithBodyEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.index = binaryDecoder.decodeInt();
-		org.alice.ide.croquet.codecs.NodeCodec<org.lgna.project.ast.Statement> codec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class );
-		this.statements = org.lgna.croquet.ItemCodec.Arrays.decodeArray( binaryDecoder, codec );
+		NodeCodec<Statement> codec = NodeCodec.getInstance( Statement.class );
+		this.statements = ItemCodec.Arrays.decodeArray( binaryDecoder, codec );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.index );
-		org.alice.ide.croquet.codecs.NodeCodec<org.lgna.project.ast.Statement> codec = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class );
-		org.lgna.croquet.ItemCodec.Arrays.encodeArray( binaryEncoder, codec, this.statements );
+		NodeCodec<Statement> codec = NodeCodec.getInstance( Statement.class );
+		ItemCodec.Arrays.encodeArray( binaryEncoder, codec, this.statements );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		//todo: check 
-		org.lgna.project.ast.BlockStatement owner = this.getBlockStatement();
-		org.lgna.project.ast.AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+		BlockStatement owner = this.getBlockStatement();
+		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 
 		owner.statements.remove( index );
 		statementWithBody.body.getValue().statements.clear();
 		owner.statements.add( index, statements );
 
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected final void undoInternal() {
 		//todo: check 
-		org.lgna.project.ast.BlockStatement owner = this.getBlockStatement();
-		org.lgna.project.ast.AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
+		BlockStatement owner = this.getBlockStatement();
+		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 		owner.statements.removeExclusive( this.index, this.index + this.statements.length );
 		statementWithBody.body.getValue().statements.add( this.statements );
 		owner.statements.add( index, statementWithBody );
 
 		//todo: remove
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "dissolve:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getModel().getStatementWithBody(), org.lgna.croquet.Application.getLocale() );
+		NodeUtilities.safeAppendRepr( rv, this.getModel().getStatementWithBody(), Application.getLocale() );
 	}
 }

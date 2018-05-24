@@ -42,24 +42,33 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.renderers;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
+
+import javax.swing.JList;
+import javax.swing.UIManager;
+import java.awt.Color;
+import java.awt.Component;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ContentsCachingListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane implements javax.swing.ListCellRenderer {
-	private static java.awt.Color selectionBackground = javax.swing.UIManager.getColor( "List.selectionBackground" );
-	private java.util.Map<E, java.awt.Component> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public abstract class ContentsCachingListCellRenderer<E> extends JLineAxisPane implements javax.swing.ListCellRenderer {
+	private static Color selectionBackground = UIManager.getColor( "List.selectionBackground" );
+	private Map<E, Component> map = Maps.newHashMap();
 
-	protected abstract void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus );
+	protected abstract void update( Component contents, int index, boolean isSelected, boolean cellHasFocus );
 
-	protected abstract java.awt.Component createComponent( E e );
+	protected abstract Component createComponent( E e );
 
 	public ContentsCachingListCellRenderer() {
 		this.setBackground( selectionBackground );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		this.setAlignmentX( Component.LEFT_ALIGNMENT );
 	}
 
-	private java.awt.Component getComponent( E e ) {
-		java.awt.Component rv = this.map.get( e );
+	private Component getComponent( E e ) {
+		Component rv = this.map.get( e );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -70,8 +79,8 @@ public abstract class ContentsCachingListCellRenderer<E> extends edu.cmu.cs.denn
 	}
 
 	@Override
-	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		java.awt.Component component = this.getComponent( (E)value );
+	public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		Component component = this.getComponent( (E)value );
 		this.update( component, index, isSelected, cellHasFocus );
 		this.revalidate();
 		return this;

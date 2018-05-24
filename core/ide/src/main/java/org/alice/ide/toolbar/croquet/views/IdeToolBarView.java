@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.toolbar.croquet.views;
 
+import org.alice.ide.clipboard.Clipboard;
+import org.alice.ide.toolbar.croquet.IdeToolBar;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.views.ToolBarView;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IdeToolBarView extends org.lgna.croquet.views.ToolBarView {
-	public IdeToolBarView( org.alice.ide.toolbar.croquet.IdeToolBar composite ) {
+public class IdeToolBarView extends ToolBarView {
+	public IdeToolBarView( IdeToolBar composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected String addViewForElement( org.lgna.croquet.Element element, String constraints ) {
-		if( element == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
-			this.addComponent( org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent(), constraints );
+	protected String addViewForElement( Element element, String constraints ) {
+		if( element == Clipboard.SINGLETON.getDragModel() ) {
+			this.addComponent( Clipboard.SINGLETON.getDragComponent(), constraints );
 			return "";
 		} else {
 			return super.addViewForElement( element, constraints );

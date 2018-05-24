@@ -42,7 +42,42 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.ide.IDE;
 import org.alice.ide.ast.declaration.AddManagedFieldComposite;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.cascade.ExpressionCascadeContext;
+import org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter;
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.lgna.croquet.AbstractComposite;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+import org.lgna.story.SModel;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
+import java.awt.Dimension;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author user
@@ -56,27 +91,27 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 		return SingletonHolder.instance;
 	}
 
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {
-		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+	private static AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( Expression expression ) {
+		if( expression instanceof InstanceCreation ) {
+			InstanceCreation instanceCreation = (InstanceCreation)expression;
 			return instanceCreation.constructor.getValue().getDeclaringType();
 		} else {
 			return null;
 		}
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+	private final ValueListener<Expression> initializerListener = new ValueListener<Expression>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
+		public void valueChanged( ValueEvent<Expression> e ) {
 			AddCopiedManagedFieldComposite.this.handleInitializerChanged( e.getNextValue() );
 		}
 	};
 
-	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
-	private org.lgna.project.ast.UserField fieldToCopy = null;
+	private InstanceCreation initialInstanceCreation;
+	private UserField fieldToCopy = null;
 
 	private AddCopiedManagedFieldComposite() {
-		super( java.util.UUID.fromString( "a14a3088-185c-4dfd-983c-af05e1d8dc14" ), new FieldDetailsBuilder()
+		super( UUID.fromString( "a14a3088-185c-4dfd-983c-af05e1d8dc14" ), new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.DISPLAYED, null )
@@ -85,37 +120,37 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 	}
 
 	@Override
-	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform = null;
-		org.lgna.croquet.DropSite dropSite = step.findDropSite();
-		if( dropSite instanceof org.alice.stageide.sceneeditor.draganddrop.SceneDropSite ) {
-			org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)dropSite;
+	protected EditCustomization customize( CompletionStep<?> step, UserType<?> declaringType, UserField field, EditCustomization rv ) {
+		AffineMatrix4x4 initialTransform = null;
+		DropSite dropSite = step.findDropSite();
+		if( dropSite instanceof SceneDropSite ) {
+			SceneDropSite sceneDropSite = (SceneDropSite)dropSite;
 			initialTransform = sceneDropSite.getTransform();
 		} else {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
-			org.lgna.project.ast.JavaType javaType = type.getFirstEncounteredJavaType();
+			AbstractType<?, ?, ?> type = field.getValueType();
+			JavaType javaType = type.getFirstEncounteredJavaType();
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
-			if( org.lgna.story.SModel.class.isAssignableFrom( cls ) ) {
-				initialTransform = org.lgna.story.implementation.alice.AliceResourceUtilties.getDefaultInitialTransform( org.lgna.story.implementation.alice.AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends org.lgna.story.SModel>)cls ) );
+			if( SModel.class.isAssignableFrom( cls ) ) {
+				initialTransform = AliceResourceUtilties.getDefaultInitialTransform( AliceResourceClassUtilities.getResourceClassForModelClass( (Class<? extends SModel>)cls ) );
 			}
 			else {
 				initialTransform = null;
 			}
 		}
 		initialTransform = this.updateInitialTransformIfNecessary( initialTransform );
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForCopyField( this.fieldToCopy, field, initialTransform );
-		for( org.lgna.project.ast.Statement s : doStatements ) {
+		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
+		Statement[] doStatements = sceneEditor.getDoStatementsForCopyField( this.fieldToCopy, field, initialTransform );
+		for( Statement s : doStatements ) {
 			rv.addDoStatement( s );
 		}
-		org.lgna.project.ast.Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
-		for( org.lgna.project.ast.Statement s : undoStatements ) {
+		Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
+		for( Statement s : undoStatements ) {
 			rv.addUndoStatement( s );
 		}
 		return rv;
 	}
 
-	private void setInitializerInitialValue( org.lgna.project.ast.InstanceCreation initialInstanceCreation ) {
+	private void setInitializerInitialValue( InstanceCreation initialInstanceCreation ) {
 		this.initialInstanceCreation = initialInstanceCreation;
 	}
 
@@ -126,41 +161,41 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 		return sourceName.replaceAll("\\d*$", "");
 	}
 
-	public void setFieldToBeCopied( org.lgna.project.ast.UserField fieldToCopy, org.lgna.project.ast.Statement... setupStatements ) {
+	public void setFieldToBeCopied( UserField fieldToCopy, Statement... setupStatements ) {
 		this.fieldToCopy = fieldToCopy;
-		org.lgna.project.ast.Expression newInitializer = org.lgna.project.ast.AstUtilities.createCopy( fieldToCopy.initializer.getValue(), (org.lgna.project.ast.NamedUserType)fieldToCopy.getDeclaringType() );
-		assert fieldToCopy.initializer.getValue() instanceof org.lgna.project.ast.InstanceCreation;
-		setInitializerInitialValue( (org.lgna.project.ast.InstanceCreation)newInitializer );
+		Expression newInitializer = AstUtilities.createCopy( fieldToCopy.initializer.getValue(), (NamedUserType)fieldToCopy.getDeclaringType() );
+		assert fieldToCopy.initializer.getValue() instanceof InstanceCreation;
+		setInitializerInitialValue( (InstanceCreation)newInitializer );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+	protected Expression getInitializerInitialValue() {
 		return this.initialInstanceCreation;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+	protected AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
 		return getDeclaringTypeFromInitializer( this.getInitializer() );
 	}
 
-	private void handleInitializerChanged( org.lgna.project.ast.Expression nextValue ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
+	private void handleInitializerChanged( Expression nextValue ) {
+		AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
 		this.getValueComponentTypeState().setValueTransactionlessly( type );
 		this.getNameState().setValueTransactionlessly( this.getNameInitialValue() );
 		this.refreshStatus();
-		final org.lgna.croquet.views.AbstractWindow<?> root = this.getView().getRoot();
+		final AbstractWindow<?> root = this.getView().getRoot();
 		if( root != null ) {
-			java.awt.Dimension preferredSize = root.getAwtComponent().getPreferredSize();
-			java.awt.Dimension size = root.getSize();
+			Dimension preferredSize = root.getAwtComponent().getPreferredSize();
+			Dimension size = root.getSize();
 			if( ( preferredSize.width > size.width ) || ( preferredSize.height > size.height ) ) {
 				root.pack();
 			}
 		}
 	}
 
-	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
+	private class InitializerContext implements ExpressionCascadeContext {
 		@Override
-		public org.lgna.project.ast.Expression getPreviousExpression() {
+		public Expression getPreviousExpression() {
 			//todo: investigate
 			//org.lgna.project.ast.UserField field = getPreviewValue();
 			//return field.initializer.getValue();
@@ -169,50 +204,50 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 		}
 
 		@Override
-		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+		public BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
 	}
 
-	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
-		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
+	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<Expression> {
+		private ExpressionCascadeContext pushedContext;
 
 		@Override
-		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
+		public CascadeFillIn getFillInFor( Expression value ) {
 			return null;
 		}
 
 		@Override
-		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		public void prologue( Trigger trigger ) {
 			this.pushedContext = new InitializerContext();
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		}
 
 		@Override
 		public void epilogue() {
-			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
 			this.pushedContext = null;
 		}
 
 		@Override
-		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-			org.lgna.project.ast.Expression initializer = getInitializer();
-			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
-				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				blankChildren.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
-				blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
+			Expression initializer = getInitializer();
+			if( initializer instanceof InstanceCreation ) {
+				InstanceCreation instanceCreation = (InstanceCreation)initializer;
+				AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				blankChildren.add( InstanceCreationFillInWithGalleryResourceParameter.getInstance( constructor ) );
+				blankChildren.add( CascadeLineSeparator.getInstance() );
 			}
 		}
 	}
 
 	@Override
-	protected org.lgna.croquet.AbstractComposite.ItemStateCustomizer<org.lgna.project.ast.Expression> createInitializerCustomizer() {
+	protected AbstractComposite.ItemStateCustomizer<Expression> createInitializerCustomizer() {
 		return new ResourceKeyInitializerCustomizer();
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		this.initialInstanceCreation = null;
 	}

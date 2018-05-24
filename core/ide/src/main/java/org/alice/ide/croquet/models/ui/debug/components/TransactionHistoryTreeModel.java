@@ -43,39 +43,50 @@
 
 package org.alice.ide.croquet.models.ui.debug.components;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.PrepStep;
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+
+import javax.swing.tree.TreePath;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel<Object> {
+public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object> {
 
-	private org.lgna.croquet.history.TransactionHistory root;
+	private TransactionHistory root;
 
-	public TransactionHistoryTreeModel( org.lgna.croquet.history.TransactionHistory root ) {
+	public TransactionHistoryTreeModel( TransactionHistory root ) {
 		this.root = root;
 	}
 
 	@Override
-	public org.lgna.croquet.history.TransactionHistory getRoot() {
+	public TransactionHistory getRoot() {
 		return this.root;
 	}
 
 	@Override
 	public boolean isLeaf( Object node ) {
-		return node instanceof org.lgna.croquet.history.PrepStep<?>;
+		return node instanceof PrepStep<?>;
 	}
 
 	@Override
 	public int getChildCount( Object parent ) {
-		if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
-			org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
+		if( parent instanceof TransactionHistory ) {
+			TransactionHistory transactionHistory = (TransactionHistory)parent;
 			return transactionHistory.getTransactionCount();
-		} else if( parent instanceof org.lgna.croquet.history.Transaction ) {
-			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)parent;
+		} else if( parent instanceof Transaction ) {
+			Transaction transaction = (Transaction)parent;
 			return transaction.getChildStepCount();
-		} else if( parent instanceof org.lgna.croquet.history.CompletionStep<?> ) {
-			org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)parent;
+		} else if( parent instanceof CompletionStep<?> ) {
+			CompletionStep<?> completionStep = (CompletionStep<?>)parent;
 			//return completionStep.getTransactionHistory() != null ? 1 : 0;
-			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+			TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 			if( transactionHistory != null ) {
 				return transactionHistory.getTransactionCount();
 			} else {
@@ -88,15 +99,15 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 
 	@Override
 	public Object getChild( Object parent, int index ) {
-		if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
-			org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
+		if( parent instanceof TransactionHistory ) {
+			TransactionHistory transactionHistory = (TransactionHistory)parent;
 			return transactionHistory.getTransactionAt( index );
-		} else if( parent instanceof org.lgna.croquet.history.Transaction ) {
-			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)parent;
+		} else if( parent instanceof Transaction ) {
+			Transaction transaction = (Transaction)parent;
 			return transaction.getChildStepAt( index );
-		} else if( parent instanceof org.lgna.croquet.history.CompletionStep<?> ) {
-			org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)parent;
-			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+		} else if( parent instanceof CompletionStep<?> ) {
+			CompletionStep<?> completionStep = (CompletionStep<?>)parent;
+			TransactionHistory transactionHistory = completionStep.getTransactionHistory();
 			if( transactionHistory != null ) {
 				return transactionHistory.getTransactionAt( index );
 			} else {
@@ -111,24 +122,24 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 
 	@Override
 	public int getIndexOfChild( Object parent, Object child ) {
-		if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
-			org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
-			if( child instanceof org.lgna.croquet.history.Transaction ) {
-				return transactionHistory.getIndexOfTransaction( (org.lgna.croquet.history.Transaction)child );
+		if( parent instanceof TransactionHistory ) {
+			TransactionHistory transactionHistory = (TransactionHistory)parent;
+			if( child instanceof Transaction ) {
+				return transactionHistory.getIndexOfTransaction( (Transaction)child );
 			} else {
 				return -1;
 			}
-		} else if( parent instanceof org.lgna.croquet.history.Transaction ) {
-			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)parent;
-			if( child instanceof org.lgna.croquet.history.PrepStep<?> ) {
-				return transaction.getIndexOfPrepStep( (org.lgna.croquet.history.PrepStep<?>)child );
+		} else if( parent instanceof Transaction ) {
+			Transaction transaction = (Transaction)parent;
+			if( child instanceof PrepStep<?> ) {
+				return transaction.getIndexOfPrepStep( (PrepStep<?>)child );
 			} else {
 				return -1;
 			}
-		} else if( parent instanceof org.lgna.croquet.history.CompletionStep<?> ) {
-			org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)parent;
-			org.lgna.croquet.history.TransactionHistory transactionHistory = completionStep.getTransactionHistory();
-			return transactionHistory.getIndexOfTransaction( (org.lgna.croquet.history.Transaction)child );
+		} else if( parent instanceof CompletionStep<?> ) {
+			CompletionStep<?> completionStep = (CompletionStep<?>)parent;
+			TransactionHistory transactionHistory = completionStep.getTransactionHistory();
+			return transactionHistory.getIndexOfTransaction( (Transaction)child );
 			//			assert child == completionStep.getTransactionHistory();
 			//			return 0;
 		} else {
@@ -136,18 +147,18 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 		}
 	}
 
-	private java.util.List<Object> updatePath( java.util.List<Object> rv, Object node ) {
+	private List<Object> updatePath( List<Object> rv, Object node ) {
 		Object parent;
-		if( node instanceof org.lgna.croquet.history.Transaction ) {
-			parent = ( (org.lgna.croquet.history.Transaction)node ).getOwner();
-			if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
-				org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
+		if( node instanceof Transaction ) {
+			parent = ( (Transaction)node ).getOwner();
+			if( parent instanceof TransactionHistory ) {
+				TransactionHistory transactionHistory = (TransactionHistory)parent;
 				if( transactionHistory.getOwner() != null ) {
 					parent = transactionHistory;
 				}
 			}
-		} else if( node instanceof org.lgna.croquet.history.Step ) {
-			parent = ( (org.lgna.croquet.history.Step)node ).getOwner();
+		} else if( node instanceof Step ) {
+			parent = ( (Step)node ).getOwner();
 		} else {
 			parent = null;
 		}
@@ -159,9 +170,9 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 	}
 
 	@Override
-	public javax.swing.tree.TreePath getTreePath( Object node ) {
-		java.util.List<Object> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public TreePath getTreePath( Object node ) {
+		List<Object> list = Lists.newLinkedList();
 		updatePath( list, node );
-		return new javax.swing.tree.TreePath( list.toArray() );
+		return new TreePath( list.toArray() );
 	}
 }

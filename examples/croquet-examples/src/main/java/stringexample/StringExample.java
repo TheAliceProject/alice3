@@ -42,24 +42,32 @@
  */
 package stringexample;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+import stringexample.croquet.StringExampleComposite;
+
+import javax.swing.SwingUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public class StringExample {
 	public static void main( String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+				UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				SimpleApplication app = new SimpleApplication();
 
-				stringexample.croquet.StringExampleComposite composite = new stringexample.croquet.StringExampleComposite();
+				StringExampleComposite composite = new StringExampleComposite();
 
-				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+				DocumentFrame documentFrame = app.getDocumentFrame();
+				Frame frame = documentFrame.getFrame();
 				frame.setTitle( "String Example" );
 				frame.setMainComposite( composite );
-				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+				frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.EXIT );
 				frame.pack();
 				frame.setVisible( true );
 			}

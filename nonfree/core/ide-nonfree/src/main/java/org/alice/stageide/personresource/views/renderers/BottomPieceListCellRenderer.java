@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import org.lgna.story.resources.sims2.BottomPiece;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BottomPieceListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.BottomPiece> {
+public class BottomPieceListCellRenderer extends IngredientListCellRenderer<BottomPiece> {
 	private static class SingletonHolder {
 		private static BottomPieceListCellRenderer instance = new BottomPieceListCellRenderer();
 	}

@@ -42,12 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PlusMinusOperation extends NumberPadOperation {
 
-	private static java.util.Map<NumberModel<?>, PlusMinusOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<NumberModel<?>, PlusMinusOperation> map = Maps.newHashMap();
 
 	public static synchronized PlusMinusOperation getInstance( NumberModel<?> model ) {
 		PlusMinusOperation rv = map.get( model );
@@ -61,12 +67,12 @@ public class PlusMinusOperation extends NumberPadOperation {
 	}
 
 	private PlusMinusOperation( NumberModel<?> model ) {
-		super( java.util.UUID.fromString( "6845e168-dfce-4f9e-b94f-d5674613f38c" ), model );
+		super( UUID.fromString( "6845e168-dfce-4f9e-b94f-d5674613f38c" ), model );
 		this.setName( "\u00B1" );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		this.numberModel.negate();
 		step.finish();
 	}

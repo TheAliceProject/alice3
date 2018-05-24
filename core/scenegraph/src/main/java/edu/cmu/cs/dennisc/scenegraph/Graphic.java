@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Graphic extends edu.cmu.cs.dennisc.scenegraph.Element {
+public abstract class Graphic extends Element {
 	public Layer getParent() {
 		return this.layer;
 	}

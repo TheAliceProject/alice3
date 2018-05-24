@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.UserParameter;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LgnaVmIllegalParameterAccessException extends LgnaVmException {
-	private final org.lgna.project.ast.UserParameter parameter;
+	private final UserParameter parameter;
 
-	public LgnaVmIllegalParameterAccessException( VirtualMachine vm, org.lgna.project.ast.UserParameter parameter ) {
+	public LgnaVmIllegalParameterAccessException( VirtualMachine vm, UserParameter parameter ) {
 		super( vm );
 		this.parameter = parameter;
 	}
 
-	public final org.lgna.project.ast.UserParameter getParameter() {
+	public final UserParameter getParameter() {
 		return this.parameter;
 	}
 

@@ -42,14 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.instancefactory.croquet;
 
+import org.lgna.croquet.CascadeLabelSeparator;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ParametersVariablesAndConstantsSeparator extends org.lgna.croquet.CascadeLabelSeparator {
+public final class ParametersVariablesAndConstantsSeparator extends CascadeLabelSeparator {
 	private String menuItemText;
 
 	public ParametersVariablesAndConstantsSeparator() {
-		super( java.util.UUID.fromString( "042b6c68-c6c1-4fa8-82f9-c393cf03e2e8" ) );
+		super( UUID.fromString( "042b6c68-c6c1-4fa8-82f9-c393cf03e2e8" ) );
 	}
 
 	@Override

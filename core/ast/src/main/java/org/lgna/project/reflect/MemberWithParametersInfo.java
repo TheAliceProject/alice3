@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
 /**
@@ -58,14 +60,14 @@ public abstract class MemberWithParametersInfo extends MemberInfo {
 		this.parameterNames = parameterNames;
 	}
 
-	public MemberWithParametersInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MemberWithParametersInfo( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.parameterClassNames = binaryDecoder.decodeStringArray();
 		this.parameterNames = binaryDecoder.decodeStringArray();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.parameterClassNames );
 		binaryEncoder.encode( this.parameterNames );

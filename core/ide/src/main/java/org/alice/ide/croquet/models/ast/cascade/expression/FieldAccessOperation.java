@@ -43,34 +43,44 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldAccessOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class FieldAccessOperation extends ProjectExpressionPropertyOperation {
+	private static MapToMap<AbstractField, ExpressionProperty, FieldAccessOperation> mapToMap = MapToMap.newInstance();
 
-	public static FieldAccessOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FieldAccessOperation getInstance( AbstractField field, ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldAccessOperation>() {
+		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldAccessOperation>() {
 			@Override
-			public FieldAccessOperation initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public FieldAccessOperation initialize( AbstractField field, ExpressionProperty expressionProperty ) {
 				return new FieldAccessOperation( field, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldAccessOperation( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "bf8b616d-d1ab-4798-8be2-60a107e9e762" ), expressionProperty );
+	private FieldAccessOperation( AbstractField field, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "bf8b616d-d1ab-4798-8be2-60a107e9e762" ), expressionProperty );
 		this.field = field;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess(
-				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
+	protected Expression createExpression() {
+		return AstUtilities.createFieldAccess(
+				IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
 				this.field
 				);
 	}

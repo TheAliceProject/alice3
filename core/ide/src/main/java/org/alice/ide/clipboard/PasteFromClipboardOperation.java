@@ -43,13 +43,23 @@
 
 package org.alice.ide.clipboard;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.clipboard.edits.PasteFromClipboardEdit;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PasteFromClipboardOperation extends FromClipboardOperation {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, PasteFromClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, PasteFromClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized PasteFromClipboardOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized PasteFromClipboardOperation getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		PasteFromClipboardOperation rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -61,12 +71,12 @@ public class PasteFromClipboardOperation extends FromClipboardOperation {
 		return rv;
 	}
 
-	private PasteFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair );
+	private PasteFromClipboardOperation( BlockStatementIndexPair blockStatementIndexPair ) {
+		super( UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
-		return new org.alice.ide.clipboard.edits.PasteFromClipboardEdit( step, statement, this.getBlockStatementIndexPair() );
+	protected Edit createEdit( CompletionStep step, Statement statement ) {
+		return new PasteFromClipboardEdit( step, statement, this.getBlockStatementIndexPair() );
 	}
 }

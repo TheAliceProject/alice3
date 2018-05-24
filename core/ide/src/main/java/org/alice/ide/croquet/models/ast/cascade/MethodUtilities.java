@@ -43,6 +43,12 @@
 
 package org.alice.ide.croquet.models.ast.cascade;
 
+import org.alice.ide.croquet.models.cascade.ParameterBlank;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractParameter;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,11 +57,11 @@ public class MethodUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.alice.ide.croquet.models.cascade.ParameterBlank[] createParameterBlanks( org.lgna.project.ast.AbstractMethod method ) {
-		java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = method.getRequiredParameters();
-		org.alice.ide.croquet.models.cascade.ParameterBlank[] rv = new org.alice.ide.croquet.models.cascade.ParameterBlank[ parameters.size() ];
+	public static ParameterBlank[] createParameterBlanks( AbstractMethod method ) {
+		List<? extends AbstractParameter> parameters = method.getRequiredParameters();
+		ParameterBlank[] rv = new ParameterBlank[ parameters.size() ];
 		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameters.get( i ) );
+			rv[ i ] = ParameterBlank.getInstance( parameters.get( i ) );
 		}
 		return rv;
 	}

@@ -42,9 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface DropSite extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface DropSite extends BinaryEncodableAndDecodable {
 	public DropReceptor getOwningDropReceptor();
 }

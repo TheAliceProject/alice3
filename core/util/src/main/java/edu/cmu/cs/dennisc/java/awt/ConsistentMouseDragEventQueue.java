@@ -42,12 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.DStack;
+import edu.cmu.cs.dennisc.java.util.Stacks;
+
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
+public class ConsistentMouseDragEventQueue extends EventQueue {
 	private static final boolean IS_CLICK_AND_CLACK_DESIRED_DEFAULT = false;
-	private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired" );
+	private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired" );
 
 	private static class SingletonHolder {
 		private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
@@ -58,20 +70,20 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 	}
 
 	public static void pushIfAppropriate() {
-		if( ( IS_CLICK_AND_CLACK_DESIRED == false ) && edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+		if( ( IS_CLICK_AND_CLACK_DESIRED == false ) && SystemUtilities.isWindows() ) {
 			//pass
 		} else {
-			java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().push( SingletonHolder.instance );
+			Toolkit.getDefaultToolkit().getSystemEventQueue().push( SingletonHolder.instance );
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Component> stack;
+	private final DStack<Component> stack;
 	private int lastPressOrDragModifiers;
-	private java.awt.Component componentForPotentialFollowUpClickEvent;
+	private Component componentForPotentialFollowUpClickEvent;
 
 	private ConsistentMouseDragEventQueue() {
 		if( IS_CLICK_AND_CLACK_DESIRED ) {
-			this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+			this.stack = Stacks.newStack();
 		} else {
 			this.stack = null;
 		}
@@ -81,7 +93,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		return this.stack != null;
 	}
 
-	public java.awt.Component peekClickAndClackComponent() {
+	public Component peekClickAndClackComponent() {
 		if( this.stack != null ) {
 			if( this.stack.size() > 0 ) {
 				return this.stack.peek();
@@ -93,7 +105,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		}
 	}
 
-	public void pushClickAndClackMouseFocusComponent( java.awt.Component awtComponent ) {
+	public void pushClickAndClackMouseFocusComponent( Component awtComponent ) {
 		if( this.stack != null ) {
 			this.stack.push( awtComponent );
 		} else {
@@ -101,7 +113,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		}
 	}
 
-	public java.awt.Component popClickAndClackMouseFocusComponent() {
+	public Component popClickAndClackMouseFocusComponent() {
 		if( this.stack != null ) {
 			return this.stack.pop();
 		} else {
@@ -109,16 +121,16 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		}
 	}
 
-	public java.awt.Component popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent() {
-		java.awt.Component rv = this.popClickAndClackMouseFocusComponent();
+	public Component popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent() {
+		Component rv = this.popClickAndClackMouseFocusComponent();
 		this.componentForPotentialFollowUpClickEvent = rv;
 		return rv;
 	}
 
-	protected java.awt.event.MouseEvent convertClickAndClackIfNecessary( java.awt.event.MouseEvent e ) {
-		java.awt.Component component;
+	protected MouseEvent convertClickAndClackIfNecessary( MouseEvent e ) {
+		Component component;
 		if( this.componentForPotentialFollowUpClickEvent != null ) {
-			if( e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED ) {
+			if( e.getID() == MouseEvent.MOUSE_CLICKED ) {
 				component = this.componentForPotentialFollowUpClickEvent;
 			} else {
 				component = null;
@@ -137,22 +149,22 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 			}
 		}
 		if( component != null ) {
-			java.awt.Component curr = e.getComponent();
+			Component curr = e.getComponent();
 			if( curr == component ) {
 				//pass
 			} else {
-				e = edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( curr, e, component );
+				e = MouseEventUtilities.convertMouseEvent( curr, e, component );
 			}
 		}
 		return e;
 	}
 
 	@Override
-	protected void dispatchEvent( java.awt.AWTEvent e ) {
-		if( e instanceof java.awt.event.MouseWheelEvent ) {
-			java.awt.event.MouseWheelEvent mouseWheelEvent = (java.awt.event.MouseWheelEvent)e;
+	protected void dispatchEvent( AWTEvent e ) {
+		if( e instanceof MouseWheelEvent ) {
+			MouseWheelEvent mouseWheelEvent = (MouseWheelEvent)e;
 
-			java.awt.Component source = mouseWheelEvent.getComponent();
+			Component source = mouseWheelEvent.getComponent();
 			int id = mouseWheelEvent.getID();
 			long when = mouseWheelEvent.getWhen();
 			int modifiers = mouseWheelEvent.getModifiers();
@@ -176,14 +188,14 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 			//= new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
 
 			// 1.5
-			e = new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation );
+			e = new MouseWheelEvent( source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation );
 
-		} else if( e instanceof java.awt.event.MouseEvent ) {
-			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
+		} else if( e instanceof MouseEvent ) {
+			MouseEvent mouseEvent = (MouseEvent)e;
 			int id = mouseEvent.getID();
 			switch( id ) {
-			case java.awt.event.MouseEvent.MOUSE_PRESSED:
-			case java.awt.event.MouseEvent.MOUSE_DRAGGED:
+			case MouseEvent.MOUSE_PRESSED:
+			case MouseEvent.MOUSE_DRAGGED:
 				this.lastPressOrDragModifiers = mouseEvent.getModifiers();
 				break;
 			}

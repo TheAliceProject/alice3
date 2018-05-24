@@ -42,17 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TexturedModel extends ModelTransformable {
-	private edu.cmu.cs.dennisc.texture.BufferedImageTexture m_bufferedImageTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
+	private BufferedImageTexture m_bufferedImageTexture = new BufferedImageTexture();
 
 	public TexturedModel() {
 		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTexture( m_bufferedImageTexture );
 	}
 
-	public edu.cmu.cs.dennisc.texture.BufferedImageTexture getBufferedImageTexture() {
+	public BufferedImageTexture getBufferedImageTexture() {
 		return m_bufferedImageTexture;
 	}
 
@@ -61,8 +66,8 @@ public class TexturedModel extends ModelTransformable {
 		m_bufferedImageTexture.setPotentiallyAlphaBlended( isAlphaBlended );
 	}
 
-	public void loadImage( String path ) throws java.io.IOException {
-		m_bufferedImageTexture.setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( path ) );
+	public void loadImage( String path ) throws IOException {
+		m_bufferedImageTexture.setBufferedImage( ImageUtilities.read( path ) );
 	}
 
 	@Override

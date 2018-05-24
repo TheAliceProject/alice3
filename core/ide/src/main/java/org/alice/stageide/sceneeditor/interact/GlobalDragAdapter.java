@@ -44,7 +44,14 @@
 package org.alice.stageide.sceneeditor.interact;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.Silhouette;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
@@ -69,12 +76,15 @@ import org.alice.interact.condition.SelectedObjectCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.JointRotationRingHandle;
 import org.alice.interact.handle.LinearScaleHandle;
 import org.alice.interact.handle.LinearTranslateHandle;
 import org.alice.interact.handle.ManipulationAxes;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.interact.handle.SelectionIndicator;
 import org.alice.interact.handle.StoodUpRotationRingHandle;
+import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraMoveDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraPanDragManipulator;
@@ -92,7 +102,9 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import org.alice.interact.manipulator.TargetManipulator;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
+import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.CopyObjectDragManipulator;
@@ -103,20 +115,31 @@ import org.alice.stageide.sceneeditor.interact.manipulators.ScaleDragManipulator
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.alice.stageide.sceneeditor.side.SideComposite;
+import org.alice.stageide.sceneeditor.snap.SnapState;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SJoint;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.JointImp;
 
 /**
  * @author David Culyba
  */
-public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.CroquetSupportingDragAdapter {
+public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 
 	//Used to lock down the scene editor so only selection is available as an interaction (moving objects, moving the camera and whatnot are all disabled)
 	private static final boolean ENABLE_SELECTION_ONLY_MODE = false;
 
 	TargetManipulator dropTargetManipulator;
 
-	private final org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
+	private final StorytellingSceneEditor sceneEditor;
 
-	public GlobalDragAdapter( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor ) {
+	public GlobalDragAdapter( StorytellingSceneEditor sceneEditor ) {
 		this.sceneEditor = sceneEditor;
 		this.setUpControls();
 	}
@@ -129,14 +152,14 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 	private void setUpControls() {
 		if( ENABLE_SELECTION_ONLY_MODE ) {
 			//Selection visual handle
-			org.alice.interact.handle.SelectionIndicator selectionIndicator = new org.alice.interact.handle.SelectionIndicator();
+			SelectionIndicator selectionIndicator = new SelectionIndicator();
 			selectionIndicator.addToGroup( HandleSet.HandleGroup.SELECTION );
 			this.addManipulationListener( selectionIndicator );
 			selectionIndicator.setDragAdapterAndAddHandle( this );
 
 			//Selection manipulator
 			ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator( this ) );
-			selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
+			selectObject.addCondition( new MousePressCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
 			this.addManipulatorConditionSet( selectObject );
 
 			//Ability to drag stuff in from gallery
@@ -148,14 +171,14 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 
 			if( this.sceneEditor != null ) {
 				final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects( ObjectType.ANY );
-				InteractionGroup selectionOnly = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, selectObject, org.alice.interact.PickHint.PickType.MOVEABLE ) );
+				InteractionGroup selectionOnly = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, selectObject, PickHint.PickType.MOVEABLE ) );
 
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.DEFAULT, selectionOnly );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.ROTATION, selectionOnly );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.TRANSLATION, selectionOnly );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.RESIZE, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.DEFAULT, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.ROTATION, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.TRANSLATION, selectionOnly );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.RESIZE, selectionOnly );
 
-				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
+				SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
 		} else {
 			MovementKey[] movementKeys = {
@@ -233,11 +256,11 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			this.addManipulatorConditionSet( cameraRotate );
 
 			//Camera mouse control
-			MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-			MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
-			MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
-			MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
-			MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
+			MouseDragCondition leftAndNoModifiers = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+			MouseDragCondition leftAndShift = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
+			MouseDragCondition leftAndControl = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
+			MouseDragCondition middleMouseAndAnything = new MouseDragCondition( MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+			MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
 
 			ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 			//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
@@ -264,9 +287,9 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			dragFromGallery.addCondition( new DragAndDropCondition() );
 			this.addManipulatorConditionSet( dragFromGallery );
 
-			MouseDragCondition leftClickMoveableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-			MouseDragCondition leftClickTurnableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-			MouseDragCondition leftClickResizableObjects = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.RESIZABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+			MouseDragCondition leftClickMoveableObjects = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+			MouseDragCondition leftClickTurnableObjects = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+			MouseDragCondition leftClickResizableObjects = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.RESIZABLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 
 			ManipulatorConditionSet leftClickMouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator(), "Mouse Translate" );
 			leftClickMouseTranslateObject.addCondition( leftClickMoveableObjects );
@@ -278,30 +301,30 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			leftClickMouseRotateObjectLeftRight.setEnabled( false );
 			this.addManipulatorConditionSet( leftClickMouseRotateObjectLeftRight );
 
-			ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE, edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE ) );
+			ManipulatorConditionSet leftClickMouseResizeObject = new ManipulatorConditionSet( new ResizeDragManipulator( Resizer.UNIFORM, Resizer.XY_PLANE, Resizer.XZ_PLANE, Resizer.YZ_PLANE ) );
 			leftClickMouseResizeObject.addCondition( leftClickResizableObjects );
 			//This manipulation is used only when the "resize" interaction group is selected. Disabled by default.
 			leftClickMouseResizeObject.setEnabled( false );
 			this.addManipulatorConditionSet( leftClickMouseResizeObject );
 
 			ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
-			MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
+			MouseDragCondition moveableObjectWithShift = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 			mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 			this.addManipulatorConditionSet( mouseUpDownTranslateObject );
 
 			ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
-			MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
+			MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
 			mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 			this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
 
 			ManipulatorConditionSet mouseCopyAndMoveObject = new ManipulatorConditionSet( new CopyObjectDragManipulator() );
-			MouseDragCondition copyObjectWithAlt = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.ALT ) );
+			MouseDragCondition copyObjectWithAlt = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.ALT ) );
 			mouseCopyAndMoveObject.addCondition( copyObjectWithAlt );
 			this.addManipulatorConditionSet( mouseCopyAndMoveObject );
 
 			ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
-			MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.THREE_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-			MouseCondition handleObjectClickCondition = new MouseCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+			MouseDragCondition handleObjectCondition = new MouseDragCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.THREE_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+			MouseCondition handleObjectClickCondition = new MouseCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 			mouseHandleDrag.addCondition( handleObjectCondition );
 			mouseHandleDrag.addCondition( handleObjectClickCondition );
 			this.addManipulatorConditionSet( mouseHandleDrag );
@@ -313,11 +336,11 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			//		this.addManipulator( mouseHandleClick );
 
 			ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator( this ) );
-			selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
+			selectObject.addCondition( new MousePressCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
 			this.addManipulatorConditionSet( selectObject );
 
 			ManipulatorConditionSet getAGoodLookAtObject = new ManipulatorConditionSet( new GetAGoodLookAtManipulator() );
-			getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.VIEWABLE.pickHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) ) );
+			getAGoodLookAtObject.addCondition( new DoubleClickedObjectCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.VIEWABLE.pickHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) ) );
 			this.addManipulatorConditionSet( getAGoodLookAtObject );
 
 			ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
@@ -330,7 +353,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 				manipulatorConditionSet.getManipulator().setDragAdapter( this );
 			}
 
-			ManipulationAxes handleAxis = new org.alice.interact.handle.ManipulationAxes();
+			ManipulationAxes handleAxis = new ManipulationAxes();
 
 			handleAxis.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 
@@ -382,21 +405,21 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			rotateAboutZAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutZAxis.setName( "rotateAboutZAxis" );
 
-			JointRotationRingHandle rotateJointAboutZAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.WHITE );
+			JointRotationRingHandle rotateJointAboutZAxis = new JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.WHITE );
 			rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutZAxis.setName( "rotateJointAboutZAxis" );
 
-			JointRotationRingHandle rotateJointAboutYAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.RED );
+			JointRotationRingHandle rotateJointAboutYAxis = new JointRotationRingHandle( MovementDirection.UP, Color4f.RED );
 			rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutYAxis.setName( "rotateJointAboutYAxis" );
 
-			JointRotationRingHandle rotateJointAboutXAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.BLUE );
+			JointRotationRingHandle rotateJointAboutXAxis = new JointRotationRingHandle( MovementDirection.LEFT, Color4f.BLUE );
 			rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
@@ -476,7 +499,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			translateForward.setName( "translateForward" );
 			translateBackward.setName( "translateBackward" );
 
-			LinearScaleHandle scaleAxisUniform = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM );
+			LinearScaleHandle scaleAxisUniform = LinearScaleHandle.createFromResizer( Resizer.UNIFORM );
 			scaleAxisUniform.setManipulation( new ScaleDragManipulator() );
 			scaleAxisUniform.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisUniform.addToGroups( HandleSet.HandleGroup.RESIZE_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -484,7 +507,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisUniform.setDragAdapterAndAddHandle( this );
 			scaleAxisUniform.setName( "scaleAxisUniform" );
 
-			LinearScaleHandle scaleAxisX = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS );
+			LinearScaleHandle scaleAxisX = LinearScaleHandle.createFromResizer( Resizer.X_AXIS );
 			scaleAxisX.setManipulation( new ScaleDragManipulator() );
 			scaleAxisX.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisX.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -492,7 +515,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisX.setDragAdapterAndAddHandle( this );
 			scaleAxisX.setName( "scaleAxisX" );
 
-			LinearScaleHandle scaleAxisY = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS );
+			LinearScaleHandle scaleAxisY = LinearScaleHandle.createFromResizer( Resizer.Y_AXIS );
 			scaleAxisY.setManipulation( new ScaleDragManipulator() );
 			scaleAxisY.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisY.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -500,7 +523,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisY.setDragAdapterAndAddHandle( this );
 			scaleAxisY.setName( "scaleAxisY" );
 
-			LinearScaleHandle scaleAxisZ = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS );
+			LinearScaleHandle scaleAxisZ = LinearScaleHandle.createFromResizer( Resizer.Z_AXIS );
 			scaleAxisZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -508,7 +531,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisZ.setDragAdapterAndAddHandle( this );
 			scaleAxisZ.setName( "scaleAxisZ" );
 
-			LinearScaleHandle scaleAxisXY = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE );
+			LinearScaleHandle scaleAxisXY = LinearScaleHandle.createFromResizer( Resizer.XY_PLANE );
 			scaleAxisXY.setManipulation( new ScaleDragManipulator() );
 			scaleAxisXY.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisXY.addToGroups( HandleSet.HandleGroup.X_AND_Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -516,7 +539,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisXY.setDragAdapterAndAddHandle( this );
 			scaleAxisXY.setName( "scaleAxisXY" );
 
-			LinearScaleHandle scaleAxisXZ = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE );
+			LinearScaleHandle scaleAxisXZ = LinearScaleHandle.createFromResizer( Resizer.XZ_PLANE );
 			scaleAxisXZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisXZ.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisXZ.addToGroups( HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -524,7 +547,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisXZ.setDragAdapterAndAddHandle( this );
 			scaleAxisXZ.setName( "scaleAxisXZ" );
 
-			LinearScaleHandle scaleAxisYZ = LinearScaleHandle.createFromResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE );
+			LinearScaleHandle scaleAxisYZ = LinearScaleHandle.createFromResizer( Resizer.YZ_PLANE );
 			scaleAxisYZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisYZ.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisYZ.addToGroups( HandleSet.HandleGroup.Y_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
@@ -538,32 +561,32 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 				final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects( ObjectType.JOINT );
 				final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects( ObjectType.ANY );
 
-				InteractionGroup selectionOnly = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE ) );
-				InteractionGroup defaultInteraction = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE ) );
+				InteractionGroup selectionOnly = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE ) );
+				InteractionGroup defaultInteraction = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE ) );
 
 				//TODO: Make joint and non joint interactions
 				InteractionGroup rotationInteraction = new InteractionGroup();
-				rotationInteraction.addInteractionInfo( notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE );
-				rotationInteraction.addInteractionInfo( joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE );
+				rotationInteraction.addInteractionInfo( notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE );
+				rotationInteraction.addInteractionInfo( joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, PickHint.PickType.TURNABLE );
 
 				InteractionGroup translationInteraction = new InteractionGroup();
-				translationInteraction.addInteractionInfo( notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
-				translationInteraction.addInteractionInfo( joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
+				translationInteraction.addInteractionInfo( notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE );
+				translationInteraction.addInteractionInfo( joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, PickHint.PickType.MOVEABLE );
 
-				InteractionGroup resizeInteraction = new InteractionGroup( new InteractionGroup.InteractionInfo( notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, org.alice.interact.PickHint.PickType.RESIZABLE ) );
+				InteractionGroup resizeInteraction = new InteractionGroup( new InteractionGroup.InteractionInfo( notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, PickHint.PickType.RESIZABLE ) );
 
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.DEFAULT, defaultInteraction );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.ROTATION, rotationInteraction );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.TRANSLATION, translationInteraction );
-				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.RESIZE, resizeInteraction );
-				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
-				this.setHandleSelectionState( org.alice.interact.handle.HandleStyle.DEFAULT );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.DEFAULT, defaultInteraction );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.ROTATION, rotationInteraction );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.TRANSLATION, translationInteraction );
+				this.mapHandleStyleToInteractionGroup.put( HandleStyle.RESIZE, resizeInteraction );
+				SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
+				this.setHandleSelectionState( HandleStyle.DEFAULT );
 			}
 		}
 
-		edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
+		RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
 		if( renderCapabilities.getStencilBits() > 0 ) {
-			edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette = new edu.cmu.cs.dennisc.scenegraph.Silhouette();
+			Silhouette sgSilhouette = new Silhouette();
 			//sgSilhouette.color.setValue( Color4f.YELLOW );
 			//sgSilhouette.width.setValue( 1.5f );
 			this.setSgSilhouette( sgSilhouette );
@@ -579,70 +602,70 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 	}
 
 	@Override
-	protected org.lgna.croquet.ImmutableDataSingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState() {
-		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState();
+	protected ImmutableDataSingleSelectListState<HandleStyle> getHandleStyleState() {
+		return SideComposite.getInstance().getHandleStyleState();
 	}
 
 	public AffineMatrix4x4 getDropTargetTransformation() {
 		return this.dropTargetManipulator.getTargetTransformation();
 	}
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.interact.handle.HandleStyle> handleStyleListener = new org.lgna.croquet.event.ValueListener<org.alice.interact.handle.HandleStyle>() {
+	private final ValueListener<HandleStyle> handleStyleListener = new ValueListener<HandleStyle>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.interact.handle.HandleStyle> e ) {
+		public void valueChanged( ValueEvent<HandleStyle> e ) {
 			setInteractionState( e.getNextValue() );
 		}
 	};
 
 	@Override
 	public boolean shouldSnapToRotation() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToRotation();
+		return SnapState.getInstance().shouldSnapToRotation();
 	}
 
 	@Override
 	public boolean shouldSnapToGround() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGround();
+		return SnapState.getInstance().shouldSnapToGround();
 	}
 
 	@Override
 	public boolean shouldSnapToGrid() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().shouldSnapToGrid();
+		return SnapState.getInstance().shouldSnapToGrid();
 	}
 
 	@Override
 	public double getGridSpacing() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().getGridSpacing();
+		return SnapState.getInstance().getGridSpacing();
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
-		return org.alice.stageide.sceneeditor.snap.SnapState.getInstance().getRotationSnapAngle();
+	public Angle getRotationSnapAngle() {
+		return SnapState.getInstance().getRotationSnapAngle();
 	}
 
 	@Override
-	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgManipulatedTransformable = manipulator.getManipulatedTransformable();
+	public void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
+		AbstractTransformable sgManipulatedTransformable = manipulator.getManipulatedTransformable();
 		if( sgManipulatedTransformable != null ) {
 			AffineMatrix4x4 newTransformation = sgManipulatedTransformable.getLocalTransformation();
 
 			if( newTransformation.equals( originalTransformation ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the transformation." );
+				Logger.warning( "Adding an undoable action for a manipulation that didn't actually change the transformation." );
 			}
 			if( originalTransformation == null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Ending manipulation where the original transformaion is null." );
+				Logger.severe( "Ending manipulation where the original transformaion is null." );
 			}
 
-			org.lgna.story.SThing aliceThing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( sgManipulatedTransformable );
+			SThing aliceThing = EntityImp.getAbstractionFromSgElement( sgManipulatedTransformable );
 			if( aliceThing != null ) {
 				AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
-				if( aliceThing instanceof org.lgna.story.SJoint ) {
-					org.lgna.story.implementation.JointImp jointImp = (org.lgna.story.implementation.JointImp)org.lgna.story.implementation.EntityImp.getInstance( sgManipulatedTransformable );
-					org.lgna.story.SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
-					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
-					undoOperation = new org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalJointTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, manipulator.getUndoRedoDescription() );
+				if( aliceThing instanceof SJoint ) {
+					JointImp jointImp = (JointImp)EntityImp.getInstance( sgManipulatedTransformable );
+					SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
+					UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
+					undoOperation = new PredeterminedSetLocalJointTransformationActionOperation( Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, manipulator.getUndoRedoDescription() );
 				} else {
-					org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
-					undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription() );
+					UserField manipulatedField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+					undoOperation = new PredeterminedSetLocalTransformationActionOperation( Application.PROJECT_GROUP, false, this.getAnimator(), manipulatedField, originalTransformation, newTransformation, manipulator.getUndoRedoDescription() );
 				}
 				undoOperation.fire();
 			} else {

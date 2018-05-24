@@ -42,45 +42,61 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.edits;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ast.ExpressionCreator;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.Color;
+import org.lgna.story.SMarker;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MarkerColorIdEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.project.ast.UserField field;
-	private final org.lgna.project.ast.Expression nextArgumentExpression;
-	private transient org.lgna.project.ast.Expression prevArgumentExpression;
+public class MarkerColorIdEdit extends AbstractEdit {
+	private final UserField field;
+	private final Expression nextArgumentExpression;
+	private transient Expression prevArgumentExpression;
 
-	private static final org.lgna.project.ast.JavaMethod SET_COLOR_ID_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class );
+	private static final JavaMethod SET_COLOR_ID_METHOD = JavaMethod.getInstance( SMarker.class, "setColorId", Color.class );
 
-	public MarkerColorIdEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserField field, org.lgna.project.ast.Expression nextArgumentExpression ) {
+	public MarkerColorIdEdit( CompletionStep step, UserField field, Expression nextArgumentExpression ) {
 		super( step );
 		this.field = field;
 		this.nextArgumentExpression = nextArgumentExpression;
 	}
 
-	private void set( org.lgna.project.ast.Expression argumentExpression ) {
-		org.lgna.project.ast.Statement statement = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(
-				org.lgna.project.ast.AstUtilities.createFieldAccess( new org.lgna.project.ast.ThisExpression(), field ),
+	private void set( Expression argumentExpression ) {
+		Statement statement = AstUtilities.createMethodInvocationStatement(
+				AstUtilities.createFieldAccess( new ThisExpression(), field ),
 				SET_COLOR_ID_METHOD,
 				argumentExpression );
-		org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().executeStatements( statement );
+		StageIDE.getActiveInstance().getSceneEditor().executeStatements( statement );
 	}
 
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
 		if( isDo ) {
-			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-			org.lgna.story.SMarker marker = ide.getSceneEditor().getInstanceInJavaVMForField( this.field, org.lgna.story.SMarker.class );
+			StageIDE ide = StageIDE.getActiveInstance();
+			SMarker marker = ide.getSceneEditor().getInstanceInJavaVMForField( this.field, SMarker.class );
 			if( marker != null ) {
-				org.lgna.story.Color colorId = marker.getColorId();
+				Color colorId = marker.getColorId();
 				try {
 					this.prevArgumentExpression = ide.getApiConfigurationManager().getExpressionCreator().createExpression( colorId );
-				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee, colorId );
-					this.prevArgumentExpression = new org.lgna.project.ast.NullLiteral();
+				} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
+					Logger.throwable( ccee, colorId );
+					this.prevArgumentExpression = new NullLiteral();
 				}
 			} else {
-				this.prevArgumentExpression = new org.lgna.project.ast.NullLiteral();
+				this.prevArgumentExpression = new NullLiteral();
 			}
 		}
 		this.set( this.nextArgumentExpression );
@@ -94,10 +110,10 @@ public class MarkerColorIdEdit extends org.lgna.croquet.edits.AbstractEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "change " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.field );
+		NodeUtilities.safeAppendRepr( rv, this.field );
 		rv.append( " color id " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.prevArgumentExpression );
+		NodeUtilities.safeAppendRepr( rv, this.prevArgumentExpression );
 		rv.append( " ===> " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.nextArgumentExpression );
+		NodeUtilities.safeAppendRepr( rv, this.nextArgumentExpression );
 	}
 }

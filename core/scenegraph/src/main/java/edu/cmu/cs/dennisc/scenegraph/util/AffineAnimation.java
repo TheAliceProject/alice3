@@ -44,6 +44,13 @@ package edu.cmu.cs.dennisc.scenegraph.util;
 
 //todo: move this to a different package so it won't be out of place?
 
+import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AngleInRevolutions;
+import edu.cmu.cs.dennisc.math.Tuple3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,17 +60,17 @@ public class AffineAnimation {
 	private static long s_t0 = System.currentTimeMillis();
 
 	private static void waitForLookingGlass() {
-		edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( SLEEP_MSEC );
+		ThreadUtilities.sleep( SLEEP_MSEC );
 	}
 
 	private static double getCurrentTime() {
 		return ( System.currentTimeMillis() - s_t0 ) * 0.001;
 	}
 
-	public static void setTranslation( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double x, double y, double z, double rate ) {
+	public static void setTranslation( Transformable transformable, double x, double y, double z, double rate ) {
 		double t0 = getCurrentTime();
 
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getLocalTransformation();
+		AffineMatrix4x4 m = transformable.getLocalTransformation();
 		double x0 = m.translation.x;
 		double y0 = m.translation.y;
 		double z0 = m.translation.z;
@@ -82,7 +89,7 @@ public class AffineAnimation {
 		double yDelta = y - y0;
 		double zDelta = z - z0;
 
-		double distance = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( xDelta, yDelta, zDelta );
+		double distance = Tuple3.calculateMagnitude( xDelta, yDelta, zDelta );
 
 		if( distance != 0 ) {
 			double xRate = ( rate * xDelta ) / distance;
@@ -111,7 +118,7 @@ public class AffineAnimation {
 		}
 	}
 
-	private static void rotate( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRevolutions, double duration ) {
+	private static void rotate( Transformable transformable, Vector3 axis, double angleInRevolutions, double duration ) {
 		double t0 = getCurrentTime();
 
 		double tComplete = t0 + duration;
@@ -127,37 +134,37 @@ public class AffineAnimation {
 
 				double anglePortion = ( angleInRevolutions * tPortion ) - angleSum;
 
-				transformable.applyRotationAboutArbitraryAxis( axis, new edu.cmu.cs.dennisc.math.AngleInRevolutions( anglePortion ) );
+				transformable.applyRotationAboutArbitraryAxis( axis, new AngleInRevolutions( anglePortion ) );
 
 				angleSum += anglePortion;
 				waitForLookingGlass();
 			}
 		}
-		transformable.applyRotationAboutArbitraryAxis( axis, new edu.cmu.cs.dennisc.math.AngleInRevolutions( angleInRevolutions - angleSum ) );
+		transformable.applyRotationAboutArbitraryAxis( axis, new AngleInRevolutions( angleInRevolutions - angleSum ) );
 		waitForLookingGlass();
 	}
 
-	public static void turnLeft( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double angleInRevolutions, double duration ) {
-		rotate( transformable, edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis(), angleInRevolutions, duration );
+	public static void turnLeft( Transformable transformable, double angleInRevolutions, double duration ) {
+		rotate( transformable, Vector3.accessPositiveYAxis(), angleInRevolutions, duration );
 	}
 
-	public static void turnRight( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double angleInRevolutions, double duration ) {
+	public static void turnRight( Transformable transformable, double angleInRevolutions, double duration ) {
 		turnLeft( transformable, -angleInRevolutions, duration );
 	}
 
-	public static void turnForward( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double angleInRevolutions, double duration ) {
-		rotate( transformable, edu.cmu.cs.dennisc.math.Vector3.accessPositiveXAxis(), angleInRevolutions, duration );
+	public static void turnForward( Transformable transformable, double angleInRevolutions, double duration ) {
+		rotate( transformable, Vector3.accessPositiveXAxis(), angleInRevolutions, duration );
 	}
 
-	public static void turnBackward( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double angleInRevolutions, double duration ) {
+	public static void turnBackward( Transformable transformable, double angleInRevolutions, double duration ) {
 		turnForward( transformable, -angleInRevolutions, duration );
 	}
 
-	public static void rollLeft( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double angleInRevolutions, double duration ) {
-		rotate( transformable, edu.cmu.cs.dennisc.math.Vector3.accessPositiveZAxis(), angleInRevolutions, duration );
+	public static void rollLeft( Transformable transformable, double angleInRevolutions, double duration ) {
+		rotate( transformable, Vector3.accessPositiveZAxis(), angleInRevolutions, duration );
 	}
 
-	public static void rollRight( edu.cmu.cs.dennisc.scenegraph.Transformable transformable, double angleInRevolutions, double duration ) {
+	public static void rollRight( Transformable transformable, double angleInRevolutions, double duration ) {
 		rollLeft( transformable, -angleInRevolutions, duration );
 	}
 }

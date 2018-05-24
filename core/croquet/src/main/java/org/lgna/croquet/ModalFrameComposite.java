@@ -42,13 +42,26 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp;
+import org.lgna.croquet.triggers.WindowEventTrigger;
+import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Frame;
+
+import java.awt.Point;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractWindowComposite<V> implements OperationOwningComposite<V> {
-	public ModalFrameComposite( java.util.UUID id, Group launchOperationGroup ) {
+public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends AbstractWindowComposite<V> implements OperationOwningComposite<V> {
+	public ModalFrameComposite( UUID id, Group launchOperationGroup ) {
 		super( id );
-		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp<ModalFrameComposite<V>>( this, launchOperationGroup );
+		this.imp = new LaunchOperationOwningCompositeImp<ModalFrameComposite<V>>( this, launchOperationGroup );
 	}
 
 	@Override
@@ -57,11 +70,11 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> getImp() {
+	protected LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> getImp() {
 		return this.imp;
 	}
 
-	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
+	public Operation getLaunchOperation( String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 
@@ -70,10 +83,10 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		return text;
 	}
 
-	protected void handlePreShowWindow( org.lgna.croquet.views.Frame frame ) {
+	protected void handlePreShowWindow( Frame frame ) {
 	}
 
-	protected void handlePostHideWindow( org.lgna.croquet.views.Frame frame ) {
+	protected void handlePostHideWindow( Frame frame ) {
 	}
 
 	protected void handleFinally() {
@@ -85,26 +98,26 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 	}
 
 	@Override
-	public void perform( org.lgna.croquet.OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> step ) {
-		final java.util.List<org.lgna.croquet.views.Frame> framesToDiable = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> step ) {
+		final List<Frame> framesToDiable = Lists.newLinkedList();
 
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		Application application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
 		framesToDiable.add( documentFrame.getFrame() );
 
-		final org.lgna.croquet.views.Frame frame = new org.lgna.croquet.views.Frame();
-		class ModalFrameWindowListener implements java.awt.event.WindowListener {
+		final Frame frame = new Frame();
+		class ModalFrameWindowListener implements WindowListener {
 			@Override
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				for( org.lgna.croquet.views.Frame frame : framesToDiable ) {
+			public void windowOpened( WindowEvent e ) {
+				for( Frame frame : framesToDiable ) {
 					frame.getAwtComponent().setEnabled( false );
 				}
 			}
 
 			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				if( isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) ) ) {
-					for( org.lgna.croquet.views.Frame frame : framesToDiable ) {
+			public void windowClosing( WindowEvent e ) {
+				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( e ) ) ) {
+					for( Frame frame : framesToDiable ) {
 						frame.getAwtComponent().setEnabled( true );
 					}
 					//e.getComponent().setVisible( false );
@@ -113,7 +126,7 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 			}
 
 			@Override
-			public void windowClosed( java.awt.event.WindowEvent e ) {
+			public void windowClosed( WindowEvent e ) {
 				frame.removeWindowListener( this );
 				try {
 					handlePostHideWindow( frame );
@@ -123,31 +136,31 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 			}
 
 			@Override
-			public void windowActivated( java.awt.event.WindowEvent e ) {
+			public void windowActivated( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
+			public void windowDeactivated( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
+			public void windowDeiconified( WindowEvent e ) {
 			}
 
 			@Override
-			public void windowIconified( java.awt.event.WindowEvent e ) {
+			public void windowIconified( WindowEvent e ) {
 			}
 		}
 
 		ModalFrameWindowListener windowListener = new ModalFrameWindowListener();
-		frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
+		frame.setDefaultCloseOperation( Frame.DefaultCloseOperation.DO_NOTHING );
 		frame.addWindowListener( windowListener );
 		V view = this.getView();
 		frame.getAwtComponent().setContentPane( view.getAwtComponent() );
 
 		this.updateWindowSize( frame );
 		final int OFFSET = 32;
-		java.awt.Point p = documentFrame.getFrame().getLocation();
+		Point p = documentFrame.getFrame().getLocation();
 		frame.setLocation( p.x + OFFSET, p.y + OFFSET );
 		frame.setTitle( this.getModalFrameTitle() );
 		this.handlePreShowWindow( frame );
@@ -195,10 +208,10 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		return rv;
 	}
 
-	protected boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {
+	protected boolean isWindowClosingEnabled( WindowEventTrigger trigger ) {
 		return true;
 	}
 
-	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> imp;
+	private final LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> imp;
 	private String title;
 }

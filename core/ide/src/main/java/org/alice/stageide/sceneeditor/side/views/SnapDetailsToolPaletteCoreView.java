@@ -42,18 +42,26 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side.views;
 
+import org.alice.stageide.sceneeditor.side.SideComposite;
+import org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.MigPanel;
+
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.views.MigPanel {
-	private final org.lgna.croquet.event.ValueListener<Boolean> isEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+public class SnapDetailsToolPaletteCoreView extends MigPanel {
+	private final ValueListener<Boolean> isEnabledListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			handleEnabledChanged( e.getNextValue() );
 		}
 	};
 
-	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite composite ) {
+	public SnapDetailsToolPaletteCoreView( SnapDetailsToolPaletteCoreComposite composite ) {
 		super( composite, "", "24[][]" );
 
 		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
@@ -68,7 +76,7 @@ public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.views.MigPa
 	}
 
 	private void handleEnabledChanged( boolean nextValue ) {
-		for( java.awt.Component awtComponent : this.getAwtComponent().getComponents() ) {
+		for( Component awtComponent : this.getAwtComponent().getComponents() ) {
 			awtComponent.setEnabled( nextValue );
 		}
 	}
@@ -76,13 +84,13 @@ public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.views.MigPa
 	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
-		org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener( this.isEnabledListener );
+		SideComposite.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener( this.isEnabledListener );
 
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
-		org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getIsSnapEnabledState().removeNewSchoolValueListener( this.isEnabledListener );
+		SideComposite.getInstance().getIsSnapEnabledState().removeNewSchoolValueListener( this.isEnabledListener );
 		super.handleCompositePostDeactivation();
 	}
 }

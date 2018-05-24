@@ -43,10 +43,24 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
+import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;
+import org.alice.ide.croquet.models.ast.cascade.ExpressionsCascade;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionsCascade implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
+public abstract class StatementInsertCascade extends ExpressionsCascade implements InsertStatementCompletionModel {
 
 	private static boolean EPIC_HACK_isActive;
 
@@ -54,16 +68,16 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		return EPIC_HACK_isActive;
 	}
 
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private final BlockStatementIndexPair blockStatementIndexPair;
 	private final boolean isEnveloping;
 
-	public StatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, id, blanks );
+	public StatementInsertCascade( UUID id, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, CascadeBlank<Expression>... blanks ) {
+		super( Application.PROJECT_GROUP, id, blanks );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 		this.isEnveloping = isEnveloping;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 
@@ -71,10 +85,10 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 		return this.isEnveloping;
 	}
 
-	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
+	protected abstract Statement createStatement( Expression... expressions );
 
 	@Override
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void prologue( Trigger trigger ) {
 		EPIC_HACK_isActive = true;
 		super.prologue( trigger );
 	}
@@ -86,8 +100,8 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	@Override
-	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
-		org.lgna.project.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values, this.isEnveloping );
+	protected InsertStatementEdit createEdit( CompletionStep<Cascade<Expression>> step, Expression[] values ) {
+		Statement statement = this.createStatement( values );
+		return new InsertStatementEdit( step, this.blockStatementIndexPair, statement, values, this.isEnveloping );
 	}
 }

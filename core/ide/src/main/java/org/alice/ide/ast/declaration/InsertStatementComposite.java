@@ -42,25 +42,38 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView;
+import org.alice.ide.ast.declaration.views.InsertStatementView;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
+import org.alice.ide.name.validators.LocalNameValidator;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InsertStatementComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+public abstract class InsertStatementComposite<S extends Statement> extends DeclarationLikeSubstanceComposite<S> {
+	private final BlockStatementIndexPair blockStatementIndexPair;
 	private final boolean isEnveloping;
 	//todo: remove
-	private final org.alice.ide.name.validators.LocalNameValidator nameValidator;
+	private final LocalNameValidator nameValidator;
 
-	public InsertStatementComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+	public InsertStatementComposite( UUID migrationId, Details details, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		super( migrationId, details );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 		this.isEnveloping = isEnveloping;
-		this.nameValidator = new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair );
+		this.nameValidator = new LocalNameValidator( blockStatementIndexPair );
 	}
 
 	protected abstract S createStatement();
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 
@@ -74,12 +87,12 @@ public abstract class InsertStatementComposite<S extends org.lgna.project.ast.St
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement(), new org.lgna.project.ast.Expression[ 0 ], this.isEnveloping );
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		return new InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement(), new Expression[ 0 ], this.isEnveloping );
 	}
 
 	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return null;
 	}
 
@@ -89,7 +102,7 @@ public abstract class InsertStatementComposite<S extends org.lgna.project.ast.St
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
-		return new org.alice.ide.ast.declaration.views.InsertStatementView( this );
+	protected DeclarationLikeSubstanceView createView() {
+		return new InsertStatementView( this );
 	}
 }

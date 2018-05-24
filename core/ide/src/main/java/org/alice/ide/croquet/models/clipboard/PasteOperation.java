@@ -43,11 +43,15 @@
 package org.alice.ide.croquet.models.clipboard;
 
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PasteOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class PasteOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static PasteOperation instance = new PasteOperation();
 	}
@@ -57,11 +61,11 @@ public class PasteOperation extends org.alice.ide.operations.InconsequentialActi
 	}
 
 	private PasteOperation() {
-		super( java.util.UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
+		super( UUID.fromString( "b6c8d189-3529-4244-9530-d71701c6e75f" ) );
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal( CompletionStep<?> step ) {
 		new OkDialog.Builder( findLocalizedText( "content" ) )
 				.title( findLocalizedText( "title" ) )
 				.buildAndShow();

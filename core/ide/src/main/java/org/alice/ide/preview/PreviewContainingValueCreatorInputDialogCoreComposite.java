@@ -43,11 +43,18 @@
 
 package org.alice.ide.preview;
 
+import org.alice.ide.preview.components.PanelWithPreview;
+import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.event.Event;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<V, T> {
-	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
+public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends PanelWithPreview, T> extends SingleValueCreatorInputDialogCoreComposite<V, T> {
+	public PreviewContainingValueCreatorInputDialogCoreComposite( UUID id ) {
 		super( id );
 	}
 
@@ -56,13 +63,13 @@ public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V ex
 	}
 
 	@Override
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
+	protected void handleFiredEvent( Event<?> event ) {
 		super.handleFiredEvent( event );
 		this.getView().updatePreview();
 	}
 
 	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void handlePreShowDialog( CompletionStep<?> step ) {
 		this.getView().updatePreview();
 		super.handlePreShowDialog( step );
 	}

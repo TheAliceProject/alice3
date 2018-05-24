@@ -43,18 +43,26 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+
+import java.awt.Rectangle;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera<edu.cmu.cs.dennisc.scenegraph.OrthographicCamera> {
-	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
+public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera<OrthographicCamera> {
+	private static ClippedZPlane s_actualPicturePlaneBufferForReuse = ClippedZPlane.createNaN();
 
 	//	private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
+	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
 		synchronized( s_actualPicturePlaneBufferForReuse ) {
 			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
 			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
@@ -81,7 +89,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
+	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
 		synchronized( s_actualPicturePlaneBufferForReuse ) {
 			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
 			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
@@ -105,19 +113,19 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
 	}
 
 	@Override
-	protected java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv ) {
+	protected Rectangle performLetterboxing( Rectangle rv ) {
 		//todo: handle NaN
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
+	public final ClippedZPlane getActualPicturePlane( ClippedZPlane rv, Rectangle actualViewport ) {
 		//		rv.set( m_picturePlane, actualViewport );
-		rv.set( owner.picturePlane.getValue(), edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( actualViewport ) );
+		rv.set( owner.picturePlane.getValue(), RectangleUtilities.toMRectangleI( actualViewport ) );
 		return rv;
 	}
 
 	@Override
-	protected void setupProjection( Context context, java.awt.Rectangle actualViewport, float near, float far ) {
+	protected void setupProjection( Context context, Rectangle actualViewport, float near, float far ) {
 		synchronized( s_actualPicturePlaneBufferForReuse ) {
 			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
 			context.gl.glOrtho( s_actualPicturePlaneBufferForReuse.getXMinimum(), s_actualPicturePlaneBufferForReuse.getXMaximum(), s_actualPicturePlaneBufferForReuse.getYMinimum(), s_actualPicturePlaneBufferForReuse.getYMaximum(), near, far );
@@ -125,7 +133,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.picturePlane ) {
 			//pass
 		} else {

@@ -42,61 +42,83 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
+import javax.swing.AbstractButton;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Enumeration;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
-	private javax.swing.JList list;
-	private javax.swing.ListModel model;
-	private javax.swing.ButtonGroup group;
-	private java.awt.GridBagConstraints gbc;
+	private JList list;
+	private ListModel model;
+	private ButtonGroup group;
+	private GridBagConstraints gbc;
 
-	private javax.swing.event.ListDataListener listDataAdapter = new javax.swing.event.ListDataListener() {
+	private ListDataListener listDataAdapter = new ListDataListener() {
 		@Override
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+		public void contentsChanged( ListDataEvent e ) {
 			ListUI.this.refresh();
 		}
 
 		@Override
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+		public void intervalAdded( ListDataEvent e ) {
 			for( int i = e.getIndex0(); i <= e.getIndex1(); i++ ) {
 				ListUI.this.add( i );
 			}
 		}
 
 		@Override
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+		public void intervalRemoved( ListDataEvent e ) {
 			for( int i = e.getIndex1(); i >= e.getIndex0(); i-- ) {
 				ListUI.this.remove( i );
 			}
 		}
 	};
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+	private ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		public void valueChanged( ListSelectionEvent e ) {
 
 		}
 	};
-	private java.beans.PropertyChangeListener propertyListener = new java.beans.PropertyChangeListener() {
+	private PropertyChangeListener propertyListener = new PropertyChangeListener() {
 		@Override
-		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+		public void propertyChange( PropertyChangeEvent e ) {
 			if( "model".equals( e.getPropertyName() ) ) {
 				ListUI.this.refresh();
 			}
 		}
 	};
 
-	protected abstract javax.swing.AbstractButton createComponentFor( int index, E e );
+	protected abstract AbstractButton createComponentFor( int index, E e );
 
-	protected abstract void updateIndex( javax.swing.AbstractButton button, int index );
+	protected abstract void updateIndex( AbstractButton button, int index );
 
 	private void updateIndices() {
 		this.list.revalidate();
 		this.list.repaint();
 		int i = 0;
-		java.util.Enumeration<javax.swing.AbstractButton> e = this.group.getElements();
+		Enumeration<AbstractButton> e = this.group.getElements();
 		while( e.hasMoreElements() ) {
-			javax.swing.AbstractButton b = e.nextElement();
+			AbstractButton b = e.nextElement();
 			this.updateIndex( b, i );
 			i++;
 		}
@@ -105,13 +127,13 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	private void add( final int i ) {
 		if( this.list != null ) {
 			final E value = (E)model.getElementAt( i );
-			javax.swing.AbstractButton button = this.createComponentFor( i, value );
-			button.addItemListener( new java.awt.event.ItemListener() {
+			AbstractButton button = this.createComponentFor( i, value );
+			button.addItemListener( new ItemListener() {
 				@Override
-				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+				public void itemStateChanged( ItemEvent e ) {
+					if( e.getStateChange() == ItemEvent.SELECTED ) {
 						if( ListUI.this.list != null ) {
-							javax.swing.ListSelectionModel model = ListUI.this.list.getSelectionModel();
+							ListSelectionModel model = ListUI.this.list.getSelectionModel();
 							model.setSelectionInterval( i, i );
 						}
 					}
@@ -125,7 +147,7 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 
 	private void remove( int i ) {
 		if( this.list != null ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)this.list.getComponent( i );
+			AbstractButton button = (AbstractButton)this.list.getComponent( i );
 			this.group.remove( button );
 			this.list.remove( button );
 			this.updateIndices();
@@ -144,13 +166,13 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 				}
 			}
 			this.list.removeAll();
-			this.group = new javax.swing.ButtonGroup();
+			this.group = new ButtonGroup();
 			final int N = this.model.getSize();
 			for( int i = 0; i < N; i++ ) {
 				this.add( i );
 			}
 			gbc.weighty = 1.0;
-			this.list.add( javax.swing.Box.createGlue(), gbc );
+			this.list.add( Box.createGlue(), gbc );
 			gbc.weighty = 0.0;
 			this.list.revalidate();
 			this.list.repaint();
@@ -158,20 +180,20 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	}
 
 	@Override
-	public void installUI( javax.swing.JComponent c ) {
+	public void installUI( JComponent c ) {
 		super.installUI( c );
-		this.list = (javax.swing.JList)c;
-		this.list.setLayout( new java.awt.GridBagLayout() );
-		this.group = new javax.swing.ButtonGroup();
-		this.gbc = new java.awt.GridBagConstraints();
-		this.gbc.fill = java.awt.GridBagConstraints.BOTH;
-		this.gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		this.list = (JList)c;
+		this.list.setLayout( new GridBagLayout() );
+		this.group = new ButtonGroup();
+		this.gbc = new GridBagConstraints();
+		this.gbc.fill = GridBagConstraints.BOTH;
+		this.gbc.gridwidth = GridBagConstraints.REMAINDER;
 		this.gbc.weightx = 1.0;
 		this.refresh();
 	}
 
 	@Override
-	public void uninstallUI( javax.swing.JComponent c ) {
+	public void uninstallUI( JComponent c ) {
 		this.model.removeListDataListener( this.listDataAdapter );
 		this.model = null;
 		this.group = null;
@@ -183,12 +205,12 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	}
 
 	@Override
-	public java.awt.Rectangle getCellBounds( javax.swing.JList list, int index1, int index2 ) {
-		java.awt.Rectangle rv = null;
+	public Rectangle getCellBounds( JList list, int index1, int index2 ) {
+		Rectangle rv = null;
 		final int N = list.getComponentCount() - 1;
 		if( ( ( 0 <= index1 ) && ( index1 < N ) ) && ( ( 0 <= index2 ) && ( index2 < N ) ) ) {
 			for( int i = index1; i <= index2; i++ ) {
-				java.awt.Component c = list.getComponent( i );
+				Component c = list.getComponent( i );
 				if( rv != null ) {
 					rv = rv.union( c.getBounds() );
 				} else {
@@ -200,15 +222,15 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	}
 
 	@Override
-	public java.awt.Point indexToLocation( javax.swing.JList list, int index ) {
+	public Point indexToLocation( JList list, int index ) {
 		return list.getComponent( index ).getLocation();
 	}
 
 	@Override
-	public int locationToIndex( javax.swing.JList list, java.awt.Point location ) {
+	public int locationToIndex( JList list, Point location ) {
 		final int N = list.getComponentCount() - 1;
 		for( int i = 0; i < N; i++ ) {
-			java.awt.Component c = list.getComponent( i );
+			Component c = list.getComponent( i );
 			if( c.contains( location ) ) {
 				return i;
 			}

@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.Action;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JFauxHyperlink extends AbstractHyperlink {
-	public JFauxHyperlink( javax.swing.Action action ) {
+	public JFauxHyperlink( Action action ) {
 		this.setAction( action );
 	}
 }

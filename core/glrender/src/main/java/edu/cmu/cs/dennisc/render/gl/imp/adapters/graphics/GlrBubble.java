@@ -42,46 +42,58 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
+import edu.cmu.cs.dennisc.java.awt.MultilineText;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 import edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager;
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
 
-public abstract class GlrBubble<T extends edu.cmu.cs.dennisc.scenegraph.graphics.Bubble> extends GlrShapeEnclosedText<T> {
-	private java.awt.geom.Point2D.Float originOfTail = new java.awt.geom.Point2D.Float();
-	private java.awt.geom.Point2D.Float bodyConnectionLocationOfTail = new java.awt.geom.Point2D.Float();
-	private java.awt.geom.Point2D.Float textBoundsOffset = new java.awt.geom.Point2D.Float();
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+
+public abstract class GlrBubble<T extends Bubble> extends GlrShapeEnclosedText<T> {
+	private Point2D.Float originOfTail = new Point2D.Float();
+	private Point2D.Float bodyConnectionLocationOfTail = new Point2D.Float();
+	private Point2D.Float textBoundsOffset = new Point2D.Float();
 
 	@Override
-	protected float getWrapWidth( java.awt.Rectangle actualViewport ) {
+	protected float getWrapWidth( Rectangle actualViewport ) {
 		return (float)( actualViewport.getWidth() * 0.9 );
 	}
 
 	protected abstract void render(
-			edu.cmu.cs.dennisc.render.Graphics2D g2,
-			edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-			java.awt.Rectangle actualViewport,
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
-			java.awt.Font font,
-			java.awt.Color textColor,
+			Graphics2D g2,
+			RenderTarget renderTarget,
+			Rectangle actualViewport,
+			AbstractCamera camera,
+			MultilineText multilineText,
+			Font font,
+			Color textColor,
 			float wrapWidth,
-			java.awt.Color fillColor,
-			java.awt.Color outlineColor,
+			Color fillColor,
+			Color outlineColor,
 			OnscreenBubble bubble,
 			double portion );
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.render.Graphics2D g2,
-			edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-			java.awt.Rectangle actualViewport,
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
-			java.awt.Font font,
-			java.awt.Color textColor,
+			Graphics2D g2,
+			RenderTarget renderTarget,
+			Rectangle actualViewport,
+			AbstractCamera camera,
+			MultilineText multilineText,
+			Font font,
+			Color textColor,
 			float wrapWidth,
-			java.awt.Color fillColor,
-			java.awt.Color outlineColor ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.owner.getOriginator();
+			Color fillColor,
+			Color outlineColor ) {
+		Bubble.Originator originator = this.owner.getOriginator();
 		if( originator != null ) {
 
 			//Scale the font size to try to match the viewport
@@ -96,9 +108,9 @@ public abstract class GlrBubble<T extends edu.cmu.cs.dennisc.scenegraph.graphics
 			else {
 				scaleFactor = (float)( actualViewport.getWidth() / DEFAULT_WIDTH );
 			}
-			java.awt.Font scaledFont = font.deriveFont( font.getSize2D() * scaleFactor );
+			Font scaledFont = font.deriveFont( font.getSize2D() * scaleFactor );
 			g2.setFont( scaledFont );
-			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
+			Dimension2D size = multilineText.getDimension( g2, wrapWidth );
 			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.owner, renderTarget, actualViewport, camera, size );
 			OnscreenBubble bubble = BubbleManager.getInstance().getBubble( this.owner );
 			if( bubble == null )
@@ -124,7 +136,7 @@ public abstract class GlrBubble<T extends edu.cmu.cs.dennisc.scenegraph.graphics
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.portion ) {
 			//pass
 		} else {

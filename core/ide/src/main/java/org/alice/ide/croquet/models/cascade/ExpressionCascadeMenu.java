@@ -43,11 +43,16 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.lgna.croquet.CascadeMenuModel;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCascadeMenu<T extends org.lgna.project.ast.Expression> extends org.lgna.croquet.CascadeMenuModel<T> {
-	public ExpressionCascadeMenu( java.util.UUID id ) {
+public abstract class ExpressionCascadeMenu<T extends Expression> extends CascadeMenuModel<T> {
+	public ExpressionCascadeMenu( UUID id ) {
 		super( id );
 	}
 }

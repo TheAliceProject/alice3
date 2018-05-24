@@ -42,20 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing;
 
+import edu.cmu.cs.dennisc.browser.BrowserUtilities;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import java.awt.event.ActionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CheckForNewAliceVersionAction extends javax.swing.AbstractAction {
+public class CheckForNewAliceVersionAction extends AbstractAction {
 	private static final String SPEC = "http://www.alice.org/get-alice/alice-3";
 
 	public CheckForNewAliceVersionAction() {
-		this.putValue( javax.swing.Action.NAME, SPEC );
+		this.putValue( Action.NAME, SPEC );
 	}
 
 	@Override
-	public void actionPerformed( java.awt.event.ActionEvent actionEvent ) {
+	public void actionPerformed( ActionEvent actionEvent ) {
 		try {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( SPEC );
+			BrowserUtilities.browse( SPEC );
 		} catch( Exception e ) {
 			//todo?
 			e.printStackTrace();

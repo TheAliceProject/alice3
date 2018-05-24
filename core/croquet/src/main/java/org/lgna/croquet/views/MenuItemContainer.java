@@ -43,6 +43,8 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.event.PopupMenuListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,9 +56,9 @@ public interface MenuItemContainer {
 	//	public void addItemListener( java.awt.event.ItemListener listener );
 	//	public void removeItemListener( java.awt.event.ItemListener listener );
 
-	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	public void addPopupMenuListener( PopupMenuListener listener );
 
-	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
+	public void removePopupMenuListener( PopupMenuListener listener );
 
 	public AwtContainerView<?> getParent();
 

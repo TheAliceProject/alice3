@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyView extends NodePropertyView<org.lgna.project.ast.ExpressionProperty, org.lgna.project.ast.Expression> {
-	public ExpressionPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionProperty property ) {
+public class ExpressionPropertyView extends NodePropertyView<ExpressionProperty, Expression> {
+	public ExpressionPropertyView( AstI18nFactory factory, ExpressionProperty property ) {
 		super( factory, property );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.lgna.project.ast.Expression expression ) {
+	protected SwingComponentView<?> createComponent( Expression expression ) {
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

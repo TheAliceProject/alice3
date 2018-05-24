@@ -42,14 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.event;
 
-public class PointOfViewEvent extends AbstractEvent {
-	private final org.lgna.story.SThing entity;
+import org.lgna.story.SThing;
 
-	public PointOfViewEvent( org.lgna.story.SThing entity ) {
+public class PointOfViewEvent extends AbstractEvent {
+	private final SThing entity;
+
+	public PointOfViewEvent( SThing entity ) {
 		this.entity = entity;
 	}
 
-	public org.lgna.story.SThing getEntity() {
+	public SThing getEntity() {
 		return entity;
 	}
 }

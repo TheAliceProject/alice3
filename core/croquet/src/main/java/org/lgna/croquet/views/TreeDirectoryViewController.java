@@ -43,10 +43,15 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.State;
+
+import java.util.Collections;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeDirectoryViewController<T> extends PanelViewController<org.lgna.croquet.SingleSelectTreeState<T>> {
+public abstract class TreeDirectoryViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
 	private static class InternalPanel<T> extends MigPanel {
 		public InternalPanel() {
 			super( null, "insets 0", "", "" );
@@ -72,18 +77,18 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 		}
 	}
 
-	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
 		@Override
-		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changing( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
 
 		@Override
-		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 			TreeDirectoryViewController.this.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
 		}
 	};
 
-	public TreeDirectoryViewController( org.lgna.croquet.SingleSelectTreeState<T> model ) {
+	public TreeDirectoryViewController( SingleSelectTreeState<T> model ) {
 		super( model, new InternalPanel<T>() );
 
 	}
@@ -103,7 +108,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 	protected abstract SwingComponentView<?> getComponentFor( T value );
 
 	protected java.util.List<T> getChildren() {
-		org.lgna.croquet.SingleSelectTreeState<T> model = this.getModel();
+		SingleSelectTreeState<T> model = this.getModel();
 		T node = model.getSelectedNode();
 		if( node != null ) {
 			if( model.isLeaf( node ) ) {
@@ -111,11 +116,11 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 			}
 			return model.getChildren( node );
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
-	protected void handleSelectionChange( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+	protected void handleSelectionChange( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		this.getInternalPanel().refreshLater();
 	}
 }

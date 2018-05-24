@@ -43,15 +43,25 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.util.texture.TextureData;
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.TextureBinding;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.texture.Texture;
+import edu.cmu.cs.dennisc.texture.event.TextureEvent;
+
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> extends GlrObject<T> {
-	/*package-private*/static void handleTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
+public abstract class GlrTexture<T extends Texture> extends GlrObject<T> {
+	/*package-private*/static void handleTextureChanged( TextureEvent e ) {
 		GlrTexture<?> textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		textureAdapter.handleTextureChanged();
 	}
@@ -85,7 +95,7 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 
 	public void removeReference() {
 		if( this.refCount <= 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "TRYING TO REMOVE REFERENCE WHEN REFCOUNT IN <= 0 " + this.hashCode() );
+			Logger.severe( "TRYING TO REMOVE REFERENCE WHEN REFCOUNT IN <= 0 " + this.hashCode() );
 		} else {
 			this.refCount--;
 		}
@@ -127,18 +137,18 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 		return v;
 	}
 
-	protected static com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
-		com.jogamp.opengl.util.texture.TextureData rv = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
+	protected static TextureData newTextureData( GL gl, BufferedImage image, boolean isMipMapDesired ) {
+		TextureData rv = AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
 		return rv;
 		//return com.jogamp.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
 
-	protected abstract com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTexture );
+	protected abstract TextureData newTextureData( GL gl, TextureData currentTexture );
 
 	public ForgettableBinding bindTexture( RenderContext rc ) {
 		if( this.isDirty() ) {
 			if( this.textureData != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "new texture data", this );
+				Logger.info( "new texture data", this );
 			}
 			this.textureData = this.newTextureData( rc.gl, this.textureData );
 			this.setDirty( false );
@@ -148,8 +158,8 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 	}
 
 	private final TextureBinding textureBinding = new TextureBinding();
-	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private com.jogamp.opengl.util.texture.TextureData textureData;
+	private final List<RenderContext> renderContexts = Lists.newCopyOnWriteArrayList();
+	private TextureData textureData;
 	private boolean isTextureDataDirty = true;
 
 	private int refCount = 0;

@@ -42,24 +42,31 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet;
 
+import org.alice.imageeditor.croquet.views.SaveOverPane;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.YesNoConfirmDialogComposite;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SaveOverComposite extends org.lgna.croquet.YesNoConfirmDialogComposite<org.lgna.croquet.views.Panel> {
-	private final org.lgna.croquet.PlainStringValue prevHeader = this.createStringValue( "prevHeader" );
-	private final org.lgna.croquet.PlainStringValue nextHeader = this.createStringValue( "nextHeader" );
+public class SaveOverComposite extends YesNoConfirmDialogComposite<Panel> {
+	private final PlainStringValue prevHeader = this.createStringValue( "prevHeader" );
+	private final PlainStringValue nextHeader = this.createStringValue( "nextHeader" );
 	private final SaveOperation owner;
 
 	public SaveOverComposite( SaveOperation owner ) {
-		super( java.util.UUID.fromString( "3f859738-f422-4aae-bee4-9001d6bd94f9" ) );
+		super( UUID.fromString( "3f859738-f422-4aae-bee4-9001d6bd94f9" ) );
 		this.owner = owner;
 	}
 
-	public org.lgna.croquet.PlainStringValue getPrevHeader() {
+	public PlainStringValue getPrevHeader() {
 		return this.prevHeader;
 	}
 
-	public org.lgna.croquet.PlainStringValue getNextHeader() {
+	public PlainStringValue getNextHeader() {
 		return this.nextHeader;
 	}
 
@@ -68,7 +75,7 @@ public class SaveOverComposite extends org.lgna.croquet.YesNoConfirmDialogCompos
 	}
 
 	@Override
-	protected org.alice.imageeditor.croquet.views.SaveOverPane createView() {
-		return new org.alice.imageeditor.croquet.views.SaveOverPane( this );
+	protected SaveOverPane createView() {
+		return new SaveOverPane( this );
 	}
 }

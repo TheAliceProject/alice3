@@ -43,19 +43,25 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
+
+import javax.swing.Icon;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
-	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel;
+	private final TreeModel<T> treeModel;
 
-	public DefaultSingleSelectTreeState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel ) {
+	public DefaultSingleSelectTreeState( Group group, UUID id, ItemCodec<T> itemCodec, T initialSelection, TreeModel<T> treeModel ) {
 		super( group, id, initialSelection, itemCodec );
 		this.treeModel = treeModel;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
+	public TreeModel<T> getTreeModel() {
 		return this.treeModel;
 	}
 
@@ -65,12 +71,12 @@ public class DefaultSingleSelectTreeState<T> extends SingleSelectTreeState<T> {
 	}
 
 	@Override
-	protected javax.swing.Icon getIconForNode( T node ) {
+	protected Icon getIconForNode( T node ) {
 		return null;
 	}
 
 	@Override
 	public void refresh( T node ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+		Logger.todo( this );
 	}
 }

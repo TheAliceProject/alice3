@@ -42,10 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import org.alice.ide.icons.Icons;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class BackwardOperation extends org.lgna.croquet.ActionOperation {
+public class BackwardOperation extends ActionOperation {
 	private static class SingletonHolder {
 		private static BackwardOperation instance = new BackwardOperation();
 	}
@@ -55,12 +62,12 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	private BackwardOperation() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
-		this.setButtonIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
+		this.setButtonIcon( Icons.PREVIOUS_SMALL );
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void perform( CompletionStep<?> step ) {
 		DeclarationCompositeHistory.getInstance().goBackward();
 		step.finish();
 	}

@@ -43,24 +43,45 @@
 
 package org.alice.stageide.personresource.views;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
 import org.alice.stageide.custom.ColorCustomExpressionCreatorComposite;
+import org.alice.stageide.personresource.IngredientsComposite;
+import org.alice.stageide.personresource.SkinColorState;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ToggleButton;
+import org.lgna.story.resources.sims2.LifeStage;
+
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.util.concurrent.Callable;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IngredientsView extends org.lgna.croquet.views.MigPanel {
-	public static final java.awt.Insets COLOR_BUTTON_MARGIN = new java.awt.Insets( 1, -7, 1, -7 ); //todo
-	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
-	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+public class IngredientsView extends MigPanel {
+	public static final Insets COLOR_BUTTON_MARGIN = new Insets( 1, -7, 1, -7 ); //todo
+	public static final Color BACKGROUND_COLOR = new Color( 173, 167, 208 );
+	public static final Color SELECTED_COLOR = ColorUtilities.scaleHSB( Color.YELLOW, 1.0, 0.3, 1.0 );
+	public static final Color UNSELECTED_COLOR = ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	private final org.lgna.croquet.views.Label isLifeStageLockedLabel = new org.lgna.croquet.views.Label();
-	private final HorizontalWrapList<org.lgna.story.resources.sims2.LifeStage> lifeStageList;
+	private final Label isLifeStageLockedLabel = new Label();
+	private final HorizontalWrapList<LifeStage> lifeStageList;
 
-	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
+	private static final Icon LOCKED_ICON = IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/locked.png" ) );
 
-	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
+	public IngredientsView( final IngredientsComposite composite ) {
 		super( composite, "insets 0, fill", "[][align right][][grow]", "[][][][][shrink]" );
 
 		this.addComponent( this.isLifeStageLockedLabel );
@@ -73,45 +94,45 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "skip" );
 		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "wrap" );
 
-		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
+		final SkinColorState skinColorState = composite.getSkinColorState();
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
 
-		final java.awt.Color[] melaninChipColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
+		final Color[] melaninChipColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
 		String constraints = "gap 0, split " + melaninChipColors.length;
-		for( java.awt.Color melaninShade : melaninChipColors ) {
-			org.lgna.croquet.BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
+		for( Color melaninShade : melaninChipColors ) {
+			BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
 			itemSelectedState.initializeIfNecessary();
 			itemSelectedState.setTextForBothTrueAndFalse( "" );
-			itemSelectedState.setIconForBothTrueAndFalse( new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( melaninShade ) );
-			org.lgna.croquet.views.ToggleButton button = itemSelectedState.createToggleButton();
+			itemSelectedState.setIconForBothTrueAndFalse( new ColorIcon( melaninShade ) );
+			ToggleButton button = itemSelectedState.createToggleButton();
 			button.tightenUpMargin( COLOR_BUTTON_MARGIN );
 			this.addComponent( button, constraints );
 			constraints = "gap 0";
 		}
 
-		class OtherColorCallable implements java.util.concurrent.Callable<java.awt.Color> {
-			private java.awt.Color value = null;
+		class OtherColorCallable implements Callable<Color> {
+			private Color value = null;
 
-			public java.awt.Color getValue() {
+			public Color getValue() {
 				return this.value;
 			}
 
-			public void setValue( java.awt.Color value ) {
+			public void setValue( Color value ) {
 				this.value = value;
 			}
 
 			@Override
-			public java.awt.Color call() throws Exception {
+			public Color call() throws Exception {
 				return this.value;
 			}
 		}
 
 		final OtherColorCallable otherColorCallable = new OtherColorCallable();
 
-		final org.lgna.croquet.BooleanState otherColorState = skinColorState.getItemSelectedState( otherColorCallable );
-		final org.lgna.croquet.views.ToggleButton otherColorButton = otherColorState.createToggleButton();
-		final int SIZE = edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon.DEFAULT_SIZE;
-		class OtherColorIcon implements javax.swing.Icon {
+		final BooleanState otherColorState = skinColorState.getItemSelectedState( otherColorCallable );
+		final ToggleButton otherColorButton = otherColorState.createToggleButton();
+		final int SIZE = ColorIcon.DEFAULT_SIZE;
+		class OtherColorIcon implements Icon {
 			@Override
 			public int getIconWidth() {
 				return SIZE;
@@ -123,8 +144,8 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 			}
 
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				java.awt.Color color = otherColorCallable.getValue();
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
+				Color color = otherColorCallable.getValue();
 				if( color != null ) {
 					g.setColor( color );
 					g.fillRect( x, y, SIZE, SIZE );
@@ -138,17 +159,17 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( otherColorButton, "gap 8, split 2" );
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
-		final org.lgna.croquet.views.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
+		final Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
 		String customColorLabel = ResourceBundleUtilities.getStringForKey("ColorCustomExpressionCreatorComposite",
 						ColorCustomExpressionCreatorComposite.class);
 		customColorDialogButton.setClobberText( customColorLabel );
 
-		org.lgna.croquet.event.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.event.ValueListener<java.awt.Color>() {
+		ValueListener<Color> colorListener = new ValueListener<Color>() {
 			@Override
-			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Color> e ) {
-				java.awt.Color nextValue = e.getNextValue();
+			public void valueChanged( ValueEvent<Color> e ) {
+				Color nextValue = e.getNextValue();
 				boolean isColorMelaninShade = false;
-				for( java.awt.Color melaninShade : skinColorState.getMelaninChooserTabComposite().getMelaninChipShades() ) {
+				for( Color melaninShade : skinColorState.getMelaninChooserTabComposite().getMelaninChipShades() ) {
 					if( melaninShade.equals( nextValue ) ) {
 						isColorMelaninShade = true;
 						break;
@@ -166,16 +187,16 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 
 		this.addComponent( customColorDialogButton, "gapx 0, wrap" );
 
-		final java.awt.Color[] melaninSliderColors = skinColorState.getMelaninChooserTabComposite().getMelaninSliderShades();
+		final Color[] melaninSliderColors = skinColorState.getMelaninChooserTabComposite().getMelaninSliderShades();
 		this.getAwtComponent().add( new JColorSlider( melaninSliderColors ) {
 			@Override
-			protected void handleNextColor( java.awt.Color nextColor ) {
+			protected void handleNextColor( Color nextColor ) {
 				//todo
 				skinColorState.setValueTransactionlessly( nextColor );
 			}
 		}, "skip 2, grow, gaptop 0, wrap" );
 
-		org.lgna.croquet.views.FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
+		FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
 		this.addComponent( tabbedPane, "span 4, grow" );
 		this.setBackgroundColor( BACKGROUND_COLOR );
@@ -183,7 +204,7 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 
 	@Override
 	public void handleCompositePreActivation() {
-		org.alice.stageide.personresource.IngredientsComposite composite = (org.alice.stageide.personresource.IngredientsComposite)this.getComposite();
+		IngredientsComposite composite = (IngredientsComposite)this.getComposite();
 		this.isLifeStageLockedLabel.setIcon( composite.getLifeStageState().isEnabled() ? null : LOCKED_ICON );
 		super.handleCompositePreActivation();
 	}

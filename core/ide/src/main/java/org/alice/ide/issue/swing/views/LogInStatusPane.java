@@ -42,20 +42,62 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator;
+import com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException;
+import com.atlassian.jira.rpc.soap.client.RemoteUser;
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
+import edu.cmu.cs.dennisc.javax.swing.JDialogUtilities;
+import edu.cmu.cs.dennisc.javax.swing.LabelUtilities;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JCardPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane;
+import edu.cmu.cs.dennisc.login.AccountInformation;
+import edu.cmu.cs.dennisc.login.AccountManager;
+import org.alice.ide.croquet.models.help.SignUpOperation;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
+import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
 
-class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URL;
+import java.util.List;
+import java.util.UUID;
+
+class PasswordPane extends JPageAxisPane {
 	private static final String HIDDEN_KEY = "HIDDEN_KEY";
 	private static final String EXPOSED_KEY = "EXPOSED_KEY";
 
-	class PasswordCardPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
-		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField() {
+	class PasswordCardPane extends JCardPane {
+		private JPasswordField hidden = new JPasswordField() {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
+			public Dimension getPreferredSize() {
+				return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
 			}
 		};
-		private javax.swing.JTextField exposed = new javax.swing.JTextField();
+		private JTextField exposed = new JTextField();
 		private boolean isExposed = false;
 
 		public PasswordCardPane() {
@@ -77,12 +119,12 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 	}
 
 	private PasswordCardPane passwordCardPane = new PasswordCardPane();
-	private javax.swing.JCheckBox checkBox = new javax.swing.JCheckBox( "display password" );
+	private JCheckBox checkBox = new JCheckBox( "display password" );
 
 	public PasswordPane() {
-		checkBox.addActionListener( new java.awt.event.ActionListener() {
+		checkBox.addActionListener( new ActionListener() {
 			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
+			public void actionPerformed( ActionEvent e ) {
 				passwordCardPane.toggle();
 			}
 		} );
@@ -95,10 +137,10 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 	}
 }
 
-class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
-	class TestLogInOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+class LogInPane extends JPageAxisPane {
+	class TestLogInOperation extends InconsequentialActionOperation {
 		public TestLogInOperation() {
-			super( java.util.UUID.fromString( "cf700b82-c80b-4fb4-8886-2d170503a253" ) );
+			super( UUID.fromString( "cf700b82-c80b-4fb4-8886-2d170503a253" ) );
 		}
 
 		@Override
@@ -108,23 +150,23 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 		}
 
 		@Override
-		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected void performInternal( CompletionStep<?> step ) {
 			try {
-				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
+				JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+				JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
 				String username = textUsername.getText();
 				try {
 					String password = passwordPane.getPassword();
 					String token = service.login( username, password );
 					try {
-						com.atlassian.jira.rpc.soap.client.RemoteUser remoteUser = service.getUser( token, username );
-						edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
+						RemoteUser remoteUser = service.getUser( token, username );
+						AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
 					} finally {
 						service.logout( token );
 					}
-					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
-				} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
-					javax.swing.JOptionPane.showMessageDialog( null, rae );
+					SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
+				} catch( RemoteAuthenticationException rae ) {
+					JOptionPane.showMessageDialog( null, rae );
 					//edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
 				}
 			} catch( Exception e ) {
@@ -133,74 +175,74 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 		}
 	}
 
-	private javax.swing.JTextField textUsername = new javax.swing.JTextField();
+	private JTextField textUsername = new JTextField();
 	private PasswordPane passwordPane = new PasswordPane();
 	//todo: remove. rely only on operations.
-	private javax.swing.JButton logInButton = new TestLogInOperation().createButton().getAwtComponent();
+	private JButton logInButton = new TestLogInOperation().createButton().getAwtComponent();
 
-	private java.awt.Component createLabel( String text ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
-		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+	private Component createLabel( String text ) {
+		JLabel rv = LabelUtilities.createLabel( text );
+		rv.setVerticalAlignment( SwingConstants.TOP );
+		rv.setHorizontalAlignment( SwingConstants.TRAILING );
 		return rv;
 	}
 
 	public LogInPane() {
-		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane rowsPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 4 ) {
+		JRowsSpringPane rowsPane = new JRowsSpringPane( 8, 4 ) {
 			@Override
-			protected java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv ) {
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "Password:" ), passwordPane ) );
+			protected List<Component[]> addComponentRows( List<Component[]> rv ) {
+				rv.add( SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
+				rv.add( SpringUtilities.createRow( createLabel( "Password:" ), passwordPane ) );
 				return rv;
 			}
 		};
 
-		edu.cmu.cs.dennisc.javax.swing.components.JPane signUpPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
-		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Not a member?" ) );
-		org.alice.ide.croquet.models.help.SignUpOperation signUpOperation = new org.alice.ide.croquet.models.help.SignUpOperation();
+		JPane signUpPane = new JPane();
+		signUpPane.add( LabelUtilities.createLabel( "Not a member?" ) );
+		SignUpOperation signUpOperation = new SignUpOperation();
 		signUpPane.add( signUpOperation.createHyperlink().getAwtComponent() );
-		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "for an account." ) );
+		signUpPane.add( LabelUtilities.createLabel( "for an account." ) );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
+		JPane buttonPane = new JPane();
 		buttonPane.add( this.logInButton );
 
-		signUpPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
-		rowsPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
-		buttonPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
+		signUpPane.setAlignmentX( JComponent.CENTER_ALIGNMENT );
+		rowsPane.setAlignmentX( JComponent.CENTER_ALIGNMENT );
+		buttonPane.setAlignmentX( JComponent.CENTER_ALIGNMENT );
 
 		this.add( signUpPane );
-		this.add( javax.swing.Box.createVerticalStrut( 32 ) );
+		this.add( Box.createVerticalStrut( 32 ) );
 		this.add( rowsPane );
-		this.add( javax.swing.Box.createVerticalStrut( 6 ) );
+		this.add( Box.createVerticalStrut( 6 ) );
 		this.add( buttonPane );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
 	}
 
-	public javax.swing.JButton getLogInButton() {
+	public JButton getLogInButton() {
 		return this.logInButton;
 	}
 }
 
-public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
+public class LogInStatusPane extends JCardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
 
-	class LogInOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	class LogInOperation extends InconsequentialActionOperation {
 		public LogInOperation() {
-			super( java.util.UUID.fromString( "f2d620ad-9b18-42e7-8b77-240e7a829b03" ) );
+			super( UUID.fromString( "f2d620ad-9b18-42e7-8b77-240e7a829b03" ) );
 			this.setName( "Log In... (Optional)" );
 		}
 
 		@Override
-		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		protected void performInternal( CompletionStep<?> step ) {
 			LogInPane pane = new LogInPane();
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			java.awt.Component owner = trigger.getViewController().getAwtComponent();
-			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-			edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
+			Trigger trigger = step.getTrigger();
+			Component owner = trigger.getViewController().getAwtComponent();
+			JDialog dialog = JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, WindowConstants.DISPOSE_ON_CLOSE );
+			WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
 			dialog.setVisible( true );
-			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+			AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			if( accountInformation != null ) {
 				LogInStatusPane.this.onPane.refresh();
 				LogInStatusPane.this.show( ON_KEY );
@@ -208,56 +250,56 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		}
 	}
 
-	class LogOutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	class LogOutOperation extends InconsequentialActionOperation {
 		public LogOutOperation() {
-			super( java.util.UUID.fromString( "73bf08cc-3666-463d-86da-3d483a4d8f2b" ) );
+			super( UUID.fromString( "73bf08cc-3666-463d-86da-3d483a4d8f2b" ) );
 			this.setName( "Log Out" );
 		}
 
 		@Override
-		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+		protected void performInternal( CompletionStep<?> step ) {
+			AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}
 	}
 
 	private static final String OFF_KEY = "OFF_KEY";
 	private static final String ON_KEY = "ON_KEY";
-	private javax.swing.JButton logInButton = new LogInOperation().createButton().getAwtComponent();
-	private javax.swing.JButton logOutButton = new LogOutOperation().createButton().getAwtComponent();
+	private JButton logInButton = new LogInOperation().createButton().getAwtComponent();
+	private JButton logOutButton = new LogOutOperation().createButton().getAwtComponent();
 
-	class OffPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+	class OffPane extends JLineAxisPane {
 		public OffPane() {
-			this.add( javax.swing.Box.createHorizontalGlue() );
+			this.add( Box.createHorizontalGlue() );
 			this.add( logInButton );
 		}
 	}
 
-	class OnPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
-		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
+	class OnPane extends JLineAxisPane {
+		private JLabel nameLabel = new JLabel( "Full Name" ) {
 			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+			public Dimension getPreferredSize() {
+				return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
 
 			@Override
-			public java.awt.Dimension getMaximumSize() {
+			public Dimension getMaximumSize() {
 				return this.getPreferredSize();
 			}
 		};
 
 		public OnPane() {
 			this.refresh();
-			this.nameLabel.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-			this.nameLabel.setForeground( java.awt.Color.WHITE );
-			this.add( javax.swing.Box.createHorizontalGlue() );
+			this.nameLabel.setHorizontalAlignment( SwingConstants.TRAILING );
+			this.nameLabel.setForeground( Color.WHITE );
+			this.add( Box.createHorizontalGlue() );
 			this.add( this.nameLabel );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+			this.add( Box.createHorizontalStrut( 8 ) );
 			this.add( logOutButton );
 		}
 
 		public void refresh() {
-			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+			AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			if( accountInformation != null ) {
 				this.nameLabel.setText( accountInformation.getFullName() );
 				this.revalidate();
@@ -271,7 +313,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 	public LogInStatusPane() {
 		this.add( this.offPane, OFF_KEY );
 		this.add( this.onPane, ON_KEY );
-		edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+		AccountInformation accountInformation = AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 		if( accountInformation != null ) {
 			LogInStatusPane.this.show( ON_KEY );
 		}
@@ -286,8 +328,8 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		LogInStatusPane pane = new LogInStatusPane();
 		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
-		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		dialog.getContentPane().setBackground( java.awt.Color.DARK_GRAY );
+		JDialog dialog = JDialogUtilities.createPackedJDialog( pane, null, "", true, WindowConstants.DISPOSE_ON_CLOSE );
+		dialog.getContentPane().setBackground( Color.DARK_GRAY );
 		dialog.setLocation( 200, 200 );
 		dialog.setVisible( true );
 	}

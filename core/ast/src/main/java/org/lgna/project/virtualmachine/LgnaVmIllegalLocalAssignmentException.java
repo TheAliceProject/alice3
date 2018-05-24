@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
+import org.lgna.project.ast.UserLocal;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LgnaVmIllegalLocalAssignmentException extends LgnaVmIllegalLocalException {
-	public LgnaVmIllegalLocalAssignmentException( VirtualMachine vm, org.lgna.project.ast.UserLocal local ) {
+	public LgnaVmIllegalLocalAssignmentException( VirtualMachine vm, UserLocal local ) {
 		super( vm, local );
 	}
 }

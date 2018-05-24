@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern.event;
 
+import edu.cmu.cs.dennisc.pattern.Releasable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ReleaseEvent extends Event<edu.cmu.cs.dennisc.pattern.Releasable> {
-	public ReleaseEvent( edu.cmu.cs.dennisc.pattern.Releasable source ) {
+public class ReleaseEvent extends Event<Releasable> {
+	public ReleaseEvent( Releasable source ) {
 		super( source );
 	}
 }

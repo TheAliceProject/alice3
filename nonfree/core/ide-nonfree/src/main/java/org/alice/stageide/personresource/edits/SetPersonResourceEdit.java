@@ -43,22 +43,28 @@
 
 package org.alice.stageide.personresource.edits;
 
+import org.alice.stageide.personresource.IngredientsComposite;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.story.resources.sims2.PersonResource;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetPersonResourceEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.lgna.story.resources.sims2.PersonResource prevResource;
-	private final org.lgna.story.resources.sims2.PersonResource nextResource;
+public class SetPersonResourceEdit extends AbstractEdit {
+	private final PersonResource prevResource;
+	private final PersonResource nextResource;
 
-	public SetPersonResourceEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.story.resources.sims2.PersonResource nextResource ) {
+	public SetPersonResourceEdit( CompletionStep step, PersonResource nextResource ) {
 		super( step );
-		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
+		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
 		this.prevResource = ingredientsComposite.createResourceFromStates();
 		this.nextResource = nextResource;
 	}
 
-	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
-		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
+	private void setResource( PersonResource resource ) {
+		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
 		ingredientsComposite.setStates( resource );
 	}
 

@@ -43,6 +43,10 @@
 
 package org.lgna.croquet.views;
 
+import javax.swing.JLayeredPane;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,21 +54,21 @@ public final class Layer {
 	private final LayeredPane layeredPane;
 	private final Integer id;
 	private SwingComponentView<?> component;
-	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+	private final ComponentListener componentListener = new ComponentListener() {
 		@Override
-		public void componentShown( java.awt.event.ComponentEvent e ) {
+		public void componentShown( ComponentEvent e ) {
 		}
 
 		@Override
-		public void componentHidden( java.awt.event.ComponentEvent e ) {
+		public void componentHidden( ComponentEvent e ) {
 		}
 
 		@Override
-		public void componentMoved( java.awt.event.ComponentEvent e ) {
+		public void componentMoved( ComponentEvent e ) {
 		}
 
 		@Override
-		public void componentResized( java.awt.event.ComponentEvent e ) {
+		public void componentResized( ComponentEvent e ) {
 			Layer.this.updateComponentSize();
 		}
 	};
@@ -86,7 +90,7 @@ public final class Layer {
 
 	public void setComponent( SwingComponentView<?> component ) {
 		if( this.component != component ) {
-			javax.swing.JLayeredPane jLayeredPane = this.layeredPane.getAwtComponent();
+			JLayeredPane jLayeredPane = this.layeredPane.getAwtComponent();
 			if( this.component != null ) {
 				jLayeredPane.removeComponentListener( this.componentListener );
 				jLayeredPane.remove( this.component.getAwtComponent() );
@@ -102,42 +106,42 @@ public final class Layer {
 	}
 
 	public boolean isBelowDefaultLayer() {
-		return this.id < javax.swing.JLayeredPane.DEFAULT_LAYER;
+		return this.id < JLayeredPane.DEFAULT_LAYER;
 	}
 
 	public boolean isAboveDefaultLayer() {
-		return this.id > javax.swing.JLayeredPane.DEFAULT_LAYER;
+		return this.id > JLayeredPane.DEFAULT_LAYER;
 	}
 
 	public boolean isBelowPaletteLayer() {
-		return this.id < javax.swing.JLayeredPane.PALETTE_LAYER;
+		return this.id < JLayeredPane.PALETTE_LAYER;
 	}
 
 	public boolean isAbovePaletteLayer() {
-		return this.id > javax.swing.JLayeredPane.PALETTE_LAYER;
+		return this.id > JLayeredPane.PALETTE_LAYER;
 	}
 
 	public boolean isBelowModalLayer() {
-		return this.id < javax.swing.JLayeredPane.MODAL_LAYER;
+		return this.id < JLayeredPane.MODAL_LAYER;
 	}
 
 	public boolean isAboveModalLayer() {
-		return this.id > javax.swing.JLayeredPane.MODAL_LAYER;
+		return this.id > JLayeredPane.MODAL_LAYER;
 	}
 
 	public boolean isBelowPopupLayer() {
-		return this.id < javax.swing.JLayeredPane.POPUP_LAYER;
+		return this.id < JLayeredPane.POPUP_LAYER;
 	}
 
 	public boolean isAbovePopupLayer() {
-		return this.id > javax.swing.JLayeredPane.POPUP_LAYER;
+		return this.id > JLayeredPane.POPUP_LAYER;
 	}
 
 	public boolean isBelowDragLayer() {
-		return this.id < javax.swing.JLayeredPane.DRAG_LAYER;
+		return this.id < JLayeredPane.DRAG_LAYER;
 	}
 
 	public boolean isAboveDragLayer() {
-		return this.id > javax.swing.JLayeredPane.DRAG_LAYER;
+		return this.id > JLayeredPane.DRAG_LAYER;
 	}
 }

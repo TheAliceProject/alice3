@@ -43,30 +43,32 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class Scale {
-	public static final Scale IDENTITY = new Scale( new edu.cmu.cs.dennisc.math.Dimension3( 1.0, 1.0, 1.0 ) );
-	private final edu.cmu.cs.dennisc.math.Dimension3 internal;
+	public static final Scale IDENTITY = new Scale( new Dimension3( 1.0, 1.0, 1.0 ) );
+	private final Dimension3 internal;
 
-	private Scale( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+	private Scale( Dimension3 internal ) {
 		this.internal = internal;
 	}
 
 	public Scale( Number leftToRight, Number bottomToTop, Number frontToBack ) {
-		this( new edu.cmu.cs.dennisc.math.Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
+		this( new Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
 	}
 
-	/* package-private */static Scale createInstance( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+	/* package-private */static Scale createInstance( Dimension3 internal ) {
 		return internal != null ? new Scale( internal ) : null;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.math.Dimension3 getInternal() {
+	/* package-private */Dimension3 getInternal() {
 		return this.internal;
 	}
 
-	/* package-private */static edu.cmu.cs.dennisc.math.Dimension3 getInternal( Scale scale ) {
+	/* package-private */static Dimension3 getInternal( Scale scale ) {
 		return scale != null ? scale.internal : null;
 	}
 

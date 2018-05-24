@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -66,8 +68,8 @@ public final class OwnedByCompositeOperationSubKey {
 		}
 		if( obj instanceof OwnedByCompositeOperationSubKey ) {
 			OwnedByCompositeOperationSubKey other = (OwnedByCompositeOperationSubKey)obj;
-			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.composite, other.composite )
-					&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.text, other.text );
+			return Objects.equals( this.composite, other.composite )
+					&& Objects.equals( this.text, other.text );
 		}
 		return false;
 	}

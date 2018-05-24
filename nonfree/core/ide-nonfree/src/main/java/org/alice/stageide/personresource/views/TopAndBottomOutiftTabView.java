@@ -42,27 +42,39 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import org.alice.stageide.personresource.TopAndBottomOutfitTabComposite;
+import org.alice.stageide.personresource.views.renderers.BottomPieceListCellRenderer;
+import org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer;
+import org.lgna.croquet.views.GridPanel;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.story.resources.sims2.BottomPiece;
+import org.lgna.story.resources.sims2.TopPiece;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TopAndBottomOutiftTabView extends OutfitTabView {
-	public TopAndBottomOutiftTabView( org.alice.stageide.personresource.TopAndBottomOutfitTabComposite composite ) {
+	public TopAndBottomOutiftTabView( TopAndBottomOutfitTabComposite composite ) {
 		super( composite );
-		java.awt.Color backgroundColor = this.getBackgroundColor();
+		Color backgroundColor = this.getBackgroundColor();
 
-		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.TopPiece> topList = new HorizontalWrapList<org.lgna.story.resources.sims2.TopPiece>( composite.getTopPieceState(), -1, org.alice.stageide.personresource.views.renderers.TopPieceListCellRenderer.getInstance() );
+		List<TopPiece> topList = new HorizontalWrapList<TopPiece>( composite.getTopPieceState(), -1, TopPieceListCellRenderer.getInstance() );
 		topList.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.views.ScrollPane topScrollPane = new org.lgna.croquet.views.ScrollPane( topList );
+		ScrollPane topScrollPane = new ScrollPane( topList );
 		topScrollPane.setBothScrollBarIncrements( 66, 66 );
-		topScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		topScrollPane.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.WHITE ) );
+		topScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		topScrollPane.setBorder( BorderFactory.createMatteBorder( 0, 0, 1, 0, Color.WHITE ) );
 
-		org.lgna.croquet.views.List<org.lgna.story.resources.sims2.BottomPiece> bottomList = new HorizontalWrapList<org.lgna.story.resources.sims2.BottomPiece>( composite.getBottomPieceState(), -1, org.alice.stageide.personresource.views.renderers.BottomPieceListCellRenderer.getInstance() );
+		List<BottomPiece> bottomList = new HorizontalWrapList<BottomPiece>( composite.getBottomPieceState(), -1, BottomPieceListCellRenderer.getInstance() );
 		bottomList.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.views.ScrollPane bottomScrollPane = new org.lgna.croquet.views.ScrollPane( bottomList );
+		ScrollPane bottomScrollPane = new ScrollPane( bottomList );
 		bottomScrollPane.setBothScrollBarIncrements( 66, 66 );
-		bottomScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		bottomScrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
 
-		this.addCenterComponent( org.lgna.croquet.views.GridPanel.createSingleColumnGridPane( topScrollPane, bottomScrollPane ) );
+		this.addCenterComponent( GridPanel.createSingleColumnGridPane( topScrollPane, bottomScrollPane ) );
 	}
 }

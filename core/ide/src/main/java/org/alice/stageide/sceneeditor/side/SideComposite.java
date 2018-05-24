@@ -42,46 +42,62 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.interact.handle.HandleStyle;
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
+import org.alice.stageide.sceneeditor.side.views.SideView;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.SimpleComposite;
+
+import javax.swing.JComponent;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.side.views.SideView> {
+public class SideComposite extends SimpleComposite<SideView> {
 	//todo
 	@Deprecated
 	public static SideComposite getInstance() {
-		return (SideComposite)org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getSceneLayoutComposite().getTrailingComposite();
+		return (SideComposite)SetupScenePerspectiveComposite.getInstance().getSceneLayoutComposite().getTrailingComposite();
 	}
 
 	//todo: remove and migrate handle.properties to croquet.properties
-	private static enum HandleStyleCodec implements org.lgna.croquet.ItemCodec<HandleStyle> {
+	private static enum HandleStyleCodec implements ItemCodec<HandleStyle> {
 		INSTANCE;
 		@Override
-		public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.interact.handle.HandleStyle value ) {
+		public void encodeValue( BinaryEncoder binaryEncoder, HandleStyle value ) {
 			binaryEncoder.encode( value );
 		}
 
 		@Override
-		public org.alice.interact.handle.HandleStyle decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public HandleStyle decodeValue( BinaryDecoder binaryDecoder ) {
 			return binaryDecoder.decodeEnum();
 		}
 
 		@Override
-		public Class<org.alice.interact.handle.HandleStyle> getValueClass() {
+		public Class<HandleStyle> getValueClass() {
 			return HandleStyle.class;
 		}
 
 		@Override
-		public void appendRepresentation( StringBuilder sb, org.alice.interact.handle.HandleStyle value ) {
-			String bundleName = org.alice.interact.handle.HandleStyle.class.getPackage().getName() + ".handle";
-			String key = value.name().toLowerCase( java.util.Locale.ENGLISH );
+		public void appendRepresentation( StringBuilder sb, HandleStyle value ) {
+			String bundleName = HandleStyle.class.getPackage().getName() + ".handle";
+			String key = value.name().toLowerCase( Locale.ENGLISH );
 			try {
-				java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
-				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
+				Locale locale = JComponent.getDefaultLocale();
+				ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
 				sb.append( resourceBundle.getString( key ) );
-			} catch( java.util.MissingResourceException mre ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( mre, bundleName, key );
+			} catch( MissingResourceException mre ) {
+				Logger.throwable( mre, bundleName, key );
 				sb.append( key );
 			}
 		}
@@ -91,21 +107,21 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	private final ObjectPropertiesToolPalette objectPropertiesTab = new ObjectPropertiesToolPalette();
 	private final ObjectMarkersToolPalette objectMarkersTab = new ObjectMarkersToolPalette();
 	private final CameraMarkersToolPalette cameraMarkersTab = new CameraMarkersToolPalette();
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<HandleStyle> handleStyleState = this.createImmutableListState( "handleStyleState", HandleStyle.class, HandleStyleCodec.INSTANCE, 0, HandleStyle.values() );
+	private final ImmutableDataSingleSelectListState<HandleStyle> handleStyleState = this.createImmutableListState( "handleStyleState", HandleStyle.class, HandleStyleCodec.INSTANCE, 0, HandleStyle.values() );
 
-	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( "isSnapEnabledState", false );
+	private final BooleanState isSnapEnabledState = this.createBooleanState( "isSnapEnabledState", false );
 
-	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( "areJointsShowingState", false );
+	private final BooleanState areJointsShowingState = this.createBooleanState( "areJointsShowingState", false );
 
 	public SideComposite() {
-		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
+		super( UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
 		for( HandleStyle handleStyle : HandleStyle.values() ) {
-			org.lgna.croquet.BooleanState booleanState = this.handleStyleState.getItemSelectedState( handleStyle );
+			BooleanState booleanState = this.handleStyleState.getItemSelectedState( handleStyle );
 			booleanState.setIconForBothTrueAndFalse( handleStyle.getIcon() );
 			booleanState.setToolTipText( handleStyle.getToolTipText() );
 		}
@@ -132,20 +148,20 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return this.objectMarkersTab;
 	}
 
-	public org.lgna.croquet.BooleanState getAreJointsShowingState() {
+	public BooleanState getAreJointsShowingState() {
 		return this.areJointsShowingState;
 	}
 
-	public org.lgna.croquet.BooleanState getIsSnapEnabledState() {
+	public BooleanState getIsSnapEnabledState() {
 		return this.isSnapEnabledState;
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<HandleStyle> getHandleStyleState() {
+	public ImmutableDataSingleSelectListState<HandleStyle> getHandleStyleState() {
 		return this.handleStyleState;
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.side.views.SideView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.SideView( this );
+	protected SideView createView() {
+		return new SideView( this );
 	}
 }

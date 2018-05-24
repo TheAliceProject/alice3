@@ -42,22 +42,30 @@
  *******************************************************************************/
 package org.alice.stageide.custom.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.alice.ide.custom.components.CustomExpressionCreatorView;
+import org.alice.stageide.custom.KeyCustomExpressionCreatorComposite;
+import org.lgna.croquet.views.AbstractLabel;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.SwingComponentView;
+
 /**
  * @author Dennis Cosgrove
  */
-public class KeyCustomExpressionCreatorView extends org.alice.ide.custom.components.CustomExpressionCreatorView {
-	public KeyCustomExpressionCreatorView( org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite ) {
+public class KeyCustomExpressionCreatorView extends CustomExpressionCreatorView {
+	public KeyCustomExpressionCreatorView( KeyCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createMainComponent() {
-		org.alice.stageide.custom.KeyCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.KeyCustomExpressionCreatorComposite)this.getComposite();
+	protected SwingComponentView<?> createMainComponent() {
+		KeyCustomExpressionCreatorComposite composite = (KeyCustomExpressionCreatorComposite)this.getComposite();
 
-		org.lgna.croquet.views.AbstractLabel pressAnyKeyLabel = composite.getPressAnyKeyLabel().createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		pressAnyKeyLabel.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.CENTER );
+		AbstractLabel pressAnyKeyLabel = composite.getPressAnyKeyLabel().createLabel( TextPosture.OBLIQUE );
+		pressAnyKeyLabel.setHorizontalAlignment( HorizontalAlignment.CENTER );
 
-		return new org.lgna.croquet.views.BorderPanel.Builder()
+		return new BorderPanel.Builder()
 				.pageStart( pressAnyKeyLabel )
 				.center( composite.getValueState().createViewController() )
 				.build();

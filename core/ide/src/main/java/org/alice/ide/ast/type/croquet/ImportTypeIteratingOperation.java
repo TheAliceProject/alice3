@@ -42,23 +42,42 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+import org.alice.ide.icons.Icons;
+import org.alice.stageide.icons.PlusIconFactory;
+import org.lgna.common.Resource;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.ValueCreator;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.TypeResourcesPair;
 
+import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
-	private final org.lgna.project.ast.NamedUserType dstType;
+public final class ImportTypeIteratingOperation extends SingleThreadIteratingOperation {
+	private final NamedUserType dstType;
 
-	public ImportTypeIteratingOperation( org.lgna.project.ast.NamedUserType dstType ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
+	public ImportTypeIteratingOperation( NamedUserType dstType ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "bae897e2-63cb-481a-8ff6-41c99052a026" ) );
 		this.dstType = dstType;
-		this.setButtonIcon( new edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL, org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( org.alice.ide.icons.Icons.FOLDER_ICON_SMALL.getIconWidth(), org.alice.ide.icons.Icons.FOLDER_ICON_SMALL.getIconHeight() ) ) ) );
+		this.setButtonIcon( new LineAxisIcon( Icons.FOLDER_ICON_SMALL, PlusIconFactory.getInstance().getIcon( new Dimension( Icons.FOLDER_ICON_SMALL.getIconWidth(), Icons.FOLDER_ICON_SMALL.getIconHeight() ) ) ) );
 	}
 
 	@Override
@@ -67,26 +86,26 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return ImportTypeFileDialogValueCreator.getInstance();
 		case 1:
-			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
-				java.io.File file = (java.io.File)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
+			Step<?> prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
+				File file = (File)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
 				try {
-					org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( file );
-					org.lgna.project.ast.NamedUserType importedType = typeResourcesPair.getType();
-					java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
-					org.lgna.project.ast.NamedUserType srcType;
+					TypeResourcesPair typeResourcesPair = IoUtilities.readType( file );
+					NamedUserType importedType = typeResourcesPair.getType();
+					Set<Resource> importedResources = typeResourcesPair.getResources();
+					NamedUserType srcType;
 					if( importedType.getName().contentEquals( this.dstType.getName() ) ) {
 						srcType = importedType;
 					} else {
 						srcType = null;
-						edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
-						importedType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
-						for( org.lgna.project.ast.NamedUserType type : crawler.getList() ) {
+						IsInstanceCrawler<NamedUserType> crawler = IsInstanceCrawler.createInstance( NamedUserType.class );
+						importedType.crawl( crawler, CrawlPolicy.COMPLETE );
+						for( NamedUserType type : crawler.getList() ) {
 							if( type.getName().contentEquals( this.dstType.getName() ) ) {
 								srcType = type;
 								break;
@@ -96,14 +115,14 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 					if( srcType != null ) {
 						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
 					} else {
-						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file )
+						new OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file )
 								.buildAndShow();
 						return null;
 					}
-				} catch( java.io.IOException ioe ) {
+				} catch( IOException ioe ) {
 					throw new RuntimeException( ioe );
-				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "version not supported " + vnse.getVersion() )
+				} catch( VersionNotSupportedException vnse ) {
+					new OkDialog.Builder( "version not supported " + vnse.getVersion() )
 							.buildAndShow();
 				}
 				return null;
@@ -116,7 +135,7 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 		step.finish();
 	}
 }

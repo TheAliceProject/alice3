@@ -42,13 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.rename.RenameLocalComposite;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class LocalMenuModel extends PredeterminedMenuModel {
+	private static Map<UserLocal, LocalMenuModel> map = Maps.newHashMap();
 
-	public static synchronized LocalMenuModel getInstance( org.lgna.project.ast.UserLocal local ) {
+	public static synchronized LocalMenuModel getInstance( UserLocal local ) {
 		LocalMenuModel rv = map.get( local );
 		if( rv != null ) {
 			//pass
@@ -59,8 +67,8 @@ public class LocalMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		return rv;
 	}
 
-	private LocalMenuModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
-				org.alice.ide.ast.rename.RenameLocalComposite.getInstance( local ).getLaunchOperation().getMenuItemPrepModel() );
+	private LocalMenuModel( UserLocal local ) {
+		super( UUID.fromString( "b225cc92-f2c6-4a47-9818-1bbd0319091b" ),
+				RenameLocalComposite.getInstance( local ).getLaunchOperation().getMenuItemPrepModel() );
 	}
 }

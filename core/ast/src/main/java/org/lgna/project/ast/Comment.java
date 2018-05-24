@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,5 +60,5 @@ public class Comment extends Statement {
 		generator.formatMultiLineComment(text.getValue());
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
+	public final StringProperty text = new StringProperty( this, "" );
 }

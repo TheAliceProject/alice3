@@ -43,11 +43,17 @@
 package org.lgna.story.event;
 
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PickResult;
 import org.alice.interact.PickUtilities;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SModel;
+import org.lgna.story.SScene;
+import org.lgna.story.SThing;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
@@ -58,19 +64,19 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author Dennis Cosgrove
  */
 public class MouseClickEventImp {
-	private final java.awt.event.MouseEvent e;
-	private final org.lgna.story.SScene scene;
+	private final MouseEvent e;
+	private final SScene scene;
 
 	private Rectangle viewport;
 	private boolean isPickPerformed = false;
-	private org.lgna.story.SModel modelAtMouseLocation;
+	private SModel modelAtMouseLocation;
 
-	public MouseClickEventImp( java.awt.event.MouseEvent e, org.lgna.story.SScene scene ) {
+	public MouseClickEventImp( MouseEvent e, SScene scene ) {
 		this.e = e;
 		this.scene = scene;
 	}
 
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		if( this.scene != null ) {
 			SceneImp sceneImp = EmployeesOnly.getImplementation( this.scene );
 			ProgramImp programImp = sceneImp.getProgram();
@@ -85,7 +91,7 @@ public class MouseClickEventImp {
 		if( this.viewport != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+			OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
 			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
 			AbstractCamera sgCamera = rt.getSgCameraAt( 0 );
 			this.viewport = rt.getActualViewportAsAwtRectangle( sgCamera );
@@ -98,13 +104,13 @@ public class MouseClickEventImp {
 			//pass
 		} else {
 			if( this.scene != null ) {
-				edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+				OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
 				if( rt != null ) {
-					edu.cmu.cs.dennisc.render.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+					PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 					if( pickResult != null ) {
-						org.lgna.story.SThing e = PickUtilities.getEntityFromPickedObject( pickResult.getVisual() );
-						if( e instanceof org.lgna.story.SModel ) {
-							this.modelAtMouseLocation = (org.lgna.story.SModel)e;
+						SThing e = PickUtilities.getEntityFromPickedObject( pickResult.getVisual() );
+						if( e instanceof SModel ) {
+							this.modelAtMouseLocation = (SModel)e;
 						}
 					}
 				}
@@ -117,7 +123,7 @@ public class MouseClickEventImp {
 	//		this.pickIfNecessary();
 	//		return this.partAtMouseLocation;
 	//	}
-	public org.lgna.story.SModel getModelAtMouseLocation() {
+	public SModel getModelAtMouseLocation() {
 		this.pickIfNecessary();
 		return this.modelAtMouseLocation;
 	}
@@ -139,11 +145,11 @@ public class MouseClickEventImp {
 		return rv;
 	}
 
-	public org.lgna.story.SScene getScene() {
+	public SScene getScene() {
 		return this.scene;
 	}
 
-	public java.awt.event.MouseEvent getEvent() {
+	public MouseEvent getEvent() {
 		return this.e;
 	}
 }

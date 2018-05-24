@@ -43,14 +43,20 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Sphere;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
+public class GlrSphere extends GlrShape<Sphere> {
 	//todo: add scenegraph hint
 	private static final int STACK_COUNT = 50;
 	private static final int SLICE_COUNT = 50;
@@ -68,13 +74,13 @@ public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		//assuming ray unit length
 
-		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
-		edu.cmu.cs.dennisc.math.Vector3 dst = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( ray.accessOrigin(), origin );
-		double b = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, ray.accessDirection() );
-		double c = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, dst ) - this.radius;
+		Point3 origin = new Point3( 0, 0, 0 );
+		Vector3 dst = Vector3.createSubtraction( ray.accessOrigin(), origin );
+		double b = Vector3.calculateDotProduct( dst, ray.accessDirection() );
+		double c = Vector3.calculateDotProduct( dst, dst ) - this.radius;
 		double d = ( b * b ) - c;
 		if( d > 0 ) {
 			double t = -b - Math.sqrt( d );
@@ -99,7 +105,7 @@ public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.radius ) {
 			this.radius = owner.radius.getValue();
 			setIsGeometryChanged( true );

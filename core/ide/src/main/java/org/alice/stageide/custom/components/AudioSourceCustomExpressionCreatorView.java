@@ -43,21 +43,28 @@
 
 package org.alice.stageide.custom.components;
 
+import org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView;
+import org.alice.ide.x.DialogAstI18nFactory;
+import org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite;
+import org.lgna.croquet.views.LabeledFormRow;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom.components.RowBasedCustomExpressionCreatorView {
-	public AudioSourceCustomExpressionCreatorView( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite ) {
+public class AudioSourceCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+	public AudioSourceCustomExpressionCreatorView( AudioSourceCustomExpressionCreatorComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ), false ) );
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider() ) );
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider() ) );
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, composite.getTestOperation().createButton(), false ) );
+	protected void appendRows( List<LabeledFormRow> rows ) {
+		AudioSourceCustomExpressionCreatorComposite composite = (AudioSourceCustomExpressionCreatorComposite)this.getComposite();
+		rows.add( new LabeledFormRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( DialogAstI18nFactory.getInstance() ), false ) );
+		rows.add( new LabeledFormRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );
+		rows.add( new LabeledFormRow( composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider() ) );
+		rows.add( new LabeledFormRow( composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider() ) );
+		rows.add( new LabeledFormRow( null, composite.getTestOperation().createButton(), false ) );
 	}
 }

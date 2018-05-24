@@ -43,9 +43,14 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.project.ast.UserField;
 
-public class ObjectMarkerFieldState extends org.lgna.croquet.MutableDataSingleSelectListState<UserField> {
+import java.util.UUID;
+
+public class ObjectMarkerFieldState extends MutableDataSingleSelectListState<UserField> {
 	private static class SingletonHolder {
 		private static ObjectMarkerFieldState instance = new ObjectMarkerFieldState();
 	}
@@ -55,6 +60,6 @@ public class ObjectMarkerFieldState extends org.lgna.croquet.MutableDataSingleSe
 	}
 
 	private ObjectMarkerFieldState() {
-		super( org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserField.class ) );
+		super( ProjectApplication.DOCUMENT_UI_GROUP, UUID.fromString( "35ba71ac-34f5-46ec-9bf4-3b8127717366" ), NodeCodec.getInstance( UserField.class ) );
 	}
 }

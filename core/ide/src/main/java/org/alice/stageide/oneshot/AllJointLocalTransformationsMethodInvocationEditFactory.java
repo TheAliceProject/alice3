@@ -42,24 +42,30 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.stageide.oneshot.edits.AllJointLocalTransformationsEdit;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
 
 /**
  * @author Dennis Cosgrove
  */
 public class AllJointLocalTransformationsMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+	private final InstanceFactory instanceFactory;
+	private final AbstractMethod method;
+	private final Expression[] argumentExpressions;
 
-	public AllJointLocalTransformationsMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public AllJointLocalTransformationsMethodInvocationEditFactory( InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+	public Edit createEdit( CompletionStep<Cascade<MethodInvocationEditFactory>> step ) {
 		return new AllJointLocalTransformationsEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

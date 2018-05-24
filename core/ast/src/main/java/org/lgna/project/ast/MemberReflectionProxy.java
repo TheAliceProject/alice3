@@ -66,7 +66,7 @@ public abstract class MemberReflectionProxy<E> extends ReflectionProxy<E> {
 	}
 
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
 		MemberReflectionProxy<?> other = (MemberReflectionProxy<?>)o;
 		return this.declaringClassReflectionProxy != null ? this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy ) : other.declaringClassReflectionProxy == null;
 	}

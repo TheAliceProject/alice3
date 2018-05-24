@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.property.StringProperty;
+import org.lgna.project.annotations.ValueDetails;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,7 +65,7 @@ public class UserParameter extends AbstractParameter {
 
 	@Override
 	public UserCode getCode() {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getParent(), UserCode.class );
+		return ClassUtilities.getInstance( this.getParent(), UserCode.class );
 	}
 
 	@Override
@@ -75,7 +79,7 @@ public class UserParameter extends AbstractParameter {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+	public StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
 
@@ -85,7 +89,7 @@ public class UserParameter extends AbstractParameter {
 	}
 
 	@Override
-	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
+	public ValueDetails<?> getDetails() {
 		return null;
 	}
 
@@ -94,6 +98,6 @@ public class UserParameter extends AbstractParameter {
 		return false;
 	}
 
-	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final StringProperty name = new StringProperty( this, null );
 	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
 }

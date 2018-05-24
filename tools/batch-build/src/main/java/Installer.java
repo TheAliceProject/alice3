@@ -41,28 +41,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import edu.cmu.cs.dennisc.java.io.FileSystemUtils;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ProcessUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.apache.commons.io.FileUtils;
+import org.lgna.project.ProjectVersion;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Installer {
-	public Installer( Config config, java.io.File repoRoot ) {
+	public Installer( Config config, File repoRoot ) {
 		this.config = config;
-		this.root = new java.io.File( repoRoot, "installer" );
+		this.root = new File( repoRoot, "installer" );
 		assert this.root.exists() : this.root;
 		assert this.root.isDirectory() : this.root;
 
-		java.io.InputStream is = Build.class.getResourceAsStream( "Installer/aliceinstallerproject.install4j" );
+		InputStream is = Build.class.getResourceAsStream( "Installer/aliceinstallerproject.install4j" );
 		assert is != null;
-		this.markedUpInstall4jText = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
+		this.markedUpInstall4jText = TextFileUtilities.read( is );
 		assert this.markedUpInstall4jText != null;
 		assert this.markedUpInstall4jText.length() > 0;
 	}
 
-	private java.io.File getTargetDir() {
-		return new java.io.File( this.root, "aliceInstallData/Alice3" );
+	private File getTargetDir() {
+		return new File( this.root, "aliceInstallData/Alice3" );
 	}
 
-	private static boolean isFileNameStartsWith( java.io.File file, java.util.List<String> candidates ) {
+	private static boolean isFileNameStartsWith( File file, List<String> candidates ) {
 		String name = file.getName();
 		for( String candidate : candidates ) {
 			if( name.startsWith( candidate ) ) {
@@ -72,33 +88,33 @@ public class Installer {
 		return false;
 	}
 
-	public void copyJarsFromMaven() throws java.io.IOException {
-		final java.util.List<String> batchDependencyPrefixes = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
+	public void copyJarsFromMaven() throws IOException {
+		final List<String> batchDependencyPrefixes = Collections.unmodifiableList( Lists.newArrayList(
 				"commons-io",
 				"commons-cli" ) );
-		java.io.File extDir = new java.io.File( this.getTargetDir(), "ext" );
+		File extDir = new File( this.getTargetDir(), "ext" );
 		if( extDir.exists() ) {
-			org.apache.commons.io.FileUtils.deleteDirectory( extDir );
+			FileUtils.deleteDirectory( extDir );
 		}
-		java.io.File mavenRepositoryRootDirectory = MavenUtils.getMavenRepositoryDir();
-		for( String pathname : edu.cmu.cs.dennisc.java.lang.SystemUtilities.getClassPath() ) {
-			java.io.File file = new java.io.File( pathname );
+		File mavenRepositoryRootDirectory = MavenUtils.getMavenRepositoryDir();
+		for( String pathname : SystemUtilities.getClassPath() ) {
+			File file = new File( pathname );
 			if( file.isDirectory() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping directory:", file );
+				Logger.errln( "skipping directory:", file );
 			} else {
 				if( isFileNameStartsWith( file, batchDependencyPrefixes ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping batch dependency:", file );
+					Logger.errln( "skipping batch dependency:", file );
 				} else {
-					if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, "jar" ) ) {
-						if( edu.cmu.cs.dennisc.java.io.FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
-							java.io.File dstFile = edu.cmu.cs.dennisc.java.io.FileUtilities.getAnalogousFile( file, mavenRepositoryRootDirectory, extDir );
-							edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( file, dstFile );
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "++ adding: " + dstFile );
+					if( FileUtilities.isExtensionAmoung( file, "jar" ) ) {
+						if( FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
+							File dstFile = FileUtilities.getAnalogousFile( file, mavenRepositoryRootDirectory, extDir );
+							FileUtilities.copyFile( file, dstFile );
+							Logger.outln( "++ adding: " + dstFile );
 						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non descendant:", file );
+							Logger.errln( "skipping non descendant:", file );
 						}
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non jar:", file );
+						Logger.errln( "skipping non jar:", file );
 					}
 				}
 			}
@@ -106,13 +122,13 @@ public class Installer {
 		System.err.flush();
 	}
 
-	public void copyJarsFromBuild( BuildRepo buildRepo ) throws java.io.IOException {
-		java.io.File libDir = new java.io.File( this.getTargetDir(), "lib" );
+	public void copyJarsFromBuild( BuildRepo buildRepo ) throws IOException {
+		File libDir = new File( this.getTargetDir(), "lib" );
 		if( libDir.exists() ) {
-			org.apache.commons.io.FileUtils.deleteDirectory( libDir );
+			FileUtils.deleteDirectory( libDir );
 		}
 
-		java.util.List<ProjectCollection> projectCollections = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<ProjectCollection> projectCollections = Lists.newLinkedList();
 
 		projectCollections.add( new ProjectCollection.Builder( "core" )
 				.addProjectNames(
@@ -146,70 +162,70 @@ public class Installer {
 		}
 	}
 
-	public void copyDistribution( BuildRepo buildRepo ) throws java.io.IOException {
-		java.io.File distibDst = this.getTargetDir();
+	public void copyDistribution( BuildRepo buildRepo ) throws IOException {
+		File distibDst = this.getTargetDir();
 
-		java.io.File distribSrc = buildRepo.getDistributionSourceDir();
+		File distribSrc = buildRepo.getDistributionSourceDir();
 		assert distribSrc.exists() : distribSrc;
 		assert distribSrc.isDirectory() : distribSrc;
-		edu.cmu.cs.dennisc.java.io.FileUtilities.copyDirectory( distribSrc, distibDst );
+		FileUtilities.copyDirectory( distribSrc, distibDst );
 
 		assert distibDst.isDirectory() : distibDst;
 	}
 
-	private java.io.File getInstall4JFile() {
-		return new java.io.File( this.root, "aliceinstallerproject.install4j" );
+	private File getInstall4JFile() {
+		return new File( this.root, "aliceinstallerproject.install4j" );
 	}
 
-	public void prepareInstall4jFile() throws java.io.IOException {
+	public void prepareInstall4jFile() throws IOException {
 		String[] dirNames = { "ext", "lib" };
 
-		java.util.List<java.io.File> jarFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<File> jarFiles = Lists.newLinkedList();
 		for( String dirName : dirNames ) {
-			java.io.File[] descendants = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( new java.io.File( this.getTargetDir(), dirName ), "jar" );
-			java.util.Collections.addAll( jarFiles, descendants );
+			File[] descendants = FileUtilities.listDescendants( new File( this.getTargetDir(), dirName ), "jar" );
+			Collections.addAll( jarFiles, descendants );
 		}
 
-		java.util.Collections.sort( jarFiles );
+		Collections.sort( jarFiles );
 
 		final int N = this.getTargetDir().getAbsolutePath().length() + 1;
 		StringBuilder sb = new StringBuilder();
-		for( java.io.File jarFile : jarFiles ) {
+		for( File jarFile : jarFiles ) {
 			sb.append( "          <archive location=\"" + jarFile.getAbsolutePath().substring( N ).replaceAll( "\\\\", "/" ) + "\" failOnError=\"true\" />\n" );
 		}
 
 		String finalInstall4jText = this.markedUpInstall4jText;
-		finalInstall4jText = finalInstall4jText.replaceAll( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
+		finalInstall4jText = finalInstall4jText.replaceAll( "___ALICE_VERSION___", ProjectVersion.getCurrentVersionText() );
 		finalInstall4jText = finalInstall4jText.replaceAll( "___CLASSPATH___", sb.toString() );
 		finalInstall4jText = finalInstall4jText.replaceAll( "___INCLUDED_JVM_VERSION___", config.getInstallerIncludedJvmVersion() );
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb );
+		Logger.outln( sb );
 
-		java.io.File dstInstall4JFile = this.getInstall4JFile();
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstInstall4JFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstInstall4JFile, finalInstall4jText );
+		File dstInstall4JFile = this.getInstall4JFile();
+		FileSystemUtils.deleteIfExists( dstInstall4JFile );
+		TextFileUtilities.write( dstInstall4JFile, finalInstall4jText );
 		assert dstInstall4JFile.exists() : dstInstall4JFile;
 	}
 
-	public void createInstallers( Config config ) throws InterruptedException, java.io.IOException {
-		java.io.File installerOutputDir = new java.io.File( this.root, "installerOutput" );
-		String underscoreVersionText = org.lgna.project.ProjectVersion.getCurrentVersionText().replaceAll( "\\.", "_" );
-		java.io.File win64File = new java.io.File( installerOutputDir, "Alice3_windows-x64_" + underscoreVersionText + ".exe" );
-		java.io.File win32File = new java.io.File( installerOutputDir, "Alice3_windows_" + underscoreVersionText + ".exe" );
-		java.io.File linuxFile = new java.io.File( installerOutputDir, "Alice3_unix_" + underscoreVersionText + ".sh" );
-		java.io.File macFile = new java.io.File( installerOutputDir, "Alice3_macos_" + underscoreVersionText + ".dmg" );
+	public void createInstallers( Config config ) throws InterruptedException, IOException {
+		File installerOutputDir = new File( this.root, "installerOutput" );
+		String underscoreVersionText = ProjectVersion.getCurrentVersionText().replaceAll( "\\.", "_" );
+		File win64File = new File( installerOutputDir, "Alice3_windows-x64_" + underscoreVersionText + ".exe" );
+		File win32File = new File( installerOutputDir, "Alice3_windows_" + underscoreVersionText + ".exe" );
+		File linuxFile = new File( installerOutputDir, "Alice3_unix_" + underscoreVersionText + ".sh" );
+		File macFile = new File( installerOutputDir, "Alice3_macos_" + underscoreVersionText + ".dmg" );
 
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( win64File );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( win32File );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( linuxFile );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( macFile );
+		FileSystemUtils.deleteIfExists( win64File );
+		FileSystemUtils.deleteIfExists( win32File );
+		FileSystemUtils.deleteIfExists( linuxFile );
+		FileSystemUtils.deleteIfExists( macFile );
 
-		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> command = Lists.newLinkedList();
 		command.add( Install4JUtils.getInstall4JCommandFile( config ).getAbsolutePath() );
 		command.add( "--build-selected" );
 		command.add( this.getInstall4JFile().getAbsolutePath() );
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+		ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 
 		assert win64File.exists() : win64File;
 		assert win32File.exists() : win32File;
@@ -220,6 +236,6 @@ public class Installer {
 	}
 
 	private final Config config;
-	private final java.io.File root;
+	private final File root;
 	private final String markedUpInstall4jText;
 }

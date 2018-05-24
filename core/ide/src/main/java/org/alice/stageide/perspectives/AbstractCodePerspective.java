@@ -43,29 +43,43 @@
 
 package org.alice.stageide.perspectives;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.codedrop.CodePanelWithDropReceptor;
+import org.alice.ide.croquet.models.IdeDragModel;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.declarationseditor.components.DeclarationView;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.MenuBarComposite;
+import org.lgna.croquet.views.TrackableShape;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodePerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public AbstractCodePerspective( java.util.UUID id, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.MenuBarComposite menuBar ) {
+public abstract class AbstractCodePerspective extends ProjectPerspective {
+	public AbstractCodePerspective( UUID id, ProjectDocumentFrame projectDocumentFrame, MenuBarComposite menuBar ) {
 		super( id, projectDocumentFrame, menuBar );
 	}
 
 	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
+	public CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		return this.getProjectDocumentFrame().getDeclarationsEditorComposite().getView().getCodeDropReceptorInFocus();
 	}
 
 	@Override
-	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	public TrackableShape getRenderWindow() {
+		return StorytellingSceneEditor.getInstance();
 	}
 
 	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = this.getProjectDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+	protected void addPotentialDropReceptors( List<DropReceptor> out, IdeDragModel dragModel ) {
+		DeclarationComposite<?, ?> declarationComposite = this.getProjectDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 		if( declarationComposite != null ) {
-			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
+			DeclarationView declarationView = declarationComposite.getView();
 			declarationView.addPotentialDropReceptors( out, dragModel );
 		}
 	}

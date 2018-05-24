@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.ast.localizer.AstLocalizer;
 
 /**
@@ -55,7 +56,7 @@ public final class SuperExpression extends Expression {
 		if( type != null ) {
 			return type.getSuperType();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "SuperExpression cannot find type" );
+			Logger.warning( "SuperExpression cannot find type" );
 			return null;
 		}
 	}

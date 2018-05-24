@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.immutable;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +59,7 @@ public final class MAffineMatrix4x4 {
 
 	public MAffineMatrix4x4 createInverse() {
 		//todo
-		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( this ) ).createImmutable();
+		return AffineMatrix4x4.createInverse( new AffineMatrix4x4( this ) ).createImmutable();
 	}
 
 	public final MOrthogonalMatrix3x3 orientation;

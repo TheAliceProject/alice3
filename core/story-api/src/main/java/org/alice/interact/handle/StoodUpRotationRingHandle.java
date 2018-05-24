@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import org.alice.interact.MovementDirection;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -49,6 +50,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.debug.DebugInteractUtilities;
 
 /**
  * @author David Culyba
@@ -57,7 +59,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 	public StoodUpRotationRingHandle() {
 		super();
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
+		if( DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
@@ -71,7 +73,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection ) {
 		super( rotationAxisDirection );
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
+		if( DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
@@ -79,7 +81,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition ) {
 		super( rotationAxisDirection, handlePosition );
 		this.standUpReference.setName( "Rotation StandUp Reference" );
-		if( org.alice.interact.debug.DebugInteractUtilities.isDebugEnabled() ) {
+		if( DebugInteractUtilities.isDebugEnabled() ) {
 			this.standUpReference.putBonusDataFor( ManipulationHandle3D.DEBUG_PARENT_TRACKER_KEY, this );
 		}
 	}
@@ -121,7 +123,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle {
 		this.setTranslationOnly( this.handleOffset, this.getReferenceFrame() );
 	}
 
-	private final edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+	private final PropertyListener propertyListener = new PropertyListener() {
 		@Override
 		public void propertyChanged( PropertyEvent e ) {
 			positionRelativeToObject();

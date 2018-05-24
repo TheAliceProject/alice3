@@ -43,11 +43,13 @@
 
 package org.lgna.story.resources.sims2;
 
+import org.lgna.story.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class TeenPersonResource extends PersonResource {
-	public TeenPersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+	public TeenPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 	}
 
@@ -62,7 +64,7 @@ public final class TeenPersonResource extends PersonResource {
 	}
 
 	@Deprecated
-	public TeenPersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+	public TeenPersonResource( Gender gender, Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
 		super( gender, skinColor, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
 	}
 

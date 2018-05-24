@@ -14,7 +14,7 @@ public class ComponentExecutor implements Runnable{
 
 	@Override
 	public void run() {
-		org.lgna.common.ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
+		ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
 	}
 	
 	public synchronized void start() {

@@ -43,11 +43,15 @@
 
 package edu.cmu.cs.dennisc.java.util.logging;
 
+import java.util.logging.Formatter;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ConsoleFormatter extends java.util.logging.Formatter {
-	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.Logger.class.getName();
+public class ConsoleFormatter extends Formatter {
+	private static String CLASS_NAME = Logger.class.getName();
 
 	private int getStackTraceIndex( StackTraceElement[] stack ) {
 		int index = 0;
@@ -70,8 +74,8 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 	}
 
 	@Override
-	public String format( java.util.logging.LogRecord record ) {
-		java.util.logging.Level level = record.getLevel();
+	public String format( LogRecord record ) {
+		Level level = record.getLevel();
 		StringBuilder sb = new StringBuilder();
 		sb.append( level );
 		sb.append( ": " );
@@ -81,7 +85,7 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 		int index = this.getStackTraceIndex( stack );
 		if( index >= 0 ) {
 			int N;
-			if( java.util.logging.Level.SEVERE.intValue() <= level.intValue() ) {
+			if( Level.SEVERE.intValue() <= level.intValue() ) {
 				N = index + 16;
 			} else {
 				N = index + 1;

@@ -42,15 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.declarationseditor.type.ConstructorMenuModel;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.project.ast.NamedUserConstructor;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ConstructorView extends MemberView {
-	public ConstructorView( org.lgna.project.ast.NamedUserConstructor constructor ) {
-		super( org.alice.ide.declarationseditor.type.ConstructorMenuModel.getInstance( constructor ) );
-		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForConstructor( constructor );
-		org.lgna.croquet.views.Hyperlink hyperlink = operation.createHyperlink();
+	public ConstructorView( NamedUserConstructor constructor ) {
+		super( ConstructorMenuModel.getInstance( constructor ) );
+		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		Operation operation = tabState.getItemSelectionOperationForConstructor( constructor );
+		Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
 		//hyperlink.setClobberText( "constructor" );
 		this.addComponent( hyperlink );

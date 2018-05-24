@@ -44,16 +44,22 @@ package org.lgna.project.migration.ast;
 
 import java.util.ArrayList;
 
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.story.SScene;
+import org.lgna.story.ast.EventListenerMethodUtilities;
 import org.lgna.story.event.MouseClickOnScreenEvent;
 
 /**
@@ -61,35 +67,35 @@ import org.lgna.story.event.MouseClickOnScreenEvent;
  */
 public class EventAstMigration extends MethodInvocationAstMigration {
 	private static final JavaMethod[] removeTheseDetails = {
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.MOVE_WITH_ARROWS,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
-			org.lgna.story.ast.EventListenerMethodUtilities.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
+			EventListenerMethodUtilities.ADD_SCENE_ACTIVATION_LISTENER_METHOD,
+			EventListenerMethodUtilities.MOVE_WITH_ARROWS,
+			EventListenerMethodUtilities.ADD_TRANSFORMATION_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_END_COLLISION_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_START_OCCLUSION_EVENT_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_END_OCCLUSION_EVENT_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_ENTER_VIEW_EVENT_LISTENER_METHOD,
+			EventListenerMethodUtilities.ADD_EXIT_VIEW_EVENT_LISTENER_METHOD
 	};
 
-	public EventAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version maximumVersion ) {
+	public EventAstMigration( Version minimumVersion, Version maximumVersion ) {
 		super( minimumVersion, maximumVersion );
 	}
 
 	@Override
-	protected void migrate( MethodInvocation methodInvocation, org.lgna.project.Project projectIfApplicable ) {
-		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-		if( method instanceof org.lgna.project.ast.JavaMethod ) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+	protected void migrate( MethodInvocation methodInvocation, Project projectIfApplicable ) {
+		AbstractMethod method = methodInvocation.method.getValue();
+		if( method instanceof JavaMethod ) {
+			JavaMethod javaMethod = (JavaMethod)method;
 			JavaMethod replacementMethod = null;
-			if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
+			if( javaMethod.getDeclaringType() == JavaType.getInstance( SScene.class ) ) {
 				String methodName = method.getName();
 				if( methodName.equals( "addTimeListener" ) ) {
 					handleAddTimeListener( methodInvocation, javaMethod );
 				} else if( methodName.equals( "addProximityEnterListener" ) || methodName.equals( "addProximityExitListener" ) ) {
-					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? org.lgna.story.ast.EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD : org.lgna.story.ast.EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
+					JavaMethod newMethod = javaMethod.getName().equals( "addProximityEnterListener" ) ? EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD : EventListenerMethodUtilities.ADD_EXIT_PROXIMITY_LISTENER_METHOD;
 					methodInvocation.method.setValue( newMethod );
 				} else if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
 					addMouseClickOnScreenEventParameter( methodInvocation );
@@ -121,7 +127,7 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 		value.requiredParameters.add( new UserParameter( "event", MouseClickOnScreenEvent.class ) );
 	}
 
-	private void handleAddTimeListener( MethodInvocation methodInvocation, org.lgna.project.ast.JavaMethod javaMethod ) {
+	private void handleAddTimeListener( MethodInvocation methodInvocation, JavaMethod javaMethod ) {
 		ArrayList<JavaKeyedArgument> keyedParameter = methodInvocation.keyedArguments.getValue();
 		Double duration = null;
 		JavaKeyedArgument argToRemove = null;
@@ -141,6 +147,6 @@ public class EventAstMigration extends MethodInvocationAstMigration {
 			duration = 0.0;
 		}
 		methodInvocation.requiredArguments.add( new SimpleArgument( javaMethod.getRequiredParameters().get( 0 ), new DoubleLiteral( duration ) ) );
-		methodInvocation.method.setValue( org.lgna.story.ast.EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD );
+		methodInvocation.method.setValue( EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD );
 	}
 }

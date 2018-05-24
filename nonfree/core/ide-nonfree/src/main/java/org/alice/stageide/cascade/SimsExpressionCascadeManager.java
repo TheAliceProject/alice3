@@ -42,19 +42,35 @@
  *******************************************************************************/
 package org.alice.stageide.cascade;
 
+import org.alice.stageide.cascade.fillerinners.HairFillerInner;
+import org.alice.stageide.cascade.fillerinners.OutfitFillerInner;
+import org.alice.stageide.personresource.cascade.AdultPersonResourceFillerInner;
+import org.alice.stageide.personresource.cascade.ChildPersonResourceFillerInner;
+import org.alice.stageide.personresource.cascade.ElderPersonResourceFillerInner;
+import org.alice.stageide.personresource.cascade.TeenPersonResourceFillerInner;
+import org.alice.stageide.personresource.cascade.ToddlerPersonResourceFillerInner;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.resources.sims2.BaseEyeColor;
+import org.lgna.story.resources.sims2.BaseFace;
+import org.lgna.story.resources.sims2.BaseSkinTone;
+import org.lgna.story.resources.sims2.EyeColor;
+import org.lgna.story.resources.sims2.Face;
+import org.lgna.story.resources.sims2.SkinTone;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SimsExpressionCascadeManager extends ExpressionCascadeManager {
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?, ?, ?> interfaceType ) {
-		if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.EyeColor.class ) ) {
-			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class );
-		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.SkinTone.class ) ) {
-			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class );
-		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.Face.class ) ) {
-			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseFace.class );
+	protected AbstractType<?, ?, ?> getEnumTypeForInterfaceType( AbstractType<?, ?, ?> interfaceType ) {
+		if( interfaceType == JavaType.getInstance( EyeColor.class ) ) {
+			return JavaType.getInstance( BaseEyeColor.class );
+		} else if( interfaceType == JavaType.getInstance( SkinTone.class ) ) {
+			return JavaType.getInstance( BaseSkinTone.class );
+		} else if( interfaceType == JavaType.getInstance( Face.class ) ) {
+			return JavaType.getInstance( BaseFace.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
@@ -62,13 +78,13 @@ public class SimsExpressionCascadeManager extends ExpressionCascadeManager {
 
 	@Override
 	protected void addSimsExpressionFillerInners() {
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
+		this.addExpressionFillerInner( new OutfitFillerInner() );
+		this.addExpressionFillerInner( new HairFillerInner() );
 
-		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.AdultPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.ChildPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.ElderPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.TeenPersonResourceFillerInner() );
-		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.ToddlerPersonResourceFillerInner() );
+		this.addExpressionFillerInner( new AdultPersonResourceFillerInner() );
+		this.addExpressionFillerInner( new ChildPersonResourceFillerInner() );
+		this.addExpressionFillerInner( new ElderPersonResourceFillerInner() );
+		this.addExpressionFillerInner( new TeenPersonResourceFillerInner() );
+		this.addExpressionFillerInner( new ToddlerPersonResourceFillerInner() );
 	}
 }

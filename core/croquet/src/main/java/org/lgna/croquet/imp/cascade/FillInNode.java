@@ -43,19 +43,21 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.CascadeFillIn;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FillInNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.CascadeFillIn<F, B>> {
-	public static <F, B> FillInNode<F, B> createInstance( org.lgna.croquet.CascadeFillIn<F, B> model ) {
+public class FillInNode<F, B> extends BlankOwnerNode<F, B, CascadeFillIn<F, B>> {
+	public static <F, B> FillInNode<F, B> createInstance( CascadeFillIn<F, B> model ) {
 		return new FillInNode<F, B>( model );
 	}
 
-	private FillInNode( org.lgna.croquet.CascadeFillIn<F, B> model ) {
+	private FillInNode( CascadeFillIn<F, B> model ) {
 		super( model );
 	}
 
-	public org.lgna.croquet.CascadeFillIn<F, B> getCascadeFillIn() {
+	public CascadeFillIn<F, B> getCascadeFillIn() {
 		return this.getElement();
 	}
 }

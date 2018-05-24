@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.croquet.models.cascade.adapters;
 
+import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.LambdaExpression;
+
 import java.util.UUID;
 
-public abstract class LambdaExpressionFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.LambdaExpression> {
+public abstract class LambdaExpressionFillIn extends ExpressionFillInWithoutBlanks<LambdaExpression> {
 	private final Class<?> listenerCls;
-	private final org.lgna.project.ast.LambdaExpression transientValue;
+	private final LambdaExpression transientValue;
 
 	public LambdaExpressionFillIn( UUID id, Class<?> listenerCls ) {
 		super( id );
@@ -55,12 +61,12 @@ public abstract class LambdaExpressionFillIn extends org.alice.ide.croquet.model
 	}
 
 	@Override
-	public org.lgna.project.ast.LambdaExpression getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LambdaExpression, Void> node ) {
+	public LambdaExpression getTransientValue( ItemNode<? super LambdaExpression, Void> node ) {
 		return this.transientValue;
 	}
 
 	@Override
-	public org.lgna.project.ast.LambdaExpression createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LambdaExpression, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public LambdaExpression createValue( ItemNode<? super LambdaExpression, Void> node, TransactionHistory transactionHistory ) {
 		return this.createValue();
 	}
 
@@ -69,7 +75,7 @@ public abstract class LambdaExpressionFillIn extends org.alice.ide.croquet.model
 		return true;
 	}
 
-	private org.lgna.project.ast.LambdaExpression createValue() {
-		return org.lgna.project.ast.AstUtilities.createLambdaExpression( this.listenerCls );
+	private LambdaExpression createValue() {
+		return AstUtilities.createLambdaExpression( this.listenerCls );
 	}
 }

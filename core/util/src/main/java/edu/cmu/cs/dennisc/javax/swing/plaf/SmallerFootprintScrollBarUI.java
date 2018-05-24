@@ -42,53 +42,71 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.plaf;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.plaf.ScrollBarUI;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SmallerFootprintScrollBarUI extends javax.swing.plaf.basic.BasicScrollBarUI {
+public class SmallerFootprintScrollBarUI extends BasicScrollBarUI {
 	public static final int INSET = 2;
 
-	public static javax.swing.plaf.ScrollBarUI createUI() {
+	public static ScrollBarUI createUI() {
 		return new SmallerFootprintScrollBarUI();
 	}
 
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
-		this.thumbRolloverColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 100 );
-		this.thumbPressedColor = new java.awt.Color( 100, 140, 255 );
+		this.thumbRolloverColor = ColorUtilities.createGray( 100 );
+		this.thumbPressedColor = new Color( 100, 140, 255 );
 	}
 
 	@Override
-	protected void paintThumb( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds ) {
+	protected void paintThumb( Graphics g, JComponent c, Rectangle thumbBounds ) {
 		//super.paintThumb( g, c, thumbBounds );
-		if( c instanceof javax.swing.JScrollBar ) {
-			javax.swing.JScrollBar jScrollBar = (javax.swing.JScrollBar)c;
-			int span = jScrollBar.getOrientation() == javax.swing.JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
+		if( c instanceof JScrollBar ) {
+			JScrollBar jScrollBar = (JScrollBar)c;
+			int span = jScrollBar.getOrientation() == JScrollBar.VERTICAL ? c.getWidth() : c.getHeight();
 			int arc = span - INSET - INSET;
-			java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
-			java.awt.Paint paint;
+			Shape shape = new RoundRectangle2D.Float( thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc );
+			Paint paint;
 			if( this.isDragging ) {
 				paint = this.thumbPressedColor;
 			} else {
 				paint = isThumbRollover() ? this.thumbRolloverColor : this.thumbColor;
 			}
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			Graphics2D g2 = (Graphics2D)g;
+			Object prevAntialiasing = GraphicsUtilities.setAntialiasing( g2, RenderingHints.VALUE_ANTIALIAS_ON );
 			g2.setPaint( paint );
 			g2.fill( shape );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
+			GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
 		}
 	}
 
 	@Override
-	protected void paintTrack( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle trackBounds ) {
+	protected void paintTrack( Graphics g, JComponent c, Rectangle trackBounds ) {
 		//super.paintTrack( g, c, trackBounds );
 	}
 
-	private static javax.swing.JButton create0SizeButton() {
-		javax.swing.JButton rv = new javax.swing.JButton();
-		java.awt.Dimension size = new java.awt.Dimension( 0, 0 );
+	private static JButton create0SizeButton() {
+		JButton rv = new JButton();
+		Dimension size = new Dimension( 0, 0 );
 		rv.setMinimumSize( size );
 		rv.setPreferredSize( size );
 		rv.setMaximumSize( size );
@@ -96,15 +114,15 @@ public class SmallerFootprintScrollBarUI extends javax.swing.plaf.basic.BasicScr
 	}
 
 	@Override
-	protected javax.swing.JButton createIncreaseButton( int orientation ) {
+	protected JButton createIncreaseButton( int orientation ) {
 		return create0SizeButton();
 	}
 
 	@Override
-	protected javax.swing.JButton createDecreaseButton( int orientation ) {
+	protected JButton createDecreaseButton( int orientation ) {
 		return create0SizeButton();
 	}
 
-	private java.awt.Color thumbPressedColor;
-	private java.awt.Color thumbRolloverColor;
+	private Color thumbPressedColor;
+	private Color thumbRolloverColor;
 }

@@ -43,18 +43,21 @@
 
 package org.lgna.croquet.history.event;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
 public class EditCommittedEvent extends SuccessfulCompletionEvent {
-	private final org.lgna.croquet.edits.Edit edit;
+	private final Edit edit;
 
-	public EditCommittedEvent( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit edit ) {
+	public EditCommittedEvent( CompletionStep<?> step, Edit edit ) {
 		super( step );
 		this.edit = edit;
 	}
 
-	public org.lgna.croquet.edits.Edit getEdit() {
+	public Edit getEdit() {
 		return this.edit;
 	}
 }

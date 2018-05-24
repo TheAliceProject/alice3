@@ -42,13 +42,18 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 	private final ValueCreator<T> source;
 
-	public ValueConverter( java.util.UUID migrationId, ValueCreator<T> source ) {
+	public ValueConverter( UUID migrationId, ValueCreator<T> source ) {
 		super( migrationId );
 		this.source = source;
 	}
@@ -66,7 +71,7 @@ public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 	protected abstract TPRIME convert( T value );
 
 	@Override
-	protected final TPRIME createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final TPRIME createValue( Transaction transaction, Trigger trigger ) {
 		T value = this.source.createValue( transaction, trigger );
 		return this.convert( value );
 	}

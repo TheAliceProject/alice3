@@ -43,33 +43,43 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.awt.GLCanvas;
+import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 /**
  * @author Dennis Cosgrove
  */
-class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget {
-	private com.jogamp.opengl.awt.GLCanvas m_glCanvas;
+class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<Component> implements HeavyweightOnscreenRenderTarget {
+	private GLCanvas m_glCanvas;
 
-	/* package-private */ GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		m_glCanvas = GlDrawableUtils.createGLCanvas( requestedCapabilities );
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
 		//m_glCanvas.setAutoSwapBufferMode( false );
-		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {
+		m_glCanvas.addComponentListener( new ComponentListener() {
 			@Override
-			public void componentShown( java.awt.event.ComponentEvent e ) {
+			public void componentShown( ComponentEvent e ) {
 			}
 
 			@Override
-			public void componentHidden( java.awt.event.ComponentEvent e ) {
+			public void componentHidden( ComponentEvent e ) {
 			}
 
 			@Override
-			public void componentMoved( java.awt.event.ComponentEvent e ) {
+			public void componentMoved( ComponentEvent e ) {
 			}
 
 			@Override
-			public void componentResized( java.awt.event.ComponentEvent e ) {
-				m_glCanvas.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
+			public void componentResized( ComponentEvent e ) {
+				m_glCanvas.setMinimumSize( new Dimension( 0, 0 ) );
 				m_glCanvas.repaint();
 			}
 		} );
@@ -81,23 +91,23 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.aw
 	}
 
 	@Override
-	public java.awt.Component getAwtComponent() {
+	public Component getAwtComponent() {
 		return m_glCanvas;
 	}
 
 	@Override
-	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+	protected Dimension getSurfaceSize( Dimension rv ) {
 		return m_glCanvas.getSize( rv );
 	}
 
 	@Override
-	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+	protected Dimension getDrawableSize( Dimension rv ) {
 		rv.setSize( m_glCanvas.getDelegatedDrawable().getSurfaceWidth(), m_glCanvas.getDelegatedDrawable().getSurfaceHeight() );
 		return rv;
 	}
 
 	@Override
-	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public GLAutoDrawable getGLAutoDrawable() {
 		return m_glCanvas;
 	}
 }

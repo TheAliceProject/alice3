@@ -42,21 +42,40 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
+import edu.cmu.cs.dennisc.java.awt.MultilineText;
+import edu.cmu.cs.dennisc.java.awt.TextAlignment;
+import edu.cmu.cs.dennisc.java.awt.geom.Ellipse;
+import edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
+import edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble> {
-	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 2 );
+public class GlrThoughtBubble extends GlrBubble<ThoughtBubble> {
+	private static final Stroke STROKE = new BasicStroke( 2 );
 
-	private edu.cmu.cs.dennisc.java.awt.geom.Ellipse[] m_tailEllipses = null;
+	private Ellipse[] m_tailEllipses = null;
 	//	private BumpyBubble m_bumpyBubble;
 
 	private final int TAIL_ELLIPSE_COUNT = 3;
 	private final double PORTION_PER_TAIL_ELLIPSE = 1.0 / TAIL_ELLIPSE_COUNT;
 
-	private void paintEllipses( edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext gc, double portion ) {
+	private void paintEllipses( GraphicsContext gc, double portion ) {
 		for( int i = 0; i < m_tailEllipses.length; i++ ) {
 			double portion0 = i * PORTION_PER_TAIL_ELLIPSE;
 			double portion1 = ( i + 1 ) * PORTION_PER_TAIL_ELLIPSE;
@@ -69,7 +88,7 @@ public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gr
 				} else {
 					desiredScale = ( portion - portion0 ) / PORTION_PER_TAIL_ELLIPSE;
 				}
-				java.awt.geom.AffineTransform affineTransform = m_tailEllipses[ i ].getAffineTransform();
+				AffineTransform affineTransform = m_tailEllipses[ i ].getAffineTransform();
 				double currentScale = affineTransform.getScaleX();
 
 				if( desiredScale > 0 ) {
@@ -81,27 +100,27 @@ public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gr
 		}
 	}
 
-	private static java.awt.geom.Ellipse2D createScaledOffsetRectangle2D( java.awt.geom.Rectangle2D.Double r, double offsetPortionX, double offsetPortionY, double scaleX, double scaleY ) {
-		return new java.awt.geom.Ellipse2D.Double( r.x + ( offsetPortionX * r.width ), r.y + ( offsetPortionY * r.height ), r.width * scaleX, r.height * scaleY );
+	private static Ellipse2D createScaledOffsetRectangle2D( Rectangle2D.Double r, double offsetPortionX, double offsetPortionY, double scaleX, double scaleY ) {
+		return new Ellipse2D.Double( r.x + ( offsetPortionX * r.width ), r.y + ( offsetPortionY * r.height ), r.width * scaleX, r.height * scaleY );
 	}
 
-	private static java.awt.geom.Area createRotatedAboutCenterArea( java.awt.geom.Ellipse2D e, double theta ) {
-		return new java.awt.geom.Area( e ).createTransformedArea( java.awt.geom.AffineTransform.getRotateInstance( theta, e.getCenterX(), e.getCenterY() ) );
+	private static Area createRotatedAboutCenterArea( Ellipse2D e, double theta ) {
+		return new Area( e ).createTransformedArea( AffineTransform.getRotateInstance( theta, e.getCenterX(), e.getCenterY() ) );
 	}
 
-	private static java.awt.Shape createBubbleAround( java.awt.geom.Rectangle2D.Double r ) {
-		java.awt.geom.Ellipse2D rightEllipse = createScaledOffsetRectangle2D( r, 0.45, -0.05, 0.85, 1.25 );
-		java.awt.geom.Ellipse2D topEllipse = createScaledOffsetRectangle2D( r, 0.1, -0.4, 0.8, 1.2 );
-		java.awt.geom.Ellipse2D leftEllipse = createScaledOffsetRectangle2D( r, -0.2, -0.1, 0.7, 0.9 );
-		java.awt.geom.Ellipse2D bottomLeftEllipse = createScaledOffsetRectangle2D( r, -0.1, 0.15, 0.7, 1.2 );
-		java.awt.geom.Ellipse2D bottomRightEllipse = createScaledOffsetRectangle2D( r, 0.15, 0.45, 0.8, 1.0 );
+	private static Shape createBubbleAround( Rectangle2D.Double r ) {
+		Ellipse2D rightEllipse = createScaledOffsetRectangle2D( r, 0.45, -0.05, 0.85, 1.25 );
+		Ellipse2D topEllipse = createScaledOffsetRectangle2D( r, 0.1, -0.4, 0.8, 1.2 );
+		Ellipse2D leftEllipse = createScaledOffsetRectangle2D( r, -0.2, -0.1, 0.7, 0.9 );
+		Ellipse2D bottomLeftEllipse = createScaledOffsetRectangle2D( r, -0.1, 0.15, 0.7, 1.2 );
+		Ellipse2D bottomRightEllipse = createScaledOffsetRectangle2D( r, 0.15, 0.45, 0.8, 1.0 );
 
-		java.awt.geom.AffineTransform m = java.awt.geom.AffineTransform.getRotateInstance( 0.1, topEllipse.getCenterX(), topEllipse.getCenterY() );
+		AffineTransform m = AffineTransform.getRotateInstance( 0.1, topEllipse.getCenterX(), topEllipse.getCenterY() );
 
-		java.awt.geom.Area rv = new java.awt.geom.Area( r );
+		Area rv = new Area( r );
 		rv.add( createRotatedAboutCenterArea( rightEllipse, -0.1 ) );
 		rv.add( createRotatedAboutCenterArea( topEllipse, -0.05 ) );
-		rv.add( new java.awt.geom.Area( leftEllipse ) );
+		rv.add( new Area( leftEllipse ) );
 		rv.add( createRotatedAboutCenterArea( bottomLeftEllipse, -0.1 ) );
 		rv.add( createRotatedAboutCenterArea( bottomRightEllipse, 0.1 ) );
 		return rv;
@@ -109,44 +128,44 @@ public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gr
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.render.Graphics2D g2,
-			edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
-			java.awt.Rectangle actualViewport,
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
-			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
-			java.awt.Font font,
-			java.awt.Color textColor,
+			Graphics2D g2,
+			RenderTarget renderTarget,
+			Rectangle actualViewport,
+			AbstractCamera camera,
+			MultilineText multilineText,
+			Font font,
+			Color textColor,
 			float wrapWidth,
-			java.awt.Color fillColor,
-			java.awt.Color outlineColor,
+			Color fillColor,
+			Color outlineColor,
 			OnscreenBubble bubble,
 			double portion ) {
-		java.awt.Stroke stroke = g2.getStroke();
+		Stroke stroke = g2.getStroke();
 		g2.setStroke( STROKE );
 
 		if( m_tailEllipses != null ) {
 			//pass
 		} else {
-			m_tailEllipses = new edu.cmu.cs.dennisc.java.awt.geom.Ellipse[ TAIL_ELLIPSE_COUNT ];
+			m_tailEllipses = new Ellipse[ TAIL_ELLIPSE_COUNT ];
 
 			double xDelta = bubble.getEndOfTail().getX() - bubble.getOriginOfTail().getX();
 			double yDelta = bubble.getEndOfTail().getY() - bubble.getOriginOfTail().getY();
 
 			for( int i = 0; i < m_tailEllipses.length; i++ ) {
 				double factor = i + 1;
-				m_tailEllipses[ i ] = new edu.cmu.cs.dennisc.java.awt.geom.Ellipse( 5 * factor, 3 * factor );
+				m_tailEllipses[ i ] = new Ellipse( 5 * factor, 3 * factor );
 				m_tailEllipses[ i ].setDrawPaint( outlineColor );
 				m_tailEllipses[ i ].setFillPaint( fillColor );
 				m_tailEllipses[ i ].applyTranslation( bubble.getOriginOfTail().getX() + ( i * xDelta * PORTION_PER_TAIL_ELLIPSE ), bubble.getOriginOfTail().getY() + ( i * yDelta * PORTION_PER_TAIL_ELLIPSE ) );
 			}
 		}
 
-		edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext gc = new edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext();
+		GraphicsContext gc = new GraphicsContext();
 		gc.initialize( g2 );
 		if( portion < 1.0 ) {
 			paintEllipses( gc, portion );
 		} else {
-			java.awt.geom.Rectangle2D.Double textBounds = bubble.getTextBounds();
+			Rectangle2D.Double textBounds = bubble.getTextBounds();
 			final double MINIMUM_WIDTH = 48.0;
 			double w;
 			double halfWidthDelta;
@@ -168,18 +187,18 @@ public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gr
 				h = textBounds.getHeight();
 				halfHeightDelta = 0.0;
 			}
-			java.awt.geom.Rectangle2D.Double bounds = new java.awt.geom.Rectangle2D.Double( textBounds.x + halfWidthDelta, textBounds.y + halfHeightDelta, w, h );
+			Rectangle2D.Double bounds = new Rectangle2D.Double( textBounds.x + halfWidthDelta, textBounds.y + halfHeightDelta, w, h );
 
-			java.awt.Shape shape = createBubbleAround( bounds );
+			Shape shape = createBubbleAround( bounds );
 			g2.setPaint( fillColor );
 			g2.fill( shape );
 			g2.setPaint( outlineColor );
 			g2.draw( shape );
 
 			g2.setPaint( textColor );
-			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, textBounds );
+			multilineText.paint( g2, wrapWidth, TextAlignment.LEADING, textBounds );
 
-			for( edu.cmu.cs.dennisc.java.awt.geom.Ellipse tailEllipse : m_tailEllipses ) {
+			for( Ellipse tailEllipse : m_tailEllipses ) {
 				tailEllipse.paint( gc );
 			}
 		}

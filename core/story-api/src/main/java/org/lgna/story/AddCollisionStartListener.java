@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Matt May
  */
 public class AddCollisionStartListener {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddCollisionStartListener.class )
+	@ClassTemplate( keywordFactoryCls = AddCollisionStartListener.class )
 	public interface Detail {
 	}
 

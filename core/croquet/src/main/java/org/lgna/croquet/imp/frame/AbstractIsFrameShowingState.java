@@ -42,11 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.frame;
 
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.views.Frame;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIsFrameShowingState extends org.lgna.croquet.BooleanState {
-	public AbstractIsFrameShowingState( org.lgna.croquet.Group group, java.util.UUID migrationId ) {
+public abstract class AbstractIsFrameShowingState extends BooleanState {
+	public AbstractIsFrameShowingState( Group group, UUID migrationId ) {
 		super( group, migrationId, false );
 	}
 
@@ -57,9 +67,9 @@ public abstract class AbstractIsFrameShowingState extends org.lgna.croquet.Boole
 	}
 
 	@Override
-	protected abstract Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization();
+	protected abstract Class<? extends Element> getClassUsedForLocalization();
 
-	public abstract org.lgna.croquet.FrameComposite<?> getFrameComposite();
+	public abstract FrameComposite<?> getFrameComposite();
 
 	private String getFrameTitle() {
 		this.initializeIfNecessary();
@@ -83,7 +93,7 @@ public abstract class AbstractIsFrameShowingState extends org.lgna.croquet.Boole
 	protected void fireChanged( Boolean prevValue, Boolean nextValue, IsAdjusting isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( nextValue ) {
-			org.lgna.croquet.views.Frame frameView = this.getOwnerFrameView_createIfNecessary();
+			Frame frameView = this.getOwnerFrameView_createIfNecessary();
 			frameView.setTitle( this.getFrameTitle() );
 			this.getFrameComposite().handlePreActivation();
 			frameView.setVisible( true );
@@ -99,12 +109,12 @@ public abstract class AbstractIsFrameShowingState extends org.lgna.croquet.Boole
 		}
 	}
 
-	private org.lgna.croquet.views.Frame getOwnerFrameView_createIfNecessary() {
+	private Frame getOwnerFrameView_createIfNecessary() {
 		if( this.ownerFrameView != null ) {
 			//pass
 		} else {
-			org.lgna.croquet.FrameComposite<?> frameComposite = this.getFrameComposite();
-			this.ownerFrameView = new org.lgna.croquet.views.Frame();
+			FrameComposite<?> frameComposite = this.getFrameComposite();
+			this.ownerFrameView = new Frame();
 			this.ownerFrameView.getContentPane().addCenterComponent( frameComposite.getRootComponent() );
 			frameComposite.updateWindowSize( this.ownerFrameView );
 			this.ownerFrameView.addWindowListener( this.windowListener );
@@ -112,42 +122,42 @@ public abstract class AbstractIsFrameShowingState extends org.lgna.croquet.Boole
 		return this.ownerFrameView;
 	}
 
-	private void handleWindowClosing( java.awt.event.WindowEvent e ) {
+	private void handleWindowClosing( WindowEvent e ) {
 		this.setValueTransactionlessly( false );
 	}
 
-	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+	private final WindowListener windowListener = new WindowListener() {
 		@Override
-		public void windowActivated( java.awt.event.WindowEvent e ) {
+		public void windowActivated( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowDeactivated( java.awt.event.WindowEvent e ) {
+		public void windowDeactivated( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowIconified( java.awt.event.WindowEvent e ) {
+		public void windowIconified( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowDeiconified( java.awt.event.WindowEvent e ) {
+		public void windowDeiconified( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowOpened( java.awt.event.WindowEvent e ) {
+		public void windowOpened( WindowEvent e ) {
 		}
 
 		@Override
-		public void windowClosing( java.awt.event.WindowEvent e ) {
+		public void windowClosing( WindowEvent e ) {
 			handleWindowClosing( e );
 		}
 
 		@Override
-		public void windowClosed( java.awt.event.WindowEvent e ) {
+		public void windowClosed( WindowEvent e ) {
 		}
 	};
 
 	private String title;
-	private org.lgna.croquet.views.Frame ownerFrameView;
+	private Frame ownerFrameView;
 
 }

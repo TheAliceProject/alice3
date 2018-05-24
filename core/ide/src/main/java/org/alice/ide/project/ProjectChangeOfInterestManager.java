@@ -42,23 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.project;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.project.events.ProjectChangeOfInterestListener;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum ProjectChangeOfInterestManager {
 	SINGLETON;
-	private final java.util.List<org.alice.ide.project.events.ProjectChangeOfInterestListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ProjectChangeOfInterestListener> listeners = Lists.newCopyOnWriteArrayList();
 
-	public void addProjectChangeOfInterestListener( org.alice.ide.project.events.ProjectChangeOfInterestListener listener ) {
+	public void addProjectChangeOfInterestListener( ProjectChangeOfInterestListener listener ) {
 		this.listeners.add( listener );
 	}
 
-	public void removeProjectChangeOfInterestListener( org.alice.ide.project.events.ProjectChangeOfInterestListener listener ) {
+	public void removeProjectChangeOfInterestListener( ProjectChangeOfInterestListener listener ) {
 		this.listeners.remove( listener );
 	}
 
 	public void fireProjectChangeOfInterestListeners() {
-		for( org.alice.ide.project.events.ProjectChangeOfInterestListener listener : this.listeners ) {
+		for( ProjectChangeOfInterestListener listener : this.listeners ) {
 			listener.projectChanged();
 		}
 	}

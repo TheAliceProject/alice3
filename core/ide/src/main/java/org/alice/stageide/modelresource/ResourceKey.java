@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.InstanceCreation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,13 +57,13 @@ public abstract class ResourceKey {
 
 	public abstract String getLocalizedDisplayText();
 
-	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
+	public abstract IconFactory getIconFactory();
 
 	public abstract boolean isLeaf();
 
 	protected abstract void appendRep( StringBuilder sb );
 
-	public abstract org.lgna.project.ast.InstanceCreation createInstanceCreation();
+	public abstract InstanceCreation createInstanceCreation();
 
 	public abstract String[] getTags();
 

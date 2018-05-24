@@ -42,32 +42,39 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.UTFDataFormatException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
-	private java.io.ObjectInputStream m_ois;
+	private ObjectInputStream m_ois;
 
-	public InputStreamBinaryDecoder( java.io.InputStream is ) {
+	public InputStreamBinaryDecoder( InputStream is ) {
 		initialize( is );
 	}
 
-	public InputStreamBinaryDecoder( java.io.File file ) {
+	public InputStreamBinaryDecoder( File file ) {
 		try {
-			initialize( new java.io.FileInputStream( file ) );
-		} catch( java.io.IOException ioe ) {
+			initialize( new FileInputStream( file ) );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
 	public InputStreamBinaryDecoder( String path ) {
-		this( new java.io.File( path ) );
+		this( new File( path ) );
 	}
 
-	private void initialize( java.io.InputStream is ) {
+	private void initialize( InputStream is ) {
 		try {
-			m_ois = new java.io.ObjectInputStream( is );
-		} catch( java.io.IOException ioe ) {
+			m_ois = new ObjectInputStream( is );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( is.toString(), ioe );
 		}
 	}
@@ -77,7 +84,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		try {
 			m_ois.readFully( rv );
 			return rv;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -87,7 +94,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		try {
 			m_ois.readFully( rv, offset, length );
 			return rv;
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -96,7 +103,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public boolean decodeBoolean() {
 		try {
 			return m_ois.readBoolean();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -105,7 +112,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public byte decodeByte() {
 		try {
 			return m_ois.readByte();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -114,7 +121,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public char decodeChar() {
 		try {
 			return m_ois.readChar();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -123,7 +130,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public double decodeDouble() {
 		try {
 			return m_ois.readDouble();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -132,7 +139,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public float decodeFloat() {
 		try {
 			return m_ois.readFloat();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -141,7 +148,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public int decodeInt() {
 		try {
 			return m_ois.readInt();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -150,7 +157,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public long decodeLong() {
 		try {
 			return m_ois.readLong();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -159,7 +166,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 	public short decodeShort() {
 		try {
 			return m_ois.readShort();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
@@ -180,9 +187,9 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 			} else {
 				return null;
 			}
-		} catch( java.io.UTFDataFormatException utfdfe ) {
+		} catch( UTFDataFormatException utfdfe ) {
 			throw new RuntimeException( utfdfe );
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}

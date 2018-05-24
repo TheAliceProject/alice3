@@ -45,18 +45,23 @@ package org.alice.nonfree;
 import java.util.List;
 import java.util.Map;
 
+import edu.cmu.cs.dennisc.eula.EULAUtilities;
+import edu.cmu.cs.dennisc.nebulous.License;
+import edu.cmu.cs.dennisc.nebulous.Manager;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.croquet.models.declaration.GalleryPersonResourceFillIn;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.stageide.SimsStoryApiConfigurationManager;
 import org.alice.stageide.StoryApiConfigurationManager;
+import org.alice.stageide.about.SimsArtAssetsEulaComposite;
 import org.alice.stageide.ast.ExpressionCreator;
 import org.alice.stageide.ast.SimsBootstrapUtilties;
 import org.alice.stageide.ast.SimsExpressionCreator;
 import org.alice.stageide.ast.sort.SimsOneShotSorter;
 import org.alice.stageide.cascade.ExpressionCascadeManager;
 import org.alice.stageide.cascade.SimsExpressionCascadeManager;
+import org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.PersonResourceKeyUriIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.ResourceKeyUriIteratingOperation;
 import org.alice.stageide.icons.SimsIconFactoryManager;
@@ -69,26 +74,35 @@ import org.alice.stageide.oneshot.SetCeilingPaintMethodInvocationFillIn;
 import org.alice.stageide.oneshot.SetFloorPaintMethodInvocationFillIn;
 import org.alice.stageide.oneshot.SetWallPaintMethodInvocationFillIn;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
+import org.alice.stageide.personresource.PersonResourceComposite;
 import org.alice.stageide.properties.RoomCeilingPaintPropertyAdapter;
 import org.alice.stageide.properties.RoomFloorPaintPropertyAdapter;
 import org.alice.stageide.properties.RoomWallPaintPropertyAdapter;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.Paint;
+import org.lgna.story.SRoom;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.RoomImp;
 import org.lgna.story.resources.ModelResource;
 
 import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+import org.lgna.story.resources.sims2.PersonResource;
 
 /**
  * @author Kyle J. Harms
  */
 public class IdeNonfree extends NebulousIde {
 
-	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
+	private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance( PersonResource.class );
 
 	@Override
 	public boolean isNonFreeEnabled() {
@@ -97,19 +111,19 @@ public class IdeNonfree extends NebulousIde {
 
 	@Override
 	public void promptForLicenseAgreements( String licenseKey ) throws LicenseRejectedException {
-		edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, licenseKey, "License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets", edu.cmu.cs.dennisc.nebulous.License.TEXT,
+		EULAUtilities.promptUserToAcceptEULAIfNecessary( License.class, licenseKey, "License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets", License.TEXT,
 				"The Sims (TM) 2 Art Assets" );
 	}
 
 	@Override
 	public Operation newSimsArtEulaDialogLaunchOperation() {
-		return org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
-				org.alice.stageide.about.SimsArtAssetsEulaComposite.class,
-				org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+		return LazySimpleLaunchOperationFactory.createNoArgumentConstructorInstance(
+				SimsArtAssetsEulaComposite.class,
+				Application.INFORMATION_GROUP ).getLaunchOperation();
 	}
 
 	@Override
-	public org.lgna.project.ast.NamedUserType createProgramType( TemplateUriState.Template template ) {
+	public NamedUserType createProgramType( TemplateUriState.Template template ) {
 		return SimsBootstrapUtilties.createProgramType(
 				template.getSurfaceAppearance(),
 				template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(),
@@ -146,12 +160,12 @@ public class IdeNonfree extends NebulousIde {
 
 	@Override
 	public void unloadNebulousModelData() {
-		edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
+		Manager.unloadNebulousModelData();
 	}
 
 	@Override
 	public void unloadPerson() {
-		org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
+		PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
 	}
 
 	@Override
@@ -173,7 +187,7 @@ public class IdeNonfree extends NebulousIde {
 	public Model getPersonResourceDropModel( ResourceKey resourceKey ) {
 		if( resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)resourceKey;
-			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );
+			return DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );
 			//todo
 			//		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
 			//			return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();
@@ -183,8 +197,8 @@ public class IdeNonfree extends NebulousIde {
 	}
 
 	@Override
-	public void addRoomMethods( org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType, java.util.List<org.lgna.project.ast.JavaMethod> methods ) {
-		org.lgna.project.ast.JavaType roomType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SRoom.class );
+	public void addRoomMethods( AbstractType<?, ?, ?> instanceFactoryValueType, List<JavaMethod> methods ) {
+		JavaType roomType = JavaType.getInstance( SRoom.class );
 		if( roomType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( SimsOneShotSorter.ROOM_SET_CEILING_PAINT_METHOD );
 			methods.add( SimsOneShotSorter.ROOM_SET_WALL_PAINT_METHOD );
@@ -194,7 +208,7 @@ public class IdeNonfree extends NebulousIde {
 	}
 
 	@Override
-	public org.lgna.croquet.CascadeBlankChild<?> getRoomFillIns( JavaMethod method, InstanceFactory instanceFactory ) {
+	public CascadeBlankChild<?> getRoomFillIns( JavaMethod method, InstanceFactory instanceFactory ) {
 		if( "setCeilingPaint".equals( method.getName() ) ) {
 			return SetCeilingPaintMethodInvocationFillIn.getInstance( instanceFactory, method );
 		} else if( "setWallPaint".equals( method.getName() ) ) {
@@ -223,32 +237,32 @@ public class IdeNonfree extends NebulousIde {
 
 	@Override
 	public boolean isAssignableToPersonResource( AbstractType<?, ?, ?> type ) {
-		return ( type.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) );
+		return ( type.isAssignableTo( PersonResource.class ) );
 	}
 
 	@Override
-	public org.lgna.story.Paint getFloorApperanceRedwood() {
-		return org.lgna.story.SRoom.FloorAppearance.REDWOOD;
+	public Paint getFloorApperanceRedwood() {
+		return SRoom.FloorAppearance.REDWOOD;
 	}
 
 	@Override
-	public org.lgna.story.Paint getWallApperanceYellow() {
-		return org.lgna.story.SRoom.WallAppearance.YELLOW;
+	public Paint getWallApperanceYellow() {
+		return SRoom.WallAppearance.YELLOW;
 	}
 
 	@Override
-	public org.lgna.croquet.CascadeBlankChild<?> getGalleryPersonResourceFillInInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public CascadeBlankChild<?> getGalleryPersonResourceFillInInstance( AbstractType<?, ?, ?> type ) {
 		return GalleryPersonResourceFillIn.getInstance( type );
 	}
 
 	@Override
 	public boolean isPersonResourceAssignableFrom( Class<?> cls ) {
-		return ( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( cls ) );
+		return ( PersonResource.class.isAssignableFrom( cls ) );
 	}
 
 	@Override
-	public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass( Class<? extends org.lgna.story.resources.ModelResource> resourceCls ) {
-		return org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( resourceCls );
+	public InstanceCreatorKey getPersonResourceKeyInstanceForResourceClass( Class<? extends ModelResource> resourceCls ) {
+		return PersonResourceKey.getInstanceForResourceClass( resourceCls );
 	}
 
 	@Override
@@ -257,7 +271,7 @@ public class IdeNonfree extends NebulousIde {
 	}
 
 	@Override
-	public boolean isPersonResourceTypeAssingleFrom( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public boolean isPersonResourceTypeAssingleFrom( AbstractType<?, ?, ?> type ) {
 		return PERSON_RESOURCE_TYPE.isAssignableFrom( type );
 	}
 }

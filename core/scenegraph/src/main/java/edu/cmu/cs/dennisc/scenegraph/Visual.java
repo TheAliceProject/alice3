@@ -43,6 +43,13 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.property.Matrix3x3Property;
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -90,7 +97,7 @@ public class Visual extends Leaf {
 		this.geometries.setValue( geometries );
 	}
 
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
 		if( getGeometry() != null ) {
 			//todo
 			getGeometry().getAxisAlignedMinimumBoundingBox( rv );
@@ -104,8 +111,8 @@ public class Visual extends Leaf {
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
-		return getAxisAlignedMinimumBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox() );
+	public final AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
+		return getAxisAlignedMinimumBoundingBox( new AxisAlignedBox() );
 	}
 
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
@@ -123,13 +130,13 @@ public class Visual extends Leaf {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Appearance> frontFacingAppearance = new edu.cmu.cs.dennisc.property.InstanceProperty<Appearance>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Appearance> backFacingAppearance = new edu.cmu.cs.dennisc.property.InstanceProperty<Appearance>( this, null );
-	public final edu.cmu.cs.dennisc.math.property.Matrix3x3Property scale = new edu.cmu.cs.dennisc.math.property.Matrix3x3Property( this, edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isShowing = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isPickable = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Silhouette> silouette = new edu.cmu.cs.dennisc.property.InstanceProperty<Silhouette>( this, null );
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry> geometries = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry>( this, new Geometry[ 0 ] ) {
+	public final InstanceProperty<Appearance> frontFacingAppearance = new InstanceProperty<Appearance>( this, null );
+	public final InstanceProperty<Appearance> backFacingAppearance = new InstanceProperty<Appearance>( this, null );
+	public final Matrix3x3Property scale = new Matrix3x3Property( this, Matrix3x3.createIdentity() );
+	public final BooleanProperty isShowing = new BooleanProperty( this, true );
+	public final BooleanProperty isPickable = new BooleanProperty( this, true );
+	public final InstanceProperty<Silhouette> silouette = new InstanceProperty<Silhouette>( this, null );
+	public final CopyableArrayProperty<Geometry> geometries = new CopyableArrayProperty<Geometry>( this, new Geometry[ 0 ] ) {
 		@Override
 		protected Geometry[] createArray( int length ) {
 			return new Geometry[ length ];
@@ -142,7 +149,7 @@ public class Visual extends Leaf {
 		}
 
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.scenegraph.Geometry[] value ) {
+		public void setValue( Geometry[] value ) {
 			for( Geometry geometry : value ) {
 				assert geometry != null : this;
 			}

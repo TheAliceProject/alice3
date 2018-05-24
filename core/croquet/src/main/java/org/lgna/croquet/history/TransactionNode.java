@@ -42,11 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.lgna.croquet.Context;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.history.event.Listener;
+import org.lgna.croquet.triggers.DropTrigger;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TransactionNode<P extends TransactionNode<?>> {
-	private final java.util.List<org.lgna.croquet.history.event.Listener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<Listener> listeners = Lists.newCopyOnWriteArrayList();
 
 	private P owner;
 
@@ -62,7 +75,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		this.owner = owner;
 	}
 
-	protected abstract void appendContexts( java.util.List<org.lgna.croquet.Context> out );
+	protected abstract void appendContexts( List<Context> out );
 
 	private <N extends TransactionNode<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		TransactionNode<?> rv;
@@ -80,7 +93,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		return (N)rv;
 	}
 
-	private Step<?> findAcceptableStep( edu.cmu.cs.dennisc.pattern.Criterion<Step<?>> criterion, boolean isThisIncludedInSearch ) {
+	private Step<?> findAcceptableStep( Criterion<Step<?>> criterion, boolean isThisIncludedInSearch ) {
 		TransactionNode<?> rv;
 		if( isThisIncludedInSearch ) {
 			rv = this;
@@ -116,22 +129,22 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		return this.findNodeAssignableTo( cls, false );
 	}
 
-	public org.lgna.croquet.DropSite findDropSite() {
-		Step<?> step = this.findAcceptableStep( new edu.cmu.cs.dennisc.pattern.Criterion<Step<?>>() {
+	public DropSite findDropSite() {
+		Step<?> step = this.findAcceptableStep( new Criterion<Step<?>>() {
 			@Override
 			public boolean accept( Step<?> step ) {
-				org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
-					org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+				Trigger trigger = step.getTrigger();
+				if( trigger instanceof DropTrigger ) {
+					DropTrigger dropTrigger = (DropTrigger)trigger;
 					return true;
 				}
 				return false;
 			}
 		}, true );
 		if( step != null ) {
-			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
-				org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+			Trigger trigger = step.getTrigger();
+			if( trigger instanceof DropTrigger ) {
+				DropTrigger dropTrigger = (DropTrigger)trigger;
 				return dropTrigger.getDropSite();
 			} else {
 				return null;
@@ -141,10 +154,10 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		}
 	}
 
-	protected <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {
+	protected <S extends Step<? super M>, M extends Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {
 		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.equals( step.getModel(), model ) ) {
+			if( Objects.equals( step.getModel(), model ) ) {
 				return step;
 			} else {
 				return step.findStepOfEquivalentModel( model, stepCls, false );
@@ -154,18 +167,18 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		}
 	}
 
-	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
+	public final <S extends Step<? super M>, M extends Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
 		return this.findStepOfEquivalentModel( model, stepCls, false );
 	}
 
-	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfEquivalentModel( M model, Class<S> stepCls ) {
+	public final <S extends Step<? super M>, M extends Model> S getFirstStepOfEquivalentModel( M model, Class<S> stepCls ) {
 		return this.findStepOfEquivalentModel( model, stepCls, true );
 	}
 
-	protected final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls, boolean isThisIncludedInSearch ) {
+	protected final <S extends Step<? super M>, M extends Model> S findStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls, boolean isThisIncludedInSearch ) {
 		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
-			org.lgna.croquet.Model m = step.getModel();
+			Model m = step.getModel();
 			if( m != null ) {
 				if( modelCls.isAssignableFrom( m.getClass() ) ) {
 					return step;
@@ -180,40 +193,40 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		}
 	}
 
-	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
+	public final <S extends Step<? super M>, M extends Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
 		return this.findStepOfModelAssignableTo( modelCls, stepCls, false );
 	}
 
-	public final <S extends Step<? super M>, M extends org.lgna.croquet.Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
+	public final <S extends Step<? super M>, M extends Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
 		return this.findStepOfModelAssignableTo( modelCls, stepCls, true );
 	}
 
-	public void addListener( org.lgna.croquet.history.event.Listener listener ) {
+	public void addListener( Listener listener ) {
 		this.listeners.add( listener );
 	}
 
-	public void removeListener( org.lgna.croquet.history.event.Listener listener ) {
+	public void removeListener( Listener listener ) {
 		this.listeners.remove( listener );
 	}
 
-	public boolean isListening( org.lgna.croquet.history.event.Listener listener ) {
+	public boolean isListening( Listener listener ) {
 		return this.listeners.contains( listener );
 	}
 
-	protected void fireChanging( org.lgna.croquet.history.event.Event<?> e ) {
+	protected void fireChanging( Event<?> e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanging( e );
 		}
-		for( org.lgna.croquet.history.event.Listener listener : this.listeners ) {
+		for( Listener listener : this.listeners ) {
 			listener.changing( e );
 		}
 	}
 
-	protected void fireChanged( org.lgna.croquet.history.event.Event<?> e ) {
+	protected void fireChanged( Event<?> e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanged( e );
 		}
-		for( org.lgna.croquet.history.event.Listener listener : this.listeners ) {
+		for( Listener listener : this.listeners ) {
 			listener.changed( e );
 		}
 	}

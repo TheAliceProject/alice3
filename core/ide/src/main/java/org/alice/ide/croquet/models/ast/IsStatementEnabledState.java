@@ -43,13 +43,24 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map<org.lgna.project.ast.Statement, IsStatementEnabledState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class IsStatementEnabledState extends BooleanState {
+	private static Map<Statement, IsStatementEnabledState> map = Maps.newHashMap();
 
-	public static synchronized IsStatementEnabledState getInstance( org.lgna.project.ast.Statement statement ) {
+	public static synchronized IsStatementEnabledState getInstance( Statement statement ) {
 		IsStatementEnabledState rv = map.get( statement );
 		if( rv != null ) {
 			//pass
@@ -60,18 +71,18 @@ public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.Statement statement;
+	private final Statement statement;
 
-	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			IsStatementEnabledState.this.statement.isEnabled.setValue( e.getNextValue() );
-			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+			ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		}
 	};
 
-	private IsStatementEnabledState( org.lgna.project.ast.Statement statement ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
+	private IsStatementEnabledState( Statement statement ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.addNewSchoolValueListener( this.valueListener );
 	}

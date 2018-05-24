@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,12 +60,12 @@ public class AngleInRevolutions implements Angle {
 	}
 
 	@Override
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		m_revolutions = binaryDecoder.decodeDouble();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( m_revolutions );
 	}
 
@@ -88,12 +91,12 @@ public class AngleInRevolutions implements Angle {
 
 	@Override
 	public double getAsRadians() {
-		return edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToRadians( m_revolutions );
+		return AngleUtilities.revolutionsToRadians( m_revolutions );
 	}
 
 	@Override
 	public double getAsDegrees() {
-		return edu.cmu.cs.dennisc.math.AngleUtilities.revolutionsToDegrees( m_revolutions );
+		return AngleUtilities.revolutionsToDegrees( m_revolutions );
 	}
 
 	@Override

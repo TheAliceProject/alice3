@@ -42,6 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.animation;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,14 +60,14 @@ public class AnimationUtilities {
 		throw new AssertionError();
 	}
 
-	private static abstract class AnimationActionListener implements java.awt.event.ActionListener {
-		private javax.swing.Timer timer;
+	private static abstract class AnimationActionListener implements ActionListener {
+		private Timer timer;
 		private final double duration;
-		private final java.awt.Component component;
+		private final Component component;
 
 		private Long t0 = null;
 
-		public AnimationActionListener( double duration, java.awt.Component component ) {
+		public AnimationActionListener( double duration, Component component ) {
 			this.duration = duration;
 			this.component = component;
 		}
@@ -68,14 +76,14 @@ public class AnimationUtilities {
 			return this.duration;
 		}
 
-		public java.awt.Component getComponent() {
+		public Component getComponent() {
 			return this.component;
 		}
 
 		protected abstract void update( double portion );
 
 		@Override
-		public final void actionPerformed( java.awt.event.ActionEvent e ) {
+		public final void actionPerformed( ActionEvent e ) {
 			if( t0 != null ) {
 				//pass
 			} else {
@@ -91,13 +99,13 @@ public class AnimationUtilities {
 		}
 
 		public void startTimer( double initialDelay ) {
-			this.timer = new javax.swing.Timer( DEFAULT_FRAME_DELAY, this );
+			this.timer = new Timer( DEFAULT_FRAME_DELAY, this );
 			timer.setInitialDelay( (int)( initialDelay * 1000 ) );
 			timer.start();
 		}
 	}
 
-	public static void animatePosition( java.awt.Component component, int x, int y, double duration, double initialDelay ) {
+	public static void animatePosition( Component component, int x, int y, double duration, double initialDelay ) {
 
 		class PositionAnimationActionListener extends AnimationActionListener {
 			private final int x0;
@@ -105,7 +113,7 @@ public class AnimationUtilities {
 			private final int x1;
 			private final int y1;
 
-			public PositionAnimationActionListener( double duration, java.awt.Component component, int x, int y ) {
+			public PositionAnimationActionListener( double duration, Component component, int x, int y ) {
 				super( duration, component );
 				this.x0 = component.getX();
 				this.y0 = component.getY();
@@ -134,12 +142,12 @@ public class AnimationUtilities {
 		animationActionListener.startTimer( initialDelay );
 	}
 
-	public static void animateScale( java.awt.Component component, double scale0, double scale1, double duration, double initialDelay ) {
+	public static void animateScale( Component component, double scale0, double scale1, double duration, double initialDelay ) {
 		class ScaleAnimationActionListener extends AnimationActionListener {
 			private final double scale0;
 			private final double scale1;
 
-			public ScaleAnimationActionListener( double duration, java.awt.Component component, double scale0, double scale1 ) {
+			public ScaleAnimationActionListener( double duration, Component component, double scale0, double scale1 ) {
 				super( duration, component );
 				this.scale0 = scale0;
 				this.scale1 = scale1;
@@ -155,8 +163,8 @@ public class AnimationUtilities {
 				} else {
 					scale = ( scale0 * ( 1 - portion ) ) + ( scale1 * portion );
 				}
-				java.awt.Component awtComponent = this.getComponent();
-				java.awt.Dimension preferredSize = awtComponent.getPreferredSize();
+				Component awtComponent = this.getComponent();
+				Dimension preferredSize = awtComponent.getPreferredSize();
 				int width = (int)Math.round( preferredSize.width * scale );
 				int height = (int)Math.round( preferredSize.height * scale );
 				awtComponent.setSize( width, height );
@@ -167,12 +175,12 @@ public class AnimationUtilities {
 	}
 
 	public static void main( String[] args ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				javax.swing.JFrame frame = new javax.swing.JFrame();
+				JFrame frame = new JFrame();
 				frame.setLocation( 0, 0 );
-				frame.setPreferredSize( new java.awt.Dimension( 400, 200 ) );
+				frame.setPreferredSize( new Dimension( 400, 200 ) );
 				frame.pack();
 				frame.setVisible( true );
 				animatePosition( frame, 1000, 500, 1.0, 2.0 );

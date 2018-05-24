@@ -43,21 +43,27 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.ViewController;
+
+import java.awt.Component;
+import java.awt.event.ComponentEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentEventTrigger<E extends java.awt.event.ComponentEvent> extends EventObjectTrigger<E> {
-	public ComponentEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, E event ) {
+public abstract class ComponentEventTrigger<E extends ComponentEvent> extends EventObjectTrigger<E> {
+	public ComponentEventTrigger( ViewController<?, ?> viewController, E event ) {
 		super( viewController, event );
 	}
 
-	public ComponentEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public ComponentEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	protected final java.awt.Component getComponent() {
-		java.awt.Component rv = super.getComponent();
+	protected final Component getComponent() {
+		Component rv = super.getComponent();
 		return rv != null ? rv : this.getEvent().getComponent();
 	}
 }

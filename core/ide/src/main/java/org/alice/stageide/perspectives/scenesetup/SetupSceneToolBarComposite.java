@@ -42,23 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.perspectives.scenesetup;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.toolbar.croquet.IdeToolBar;
+import org.alice.stageide.perspectives.ToolBarUtilities;
+import org.lgna.croquet.Element;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetupSceneToolBarComposite extends org.alice.ide.toolbar.croquet.IdeToolBar {
-	public SetupSceneToolBarComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( projectDocumentFrame, list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( projectDocumentFrame, list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( projectDocumentFrame, list );
-		this.subElements = java.util.Collections.unmodifiableList( list );
+public class SetupSceneToolBarComposite extends IdeToolBar {
+	public SetupSceneToolBarComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
+		List<Element> list = Lists.newLinkedList();
+		ToolBarUtilities.appendDocumentSubElements( projectDocumentFrame, list );
+		ToolBarUtilities.appendUndoRedoSubElements( projectDocumentFrame, list );
+		ToolBarUtilities.appendRunSubElements( projectDocumentFrame, list );
+		this.subElements = Collections.unmodifiableList( list );
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
+	public Iterable<? extends Element> getSubElements() {
 		return this.subElements;
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
+	private final List<? extends Element> subElements;
 }

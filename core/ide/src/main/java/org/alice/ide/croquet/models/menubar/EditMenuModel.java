@@ -42,17 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.croquet.models.clipboard.CopyOperation;
+import org.alice.ide.croquet.models.clipboard.CutOperation;
+import org.alice.ide.croquet.models.clipboard.PasteOperation;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.PredeterminedMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EditMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	public EditMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ),
+public class EditMenuModel extends PredeterminedMenuModel {
+	public EditMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ),
 				projectDocumentFrame.getUndoOperation().getMenuItemPrepModel(),
 				projectDocumentFrame.getRedoOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance().getMenuItemPrepModel() );
+				MenuModel.SEPARATOR,
+				CutOperation.getInstance().getMenuItemPrepModel(),
+				CopyOperation.getInstance().getMenuItemPrepModel(),
+				PasteOperation.getInstance().getMenuItemPrepModel() );
 	}
 }

@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+
 /**
  * @author dculyba
  */
@@ -71,15 +74,15 @@ public class TransformableVisual extends Visual {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
-		edu.cmu.cs.dennisc.math.AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox( rv );
+	public AxisAlignedBox getAxisAlignedMinimumBoundingBox( AxisAlignedBox rv ) {
+		AxisAlignedBox transformedRV = super.getAxisAlignedMinimumBoundingBox( rv );
 
 		if( !transformedRV.isNaN() ) {
-			edu.cmu.cs.dennisc.math.Point3 maximum = transformedRV.getMaximum();
+			Point3 maximum = transformedRV.getMaximum();
 			this.sgTransformable.accessLocalTransformation().transform( maximum );
 			transformedRV.setMaximum( maximum );
 
-			edu.cmu.cs.dennisc.math.Point3 minimum = transformedRV.getMinimum();
+			Point3 minimum = transformedRV.getMinimum();
 			this.sgTransformable.accessLocalTransformation().transform( minimum );
 			transformedRV.setMinimum( minimum );
 		}

@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.story.resources.sims2.BottomPiece;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum BottomPieceCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.BottomPiece> {
+public enum BottomPieceCodec implements ItemCodec<BottomPiece> {
 	SINGLETON;
 	@Override
-	public Class<org.lgna.story.resources.sims2.BottomPiece> getValueClass() {
-		return org.lgna.story.resources.sims2.BottomPiece.class;
+	public Class<BottomPiece> getValueClass() {
+		return BottomPiece.class;
 	}
 
 	@Override
-	public org.lgna.story.resources.sims2.BottomPiece decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public BottomPiece decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.BottomPiece value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, BottomPiece value ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.BottomPiece value ) {
+	public void appendRepresentation( StringBuilder sb, BottomPiece value ) {
 		sb.append( value );
 	}
 }

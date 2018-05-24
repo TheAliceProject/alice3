@@ -42,16 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JConcealedBin extends javax.swing.JPanel {
+public class JConcealedBin extends JPanel {
 	//	public ConcealedBin() {
 	//		this.setLayout( new java.awt.FlowLayout() );
 	//	}
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return new java.awt.Dimension( 0, 0 );
+	public Dimension getPreferredSize() {
+		return new Dimension( 0, 0 );
 	}
 
 	//	@Override
@@ -59,6 +63,6 @@ public class JConcealedBin extends javax.swing.JPanel {
 	//		return new java.awt.Dimension( 0, 0 );
 	//	}
 	@Override
-	public void update( java.awt.Graphics g ) {
+	public void update( Graphics g ) {
 	}
 }

@@ -43,34 +43,54 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
+import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractElement implements Element {
-	private static final java.util.Map<java.util.UUID, Class<? extends Element>> mapMigrationIdToCls;
-	private static final java.util.Set<String> ignoredLocalizationSubkeys;
+	private static final Map<UUID, Class<? extends Element>> mapMigrationIdToCls;
+	private static final Set<String> ignoredLocalizationSubkeys;
 
 	private static final String ACCELERATOR_SUB_KEY = "accelerator";
 	private static final String MNEMONIC_SUB_KEY = "mnemonic";
 
 	static {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
-			mapMigrationIdToCls = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
+		if( SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
+			mapMigrationIdToCls = Maps.newHashMap();
+			Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		} else {
 			mapMigrationIdToCls = null;
 		}
 		final boolean IS_NULL_LOCALIZATION_OUTPUT_DESIRED = false;
 		if( IS_NULL_LOCALIZATION_OUTPUT_DESIRED ) {
-			ignoredLocalizationSubkeys = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
+			ignoredLocalizationSubkeys = Sets.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
 		} else {
 			ignoredLocalizationSubkeys = null;
 		}
 	}
 
-	private final java.util.UUID migrationId;
+	private final UUID migrationId;
 
-	public AbstractElement( java.util.UUID migrationId ) {
+	public AbstractElement( UUID migrationId ) {
 		this.migrationId = migrationId;
 		if( mapMigrationIdToCls != null ) {
 			if( migrationId != null ) {
@@ -80,20 +100,20 @@ public abstract class AbstractElement implements Element {
 						//pass
 					} else {
 						String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
-						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( clipboardContents );
-						new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates." ).buildAndShow();
+						ClipboardUtilities.setClipboardContents( clipboardContents );
+						new OkDialog.Builder( "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates." ).buildAndShow();
 					}
 				} else {
 					mapMigrationIdToCls.put( migrationId, this.getClass() );
 				}
 			} else {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "migrationId is null for " + this + " " + this.getClass() ).buildAndShow();
+				new OkDialog.Builder( "migrationId is null for " + this + " " + this.getClass() ).buildAndShow();
 			}
 		}
 	}
 
 	@Override
-	public java.util.UUID getMigrationId() {
+	public UUID getMigrationId() {
 		return this.migrationId;
 	}
 
@@ -140,7 +160,7 @@ public abstract class AbstractElement implements Element {
 		if( cls != null ) {
 			String bundleName = cls.getPackage().getName() + ".croquet";
 			try {
-				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+				ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
 				String key = cls.getSimpleName();
 
 				//todo?
@@ -156,7 +176,7 @@ public abstract class AbstractElement implements Element {
 				}
 				String rv = resourceBundle.getString( key );
 				return rv;
-			} catch( java.util.MissingResourceException mre ) {
+			} catch( MissingResourceException mre ) {
 				if( cls == AbstractElement.class ) {
 					return null;
 				} else {
@@ -164,7 +184,7 @@ public abstract class AbstractElement implements Element {
 					if( Element.class.isAssignableFrom( superCls ) ) {
 						return findLocalizedText( (Class<? extends Element>)superCls, subKey );
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls, subKey );
+						Logger.severe( cls, subKey );
 						return null;
 					}
 				}
@@ -190,7 +210,7 @@ public abstract class AbstractElement implements Element {
 					sb.append( "." );
 					sb.append( actualSubKey );
 				}
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( sb.toString() );
+				Logger.errln( sb.toString() );
 			}
 		}
 	}
@@ -224,7 +244,7 @@ public abstract class AbstractElement implements Element {
 	private static int getField( Class<?> cls, String fieldName, int nullValue ) {
 		if( fieldName != null ) {
 			try {
-				java.lang.reflect.Field field = cls.getField( fieldName );
+				Field field = cls.getField( fieldName );
 				Object value = field.get( null );
 				if( value instanceof Integer ) {
 					return (Integer)value;
@@ -239,14 +259,14 @@ public abstract class AbstractElement implements Element {
 	}
 
 	private static int getKeyCode( String vkFieldName ) {
-		return getField( java.awt.event.KeyEvent.class, vkFieldName, NULL_MNEMONIC );
+		return getField( KeyEvent.class, vkFieldName, NULL_MNEMONIC );
 	}
 
 	private static int getModifierMask( String modifierText ) {
 		if( "PLATFORM_ACCELERATOR_MASK".equals( modifierText ) ) {
-			return edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+			return InputEventUtilities.getAcceleratorMask();
 		} else {
-			return getField( java.awt.event.InputEvent.class, modifierText, NULL_ACCELERATOR_MASK );
+			return getField( InputEvent.class, modifierText, NULL_ACCELERATOR_MASK );
 		}
 	}
 
@@ -257,17 +277,17 @@ public abstract class AbstractElement implements Element {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
 
-	private static javax.swing.KeyStroke getKeyStroke( String acceleratorText ) {
+	private static KeyStroke getKeyStroke( String acceleratorText ) {
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split( "," );
 			if( array.length > 0 ) {
 				int keyCode = getKeyCode( array[ 0 ] );
 				if( keyCode != NULL_MNEMONIC ) {
 					int modifierMask;
-					if( ( java.awt.event.KeyEvent.VK_F1 <= keyCode ) && ( keyCode <= java.awt.event.KeyEvent.VK_F24 ) ) {
+					if( ( KeyEvent.VK_F1 <= keyCode ) && ( keyCode <= KeyEvent.VK_F24 ) ) {
 						modifierMask = 0;
 					} else {
-						modifierMask = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask();
+						modifierMask = InputEventUtilities.getAcceleratorMask();
 					}
 					if( array.length > 1 ) {
 						String[] modifierTexts = array[ 1 ].split( "\\|" );
@@ -280,7 +300,7 @@ public abstract class AbstractElement implements Element {
 							}
 						}
 					}
-					return javax.swing.KeyStroke.getKeyStroke( keyCode, modifierMask );
+					return KeyStroke.getKeyStroke( keyCode, modifierMask );
 				}
 
 			}
@@ -288,7 +308,7 @@ public abstract class AbstractElement implements Element {
 		return null;
 	}
 
-	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
+	protected KeyStroke getLocalizedAcceleratorKeyStroke() {
 		return getKeyStroke( this.findLocalizedText( ACCELERATOR_SUB_KEY ) );
 	}
 

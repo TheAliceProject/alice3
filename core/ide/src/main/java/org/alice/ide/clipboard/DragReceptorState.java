@@ -42,26 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.clipboard;
 
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum DragReceptorState {
-	IDLE( new java.awt.Color( 226, 179, 105 ), java.awt.Color.WHITE ),
-	STARTED( java.awt.Color.YELLOW, java.awt.Color.YELLOW ),
-	ENTERED( new java.awt.Color( 0xCCFF99 ), new java.awt.Color( 0x44FF44 ) );
-	private final java.awt.Color boardColor;
-	private final java.awt.Color paperColor;
+	IDLE( new Color( 226, 179, 105 ), Color.WHITE ),
+	STARTED( Color.YELLOW, Color.YELLOW ),
+	ENTERED( new Color( 0xCCFF99 ), new Color( 0x44FF44 ) );
+	private final Color boardColor;
+	private final Color paperColor;
 
-	private DragReceptorState( java.awt.Color boardColor, java.awt.Color paperColor ) {
+	private DragReceptorState( Color boardColor, Color paperColor ) {
 		this.boardColor = boardColor;
 		this.paperColor = paperColor;
 	}
 
-	public java.awt.Color getBoardColor() {
+	public Color getBoardColor() {
 		return this.boardColor;
 	}
 
-	public java.awt.Color getPaperColor() {
+	public Color getPaperColor() {
 		return this.paperColor;
 	}
 };

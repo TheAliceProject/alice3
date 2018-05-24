@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SimpleAssignmentInsertCascade extends AssignmentInsertCascade {
-	public SimpleAssignmentInsertCascade( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.alice.ide.croquet.models.cascade.ExpressionBlank[] blanks ) {
+	public SimpleAssignmentInsertCascade( UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, ExpressionBlank[] blanks ) {
 		super( migrationId, blockStatementIndexPair, blanks );
 	}
 

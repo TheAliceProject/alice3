@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.find.croquet.views;
 
+import java.awt.ComponentOrientation;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.TreePath;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import org.alice.ide.croquet.models.project.find.core.SearchResult;
 import org.alice.ide.croquet.models.project.find.croquet.AbstractFindComposite;
 import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTreeState;
@@ -62,6 +64,7 @@ import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTree
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.BorderPanel;
@@ -87,7 +90,7 @@ public class FindView extends BorderPanel {
 	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Maps.newHashMap();
 	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Maps.newHashMap();
 	private final FindReferencesTreeState referenceResults;
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResults;
+	private final RefreshableDataSingleSelectListState<SearchResult> searchResults;
 	boolean listIsSelected = true;
 
 	public FindView( AbstractFindComposite composite ) {
@@ -100,7 +103,7 @@ public class FindView extends BorderPanel {
 		right = inputMap.get( KeyStroke.getKeyStroke( "RIGHT" ) );
 		this.addPageStartComponent( searchBox );
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
-		panel.setPreferredSize( edu.cmu.cs.dennisc.java.awt.DimensionUtilities.createWiderGoldenRatioSizeFromHeight( 250 ) );
+		panel.setPreferredSize( DimensionUtilities.createWiderGoldenRatioSizeFromHeight( 250 ) );
 		searchResultsList = composite.getSearchResults().createList();
 		referencesTreeList = referenceResults.createTree();
 		referencesTreeList.setRootVisible( false );
@@ -151,7 +154,7 @@ public class FindView extends BorderPanel {
 
 		@Override
 		public void treeExpanded( TreeExpansionEvent event ) {
-			org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
+			RefreshableDataSingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
 			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
 				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
@@ -161,7 +164,7 @@ public class FindView extends BorderPanel {
 
 		@Override
 		public void treeCollapsed( TreeExpansionEvent event ) {
-			org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
+			RefreshableDataSingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
 			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
 				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
@@ -200,7 +203,7 @@ public class FindView extends BorderPanel {
 		public void keyPressed( KeyEvent e ) {
 			int keyCode = e.getKeyCode();
 
-			java.awt.ComponentOrientation componentOrientation = e.getComponent().getComponentOrientation();
+			ComponentOrientation componentOrientation = e.getComponent().getComponentOrientation();
 
 			final int LEADING_KEY_CODE;
 			final int TRAILING_KEY_CODE;

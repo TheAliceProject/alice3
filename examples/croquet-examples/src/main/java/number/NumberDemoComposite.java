@@ -42,39 +42,52 @@
  */
 package number;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import number.views.NumberDemoView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.simple.SimpleApplication;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class NumberDemoComposite extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<number.views.NumberDemoView> {
-	private final org.lgna.croquet.BoundedIntegerState waterTempFahrenheitState = this.createBoundedIntegerState( "waterTempFahrenheitState", new BoundedIntegerDetails().minimum( 32 ).maximum( 212 ).initialValue( 70 ) );
+public final class NumberDemoComposite extends SimpleOperationInputDialogCoreComposite<NumberDemoView> {
+	private final BoundedIntegerState waterTempFahrenheitState = this.createBoundedIntegerState( "waterTempFahrenheitState", new BoundedIntegerDetails().minimum( 32 ).maximum( 212 ).initialValue( 70 ) );
 
-	private final org.lgna.croquet.event.ValueListener<Integer> listener = new org.lgna.croquet.event.ValueListener<Integer>() {
+	private final ValueListener<Integer> listener = new ValueListener<Integer>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
+		public void valueChanged( ValueEvent<Integer> e ) {
 			System.out.println( e.getNextValue() );
 		}
 	};
 
 	public NumberDemoComposite() {
-		super( java.util.UUID.fromString( "f2d46859-44a9-4b38-9cce-65c8b8dfaef1" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+		super( UUID.fromString( "f2d46859-44a9-4b38-9cce-65c8b8dfaef1" ), Application.DOCUMENT_UI_GROUP );
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getWaterTempFahrenheitState() {
+	public BoundedIntegerState getWaterTempFahrenheitState() {
 		return this.waterTempFahrenheitState;
 	}
 
 	@Override
-	protected number.views.NumberDemoView createView() {
-		return new number.views.NumberDemoView( this );
+	protected NumberDemoView createView() {
+		return new NumberDemoView( this );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		return null;
 	}
 
@@ -91,8 +104,8 @@ public final class NumberDemoComposite extends org.lgna.croquet.SimpleOperationI
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		SimpleApplication app = new SimpleApplication();
 		new NumberDemoComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}

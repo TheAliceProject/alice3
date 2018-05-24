@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
+import java.util.BitSet;
+
 /**
  * @author David Culyba
  */
-public class HandleSet extends java.util.BitSet {
+public class HandleSet extends BitSet {
 	public static final HandleSet STOOD_UP_GROUND_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.STOOD_UP_TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS );
 	public static final HandleSet STOOD_UP_UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.STOOD_UP_TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS );
 	public static final HandleSet ABSOLUTE_GROUND_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.ABSOLUTE_TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS );
@@ -145,7 +147,7 @@ public class HandleSet extends java.util.BitSet {
 	//HandleSet intersection is true if all of the bits passed in are set on this
 	//An empty set will never match
 	@Override
-	public boolean intersects( java.util.BitSet set ) {
+	public boolean intersects( BitSet set ) {
 		if( set != null ) {
 			boolean intersection = false;
 			for( int i = 0; i < set.length(); i++ ) {

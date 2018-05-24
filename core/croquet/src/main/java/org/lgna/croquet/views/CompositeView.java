@@ -43,10 +43,14 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Composite;
+
+import javax.swing.JComponent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeView<J extends javax.swing.JComponent, C extends org.lgna.croquet.Composite<?>> extends SwingComponentView<J> {
+public abstract class CompositeView<J extends JComponent, C extends Composite<?>> extends SwingComponentView<J> {
 	private final C composite;
 
 	public CompositeView( C composite ) {

@@ -42,25 +42,34 @@
  *******************************************************************************/
 package org.lgna.croquet.data;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.ItemCodec;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class MutableListData<T> extends AbstractMutableListData<T> {
-	private final java.util.concurrent.CopyOnWriteArrayList<T> values;
+	private final CopyOnWriteArrayList<T> values;
 
-	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+	public MutableListData( ItemCodec<T> itemCodec ) {
 		super( itemCodec );
-		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+		this.values = Lists.newCopyOnWriteArrayList();
 	}
 
-	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, T[] values ) {
+	public MutableListData( ItemCodec<T> itemCodec, T[] values ) {
 		super( itemCodec );
-		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( values );
+		this.values = Lists.newCopyOnWriteArrayList( values );
 	}
 
-	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
+	public MutableListData( ItemCodec<T> itemCodec, Collection<T> values ) {
 		super( itemCodec );
-		this.values = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( values );
+		this.values = Lists.newCopyOnWriteArrayList( values );
 	}
 
 	@Override
@@ -74,7 +83,7 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 			if( index < this.getItemCount() ) {
 				return this.values.get( index );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( index, this.getItemCount() );
+				Logger.severe( index, this.getItemCount() );
 				return null;
 			}
 		} else {
@@ -88,7 +97,7 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 	}
 
 	@Override
-	public java.util.Iterator<T> iterator() {
+	public Iterator<T> iterator() {
 		return this.values.iterator();
 	}
 
@@ -99,7 +108,7 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 
 	@Override
 	protected final T[] toArray( Class<T> componentType ) {
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
+		return ArrayUtilities.createArray( this.values, componentType );
 	}
 
 	@Override
@@ -115,7 +124,7 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 	}
 
 	@Override
-	public void internalSetAllItems( java.util.Collection<T> items ) {
+	public void internalSetAllItems( Collection<T> items ) {
 		this.values.clear();
 		this.values.addAll( items );
 		this.fireContentsChanged();

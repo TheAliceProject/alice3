@@ -42,14 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.croquet.views.PopupButton;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MemberView extends org.lgna.croquet.views.LineAxisPanel {
-	public MemberView( org.lgna.croquet.MenuModel menuModel ) {
-		org.lgna.croquet.views.PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
-		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
+public class MemberView extends LineAxisPanel {
+	public MemberView( MenuModel menuModel ) {
+		PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
+		popupButton.setBorder( BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
 		this.addComponent( popupButton );
-		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+		this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 	}
 }

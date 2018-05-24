@@ -43,13 +43,27 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CustomItemStateWithInternalBlank;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserField;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithInternalBlank<org.lgna.project.ast.Expression> {
-	private static java.util.Map<org.lgna.project.ast.UserField, FieldInitializerState> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class FieldInitializerState extends CustomItemStateWithInternalBlank<Expression> {
+	private static Map<UserField, FieldInitializerState> map = Maps.newHashMap();
 
-	public static synchronized FieldInitializerState getInstance( org.lgna.project.ast.UserField field ) {
+	public static synchronized FieldInitializerState getInstance( UserField field ) {
 		FieldInitializerState rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -60,25 +74,25 @@ public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithI
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserField field;
+	private final UserField field;
 
-	private FieldInitializerState( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), field.initializer.getValue(), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
+	private FieldInitializerState( UserField field ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), field.initializer.getValue(), NodeCodec.getInstance( Expression.class ) );
 		this.field = field;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getSwingValue() {
+	protected Expression getSwingValue() {
 		return this.field.initializer.getValue();
 	}
 
 	@Override
-	protected void setSwingValue( org.lgna.project.ast.Expression nextValue ) {
+	protected void setSwingValue( Expression nextValue ) {
 		this.field.initializer.setValue( nextValue );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.field.getValueType(), null );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
+		IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.field.getValueType(), null );
 	}
 }

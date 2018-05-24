@@ -43,9 +43,12 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.CompositeView;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface ValueCreatorOwningComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, T> extends Composite<V> {
-	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep );
+public interface ValueCreatorOwningComposite<V extends CompositeView<?, ?>, T> extends Composite<V> {
+	public T createValue( CompletionStep<?> completionStep );
 }

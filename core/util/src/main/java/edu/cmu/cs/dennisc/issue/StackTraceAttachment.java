@@ -42,10 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
+import edu.cmu.cs.dennisc.java.lang.ThrowableUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StackTraceAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+public class StackTraceAttachment implements Attachment {
 	private Throwable throwable;
 
 	public StackTraceAttachment( Throwable throwable ) {
@@ -54,7 +56,7 @@ public class StackTraceAttachment implements edu.cmu.cs.dennisc.issue.Attachment
 
 	@Override
 	public byte[] getBytes() {
-		return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
+		return ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
 	}
 
 	@Override

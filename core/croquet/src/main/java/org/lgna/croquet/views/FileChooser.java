@@ -42,16 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.FileSelectionState;
+
+import javax.swing.JFileChooser;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FileChooser extends ViewController<javax.swing.JFileChooser, org.lgna.croquet.FileSelectionState> {
-	public FileChooser( org.lgna.croquet.FileSelectionState model ) {
+public class FileChooser extends ViewController<JFileChooser, FileSelectionState> {
+	public FileChooser( FileSelectionState model ) {
 		super( model );
 	}
 
 	@Override
-	protected javax.swing.JFileChooser createAwtComponent() {
+	protected JFileChooser createAwtComponent() {
 		return this.getModel().getSwingModel().getJFileChooser();
 	}
 }

@@ -43,15 +43,19 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.IntBufferProperty;
+
+import java.nio.IntBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class IndexedPolygonArray extends VertexGeometry {
 	public abstract int getIndicesPerPolygon();
 
-	public final edu.cmu.cs.dennisc.property.IntBufferProperty polygonData = new edu.cmu.cs.dennisc.property.IntBufferProperty( this, new int[ 0 ] ) {
+	public final IntBufferProperty polygonData = new IntBufferProperty( this, new int[ 0 ] ) {
 		@Override
-		public void setValue( java.nio.IntBuffer value ) {
+		public void setValue( IntBuffer value ) {
 			assert value != null;
 			super.setValue( value );
 		}

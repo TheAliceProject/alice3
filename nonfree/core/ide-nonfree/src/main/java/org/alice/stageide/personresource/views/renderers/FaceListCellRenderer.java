@@ -42,10 +42,16 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import org.lgna.story.resources.sims2.Face;
+import org.lgna.story.resources.sims2.Gender;
+import org.lgna.story.resources.sims2.LifeStage;
+
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FaceListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.Face> {
+public class FaceListCellRenderer extends IngredientListCellRenderer<Face> {
 	private static class SingletonHolder {
 		private static FaceListCellRenderer instance = new FaceListCellRenderer();
 	}
@@ -59,17 +65,17 @@ public class FaceListCellRenderer extends IngredientListCellRenderer<org.lgna.st
 	}
 
 	@Override
-	protected String modifyClsNameIfNecessary( String clsName, org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+	protected String modifyClsNameIfNecessary( String clsName, LifeStage lifeStage, Gender gender ) {
 		StringBuilder sb = new StringBuilder();
 		if( gender != null ) {
 			String genderName = gender.name();
 			sb.append( genderName.charAt( 0 ) );
-			sb.append( genderName.substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
+			sb.append( genderName.substring( 1 ).toLowerCase( Locale.ENGLISH ) );
 		}
 		if( lifeStage != null ) {
 			String lifeStageName = lifeStage.name();
 			sb.append( lifeStageName.charAt( 0 ) );
-			sb.append( lifeStageName.substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
+			sb.append( lifeStageName.substring( 1 ).toLowerCase( Locale.ENGLISH ) );
 		}
 		sb.append( clsName );
 		return sb.toString();

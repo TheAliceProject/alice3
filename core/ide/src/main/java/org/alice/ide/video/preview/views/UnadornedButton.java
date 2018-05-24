@@ -42,7 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.video.preview.views;
 
-class UnadornedButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.views.OperationButton;
+
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicButtonUI;
+
+class UnadornedButtonUI extends BasicButtonUI {
 	private static class SingletonHolder {
 		private static UnadornedButtonUI instance = new UnadornedButtonUI();
 	}
@@ -50,7 +60,7 @@ class UnadornedButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 	private UnadornedButtonUI() {
 	}
 
-	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
+	public static ComponentUI createUI( JComponent component ) {
 		return SingletonHolder.instance;
 	}
 }
@@ -58,14 +68,14 @@ class UnadornedButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 /**
  * @author Dennis Cosgrove
  */
-public class UnadornedButton extends org.lgna.croquet.views.OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public UnadornedButton( org.lgna.croquet.Operation operation ) {
+public class UnadornedButton extends OperationButton<JButton, Operation> {
+	public UnadornedButton( Operation operation ) {
 		super( operation );
 	}
 
 	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
+	protected final JButton createAwtComponent() {
+		JButton rv = new JButton() {
 			@Override
 			public String getText() {
 				if( isTextClobbered() ) {
@@ -76,12 +86,12 @@ public class UnadornedButton extends org.lgna.croquet.views.OperationButton<java
 			}
 
 			@Override
-			public javax.swing.Icon getIcon() {
+			public Icon getIcon() {
 				if( UnadornedButton.this.isIconClobbered() ) {
 					return UnadornedButton.this.getClobberIcon();
 				} else {
-					org.lgna.croquet.Operation model = UnadornedButton.this.getModel();
-					javax.swing.Icon buttonIcon = model.getButtonIcon();
+					Operation model = UnadornedButton.this.getModel();
+					Icon buttonIcon = model.getButtonIcon();
 					if( buttonIcon != null ) {
 						return buttonIcon;
 					} else {
@@ -96,7 +106,7 @@ public class UnadornedButton extends org.lgna.croquet.views.OperationButton<java
 			}
 		};
 		rv.setRolloverEnabled( true );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setBorder( BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );
 		return rv;
 	}

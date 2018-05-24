@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,12 +53,12 @@ public class FloatPreference extends Preference<Float> {
 	}
 
 	@Override
-	protected Float getValue( java.util.prefs.Preferences utilPrefs, String key, Float defaultValue ) {
+	protected Float getValue( Preferences utilPrefs, String key, Float defaultValue ) {
 		return utilPrefs.getFloat( key, defaultValue );
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, Float nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, Float nextValue ) {
 		utilPrefs.putFloat( key, nextValue );
 	}
 }

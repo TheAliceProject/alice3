@@ -42,42 +42,49 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.Project;
+
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FileProjectLoader extends AbstractFileProjectLoader {
-	public FileProjectLoader( java.io.File file ) {
+	public FileProjectLoader( File file ) {
 		super( file );
 	}
 
 	@Override
-	public java.net.URI getUri() {
+	public URI getUri() {
 		return this.getFile().toURI();
 	}
 
 	public static void main( String[] args ) throws Exception {
-		java.io.File file = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" );
+		File file = new File( FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" );
 		FileProjectLoader uriProjectPair = new FileProjectLoader( file );
 
 		UriContentLoader.MutationPlan mutationPlan = MutationPlan.WILL_MUTATE;
 		for( int i = 0; i < 32; i++ ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( i );
+			Logger.outln( i );
 			final boolean IS_OBSERVER_DESIRED = true;
 			if( IS_OBSERVER_DESIRED ) {
-				uriProjectPair.getContentOnEventDispatchThread( mutationPlan, new GetContentObserver<org.lgna.project.Project>() {
+				uriProjectPair.getContentOnEventDispatchThread( mutationPlan, new GetContentObserver<Project>() {
 					@Override
 					public void workStarted() {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workStarted" );
+						Logger.outln( "workStarted" );
 					}
 
 					@Override
 					public void workEnded() {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workEnded" );
+						Logger.outln( "workEnded" );
 					}
 
 					@Override
-					public void completed( org.lgna.project.Project project ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
+					public void completed( Project project ) {
+						Logger.outln( project );
 					}
 
 					@Override
@@ -86,7 +93,7 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
 					}
 				} );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( uriProjectPair.getContentWaitingIfNecessary( mutationPlan ) );
+				Logger.outln( uriProjectPair.getContentWaitingIfNecessary( mutationPlan ) );
 			}
 			Thread.sleep( 100 );
 		}

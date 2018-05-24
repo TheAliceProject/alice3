@@ -43,6 +43,8 @@
 
 package org.lgna.croquet.imp.cascade;
 
+import org.lgna.croquet.history.TransactionHistory;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,5 +55,5 @@ public interface ItemNode<F, B> {
 
 	public F getTransientValue();
 
-	public F createValue( org.lgna.croquet.history.TransactionHistory transactionHistory );
+	public F createValue( TransactionHistory transactionHistory );
 }

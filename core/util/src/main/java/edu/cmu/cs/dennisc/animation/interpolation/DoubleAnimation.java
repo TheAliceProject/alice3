@@ -43,11 +43,14 @@
 package edu.cmu.cs.dennisc.animation.interpolation;
 
 //todo: better handling of immutables?
+
+import edu.cmu.cs.dennisc.animation.Style;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class DoubleAnimation extends InterpolationAnimation<Double> {
-	public DoubleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Double d0, Double d1 ) {
+	public DoubleAnimation( Number duration, Style style, Double d0, Double d1 ) {
 		super( duration, style, d0, d1 );
 	}
 

@@ -42,15 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.issue.Attachment;
+
+import java.awt.Image;
+import java.io.IOException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+public class ImageAttachment implements Attachment {
 	private final byte[] bytes;
 	private final String fileName;
 
-	public ImageAttachment( java.awt.Image image, String baseName ) throws java.io.IOException {
-		this.bytes = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, image );
+	public ImageAttachment( Image image, String baseName ) throws IOException {
+		this.bytes = ImageUtilities.writeToByteArray( ImageUtilities.PNG_CODEC_NAME, image );
 		this.fileName = baseName + ".png";
 	}
 

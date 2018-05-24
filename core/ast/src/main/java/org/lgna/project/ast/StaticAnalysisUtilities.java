@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Strings;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.common.Resource;
+import org.lgna.project.Project;
+
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,7 +68,7 @@ public class StaticAnalysisUtilities {
 	private static int getIndexOfLastEnabledNonComment( BlockStatement blockStatement ) {
 		final int N = blockStatement.statements.size();
 		for( int i = N - 1; i >= 0; i-- ) {
-			org.lgna.project.ast.Statement statement = blockStatement.statements.get( i );
+			Statement statement = blockStatement.statements.get( i );
 			if( isEnabledNonCommment( statement ) ) {
 				return i;
 			}
@@ -77,7 +84,7 @@ public class StaticAnalysisUtilities {
 		final int lastIndex = getIndexOfLastEnabledNonComment( blockStatement );
 		for( int i = 0; i <= lastIndex; i++ ) {
 			boolean isLastIndex = i == lastIndex;
-			org.lgna.project.ast.Statement statement = blockStatement.statements.get( i );
+			Statement statement = blockStatement.statements.get( i );
 			if( isEnabledNonCommment( statement ) ) {
 				if( statement instanceof ReturnStatement ) {
 					if( isLastIndex ) {
@@ -225,13 +232,13 @@ public class StaticAnalysisUtilities {
 		return getConventionalIdentifierName( text, true );
 	}
 
-	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name, org.lgna.common.Resource self ) {
+	public static boolean isAvailableResourceName( Project project, String name, Resource self ) {
 		if( project != null ) {
-			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
+			Set<Resource> resources = project.getResources();
 			if( resources != null ) {
-				for( org.lgna.common.Resource resource : resources ) {
+				for( Resource resource : resources ) {
 					if( ( resource != null ) && ( resource != self ) ) {
-						if( edu.cmu.cs.dennisc.java.util.Strings.equalsIgnoreCase( name, resource.getName() ) ) {
+						if( Strings.equalsIgnoreCase( name, resource.getName() ) ) {
 							return false;
 						}
 					}
@@ -243,13 +250,13 @@ public class StaticAnalysisUtilities {
 		return true;
 	}
 
-	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name ) {
+	public static boolean isAvailableResourceName( Project project, String name ) {
 		return isAvailableResourceName( project, name, null );
 	}
 
 	private static boolean isAvailableFieldName( String name, UserType<?> declaringType, UserField self ) {
 		if( declaringType != null ) {
-			for( org.lgna.project.ast.UserField field : declaringType.fields ) {
+			for( UserField field : declaringType.fields ) {
 				assert field != null;
 				if( field == self ) {
 					//pass
@@ -260,7 +267,7 @@ public class StaticAnalysisUtilities {
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
+			Logger.todo( "type == null" );
 		}
 		return true;
 	}
@@ -275,7 +282,7 @@ public class StaticAnalysisUtilities {
 
 	private static boolean isAvailableMethodName( String name, UserType<?> declaringType, UserMethod self ) {
 		if( declaringType != null ) {
-			for( org.lgna.project.ast.UserMethod method : declaringType.methods ) {
+			for( UserMethod method : declaringType.methods ) {
 				if( method == self ) {
 					//pass
 				} else {
@@ -285,7 +292,7 @@ public class StaticAnalysisUtilities {
 				}
 			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
+			Logger.todo( "type == null" );
 		}
 		return true;
 	}
@@ -298,9 +305,9 @@ public class StaticAnalysisUtilities {
 		return isAvailableMethodName( name, self.getDeclaringType(), self );
 	}
 
-	public static int getUserTypeDepth( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static int getUserTypeDepth( AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
-			if( type instanceof org.lgna.project.ast.JavaType ) {
+			if( type instanceof JavaType ) {
 				return -1;
 			} else {
 				return 1 + getUserTypeDepth( type.getSuperType() );

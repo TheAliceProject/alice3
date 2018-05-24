@@ -43,6 +43,14 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+import edu.cmu.cs.dennisc.animation.Style;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+
+import java.lang.reflect.Method;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +59,7 @@ public abstract class Property<T> {
 		public void propertyChanged( Property<T> property, T prevValue, T nextValue );
 	}
 
-	public static String getPropertyNameForGetter( java.lang.reflect.Method method ) {
+	public static String getPropertyNameForGetter( Method method ) {
 		Class<?> valueClass = method.getReturnType();
 		boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
 		String prefix;
@@ -72,7 +80,7 @@ public abstract class Property<T> {
 		}
 	}
 
-	private final java.util.List<Listener<T>> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<Listener<T>> listeners = Lists.newCopyOnWriteArrayList();
 	private final PropertyOwnerImp owner;
 	private final Class<T> valueCls;
 
@@ -101,13 +109,13 @@ public abstract class Property<T> {
 		this.fireChanged( prevValue, value );
 	}
 
-	public void animateValue( final T value, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void animateValue( final T value, double duration, Style style ) {
 		duration = this.owner.adjustDurationIfNecessary( duration );
-		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, EntityImp.RIGHT_NOW ) ) {
+		if( EpsilonUtilities.isWithinReasonableEpsilon( duration, EntityImp.RIGHT_NOW ) ) {
 			this.setValue( value );
 		} else {
 			final T value0 = this.getValue();
-			this.owner.perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
+			this.owner.perform( new DurationBasedAnimation( duration, style ) {
 				@Override
 				protected void prologue() {
 				}

@@ -43,6 +43,41 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.animation.Animation;
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderFactory;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import org.lgna.common.ProgramClosedException;
+import org.lgna.story.SProgram;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JApplet;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.lang.reflect.Constructor;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,22 +104,22 @@ public abstract class ProgramImp {
 		ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( classForNextInstance, new Class<?>[] {}, new Object[] {} );
 	}
 
-	public static ProgramImp createInstance( org.lgna.story.SProgram abstraction ) {
+	public static ProgramImp createInstance( SProgram abstraction ) {
 		ProgramImp rv;
 		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
 			if( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance != null ) {
 
 				Class<?>[] parameterTypes = new Class<?>[ ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length + 1 ];
-				parameterTypes[ 0 ] = org.lgna.story.SProgram.class;
+				parameterTypes[ 0 ] = SProgram.class;
 				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes, 0, parameterTypes, 1, ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length );
 
 				Object[] arguments = new Object[ ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length + 1 ];
 				arguments[ 0 ] = abstraction;
 				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusArguments, 0, arguments, 1, ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length );
 
-				java.lang.reflect.Constructor<? extends ProgramImp> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance, parameterTypes );
+				Constructor<? extends ProgramImp> cnstrctr = ReflectionUtilities.getConstructor( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance, parameterTypes );
 				assert cnstrctr != null : ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
-				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
+				rv = ReflectionUtilities.newInstance( cnstrctr, arguments );
 				ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = null;
 				ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes = null;
 				ACCEPTABLE_HACK_FOR_NOW_bonusArguments = null;
@@ -95,16 +130,16 @@ public abstract class ProgramImp {
 		return rv;
 	}
 
-	private static class ToggleFullScreenAction extends javax.swing.AbstractAction {
-		private java.awt.Rectangle prevNormalBounds;
+	private static class ToggleFullScreenAction extends AbstractAction {
+		private Rectangle prevNormalBounds;
 
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
-			javax.swing.ButtonModel buttonModel = button.getModel();
-			java.awt.Component root = javax.swing.SwingUtilities.getRoot( button );
+		public void actionPerformed( ActionEvent e ) {
+			AbstractButton button = (AbstractButton)e.getSource();
+			ButtonModel buttonModel = button.getModel();
+			Component root = SwingUtilities.getRoot( button );
 			if( root != null ) {
-				java.awt.Rectangle bounds;
+				Rectangle bounds;
 				if( buttonModel.isSelected() ) {
 					this.prevNormalBounds = root.getBounds();
 					bounds = root.getGraphicsConfiguration().getBounds();
@@ -119,7 +154,7 @@ public abstract class ProgramImp {
 		}
 	};
 
-	private static final class FullScreenIcon implements javax.swing.Icon {
+	private static final class FullScreenIcon implements Icon {
 		@Override
 		public int getIconWidth() {
 			return 24;
@@ -130,7 +165,7 @@ public abstract class ProgramImp {
 			return 16;
 		}
 
-		private static void paintRect( java.awt.Graphics2D g2, java.awt.Paint fillPaint, java.awt.Paint drawPaint, int x, int y, int width, int height ) {
+		private static void paintRect( Graphics2D g2, Paint fillPaint, Paint drawPaint, int x, int y, int width, int height ) {
 			g2.setPaint( fillPaint );
 			g2.fillRect( x, y, width, height );
 			g2.setPaint( drawPaint );
@@ -138,18 +173,18 @@ public abstract class ProgramImp {
 		}
 
 		@Override
-		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-			javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		public void paintIcon( Component c, Graphics g, int x, int y ) {
+			AbstractButton b = (AbstractButton)c;
+			Graphics2D g2 = (Graphics2D)g;
 
-			javax.swing.ButtonModel buttonModel = b.getModel();
-			java.awt.Paint fillPaint;
+			ButtonModel buttonModel = b.getModel();
+			Paint fillPaint;
 			if( buttonModel.isRollover() ) {
-				fillPaint = java.awt.Color.WHITE;
+				fillPaint = Color.WHITE;
 			} else {
-				fillPaint = java.awt.Color.LIGHT_GRAY;
+				fillPaint = Color.LIGHT_GRAY;
 			}
-			java.awt.Paint drawPaint = java.awt.Color.DARK_GRAY;
+			Paint drawPaint = Color.DARK_GRAY;
 
 			int W = this.getIconWidth();
 			int H = this.getIconHeight();
@@ -163,15 +198,15 @@ public abstract class ProgramImp {
 			paintRect( g2, fillPaint, drawPaint, W - w, H - h, w, h );
 			paintRect( g2, fillPaint, drawPaint, W - w, 0, w, h );
 
-			paintRect( g2, java.awt.Color.GRAY, drawPaint, 4, 3, W - 8, H - 6 );
+			paintRect( g2, Color.GRAY, drawPaint, 4, 3, W - 8, H - 6 );
 			g2.translate( -x, -y );
 		}
 	}
 
-	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	protected ProgramImp( SProgram abstraction, OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		this.abstraction = abstraction;
 		this.onscreenRenderTarget = onscreenRenderTarget;
-		this.toggleFullScreenAction.putValue( javax.swing.Action.SMALL_ICON, new FullScreenIcon() );
+		this.toggleFullScreenAction.putValue( Action.SMALL_ICON, new FullScreenIcon() );
 	}
 
 	protected void handleSpeedChange( double speedFactor ) {
@@ -186,19 +221,19 @@ public abstract class ProgramImp {
 		speedFormat = format;
 	}
 
-	public javax.swing.Action getRestartAction() {
+	public Action getRestartAction() {
 		return this.restartAction;
 	}
 
-	public void setRestartAction( javax.swing.Action restartAction ) {
+	public void setRestartAction( Action restartAction ) {
 		this.restartAction = restartAction;
 	}
 
-	public javax.swing.Action getToggleFullScreenAction() {
+	public Action getToggleFullScreenAction() {
 		return this.toggleFullScreenAction;
 	}
 
-	public java.awt.Rectangle getNormalDialogBounds( java.awt.Component awtComponent ) {
+	public Rectangle getNormalDialogBounds( Component awtComponent ) {
 		if( this.toggleFullScreenAction.prevNormalBounds != null ) {
 			return this.toggleFullScreenAction.prevNormalBounds;
 		} else {
@@ -216,15 +251,15 @@ public abstract class ProgramImp {
 		this.isControlPanelDesired = isControlPanelDesired;
 	}
 
-	public org.lgna.story.SProgram getAbstraction() {
+	public SProgram getAbstraction() {
 		return this.abstraction;
 	}
 
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
-	public abstract edu.cmu.cs.dennisc.animation.Animator getAnimator();
+	public abstract Animator getAnimator();
 
 	public double getSimulationSpeedFactor() {
 		return this.simulationSpeedFactor;
@@ -234,15 +269,15 @@ public abstract class ProgramImp {
 		this.simulationSpeedFactor = simulationSpeedFactor;
 	}
 
-	private edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
+	private AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
 			ProgramImp.this.getAnimator().update();
 		}
 	};
 
 	public void startAnimator() {
-		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
+		RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
 		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		renderFactory.incrementAutomaticDisplayCount();
 		this.isAnimatorStarted = true;
@@ -251,19 +286,19 @@ public abstract class ProgramImp {
 	public void stopAnimator() {
 		if( this.isAnimatorStarted ) {
 			this.getAnimator().completeAll( null );
-			edu.cmu.cs.dennisc.render.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
+			RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
 			renderFactory.decrementAutomaticDisplayCount();
 			renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 			this.isAnimatorStarted = false;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.isAnimatorStarted );
+			Logger.severe( this.isAnimatorStarted );
 		}
 	}
 
 	private void addComponents( AwtContainerInitializer awtContainerInitializer ) {
-		java.awt.Component awtLgComponent = this.getOnscreenRenderTarget().getAwtComponent();
+		Component awtLgComponent = this.getOnscreenRenderTarget().getAwtComponent();
 		synchronized( awtLgComponent.getTreeLock() ) {
-			javax.swing.JPanel controlPanel;
+			JPanel controlPanel;
 			if( this.isControlPanelDesired() ) {
 				controlPanel = new ProgramControlPanel( this );
 			} else {
@@ -278,24 +313,24 @@ public abstract class ProgramImp {
 	}
 
 	public static interface AwtContainerInitializer {
-		public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel );
+		public void addComponents( OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel );
 	}
 
 	private static class DefaultAwtContainerInitializer implements AwtContainerInitializer {
-		private final java.awt.Container awtContainer;
+		private final Container awtContainer;
 
-		public DefaultAwtContainerInitializer( java.awt.Container awtContainer ) {
+		public DefaultAwtContainerInitializer( Container awtContainer ) {
 			this.awtContainer = awtContainer;
 		}
 
 		@Override
-		public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+		public void addComponents( OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel ) {
 			this.awtContainer.add( onscreenRenderTarget.getAwtComponent() );
 			if( controlPanel != null ) {
-				this.awtContainer.add( controlPanel, java.awt.BorderLayout.PAGE_START );
+				this.awtContainer.add( controlPanel, BorderLayout.PAGE_START );
 			}
-			if( this.awtContainer instanceof javax.swing.JComponent ) {
-				( (javax.swing.JComponent)this.awtContainer ).revalidate();
+			if( this.awtContainer instanceof JComponent ) {
+				( (JComponent)this.awtContainer ).revalidate();
 			}
 		}
 	}
@@ -303,7 +338,7 @@ public abstract class ProgramImp {
 	public void initializeInAwtContainer( AwtContainerInitializer awtContainerInitializer ) {
 		this.addComponents( awtContainerInitializer );
 		this.startAnimator();
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				requestFocusInWindow();
@@ -311,12 +346,12 @@ public abstract class ProgramImp {
 		} );
 	}
 
-	public void initializeInAwtContainer( java.awt.Container awtContainer ) {
+	public void initializeInAwtContainer( Container awtContainer ) {
 		this.initializeInAwtContainer( new DefaultAwtContainerInitializer( awtContainer ) );
 	}
 
-	public void initializeInFrame( final javax.swing.JFrame frame, final Runnable runnable ) {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	public void initializeInFrame( final JFrame frame, final Runnable runnable ) {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 				ProgramImp.this.addComponents( new DefaultAwtContainerInitializer( frame.getContentPane() ) );
@@ -327,8 +362,8 @@ public abstract class ProgramImp {
 		} );
 	}
 
-	public void initializeInFrame( javax.swing.JFrame frame ) {
-		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+	public void initializeInFrame( JFrame frame ) {
+		final CyclicBarrier barrier = new CyclicBarrier( 2 );
 		this.initializeInFrame( frame, new Runnable() {
 			@Override
 			public void run() {
@@ -336,7 +371,7 @@ public abstract class ProgramImp {
 					barrier.await();
 				} catch( InterruptedException ie ) {
 					throw new RuntimeException( ie );
-				} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+				} catch( BrokenBarrierException bbe ) {
 					throw new RuntimeException( bbe );
 				}
 			}
@@ -345,13 +380,13 @@ public abstract class ProgramImp {
 			barrier.await();
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
-		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+		} catch( BrokenBarrierException bbe ) {
 			throw new RuntimeException( bbe );
 		}
 		this.startAnimator();
 	}
 
-	public void initializeInApplet( javax.swing.JApplet applet ) {
+	public void initializeInApplet( JApplet applet ) {
 		this.addComponents( new DefaultAwtContainerInitializer( applet.getContentPane() ) );
 		this.startAnimator();
 	}
@@ -362,21 +397,21 @@ public abstract class ProgramImp {
 		this.isProgramClosedExceptionDesired = true;
 	}
 
-	/* package-private */void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	/* package-private */void perform( Animation animation, AnimationObserver animationObserver ) {
 		if( this.isProgramClosedExceptionDesired ) {
 			if( this.isAnimatorStarted ) {
 				this.stopAnimator();
 			}
-			throw new org.lgna.common.ProgramClosedException();
+			throw new ProgramClosedException();
 		}
 		this.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 	}
 
-	private final org.lgna.story.SProgram abstraction;
-	private final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget;
+	private final SProgram abstraction;
+	private final OnscreenRenderTarget<?> onscreenRenderTarget;
 	private double simulationSpeedFactor = 1.0;
 	private String speedFormat;
-	private javax.swing.Action restartAction;
+	private Action restartAction;
 	private boolean isAnimatorStarted = false;
 	private boolean isProgramClosedExceptionDesired = false;
 	private final ToggleFullScreenAction toggleFullScreenAction = new ToggleFullScreenAction();

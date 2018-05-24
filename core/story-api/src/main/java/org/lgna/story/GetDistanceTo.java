@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GetDistanceTo {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = GetDistanceTo.class )
+	@ClassTemplate( keywordFactoryCls = GetDistanceTo.class )
 	public static interface Detail {
 	}
 

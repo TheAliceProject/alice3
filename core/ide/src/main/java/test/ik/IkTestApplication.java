@@ -43,8 +43,10 @@
 
 package test.ik;
 
+import org.lgna.croquet.simple.SimpleApplication;
+
 /**
  * @author Dennis Cosgrove
  */
-public class IkTestApplication extends org.lgna.croquet.simple.SimpleApplication {
+public class IkTestApplication extends SimpleApplication {
 }

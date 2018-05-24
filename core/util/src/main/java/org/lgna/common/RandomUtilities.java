@@ -43,12 +43,15 @@
 
 package org.lgna.common;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * @author Dennis Cosgrove
  */
 
 public class RandomUtilities {
-	private static java.util.Random s_random = new java.util.Random();
+	private static Random s_random = new Random();
 
 	private static int getRandomIndex( int n ) {
 		return s_random.nextInt( n );
@@ -93,7 +96,7 @@ public class RandomUtilities {
 	}
 
 	public static <E> E getRandomValueFrom( E[] array ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( array, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( array, 0 );
 		if( array.length > 0 ) {
 			return array[ getRandomIndex( array.length ) ];
 		} else {
@@ -102,8 +105,8 @@ public class RandomUtilities {
 		}
 	}
 
-	public static <E> E getRandomValueFrom( java.util.List<E> list ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( list, 0 );
+	public static <E> E getRandomValueFrom( List<E> list ) {
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( list, 0 );
 		if( list.size() > 0 ) {
 			return list.get( getRandomIndex( list.size() ) );
 		} else {
@@ -113,7 +116,7 @@ public class RandomUtilities {
 	}
 
 	public static <E extends Enum<? extends E>> E getRandomEnumConstant( Class<E> cls ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( cls, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( cls, 0 );
 		E[] enumConstants = cls.getEnumConstants();
 		assert enumConstants.length > 0 : cls;
 		int index = s_random.nextInt( enumConstants.length );

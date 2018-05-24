@@ -43,15 +43,21 @@
 package org.alice.ide.croquet.models.help.views;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 import org.alice.ide.croquet.models.help.GraphicsHelpComposite;
+import org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation;
+import org.alice.ide.issue.croquet.GraphicsDriverHelpOperation;
+import org.alice.ide.system.croquet.StartPerformanceInformationAndToolsOperation;
+import org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite;
 import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
+public class GraphicsHelpView extends MigPanel {
 	private static String getSystemInformation() {
 		return String.format( getLocalizedStringByKey( "systemInfo" ),
 						System.getProperty( "os.name" ),
@@ -71,12 +77,12 @@ public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 
 		this.addComponent( new Label( getLocalizedStringByKey( "commonFix" ), 1.2f, TextWeight.BOLD ), "wrap" );
 		this.addComponent( new Label( getLocalizedStringByKey( "helpHeader" ) ), "wrap, gapleft " + LEVEL_1 );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			this.addComponent( org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().createButton(), "wrap, gapleft " + LEVEL_2 );
-			this.addComponent( org.alice.ide.system.croquet.StartPerformanceInformationAndToolsOperation.getInstance().createButton(), "wrap, gapleft " + LEVEL_2 );
+		if( SystemUtilities.isWindows() ) {
+			this.addComponent( WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().createButton(), "wrap, gapleft " + LEVEL_2 );
+			this.addComponent( StartPerformanceInformationAndToolsOperation.getInstance().createButton(), "wrap, gapleft " + LEVEL_2 );
 		}
-		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( org.alice.ide.issue.croquet.GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
 		this.addComponent( new Label( getLocalizedStringByKey( "aboutHeader" ) ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
 		this.addComponent( new Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
 		this.addComponent( new Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );

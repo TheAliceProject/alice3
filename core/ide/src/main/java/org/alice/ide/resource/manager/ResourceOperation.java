@@ -43,23 +43,31 @@
 
 package org.alice.ide.resource.manager;
 
+import org.lgna.common.Resource;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation {
-	public ResourceOperation( java.util.UUID migrationId ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
+public abstract class ResourceOperation extends ActionOperation {
+	public ResourceOperation( UUID migrationId ) {
+		super( Application.PROJECT_GROUP, migrationId );
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );
+	protected abstract Edit createEdit( CompletionStep<?> step, Resource resource );
 
-	protected abstract org.lgna.common.Resource getResource();
+	protected abstract Resource getResource();
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.common.Resource resource = this.getResource();
+	protected void perform( CompletionStep<?> step ) {
+		Resource resource = this.getResource();
 		if( resource != null ) {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( step, resource );
+			Edit edit = this.createEdit( step, resource );
 			if( edit != null ) {
 				step.commitAndInvokeDo( edit );
 			} else {

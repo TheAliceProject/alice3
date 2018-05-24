@@ -43,13 +43,15 @@
 
 package org.lgna.croquet.history.event;
 
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ValueCommittedEvent<T> extends Event<org.lgna.croquet.history.CompletionStep<?>> {
+public class ValueCommittedEvent<T> extends Event<CompletionStep<?>> {
 	private final T value;
 
-	public ValueCommittedEvent( org.lgna.croquet.history.CompletionStep<?> step, T value ) {
+	public ValueCommittedEvent( CompletionStep<?> step, T value ) {
 		super( step );
 		this.value = value;
 	}

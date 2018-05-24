@@ -45,15 +45,22 @@ package org.alice.ide.croquet.models.cascade;
 
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.RelationalInfixExpression;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<org.lgna.project.ast.RelationalInfixExpression> {
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<RelationalInfixExpression> {
+	private final AbstractType<?, ?, ?> type;
 
-	public RelationalObjectCascadeMenu( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( java.util.UUID.fromString( "056d67c7-2cea-41d9-b6f0-750b2ab6a51e" ) );
+	public RelationalObjectCascadeMenu( AbstractType<?, ?, ?> type ) {
+		super( UUID.fromString( "056d67c7-2cea-41d9-b6f0-750b2ab6a51e" ) );
 		this.type = type;
 	}
 
@@ -64,8 +71,8 @@ public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<org.lgna.
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.RelationalInfixExpression> step ) {
-		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS ) );
-		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<RelationalInfixExpression> step ) {
+		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, RelationalInfixExpression.Operator.EQUALS ) );
+		blankChildren.add( RelationalExpressionLeftAndRightOperandsFillIn.getInstance( this.type, RelationalInfixExpression.Operator.NOT_EQUALS ) );
 	}
 }

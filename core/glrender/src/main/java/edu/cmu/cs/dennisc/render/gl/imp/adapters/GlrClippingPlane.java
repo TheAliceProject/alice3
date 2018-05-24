@@ -44,11 +44,12 @@
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.ClippingPlane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrClippingPlane extends GlrAffector<edu.cmu.cs.dennisc.scenegraph.ClippingPlane> {
+public class GlrClippingPlane extends GlrAffector<ClippingPlane> {
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		throw new RuntimeException( "todo" );

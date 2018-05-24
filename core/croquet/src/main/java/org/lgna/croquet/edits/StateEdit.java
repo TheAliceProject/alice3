@@ -42,30 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.State;
+import org.lgna.croquet.history.CompletionStep;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class StateEdit<T> extends org.lgna.croquet.edits.AbstractEdit<org.lgna.croquet.State<T>> {
+public final class StateEdit<T> extends AbstractEdit<State<T>> {
 	private T prevValue;
 	private T nextValue;
 
-	public StateEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<T>> completionStep, T prevValue, T nextValue ) {
+	public StateEdit( CompletionStep<State<T>> completionStep, T prevValue, T nextValue ) {
 		super( completionStep );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
 
-	public StateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public StateEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		org.lgna.croquet.State<T> state = this.getModel();
+		State<T> state = this.getModel();
 		this.prevValue = state.decodeValue( binaryDecoder );
 		this.nextValue = state.decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public final void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.lgna.croquet.State<T> state = this.getModel();
+		State<T> state = this.getModel();
 		state.encodeValue( binaryEncoder, this.prevValue );
 		state.encodeValue( binaryEncoder, this.nextValue );
 	}
@@ -81,7 +86,7 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.AbstractEdit<org.
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "select " );
-		org.lgna.croquet.State<T> state = this.getModel();
+		State<T> state = this.getModel();
 		if( state != null ) {
 			state.appendRepresentation( rv, this.prevValue );
 		} else {

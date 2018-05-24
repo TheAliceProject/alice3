@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.media.audio;
 
+import org.lgna.common.resources.AudioResource;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -50,6 +52,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
@@ -60,18 +63,18 @@ public class AudioTrackMixer {
 
 	private double trackLength;
 	private List<ScheduledAudioStream> scheduledStreams;
-	private Map<org.lgna.common.resources.AudioResource, org.lgna.common.resources.AudioResource> convertedResourceMap;
-	private javax.sound.sampled.AudioFormat targetFormat;
+	private Map<AudioResource, AudioResource> convertedResourceMap;
+	private AudioFormat targetFormat;
 
-	public AudioTrackMixer( javax.sound.sampled.AudioFormat targetFormat, double trackLength ) {
+	public AudioTrackMixer( AudioFormat targetFormat, double trackLength ) {
 		this.trackLength = trackLength;
 		this.scheduledStreams = new LinkedList<ScheduledAudioStream>();
 		this.targetFormat = targetFormat;
-		this.convertedResourceMap = new HashMap<org.lgna.common.resources.AudioResource, org.lgna.common.resources.AudioResource>();
+		this.convertedResourceMap = new HashMap<AudioResource, AudioResource>();
 	}
 
-	private org.lgna.common.resources.AudioResource convertResourceIfNecessary( org.lgna.common.resources.AudioResource resource ) {
-		org.lgna.common.resources.AudioResource convertedResource = null;
+	private AudioResource convertResourceIfNecessary( AudioResource resource ) {
+		AudioResource convertedResource = null;
 		if( this.convertedResourceMap.containsKey( resource ) ) {
 			convertedResource = this.convertedResourceMap.get( resource );
 		} else {
@@ -85,14 +88,14 @@ public class AudioTrackMixer {
 		return convertedResource;
 	}
 
-	public void addAudioResource( org.lgna.common.resources.AudioResource resource, double startTime, double entryPoint, double endPoint, double volume ) {
-		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( resource );
+	public void addAudioResource( AudioResource resource, double startTime, double entryPoint, double endPoint, double volume ) {
+		AudioResource convertedResource = convertResourceIfNecessary( resource );
 		ScheduledAudioStream scheduledStream = new ScheduledAudioStream( convertedResource, startTime, entryPoint, endPoint, volume );
 		addScheduledStream( scheduledStream );
 	}
 
 	public void addScheduledStream( ScheduledAudioStream scheduledStream ) {
-		org.lgna.common.resources.AudioResource convertedResource = convertResourceIfNecessary( scheduledStream.getAudioResource() );
+		AudioResource convertedResource = convertResourceIfNecessary( scheduledStream.getAudioResource() );
 		if( convertedResource != scheduledStream.getAudioResource() ) {
 			scheduledStream.setAudioResource( convertedResource );
 		}

@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import Jama.SingularValueDecomposition;
 import org.lgna.ik.core.IkConstants;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Chain;
 import org.lgna.ik.core.solver.Bone.Axis;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
 
 import Jama.Matrix;
@@ -101,7 +103,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 				isTransposed = false;
 			}
 
-			Jama.SingularValueDecomposition svd = new Jama.SingularValueDecomposition( mj );
+			SingularValueDecomposition svd = new SingularValueDecomposition( mj );
 
 			u = svd.getU();
 			Matrix s = svd.getS();
@@ -145,7 +147,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 			reduceAndInvertSofSvdBasically( sForRegular );
 
-			Jama.Matrix pseudoInverseForNullspace = v.times( sForRegular ).times( u.transpose() );
+			Matrix pseudoInverseForNullspace = v.times( sForRegular ).times( u.transpose() );
 
 			if( isTransposed ) { //TODO perhaps record the fact that matrices are transposed and act accordingly. 
 				pseudoInverseForNullspace = pseudoInverseForNullspace.transpose();
@@ -660,7 +662,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 	private List<PositionConstraint> activePositionConstraints = new ArrayList<PositionConstraint>();
 	private List<OrientationConstraint> activeOrientationConstraints = new ArrayList<OrientationConstraint>();
 
-	public TightPositionalIkEnforcer( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp ) {
+	public TightPositionalIkEnforcer( JointedModelImp<?, ?> jointedModelImp ) {
 		super( jointedModelImp );
 
 		initializeListOfAxes();
@@ -898,7 +900,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 	}
 
 	public PositionConstraint createPositionConstraint( int level, JointId anchorId, JointId endId ) {
-		Chain chain = org.lgna.ik.core.solver.Chain.createInstance( jointedModelImp, anchorId, endId );
+		Chain chain = Chain.createInstance( jointedModelImp, anchorId, endId );
 
 		Point3 endPosition = jointedModelImp.getJointImplementation( endId ).getTransformation( AsSeenBy.SCENE ).translation;
 

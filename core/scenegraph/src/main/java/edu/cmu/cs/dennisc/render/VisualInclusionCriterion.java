@@ -42,9 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface VisualInclusionCriterion {
-	boolean isIncluded( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual );
+	boolean isIncluded( Visual sgVisual );
 }

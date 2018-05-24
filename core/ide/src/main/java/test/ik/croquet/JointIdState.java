@@ -43,42 +43,54 @@
 
 package test.ik.croquet;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.CustomItemStateWithInternalBlank;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.JointId;
+import test.ik.croquet.codecs.JointIdCodec;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithInternalBlank<org.lgna.story.resources.JointId> {
-	private org.lgna.story.resources.JointId value;
+public abstract class JointIdState extends CustomItemStateWithInternalBlank<JointId> {
+	private JointId value;
 
-	public JointIdState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, null, test.ik.croquet.codecs.JointIdCodec.SINGLETON );
+	public JointIdState( UUID id ) {
+		super( Application.DOCUMENT_UI_GROUP, id, null, JointIdCodec.SINGLETON );
 	}
 
 	@Override
-	protected org.lgna.story.resources.JointId getSwingValue() {
+	protected JointId getSwingValue() {
 		return value;
 	}
 
 	@Override
-	protected void setSwingValue( org.lgna.story.resources.JointId nextValue ) {
+	protected void setSwingValue( JointId nextValue ) {
 		//		this.setSwingValue( nextValue );
 		this.value = nextValue;
 	}
 
-	private static void fillIn( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.story.resources.JointId id ) {
+	private static void fillIn( List<CascadeBlankChild> rv, JointId id ) {
 		rv.add( JointIdFillIn.getInstance( id ) );
 		//TODO: Make this work for resource classes that have different joints based on different resources
 		//(this only happens when the resource class declares an array and different resources have a variable number of joint in that array, like railroad track pieces)
-		for( org.lgna.story.resources.JointId childId : id.getDeclaredChildren( null ) ) {
+		for( JointId childId : id.getDeclaredChildren( null ) ) {
 			fillIn( rv, childId );
 		}
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.story.resources.JointId> blankNode ) {
-		org.lgna.story.resources.JointId[] rootIds = org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
-		for( org.lgna.story.resources.JointId rootId : rootIds ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<JointId> blankNode ) {
+		JointId[] rootIds = BipedResource.JOINT_ID_ROOTS;
+		for( JointId rootId : rootIds ) {
 			fillIn( blankChildren, rootId );
-			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			blankChildren.add( CascadeLineSeparator.getInstance() );
 		}
 	}
 }

@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NodeProperty<E extends Node> extends edu.cmu.cs.dennisc.property.InstanceProperty<E> {
-	public NodeProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+public class NodeProperty<E extends Node> extends InstanceProperty<E> {
+	public NodeProperty( InstancePropertyOwner owner ) {
 		super( owner, null );
 	}
 

@@ -42,10 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractScaledIcon implements javax.swing.Icon {
+public abstract class AbstractScaledIcon implements Icon {
 	private final int width;
 	private final int height;
 	private final float factor;
@@ -76,14 +82,14 @@ public abstract class AbstractScaledIcon implements javax.swing.Icon {
 
 	protected abstract int getSourceHeight();
 
-	protected abstract void paintSource( java.awt.Component c, java.awt.Graphics g );
+	protected abstract void paintSource( Component c, Graphics g );
 
 	@Override
-	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	public final void paintIcon( Component c, Graphics g, int x, int y ) {
 		double xScale = Float.isNaN( this.factor ) ? this.width / (double)this.getSourceWidth() : this.factor;
 		double yScale = Float.isNaN( this.factor ) ? this.height / (double)this.getSourceHeight() : this.factor;
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+		Graphics2D g2 = (Graphics2D)g;
+		AffineTransform prevTransform = g2.getTransform();
 		g2.translate( x, y );
 		g2.scale( xScale, yScale );
 		this.paintSource( c, g2 );

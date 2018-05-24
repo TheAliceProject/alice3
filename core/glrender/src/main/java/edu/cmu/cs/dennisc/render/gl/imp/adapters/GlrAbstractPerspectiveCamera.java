@@ -43,8 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractPerspectiveCamera;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAbstractPerspectiveCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractPerspectiveCamera> extends GlrAbstractNearPlaneAndFarPlaneCamera<T> {
+public abstract class GlrAbstractPerspectiveCamera<T extends AbstractPerspectiveCamera> extends GlrAbstractNearPlaneAndFarPlaneCamera<T> {
 }

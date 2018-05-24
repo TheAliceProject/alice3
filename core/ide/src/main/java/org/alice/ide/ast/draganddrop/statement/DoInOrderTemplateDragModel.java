@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.DoInOrder;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class DoInOrderTemplateDragModel extends PotentiallyEnvelopingStatementTe
 	}
 
 	private DoInOrderTemplateDragModel() {
-		super( java.util.UUID.fromString( "cdbe6179-5721-49a9-a77e-79187adaadc2" ), org.lgna.project.ast.DoInOrder.class, org.lgna.project.ast.AstUtilities.createDoInOrder() );
+		super( UUID.fromString( "cdbe6179-5721-49a9-a77e-79187adaadc2" ), DoInOrder.class, AstUtilities.createDoInOrder() );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.DoInOrderInsertOperation.getInstance( blockStatementIndexPair, isEnveloping );
+	protected Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return DoInOrderInsertOperation.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

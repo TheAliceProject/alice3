@@ -42,7 +42,14 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
+import org.lgna.project.migration.ast.ChangeDeclaringClassForAxesSetVehicle;
+import org.lgna.project.migration.ast.EventAstMigration;
+import org.lgna.project.migration.ast.MouseClickAstMigration;
+import org.lgna.project.migration.ast.NoOpAstMigrationStandIn;
+import org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration;
+import org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration;
 
 /**
  * @author Dennis Cosgrove
@@ -181,13 +188,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 	//	}
 
 	private final TextMigration[] textMigrations = {
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.7.0.0" ),
-					new org.lgna.project.Version( "3.1.8.0.0" ) ),
+			new TextMigration(
+					new Version( "3.1.7.0.0" ),
+					new Version( "3.1.8.0.0" ) ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.8.0.0" ),
-					new org.lgna.project.Version( "3.1.9.0.0" ),
+			new TextMigration(
+					new Version( "3.1.8.0.0" ),
+					new Version( "3.1.9.0.0" ),
 
 					"ARMOIRE_CLOTHING", NO_REPLACEMENT,
 
@@ -198,13 +205,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					"org.lgna.story.resources.quadruped.Poodle", NO_REPLACEMENT ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.9.0.0" ),
-					new org.lgna.project.Version( "3.1.11.0.0" ) ),
+			new TextMigration(
+					new Version( "3.1.9.0.0" ),
+					new Version( "3.1.11.0.0" ) ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.11.0.0" ),
-					new org.lgna.project.Version( "3.1.14.0.0" ),
+			new TextMigration(
+					new Version( "3.1.11.0.0" ),
+					new Version( "3.1.14.0.0" ),
 
 					"CAMEL", NO_REPLACEMENT,
 
@@ -222,13 +229,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					"org.lgna.story.resources.quadruped.Wolf", NO_REPLACEMENT ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.14.0.0" ),
-					new org.lgna.project.Version( "3.1.15.1.0" ) ),
+			new TextMigration(
+					new Version( "3.1.14.0.0" ),
+					new Version( "3.1.15.1.0" ) ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.15.1.0" ),
-					new org.lgna.project.Version( "3.1.20.0.0" ),
+			new TextMigration(
+					new Version( "3.1.15.1.0" ),
+					new Version( "3.1.20.0.0" ),
 
 					"org.lgna.story.resources.dresser.DresserCentralAsian",
 					"org.lgna.story.resources.prop.DresserCentralAsian",
@@ -239,13 +246,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"org.lgna.story.resources.dresser.DresserDesigner",
 					"org.lgna.story.resources.prop.DresserDesigner" ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.20.0.0" ),
-					new org.lgna.project.Version( "3.1.33.0.0" ) ),
+			new TextMigration(
+					new Version( "3.1.20.0.0" ),
+					new Version( "3.1.33.0.0" ) ),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.33.0.0" ),
-					new org.lgna.project.Version( "3.1.34.0.0" ),
+			new TextMigration(
+					new Version( "3.1.33.0.0" ),
+					new Version( "3.1.34.0.0" ),
 
 					"org.lgna.story.Program",
 					"org.lgna.story.SProgram",
@@ -2195,9 +2202,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createJointAccessorPattern( "getRightPectoralFin", "SSwimmer" ),
 					createJointAccessorReplacement( "getFrontRightFin", "SSwimmer" )
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.34.0.0" ),
-					new org.lgna.project.Version( "3.1.35.0.0" ),
+			new TextMigration(
+					new Version( "3.1.34.0.0" ),
+					new Version( "3.1.35.0.0" ),
 
 					"org.lgna.story.resources.biped.Alien",
 					"org.lgna.story.resources.biped.AlienResource",
@@ -2538,13 +2545,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"org.lgna.story.resources.marinemammal.Walrus",
 					"org.lgna.story.resources.marinemammal.WalrusResource"
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.35.0.0" ),
-					new org.lgna.project.Version( "3.1.38.0.0" )
+			new TextMigration(
+					new Version( "3.1.35.0.0" ),
+					new Version( "3.1.38.0.0" )
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.38.0.0" ),
-					new org.lgna.project.Version( "3.1.39.0.0" ),
+			new TextMigration(
+					new Version( "3.1.38.0.0" ),
+					new Version( "3.1.39.0.0" ),
 
 					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
 					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnScreenListener",
@@ -2552,16 +2559,16 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
 					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnObjectListener"
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.39.0.0" ),
-					new org.lgna.project.Version( "3.1.48.0.0" ),
+			new TextMigration(
+					new Version( "3.1.39.0.0" ),
+					new Version( "3.1.48.0.0" ),
 
 					"BILLY_GOAT",
 					"BIG_HORNS"
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.48.0.0" ),
-					new org.lgna.project.Version( "3.1.58.0.0" ),
+			new TextMigration(
+					new Version( "3.1.48.0.0" ),
+					new Version( "3.1.58.0.0" ),
 
 					"name=\"ICE_FLOW",
 					"name=\"ICE_FLOE",
@@ -2578,9 +2585,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"PIXIE_BLUE",
 					"name=\"BLUE"
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.58.0.0" ),
-					new org.lgna.project.Version( "3.1.59.0.0" ),
+			new TextMigration(
+					new Version( "3.1.58.0.0" ),
+					new Version( "3.1.59.0.0" ),
 
 					createMoreSpecificFieldPattern( "PLANT1", "org.lgna.story.resources.prop.SeaPlantResource" ),
 					createMoreSpecificFieldReplacement( "DOUBLE", "org.lgna.story.resources.prop.SeaSpongeResource" ),
@@ -4448,9 +4455,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.WeddingCakeResource",
 					"name=\"org.lgna.story.resources.prop.CakeResource"
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.59.0.0" ),
-					new org.lgna.project.Version( "3.1.68.0.0" ),
+			new TextMigration(
+					new Version( "3.1.59.0.0" ),
+					new Version( "3.1.68.0.0" ),
 
 					createMoreSpecificFieldPattern( "STRAIGHT1_RIVERBANK2", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldReplacement( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
@@ -5091,9 +5098,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 			),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.68.0.0" ),
-					new org.lgna.project.Version( "3.1.69.0.0" ),
+			new TextMigration(
+					new Version( "3.1.68.0.0" ),
+					new Version( "3.1.69.0.0" ),
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
@@ -5105,9 +5112,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldReplacement( "DEFAULT_MARS", "org.lgna.story.resources.prop.CliffWallResource" )
 			),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.69.0.0" ),
-					new org.lgna.project.Version( "3.1.70.0.0" ),
+			new TextMigration(
+					new Version( "3.1.69.0.0" ),
+					new Version( "3.1.70.0.0" ),
 
 					createMoreSpecificFieldPattern( "STRAIGHT1", "org.lgna.story.resources.prop.RiverPieceResource" ),
 					createMoreSpecificFieldReplacement( "STRAIGHT1_BLUE", "org.lgna.story.resources.prop.RiverPieceResource" ),
@@ -5166,9 +5173,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.watercraft.SailboatResource"
 			),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.70.0.0" ),
-					new org.lgna.project.Version( "3.1.85.0.0" ),
+			new TextMigration(
+					new Version( "3.1.70.0.0" ),
+					new Version( "3.1.85.0.0" ),
 
 					//<note: moved from 68 - 69 migration when a world with the UFO discovered with old resource>
 					"name=\"org.lgna.story.resources.prop.HelicopterResource",
@@ -5211,14 +5218,14 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 			),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.85.0.0" ),
-					new org.lgna.project.Version( "3.1.92.0.0" )
+			new TextMigration(
+					new Version( "3.1.85.0.0" ),
+					new Version( "3.1.92.0.0" )
 			),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.92.0.0" ),
-					new org.lgna.project.Version( "3.1.93.0.0" ),
+			new TextMigration(
+					new Version( "3.1.92.0.0" ),
+					new Version( "3.1.93.0.0" ),
 
 					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_WALNUT", "org.lgna.story.resources.prop.BiotechStationResource" ),
 					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
@@ -5549,14 +5556,14 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createJointIdPattern( "TAIL_5", "quadruped.DalmatianResource" ),
 					createJointIdReplacement( "TAIL_4" )
 			),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.1.93.0.0" ),
-					new org.lgna.project.Version( "3.2.108.0.0" )
+			new TextMigration(
+					new Version( "3.1.93.0.0" ),
+					new Version( "3.2.108.0.0" )
 
 					),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.2.108.0.0" ),
-					new org.lgna.project.Version( "3.2.110.0.0" ),
+			new TextMigration(
+					new Version( "3.2.108.0.0" ),
+					new Version( "3.2.110.0.0" ),
 
 					createMoreSpecificFieldPattern( "OVAL", "org.lgna.story.resources.prop.SandDunesResource" ),
 					createMoreSpecificFieldReplacement( "OVAL_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
@@ -5651,9 +5658,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "WATER", "org.lgna.story.resources.prop.WaterTankWellResource" ),
 					createMoreSpecificFieldReplacement( "WATER_INDIA_WATER_TANK", "org.lgna.story.resources.prop.WaterTankWellResource" )
 					),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.2.110.0.0" ),
-					new org.lgna.project.Version( "3.2.111.0.0" ),
+			new TextMigration(
+					new Version( "3.2.110.0.0" ),
+					new Version( "3.2.111.0.0" ),
 
 					createMoreSpecificFieldPattern( "BLEACHERS", "org.lgna.story.resources.prop.CircusBleachersResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT_BLEACHERS", "org.lgna.story.resources.prop.CircusBleachersResource" ),
@@ -5667,13 +5674,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "SHORT", "org.lgna.story.resources.prop.WychElmResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.WychElmResource" )
 					),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.2.111.0.0" ),
-					new org.lgna.project.Version( "3.2.112.0.0" )
+			new TextMigration(
+					new Version( "3.2.111.0.0" ),
+					new Version( "3.2.112.0.0" )
 					),
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.2.112.0.0" ),
-					new org.lgna.project.Version( "3.2.113.0.0" ),
+			new TextMigration(
+					new Version( "3.2.112.0.0" ),
+					new Version( "3.2.113.0.0" ),
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkMirrorResource" ),
 					createMoreSpecificFieldReplacement( "MIRROR", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
@@ -5836,9 +5843,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					),
 
-			new org.lgna.project.migration.TextMigration(
-					new org.lgna.project.Version( "3.2.113.0.0" ),
-					new org.lgna.project.Version( "3.3.0.0.0" ),
+			new TextMigration(
+					new Version( "3.2.113.0.0" ),
+					new Version( "3.3.0.0.0" ),
 
 					"INDIA_BRICK_D",
 					"GRAY",
@@ -5875,29 +5882,29 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 	};
 
 	private final AstMigration[] astMigrations = {
-			new org.lgna.project.migration.ast.NoOpAstMigrationStandIn(
-					new org.lgna.project.Version( "3.1.0.0.0" ),
-					new org.lgna.project.Version( "3.1.38.0.0" )
+			new NoOpAstMigrationStandIn(
+					new Version( "3.1.0.0.0" ),
+					new Version( "3.1.38.0.0" )
 			),
-			new org.lgna.project.migration.ast.MouseClickAstMigration(
-					new org.lgna.project.Version( "3.1.38.0.0" ),
-					new org.lgna.project.Version( "3.1.39.0.0" )
+			new MouseClickAstMigration(
+					new Version( "3.1.38.0.0" ),
+					new Version( "3.1.39.0.0" )
 			),
-			new org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration(
-					new org.lgna.project.Version( "3.1.39.0.0" ),
-					new org.lgna.project.Version( "3.1.68.0.0" )
+			new UnderscoreFieldAccessAstMigration(
+					new Version( "3.1.39.0.0" ),
+					new Version( "3.1.68.0.0" )
 			),
-			new org.lgna.project.migration.ast.EventAstMigration(
-					new org.lgna.project.Version( "3.1.68.0.0" ),
-					new org.lgna.project.Version( "3.1.70.0.0" )
+			new EventAstMigration(
+					new Version( "3.1.68.0.0" ),
+					new Version( "3.1.70.0.0" )
 			),
-			new org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration(
-					new org.lgna.project.Version( "3.1.70.0.0" ),
-					new org.lgna.project.Version( "3.1.72.0.0" )
+			new RemoveGetMySceneMethodFromProgramTypeAstMigration(
+					new Version( "3.1.70.0.0" ),
+					new Version( "3.1.72.0.0" )
 			),
-			new org.lgna.project.migration.ast.ChangeDeclaringClassForAxesSetVehicle(
-					new org.lgna.project.Version( "3.2.5.0.0" ),
-					new org.lgna.project.Version( "3.2.113.0.0" )
+			new ChangeDeclaringClassForAxesSetVehicle(
+					new Version( "3.2.5.0.0" ),
+					new Version( "3.2.113.0.0" )
 			)
 	};
 
@@ -5912,16 +5919,16 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 	}
 
 	private ProjectMigrationManager() {
-		super( org.lgna.project.ProjectVersion.getCurrentVersion() );
+		super( ProjectVersion.getCurrentVersion() );
 	}
 
 	@Override
-	protected org.lgna.project.migration.TextMigration[] getTextMigrations() {
+	protected TextMigration[] getTextMigrations() {
 		return this.textMigrations;
 	}
 
 	@Override
-	protected org.lgna.project.migration.AstMigration[] getAstMigrations() {
+	protected AstMigration[] getAstMigrations() {
 		return this.astMigrations;
 	}
 }

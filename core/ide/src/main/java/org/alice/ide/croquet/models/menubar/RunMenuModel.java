@@ -42,21 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.stageide.run.RunComposite;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.StaticMenuModel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RunMenuModel extends org.lgna.croquet.StaticMenuModel {
-	public RunMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ) );
+public class RunMenuModel extends StaticMenuModel {
+	public RunMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		return new org.lgna.croquet.StandardMenuItemPrepModel[] {
-				org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation().getMenuItemPrepModel()
+	protected StandardMenuItemPrepModel[] createModels() {
+		return new StandardMenuItemPrepModel[] {
+				RunComposite.getInstance().getLaunchOperation().getMenuItemPrepModel()
 		};
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

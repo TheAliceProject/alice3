@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.lgna.common;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,8 +61,8 @@ public class ThreadUtilities {
 			runnables[ 0 ].run();
 			break;
 		default:
-			final java.util.List<RuntimeException> runtimeExceptions = new java.util.LinkedList<RuntimeException>();
-			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
+			final List<RuntimeException> runtimeExceptions = new LinkedList<RuntimeException>();
+			final CyclicBarrier barrier = new CyclicBarrier( runnables.length + 1 );
 			for( final Runnable runnable : runnables ) {
 				new ComponentExecutor( new Runnable() {
 					@Override
@@ -73,7 +78,7 @@ public class ThreadUtilities {
 								barrier.await();
 							} catch( InterruptedException ie ) {
 								throw new RuntimeException( ie );
-							} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+							} catch( BrokenBarrierException bbe ) {
 								throw new RuntimeException( bbe );
 							}
 						}
@@ -84,7 +89,7 @@ public class ThreadUtilities {
 				barrier.await();
 			} catch( InterruptedException ie ) {
 				throw new RuntimeException( ie );
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+			} catch( BrokenBarrierException bbe ) {
 				throw new RuntimeException( bbe );
 			}
 			synchronized( runtimeExceptions ) {

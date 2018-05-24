@@ -42,16 +42,29 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public abstract class GlrText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.Text> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGraphic<T> {
-	private edu.cmu.cs.dennisc.java.awt.MultilineText multilineText;
-	private java.awt.Font rememberedFont = null;
-	private java.awt.Color textColor = null;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.MultilineText;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.render.Graphics2D;
+import edu.cmu.cs.dennisc.render.RenderTarget;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGraphic;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.graphics.Text;
 
-	protected abstract float getWrapWidth( java.awt.Rectangle actualViewport );
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
 
-	protected abstract void render( edu.cmu.cs.dennisc.render.Graphics2D g2, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, java.awt.Font font, java.awt.Color textColor, float wrapWidth );
+public abstract class GlrText<T extends Text> extends GlrGraphic<T> {
+	private MultilineText multilineText;
+	private Font rememberedFont = null;
+	private Color textColor = null;
 
-	private void forgetFontIfNecessary( edu.cmu.cs.dennisc.render.Graphics2D g2 ) {
+	protected abstract float getWrapWidth( Rectangle actualViewport );
+
+	protected abstract void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera, MultilineText multilineText, Font font, Color textColor, float wrapWidth );
+
+	private void forgetFontIfNecessary( Graphics2D g2 ) {
 		if( this.rememberedFont != null ) {
 			g2.forget( this.rememberedFont );
 			this.rememberedFont = null;
@@ -59,9 +72,9 @@ public abstract class GlrText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.T
 	}
 
 	@Override
-	protected void render( edu.cmu.cs.dennisc.render.Graphics2D g2, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	protected void render( Graphics2D g2, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera camera ) {
 		String text = this.owner.text.getValue();
-		java.awt.Font font = this.owner.font.getValue();
+		Font font = this.owner.font.getValue();
 		if( font == this.rememberedFont ) {
 			//pass
 		} else {
@@ -72,13 +85,13 @@ public abstract class GlrText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.T
 		if( this.multilineText != null ) {
 			//pass
 		} else {
-			this.multilineText = new edu.cmu.cs.dennisc.java.awt.MultilineText( text );
+			this.multilineText = new MultilineText( text );
 		}
 		this.render( g2, renderTarget, actualViewport, camera, this.multilineText, this.rememberedFont, this.textColor, this.getWrapWidth( actualViewport ) );
 	}
 
 	@Override
-	protected void forget( edu.cmu.cs.dennisc.render.Graphics2D g2 ) {
+	protected void forget( Graphics2D g2 ) {
 		this.forgetFontIfNecessary( g2 );
 	}
 
@@ -87,13 +100,13 @@ public abstract class GlrText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.T
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.text ) {
 			this.markMultilineTextInvalid();
 		} else if( property == owner.font ) {
 			this.markMultilineTextInvalid();
 		} else if( property == owner.textColor ) {
-			this.textColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.toAwtColor( this.owner.textColor.getValue() );
+			this.textColor = ColorUtilities.toAwtColor( this.owner.textColor.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}

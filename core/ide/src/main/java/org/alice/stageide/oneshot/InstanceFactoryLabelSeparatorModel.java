@@ -43,13 +43,20 @@
 
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.LabelMenuSeparatorModel;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class InstanceFactoryLabelSeparatorModel extends LabelMenuSeparatorModel {
+	private static Map<InstanceFactory, InstanceFactoryLabelSeparatorModel> map = Maps.newHashMap();
 
-	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
+	public static InstanceFactoryLabelSeparatorModel getInstance( InstanceFactory value ) {
 		synchronized( map ) {
 			InstanceFactoryLabelSeparatorModel rv = map.get( value );
 			if( rv != null ) {
@@ -62,10 +69,10 @@ public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMe
 		}
 	}
 
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final InstanceFactory instanceFactory;
 
-	private InstanceFactoryLabelSeparatorModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
+	private InstanceFactoryLabelSeparatorModel( InstanceFactory instanceFactory ) {
+		super( UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
 		this.instanceFactory = instanceFactory;
 	}
 

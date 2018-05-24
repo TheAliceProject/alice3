@@ -42,19 +42,36 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.ide.ProjectStack;
 import org.alice.ide.ast.type.merge.core.MergeUtilities;
 import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.preview.croquet.PreviewPage;
+import org.lgna.common.Resource;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.SimpleOperationWizardDialogCoreComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.project.Project;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.io.IoUtilities;
+import org.lgna.project.io.TypeResourcesPair;
+
+import java.io.File;
+import java.net.URI;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeWizard extends org.lgna.croquet.SimpleOperationWizardDialogCoreComposite {
+public class ImportTypeWizard extends SimpleOperationWizardDialogCoreComposite {
 	private final AddMembersPage addMembersPage;
 	private final PreviewPage previewPage;
 
-	public ImportTypeWizard( java.net.URI uriForDescriptionPurposesOnly, org.lgna.project.ast.NamedUserType importedRootType, java.util.Set<org.lgna.common.Resource> importedResources, org.lgna.project.ast.NamedUserType srcType, org.lgna.project.ast.NamedUserType dstType ) {
-		super( java.util.UUID.fromString( "30a4572a-53e9-464b-a8a3-cdebac13372f" ), org.lgna.croquet.Application.PROJECT_GROUP );
+	public ImportTypeWizard( URI uriForDescriptionPurposesOnly, NamedUserType importedRootType, Set<Resource> importedResources, NamedUserType srcType, NamedUserType dstType ) {
+		super( UUID.fromString( "30a4572a-53e9-464b-a8a3-cdebac13372f" ), Application.PROJECT_GROUP );
 		this.addMembersPage = new AddMembersPage( this, uriForDescriptionPurposesOnly, importedRootType, importedResources, srcType, dstType );
 		this.previewPage = new PreviewPage( this );
 		this.addPage( this.addMembersPage );
@@ -80,30 +97,30 @@ public class ImportTypeWizard extends org.lgna.croquet.SimpleOperationWizardDial
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		return this.addMembersPage.createEdit( completionStep );
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		new org.lgna.croquet.simple.SimpleApplication();
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		new SimpleApplication();
 
-		java.io.File projectFile = new java.io.File( args[ 0 ] );
+		File projectFile = new File( args[ 0 ] );
 
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( projectFile );
-		org.alice.ide.ProjectStack.pushProject( project );
+		Project project = IoUtilities.readProject( projectFile );
+		ProjectStack.pushProject( project );
 
-		java.io.File typeFile = new java.io.File( args[ 1 ] );
+		File typeFile = new File( args[ 1 ] );
 
-		org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( typeFile );
-		org.lgna.project.ast.NamedUserType importedRootType = typeResourcesPair.getType();
-		java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
-		org.lgna.project.ast.NamedUserType srcType = importedRootType;
-		org.lgna.project.ast.NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
+		TypeResourcesPair typeResourcesPair = IoUtilities.readType( typeFile );
+		NamedUserType importedRootType = typeResourcesPair.getType();
+		Set<Resource> importedResources = typeResourcesPair.getResources();
+		NamedUserType srcType = importedRootType;
+		NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
 		if( dstType != null ) {
 			//pass
 		} else {
-			dstType = new org.lgna.project.ast.NamedUserType();
+			dstType = new NamedUserType();
 			dstType.name.setValue( importedRootType.getName() );
 		}
 		ImportTypeWizard wizard = new ImportTypeWizard( typeFile.toURI(), importedRootType, importedResources, srcType, dstType );

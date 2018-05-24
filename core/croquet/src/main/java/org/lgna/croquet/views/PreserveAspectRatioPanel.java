@@ -42,7 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet.views;
 
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 
 /**
  * @author Matt May
@@ -57,39 +61,39 @@ public class PreserveAspectRatioPanel extends Panel {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.LayoutManager() {
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new LayoutManager() {
 			@Override
-			public void addLayoutComponent( String name, java.awt.Component comp ) {
+			public void addLayoutComponent( String name, Component comp ) {
 			}
 
 			@Override
-			public void removeLayoutComponent( java.awt.Component comp ) {
+			public void removeLayoutComponent( Component comp ) {
 			}
 
-			private java.awt.Dimension layoutSize( java.awt.Container parent ) {
+			private Dimension layoutSize( Container parent ) {
 				if( parent.getComponentCount() > 0 ) {
 					return parent.getComponent( 0 ).getPreferredSize();
 				} else {
-					return new java.awt.Dimension();
+					return new Dimension();
 				}
 			}
 
 			@Override
-			public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+			public Dimension minimumLayoutSize( Container parent ) {
 				return this.layoutSize( parent );
 			}
 
 			@Override
-			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			public Dimension preferredLayoutSize( Container parent ) {
 				return this.layoutSize( parent );
 			}
 
 			@Override
-			public void layoutContainer( java.awt.Container parent ) {
+			public void layoutContainer( Container parent ) {
 				if( parent.getComponentCount() > 0 ) {
-					java.awt.Dimension parentSize = parent.getSize();
-					java.awt.Component component = parent.getComponent( 0 );
+					Dimension parentSize = parent.getSize();
+					Component component = parent.getComponent( 0 );
 					Dimension properSize = getProperSize();
 					component.setSize( properSize );
 					component.setLocation( ( parentSize.width - properSize.width ) / 2, ( parentSize.height - properSize.height ) / 2 );

@@ -44,15 +44,16 @@ package org.lgna.story;
 
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.BillboardImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SBillboard extends SModel {
-	private final org.lgna.story.implementation.BillboardImp implementation = new org.lgna.story.implementation.BillboardImp( this );
+	private final BillboardImp implementation = new BillboardImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.BillboardImp getImplementation() {
+	/* package-private */BillboardImp getImplementation() {
 		return this.implementation;
 	}
 

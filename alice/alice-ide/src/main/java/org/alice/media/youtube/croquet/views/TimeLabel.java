@@ -42,20 +42,29 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextFamily;
+import org.lgna.croquet.views.HorizontalAlignment;
+import org.lgna.croquet.views.Label;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TimeLabel extends org.lgna.croquet.views.Label {
-	private static final java.text.SimpleDateFormat MINUTE_SECOND_FORMAT = new java.text.SimpleDateFormat( "mm:ss." );
-	private static final java.text.NumberFormat CENTISECOND_FORMAT = new java.text.DecimalFormat( "00" );
+public class TimeLabel extends Label {
+	private static final SimpleDateFormat MINUTE_SECOND_FORMAT = new SimpleDateFormat( "mm:ss." );
+	private static final NumberFormat CENTISECOND_FORMAT = new DecimalFormat( "00" );
 
 	public TimeLabel() {
-		this.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
-		this.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.TRAILING );
+		this.changeFont( TextFamily.MONOSPACED );
+		this.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 	}
 
 	public void setTimeInMilliseconds( long timeInMilliseconds ) {
-		java.util.Date date = new java.util.Date( timeInMilliseconds );
+		Date date = new Date( timeInMilliseconds );
 		StringBuilder sb = new StringBuilder();
 		sb.append( MINUTE_SECOND_FORMAT.format( date ) );
 		sb.append( CENTISECOND_FORMAT.format( ( timeInMilliseconds % 1000 ) / 10 ) );

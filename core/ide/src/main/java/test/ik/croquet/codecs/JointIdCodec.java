@@ -43,29 +43,34 @@
 
 package test.ik.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum JointIdCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.JointId> {
+public enum JointIdCodec implements ItemCodec<JointId> {
 	SINGLETON;
 
 	@Override
-	public org.lgna.story.resources.JointId decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public JointId decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.JointId value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, JointId value ) {
 		throw new RuntimeException();
 	}
 
 	@Override
-	public Class<org.lgna.story.resources.JointId> getValueClass() {
-		return org.lgna.story.resources.JointId.class;
+	public Class<JointId> getValueClass() {
+		return JointId.class;
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.JointId value ) {
+	public void appendRepresentation( StringBuilder sb, JointId value ) {
 		sb.append( value );
 	}
 }

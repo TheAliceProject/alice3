@@ -42,20 +42,27 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.MenuItemContainer;
+import org.lgna.croquet.views.MenuTextSeparator;
+
+import javax.swing.Icon;
+import java.util.Collections;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel {
-	private javax.swing.Icon icon;
+	private Icon icon;
 	private String name;
 
-	public LabelMenuSeparatorModel( java.util.UUID id ) {
+	public LabelMenuSeparatorModel( UUID id ) {
 		super( id );
 	}
 
 	@Override
 	public Iterable<? extends Model> getChildren() {
-		return java.util.Collections.emptyList();
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -67,20 +74,20 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 		return this.name;
 	}
 
-	public javax.swing.Icon getIcon() {
+	public Icon getIcon() {
 		return this.icon;
 	}
 
-	public void setIcon( javax.swing.Icon icon ) {
+	public void setIcon( Icon icon ) {
 		this.icon = icon;
 	}
 
 	@Override
-	public org.lgna.croquet.views.MenuTextSeparator createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+	public MenuTextSeparator createMenuItemAndAddTo( MenuItemContainer menuItemContainer ) {
 		this.initializeIfNecessary();
 		String name = this.getName();
 		if( ( name != null ) || ( this.icon != null ) ) {
-			org.lgna.croquet.views.MenuTextSeparator menuTextSeparator = new org.lgna.croquet.views.MenuTextSeparator( this );
+			MenuTextSeparator menuTextSeparator = new MenuTextSeparator( this );
 			menuItemContainer.addSeparator( menuTextSeparator );
 			return menuTextSeparator;
 		} else {

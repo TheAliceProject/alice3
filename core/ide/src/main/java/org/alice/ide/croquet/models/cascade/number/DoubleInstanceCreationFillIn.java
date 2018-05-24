@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade.number;
 
+import org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DoubleInstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.AbstractInstanceCreationFillIn {
+public class DoubleInstanceCreationFillIn extends AbstractInstanceCreationFillIn {
 	private static class SingletonHolder {
 		private static DoubleInstanceCreationFillIn instance = new DoubleInstanceCreationFillIn();
 	}
@@ -56,6 +61,6 @@ public class DoubleInstanceCreationFillIn extends org.alice.ide.croquet.models.c
 
 	//note: we would like to fill in an Integer for double parameter, hence the semi-madness below 
 	private DoubleInstanceCreationFillIn() {
-		super( java.util.UUID.fromString( "f9e4d7ff-cbe5-45d7-a71b-b16f93a3afce" ), org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE.getDeclaredConstructor( Double.TYPE ), IntegerBlank.getInstance() );
+		super( UUID.fromString( "f9e4d7ff-cbe5-45d7-a71b-b16f93a3afce" ), JavaType.DOUBLE_OBJECT_TYPE.getDeclaredConstructor( Double.TYPE ), IntegerBlank.getInstance() );
 	}
 }

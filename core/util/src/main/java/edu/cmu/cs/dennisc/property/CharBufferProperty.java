@@ -43,19 +43,21 @@
 
 package edu.cmu.cs.dennisc.property;
 
+import java.nio.CharBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CharBufferProperty extends PrimitiveBufferProperty<java.nio.CharBuffer> {
-	public CharBufferProperty( InstancePropertyOwner owner, java.nio.CharBuffer value ) {
+public class CharBufferProperty extends PrimitiveBufferProperty<CharBuffer> {
+	public CharBufferProperty( InstancePropertyOwner owner, CharBuffer value ) {
 		super( owner, value );
 	}
 
 	public CharBufferProperty( InstancePropertyOwner owner, char[] value ) {
-		super( owner, java.nio.CharBuffer.wrap( value ) );
+		super( owner, CharBuffer.wrap( value ) );
 	}
 
 	public final void setValue( char[] value ) {
-		this.setValue( java.nio.CharBuffer.wrap( value ) );
+		this.setValue( CharBuffer.wrap( value ) );
 	}
 }

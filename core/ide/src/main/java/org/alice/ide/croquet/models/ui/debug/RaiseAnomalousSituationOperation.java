@@ -42,10 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ui.debug;
 
+import org.alice.ide.croquet.models.ast.StatementContextMenu;
+import org.alice.ide.operations.InconsequentialActionOperation;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RaiseAnomalousSituationOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class RaiseAnomalousSituationOperation extends InconsequentialActionOperation {
 	private static class SingletonHolder {
 		private static RaiseAnomalousSituationOperation instance = new RaiseAnomalousSituationOperation();
 	}
@@ -55,7 +64,7 @@ public class RaiseAnomalousSituationOperation extends org.alice.ide.operations.I
 	}
 
 	private RaiseAnomalousSituationOperation() {
-		super( java.util.UUID.fromString( "d7129c6f-b7e1-40cb-9036-401f034d982b" ) );
+		super( UUID.fromString( "d7129c6f-b7e1-40cb-9036-401f034d982b" ) );
 	}
 
 	@Override
@@ -65,12 +74,12 @@ public class RaiseAnomalousSituationOperation extends org.alice.ide.operations.I
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected void performInternal( CompletionStep<?> step ) {
 		new Thread() {
 			@Override
 			public void run() {
-				org.lgna.project.ast.Statement statement = new org.lgna.project.ast.Comment( "delete me" );
-				org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+				Statement statement = new Comment( "delete me" );
+				StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( NullTrigger.createUserInstance() );
 			}
 		}.start();
 	}

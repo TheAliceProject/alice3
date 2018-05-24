@@ -42,22 +42,33 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.imp.operation.OperationImp;
+import org.lgna.croquet.views.Button;
+import org.lgna.croquet.views.ButtonWithRightClickCascade;
+import org.lgna.croquet.views.Hyperlink;
+
+import javax.swing.Icon;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Operation extends AbstractCompletionModel {
-	private javax.swing.Icon buttonIcon;
+	private Icon buttonIcon;
 
-	public Operation( Group group, java.util.UUID id ) {
+	public Operation( Group group, UUID id ) {
 		super( group, id );
 	}
 
-	public org.lgna.croquet.imp.operation.OperationImp getImp() {
+	public OperationImp getImp() {
 		return this.imp;
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		return this.imp.getPotentialPrepModelPaths( edit );
 	}
 
@@ -94,7 +105,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.imp.setName( name );
 	}
 
-	public void setSmallIcon( javax.swing.Icon icon ) {
+	public void setSmallIcon( Icon icon ) {
 		this.imp.setSmallIcon( icon );
 	}
 
@@ -102,11 +113,11 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.imp.setShortDescription( toolTipText );
 	}
 
-	public javax.swing.Icon getButtonIcon() {
+	public Icon getButtonIcon() {
 		return this.buttonIcon;
 	}
 
-	public void setButtonIcon( javax.swing.Icon icon ) {
+	public void setButtonIcon( Icon icon ) {
 		this.buttonIcon = icon;
 	}
 
@@ -118,25 +129,25 @@ public abstract class Operation extends AbstractCompletionModel {
 		return this.imp.getFauxCascadeItem();
 	}
 
-	public org.lgna.croquet.views.Button createButton( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.views.Button( this, fontScalar, textAttributes );
+	public Button createButton( float fontScalar, TextAttribute<?>... textAttributes ) {
+		return new Button( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.views.Button createButton( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public Button createButton( TextAttribute<?>... textAttributes ) {
 		return this.createButton( 1.0f, textAttributes );
 	}
 
-	public org.lgna.croquet.views.Hyperlink createHyperlink( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.views.Hyperlink( this, fontScalar, textAttributes );
+	public Hyperlink createHyperlink( float fontScalar, TextAttribute<?>... textAttributes ) {
+		return new Hyperlink( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.views.Hyperlink createHyperlink( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+	public Hyperlink createHyperlink( TextAttribute<?>... textAttributes ) {
 		return this.createHyperlink( 1.0f, textAttributes );
 	}
 
-	public org.lgna.croquet.views.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
-		return new org.lgna.croquet.views.ButtonWithRightClickCascade( this, cascade );
+	public ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
+		return new ButtonWithRightClickCascade( this, cascade );
 	}
 
-	private final org.lgna.croquet.imp.operation.OperationImp imp = new org.lgna.croquet.imp.operation.OperationImp( this );
+	private final OperationImp imp = new OperationImp( this );
 }

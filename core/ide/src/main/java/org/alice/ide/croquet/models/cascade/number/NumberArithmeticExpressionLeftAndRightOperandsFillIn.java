@@ -43,13 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.number;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NumberArithmeticExpressionLeftAndRightOperandsFillIn extends org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticExpressionLeftAndRightOperandsFillIn {
-	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, NumberArithmeticExpressionLeftAndRightOperandsFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class NumberArithmeticExpressionLeftAndRightOperandsFillIn extends ArithmeticExpressionLeftAndRightOperandsFillIn {
+	private static Map<ArithmeticInfixExpression.Operator, NumberArithmeticExpressionLeftAndRightOperandsFillIn> map = Maps.newHashMap();
 
-	public static NumberArithmeticExpressionLeftAndRightOperandsFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
+	public static NumberArithmeticExpressionLeftAndRightOperandsFillIn getInstance( ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			NumberArithmeticExpressionLeftAndRightOperandsFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -62,7 +69,7 @@ public class NumberArithmeticExpressionLeftAndRightOperandsFillIn extends org.al
 		}
 	}
 
-	private NumberArithmeticExpressionLeftAndRightOperandsFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "04658765-3fc8-4874-ba9d-789265bb1b47" ), Double.class, Number.class, operator, Number.class );
+	private NumberArithmeticExpressionLeftAndRightOperandsFillIn( ArithmeticInfixExpression.Operator operator ) {
+		super( UUID.fromString( "04658765-3fc8-4874-ba9d-789265bb1b47" ), Double.class, Number.class, operator, Number.class );
 	}
 }

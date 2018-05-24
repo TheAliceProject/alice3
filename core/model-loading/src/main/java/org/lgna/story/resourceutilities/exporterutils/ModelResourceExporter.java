@@ -76,12 +76,31 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.lgna.story.BipedPose;
+import org.lgna.story.BipedPoseBuilder;
+import org.lgna.story.FlyerPose;
+import org.lgna.story.FlyerPoseBuilder;
+import org.lgna.story.JointedModelPose;
+import org.lgna.story.JointedModelPoseBuilder;
+import org.lgna.story.Pose;
+import org.lgna.story.QuadrupedPose;
+import org.lgna.story.QuadrupedPoseBuilder;
+import org.lgna.story.SlithererPose;
+import org.lgna.story.SlithererPoseBuilder;
+import org.lgna.story.SwimmerPose;
+import org.lgna.story.SwimmerPoseBuilder;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory;
+import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
+import org.lgna.story.resources.SlithererResource;
 import org.lgna.story.resources.SwimmerResource;
 import org.lgna.story.resourceutilities.JavaCodeUtilities;
 import org.lgna.story.resourceutilities.ModelClassData;
@@ -99,6 +118,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.w3c.dom.Element;
 
 public class ModelResourceExporter {
 
@@ -154,7 +174,7 @@ public class ModelResourceExporter {
 	private String attributionName;
 	private String attributionYear;
 
-	private Class<?> jointAndVisualFactory = org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory.class;
+	private Class<?> jointAndVisualFactory = JointImplementationAndVisualDataFactory.class;
 
 	private ModelClassData classData;
 	private List<Tuple2<String, String>> jointList;
@@ -703,13 +723,13 @@ public class ModelResourceExporter {
 		this.javaFile = javaFile;
 	}
 
-	private static org.w3c.dom.Element createBoundingBoxElement( Document doc, AxisAlignedBox bbox ) {
-		org.w3c.dom.Element bboxElement = doc.createElement( "BoundingBox" );
-		org.w3c.dom.Element minElement = doc.createElement( "Min" );
+	private static Element createBoundingBoxElement( Document doc, AxisAlignedBox bbox ) {
+		Element bboxElement = doc.createElement( "BoundingBox" );
+		Element minElement = doc.createElement( "Min" );
 		minElement.setAttribute( "x", Double.toString( bbox.getXMinimum() ) );
 		minElement.setAttribute( "y", Double.toString( bbox.getYMinimum() ) );
 		minElement.setAttribute( "z", Double.toString( bbox.getZMinimum() ) );
-		org.w3c.dom.Element maxElement = doc.createElement( "Max" );
+		Element maxElement = doc.createElement( "Max" );
 		maxElement.setAttribute( "x", Double.toString( bbox.getXMaximum() ) );
 		maxElement.setAttribute( "y", Double.toString( bbox.getYMaximum() ) );
 		maxElement.setAttribute( "z", Double.toString( bbox.getZMaximum() ) );
@@ -720,38 +740,38 @@ public class ModelResourceExporter {
 		return bboxElement;
 	}
 
-	private static org.w3c.dom.Element createTagsElement( Document doc, List<String> tagList ) {
-		org.w3c.dom.Element tagsElement = doc.createElement( "Tags" );
+	private static Element createTagsElement( Document doc, List<String> tagList ) {
+		Element tagsElement = doc.createElement( "Tags" );
 		for( String tag : tagList ) {
-			org.w3c.dom.Element tagElement = doc.createElement( "Tag" );
+			Element tagElement = doc.createElement( "Tag" );
 			tagElement.setTextContent( tag );
 			tagsElement.appendChild( tagElement );
 		}
 		return tagsElement;
 	}
 
-	private static org.w3c.dom.Element createGroupTagsElement( Document doc, List<String> tagList ) {
-		org.w3c.dom.Element tagsElement = doc.createElement( "GroupTags" );
+	private static Element createGroupTagsElement( Document doc, List<String> tagList ) {
+		Element tagsElement = doc.createElement( "GroupTags" );
 		for( String tag : tagList ) {
-			org.w3c.dom.Element tagElement = doc.createElement( "GroupTag" );
+			Element tagElement = doc.createElement( "GroupTag" );
 			tagElement.setTextContent( tag );
 			tagsElement.appendChild( tagElement );
 		}
 		return tagsElement;
 	}
 
-	private static org.w3c.dom.Element createThemeTagsElement( Document doc, List<String> tagList ) {
-		org.w3c.dom.Element tagsElement = doc.createElement( "ThemeTags" );
+	private static Element createThemeTagsElement( Document doc, List<String> tagList ) {
+		Element tagsElement = doc.createElement( "ThemeTags" );
 		for( String tag : tagList ) {
-			org.w3c.dom.Element tagElement = doc.createElement( "ThemeTag" );
+			Element tagElement = doc.createElement( "ThemeTag" );
 			tagElement.setTextContent( tag );
 			tagsElement.appendChild( tagElement );
 		}
 		return tagsElement;
 	}
 
-	private static org.w3c.dom.Element createSubResourceElement( Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE ) {
-		org.w3c.dom.Element resourceElement = doc.createElement( "Resource" );
+	private static Element createSubResourceElement( Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE ) {
+		Element resourceElement = doc.createElement( "Resource" );
 		resourceElement.setAttribute( "textureName", AliceResourceUtilties.makeEnumName( subResource.getTextureName() ) );
 		resourceElement.setAttribute( "resourceName", createResourceEnumName( parentMRE, subResource ) );
 		if( subResource.getModelName() != null ) {
@@ -810,7 +830,7 @@ public class ModelResourceExporter {
 	private Document createXMLDocument() {
 		try {
 			Document doc = XMLUtilities.createDocument();
-			org.w3c.dom.Element modelRoot = doc.createElement( "AliceModel" );
+			Element modelRoot = doc.createElement( "AliceModel" );
 			modelRoot.setAttribute( "name", this.className );
 			if( ( this.attributionName != null ) && ( this.attributionName.length() > 0 ) ) {
 				modelRoot.setAttribute( "creator", this.attributionName );
@@ -897,14 +917,14 @@ public class ModelResourceExporter {
 		List<Tuple2<String, String>> ids = new LinkedList<Tuple2<String, String>>();
 		Field[] fields = resourceClass.getDeclaredFields();
 		for( Field f : fields ) {
-			if( org.lgna.story.resources.JointId.class.isAssignableFrom( f.getType() ) ) {
+			if( JointId.class.isAssignableFrom( f.getType() ) ) {
 				String fieldName = f.getName();
 				String parentName = null;
-				org.lgna.story.resources.JointId fieldData = null;
+				JointId fieldData = null;
 				try {
 					Object o = f.get( null );
-					if( ( o != null ) && ( o instanceof org.lgna.story.resources.JointId ) ) {
-						fieldData = (org.lgna.story.resources.JointId)o;
+					if( ( o != null ) && ( o instanceof JointId ) ) {
+						fieldData = (JointId)o;
 					}
 				} catch( Exception e ) {
 				}
@@ -926,7 +946,7 @@ public class ModelResourceExporter {
 		List<String> ids = new LinkedList<String>();
 		Field[] fields = resourceClass.getDeclaredFields();
 		for( Field f : fields ) {
-			if( org.lgna.story.resources.JointId.class.isAssignableFrom( f.getType() ) ) {
+			if( JointId.class.isAssignableFrom( f.getType() ) ) {
 				String fieldName = f.getName();
 				ids.add( fieldName );
 			}
@@ -938,17 +958,17 @@ public class ModelResourceExporter {
 		return ids;
 	}
 
-	private java.lang.reflect.Field getJointRootsField( Class<?> cls ) {
+	private Field getJointRootsField( Class<?> cls ) {
 		if( cls == null ) {
 			return null;
 		}
-		java.lang.reflect.Field[] rootFields = AliceResourceClassUtilities.getFieldsOfType( cls, org.lgna.story.resources.JointId[].class );
+		Field[] rootFields = AliceResourceClassUtilities.getFieldsOfType( cls, JointId[].class );
 		if( rootFields.length == 1 ) {
 			return rootFields[ 0 ];
 		} else {
 			Class[] interfaces = cls.getInterfaces();
 			for( Class i : interfaces ) {
-				java.lang.reflect.Field rootField = getJointRootsField( i );
+				Field rootField = getJointRootsField( i );
 				if( rootField != null ) {
 					return rootField;
 				}
@@ -961,9 +981,9 @@ public class ModelResourceExporter {
 		if( cls == null ) {
 			return false;
 		}
-		java.lang.reflect.Method[] methods = cls.getMethods();
-		for( java.lang.reflect.Method m : methods ) {
-			if( org.lgna.story.resources.JointId[].class.isAssignableFrom( m.getReturnType() ) ) {
+		Method[] methods = cls.getMethods();
+		for( Method m : methods ) {
+			if( JointId[].class.isAssignableFrom( m.getReturnType() ) ) {
 				return true;
 			}
 		}
@@ -977,7 +997,7 @@ public class ModelResourceExporter {
 		return false;
 	}
 
-	public static String getAccessorMethodsForResourceClass( Class<? extends org.lgna.story.resources.JointedModelResource> resourceClass ) {
+	public static String getAccessorMethodsForResourceClass( Class<? extends JointedModelResource> resourceClass ) {
 		StringBuilder sb = new StringBuilder();
 		List<String> jointIds = getExistingJointIds( resourceClass );
 		for( String id : jointIds ) {
@@ -1093,7 +1113,7 @@ public class ModelResourceExporter {
 
 	private List<String> getMandatoryJointArrayNames( Class<?> superClass ) {
 		List<String> methodNames = new LinkedList<String>();
-		for( Method method : getMandatoryMethods( superClass, org.lgna.story.resources.JointId[].class ) ) {
+		for( Method method : getMandatoryMethods( superClass, JointId[].class ) ) {
 			methodNames.add( method.getName() );
 		}
 		List<String> arrayNames = new LinkedList<String>();
@@ -1130,7 +1150,7 @@ public class ModelResourceExporter {
 
 	private List<String> getMandatoryPoseNames( Class<?> superClass ) {
 		List<String> methodNames = new LinkedList<String>();
-		for( Method method : getMandatoryMethods( superClass, org.lgna.story.Pose.class ) ) {
+		for( Method method : getMandatoryMethods( superClass, Pose.class ) ) {
 			methodNames.add( method.getName() );
 		}
 		List<String> poseNames = new LinkedList<String>();
@@ -1154,38 +1174,38 @@ public class ModelResourceExporter {
 
 	private Class getPoseBuilderTypeForSuperClass( Class<?> superClass ) {
 		if( FlyerResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.FlyerPoseBuilder.class;
+			return FlyerPoseBuilder.class;
 		} else if( BipedResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.BipedPoseBuilder.class;
+			return BipedPoseBuilder.class;
 		} else if( QuadrupedResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.QuadrupedPoseBuilder.class;
+			return QuadrupedPoseBuilder.class;
 		} else if( SwimmerResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.SwimmerPoseBuilder.class;
-		} else if( org.lgna.story.resources.SlithererResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.SlithererPoseBuilder.class;
+			return SwimmerPoseBuilder.class;
+		} else if( SlithererResource.class.isAssignableFrom( superClass ) ) {
+			return SlithererPoseBuilder.class;
 		}
-		return org.lgna.story.JointedModelPoseBuilder.class;
+		return JointedModelPoseBuilder.class;
 	}
 
 	private Class getPoseTypeForSuperClass( Class<?> superClass ) {
 		if( FlyerResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.FlyerPose.class;
+			return FlyerPose.class;
 		} else if( BipedResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.BipedPose.class;
+			return BipedPose.class;
 		} else if( QuadrupedResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.QuadrupedPose.class;
+			return QuadrupedPose.class;
 		} else if( SwimmerResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.SwimmerPose.class;
-		} else if( org.lgna.story.resources.SlithererResource.class.isAssignableFrom( superClass ) ) {
-			return org.lgna.story.SlithererPose.class;
+			return SwimmerPose.class;
+		} else if( SlithererResource.class.isAssignableFrom( superClass ) ) {
+			return SlithererPose.class;
 		}
-		return org.lgna.story.JointedModelPose.class;
+		return JointedModelPose.class;
 
 	}
 
 	private List<String> getAlreadyDeclaredJointArrayNames( Class<?> superClass ) {
 		List<String> fieldNames = new LinkedList<String>();
-		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( superClass, org.lgna.story.resources.JointArrayId.class ) ) {
+		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( superClass, JointArrayId.class ) ) {
 			fieldNames.add( field.getName() );
 		}
 		return fieldNames;
@@ -1303,7 +1323,7 @@ public class ModelResourceExporter {
 					}
 
 					//					Class poseType = getPoseTypeForSuperClass( classData.superClass );
-					Class poseType = org.lgna.story.JointedModelPose.class;
+					Class poseType = JointedModelPose.class;
 					Class poseBuilderType = getPoseBuilderTypeForSuperClass( classData.superClass );
 					String poseTypeString = poseType.getName();
 					sb.append( "\n\tpublic static final " + poseTypeString + " " + fullPoseName + " = new " + poseTypeString + "( " );
@@ -1404,7 +1424,7 @@ public class ModelResourceExporter {
 			if( addedRoots ) {
 				sb.append( "\t\treturn " + this.getJavaClassName() + "." + ROOT_IDS_FIELD_NAME + ";" + JavaCodeUtilities.LINE_RETURN );
 			} else {
-				java.lang.reflect.Field rootsField = getJointRootsField( this.classData.superClass );
+				Field rootsField = getJointRootsField( this.classData.superClass );
 				if( rootsField != null ) {
 					sb.append( "\t\treturn " + rootsField.getDeclaringClass().getCanonicalName() + "." + rootsField.getName() + ";" + JavaCodeUtilities.LINE_RETURN );
 				} else {
@@ -1563,7 +1583,7 @@ public class ModelResourceExporter {
 		if( !root.endsWith( "/" ) && !root.endsWith( "\\" ) ) {
 			root += "/";
 		}
-		String resourceDirectory = root + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + org.lgna.story.implementation.alice.ModelResourceIoUtilities.getResourceSubDirWithSeparator( "" );
+		String resourceDirectory = root + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceIoUtilities.getResourceSubDirWithSeparator( "" );
 		File xmlFile = new File( resourceDirectory, this.className + ".xml" );
 		return xmlFile;
 	}
@@ -1630,7 +1650,7 @@ public class ModelResourceExporter {
 		if( !rootPath.endsWith( "/" ) && !rootPath.endsWith( "\\" ) ) {
 			rootPath += "/";
 		}
-		String resourceDirectory = rootPath + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + org.lgna.story.implementation.alice.ModelResourceIoUtilities.getResourceSubDirWithSeparator( this.className );
+		String resourceDirectory = rootPath + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceIoUtilities.getResourceSubDirWithSeparator( this.className );
 		return resourceDirectory + thumbnailName;
 	}
 

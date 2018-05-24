@@ -42,9 +42,16 @@
  */
 package org.lgna.ik.poser.scene;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.math.immutable.MRay;
+import edu.cmu.cs.dennisc.math.immutable.MSphere;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.RenderTarget;
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.controllers.PoserEvent;
@@ -63,6 +70,8 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
+import javax.swing.SwingUtilities;
+
 /**
  * @author Matt May
  */
@@ -71,7 +80,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private static final double MIN_SELECTION_DISTANCE = 50;
 	private final AbstractPoserScene<?> scene;
 	private final CameraImp camera;
-	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<PoserSphereManipulatorListener> listeners = Lists.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
 	private JointSelectionSphere anchor;
 	private Joint joint;
@@ -89,12 +98,12 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			onscreenPicturePlane.addRenderTargetListener( new DebugOverlay( new OverlayFunction() {
 
 				@Override
-				public java.awt.Color getColorForXY( int x, int y ) {
+				public Color getColorForXY( int x, int y ) {
 					JointSelectionSphere jointSelectionSphere = calculateJointSelectionSphereAtPixel( x, y );
 					if( jointSelectionSphere != null ) {
-						return java.awt.Color.RED;
+						return Color.RED;
 					} else {
-						return java.awt.Color.BLUE;
+						return Color.BLUE;
 					}
 				}
 			} ) );
@@ -130,9 +139,9 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		if( selected != null ) {
 			//System.out.println( "selectedFinal: " + selected.getJoint() );
 			Composite sgComposite = EmployeesOnly.getImplementation( selected ).getSgComposite();
-			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if( SwingUtilities.isLeftMouseButton( e ) ) {
 				this.selected = selected;
-			} else if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+			} else if( SwingUtilities.isRightMouseButton( e ) ) {
 
 				this.anchor = selected;
 			}
@@ -148,8 +157,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 		final boolean IS_USING_MATH_CLASSES = true;
 		if( IS_USING_MATH_CLASSES ) {
-			edu.cmu.cs.dennisc.math.immutable.MRay mRayInCameraSpace = ray.createImmutable();
-			edu.cmu.cs.dennisc.math.immutable.MSphere mSphereInCameraSpace = new edu.cmu.cs.dennisc.math.immutable.MSphere( center.createImmutable(), sSphere.getRadius() );
+			MRay mRayInCameraSpace = ray.createImmutable();
+			MSphere mSphereInCameraSpace = new MSphere( center.createImmutable(), sSphere.getRadius() );
 			return mSphereInCameraSpace.intersect( mRayInCameraSpace );
 		} else {
 			//this formula comes from ccs.neu.edu
@@ -241,8 +250,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private ManipulationHandle3D checkIfHandleSelected( MouseEvent e ) {
 		SceneImp implementation = EmployeesOnly.getImplementation( scene );
-		edu.cmu.cs.dennisc.render.RenderTarget rt = implementation.getProgram().getOnscreenRenderTarget();
-		edu.cmu.cs.dennisc.render.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
+		RenderTarget rt = implementation.getProgram().getOnscreenRenderTarget();
+		PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 		if( ( pickResult != null ) && ( pickResult.getVisual() != null ) ) {
 			Composite composite = pickResult.getVisual().getParent();
 			if( composite != null ) {

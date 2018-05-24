@@ -43,11 +43,13 @@
 
 package org.lgna.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPrepModel extends AbstractModel implements PrepModel {
-	public AbstractPrepModel( java.util.UUID id ) {
+	public AbstractPrepModel( UUID id ) {
 		super( id );
 	}
 

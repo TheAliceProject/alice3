@@ -42,74 +42,106 @@
  *******************************************************************************/
 package org.alice.ide.sceneeditor;
 
+import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.ProjectDocument;
+import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
+import org.alice.ide.ast.AstEventManager;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.alice.ide.project.ProjectDocumentState;
 import org.lgna.common.ComponentExecutor;
+import org.lgna.croquet.State;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.StatementListProperty;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.project.virtualmachine.VirtualMachine;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SProgram;
+import org.lgna.story.SScene;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.EntityImp;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderPanel {
+public abstract class AbstractSceneEditor extends BorderPanel {
 
-	private org.lgna.project.virtualmachine.VirtualMachine vm;
+	private VirtualMachine vm;
 
-	private java.util.Map<org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance> mapSceneFieldToInstance = new java.util.HashMap<org.lgna.project.ast.UserField, org.lgna.project.virtualmachine.UserInstance>();
-	private java.util.Map<org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField> mapSceneInstanceToField = new java.util.HashMap<org.lgna.project.virtualmachine.UserInstance, org.lgna.project.ast.UserField>();
+	private Map<UserField, UserInstance> mapSceneFieldToInstance = new HashMap<UserField, UserInstance>();
+	private Map<UserInstance, UserField> mapSceneInstanceToField = new HashMap<UserInstance, UserField>();
 
-	private java.util.Map<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement> mapSceneFieldToInitialCodeState = new java.util.HashMap<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement>();
+	private Map<UserField, Statement> mapSceneFieldToInitialCodeState = new HashMap<UserField, Statement>();
 
-	private org.lgna.project.ast.NamedUserType programType;
-	private org.lgna.project.virtualmachine.UserInstance programInstance;
-	private org.lgna.project.ast.UserField selectedField;
+	private NamedUserType programType;
+	private UserInstance programInstance;
+	private UserField selectedField;
 
 	private final SceneFieldState sceneFieldListSelectionState = new SceneFieldState();
 
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
+	private final State.ValueListener<ProjectDocument> projectListener = new State.ValueListener<ProjectDocument>() {
 		@Override
-		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+		public void changing( State<ProjectDocument> state, ProjectDocument prevValue, ProjectDocument nextValue, boolean isAdjusting ) {
 		}
 
 		@Override
-		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+		public void changed( State<ProjectDocument> state, ProjectDocument prevValue, ProjectDocument nextValue, boolean isAdjusting ) {
 			AbstractSceneEditor.this.handleProjectOpened( nextValue != null ? nextValue.getProject() : null );
 		}
 	};
 
-	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectedSceneObserver = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
+	private ValueListener<UserField> selectedSceneObserver = new ValueListener<UserField>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
-			org.lgna.project.ast.UserField nextValue = e.getNextValue();
+		public void valueChanged( ValueEvent<UserField> e ) {
+			UserField nextValue = e.getNextValue();
 			AbstractSceneEditor.this.setActiveScene( nextValue );
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+	private final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
-			org.alice.ide.perspectives.ProjectPerspective prevValue = e.getPreviousValue();
-			org.alice.ide.perspectives.ProjectPerspective nextValue = e.getNextValue();
+		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
+			ProjectPerspective prevValue = e.getPreviousValue();
+			ProjectPerspective nextValue = e.getNextValue();
 			if( prevValue != nextValue ) {
-				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective() );
+				AbstractSceneEditor.this.handleExpandContractChange( nextValue == IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective() );
 			}
 		}
 	};
 
-	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
+	public abstract void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 
-	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
+	public abstract void enableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 
-	public abstract void generateCodeForSetUp( org.lgna.project.ast.StatementListProperty bodyStatementsProperty );
+	public abstract void generateCodeForSetUp( StatementListProperty bodyStatementsProperty );
 
-	public abstract org.lgna.project.ast.Statement[] getDoStatementsForAddField( org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform );
+	public abstract Statement[] getDoStatementsForAddField( UserField field, AffineMatrix4x4 initialTransform );
 
-	public abstract org.lgna.project.ast.Statement[] getDoStatementsForCopyField( org.lgna.project.ast.UserField fieldToCopy, org.lgna.project.ast.UserField newField, AffineMatrix4x4 initialTransform );
+	public abstract Statement[] getDoStatementsForCopyField( UserField fieldToCopy, UserField newField, AffineMatrix4x4 initialTransform );
 
-	public abstract org.lgna.project.ast.Statement[] getUndoStatementsForAddField( org.lgna.project.ast.UserField field );
+	public abstract Statement[] getUndoStatementsForAddField( UserField field );
 
-	public abstract org.lgna.project.ast.Statement[] getDoStatementsForRemoveField( org.lgna.project.ast.UserField field );
+	public abstract Statement[] getDoStatementsForRemoveField( UserField field );
 
-	public abstract org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField( org.lgna.project.ast.UserField field );
+	public abstract Statement[] getUndoStatementsForRemoveField( UserField field );
 
 	public abstract void preScreenCapture();
 
@@ -133,38 +165,38 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	}
 
 	protected void initializeObservers() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
+		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
-	protected void setInitialCodeStateForField( org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement code ) {
+	protected void setInitialCodeStateForField( UserField field, Statement code ) {
 		this.mapSceneFieldToInitialCodeState.put( field, code );
 	}
 
-	protected org.lgna.project.ast.Statement getInitialCodeforField( org.lgna.project.ast.UserField field ) {
+	protected Statement getInitialCodeforField( UserField field ) {
 		return this.mapSceneFieldToInitialCodeState.get( field );
 	}
 
-	public org.lgna.project.ast.UserField getActiveSceneField() {
+	public UserField getActiveSceneField() {
 		return this.sceneFieldListSelectionState.getValue();
 	}
 
-	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM( Object javaInstance ) {
+	public UserField getFieldForInstanceInJavaVM( Object javaInstance ) {
 		return getActiveSceneInstance().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( javaInstance );
 	}
 
-	public Object getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field ) {
+	public Object getInstanceInJavaVMForField( AbstractField field ) {
 		if( field == null ) {
 			return null;
 		}
-		assert field instanceof org.lgna.project.ast.UserField;
+		assert field instanceof UserField;
 		if( field == this.getActiveSceneField() ) {
 			return getActiveSceneInstance().getJavaInstance();
 		} else {
-			return getActiveSceneInstance().getFieldValueInstanceInJava( (org.lgna.project.ast.UserField)field );
+			return getActiveSceneInstance().getFieldValueInstanceInJava( (UserField)field );
 		}
 	}
 
-	public Object getInstanceForExpression( org.lgna.project.ast.Expression expression ) {
+	public Object getInstanceForExpression( Expression expression ) {
 		if( expression == null ) {
 			return null;
 		}
@@ -176,54 +208,54 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 				return null;
 			}
 		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+			Logger.throwable( t );
 			return null;
 		}
 	}
 
-	public Object getInstanceInJavaVMForExpression( org.lgna.project.ast.Expression expression ) {
-		return org.lgna.project.virtualmachine.UserInstance.getJavaInstanceIfNecessary( getInstanceForExpression( expression ) );
+	public Object getInstanceInJavaVMForExpression( Expression expression ) {
+		return UserInstance.getJavaInstanceIfNecessary( getInstanceForExpression( expression ) );
 	}
 
-	public <E> E getInstanceInJavaVMForField( org.lgna.project.ast.AbstractField field, Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstanceInJavaVMForField( field ), cls );
+	public <E> E getInstanceInJavaVMForField( AbstractField field, Class<E> cls ) {
+		return ClassUtilities.getInstance( getInstanceInJavaVMForField( field ), cls );
 	}
 
-	public <E> E getInstanceInJavaVMForExpression( org.lgna.project.ast.Expression expression, Class<E> cls ) {
-		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getInstanceInJavaVMForExpression( expression ), cls );
+	public <E> E getInstanceInJavaVMForExpression( Expression expression, Class<E> cls ) {
+		return ClassUtilities.getInstance( getInstanceInJavaVMForExpression( expression ), cls );
 	}
 
-	public <T extends org.lgna.story.implementation.EntityImp> T getImplementation( org.lgna.project.ast.AbstractField field ) {
+	public <T extends EntityImp> T getImplementation( AbstractField field ) {
 		if( field == null ) {
 			return null;
 		}
-		org.lgna.story.SThing entity = getInstanceInJavaVMForField( field, org.lgna.story.SThing.class );
+		SThing entity = getInstanceInJavaVMForField( field, SThing.class );
 		if( entity != null ) {
-			return org.lgna.story.EmployeesOnly.getImplementation( entity );
+			return EmployeesOnly.getImplementation( entity );
 		} else {
 			return null;
 		}
 	}
 
-	public org.lgna.project.ast.UserField getSelectedField() {
+	public UserField getSelectedField() {
 		return this.selectedField;
 	}
 
-	public void setSelectedField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+	public void setSelectedField( UserType<?> declaringType, UserField field ) {
 		assert ( declaringType == this.getActiveSceneType() ) || ( field == this.getActiveSceneField() );
 		this.selectedField = field;
 	}
 
-	public void executeStatements( org.lgna.project.ast.Statement... statements ) {
-		for( org.lgna.project.ast.Statement statement : statements ) {
+	public void executeStatements( Statement... statements ) {
+		for( Statement statement : statements ) {
 			this.getVirtualMachine().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( this.getActiveSceneInstance(), statement );
 		}
 	}
 
-	public void addField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, int index, org.lgna.project.ast.Statement... statements ) {
+	public void addField( UserType<?> declaringType, UserField field, int index, Statement... statements ) {
 		assert declaringType == this.getActiveSceneType() : declaringType;
 		this.getVirtualMachine().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( this.getActiveSceneInstance(), field );
-		org.lgna.story.SProgram program = this.getProgramInstanceInJava();
+		SProgram program = this.getProgramInstanceInJava();
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 		try {
@@ -232,14 +264,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 			program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 		}
 		this.getActiveSceneType().fields.add( index, field );
-		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
+		AstEventManager.fireTypeHierarchyListeners();
 		this.setSelectedField( declaringType, field );
 
 	}
 
-	public abstract org.lgna.project.ast.Statement getCurrentStateCodeForField( org.lgna.project.ast.UserField field );
+	public abstract Statement getCurrentStateCodeForField( UserField field );
 
-	public void setFieldToState( org.lgna.project.ast.UserField field, final org.lgna.project.ast.Statement... statements ) {
+	public void setFieldToState( UserField field, final Statement... statements ) {
 		new ComponentExecutor( new Runnable() {
 			@Override
 			public void run() {
@@ -249,16 +281,16 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 
 	}
 
-	public void revertFieldToInitialState( org.lgna.project.ast.UserField field ) {
-		org.lgna.project.ast.Statement code = this.getInitialCodeforField( field );
+	public void revertFieldToInitialState( UserField field ) {
+		Statement code = this.getInitialCodeforField( field );
 		if( code == null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "No initial state code found for field " + field );
+			Logger.severe( "No initial state code found for field " + field );
 			return;
 		}
 		this.setFieldToState( field, code );
 	}
 
-	public void removeField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ) {
+	public void removeField( UserType<?> declaringType, UserField field, Statement... statements ) {
 		assert declaringType == this.getActiveSceneType() : declaringType + " " + field;
 		for( int i = 0; i < this.getActiveSceneType().fields.size(); i++ ) {
 			if( this.getActiveSceneType().fields.get( i ) == field ) {
@@ -268,50 +300,50 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 		}
 		this.executeStatements( statements );
 		if( this.selectedField == field ) {
-			org.lgna.project.ast.UserField uf = this.getActiveSceneField();
+			UserField uf = this.getActiveSceneField();
 			this.setSelectedField( uf.getDeclaringType(), uf );
 		}
 	}
 
-	public org.lgna.project.ast.NamedUserType getActiveSceneType() {
-		org.lgna.project.ast.UserField field = this.getActiveSceneField();
+	public NamedUserType getActiveSceneType() {
+		UserField field = this.getActiveSceneField();
 		if( field != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
-			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-				return (org.lgna.project.ast.NamedUserType)type;
+			AbstractType<?, ?, ?> type = field.getValueType();
+			if( type instanceof NamedUserType ) {
+				return (NamedUserType)type;
 			}
 		}
 		return null;
 	}
 
-	public org.lgna.project.virtualmachine.UserInstance getActiveSceneInstance() {
+	public UserInstance getActiveSceneInstance() {
 		return this.mapSceneFieldToInstance.get( this.getActiveSceneField() );
 	}
 
-	public <T extends org.lgna.story.implementation.EntityImp> T getActiveSceneImplementation() {
-		org.lgna.story.SThing entity = getInstanceInJavaVMForField( getActiveSceneField(), org.lgna.story.SThing.class );
+	public <T extends EntityImp> T getActiveSceneImplementation() {
+		SThing entity = getInstanceInJavaVMForField( getActiveSceneField(), SThing.class );
 		if( entity != null ) {
-			return org.lgna.story.EmployeesOnly.getImplementation( entity );
+			return EmployeesOnly.getImplementation( entity );
 		} else {
 			return null;
 		}
 	}
 
-	public final org.lgna.project.virtualmachine.VirtualMachine getVirtualMachine() {
+	public final VirtualMachine getVirtualMachine() {
 		if( this.vm != null ) {
 			//pass
 		} else {
-			this.vm = org.alice.ide.IDE.getActiveInstance().createRegisteredVirtualMachineForSceneEditor();
+			this.vm = IDE.getActiveInstance().createRegisteredVirtualMachineForSceneEditor();
 		}
 		return this.vm;
 	}
 
-	protected void addScene( org.lgna.project.ast.UserField sceneField ) {
-		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
+	protected void addScene( UserField sceneField ) {
+		NamedUserType sceneType = (NamedUserType)sceneField.getValueType();
 		Object userInstance = this.programInstance.getFieldValue( sceneField );
 		assert userInstance != null;
-		assert userInstance instanceof org.lgna.project.virtualmachine.UserInstance;
-		org.lgna.project.virtualmachine.UserInstance rv = (org.lgna.project.virtualmachine.UserInstance)userInstance;
+		assert userInstance instanceof UserInstance;
+		UserInstance rv = (UserInstance)userInstance;
 		rv.ensureInverseMapExists();
 		mapSceneFieldToInstance.put( sceneField, rv );
 		mapSceneInstanceToField.put( rv, sceneField );
@@ -327,7 +359,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 
 	}
 
-	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
+	protected void setActiveScene( UserField sceneField ) {
 		//note: added by dennisc
 		this.initializeIfNecessary();
 		//
@@ -340,23 +372,23 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 		//		getProgramInstanceInJava().setActiveScene(sceneJavaInstance);
 	}
 
-	protected org.lgna.project.virtualmachine.UserInstance getUserProgramInstance() {
+	protected UserInstance getUserProgramInstance() {
 		return this.programInstance;
 	}
 
-	protected org.lgna.story.SProgram getProgramInstanceInJava() {
-		return (org.lgna.story.SProgram)this.programInstance.getJavaInstance();
+	protected SProgram getProgramInstanceInJava() {
+		return (SProgram)this.programInstance.getJavaInstance();
 	}
 
-	protected void setProgramInstance( org.lgna.project.virtualmachine.UserInstance programInstance ) {
+	protected void setProgramInstance( UserInstance programInstance ) {
 		this.programInstance = programInstance;
 	}
 
-	protected org.lgna.project.virtualmachine.UserInstance createProgramInstance() {
+	protected UserInstance createProgramInstance() {
 		return getVirtualMachine().ENTRY_POINT_createInstance( this.programType );
 	}
 
-	protected void setProgramType( org.lgna.project.ast.NamedUserType programType ) {
+	protected void setProgramType( NamedUserType programType ) {
 		if( this.programType != programType ) {
 			if( this.programType != null ) {
 				this.sceneFieldListSelectionState.removeNewSchoolValueListener( this.selectedSceneObserver );
@@ -367,9 +399,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 			mapSceneInstanceToField.clear();
 			if( this.programType != null ) {
 				setProgramInstance( this.createProgramInstance() );
-				for( org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields() ) {
-					if( programField.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
-						this.addScene( (org.lgna.project.ast.UserField)programField );
+				for( AbstractField programField : this.programType.getDeclaredFields() ) {
+					if( programField.getValueType().isAssignableTo( SScene.class ) ) {
+						this.addScene( (UserField)programField );
 					}
 				}
 			} else {
@@ -382,7 +414,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 		}
 	}
 
-	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
+	protected void handleProjectOpened( Project nextProject ) {
 		AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
 		AbstractSceneEditor.this.revalidateAndRepaint();
 	}
@@ -396,24 +428,24 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	private boolean EPIC_HACK_isFirstAddedTo = true;
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleAddedTo( AwtComponentView<?> parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
-			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocumentFrame().getDocument();
+			ProjectDocument projectDocument = ProjectApplication.getActiveInstance().getDocumentFrame().getDocument();
 			if( projectDocument != null ) {
 				this.projectListener.changed( null, null, projectDocument, false );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove firing changed", projectDocument );
+				Logger.todo( "remove firing changed", projectDocument );
 			}
 			EPIC_HACK_isFirstAddedTo = false;
 		}
 		this.initializeIfNecessary();
-		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
+		ProjectDocumentState.getInstance().addValueListener( this.projectListener );
 		super.handleAddedTo( parent );
 	}
 
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
+	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
-		org.alice.ide.project.ProjectDocumentState.getInstance().removeValueListener( this.projectListener );
+		ProjectDocumentState.getInstance().removeValueListener( this.projectListener );
 	}
 
 }

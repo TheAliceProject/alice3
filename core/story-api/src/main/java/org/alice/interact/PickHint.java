@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.scenegraph.Element;
+
 import java.util.BitSet;
 
 /**
@@ -78,7 +80,7 @@ public class PickHint extends BitSet {
 		private PickHint pickHint = null;
 	}
 
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<PickHint> PICK_HINT_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "PICK_HINT_KEY" );
+	public static final Element.Key<PickHint> PICK_HINT_KEY = Element.Key.createInstance( "PICK_HINT_KEY" );
 
 	//	protected static final int NUM_TYPES = PickType.values().length;
 

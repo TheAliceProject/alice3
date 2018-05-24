@@ -42,18 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.history.event;
 
+import org.lgna.croquet.history.Transaction;
+
 /**
  * @author Kyle J. Harms
  */
-public class AddTransactionEvent extends Event<org.lgna.croquet.history.Transaction> {
+public class AddTransactionEvent extends Event<Transaction> {
 	private int index;
 
-	public AddTransactionEvent( org.lgna.croquet.history.Transaction transaction, int index ) {
+	public AddTransactionEvent( Transaction transaction, int index ) {
 		super( transaction );
 		this.index = index;
 	}
 
-	public org.lgna.croquet.history.Transaction getTransaction() {
+	public Transaction getTransaction() {
 		return this.getNode();
 	}
 

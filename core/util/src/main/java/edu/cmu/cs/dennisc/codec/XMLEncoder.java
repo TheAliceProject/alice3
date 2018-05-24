@@ -42,9 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.codec;
 
+import org.w3c.dom.Element;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface XMLEncoder {
-	void encode( org.w3c.dom.Element xmlElement );
+	void encode( Element xmlElement );
 }

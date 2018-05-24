@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.ast.code;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ast.code.edits.SwapParametersEdit;
 import org.alice.ide.operations.ast.AbstractCodeParameterOperation;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.UserParameter;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SwapParametersOperation extends AbstractCodeParameterOperation {
-	public SwapParametersOperation( java.util.UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
+	public SwapParametersOperation( UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
 		super( individualId, parametersProperty, parameter );
 	}
 
@@ -63,9 +68,9 @@ public abstract class SwapParametersOperation extends AbstractCodeParameterOpera
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
+	protected void perform( CompletionStep step ) {
 		final int aIndex = this.getIndexA();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( this, aIndex );
-		step.commitAndInvokeDo( new org.alice.ide.ast.code.edits.SwapParametersEdit( step, this.getCode(), aIndex ) );
+		Logger.errln( this, aIndex );
+		step.commitAndInvokeDo( new SwapParametersEdit( step, this.getCode(), aIndex ) );
 	}
 }

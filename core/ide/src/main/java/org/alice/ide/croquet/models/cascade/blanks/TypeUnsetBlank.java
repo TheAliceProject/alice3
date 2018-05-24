@@ -43,10 +43,19 @@
 
 package org.alice.ide.croquet.models.cascade.blanks;
 
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.alice.ide.croquet.models.cascade.cancels.TypeUnsetCancelFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeUnsetBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+public class TypeUnsetBlank extends ExpressionBlank {
 	private static class SingletonHolder {
 		private static TypeUnsetBlank instance = new TypeUnsetBlank();
 	}
@@ -56,12 +65,12 @@ public class TypeUnsetBlank extends org.alice.ide.croquet.models.cascade.Express
 	}
 
 	private TypeUnsetBlank() {
-		super( java.util.UUID.fromString( "e3bc0668-0d5a-455e-b594-d0107794509c" ), Void.class );
+		super( UUID.fromString( "e3bc0668-0d5a-455e-b594-d0107794509c" ), Void.class );
 	}
 
 	@Override
-	protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+	protected void updateChildren( List<CascadeBlankChild> children, BlankNode<Expression> context ) {
 		//note: not invoking super
-		children.add( org.alice.ide.croquet.models.cascade.cancels.TypeUnsetCancelFillIn.getInstance() );
+		children.add( TypeUnsetCancelFillIn.getInstance() );
 	}
 }

@@ -42,22 +42,29 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.triggers.IterationTrigger;
+import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class IteratingOperation extends Operation {
-	public IteratingOperation( Group group, java.util.UUID id ) {
+	public IteratingOperation( Group group, UUID id ) {
 		super( group, id );
 	}
 
-	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
-		return new org.lgna.croquet.history.TransactionHistory();
+	protected TransactionHistory createTransactionHistoryIfNecessary() {
+		return new TransactionHistory();
 	}
 
 	protected Iterator<Model> createIteratingData() {
@@ -68,28 +75,28 @@ public abstract class IteratingOperation extends Operation {
 
 	protected abstract Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
 
-	protected abstract void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
+	protected abstract void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps );
 
-	protected void iterateOverSubModels( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
+	protected void iterateOverSubModels( Transaction transaction, Trigger trigger ) {
+		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		try {
-			java.util.List<org.lgna.croquet.history.Step<?>> subSteps = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			List<Step<?>> subSteps = Lists.newLinkedList();
 			Iterator<Model> iteratingData = this.createIteratingData();
 			while( this.hasNext( step, subSteps, iteratingData ) ) {
 				Model model = this.getNext( step, subSteps, iteratingData );
 				if( model != null ) {
-					org.lgna.croquet.history.Step<?> subStep = model.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
+					Step<?> subStep = model.fire( IterationTrigger.createUserInstance() );
 					if( ( subStep != null ) && subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
 						subSteps.add( subStep );
 					} else {
 						if( subStep != null ) {
 							if( subStep.getOwnerTransaction().isPending() ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "subStep is pending", this );
+								Logger.severe( "subStep is pending", this );
 							} else {
 								//pass
 							}
 						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "subStep is null", this );
+							Logger.severe( "subStep is null", this );
 						}
 						step.cancel();
 						return;

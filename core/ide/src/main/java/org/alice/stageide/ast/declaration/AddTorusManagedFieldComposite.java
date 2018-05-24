@@ -44,6 +44,13 @@ package org.alice.stageide.ast.declaration;
 
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.alice.stageide.gallerybrowser.shapes.TorusDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.STorus;
+import org.lgna.story.SetInnerRadius;
+import org.lgna.story.SetOuterRadius;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,22 +64,22 @@ public class AddTorusManagedFieldComposite extends AddModelManagedFieldComposite
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> innerRadiusState = this.createInitialPropertyValueExpressionState( "innerRadiusState", 0.25, org.lgna.story.STorus.class, "setInnerRadius", Number.class, org.lgna.story.SetInnerRadius.Detail[].class );
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> outerRadiusState = this.createInitialPropertyValueExpressionState( "outerRadiusState", 0.5, org.lgna.story.STorus.class, "setOuterRadius", Number.class, org.lgna.story.SetOuterRadius.Detail[].class );
+	private final CustomItemState<Expression> innerRadiusState = this.createInitialPropertyValueExpressionState( "innerRadiusState", 0.25, STorus.class, "setInnerRadius", Number.class, SetInnerRadius.Detail[].class );
+	private final CustomItemState<Expression> outerRadiusState = this.createInitialPropertyValueExpressionState( "outerRadiusState", 0.5, STorus.class, "setOuterRadius", Number.class, SetOuterRadius.Detail[].class );
 
 	private AddTorusManagedFieldComposite() {
-		super( java.util.UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ), org.lgna.story.STorus.class );
+		super( UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ), STorus.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return TorusDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getInnerRadiusState() {
+	public CustomItemState<Expression> getInnerRadiusState() {
 		return this.innerRadiusState;
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOuterRadiusState() {
+	public CustomItemState<Expression> getOuterRadiusState() {
 		return this.outerRadiusState;
 	}
 }

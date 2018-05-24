@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import org.lgna.project.ast.localizer.AstLocalizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,7 +63,7 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		Double value = this.value.getValue();
 		if( value != null ) {
 			localizer.appendDouble( value );
@@ -69,7 +73,7 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Double> getValueProperty() {
+	public InstanceProperty<Double> getValueProperty() {
 		return this.value;
 	}
 
@@ -78,5 +82,5 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
 		generator.appendDouble( this.value.getValue() );
 	}
 
-	public final edu.cmu.cs.dennisc.property.DoubleProperty value = new edu.cmu.cs.dennisc.property.DoubleProperty( this, null, true );
+	public final DoubleProperty value = new DoubleProperty( this, null, true );
 }

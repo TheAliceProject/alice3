@@ -43,15 +43,19 @@
 package org.alice.ide.croquet.models.help;
 
 import java.awt.Color;
+import java.util.UUID;
 
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.StringValue;
+import org.lgna.croquet.views.FlowPanel;
 import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.Panel;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public final class LogOutCard extends SimpleComposite<Panel> {
 
 	public void updateWelcomeString( String str ) {
 		usernameLabel.setText( welcome.getText() + str );
@@ -62,17 +66,17 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 	private ActionOperation logoutOperation;
 
 	public LogOutCard( ActionOperation logOutOperation ) {
-		super( java.util.UUID.fromString( "ec4e5145-6754-4add-a821-55357866ba0b" ) );
+		super( UUID.fromString( "ec4e5145-6754-4add-a821-55357866ba0b" ) );
 		this.logoutOperation = logOutOperation;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
+	protected Panel createView() {
 		this.usernameLabel.getAwtComponent().setForeground( Color.WHITE );
 		updateWelcomeString( "" );
-		return new org.lgna.croquet.views.FlowPanel(
+		return new FlowPanel(
 				this,
-				org.lgna.croquet.views.FlowPanel.Alignment.TRAILING,
+				FlowPanel.Alignment.TRAILING,
 				this.usernameLabel,
 				this.logoutOperation.createButton() );
 	}

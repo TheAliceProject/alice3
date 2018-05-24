@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.meta;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,34 +60,34 @@ public abstract class MetaState<T> {
 		this.prevValue = prevValue;
 	}
 
-	public void addValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+	public void addValueListener( ValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 
-	public void addAndInvokeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
-		org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.prevValue );
+	public void addAndInvokeValueListener( ValueListener<T> listener ) {
+		ValueEvent<T> e = ValueEvent.createInstance( this.prevValue );
 		listener.valueChanged( e );
 		this.addValueListener( listener );
 	}
 
-	public void removeValueListener( org.lgna.croquet.event.ValueListener<T> listener ) {
+	public void removeValueListener( ValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 
 	protected void checkValueAndFireIfAppropriate() {
 		T nextValue = this.getValue();
-		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.prevValue, nextValue ) ) {
+		if( Objects.equals( this.prevValue, nextValue ) ) {
 			//todo: pass?
 			this.prevValue = nextValue;
 		} else {
-			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.prevValue, nextValue );
+			ValueEvent<T> e = ValueEvent.createInstance( this.prevValue, nextValue );
 			this.prevValue = nextValue;
-			for( org.lgna.croquet.event.ValueListener<T> listener : this.valueListeners ) {
+			for( ValueListener<T> listener : this.valueListeners ) {
 				listener.valueChanged( e );
 			}
 		}
 	}
 
 	private T prevValue;
-	private final java.util.List<org.lgna.croquet.event.ValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<ValueListener<T>> valueListeners = Lists.newCopyOnWriteArrayList();
 }

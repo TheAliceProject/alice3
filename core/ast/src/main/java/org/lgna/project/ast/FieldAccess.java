@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.ast.localizer.AstLocalizer;
 import org.lgna.project.code.PrecedentedAppender;
 
@@ -120,7 +121,7 @@ public final class FieldAccess extends Expression implements PrecedentedAppender
 			if( f != null ) {
 				return f.getDeclaringType();
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "field.getValue() == null", field );
+				Logger.warning( "field.getValue() == null", field );
 				return JavaType.OBJECT_TYPE;
 			}
 		}

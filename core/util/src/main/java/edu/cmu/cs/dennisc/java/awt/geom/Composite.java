@@ -42,11 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.geom.Area;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Composite extends Transformable {
-	private java.util.List<Transformable> m_children = new java.util.LinkedList<Transformable>();
+	private List<Transformable> m_children = new LinkedList<Transformable>();
 
 	public void add( Transformable child ) {
 		m_children.add( child );
@@ -64,7 +68,7 @@ public class Composite extends Transformable {
 	}
 
 	@Override
-	protected java.awt.geom.Area update( java.awt.geom.Area rv, TransformContext tc ) {
+	protected Area update( Area rv, TransformContext tc ) {
 		for( Transformable child : m_children ) {
 			child.getArea( rv, tc );
 		}

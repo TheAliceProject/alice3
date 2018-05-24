@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.type.merge.croquet.ProceduresToolPalette;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProceduresView extends MethodsView {
-	public ProceduresView( org.alice.ide.ast.type.merge.croquet.ProceduresToolPalette composite ) {
-		super( composite, org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
+	public ProceduresView( ProceduresToolPalette composite ) {
+		super( composite, ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 }

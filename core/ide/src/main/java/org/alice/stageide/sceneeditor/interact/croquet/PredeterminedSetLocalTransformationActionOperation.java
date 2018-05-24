@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.lgna.croquet.Group;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
+
 /**
  * @author Dave Culyba
  */
 public class PredeterminedSetLocalTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
-	public PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "6c925ae4-ad06-4929-8da9-3e13dd17035c" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
+	public PredeterminedSetLocalTransformationActionOperation( Group group, boolean isDoRequired, Animator animator, UserField field, AffineMatrix4x4 prevLT, AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( group, UUID.fromString( "6c925ae4-ad06-4929-8da9-3e13dd17035c" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
 	}
 }

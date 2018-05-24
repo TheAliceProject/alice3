@@ -43,33 +43,39 @@
 
 package org.lgna.story;
 
+import org.lgna.common.LgnaIllegalArgumentException;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SJointedModel extends SModel {
 	@Override
-	/* package-private */abstract org.lgna.story.implementation.JointedModelImp getImplementation();
+	/* package-private */abstract JointedModelImp getImplementation();
 
 	//todo: make protected
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public SJoint getJoint( org.lgna.story.resources.JointId jointId ) {
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public SJoint getJoint( JointId jointId ) {
 		return SJoint.getJoint( this, jointId );
 	}
 
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public SJoint[] getJointArray( org.lgna.story.resources.JointId[] jointIdArray ) {
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public SJoint[] getJointArray( JointId[] jointIdArray ) {
 		return SJoint.getJointArray( this, jointIdArray );
 	}
 
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public SJoint[] getJointArray( org.lgna.story.resources.JointArrayId jointArrayId ) {
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public SJoint[] getJointArray( JointArrayId jointArrayId ) {
 		return SJoint.getJointArray( this, jointArrayId );
 	}
 
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public void strikePose( org.lgna.story.Pose<? extends SJointedModel> pose, StrikePose.Detail... details ) {
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public void strikePose( Pose<? extends SJointedModel> pose, StrikePose.Detail... details ) {
 		double duration = Duration.getValue( details );
 		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
 		this.getImplementation().strikePose( pose, duration, style );
@@ -81,7 +87,7 @@ public abstract class SJointedModel extends SModel {
 
 	@MethodTemplate( )
 	public void say( String text, Say.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
 		double textScale = TextScale.getValue( details );
 		int textSize = (int)( 16 * textScale );
 		int textStyle = TextStyle.getValue( details ).getInternal();
@@ -90,21 +96,21 @@ public abstract class SJointedModel extends SModel {
 
 	@MethodTemplate( )
 	public void think( String text, Think.Detail... details ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
 		double textScale = TextScale.getValue( details );
 		int textSize = (int)( 16 * textScale );
 		int textStyle = TextStyle.getValue( details ).getInternal();
 		this.getImplementation().think( text, Duration.getValue( details ), TextFont.getValue( details, null, textStyle, textSize ).getAsAWTFont(), TextColor.getValue( details, Color.BLACK ).getInternal(), BubbleFillColor.getValue( details, Color.WHITE ).getInternal(), BubbleOutlineColor.getValue( details, Color.WHITE ).getInternal(), BubblePosition.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.TUCKED_AWAY )
-	public org.lgna.story.resources.JointedModelResource getJointedModelResource() {
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
+	public JointedModelResource getJointedModelResource() {
 		return this.getImplementation().getResource();
 	}
 
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	protected void setJointedModelResource( org.lgna.story.resources.JointedModelResource resource ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( resource, 0 );
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	protected void setJointedModelResource( JointedModelResource resource ) {
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( resource, 0 );
 		this.getImplementation().setNewResource( resource );
 	}
 

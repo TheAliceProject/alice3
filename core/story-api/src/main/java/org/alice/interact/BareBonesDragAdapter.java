@@ -42,6 +42,15 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import com.jogamp.opengl.GLException;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
+import edu.cmu.cs.dennisc.render.PickResult;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
@@ -53,6 +62,17 @@ import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,23 +80,23 @@ public abstract class BareBonesDragAdapter {
 	private static final double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
 	private static final double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
 
-	private boolean isComponentListener( java.awt.Component component ) {
-		for( java.awt.event.MouseListener listener : component.getMouseListeners() ) {
+	private boolean isComponentListener( Component component ) {
+		for( MouseListener listener : component.getMouseListeners() ) {
 			if( listener == this ) {
 				return true;
 			}
 		}
-		for( java.awt.event.MouseMotionListener listener : component.getMouseMotionListeners() ) {
+		for( MouseMotionListener listener : component.getMouseMotionListeners() ) {
 			if( listener == this ) {
 				return true;
 			}
 		}
-		for( java.awt.event.KeyListener listener : component.getKeyListeners() ) {
+		for( KeyListener listener : component.getKeyListeners() ) {
 			if( listener == this ) {
 				return true;
 			}
 		}
-		for( java.awt.event.MouseWheelListener listener : component.getMouseWheelListeners() ) {
+		for( MouseWheelListener listener : component.getMouseWheelListeners() ) {
 			if( listener == this ) {
 				return true;
 			}
@@ -84,7 +104,7 @@ public abstract class BareBonesDragAdapter {
 		return false;
 	}
 
-	public void addListeners( java.awt.Component component ) {
+	public void addListeners( Component component ) {
 		if( !this.isComponentListener( component ) ) {
 			component.addMouseListener( this.mouseListener );
 			component.addMouseMotionListener( this.mouseMotionListener );
@@ -93,7 +113,7 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	public void removeListeners( java.awt.Component component ) {
+	public void removeListeners( Component component ) {
 		if( this.isComponentListener( component ) ) {
 			component.removeMouseListener( this.mouseListener );
 			component.removeMouseMotionListener( this.mouseMotionListener );
@@ -123,7 +143,7 @@ public abstract class BareBonesDragAdapter {
 		return this.manipulators;
 	}
 
-	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	private Component getAWTComponentToAddListenersTo( OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		if( onscreenRenderTarget != null ) {
 			return onscreenRenderTarget.getAwtComponent();
 		} else {
@@ -131,11 +151,11 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		if( this.onscreenRenderTarget != null ) {
 			this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
@@ -146,11 +166,11 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	protected java.awt.Component getAWTComponent() {
+	protected Component getAWTComponent() {
 		return this.lookingGlassComponent;
 	}
 
-	public void setAWTComponent( java.awt.Component awtComponent ) {
+	public void setAWTComponent( Component awtComponent ) {
 		if( this.lookingGlassComponent != null ) {
 			removeListeners( this.lookingGlassComponent );
 		}
@@ -180,10 +200,10 @@ public abstract class BareBonesDragAdapter {
 	protected abstract void setManipulatorStartState( AbstractManipulator manipulator, InputState startState );
 
 	protected void handleStateChange() {
-		java.util.List<AbstractManipulator> toStart = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<AbstractManipulator> toEnd = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<AbstractManipulator> toUpdate = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<AbstractManipulator> toClick = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<AbstractManipulator> toStart = Lists.newLinkedList();
+		List<AbstractManipulator> toEnd = Lists.newLinkedList();
+		List<AbstractManipulator> toUpdate = Lists.newLinkedList();
+		List<AbstractManipulator> toClick = Lists.newLinkedList();
 		for( ManipulatorConditionSet currentManipulatorSet : this.manipulators ) {
 			//			System.out.println(currentManipulatorSet.getManipulator()+": "+currentManipulatorSet.getCondition(0));
 			currentManipulatorSet.update( this.currentInputState, this.previousInputState );
@@ -250,7 +270,7 @@ public abstract class BareBonesDragAdapter {
 		this.mouseWheelStartLocation = null;
 	}
 
-	protected boolean shouldStopMouseWheel( java.awt.Point currentMouse ) {
+	protected boolean shouldStopMouseWheel( Point currentMouse ) {
 		if( this.mouseWheelStartLocation != null ) {
 			double distance = currentMouse.distance( this.mouseWheelStartLocation );
 			if( distance > CANCEL_MOUSE_WHEEL_DISTANCE ) {
@@ -264,7 +284,7 @@ public abstract class BareBonesDragAdapter {
 		return this.isInStageChange;
 	}
 
-	private ManipulationHandle getHandleForComponent( java.awt.Component c ) {
+	private ManipulationHandle getHandleForComponent( Component c ) {
 		if( c == null ) {
 			return null;
 		}
@@ -280,19 +300,19 @@ public abstract class BareBonesDragAdapter {
 		FALSE;
 	}
 
-	private void pickIntoScene( java.awt.Point mouseLocation, IsSuppressionOfGlExceptionDesired isSuppressionOfGlExceptionDesired, edu.cmu.cs.dennisc.render.PickFrontMostObserver observer ) {
-		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+	private void pickIntoScene( Point mouseLocation, IsSuppressionOfGlExceptionDesired isSuppressionOfGlExceptionDesired, PickFrontMostObserver observer ) {
+		OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		assert onscreenRenderTarget != null;
 		final boolean IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME = false;
 		if( IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME ) {
-			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, null, observer );
+			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, PickSubElementPolicy.NOT_REQUIRED, null, observer );
 		} else {
 			try {
-				edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
+				PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, PickSubElementPolicy.NOT_REQUIRED );
 				observer.done( pickResult );
-			} catch( com.jogamp.opengl.GLException gle ) {
+			} catch( GLException gle ) {
 				if( isSuppressionOfGlExceptionDesired == IsSuppressionOfGlExceptionDesired.TRUE ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
+					Logger.errln( "Error picking into scene", gle );
 				} else {
 					throw gle;
 				}
@@ -308,14 +328,14 @@ public abstract class BareBonesDragAdapter {
 		this.fireStateChange();
 	}
 
-	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
+	protected void handleMouseEntered( MouseEvent e ) {
 		this.currentRolloverComponent = e.getComponent();
 		if( !this.currentInputState.isAnyMouseButtonDown() ) {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if( e.getComponent() == this.lookingGlassComponent ) {
-				this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+				this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new PickFrontMostObserver() {
 					@Override
-					public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+					public void done( PickResult pickResult ) {
 						currentInputState.setRolloverPickResult( pickResult );
 					}
 				} );
@@ -328,7 +348,7 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	protected void handleMouseExited( java.awt.event.MouseEvent e ) {
+	protected void handleMouseExited( MouseEvent e ) {
 		this.currentRolloverComponent = null;
 		if( !this.currentInputState.isAnyMouseButtonDown() ) {
 			this.currentInputState.setMouseLocation( e.getPoint() );
@@ -341,7 +361,7 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
+	protected void handleMousePressed( MouseEvent e ) {
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
@@ -349,9 +369,9 @@ public abstract class BareBonesDragAdapter {
 		e.getComponent().requestFocus();
 
 		if( e.getComponent() == this.lookingGlassComponent ) {
-			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new PickFrontMostObserver() {
 				@Override
-				public void done( edu.cmu.cs.dennisc.render.PickResult result ) {
+				public void done( PickResult result ) {
 					currentInputState.setClickPickResult( result );
 				}
 			} );
@@ -363,15 +383,15 @@ public abstract class BareBonesDragAdapter {
 		this.fireStateChange();
 	}
 
-	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	protected void handleMouseReleased( MouseEvent e ) {
 		this.currentInputState.setMouseState( e.getButton(), false );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
 		this.currentInputState.setInputEvent( e );
 		if( this.currentRolloverComponent == this.lookingGlassComponent ) {
-			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new PickFrontMostObserver() {
 				@Override
-				public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+				public void done( PickResult pickResult ) {
 					currentInputState.setRolloverPickResult( pickResult );
 				}
 			} );
@@ -382,7 +402,7 @@ public abstract class BareBonesDragAdapter {
 		this.fireStateChange();
 	}
 
-	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	protected void handleMouseDragged( MouseEvent e ) {
 		try {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DRAGGED );
@@ -394,7 +414,7 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
+	protected void handleMouseMoved( MouseEvent e ) {
 		if( !this.currentInputState.getIsDragEvent() ) //If we haven't already handled it through dragAndDrop
 		{
 			//java.awt.Component c = e.getComponent();
@@ -404,9 +424,9 @@ public abstract class BareBonesDragAdapter {
 				//Don't pick into the scene if a mouse button is already down
 				if( !this.currentInputState.isAnyMouseButtonDown() )
 				{
-					this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+					this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new PickFrontMostObserver() {
 						@Override
-						public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+						public void done( PickResult pickResult ) {
 							currentInputState.setRolloverPickResult( pickResult );
 						}
 					} );
@@ -425,19 +445,19 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	protected void handleMouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+	protected void handleMouseWheelMoved( MouseWheelEvent e ) {
 		this.currentInputState.setMouseWheelState( e.getWheelRotation() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_WHEEL );
 		this.currentInputState.setTimeCaptured();
 		this.currentInputState.setInputEvent( e );
 		if( this.mouseWheelStartLocation == null ) {
-			this.mouseWheelStartLocation = new java.awt.Point( e.getPoint() );
+			this.mouseWheelStartLocation = new Point( e.getPoint() );
 		}
 		this.mouseWheelTimeoutTime = MOUSE_WHEEL_TIMEOUT_TIME;
 		this.fireStateChange();
 	}
 
-	protected void handleKeyPressed( java.awt.event.KeyEvent e ) {
+	protected void handleKeyPressed( KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), true );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
 		this.currentInputState.setTimeCaptured();
@@ -446,7 +466,7 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected void handleKeyReleased( java.awt.event.KeyEvent e ) {
+	protected void handleKeyReleased( KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), false );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_UP );
 		this.currentInputState.setTimeCaptured();
@@ -455,82 +475,82 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e );
+	protected abstract void handleAutomaticDisplayCompleted( AutomaticDisplayEvent e );
 
-	private final edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
+	private final AutomaticDisplayListener automaticDisplayAdapter = new AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};
 
-	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+	private final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 		@Override
-		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+		public void mouseWheelMoved( MouseWheelEvent e ) {
 			handleMouseWheelMoved( e );
 		}
 	};
-	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+	private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
 		@Override
-		public void mouseMoved( java.awt.event.MouseEvent e ) {
+		public void mouseMoved( MouseEvent e ) {
 			handleMouseMoved( e );
 		}
 
 		@Override
-		public void mouseDragged( java.awt.event.MouseEvent e ) {
+		public void mouseDragged( MouseEvent e ) {
 			handleMouseDragged( e );
 		}
 	};
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private final MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 			handleMouseEntered( e );
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 			handleMouseExited( e );
 		}
 
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 			handleMousePressed( e );
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
 			handleMouseReleased( e );
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 	};
-	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+	private final KeyListener keyListener = new KeyListener() {
 		@Override
-		public void keyPressed( java.awt.event.KeyEvent e ) {
+		public void keyPressed( KeyEvent e ) {
 			handleKeyPressed( e );
 		}
 
 		@Override
-		public void keyReleased( java.awt.event.KeyEvent e ) {
+		public void keyReleased( KeyEvent e ) {
 			handleKeyReleased( e );
 		}
 
 		@Override
-		public void keyTyped( java.awt.event.KeyEvent e ) {
+		public void keyTyped( KeyEvent e ) {
 		}
 	};
 
-	protected/*private*/final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	protected/*private*/final List<ManipulatorConditionSet> manipulators = Lists.newCopyOnWriteArrayList();
 	private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget;
-	private java.awt.Component lookingGlassComponent = null;
-	private java.awt.Component currentRolloverComponent = null;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
+	private OnscreenRenderTarget<?> onscreenRenderTarget;
+	private Component lookingGlassComponent = null;
+	private Component currentRolloverComponent = null;
+	private Animator animator;
 	protected/*private*/InputState currentInputState = new InputState();
 	protected/*private*/InputState previousInputState = new InputState();
 	private boolean isInStageChange = false;
 	protected/*private*/double mouseWheelTimeoutTime = 0;
-	private java.awt.Point mouseWheelStartLocation = null;
+	private Point mouseWheelStartLocation = null;
 }

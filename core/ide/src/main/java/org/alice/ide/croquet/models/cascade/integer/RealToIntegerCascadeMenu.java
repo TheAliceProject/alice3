@@ -43,10 +43,20 @@
 
 package org.alice.ide.croquet.models.cascade.integer;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.lgna.common.IntegerUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.MethodInvocation;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RealToIntegerCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.MethodInvocation> {
+public class RealToIntegerCascadeMenu extends ExpressionCascadeMenu<MethodInvocation> {
 	private static class SingletonHolder {
 		private static RealToIntegerCascadeMenu instance = new RealToIntegerCascadeMenu();
 	}
@@ -56,13 +66,13 @@ public class RealToIntegerCascadeMenu extends org.alice.ide.croquet.models.casca
 	}
 
 	private RealToIntegerCascadeMenu() {
-		super( java.util.UUID.fromString( "235cc7aa-0e9c-4f8c-9548-10aff3c095af" ) );
+		super( UUID.fromString( "235cc7aa-0e9c-4f8c-9548-10aff3c095af" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.MethodInvocation> context ) {
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toFlooredInteger", Double.class ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toRoundedInteger", Double.class ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<MethodInvocation> context ) {
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( IntegerUtilities.class, "toFlooredInteger", Double.class ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( IntegerUtilities.class, "toRoundedInteger", Double.class ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( IntegerUtilities.class, "toCeilingedInteger", Double.class ) );
 	}
 }

@@ -41,49 +41,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Plugin6 extends Plugin {
-	public Plugin6( Config config, java.io.File repoRoot ) {
+	public Plugin6( Config config, File repoRoot ) {
 		super( config, repoRoot, 6 );
-		this.suiteDir = new java.io.File( this.getRoot(), "Alice3PluginSuite" );
+		this.suiteDir = new File( this.getRoot(), "Alice3PluginSuite" );
 		assert this.suiteDir.exists() : this.suiteDir;
 		assert this.suiteDir.isDirectory() : this.suiteDir;
 
-		this.wizardDir = new java.io.File( this.getRoot(), "AliceProjectWizard" );
+		this.wizardDir = new File( this.getRoot(), "AliceProjectWizard" );
 		assert this.wizardDir.exists() : this.wizardDir;
 		assert this.wizardDir.isDirectory() : this.wizardDir;
 	}
 
 	@Override
-	protected java.io.File getSuiteDir() {
+	protected File getSuiteDir() {
 		return this.suiteDir;
 	}
 
 	@Override
-	protected java.io.File getWizardDir() {
+	protected File getWizardDir() {
 		return this.wizardDir;
 	}
 
 	@Override
-	protected java.io.File getLibraryXmlFile() {
-		return new java.io.File( this.wizardDir, "src/org/alice/netbeans/aliceprojectwizard/Alice3Library.xml" );
+	protected File getLibraryXmlFile() {
+		return new File( this.wizardDir, "src/org/alice/netbeans/aliceprojectwizard/Alice3Library.xml" );
 	}
 
 	@Override
-	protected java.io.File getProjectTemplateZipFile() {
-		return new java.io.File( this.wizardDir, "src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip" );
+	protected File getProjectTemplateZipFile() {
+		return new File( this.wizardDir, "src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip" );
 	}
 
 	@Override
-	protected java.io.File getJdkToUseForNbmAntCommand() {
+	protected File getJdkToUseForNbmAntCommand() {
 		return null;
 	}
 
 	@Override
-	protected java.io.File getNbmFile() {
-		return new java.io.File( this.suiteDir, "build/updates/org-alice-netbeans-aliceprojectwizard.nbm" );
+	protected File getNbmFile() {
+		return new File( this.suiteDir, "build/updates/org-alice-netbeans-aliceprojectwizard.nbm" );
 	}
 
 	//	@Override
@@ -109,6 +111,6 @@ public class Plugin6 extends Plugin {
 	//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
 	//	}
 
-	private final java.io.File suiteDir;
-	private final java.io.File wizardDir;
+	private final File suiteDir;
+	private final File wizardDir;
 }

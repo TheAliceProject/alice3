@@ -42,10 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import org.alice.ide.croquet.models.cascade.cancels.CancelFillIn;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.JComponent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class NoVariablesOrFieldsAccessibleCancelFillIn extends org.alice.ide.croquet.models.cascade.cancels.CancelFillIn {
+public final class NoVariablesOrFieldsAccessibleCancelFillIn extends CancelFillIn {
 	private static class SingletonHolder {
 		private static NoVariablesOrFieldsAccessibleCancelFillIn instance = new NoVariablesOrFieldsAccessibleCancelFillIn();
 	}
@@ -55,11 +61,11 @@ public final class NoVariablesOrFieldsAccessibleCancelFillIn extends org.alice.i
 	}
 
 	private NoVariablesOrFieldsAccessibleCancelFillIn() {
-		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
+		super( UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode step ) {
+	protected JComponent createMenuItemIconProxy( ItemNode step ) {
 		return null;
 	}
 }

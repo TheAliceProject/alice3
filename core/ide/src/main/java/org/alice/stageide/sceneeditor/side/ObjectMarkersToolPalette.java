@@ -42,31 +42,38 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.stageide.sceneeditor.side.views.ObjectMarkersView;
+import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
+import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
+import org.lgna.croquet.Operation;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ObjectMarkersToolPalette extends MarkersToolPalette<org.alice.stageide.sceneeditor.side.views.ObjectMarkersView> {
+public class ObjectMarkersToolPalette extends MarkersToolPalette<ObjectMarkersView> {
 	public ObjectMarkersToolPalette() {
-		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
+		super( UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
-		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation.getInstance();
+	public Operation getMoveMarkerToOperation() {
+		return MoveMarkerToSelectedObjectActionOperation.getInstance();
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
-		return org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation.getInstance();
+	public Operation getMoveToMarkerOperation() {
+		return MoveSelectedObjectToMarkerActionOperation.getInstance();
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getAddOperation() {
+	public Operation getAddOperation() {
 		return AddObjectMarkerFieldComposite.getInstance().getLaunchOperation();
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.side.views.ObjectMarkersView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.ObjectMarkersView( this );
+	protected ObjectMarkersView createView() {
+		return new ObjectMarkersView( this );
 	}
 }

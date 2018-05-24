@@ -42,11 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.glyph;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.math.Point2f;
+
+import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GlyphVector {
-	public GlyphVector( String text, java.awt.Font font, float xFactor, float yFactor ) {
+	public GlyphVector( String text, Font font, float xFactor, float yFactor ) {
 		this.text = text;
 		this.font = font;
 		this.xFactor = xFactor;
@@ -71,7 +84,7 @@ public class GlyphVector {
 		return this.glyphVector;
 	}
 
-	public java.awt.Shape getFacesShape() {
+	public Shape getFacesShape() {
 		if( this.facesShape == null ) {
 			java.awt.font.GlyphVector glyphVector = getGlyphVector();
 			this.facesShape = glyphVector.getOutline();
@@ -79,9 +92,9 @@ public class GlyphVector {
 		return this.facesShape;
 	}
 
-	public java.awt.Shape getOutlinesShape() {
+	public Shape getOutlinesShape() {
 		if( this.outlinesShape == null ) {
-			java.awt.Shape facesShape = getFacesShape();
+			Shape facesShape = getFacesShape();
 			this.outlinesShape = s_stroke.createStrokedShape( facesShape );
 		}
 		return this.outlinesShape;
@@ -97,7 +110,7 @@ public class GlyphVector {
 	//		}
 	//	}
 
-	public java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> acquireFaceContours() {
+	public List<List<Point2f>> acquireFaceContours() {
 		//todo
 		//		try {
 		//			this.faceContoursLock.wait();
@@ -115,7 +128,7 @@ public class GlyphVector {
 		//		this.faceContoursLock.notify();
 	}
 
-	public java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> acquireOutlineLines() {
+	public List<List<Point2f>> acquireOutlineLines() {
 		//todo
 		//		try {
 		//			this.outlineLinesLock.wait();
@@ -133,7 +146,7 @@ public class GlyphVector {
 		//		this.outlineLinesLock.notify();
 	}
 
-	public java.awt.geom.Rectangle2D.Float getBounds( java.awt.geom.Rectangle2D.Float rv ) {
+	public Rectangle2D.Float getBounds( Rectangle2D.Float rv ) {
 		if( this.bounds == null ) {
 			//todo: convert to use convex hulls instead of flatness?
 
@@ -143,11 +156,11 @@ public class GlyphVector {
 			float yMax = -Float.MAX_VALUE;
 
 			float[] segment = new float[ 6 ];
-			java.awt.geom.PathIterator pi = getFacesShape().getPathIterator( null, edu.cmu.cs.dennisc.glyph.GlyphVector.FLATNESS );
+			PathIterator pi = getFacesShape().getPathIterator( null, GlyphVector.FLATNESS );
 			while( !pi.isDone() ) {
 				switch( pi.currentSegment( segment ) ) {
-				case java.awt.geom.PathIterator.SEG_MOVETO:
-				case java.awt.geom.PathIterator.SEG_LINETO:
+				case PathIterator.SEG_MOVETO:
+				case PathIterator.SEG_LINETO:
 					float xCurr = segment[ 0 ] * this.xFactor;
 					float yCurr = segment[ 1 ] * this.yFactor;
 					xMin = Math.min( xMin, xCurr );
@@ -155,12 +168,12 @@ public class GlyphVector {
 					yMin = Math.min( yMin, yCurr );
 					yMax = Math.max( yMax, yCurr );
 					break;
-				case java.awt.geom.PathIterator.SEG_CLOSE:
+				case PathIterator.SEG_CLOSE:
 					break;
 
-				case java.awt.geom.PathIterator.SEG_QUADTO:
+				case PathIterator.SEG_QUADTO:
 					throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-				case java.awt.geom.PathIterator.SEG_CUBICTO:
+				case PathIterator.SEG_CUBICTO:
 					throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
 				default:
 					throw new RuntimeException( "unhandled segment: should not occur" );
@@ -168,9 +181,9 @@ public class GlyphVector {
 				pi.next();
 			}
 			if( ( xMin != Float.MAX_VALUE ) && ( yMin != Float.MAX_VALUE ) && ( xMax != -Float.MAX_VALUE ) && ( yMax != -Float.MAX_VALUE ) ) {
-				this.bounds = new java.awt.geom.Rectangle2D.Float( xMin, yMin, xMax - xMin, yMax - yMin );
+				this.bounds = new Rectangle2D.Float( xMin, yMin, xMax - xMin, yMax - yMin );
 			} else {
-				this.bounds = new java.awt.geom.Rectangle2D.Float( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
+				this.bounds = new Rectangle2D.Float( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
 			}
 		}
 		rv.setFrame( this.bounds );
@@ -178,8 +191,8 @@ public class GlyphVector {
 		return rv;
 	}
 
-	public java.awt.geom.Rectangle2D.Float getBounds() {
-		return getBounds( new java.awt.geom.Rectangle2D.Float() );
+	public Rectangle2D.Float getBounds() {
+		return getBounds( new Rectangle2D.Float() );
 	}
 
 	public String getText() {
@@ -187,7 +200,7 @@ public class GlyphVector {
 	}
 
 	public boolean setText( String text ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.text, text ) ) {
+		if( Objects.notEquals( this.text, text ) ) {
 			this.text = text;
 			markShapesDirty();
 			return true;
@@ -196,12 +209,12 @@ public class GlyphVector {
 		}
 	}
 
-	public java.awt.Font getFont() {
+	public Font getFont() {
 		return this.font;
 	}
 
-	public boolean setFont( java.awt.Font font ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.font, font ) ) {
+	public boolean setFont( Font font ) {
+		if( Objects.notEquals( this.font, font ) ) {
 			this.font = font;
 			markShapesDirty();
 			return true;
@@ -210,44 +223,44 @@ public class GlyphVector {
 		}
 	}
 
-	private static java.awt.font.FontRenderContext s_frc = new java.awt.font.FontRenderContext( null, false, true );
-	private static java.awt.Stroke s_stroke = new java.awt.BasicStroke( 0 );
+	private static FontRenderContext s_frc = new FontRenderContext( null, false, true );
+	private static Stroke s_stroke = new BasicStroke( 0 );
 
 	private String text;
-	private java.awt.Font font;
+	private Font font;
 	private final float xFactor;
 	private final float yFactor;
 
 	public static final double FLATNESS = 0.01;
 
 	private java.awt.font.GlyphVector glyphVector = null;
-	private java.awt.Shape facesShape = null;
-	private java.awt.Shape outlinesShape = null;
+	private Shape facesShape = null;
+	private Shape outlinesShape = null;
 
-	private java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> faceContours = null;
+	private List<List<Point2f>> faceContours = null;
 	//private Object faceContoursLock = new Object();
-	private java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> outlineLines = null;
+	private List<List<Point2f>> outlineLines = null;
 	//private Object outlineLinesLock = new Object();
 
-	private java.awt.geom.Rectangle2D.Float bounds;
+	private Rectangle2D.Float bounds;
 
-	private static java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> iterate( java.awt.Shape shape, float xFactor, float yFactor ) {
-		java.awt.geom.PathIterator pi = shape.getPathIterator( null, FLATNESS );
+	private static List<List<Point2f>> iterate( Shape shape, float xFactor, float yFactor ) {
+		PathIterator pi = shape.getPathIterator( null, FLATNESS );
 
-		java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> polylines = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<edu.cmu.cs.dennisc.math.Point2f> polyline = null;
+		List<List<Point2f>> polylines = Lists.newLinkedList();
+		List<Point2f> polyline = null;
 
 		float[] segment = new float[ 6 ];
 		while( !pi.isDone() ) {
 			switch( pi.currentSegment( segment ) ) {
-			case java.awt.geom.PathIterator.SEG_MOVETO:
-				polyline = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			case PathIterator.SEG_MOVETO:
+				polyline = Lists.newLinkedList();
 				//note: no break
-			case java.awt.geom.PathIterator.SEG_LINETO:
+			case PathIterator.SEG_LINETO:
 				assert polyline != null;
-				polyline.add( new edu.cmu.cs.dennisc.math.Point2f( segment[ 0 ] * xFactor, segment[ 1 ] * yFactor ) );
+				polyline.add( new Point2f( segment[ 0 ] * xFactor, segment[ 1 ] * yFactor ) );
 				break;
-			case java.awt.geom.PathIterator.SEG_CLOSE:
+			case PathIterator.SEG_CLOSE:
 				assert polyline != null;
 				//				if( this.isReversed ) {
 				//					reverse( polyline );
@@ -256,9 +269,9 @@ public class GlyphVector {
 				polyline = null;
 				break;
 
-			case java.awt.geom.PathIterator.SEG_QUADTO:
+			case PathIterator.SEG_QUADTO:
 				throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-			case java.awt.geom.PathIterator.SEG_CUBICTO:
+			case PathIterator.SEG_CUBICTO:
 				throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
 			default:
 				throw new RuntimeException( "unhandled segment: should not occur" );

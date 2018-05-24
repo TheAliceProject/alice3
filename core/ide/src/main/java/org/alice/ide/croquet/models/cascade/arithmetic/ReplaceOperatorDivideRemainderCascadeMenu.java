@@ -43,10 +43,18 @@
 
 package org.alice.ide.croquet.models.cascade.arithmetic;
 
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorDivideRemainderCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.ArithmeticInfixExpression> {
+public class ReplaceOperatorDivideRemainderCascadeMenu extends ExpressionCascadeMenu<ArithmeticInfixExpression> {
 	private static class SingletonHolder {
 		private static ReplaceOperatorDivideRemainderCascadeMenu instance = new ReplaceOperatorDivideRemainderCascadeMenu();
 	}
@@ -56,13 +64,13 @@ public class ReplaceOperatorDivideRemainderCascadeMenu extends org.alice.ide.cro
 	}
 
 	private ReplaceOperatorDivideRemainderCascadeMenu() {
-		super( java.util.UUID.fromString( "9a3b8406-e78e-44e7-997c-6584bc8b35f9" ) );
+		super( UUID.fromString( "9a3b8406-e78e-44e7-997c-6584bc8b35f9" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.ArithmeticInfixExpression> context ) {
-		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<ArithmeticInfixExpression> context ) {
+		for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+			blankChildren.add( ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
 		}
 	}
 }

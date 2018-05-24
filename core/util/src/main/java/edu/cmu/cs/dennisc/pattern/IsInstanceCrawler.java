@@ -42,7 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
-public abstract class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern.Crawler {
+import java.util.LinkedList;
+import java.util.List;
+
+public abstract class IsInstanceCrawler<T> implements Crawler {
 	public static <T> IsInstanceCrawler<T> createInstance( Class<T> cls ) {
 		return new IsInstanceCrawler<T>( cls ) {
 			@Override
@@ -59,7 +62,7 @@ public abstract class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern
 	protected abstract boolean isAcceptable( T e );
 
 	@Override
-	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+	public void visit( Crawlable crawlable ) {
 		if( crawlable != null ) {
 			if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
 				T e = (T)crawlable;
@@ -70,10 +73,10 @@ public abstract class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern
 		}
 	}
 
-	public java.util.List<T> getList() {
+	public List<T> getList() {
 		return this.list;
 	}
 
 	private final Class<T> cls;
-	private final java.util.List<T> list = new java.util.LinkedList<T>();
+	private final List<T> list = new LinkedList<T>();
 }

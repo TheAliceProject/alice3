@@ -61,7 +61,7 @@ import org.lgna.project.ast.UserMethod;
 public class SearchReferencesTreeCellRenderer extends DefaultTreeCellRenderer {
 	@Override
 	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
+		Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
 		assert value instanceof SearchTreeNode;
 		SearchTreeNode node = (SearchTreeNode)value;
 		if( node.getParent() != null ) {

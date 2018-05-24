@@ -42,39 +42,55 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.menubar;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IdeApp;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.croquet.models.history.ProjectHistoryComposite;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.lgna.croquet.ItemState;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.StaticMenuModel;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WindowMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		if( perspectiveState instanceof org.lgna.croquet.SingleSelectListState ) {
-			rv.add( ( (org.lgna.croquet.SingleSelectListState)perspectiveState ).getMenuModel() );
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
+public class WindowMenuModel extends StaticMenuModel {
+	private static List<StandardMenuItemPrepModel> createModels( ItemState<ProjectPerspective> perspectiveState ) {
+		List<StandardMenuItemPrepModel> rv = Lists.newLinkedList();
+		if( perspectiveState instanceof SingleSelectListState ) {
+			rv.add( ( (SingleSelectListState)perspectiveState ).getMenuModel() );
+			rv.add( MenuModel.SEPARATOR );
 		}
-		rv.add( org.alice.ide.croquet.models.history.ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( org.alice.ide.IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		rv.add( ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+		rv.add( IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel() );
+		rv.add( MenuModel.SEPARATOR );
 		rv.add( PreferencesMenuModel.getInstance() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.IdeApp.INSTANCE.getContributorMenuModel() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
+		rv.add( MenuModel.SEPARATOR );
+		rv.add( IdeApp.INSTANCE.getContributorMenuModel() );
+		if( SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
+			rv.add( MenuModel.SEPARATOR );
 			rv.add( InternalTestingMenuModel.getInstance() );
 		}
 		return rv;
 	}
 
-	public WindowMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ) );
+	public WindowMenuModel( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( createModels( perspectiveState ), org.lgna.croquet.StandardMenuItemPrepModel.class );
+	protected StandardMenuItemPrepModel[] createModels() {
+		ItemState<ProjectPerspective> perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
+		return ArrayUtilities.createArray( createModels( perspectiveState ), StandardMenuItemPrepModel.class );
 	}
 
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

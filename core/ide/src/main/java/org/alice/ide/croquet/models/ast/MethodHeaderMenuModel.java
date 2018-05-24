@@ -42,13 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.ast.rename.RenameMethodComposite;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.StaticMenuModel;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class MethodHeaderMenuModel extends StaticMenuModel {
+	private static Map<UserMethod, MethodHeaderMenuModel> map = Maps.newHashMap();
 
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
+	public static synchronized MethodHeaderMenuModel getInstance( UserMethod method ) {
 		MethodHeaderMenuModel rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -59,20 +70,20 @@ public class MethodHeaderMenuModel extends org.lgna.croquet.StaticMenuModel {
 		return rv;
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ) );
+	private MethodHeaderMenuModel( UserMethod method ) {
+		super( UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ) );
 		this.method = method;
 	}
 
 	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
+	protected StandardMenuItemPrepModel[] createModels() {
 		//todo
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
-		return new org.lgna.croquet.StandardMenuItemPrepModel[] {
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( this.method ).getLaunchOperation().getMenuItemPrepModel(),
+		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+		return new StandardMenuItemPrepModel[] {
+				RenameMethodComposite.getInstance( this.method ).getLaunchOperation().getMenuItemPrepModel(),
 				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( this.method ).getMenuItemPrepModel()
 		};
 	}
 
-	private final org.lgna.project.ast.UserMethod method;
+	private final UserMethod method;
 }

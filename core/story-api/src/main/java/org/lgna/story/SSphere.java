@@ -43,20 +43,22 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.story.implementation.SphereImp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SSphere extends SShape {
-	private final org.lgna.story.implementation.SphereImp implementation = new org.lgna.story.implementation.SphereImp( this );
+	private final SphereImp implementation = new SphereImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.SphereImp getImplementation() {
+	/* package-private */SphereImp getImplementation() {
 		return this.implementation;
 	}
 
-	@org.lgna.project.annotations.GetterTemplate( isPersistent = true )
+	@GetterTemplate( isPersistent = true )
 	@MethodTemplate( )
 	public Double getRadius() {
 		return this.implementation.radius.getValue();

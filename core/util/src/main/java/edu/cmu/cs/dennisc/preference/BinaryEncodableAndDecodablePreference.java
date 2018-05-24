@@ -42,10 +42,15 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.CodecUtilities;
+
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BinaryEncodableAndDecodablePreference<E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> extends Preference<E> {
+public abstract class BinaryEncodableAndDecodablePreference<E extends BinaryEncodableAndDecodable> extends Preference<E> {
 	public BinaryEncodableAndDecodablePreference( E defaultValue ) {
 		super( defaultValue );
 	}
@@ -53,14 +58,14 @@ public abstract class BinaryEncodableAndDecodablePreference<E extends edu.cmu.cs
 	protected abstract Class<E> getValueClass();
 
 	@Override
-	protected E getValue( java.util.prefs.Preferences utilPrefs, String key, E defaultValue ) {
-		byte[] defaultData = edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( defaultValue );
+	protected E getValue( Preferences utilPrefs, String key, E defaultValue ) {
+		byte[] defaultData = CodecUtilities.encodeBinary( defaultValue );
 		byte[] currentData = utilPrefs.getByteArray( key, defaultData );
-		return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( currentData, this.getValueClass() );
+		return CodecUtilities.decodeBinary( currentData, this.getValueClass() );
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, E nextValue ) {
-		utilPrefs.putByteArray( key, edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary( nextValue ) );
+	protected void setAndCommitValue( Preferences utilPrefs, String key, E nextValue ) {
+		utilPrefs.putByteArray( key, CodecUtilities.encodeBinary( nextValue ) );
 	}
 }

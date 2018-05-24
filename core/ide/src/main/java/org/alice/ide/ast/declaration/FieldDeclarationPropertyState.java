@@ -42,26 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.PropertyState;
+import org.lgna.croquet.Application;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.JavaMethod;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPropertyState extends org.alice.ide.ast.PropertyState {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public class FieldDeclarationPropertyState extends PropertyState {
+	private static InitializingIfAbsentMap<JavaMethod, FieldDeclarationPropertyState> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldDeclarationPropertyState getInstanceForSetter( org.lgna.project.ast.JavaMethod setter ) {
-		return map.getInitializingIfAbsent( setter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState>() {
+	public static FieldDeclarationPropertyState getInstanceForSetter( JavaMethod setter ) {
+		return map.getInitializingIfAbsent( setter, new InitializingIfAbsentMap.Initializer<JavaMethod, FieldDeclarationPropertyState>() {
 			@Override
-			public FieldDeclarationPropertyState initialize( org.lgna.project.ast.JavaMethod setter ) {
+			public FieldDeclarationPropertyState initialize( JavaMethod setter ) {
 				return new FieldDeclarationPropertyState( setter );
 			}
 		} );
 	}
 
-	public static synchronized FieldDeclarationPropertyState getInstanceForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
+	public static synchronized FieldDeclarationPropertyState getInstanceForGetter( JavaMethod getter ) {
+		return getInstanceForSetter( AstUtilities.getSetterForGetter( getter ) );
 	}
 
-	private FieldDeclarationPropertyState( org.lgna.project.ast.JavaMethod setter ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "e4cd9f74-3815-46d1-ae68-b5b964f68ebd" ), setter );
+	private FieldDeclarationPropertyState( JavaMethod setter ) {
+		super( Application.INHERIT_GROUP, UUID.fromString( "e4cd9f74-3815-46d1-ae68-b5b964f68ebd" ), setter );
 	}
 }

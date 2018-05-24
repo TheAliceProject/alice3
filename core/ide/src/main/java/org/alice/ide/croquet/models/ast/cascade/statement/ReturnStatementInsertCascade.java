@@ -43,14 +43,27 @@
 
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ReturnStatementInsertCascade extends StatementInsertCascade {
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getReturnType( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		org.lgna.project.ast.AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
-			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)code;
+	private static AbstractType<?, ?, ?> getReturnType( BlockStatementIndexPair blockStatementIndexPair ) {
+		AbstractCode code = blockStatementIndexPair.getBlockStatement().getFirstAncestorAssignableTo( AbstractCode.class );
+		if( code instanceof UserMethod ) {
+			UserMethod method = (UserMethod)code;
 			if( method.isFunction() ) {
 				return method.returnType.getValue();
 			}
@@ -58,9 +71,9 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 		return null;
 	}
 
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, ReturnStatementInsertCascade> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static Map<BlockStatementIndexPair, ReturnStatementInsertCascade> map = Maps.newHashMap();
 
-	public static synchronized ReturnStatementInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public static synchronized ReturnStatementInsertCascade getInstance( BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		ReturnStatementInsertCascade rv = map.get( blockStatementIndexPair );
 		if( rv != null ) {
@@ -72,12 +85,12 @@ public class ReturnStatementInsertCascade extends StatementInsertCascade {
 		return rv;
 	}
 
-	private ReturnStatementInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, false, org.alice.ide.croquet.models.cascade.ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
+	private ReturnStatementInsertCascade( BlockStatementIndexPair blockStatementIndexPair ) {
+		super( UUID.fromString( "6b1dae07-066f-4250-92e8-db1eacd32801" ), blockStatementIndexPair, false, ExpressionBlank.createBlanks( getReturnType( blockStatementIndexPair ) ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-		return org.lgna.project.ast.AstUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
+	protected Statement createStatement( Expression... expressions ) {
+		return AstUtilities.createReturnStatement( getReturnType( this.getBlockStatementIndexPair() ), expressions[ 0 ] );
 	}
 }

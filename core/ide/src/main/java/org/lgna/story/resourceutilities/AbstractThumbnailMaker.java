@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.IOException;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -53,11 +55,21 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Hexahedron;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.render.OffscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.implementation.SceneImp;
 
 /**
  * @author Dave Culyba
@@ -71,11 +83,11 @@ public abstract class AbstractThumbnailMaker {
 	private final int height;
 	private final int antAliasFactor;
 
-	private final org.lgna.story.implementation.SceneImp scene;
-	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgModelTransformable;
+	private final SceneImp scene;
+	private final Transformable sgModelTransformable;
 	private final Transformable sgCameraVehicle;
 	private final SymmetricPerspectiveCamera sgCamera;
-	private final edu.cmu.cs.dennisc.render.OffscreenRenderTarget offscreenRenderTarget;
+	private final OffscreenRenderTarget offscreenRenderTarget;
 
 	protected AbstractThumbnailMaker( int width, int height )
 	{
@@ -88,28 +100,28 @@ public abstract class AbstractThumbnailMaker {
 		this.height = height;
 		this.antAliasFactor = antiAliasFactor;
 
-		this.scene = new org.lgna.story.implementation.SceneImp( null );
-		this.sgModelTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+		this.scene = new SceneImp( null );
+		this.sgModelTransformable = new Transformable();
 		this.sgCameraVehicle = new Transformable();
 		this.sgCamera = new SymmetricPerspectiveCamera();
 
 		this.scene.getSgComposite().addComponent( this.sgModelTransformable );
 		this.sgCameraVehicle.setParent( this.scene.getSgComposite() );
-		this.sgCameraVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
+		this.sgCameraVehicle.setLocalTransformation( AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
 		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
 		this.sgCamera.nearClippingPlaneDistance.setValue( .1 );
 		this.sgCamera.setParent( this.sgCameraVehicle );
-		this.offscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null, new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() );
+		this.offscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null, new RenderCapabilities.Builder().build() );
 		setUpCamera( this.offscreenRenderTarget );
 	}
 
-	protected void removeComponent( edu.cmu.cs.dennisc.scenegraph.Component sgComponent )
+	protected void removeComponent( Component sgComponent )
 	{
 		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
-			for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
-				GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = cameraAdapterI.getGlrScene();
-				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
+			for( AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
+				GlrAbstractCamera<? extends AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
+				GlrScene sceneAdapter = cameraAdapterI.getGlrScene();
+				GlrComponent<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
 				if( componentAdapter != null ) {
 					sceneAdapter.EPIC_HACK_FOR_THUMBNAIL_MAKER_removeDescendant( componentAdapter );
 				}
@@ -129,7 +141,7 @@ public abstract class AbstractThumbnailMaker {
 		return alpha == 0;
 	}
 
-	protected static int getLeftBorder( java.awt.image.BufferedImage image )
+	protected static int getLeftBorder( BufferedImage image )
 	{
 		int width = image.getWidth();
 		int height = image.getHeight();
@@ -150,7 +162,7 @@ public abstract class AbstractThumbnailMaker {
 		return width;
 	}
 
-	protected static int getRightBorder( java.awt.image.BufferedImage image ) {
+	protected static int getRightBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for( int x = width - 1; x >= 0; x-- )
@@ -170,7 +182,7 @@ public abstract class AbstractThumbnailMaker {
 		return width;
 	}
 
-	protected static int getTopBorder( java.awt.image.BufferedImage image ) {
+	protected static int getTopBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for( int y = 0; y < height; y++ )
@@ -190,7 +202,7 @@ public abstract class AbstractThumbnailMaker {
 		return height;
 	}
 
-	protected static int getBottomBorder( java.awt.image.BufferedImage image ) {
+	protected static int getBottomBorder( BufferedImage image ) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		for( int y = height - 1; y >= 0; y-- )
@@ -210,7 +222,7 @@ public abstract class AbstractThumbnailMaker {
 		return height;
 	}
 
-	protected static boolean isFullyFramed( java.awt.image.BufferedImage image ) {
+	protected static boolean isFullyFramed( BufferedImage image ) {
 		int width = image.getWidth();
 		int right = width - 1;
 		int height = image.getHeight();
@@ -247,21 +259,21 @@ public abstract class AbstractThumbnailMaker {
 	private static final boolean DEBUG_SAVE_TEST_IMAGES = false;
 	private static final String THUMBNAIL_SCRATCH_SPACE = "C:/batchOutput/thumbnailScratchSpace/";
 
-	protected static void writeDebugImageIfAppropriate( String filename, java.awt.image.BufferedImage image ) {
+	protected static void writeDebugImageIfAppropriate( String filename, BufferedImage image ) {
 		if( DEBUG_SAVE_TEST_IMAGES ) {
 			String path = THUMBNAIL_SCRATCH_SPACE + filename;
 			try {
 				ImageUtilities.write( path, image );
-			} catch( java.io.IOException ioe ) {
+			} catch( IOException ioe ) {
 				throw new RuntimeException( path, ioe );
 			}
 		}
 	}
 
-	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace, java.awt.Color colorKey ) {
+	protected synchronized BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace, Color colorKey ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenRenderTarget.clearAndRenderOffscreen();
-		java.awt.image.BufferedImage rv = offscreenRenderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
+		BufferedImage rv = offscreenRenderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
 
 		writeDebugImageIfAppropriate( "rawFinal.png", rv );
 
@@ -290,7 +302,7 @@ public abstract class AbstractThumbnailMaker {
 			float[] chromaHSB = new float[ 3 ];
 			float[] pixelHSB = new float[ 3 ];
 			int[] pixelBuffer = new int[ 4 ];
-			java.awt.Color.RGBtoHSB( colorKey.getRed(), colorKey.getGreen(), colorKey.getBlue(), chromaHSB );
+			Color.RGBtoHSB( colorKey.getRed(), colorKey.getGreen(), colorKey.getBlue(), chromaHSB );
 			Raster imageData = rv.getRaster();
 			WritableRaster writableData = null;
 			if( imageData instanceof WritableRaster ) {
@@ -301,7 +313,7 @@ public abstract class AbstractThumbnailMaker {
 					{
 						try {
 							int[] imagePixel = writableData.getPixel( x, y, pixelBuffer );
-							java.awt.Color.RGBtoHSB( imagePixel[ 0 ], imagePixel[ 1 ], imagePixel[ 2 ], pixelHSB );
+							Color.RGBtoHSB( imagePixel[ 0 ], imagePixel[ 1 ], imagePixel[ 2 ], pixelHSB );
 							if( pixelHSB[ 0 ] == chromaHSB[ 0 ] ) {
 								imagePixel[ 3 ] = 0;
 								writableData.setPixel( x, y, imagePixel );
@@ -337,9 +349,9 @@ public abstract class AbstractThumbnailMaker {
 		else {
 			returnImage = rv;
 		}
-		if( returnImage instanceof java.awt.image.BufferedImage )
+		if( returnImage instanceof BufferedImage )
 		{
-			return (java.awt.image.BufferedImage)returnImage;
+			return (BufferedImage)returnImage;
 		}
 		else if( returnImage != null )
 		{
@@ -351,19 +363,19 @@ public abstract class AbstractThumbnailMaker {
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable getModelTransformable() {
+	protected Transformable getModelTransformable() {
 		return this.sgModelTransformable;
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera getSGCamera() {
+	protected SymmetricPerspectiveCamera getSGCamera() {
 		return this.sgCamera;
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraVehicle() {
+	protected Transformable getSGCameraVehicle() {
 		return sgCameraVehicle;
 	}
 
-	protected org.lgna.story.implementation.SceneImp getScene() {
+	protected SceneImp getScene() {
 		return this.scene;
 	}
 
@@ -380,7 +392,7 @@ public abstract class AbstractThumbnailMaker {
 		cameraDir.normalize();
 		Vector3 negCameraDir = new Vector3( cameraDir );
 		negCameraDir.multiply( -1 );
-		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray( centerPoint, negCameraDir );
+		Ray cameraRay = new Ray( centerPoint, negCameraDir );
 		Point3 cameraLocation = cameraRay.getPointAlong( zoom );
 		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide( cameraDir, Vector3.accessPositiveYAxis() );
 		AffineMatrix4x4 rv = new AffineMatrix4x4( pointAtOrientation, cameraLocation );
@@ -390,7 +402,7 @@ public abstract class AbstractThumbnailMaker {
 	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox, Vector3 cameraDir )
 	{
 		cameraDir.normalize();
-		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray( bbox.getCenter(), cameraDir );
+		Ray cameraRay = new Ray( bbox.getCenter(), cameraDir );
 		double horizontalAngle = getSGCamera().horizontalViewingAngle.getValue().getAsRadians();
 		double verticalAngle = getSGCamera().verticalViewingAngle.getValue().getAsRadians();
 		double halfCameraFOV = ( horizontalAngle < verticalAngle ) ? horizontalAngle : verticalAngle;
@@ -424,33 +436,33 @@ public abstract class AbstractThumbnailMaker {
 		return getThumbnailCameraOrientation( bbox, cameraDir );
 	}
 
-	protected abstract AffineMatrix4x4 getThumbnailTransform( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox );
+	protected abstract AffineMatrix4x4 getThumbnailTransform( Visual v, AxisAlignedBox bbox );
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) {
+	public BufferedImage createThumbnail( Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) {
 		return createThumbnail( v, bbox, trimWhitespace, null );
 	}
 
-	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace, java.awt.Color colorKey ) {
+	public synchronized BufferedImage createThumbnail( Visual v, AxisAlignedBox bbox, boolean trimWhitespace, Color colorKey ) {
 		v.setParent( this.sgModelTransformable );
 		AffineMatrix4x4 finalCameraTransform = getThumbnailTransform( v, bbox );
-		java.awt.image.BufferedImage returnImage = takePicture( finalCameraTransform, trimWhitespace, colorKey );
+		BufferedImage returnImage = takePicture( finalCameraTransform, trimWhitespace, colorKey );
 		v.setParent( null );
 		return returnImage;
 	}
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) {
+	public BufferedImage createThumbnail( Visual v, AxisAlignedBox bbox ) {
 		return createThumbnail( v, bbox, true );
 	}
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v ) {
+	public BufferedImage createThumbnail( Visual v ) {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), true );
 	}
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, boolean trimWhitespace ) {
+	public BufferedImage createThumbnail( Visual v, boolean trimWhitespace ) {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}
 
-	protected void setUpCamera( edu.cmu.cs.dennisc.render.OffscreenRenderTarget renderTarget )
+	protected void setUpCamera( OffscreenRenderTarget renderTarget )
 	{
 		boolean isClearingAndAddingRequired;
 		if( renderTarget.getSgCameraCount() == 1 ) {

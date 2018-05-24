@@ -42,15 +42,26 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ziptree;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ZipTreeUtilities {
-	public static DirectoryZipTreeNode createTreeNode( java.util.zip.ZipInputStream zis, boolean isDataExtractionDesired ) throws java.io.IOException {
-		java.util.Map<String, DirectoryZipTreeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	public static DirectoryZipTreeNode createTreeNode( ZipInputStream zis, boolean isDataExtractionDesired ) throws IOException {
+		Map<String, DirectoryZipTreeNode> map = Maps.newHashMap();
 		DirectoryZipTreeNode rv = new DirectoryZipTreeNode( null );
 		map.put( "", rv );
-		java.util.zip.ZipEntry zipEntry;
+		ZipEntry zipEntry;
 		while( ( zipEntry = zis.getNextEntry() ) != null ) {
 			String name = zipEntry.getName();
 			ZipTreeNode zipTreeNode;
@@ -61,7 +72,7 @@ public class ZipTreeUtilities {
 			} else {
 				byte[] data;
 				if( isDataExtractionDesired ) {
-					data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes( zis, zipEntry );
+					data = ZipUtilities.extractBytes( zis, zipEntry );
 				} else {
 					data = null;
 				}
@@ -82,21 +93,21 @@ public class ZipTreeUtilities {
 		return rv;
 	}
 
-	public static DirectoryZipTreeNode createTreeNode( java.io.InputStream is, boolean isDataExtractionDesired ) throws java.io.IOException {
-		java.util.zip.ZipInputStream zis;
-		if( is instanceof java.util.zip.ZipInputStream ) {
-			zis = (java.util.zip.ZipInputStream)is;
+	public static DirectoryZipTreeNode createTreeNode( InputStream is, boolean isDataExtractionDesired ) throws IOException {
+		ZipInputStream zis;
+		if( is instanceof ZipInputStream ) {
+			zis = (ZipInputStream)is;
 		} else {
-			zis = new java.util.zip.ZipInputStream( is );
+			zis = new ZipInputStream( is );
 		}
 		return createTreeNode( zis, isDataExtractionDesired );
 	}
 
-	public static DirectoryZipTreeNode createTreeNode( java.io.File file, boolean isDataExtractionDesired ) throws java.io.IOException {
-		return createTreeNode( new java.io.FileInputStream( file ), isDataExtractionDesired );
+	public static DirectoryZipTreeNode createTreeNode( File file, boolean isDataExtractionDesired ) throws IOException {
+		return createTreeNode( new FileInputStream( file ), isDataExtractionDesired );
 	}
 
-	public static DirectoryZipTreeNode createTreeNode( String path, boolean isDataExtractionDesired ) throws java.io.IOException {
-		return createTreeNode( new java.io.File( path ), isDataExtractionDesired );
+	public static DirectoryZipTreeNode createTreeNode( String path, boolean isDataExtractionDesired ) throws IOException {
+		return createTreeNode( new File( path ), isDataExtractionDesired );
 	}
 }

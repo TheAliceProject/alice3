@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,7 +73,7 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 	}
 
 	@Override
-	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType<?, ?, ?> other ) {
+	protected boolean isAssignableFromType( AbstractType<?, ?, ?> other ) {
 		if( other.isArray() ) {
 			return false;
 		} else {
@@ -110,12 +112,12 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 	}
 
 	@Override
-	public final java.util.List<UserMethod> getDeclaredMethods() {
+	public final List<UserMethod> getDeclaredMethods() {
 		return methods.getValue();
 	}
 
 	@Override
-	public final java.util.List<UserField> getDeclaredFields() {
+	public final List<UserField> getDeclaredFields() {
 		return fields.getValue();
 	}
 

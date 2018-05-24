@@ -42,28 +42,35 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class FieldAccessAstMigration extends AstMigration {
-	public FieldAccessAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+	public FieldAccessAstMigration( Version minimumVersion, Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
-	protected abstract void migrate( org.lgna.project.ast.FieldAccess fieldAccess );
+	protected abstract void migrate( FieldAccess fieldAccess );
 
 	@Override
-	public final void migrate( org.lgna.project.ast.Node root, org.lgna.project.Project projectIfApplicable ) {
-		root.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+	public final void migrate( Node root, Project projectIfApplicable ) {
+		root.crawl( new Crawler() {
 			@Override
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.FieldAccess ) {
-					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)crawlable;
+			public void visit( Crawlable crawlable ) {
+				if( crawlable instanceof FieldAccess ) {
+					FieldAccess fieldAccess = (FieldAccess)crawlable;
 					FieldAccessAstMigration.this.migrate( fieldAccess );
 				}
 			}
-		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+		}, CrawlPolicy.COMPLETE, null );
 	}
 }

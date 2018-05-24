@@ -42,56 +42,68 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.alice.ide.ProjectApplication;
+import org.lgna.project.Project;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.io.IoUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.zip.ZipFile;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractFileProjectLoader extends UriProjectLoader {
-	public AbstractFileProjectLoader( java.io.File file ) {
+	public AbstractFileProjectLoader( File file ) {
 		this.file = file;
 	}
 
-	protected java.io.File getFile() {
+	protected File getFile() {
 		return this.file;
 	}
 
 	@Override
-	protected org.lgna.project.Project load() {
+	protected Project load() {
 		if( file.exists() ) {
-			final java.util.Locale locale = java.util.Locale.ENGLISH;
+			final Locale locale = Locale.ENGLISH;
 			String lcFilename = file.getName().toLowerCase( locale );
 			if( lcFilename.endsWith( ".a2w" ) ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Alice3 does not load Alice2 worlds" )
+				new OkDialog.Builder( "Alice3 does not load Alice2 worlds" )
 						.title( "Cannot read file" )
-						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+						.messageType( MessageType.ERROR )
 						.buildAndShow();
-			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) ) ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension." )
+			} else if( lcFilename.endsWith( IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) ) ) {
+				new OkDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + IoUtilities.PROJECT_EXTENSION + " extension." )
 						.title( "Incorrect File Type" )
-						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+						.messageType( MessageType.ERROR )
 						.buildAndShow();
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) );
-				java.util.zip.ZipFile zipFile;
+				boolean isWorthyOfException = lcFilename.endsWith( IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) );
+				ZipFile zipFile;
 				try {
-					zipFile = new java.util.zip.ZipFile( file );
-				} catch( java.io.IOException ioe ) {
+					zipFile = new ZipFile( file );
+				} catch( IOException ioe ) {
 					if( isWorthyOfException ) {
 						throw new RuntimeException( file.getAbsolutePath(), ioe );
 					} else {
-						org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, false );
+						ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, false );
 						zipFile = null;
 					}
 				}
 				if( zipFile != null ) {
 					try {
-						return org.lgna.project.io.IoUtilities.readProject( zipFile );
-					} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-						org.alice.ide.ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
-					} catch( java.io.IOException ioe ) {
+						return IoUtilities.readProject( zipFile );
+					} catch( VersionNotSupportedException vnse ) {
+						ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
+					} catch( IOException ioe ) {
 						if( isWorthyOfException ) {
 							throw new RuntimeException( file.getAbsolutePath(), ioe );
 						} else {
-							org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, true );
+							ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, true );
 						}
 					}
 				} else {
@@ -99,10 +111,10 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 				}
 			}
 		} else {
-			org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenFileDialog( file, "It does not exist." );
+			ProjectApplication.getActiveInstance().showUnableToOpenFileDialog( file, "It does not exist." );
 		}
 		return null;
 	}
 
-	private final java.io.File file;
+	private final File file;
 }

@@ -43,10 +43,23 @@
 
 package org.alice.ide.croquet.models.cascade.integer;
 
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu;
+import org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn;
+import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
+public class MathCascadeMenu extends ExpressionCascadeMenu<Expression> {
 	private static class SingletonHolder {
 		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
@@ -56,28 +69,28 @@ public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.Expres
 	}
 
 	private MathCascadeMenu() {
-		super( java.util.UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
+		super( UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
 	}
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
-		org.lgna.project.ast.Expression prevExpression = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> context ) {
+		Expression prevExpression = IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 		if( prevExpression != null ) {
 			if( prevExpression.getType().isAssignableTo( Integer.class ) ) {
-				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-					blankChildren.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+				for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+					blankChildren.add( IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 				}
 			}
 		}
-		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-			blankChildren.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+		for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+			blankChildren.add( IntegerArithmeticExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 		}
 		blankChildren.add( IncompleteDivideRemainderCascadeMenu.getInstance() );
 
-		blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
-		blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
-		blankChildren.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
+		blankChildren.add( CascadeLineSeparator.getInstance() );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "abs", Integer.TYPE ) );
+		blankChildren.add( CascadeLineSeparator.getInstance() );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "min", Integer.TYPE, Integer.TYPE ) );
+		blankChildren.add( StaticMethodInvocationFillIn.getInstance( Math.class, "max", Integer.TYPE, Integer.TYPE ) );
 	}
 }

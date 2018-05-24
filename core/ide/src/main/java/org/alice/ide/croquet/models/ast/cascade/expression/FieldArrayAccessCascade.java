@@ -43,40 +43,50 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<AbstractField, ExpressionProperty, FieldArrayAccessCascade> mapToMap = MapToMap.newInstance();
 
-	public static FieldArrayAccessCascade getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FieldArrayAccessCascade getInstance( AbstractField field, ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade>() {
+		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new MapToMap.Initializer<AbstractField, ExpressionProperty, FieldArrayAccessCascade>() {
 			@Override
-			public FieldArrayAccessCascade initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public FieldArrayAccessCascade initialize( AbstractField field, ExpressionProperty expressionProperty ) {
 				return new FieldArrayAccessCascade( field, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldArrayAccessCascade( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
+	private FieldArrayAccessCascade( AbstractField field, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "1aa9aa94-fd7f-47e9-99a6-2556d7871f28" ), expressionProperty );
 		this.field = field;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return org.lgna.project.ast.AstUtilities.createFieldAccess(
-				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
+	protected Expression createAccessExpression() {
+		return AstUtilities.createFieldAccess(
+				IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
 				this.field
 				);
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
+	protected AbstractType<?, ?, ?> getArrayType() {
 		return this.field.getValueType();
 	}
 }

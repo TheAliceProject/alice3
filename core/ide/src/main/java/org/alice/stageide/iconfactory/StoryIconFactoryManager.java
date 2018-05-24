@@ -42,19 +42,28 @@
  *******************************************************************************/
 package org.alice.stageide.iconfactory;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.iconfactory.IconFactoryManager;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.Visual;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFactoryManager {
+public class StoryIconFactoryManager implements IconFactoryManager {
 	public StoryIconFactoryManager() {
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory fallbackIconFactory ) {
+	public IconFactory getIconFactory( UserField field, IconFactory fallbackIconFactory ) {
 		final boolean IS_READY_FOR_PRIME_TIME = true;
 		if( IS_READY_FOR_PRIME_TIME ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
-			if( type.isAssignableTo( org.lgna.story.Visual.class ) ) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
+			AbstractType<?, ?, ?> type = field.getValueType();
+			if( type.isAssignableTo( Visual.class ) ) { //type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
 				synchronized( this.mapFieldToIconFactory ) {
 					FieldIconFactory iconFactory = this.mapFieldToIconFactory.get( field );
 					if( iconFactory != null ) {
@@ -74,12 +83,12 @@ public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFa
 	}
 
 	@Override
-	public void markIconFactoryForFieldDirty( org.lgna.project.ast.UserField field ) {
+	public void markIconFactoryForFieldDirty( UserField field ) {
 		FieldIconFactory iconFactory = this.mapFieldToIconFactory.get( field );
 		if( iconFactory != null ) {
 			iconFactory.markAllIconsDirty();
 		}
 	}
 
-	private final java.util.Map<org.lgna.project.ast.UserField, FieldIconFactory> mapFieldToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
+	private final Map<UserField, FieldIconFactory> mapFieldToIconFactory = Maps.newWeakHashMap();
 }

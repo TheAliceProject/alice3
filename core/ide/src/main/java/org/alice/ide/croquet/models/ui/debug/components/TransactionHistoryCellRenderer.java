@@ -43,21 +43,30 @@
 
 package org.alice.ide.croquet.models.ui.debug.components;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<Object> {
+public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
 	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value instanceof org.lgna.croquet.history.Transaction ) {
-			org.lgna.croquet.history.Transaction transaction = (org.lgna.croquet.history.Transaction)value;
+	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value instanceof Transaction ) {
+			Transaction transaction = (Transaction)value;
 			int i = transaction.getOwner().getIndexOfTransaction( transaction );
 			StringBuilder sb = new StringBuilder();
 			sb.append( "<html>" );
 			sb.append( "transaction[" );
 			sb.append( i );
 			sb.append( "] " );
-			org.lgna.croquet.edits.Edit edit = transaction.getEdit();
+			Edit edit = transaction.getEdit();
 			if( edit != null ) {
 				sb.append( edit.getTerseDescription() );
 			}
@@ -70,8 +79,8 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 			sb.append( "</html>" );
 			rv.setText( sb.toString() );
 			rv.setIcon( null );
-		} else if( value instanceof org.lgna.croquet.history.CompletionStep<?> ) {
-			org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)value;
+		} else if( value instanceof CompletionStep<?> ) {
+			CompletionStep<?> completionStep = (CompletionStep<?>)value;
 			String name;
 			if( completionStep.isPending() ) {
 				name = "pending";
@@ -82,7 +91,7 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 					name = "canceled";
 				}
 			}
-			rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
+			rv.setIcon( IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
 		}
 		return rv;
 	}

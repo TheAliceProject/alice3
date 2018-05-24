@@ -43,35 +43,44 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Disc;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.lgna.story.SDisc;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DiscImp extends ShapeImp {
-	public DiscImp( org.lgna.story.SDisc abstraction ) {
+	public DiscImp( SDisc abstraction ) {
 		this.abstraction = abstraction;
 		this.sgDisc.outerRadius.setValue( 0.5 );
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
-		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgDisc } );
+		Visual sgVisual = this.getSgVisuals()[ 0 ];
+		sgVisual.geometries.setValue( new Geometry[] { this.sgDisc } );
 	}
 
 	@Override
-	public org.lgna.story.SDisc getAbstraction() {
+	public SDisc getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgDisc.outerRadius };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.sgDisc.outerRadius };
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE };
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.XZ_PLANE };
 	}
 
 	@Override
-	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.XZ_PLANE ) {
 			return this.outerRadius.getValue();
 		} else {
 			assert false : resizer;
@@ -80,8 +89,8 @@ public class DiscImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.XZ_PLANE ) {
 			this.outerRadius.setValue( value );
 		} else {
 			assert false : resizer;
@@ -89,15 +98,15 @@ public class DiscImp extends ShapeImp {
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		if( size.x != size.z ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
+			Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
 		}
 		this.outerRadius.setValue( size.x * .5 );
 	}
 
-	private final org.lgna.story.SDisc abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Disc sgDisc = new edu.cmu.cs.dennisc.scenegraph.Disc();
+	private final SDisc abstraction;
+	private final Disc sgDisc = new Disc();
 	public final DoubleProperty outerRadius = new DoubleProperty( DiscImp.this ) {
 		@Override
 		public Double getValue() {

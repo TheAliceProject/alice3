@@ -44,6 +44,15 @@
 package org.lgna.project.ast;
 
 //todo: name
+
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.reflect.ClassInfo;
+import org.lgna.project.reflect.ClassInfoManager;
+import org.lgna.project.reflect.ConstructorInfo;
+
+import java.lang.annotation.Annotation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,9 +60,9 @@ public class JavaConstructorParameter extends JavaParameter {
 	private static String getParameterNameFor( ConstructorReflectionProxy constructorReflectionProxy, int index ) {
 		String rv = null;
 		try {
-			org.lgna.project.reflect.ClassInfo classInfo = org.lgna.project.reflect.ClassInfoManager.getInstance( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			ClassInfo classInfo = ClassInfoManager.getInstance( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
 			if( classInfo != null ) {
-				org.lgna.project.reflect.ConstructorInfo constructorInfo = classInfo.lookupInfo( constructorReflectionProxy.getReification() );
+				ConstructorInfo constructorInfo = classInfo.lookupInfo( constructorReflectionProxy.getReification() );
 				if( constructorInfo != null ) {
 					String[] parameterNames = constructorInfo.getParameterNames();
 					if( parameterNames != null ) {
@@ -62,12 +71,12 @@ public class JavaConstructorParameter extends JavaParameter {
 				}
 			}
 		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, constructorReflectionProxy, index );
+			Logger.throwable( t, constructorReflectionProxy, index );
 		}
 		return rv;
 	}
 
-	/* package-private */JavaConstructorParameter( JavaConstructor constructor, int index, java.lang.annotation.Annotation[] annotations ) {
+	/* package-private */JavaConstructorParameter( JavaConstructor constructor, int index, Annotation[] annotations ) {
 		super( annotations );
 		this.constructor = constructor;
 		this.index = index;
@@ -100,7 +109,7 @@ public class JavaConstructorParameter extends JavaParameter {
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaConstructorParameter ) {
 			JavaConstructorParameter otherJCP = (JavaConstructorParameter)other;
-			return this.constructor.equals( otherJCP.constructor ) && ( this.index == otherJCP.index ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.name, otherJCP.name ) && this.valueType.equals( otherJCP.valueType );
+			return this.constructor.equals( otherJCP.constructor ) && ( this.index == otherJCP.index ) && Objects.equals( this.name, otherJCP.name ) && this.valueType.equals( otherJCP.valueType );
 		} else {
 			return false;
 		}

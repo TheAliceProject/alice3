@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ziptree;
 
+import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>, Comparable<ZipTreeNode> {
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent;
+public abstract class ZipTreeNode implements TreeNode<String>, Comparable<ZipTreeNode> {
+	private TreeNode<String> parent;
 	private String path;
 	private String name;
 
@@ -65,11 +67,11 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getParent() {
+	public TreeNode<String> getParent() {
 		return this.parent;
 	}
 
-	public void setParent( edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> parent ) {
+	public void setParent( TreeNode<String> parent ) {
 		if( this.parent instanceof DirectoryZipTreeNode ) {
 			DirectoryZipTreeNode directoryZipTreeNode = (DirectoryZipTreeNode)this.parent;
 			directoryZipTreeNode.removeChild( this );
@@ -91,7 +93,7 @@ public abstract class ZipTreeNode implements edu.cmu.cs.dennisc.javax.swing.mode
 	}
 
 	@Override
-	public int compareTo( edu.cmu.cs.dennisc.ziptree.ZipTreeNode other ) {
+	public int compareTo( ZipTreeNode other ) {
 		if( this.getAllowsChildren() ) {
 			if( other.getAllowsChildren() ) {
 				return this.getName().compareToIgnoreCase( other.getName() );

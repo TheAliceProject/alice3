@@ -42,28 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.alice.stageide.personresource.data.HairHatStyle;
+import org.lgna.croquet.ItemCodec;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum HairHatStyleCodec implements org.lgna.croquet.ItemCodec<org.alice.stageide.personresource.data.HairHatStyle> {
+public enum HairHatStyleCodec implements ItemCodec<HairHatStyle> {
 	SINGLETON;
 	@Override
-	public Class<org.alice.stageide.personresource.data.HairHatStyle> getValueClass() {
-		return org.alice.stageide.personresource.data.HairHatStyle.class;
+	public Class<HairHatStyle> getValueClass() {
+		return HairHatStyle.class;
 	}
 
 	@Override
-	public org.alice.stageide.personresource.data.HairHatStyle decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public HairHatStyle decodeValue( BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.stageide.personresource.data.HairHatStyle value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, HairHatStyle value ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, org.alice.stageide.personresource.data.HairHatStyle value ) {
+	public void appendRepresentation( StringBuilder sb, HairHatStyle value ) {
 		sb.append( value );
 	}
 }

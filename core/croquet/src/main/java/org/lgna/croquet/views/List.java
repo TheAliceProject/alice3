@@ -43,14 +43,33 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.SingleSelectListState;
+
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
-public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croquet.SingleSelectListState<T, ?>> {
+public class List<T> extends ItemSelectable<JList, T, SingleSelectListState<T, ?>> {
 	public enum LayoutOrientation {
-		VERTICAL( javax.swing.JList.VERTICAL ),
-		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
-		HORIZONTAL_WRAP( javax.swing.JList.HORIZONTAL_WRAP );
+		VERTICAL( JList.VERTICAL ),
+		VERTICAL_WRAP( JList.VERTICAL_WRAP ),
+		HORIZONTAL_WRAP( JList.HORIZONTAL_WRAP );
 		private int internal;
 
 		private LayoutOrientation( int internal ) {
@@ -58,22 +77,22 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		}
 	}
 
-	private static class DefaultEmptyListPainter<T> implements edu.cmu.cs.dennisc.java.awt.Painter<List<T>> {
-		private static final java.util.Map<java.awt.font.TextAttribute, Object> mapDeriveFont;
+	private static class DefaultEmptyListPainter<T> implements Painter<List<T>> {
+		private static final Map<TextAttribute, Object> mapDeriveFont;
 		static {
-			mapDeriveFont = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			mapDeriveFont.put( java.awt.font.TextAttribute.POSTURE, java.awt.font.TextAttribute.POSTURE_OBLIQUE );
-			mapDeriveFont.put( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
+			mapDeriveFont = Maps.newHashMap();
+			mapDeriveFont.put( TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE );
+			mapDeriveFont.put( TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT );
 		}
 
 		@Override
-		public void paint( java.awt.Graphics2D g2, List<T> listView, int width, int height ) {
-			org.lgna.croquet.SingleSelectListState<T, ?> state = listView.getModel();
-			org.lgna.croquet.PlainStringValue emptyConditionText = state.getEmptyConditionText();
+		public void paint( Graphics2D g2, List<T> listView, int width, int height ) {
+			SingleSelectListState<T, ?> state = listView.getModel();
+			PlainStringValue emptyConditionText = state.getEmptyConditionText();
 			String text = emptyConditionText.getText();
 			if( ( text != null ) && ( text.length() > 0 ) ) {
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-				g2.setPaint( java.awt.Color.DARK_GRAY );
+				GraphicsUtilities.setRenderingHint( g2, RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+				g2.setPaint( Color.DARK_GRAY );
 				g2.setFont( g2.getFont().deriveFont( mapDeriveFont ) );
 				final int OFFSET = 4;
 				g2.drawString( text, OFFSET, OFFSET + g2.getFontMetrics().getAscent() );
@@ -81,21 +100,21 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		}
 	}
 
-	private edu.cmu.cs.dennisc.java.awt.Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
+	private Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
 
-	public List( org.lgna.croquet.SingleSelectListState<T, ?> model ) {
+	public List( SingleSelectListState<T, ?> model ) {
 		super( model );
 		this.getAwtComponent().setModel( model.getImp().getSwingModel().getComboBoxModel() );
 		this.getAwtComponent().setSelectionModel( model.getImp().getSwingModel().getListSelectionModel() );
 	}
 
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+	private final LenientMouseClickAdapter mouseAdapter = new LenientMouseClickAdapter() {
 		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
 				AbstractWindow<?> window = List.this.getRoot();
 				if( window != null ) {
-					org.lgna.croquet.views.Button defaultButton = window.getDefaultButton();
+					Button defaultButton = window.getDefaultButton();
 					if( defaultButton != null ) {
 						defaultButton.doClick();
 					}
@@ -114,34 +133,34 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		this.removeMouseListener( this.mouseAdapter );
 	}
 
-	protected class JDefaultList extends javax.swing.JList {
+	protected class JDefaultList extends JList {
 		@Override
-		public java.awt.Dimension getPreferredSize() {
+		public Dimension getPreferredSize() {
 			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
 
 		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
+		protected void paintComponent( Graphics g ) {
 			super.paintComponent( g );
-			javax.swing.ListModel model = this.getModel();
+			ListModel model = this.getModel();
 			if( model.getSize() == 0 ) {
 				if( emptyConditionPainter != null ) {
-					emptyConditionPainter.paint( (java.awt.Graphics2D)g, List.this, this.getWidth(), this.getHeight() );
+					emptyConditionPainter.paint( (Graphics2D)g, List.this, this.getWidth(), this.getHeight() );
 				}
 			}
 		}
 	}
 
 	@Override
-	protected javax.swing.JList createAwtComponent() {
+	protected JList createAwtComponent() {
 		return new JDefaultList();
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.Painter<List<T>> getEmptyConditionPainter() {
+	public Painter<List<T>> getEmptyConditionPainter() {
 		return this.emptyConditionPainter;
 	}
 
-	public void setEmptyConditionPainter( edu.cmu.cs.dennisc.java.awt.Painter<List<T>> emptyConditionPainter ) {
+	public void setEmptyConditionPainter( Painter<List<T>> emptyConditionPainter ) {
 		this.emptyConditionPainter = emptyConditionPainter;
 	}
 
@@ -151,11 +170,11 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		return this;
 	}
 
-	public javax.swing.ListCellRenderer getCellRenderer() {
+	public ListCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}
 
-	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+	public void setCellRenderer( ListCellRenderer listCellRenderer ) {
 		this.checkEventDispatchThread();
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}

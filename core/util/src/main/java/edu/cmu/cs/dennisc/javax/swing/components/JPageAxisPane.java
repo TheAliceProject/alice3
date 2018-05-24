@@ -42,13 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.BoxLayout;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JPageAxisPane extends JBoxPane {
-	public JPageAxisPane( java.awt.Component... components ) {
-		super( javax.swing.BoxLayout.PAGE_AXIS );
-		for( java.awt.Component component : components ) {
+	public JPageAxisPane( Component... components ) {
+		super( BoxLayout.PAGE_AXIS );
+		for( Component component : components ) {
 			this.add( component );
 		}
 	}

@@ -42,18 +42,21 @@
  *******************************************************************************/
 package org.lgna.croquet.undo.event;
 
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.undo.UndoHistory;
+
 /**
  * @author Dennis Cosgrove
  */
 public class HistoryPushEvent extends HistoryEvent {
-	private org.lgna.croquet.edits.Edit edit;
+	private Edit edit;
 
-	public HistoryPushEvent( org.lgna.croquet.undo.UndoHistory source, org.lgna.croquet.edits.Edit edit ) {
+	public HistoryPushEvent( UndoHistory source, Edit edit ) {
 		super( source );
 		this.edit = edit;
 	}
 
-	public org.lgna.croquet.edits.Edit getEdit() {
+	public Edit getEdit() {
 		return this.edit;
 	}
 }

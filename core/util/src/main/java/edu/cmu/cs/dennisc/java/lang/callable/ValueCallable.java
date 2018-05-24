@@ -42,10 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang.callable;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
+import java.util.concurrent.Callable;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ValueCallable<T> implements java.util.concurrent.Callable<T> {
+public class ValueCallable<T> implements Callable<T> {
 	private final T value;
 
 	public ValueCallable( T value ) {
@@ -59,7 +63,7 @@ public class ValueCallable<T> implements java.util.concurrent.Callable<T> {
 		}
 		if( obj instanceof ValueCallable ) {
 			ValueCallable other = (ValueCallable)obj;
-			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.value, other.value );
+			return Objects.equals( this.value, other.value );
 		} else {
 			return false;
 		}

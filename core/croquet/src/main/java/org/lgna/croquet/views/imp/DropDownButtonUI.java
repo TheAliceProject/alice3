@@ -42,21 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
+public class DropDownButtonUI extends BasicButtonUI {
 	private static enum DropDownButtonUIDispatchState {
 		DISPATCH_TO_BUTTON,
 		DISPATCH_TO_ANCESTOR
 	}
 
-	public DropDownButtonUI( javax.swing.AbstractButton button ) {
+	public DropDownButtonUI( AbstractButton button ) {
 		this.button = button;
 	}
 
 	@Override
-	protected void installListeners( javax.swing.AbstractButton b ) {
+	protected void installListeners( AbstractButton b ) {
 		//note: do not call super
 		//super.installListeners( b );
 		b.addMouseListener( this.mouseListener );
@@ -64,21 +78,21 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 	}
 
 	@Override
-	protected void uninstallListeners( javax.swing.AbstractButton b ) {
+	protected void uninstallListeners( AbstractButton b ) {
 		b.removeMouseMotionListener( this.mouseMotionListener );
 		b.removeMouseListener( this.mouseListener );
 		//note: do not call super
 		//super.uninstallListeners( b );
 	}
 
-	private void dispatchToAncestor( java.awt.event.MouseEvent e ) {
-		java.awt.EventQueue eventQueue = java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue();
-		eventQueue.postEvent( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.convertMouseEvent( this.button, e, this.ancestor ) );
+	private void dispatchToAncestor( MouseEvent e ) {
+		EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
+		eventQueue.postEvent( MouseEventUtilities.convertMouseEvent( this.button, e, this.ancestor ) );
 	}
 
-	private void handleMouseEntered( java.awt.event.MouseEvent e ) {
-		javax.swing.ButtonModel buttonModel = this.button.getModel();
-		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+	private void handleMouseEntered( MouseEvent e ) {
+		ButtonModel buttonModel = this.button.getModel();
+		if( SwingUtilities.isLeftMouseButton( e ) ) {
 			//pass
 		} else {
 			if( this.button.isEnabled() ) {
@@ -91,15 +105,15 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		}
 	}
 
-	private void handleMouseExited( java.awt.event.MouseEvent e ) {
-		javax.swing.ButtonModel buttonModel = this.button.getModel();
+	private void handleMouseExited( MouseEvent e ) {
+		ButtonModel buttonModel = this.button.getModel();
 		if( this.dispatchState != DropDownButtonUIDispatchState.DISPATCH_TO_ANCESTOR ) {
 			buttonModel.setRollover( false );
 		}
 	}
 
-	private void handleMousePressed( java.awt.event.MouseEvent e ) {
-		javax.swing.ButtonModel buttonModel = this.button.getModel();
+	private void handleMousePressed( MouseEvent e ) {
+		ButtonModel buttonModel = this.button.getModel();
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.dispatchState, this );
 		if( this.button.isEnabled() ) {
 			buttonModel.setPressed( true );
@@ -111,8 +125,8 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		}
 	}
 
-	private void handleMouseReleased( java.awt.event.MouseEvent e ) {
-		javax.swing.ButtonModel buttonModel = this.button.getModel();
+	private void handleMouseReleased( MouseEvent e ) {
+		ButtonModel buttonModel = this.button.getModel();
 		if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON ) {
 			buttonModel.setArmed( true );
 			buttonModel.setPressed( false );
@@ -128,8 +142,8 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		this.dispatchState = null;
 	}
 
-	private static JDragView findDraggableJDragView( java.awt.Component awtComponent ) {
-		JDragView jDragView = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findFirstAncestor( awtComponent, false, JDragView.class );
+	private static JDragView findDraggableJDragView( Component awtComponent ) {
+		JDragView jDragView = ComponentUtilities.findFirstAncestor( awtComponent, false, JDragView.class );
 		if( jDragView != null ) {
 			if( jDragView.isActuallyDraggable() ) {
 				return jDragView;
@@ -141,8 +155,8 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		}
 	}
 
-	private void handleMouseDragged( java.awt.event.MouseEvent e ) {
-		javax.swing.ButtonModel buttonModel = this.button.getModel();
+	private void handleMouseDragged( MouseEvent e ) {
+		ButtonModel buttonModel = this.button.getModel();
 		if( this.dispatchState == DropDownButtonUIDispatchState.DISPATCH_TO_BUTTON ) {
 			if( e.getComponent().contains( e.getPoint() ) ) {
 				//pass
@@ -164,44 +178,44 @@ public class DropDownButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 	}
 
 	private DropDownButtonUIDispatchState dispatchState;
-	private java.awt.event.MouseEvent mousePressedEvent;
+	private MouseEvent mousePressedEvent;
 	private JDragView ancestor;
 
-	private final javax.swing.AbstractButton button;
+	private final AbstractButton button;
 
-	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+	private final MouseListener mouseListener = new MouseListener() {
 		@Override
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		public void mouseEntered( MouseEvent e ) {
 			handleMouseEntered( e );
 		}
 
 		@Override
-		public void mouseExited( java.awt.event.MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 			handleMouseExited( e );
 		}
 
 		@Override
-		public void mousePressed( java.awt.event.MouseEvent e ) {
+		public void mousePressed( MouseEvent e ) {
 			handleMousePressed( e );
 		}
 
 		@Override
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
 			handleMouseReleased( e );
 		}
 
 		@Override
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		public void mouseClicked( MouseEvent e ) {
 		}
 	};
 
-	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+	private final MouseMotionListener mouseMotionListener = new MouseMotionListener() {
 		@Override
-		public void mouseMoved( java.awt.event.MouseEvent e ) {
+		public void mouseMoved( MouseEvent e ) {
 		}
 
 		@Override
-		public void mouseDragged( java.awt.event.MouseEvent e ) {
+		public void mouseDragged( MouseEvent e ) {
 			handleMouseDragged( e );
 		}
 	};

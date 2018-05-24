@@ -42,10 +42,14 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.texture;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class TextureCoordinate2f implements BinaryEncodableAndDecodable {
 	public float u;
 	public float v;
 
@@ -62,13 +66,13 @@ public final class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.Binar
 		this.v = v;
 	}
 
-	public TextureCoordinate2f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public TextureCoordinate2f( BinaryDecoder binaryDecoder ) {
 		this.u = binaryDecoder.decodeFloat();
 		this.v = binaryDecoder.decodeFloat();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( u );
 		binaryEncoder.encode( v );
 	}

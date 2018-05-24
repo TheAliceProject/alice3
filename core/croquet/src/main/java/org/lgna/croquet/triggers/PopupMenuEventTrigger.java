@@ -43,28 +43,34 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.event.PopupMenuEvent;
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.PopupMenuEvent> {
-	public static PopupMenuEventTrigger createUserInstance( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+public class PopupMenuEventTrigger extends EventObjectTrigger<PopupMenuEvent> {
+	public static PopupMenuEventTrigger createUserInstance( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
 		return new PopupMenuEventTrigger( viewController, popupMenuEvent );
 	}
 
-	public static PopupMenuEventTrigger createUserInstance( javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+	public static PopupMenuEventTrigger createUserInstance( PopupMenuEvent popupMenuEvent ) {
 		return createUserInstance( null, popupMenuEvent );
 	}
 
-	private PopupMenuEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+	private PopupMenuEventTrigger( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
 		super( viewController, popupMenuEvent );
 	}
 
-	public PopupMenuEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public PopupMenuEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	protected java.awt.Point getPoint() {
+	protected Point getPoint() {
 		return null;
 	}
 }

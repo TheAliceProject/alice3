@@ -42,15 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.projecturi.views;
 
+import org.alice.ide.projecturi.ProjectSideComposite;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.MigPanel;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectSideView extends org.lgna.croquet.views.MigPanel {
-	public ProjectSideView( org.alice.ide.projecturi.ProjectSideComposite composite ) {
+public class ProjectSideView extends MigPanel {
+	public ProjectSideView( ProjectSideComposite composite ) {
 		super( composite, "insets 0" );
-		this.addComponent( new org.lgna.croquet.views.Label( "preview", 1.4f ), "wrap" );
+		this.addComponent( new Label( "preview", 1.4f ), "wrap" );
 		this.addComponent( new PreviewProjectComponent(), "wrap" );
-		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 0 ) );
+		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 0, 0 ) );
 	}
 }

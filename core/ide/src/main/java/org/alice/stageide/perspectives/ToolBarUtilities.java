@@ -42,6 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.perspectives;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.croquet.models.projecturi.SaveProjectOperation;
+import org.alice.stageide.run.RunComposite;
+import org.lgna.croquet.Element;
+import org.lgna.croquet.GapToolBarSeparator;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,20 +58,20 @@ public class ToolBarUtilities {
 		throw new AssertionError();
 	}
 
-	public static void appendDocumentSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
+	public static void appendDocumentSubElements( ProjectDocumentFrame projectDocumentFrame, List<Element> subElements ) {
 		subElements.add( projectDocumentFrame.getOpenProjectOperation() );
-		subElements.add( org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance() );
-		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
+		subElements.add( SaveProjectOperation.getInstance() );
+		subElements.add( GapToolBarSeparator.getInstance() );
 	}
 
-	public static void appendUndoRedoSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
+	public static void appendUndoRedoSubElements( ProjectDocumentFrame projectDocumentFrame, List<Element> subElements ) {
 		subElements.add( projectDocumentFrame.getUndoOperation() );
 		subElements.add( projectDocumentFrame.getRedoOperation() );
-		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
+		subElements.add( GapToolBarSeparator.getInstance() );
 	}
 
-	public static void appendRunSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
-		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation() );
-		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
+	public static void appendRunSubElements( ProjectDocumentFrame projectDocumentFrame, List<Element> subElements ) {
+		subElements.add( RunComposite.getInstance().getLaunchOperation() );
+		subElements.add( GapToolBarSeparator.getInstance() );
 	}
 }

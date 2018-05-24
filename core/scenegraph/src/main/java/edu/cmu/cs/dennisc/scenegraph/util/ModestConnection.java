@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph.util;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.polynomial.HermiteCubic;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineStrip;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
@@ -62,12 +64,12 @@ public class ModestConnection extends Connection {
 	}
 
 	public void update() {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = getTarget().getTransformation( this );
+		AffineMatrix4x4 m = getTarget().getTransformation( this );
 		double s = m.translation.calculateMagnitude();
 		s *= 2;
-		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic x = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.x, 0, s * m.orientation.backward.x );
-		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic y = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.y, 0, s * m.orientation.backward.y );
-		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic z = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.z, -s, -s * m.orientation.backward.z );
+		HermiteCubic x = new HermiteCubic( 0, m.translation.x, 0, s * m.orientation.backward.x );
+		HermiteCubic y = new HermiteCubic( 0, m.translation.y, 0, s * m.orientation.backward.y );
+		HermiteCubic z = new HermiteCubic( 0, m.translation.z, -s, -s * m.orientation.backward.z );
 		Vertex[] vertices = this.sgLineStrip.vertices.getValue();
 		synchronized( vertices ) {
 			double tDelta = 1.0 / ( vertices.length - 1 );

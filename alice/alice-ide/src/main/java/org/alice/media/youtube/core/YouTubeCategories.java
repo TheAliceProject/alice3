@@ -42,6 +42,16 @@
  *******************************************************************************/
 package org.alice.media.youtube.core;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,12 +71,12 @@ public class YouTubeCategories {
 	//	private static final String LABEL_PATTERN = "label='[^']*'";
 	//	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
 	//	private static final String DEFAULT_CATEGORY = "tech";
-	private static java.util.List<String> categoryStrings;
-	private static java.util.List<String> termStrings;
+	private static List<String> categoryStrings;
+	private static List<String> termStrings;
 
-	private static void initializeCategoriesAndTerms() throws java.io.IOException {
-		java.net.URL categoryURL = new java.net.URL( CATEGORY_URL );
-		java.io.InputStream is = categoryURL.openStream();
+	private static void initializeCategoriesAndTerms() throws IOException {
+		URL categoryURL = new URL( CATEGORY_URL );
+		InputStream is = categoryURL.openStream();
 		StringBuilder sb = new StringBuilder();
 		int readValue;
 		while( ( readValue = is.read() ) != -1 ) {
@@ -74,8 +84,8 @@ public class YouTubeCategories {
 			sb.append( charVal );
 		}
 		String categoryData = sb.toString();
-		java.util.List<String> labels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<String> terms = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> labels = Lists.newLinkedList();
+		List<String> terms = Lists.newLinkedList();
 		int TERM_LENGTH = TERM_STRING.length();
 		int LABEL_LENGTH = LABEL_STRING.length();
 		int DEPRECATED_LENGTH = DEPRECATED_STRING.length();
@@ -102,7 +112,7 @@ public class YouTubeCategories {
 					terms.remove( terms.size() - 1 );
 					labels.remove( labels.size() - 1 );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( terms.size(), labels.size() );
+					Logger.severe( terms.size(), labels.size() );
 				}
 				i += DEPRECATED_LENGTH;
 			} else {
@@ -120,9 +130,9 @@ public class YouTubeCategories {
 			try {
 				initializeCategoriesAndTerms();
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-				categoryStrings = java.util.Collections.emptyList();
-				termStrings = java.util.Collections.emptyList();
+				Logger.throwable( t );
+				categoryStrings = Collections.emptyList();
+				termStrings = Collections.emptyList();
 			}
 		}
 
@@ -130,6 +140,6 @@ public class YouTubeCategories {
 
 	public static String[] getCategories() {
 		initializeCategoriesAndTermsIfNecessary();
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( categoryStrings, String.class );
+		return ArrayUtilities.createArray( categoryStrings, String.class );
 	}
 }

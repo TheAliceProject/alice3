@@ -43,19 +43,36 @@
 
 package org.alice.stageide.modelviewer;
 
+import edu.cmu.cs.dennisc.animation.Animator;
+import edu.cmu.cs.dennisc.animation.ClockBasedAnimator;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+import edu.cmu.cs.dennisc.render.RenderFactory;
+import edu.cmu.cs.dennisc.render.RenderUtils;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.story.implementation.SceneImp;
+import org.lgna.story.implementation.SunImp;
+import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
+
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
-	private edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() );
-	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );
-	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
-	private org.lgna.story.implementation.SunImp sunLight = new org.lgna.story.implementation.SunImp( null );
+abstract class Viewer extends BorderPanel {
+	private HeavyweightOnscreenRenderTarget onscreenRenderTarget = RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new RenderCapabilities.Builder().build() );
+	private Animator animator = new ClockBasedAnimator();
+	private SceneImp scene = new SceneImp( null );
+	private SymmetricPerspectiveCameraImp camera = new SymmetricPerspectiveCameraImp( null );
+	private SunImp sunLight = new SunImp( null );
 
-	private edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
+	private AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
 			animator.update();
 		}
 	};
@@ -63,8 +80,8 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 	public Viewer() {
 		this.camera.setVehicle( this.scene );
 		this.sunLight.setVehicle( this.scene );
-		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
-		this.getAwtComponent().add( this.onscreenRenderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
+		this.sunLight.applyRotationInRevolutions( Vector3.accessNegativeXAxis(), 0.25 );
+		this.getAwtComponent().add( this.onscreenRenderTarget.getAwtComponent(), BorderLayout.CENTER );
 	}
 
 	private boolean isInitialized = false;
@@ -73,19 +90,19 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 		this.onscreenRenderTarget.addSgCamera( this.camera.getSgCamera() );
 	}
 
-	protected edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	protected OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
-	protected org.lgna.story.implementation.SceneImp getScene() {
+	protected SceneImp getScene() {
 		return this.scene;
 	}
 
-	protected org.lgna.story.implementation.SymmetricPerspectiveCameraImp getCamera() {
+	protected SymmetricPerspectiveCameraImp getCamera() {
 		return this.camera;
 	}
 
-	protected org.lgna.story.implementation.SunImp getSunLight() {
+	protected SunImp getSunLight() {
 		return this.sunLight;
 	}
 
@@ -98,20 +115,20 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 			this.initialize();
 			this.isInitialized = true;
 		}
-		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
+		RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
 		renderFactory.incrementAutomaticDisplayCount();
 		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
+		RenderFactory renderFactory = RenderUtils.getDefaultRenderFactory();
 		renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 		renderFactory.decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
 	}
 
-	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+	protected Animator getAnimator() {
 		return this.animator;
 	}
 }

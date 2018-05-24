@@ -42,23 +42,26 @@
  *******************************************************************************/
 package org.alice.ide.cascade;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BlockStatementIndexPairContext implements ExpressionCascadeContext {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public BlockStatementIndexPairContext( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	public BlockStatementIndexPairContext( BlockStatementIndexPair blockStatementIndexPair ) {
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
 	@Override
-	public org.lgna.project.ast.Expression getPreviousExpression() {
+	public Expression getPreviousExpression() {
 		return null;
 	}
 
 	@Override
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+	public BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}
 }

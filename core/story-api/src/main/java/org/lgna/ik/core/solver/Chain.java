@@ -43,12 +43,21 @@
 
 package org.lgna.ik.core.solver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
 import org.lgna.ik.core.solver.Bone.Axis;
 
 import edu.cmu.cs.dennisc.math.Vector3;
+import org.lgna.story.implementation.AsSeenBy;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointId;
 
 /**
  * @author Dennis Cosgrove
@@ -57,28 +66,28 @@ public class Chain {
 
 	// Chain includes all the joints that will turn
 
-	public static Chain createInstance( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImp, org.lgna.story.resources.JointId anchorId, org.lgna.story.resources.JointId endId ) {
-		java.util.List<org.lgna.ik.core.solver.Bone.Direction> directions = new java.util.ArrayList<org.lgna.ik.core.solver.Bone.Direction>();
-		java.util.List<org.lgna.story.implementation.JointImp> jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId, directions );
+	public static Chain createInstance( JointedModelImp<?, ?> jointedModelImp, JointId anchorId, JointId endId ) {
+		List<Bone.Direction> directions = new ArrayList<Bone.Direction>();
+		List<JointImp> jointImps = jointedModelImp.getInclusiveListOfJointsBetween( anchorId, endId, directions );
 		return new Chain( jointImps, directions );
 	}
 
-	private final java.util.List<org.lgna.story.implementation.JointImp> jointImps;
+	private final List<JointImp> jointImps;
 	private final Bone[] bones;
-	private final edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition;
-	private final java.util.List<org.lgna.ik.core.solver.Bone.Direction> directions; //the order doesn't change but the directions do
+	private final Point3 endEffectorLocalPosition;
+	private final List<Bone.Direction> directions; //the order doesn't change but the directions do
 
 	//	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > linearVelocityContributions;
 	//	private final java.util.Map< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 > angularVelocityContributions;
 	//	
-	private final java.util.Map<Bone, Map<Axis, Vector3>> linearVelocityContributions;
-	private final java.util.Map<Bone, Map<Axis, Vector3>> angularVelocityContributions;
+	private final Map<Bone, Map<Axis, Vector3>> linearVelocityContributions;
+	private final Map<Bone, Map<Axis, Vector3>> angularVelocityContributions;
 
-	private Chain( java.util.List<org.lgna.story.implementation.JointImp> jointImps, java.util.List<org.lgna.ik.core.solver.Bone.Direction> directions ) {
+	private Chain( List<JointImp> jointImps, List<Bone.Direction> directions ) {
 		this.jointImps = jointImps;
 		this.directions = directions;
 
-		this.endEffectorLocalPosition = edu.cmu.cs.dennisc.math.Point3.createZero();
+		this.endEffectorLocalPosition = Point3.createZero();
 		//		this.linearVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
 		//		this.angularVelocityContributions = new java.util.HashMap< org.lgna.ik.solver.Bone.Axis, edu.cmu.cs.dennisc.math.Vector3 >();
 		this.linearVelocityContributions = new HashMap<Bone, Map<Axis, Vector3>>();
@@ -96,16 +105,16 @@ public class Chain {
 
 	//if this is not called, in linear motions, you will be moving the anchor of the last joint
 	//this helps you move the tip of the finger
-	public void setEndEffectorPosition( edu.cmu.cs.dennisc.math.Point3 eePosition ) {
-		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get( jointImps.size() - 1 );
+	public void setEndEffectorPosition( Point3 eePosition ) {
+		JointImp eeJointImp = jointImps.get( jointImps.size() - 1 );
 
 		//get the world eePosition local to eeJointImp
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 eeJointInverse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse( eeJointImp.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ) );
+		AffineMatrix4x4 eeJointInverse = AffineMatrix4x4.createInverse( eeJointImp.getTransformation( AsSeenBy.SCENE ) );
 
 		eeJointInverse.setReturnValueToTransformed( endEffectorLocalPosition, eePosition );
 	}
 
-	public void setEndEffectorLocalPosition( edu.cmu.cs.dennisc.math.Point3 endEffectorLocalPosition ) {
+	public void setEndEffectorLocalPosition( Point3 endEffectorLocalPosition ) {
 		this.endEffectorLocalPosition.set( endEffectorLocalPosition );
 	}
 
@@ -113,24 +122,24 @@ public class Chain {
 		return this.bones;
 	}
 
-	public org.lgna.story.implementation.JointImp getJointImpAt( int index ) {
+	public JointImp getJointImpAt( int index ) {
 		return this.jointImps.get( index );
 	}
 
-	public org.lgna.ik.core.solver.Bone.Direction getDirectionAt( int index ) {
+	public Bone.Direction getDirectionAt( int index ) {
 		return this.directions.get( index );
 	}
 
 	// these could be local or world. does it matter? it could only matter if you don't move the end effector target with the character.
 	// so, these are world
-	public edu.cmu.cs.dennisc.math.Point3 getEndEffectorPosition() {
-		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get( jointImps.size() - 1 );
-		return eeJointImp.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).setReturnValueToTransformed( new edu.cmu.cs.dennisc.math.Point3(), endEffectorLocalPosition );
+	public Point3 getEndEffectorPosition() {
+		JointImp eeJointImp = jointImps.get( jointImps.size() - 1 );
+		return eeJointImp.getTransformation( AsSeenBy.SCENE ).setReturnValueToTransformed( new Point3(), endEffectorLocalPosition );
 	}
 
-	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 getEndEffectorOrientation() {
-		org.lgna.story.implementation.JointImp eeJointImp = jointImps.get( jointImps.size() - 1 );
-		return eeJointImp.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).orientation;
+	public OrthogonalMatrix3x3 getEndEffectorOrientation() {
+		JointImp eeJointImp = jointImps.get( jointImps.size() - 1 );
+		return eeJointImp.getTransformation( AsSeenBy.SCENE ).orientation;
 	}
 
 	public void updateStateFromJoints() {
@@ -149,7 +158,7 @@ public class Chain {
 
 			Map<Axis, Vector3> contributionsForBone = linearVelocityContributions.get( bone );
 
-			for( org.lgna.ik.core.solver.Bone.Axis axis : bone.getAxes() ) {
+			for( Bone.Axis axis : bone.getAxes() ) {
 				contributionsForBone.put( axis, axis.getLinearContribution() );
 			}
 		}
@@ -163,7 +172,7 @@ public class Chain {
 
 			Map<Axis, Vector3> contributionsForBone = angularVelocityContributions.get( bone );
 
-			for( org.lgna.ik.core.solver.Bone.Axis axis : bone.getAxes() ) {
+			for( Bone.Axis axis : bone.getAxes() ) {
 				contributionsForBone.put( axis, axis.getAngularContribution() );
 			}
 		}
@@ -182,11 +191,11 @@ public class Chain {
 		return angularVelocityContributions;
 	}
 
-	public org.lgna.story.implementation.JointImp getLastJointImp() {
+	public JointImp getLastJointImp() {
 		return jointImps.get( jointImps.size() - 1 );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getAnchorPosition() {
+	public Point3 getAnchorPosition() {
 		return bones[ 0 ].getAnchorPosition();
 	}
 

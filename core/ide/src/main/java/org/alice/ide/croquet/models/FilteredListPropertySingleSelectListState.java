@@ -43,11 +43,17 @@
 
 package org.alice.ide.croquet.models;
 
+import org.alice.ide.ast.data.FilteredListPropertyData;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.RefreshableDataSingleSelectListState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredListPropertySingleSelectListState<E> extends org.lgna.croquet.RefreshableDataSingleSelectListState<E> {
-	public FilteredListPropertySingleSelectListState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, org.alice.ide.ast.data.FilteredListPropertyData<E> data ) {
+public abstract class FilteredListPropertySingleSelectListState<E> extends RefreshableDataSingleSelectListState<E> {
+	public FilteredListPropertySingleSelectListState( Group group, UUID id, int selectionIndex, FilteredListPropertyData<E> data ) {
 		super( group, id, selectionIndex, data );
 		//this.updateData();
 	}

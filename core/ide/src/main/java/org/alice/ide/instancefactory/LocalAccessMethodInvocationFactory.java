@@ -43,13 +43,21 @@
 
 package org.alice.ide.instancefactory;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.UserLocal;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.AbstractMethod, LocalAccessMethodInvocationFactory> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<UserLocal, AbstractMethod, LocalAccessMethodInvocationFactory> mapToMap = MapToMap.newInstance();
 
-	public static synchronized LocalAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
+	public static synchronized LocalAccessMethodInvocationFactory getInstance( UserLocal local, AbstractMethod method ) {
 		assert local != null;
 		LocalAccessMethodInvocationFactory rv = mapToMap.get( local, method );
 		if( rv != null ) {
@@ -61,17 +69,17 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 		return rv;
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
+	private final UserLocal local;
 
-	private LocalAccessMethodInvocationFactory( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
+	private LocalAccessMethodInvocationFactory( UserLocal local, AbstractMethod method ) {
 		super( method, local.name );
 		this.local = local;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+	protected AbstractType<?, ?, ?> getValidInstanceType( AbstractType<?, ?, ?> type, AbstractCode code ) {
 		if( code != null ) {
-			if( this.local.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) {
+			if( this.local.getFirstAncestorAssignableTo( AbstractCode.class ) == code ) {
 				return this.local.getValueType();
 			} else {
 				return null;
@@ -81,19 +89,19 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 		}
 	}
 
-	public org.lgna.project.ast.UserLocal getLocal() {
+	public UserLocal getLocal() {
 		return this.local;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
+	protected Expression createTransientExpressionForMethodInvocation() {
 		//todo?
-		return new org.lgna.project.ast.LocalAccess( this.local );
+		return new LocalAccess( this.local );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
-		return new org.lgna.project.ast.LocalAccess( this.local );
+	protected Expression createExpressionForMethodInvocation() {
+		return new LocalAccess( this.local );
 	}
 
 	@Override

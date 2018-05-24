@@ -43,16 +43,19 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.story.Color;
+import org.lgna.story.EmployeesOnly;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorProperty extends Property<org.lgna.story.Color> {
+public abstract class ColorProperty extends Property<Color> {
 	public ColorProperty( PropertyOwnerImp owner ) {
-		super( owner, org.lgna.story.Color.class );
+		super( owner, Color.class );
 	}
 
 	@Override
-	protected org.lgna.story.Color interpolate( org.lgna.story.Color a, org.lgna.story.Color b, double portion ) {
-		return org.lgna.story.EmployeesOnly.createInterpolation( a, b, (float)portion );
+	protected Color interpolate( Color a, Color b, double portion ) {
+		return EmployeesOnly.createInterpolation( a, b, (float)portion );
 	}
 }

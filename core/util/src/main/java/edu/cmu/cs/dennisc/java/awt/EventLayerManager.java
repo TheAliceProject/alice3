@@ -42,17 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Component;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.LinkedList;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EventLayerManager extends java.util.LinkedList<EventLayer> implements java.awt.event.ComponentListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
-	private java.awt.Component m_awtComponent;
+public class EventLayerManager extends LinkedList<EventLayer> implements ComponentListener, MouseListener, MouseMotionListener, KeyListener {
+	private Component m_awtComponent;
 
-	public java.awt.Component getComponent() {
+	public Component getComponent() {
 		return m_awtComponent;
 	}
 
-	public void setComponent( java.awt.Component awtComponent ) {
+	public void setComponent( Component awtComponent ) {
 		if( m_awtComponent != null ) {
 			m_awtComponent.removeComponentListener( this );
 			m_awtComponent.removeMouseListener( this );
@@ -69,10 +79,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void componentShown( java.awt.event.ComponentEvent e ) {
+	public void componentShown( ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				( (java.awt.event.ComponentListener)eventInterceptor ).componentShown( e );
+			if( eventInterceptor instanceof ComponentListener ) {
+				( (ComponentListener)eventInterceptor ).componentShown( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -81,10 +91,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void componentHidden( java.awt.event.ComponentEvent e ) {
+	public void componentHidden( ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				( (java.awt.event.ComponentListener)eventInterceptor ).componentHidden( e );
+			if( eventInterceptor instanceof ComponentListener ) {
+				( (ComponentListener)eventInterceptor ).componentHidden( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -93,10 +103,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void componentMoved( java.awt.event.ComponentEvent e ) {
+	public void componentMoved( ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				( (java.awt.event.ComponentListener)eventInterceptor ).componentMoved( e );
+			if( eventInterceptor instanceof ComponentListener ) {
+				( (ComponentListener)eventInterceptor ).componentMoved( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -105,10 +115,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void componentResized( java.awt.event.ComponentEvent e ) {
+	public void componentResized( ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				( (java.awt.event.ComponentListener)eventInterceptor ).componentResized( e );
+			if( eventInterceptor instanceof ComponentListener ) {
+				( (ComponentListener)eventInterceptor ).componentResized( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -117,10 +127,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mousePressed( java.awt.event.MouseEvent e ) {
+	public void mousePressed( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				( (java.awt.event.MouseListener)eventInterceptor ).mousePressed( e );
+			if( eventInterceptor instanceof MouseListener ) {
+				( (MouseListener)eventInterceptor ).mousePressed( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -129,10 +139,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mouseReleased( java.awt.event.MouseEvent e ) {
+	public void mouseReleased( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				( (java.awt.event.MouseListener)eventInterceptor ).mouseReleased( e );
+			if( eventInterceptor instanceof MouseListener ) {
+				( (MouseListener)eventInterceptor ).mouseReleased( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -141,10 +151,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mouseClicked( java.awt.event.MouseEvent e ) {
+	public void mouseClicked( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				( (java.awt.event.MouseListener)eventInterceptor ).mouseClicked( e );
+			if( eventInterceptor instanceof MouseListener ) {
+				( (MouseListener)eventInterceptor ).mouseClicked( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -153,10 +163,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mouseEntered( java.awt.event.MouseEvent e ) {
+	public void mouseEntered( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				( (java.awt.event.MouseListener)eventInterceptor ).mouseEntered( e );
+			if( eventInterceptor instanceof MouseListener ) {
+				( (MouseListener)eventInterceptor ).mouseEntered( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -165,10 +175,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mouseExited( java.awt.event.MouseEvent e ) {
+	public void mouseExited( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				( (java.awt.event.MouseListener)eventInterceptor ).mouseExited( e );
+			if( eventInterceptor instanceof MouseListener ) {
+				( (MouseListener)eventInterceptor ).mouseExited( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -177,10 +187,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mouseMoved( java.awt.event.MouseEvent e ) {
+	public void mouseMoved( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseMotionListener ) {
-				( (java.awt.event.MouseMotionListener)eventInterceptor ).mouseMoved( e );
+			if( eventInterceptor instanceof MouseMotionListener ) {
+				( (MouseMotionListener)eventInterceptor ).mouseMoved( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -189,10 +199,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void mouseDragged( java.awt.event.MouseEvent e ) {
+	public void mouseDragged( MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.MouseMotionListener ) {
-				( (java.awt.event.MouseMotionListener)eventInterceptor ).mouseDragged( e );
+			if( eventInterceptor instanceof MouseMotionListener ) {
+				( (MouseMotionListener)eventInterceptor ).mouseDragged( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -201,10 +211,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void keyPressed( java.awt.event.KeyEvent e ) {
+	public void keyPressed( KeyEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.KeyListener ) {
-				( (java.awt.event.KeyListener)eventInterceptor ).keyPressed( e );
+			if( eventInterceptor instanceof KeyListener ) {
+				( (KeyListener)eventInterceptor ).keyPressed( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -213,10 +223,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void keyReleased( java.awt.event.KeyEvent e ) {
+	public void keyReleased( KeyEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.KeyListener ) {
-				( (java.awt.event.KeyListener)eventInterceptor ).keyReleased( e );
+			if( eventInterceptor instanceof KeyListener ) {
+				( (KeyListener)eventInterceptor ).keyReleased( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -225,10 +235,10 @@ public class EventLayerManager extends java.util.LinkedList<EventLayer> implemen
 	}
 
 	@Override
-	public void keyTyped( java.awt.event.KeyEvent e ) {
+	public void keyTyped( KeyEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
-			if( eventInterceptor instanceof java.awt.event.KeyListener ) {
-				( (java.awt.event.KeyListener)eventInterceptor ).keyTyped( e );
+			if( eventInterceptor instanceof KeyListener ) {
+				( (KeyListener)eventInterceptor ).keyTyped( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}

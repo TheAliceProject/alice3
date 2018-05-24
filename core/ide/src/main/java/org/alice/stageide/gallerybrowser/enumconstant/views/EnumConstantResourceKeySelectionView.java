@@ -42,19 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.enumconstant.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite;
+import org.alice.stageide.gallerybrowser.enumconstant.views.renderers.EnumConstantResourceKeyListCellRenderer;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.ScrollPane;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantResourceKeySelectionView extends org.lgna.croquet.views.BorderPanel {
-	public EnumConstantResourceKeySelectionView( org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite composite ) {
+public class EnumConstantResourceKeySelectionView extends BorderPanel {
+	public EnumConstantResourceKeySelectionView( EnumConstantResourceKeySelectionComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFieldColor() );
-		org.lgna.croquet.views.List<org.alice.stageide.modelresource.EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
-		list.setCellRenderer( new org.alice.stageide.gallerybrowser.enumconstant.views.renderers.EnumConstantResourceKeyListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFieldColor() );
+		List<EnumConstantResourceKey> list = composite.getEnumConstantResourceKeyState().createList();
+		list.setCellRenderer( new EnumConstantResourceKeyListCellRenderer() );
+		list.setLayoutOrientation( List.LayoutOrientation.HORIZONTAL_WRAP );
 		list.setVisibleRowCount( -1 );
 		list.setBackgroundColor( this.getBackgroundColor() );
 		list.enableClickingDefaultButtonOnDoubleClick();
-		this.addCenterComponent( new org.lgna.croquet.views.ScrollPane( list ) );
+		this.addCenterComponent( new ScrollPane( list ) );
 	}
 }

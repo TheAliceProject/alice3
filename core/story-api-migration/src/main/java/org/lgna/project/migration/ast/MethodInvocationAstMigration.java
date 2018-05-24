@@ -42,28 +42,35 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import org.lgna.project.Project;
+import org.lgna.project.Version;
+import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class MethodInvocationAstMigration extends AstMigration {
-	public MethodInvocationAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+	public MethodInvocationAstMigration( Version minimumVersion, Version resultVersion ) {
 		super( minimumVersion, resultVersion );
 	}
 
-	protected abstract void migrate( org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.Project projectIfApplicable );
+	protected abstract void migrate( MethodInvocation methodInvocation, Project projectIfApplicable );
 
 	@Override
-	public final void migrate( org.lgna.project.ast.Node node, final org.lgna.project.Project projectIfApplicable ) {
-		node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+	public final void migrate( Node node, final Project projectIfApplicable ) {
+		node.crawl( new Crawler() {
 			@Override
-			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
-					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
+			public void visit( Crawlable crawlable ) {
+				if( crawlable instanceof MethodInvocation ) {
+					MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 					MethodInvocationAstMigration.this.migrate( methodInvocation, projectIfApplicable );
 				}
 			}
-		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+		}, CrawlPolicy.COMPLETE, null );
 	}
 }

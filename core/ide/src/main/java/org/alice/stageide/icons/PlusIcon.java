@@ -42,38 +42,48 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PlusIcon extends ShapeIcon {
-	public PlusIcon( java.awt.Dimension size ) {
+	public PlusIcon( Dimension size ) {
 		super( size );
 	}
 
-	private static java.awt.geom.Ellipse2D.Float createEllipse( float portion, int width, int height ) {
+	private static Ellipse2D.Float createEllipse( float portion, int width, int height ) {
 		float diameter = Math.min( width, height ) * portion;
 		float x = ( width - diameter ) / 2;
 		float y = ( height - diameter ) / 2;
-		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
+		return new Ellipse2D.Float( x, y, diameter, diameter );
 	}
 
-	protected java.awt.Paint getOuterRingPaint( javax.swing.ButtonModel buttonModel ) {
+	protected Paint getOuterRingPaint( ButtonModel buttonModel ) {
 		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
-		return isArmed ? java.awt.Color.WHITE : java.awt.Color.DARK_GRAY;
+		return isArmed ? Color.WHITE : Color.DARK_GRAY;
 	}
 
-	protected java.awt.Paint getInnerCirclePaint( javax.swing.ButtonModel buttonModel ) {
+	protected Paint getInnerCirclePaint( ButtonModel buttonModel ) {
 		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
-		return isArmed ? java.awt.Color.GRAY : java.awt.Color.LIGHT_GRAY;
+		return isArmed ? Color.GRAY : Color.LIGHT_GRAY;
 	}
 
-	protected java.awt.Paint getPlusPaint( javax.swing.ButtonModel buttonModel ) {
+	protected Paint getPlusPaint( ButtonModel buttonModel ) {
 		boolean isArmed = buttonModel != null ? buttonModel.isArmed() : false;
-		return isArmed ? java.awt.Color.WHITE : java.awt.Color.BLACK;
+		return isArmed ? Color.WHITE : Color.BLACK;
 	}
 
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint, javax.swing.ButtonModel buttonModel ) {
-		java.awt.Paint paint;
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint, ButtonModel buttonModel ) {
+		Paint paint;
 		paint = this.getOuterRingPaint( buttonModel );
 		if( paint != null ) {
 			g2.setPaint( paint );
@@ -96,16 +106,16 @@ public class PlusIcon extends ShapeIcon {
 		paint = this.getPlusPaint( buttonModel );
 		if( paint != null ) {
 			g2.setPaint( paint );
-			g2.fill( new java.awt.geom.Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
-			g2.fill( new java.awt.geom.Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
+			g2.fill( new Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
+			g2.fill( new Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
 		}
 	}
 
 	@Override
-	protected final void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		javax.swing.ButtonModel buttonModel;
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+	protected final void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		ButtonModel buttonModel;
+		if( c instanceof AbstractButton ) {
+			AbstractButton button = (AbstractButton)c;
 			buttonModel = button.getModel();
 		} else {
 			buttonModel = null;

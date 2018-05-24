@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.declaration.AddFunctionComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AddFunctionView extends AddMethodView {
-	public AddFunctionView( org.alice.ide.ast.declaration.AddFunctionComposite composite ) {
+	public AddFunctionView( AddFunctionComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFunctionColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFunctionColor() );
 	}
 }

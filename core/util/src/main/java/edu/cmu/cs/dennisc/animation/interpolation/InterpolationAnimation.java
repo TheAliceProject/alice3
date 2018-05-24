@@ -42,15 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.interpolation;
 
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+import edu.cmu.cs.dennisc.animation.Style;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InterpolationAnimation<E> extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
+public abstract class InterpolationAnimation<E> extends DurationBasedAnimation {
 	private E m_v0;
 	private E m_v1;
 	private E m_v;
 
-	public InterpolationAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, E v0, E v1 ) {
+	public InterpolationAnimation( Number duration, Style style, E v0, E v1 ) {
 		super( duration, style );
 		m_v0 = newE( v0 );
 		m_v1 = newE( v1 );

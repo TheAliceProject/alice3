@@ -43,11 +43,16 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V, T> {
-	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
+public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeView<?, ?>, T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V, T> {
+	public ValueCreatorInputDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -63,7 +68,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
 		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
 		if( isCommited != null ) { // close button condition
@@ -87,7 +92,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 	private T value;
 
 	@Override
-	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public T createValue( CompletionStep<?> completionStep ) {
 		this.value = null;
 		this.showDialog( completionStep );
 		return this.value;

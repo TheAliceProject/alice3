@@ -43,13 +43,15 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Accessible extends Node {
 	public AbstractType<?, ?, ?> getValueType();
 
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
+	public StringProperty getNamePropertyIfItExists();
 
 	public String getValidName( Node context );
 

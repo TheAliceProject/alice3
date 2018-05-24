@@ -42,46 +42,56 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+import net.miginfocom.swing.MigLayout;
+import org.alice.stageide.personresource.MelaninChooserTabComposite;
+import org.lgna.croquet.color.views.ColorChooserTabView;
+
+import javax.swing.BorderFactory;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
+import java.awt.Color;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MelaninChooserTabView extends org.lgna.croquet.color.views.ColorChooserTabView {
-	public MelaninChooserTabView( org.alice.stageide.personresource.MelaninChooserTabComposite composite ) {
+public class MelaninChooserTabView extends ColorChooserTabView {
+	public MelaninChooserTabView( MelaninChooserTabComposite composite ) {
 		super( composite );
 	}
 
 	private class JMelaninChooserPanel extends JColorChooserPanel {
 		@Override
 		protected void buildChooser() {
-			org.alice.stageide.personresource.MelaninChooserTabComposite composite = (org.alice.stageide.personresource.MelaninChooserTabComposite)MelaninChooserTabView.this.getComposite();
-			java.awt.Color[] colors = composite.getMelaninSliderShades();
+			MelaninChooserTabComposite composite = (MelaninChooserTabComposite)MelaninChooserTabView.this.getComposite();
+			Color[] colors = composite.getMelaninSliderShades();
 			JColorSlider jMelaninSlider = new JColorSlider( colors ) {
 				@Override
-				protected void handleNextColor( java.awt.Color nextColor ) {
+				protected void handleNextColor( Color nextColor ) {
 					MelaninChooserTabView.this.getAwtComponent().getColorSelectionModel().setSelectedColor( nextColor );
 				}
 			};
-			this.setBorder( javax.swing.BorderFactory.createMatteBorder( 1, 1, 1, 1, java.awt.Color.LIGHT_GRAY ) );
-			jMelaninSlider.setBorder( javax.swing.BorderFactory.createEmptyBorder( 3, 3, 3, 3 ) );
-			this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0" ) );
+			this.setBorder( BorderFactory.createMatteBorder( 1, 1, 1, 1, Color.LIGHT_GRAY ) );
+			jMelaninSlider.setBorder( BorderFactory.createEmptyBorder( 3, 3, 3, 3 ) );
+			this.setLayout( new MigLayout( "fill, insets 0" ) );
 			this.add( jMelaninSlider, "growx" );
 		}
 
 		@Override
 		public void updateChooser() {
-			java.awt.Color color = this.getColorFromModel();
+			Color color = this.getColorFromModel();
 			//todo
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( color );
 		}
 
 		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
+		public Dimension getPreferredSize() {
+			return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
 		}
 	}
 
 	@Override
-	protected javax.swing.colorchooser.AbstractColorChooserPanel createAwtComponent() {
+	protected AbstractColorChooserPanel createAwtComponent() {
 		return new JMelaninChooserPanel();
 	}
 }

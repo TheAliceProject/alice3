@@ -42,11 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.Frame;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PerspectiveDocumentFrame extends org.lgna.croquet.DocumentFrame {
+public abstract class PerspectiveDocumentFrame extends DocumentFrame {
 	private Perspective perspective;
 
 	public Perspective getPerspective() {
@@ -68,7 +69,7 @@ public abstract class PerspectiveDocumentFrame extends org.lgna.croquet.Document
 				toolBarComposite = null;
 				mainComposite = null;
 			}
-			org.lgna.croquet.views.Frame frame = this.getFrame();
+			Frame frame = this.getFrame();
 			frame.setMenuBarComposite( menuBarComposite );
 			frame.setToolBarComposite( toolBarComposite );
 			frame.setMainComposite( mainComposite );

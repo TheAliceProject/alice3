@@ -43,11 +43,17 @@
 
 package org.lgna.croquet.preferences;
 
+import org.lgna.croquet.Group;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.MutableDataSingleSelectListState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreferenceMutableDataSingleSelectListState<T> extends org.lgna.croquet.MutableDataSingleSelectListState<T> {
-	public PreferenceMutableDataSingleSelectListState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, org.lgna.croquet.ItemCodec<T> codec, T... values ) {
+public class PreferenceMutableDataSingleSelectListState<T> extends MutableDataSingleSelectListState<T> {
+	public PreferenceMutableDataSingleSelectListState( Group group, UUID id, int selectionIndex, ItemCodec<T> codec, T... values ) {
 		super( group, id, selectionIndex, codec, values );
 		PreferenceManager.registerAndInitializeSelectionOnlyOfListSelectionState( this );
 	}

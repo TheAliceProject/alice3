@@ -42,37 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetWallPaintMethodInvocationFillIn extends OneShotJavaMethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetWallPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static MapToMap<InstanceFactory, JavaMethod, SetWallPaintMethodInvocationFillIn> mapToMap = MapToMap.newInstance();
 
-	public static SetWallPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetWallPaintMethodInvocationFillIn>() {
+	public static SetWallPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new MapToMap.Initializer<InstanceFactory, JavaMethod, SetWallPaintMethodInvocationFillIn>() {
 			@Override
-			public SetWallPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
+			public SetWallPaintMethodInvocationFillIn initialize( InstanceFactory instanceFactory, JavaMethod method ) {
 				return new SetWallPaintMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static SetWallPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaType type, String methodName, Class<?>... parameterClses ) {
-		org.lgna.project.ast.JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
+	public static SetWallPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, JavaType type, String methodName, Class<?>... parameterClses ) {
+		JavaMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
 
-	public static SetWallPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
-		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	public static SetWallPaintMethodInvocationFillIn getInstance( InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private SetWallPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
-		super( java.util.UUID.fromString( "d39d2b96-dc21-4dad-ac20-c54882c047b5" ), instanceFactory, method );
+	private SetWallPaintMethodInvocationFillIn( InstanceFactory instanceFactory, JavaMethod method ) {
+		super( UUID.fromString( "d39d2b96-dc21-4dad-ac20-c54882c047b5" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	protected MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions ) {
 		return new SetWallPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

@@ -42,40 +42,60 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.ide.statementfactory.LocalArrayAtIndexAssignmentFillIn;
 import org.alice.ide.statementfactory.LocalAssignmentFillIn;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeWithInternalBlank;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWithInternalBlank<org.lgna.project.ast.Expression> {
-	public static TemplateAssignmentInsertCascade createInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Expression> {
+	public static TemplateAssignmentInsertCascade createInstance( BlockStatementIndexPair blockStatementIndexPair ) {
 		return new TemplateAssignmentInsertCascade( blockStatementIndexPair );
 	}
 
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private final BlockStatementIndexPair blockStatementIndexPair;
 
-	private TemplateAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "4bdde6fa-166e-42a0-9843-3696955f5ed6" ), org.lgna.project.ast.Expression.class );
+	private TemplateAssignmentInsertCascade( BlockStatementIndexPair blockStatementIndexPair ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "4bdde6fa-166e-42a0-9843-3696955f5ed6" ), Expression.class );
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+	protected Edit createEdit( CompletionStep<Cascade<Expression>> completionStep, Expression[] values ) {
+		return new InsertStatementEdit(
 				completionStep,
 				this.blockStatementIndexPair,
-				new org.lgna.project.ast.ExpressionStatement( values[ 0 ] ) );
+				new ExpressionStatement( values[ 0 ] ) );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
+		AbstractType<?, ?, ?> selectedType = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 		if( selectedType != null ) {
-			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
-				if( field instanceof org.lgna.project.ast.UserField ) {
-					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+			List<UserField> nonFinalUserFields = Lists.newLinkedList();
+			for( AbstractField field : selectedType.getDeclaredFields() ) {
+				if( field instanceof UserField ) {
+					UserField userField = (UserField)field;
 					if( userField.isFinal() ) {
 						//pass
 					} else {
@@ -85,7 +105,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 			}
 			if( nonFinalUserFields.size() > 0 ) {
 				rv.add( FieldsSeparatorModel.getInstance() );
-				for( org.lgna.project.ast.UserField field : nonFinalUserFields ) {
+				for( UserField field : nonFinalUserFields ) {
 					rv.add( FieldAssignmentFillIn.getInstance( field ) );
 					if( field.getValueType().isArray() ) {
 						rv.add( FieldArrayAtIndexAssignmentFillIn.getInstance( field ) );
@@ -94,8 +114,8 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 			}
 		}
 
-		java.util.List<org.lgna.project.ast.UserLocal> nonFinalLocals = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( org.lgna.project.ast.UserLocal local : org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals( this.blockStatementIndexPair ) ) {
+		List<UserLocal> nonFinalLocals = Lists.newLinkedList();
+		for( UserLocal local : IDE.getActiveInstance().getExpressionCascadeManager().getAccessibleLocals( this.blockStatementIndexPair ) ) {
 			if( local.isFinal.getValue() ) {
 				//pass
 			} else {
@@ -105,9 +125,9 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 
 		if( nonFinalLocals.size() > 0 ) {
 			rv.add( VariablesSeparatorModel.getInstance() );
-			for( org.lgna.project.ast.UserLocal local : nonFinalLocals ) {
+			for( UserLocal local : nonFinalLocals ) {
 				rv.add( LocalAssignmentFillIn.getInstance( local ) );
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = local.getValueType();
+				AbstractType<?, ?, ?> type = local.getValueType();
 				if( type.isArray() ) {
 					rv.add( LocalArrayAtIndexAssignmentFillIn.getInstance( local ) );
 				}

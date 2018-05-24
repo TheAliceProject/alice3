@@ -42,11 +42,13 @@
  */
 package org.lgna.story;
 
+import org.lgna.project.annotations.ClassTemplate;
+
 /**
  * @author dculyba
  */
 public class IsInFrontOf extends AsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = IsInFrontOf.class )
+	@ClassTemplate( keywordFactoryCls = IsInFrontOf.class )
 	public static interface Detail {
 	}
 

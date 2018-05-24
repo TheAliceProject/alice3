@@ -42,28 +42,35 @@
  *******************************************************************************/
 package org.lgna.croquet.data;
 
+import org.lgna.croquet.ItemCodec;
+
+import javax.swing.event.ListDataListener;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ImmutableListData<T> extends ListData<T> {
 	private final T[] values;
 
-	public ImmutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, T[] values ) {
+	public ImmutableListData( ItemCodec<T> itemCodec, T[] values ) {
 		super( itemCodec );
 		this.values = values;
 	}
 
 	@Override
-	public final void addListener( javax.swing.event.ListDataListener listener ) {
+	public final void addListener( ListDataListener listener ) {
 	}
 
 	@Override
-	public final void removeListener( javax.swing.event.ListDataListener listener ) {
+	public final void removeListener( ListDataListener listener ) {
 	}
 
 	@Override
 	public boolean contains( T item ) {
-		return java.util.Arrays.asList( this.values ).contains( item );
+		return Arrays.asList( this.values ).contains( item );
 	}
 
 	@Override
@@ -78,7 +85,7 @@ public final class ImmutableListData<T> extends ListData<T> {
 
 	@Override
 	public int indexOf( T item ) {
-		return java.util.Arrays.asList( this.values ).indexOf( item );
+		return Arrays.asList( this.values ).indexOf( item );
 	}
 
 	@Override
@@ -92,7 +99,7 @@ public final class ImmutableListData<T> extends ListData<T> {
 	}
 
 	@Override
-	public void internalSetAllItems( java.util.Collection<T> items ) {
+	public void internalSetAllItems( Collection<T> items ) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -102,8 +109,8 @@ public final class ImmutableListData<T> extends ListData<T> {
 	}
 
 	@Override
-	public java.util.Iterator<T> iterator() {
-		return java.util.Arrays.asList( this.values ).iterator();
+	public Iterator<T> iterator() {
+		return Arrays.asList( this.values ).iterator();
 	}
 
 	@Override

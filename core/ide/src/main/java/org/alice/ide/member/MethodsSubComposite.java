@@ -43,15 +43,25 @@
 
 package org.alice.ide.member;
 
+import org.alice.ide.member.views.MethodsSubView;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ToolPaletteCoreComposite;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.AbstractMethod;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.member.views.MethodsSubView<?>> {
-	public MethodsSubComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, MemberTabComposite.getExpandedAccountingForInert( isExpandedInitialValue ) );
+public abstract class MethodsSubComposite extends ToolPaletteCoreComposite<MethodsSubView<?>> {
+	public MethodsSubComposite( UUID migrationId, boolean isExpandedInitialValue ) {
+		super( migrationId, Application.DOCUMENT_UI_GROUP, MemberTabComposite.getExpandedAccountingForInert( isExpandedInitialValue ) );
 	}
 
-	public abstract java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods();
+	public abstract List<? extends AbstractMethod> getMethods();
 
 	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
 		return isExpanded == false;
@@ -60,7 +70,7 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCo
 	@Override
 	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
 		text = super.modifyTextIfNecessary( text, isExpanded );
-		java.util.List<? extends org.lgna.project.ast.AbstractMethod> methods = this.getMethods();
+		List<? extends AbstractMethod> methods = this.getMethods();
 		if( this.isMethodCountDesired( isExpanded, methods.size() ) ) {
 			text += " (" + methods.size() + ")";
 		}
@@ -68,7 +78,7 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCo
 	}
 
 	public void updateTabTitle() {
-		org.lgna.croquet.BooleanState isExpandedState = this.getOuterComposite().getIsExpandedState();
+		BooleanState isExpandedState = this.getOuterComposite().getIsExpandedState();
 		isExpandedState.updateNameAndIcon();
 	}
 
@@ -77,7 +87,7 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCo
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

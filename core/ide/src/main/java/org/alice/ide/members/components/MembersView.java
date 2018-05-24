@@ -42,20 +42,56 @@
  *******************************************************************************/
 package org.alice.ide.members.components;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.delete.DeleteStatementOperation;
+import org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+import org.alice.ide.common.TypeComponent;
+import org.alice.ide.croquet.components.InstanceFactoryPopupButton;
+import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
+import org.alice.ide.members.MembersComposite;
 import org.alice.ide.recyclebin.RecycleBin;
+import org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon;
+import org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon;
+import org.lgna.croquet.AbstractDropReceptor;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.FolderTabbedPane;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TabbedPane;
+import org.lgna.croquet.views.TrackableShape;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Statement;
+
+import javax.swing.Icon;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MembersView extends org.lgna.croquet.views.BorderPanel {
-	private static edu.cmu.cs.dennisc.map.MapToMap<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.alice.ide.common.TypeComponent> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class MembersView extends BorderPanel {
+	private static MapToMap<Class<?>, AbstractType<?, ?, ?>, TypeComponent> mapToMap = MapToMap.newInstance();
 	public static final byte PROTOTYPE = 0;
 
-	public static org.alice.ide.common.TypeComponent getComponentFor( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return mapToMap.getInitializingIfAbsent( cls, type, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.alice.ide.common.TypeComponent>() {
+	public static TypeComponent getComponentFor( Class<?> cls, AbstractType<?, ?, ?> type ) {
+		return mapToMap.getInitializingIfAbsent( cls, type, new MapToMap.Initializer<Class<?>, AbstractType<?, ?, ?>, TypeComponent>() {
 			@Override
-			public org.alice.ide.common.TypeComponent initialize( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-				return org.alice.ide.common.TypeComponent.createInstance( type );
+			public TypeComponent initialize( Class<?> cls, AbstractType<?, ?, ?> type ) {
+				return TypeComponent.createInstance( type );
 			}
 		} );
 	}
@@ -64,26 +100,26 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 
 	private static enum DragReceptorState {
 		IDLE( null, null, null, 0 ),
-		STARTED( java.awt.Color.YELLOW, new java.awt.Color( 191, 191, 191, 0 ), null, SIZE ),
-		ENTERED( java.awt.Color.YELLOW, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.LIGHT_GRAY ), SIZE ),
-		ENTERED_FAR_ENOUGH( new java.awt.Color( 0xCCFF99 ), new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.WHITE ), SIZE );
-		private final java.awt.Color colorA;
-		private final java.awt.Color colorB;
-		private final javax.swing.Icon icon;
+		STARTED( Color.YELLOW, new Color( 191, 191, 191, 0 ), null, SIZE ),
+		ENTERED( Color.YELLOW, new Color( 127, 127, 127, 191 ), new ClosedTrashCanSymbolicStyleIcon( 128, 128, Color.LIGHT_GRAY ), SIZE ),
+		ENTERED_FAR_ENOUGH( new Color( 0xCCFF99 ), new Color( 127, 127, 127, 191 ), new OpenTrashCanSymbolicStyleIcon( 128, 128, Color.WHITE ), SIZE );
+		private final Color colorA;
+		private final Color colorB;
+		private final Icon icon;
 		private final int gradientAmount;
 
-		private DragReceptorState( java.awt.Color colorA, java.awt.Color colorB, javax.swing.Icon icon, int gradientAmount ) {
+		private DragReceptorState( Color colorA, Color colorB, Icon icon, int gradientAmount ) {
 			this.colorA = colorA;
 			this.colorB = colorB;
 			this.icon = icon;
 			this.gradientAmount = gradientAmount;
 		}
 
-		public java.awt.Color getColorA() {
+		public Color getColorA() {
 			return this.colorA;
 		}
 
-		public java.awt.Color getColorB() {
+		public Color getColorB() {
 			return this.colorB;
 		}
 
@@ -91,17 +127,17 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 			return this.gradientAmount;
 		}
 
-		public javax.swing.Icon getIcon() {
+		public Icon getIcon() {
 			return this.icon;
 		}
 	};
 
-	private class RecycleBinDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+	private class RecycleBinDropReceptor extends AbstractDropReceptor {
 		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
 
 		@Override
-		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+		public boolean isPotentiallyAcceptingOf( DragModel dragModel ) {
+			return dragModel instanceof StatementDragModel;
 		}
 
 		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
@@ -110,19 +146,19 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+		public void dragStarted( DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
 		@Override
-		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
+		public void dragEntered( DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.ENTERED );
 		}
 
 		@Override
-		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
-			java.awt.event.MouseEvent e = step.getLatestMouseEvent();
-			java.awt.Point p = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertPoint( e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent() );
+		public DropSite dragUpdated( DragStep step ) {
+			MouseEvent e = step.getLatestMouseEvent();
+			Point p = ComponentUtilities.convertPoint( e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent() );
 
 			final int FAR_ENOUGH = 64;
 			if( p.x < ( MembersView.this.getWidth() - FAR_ENOUGH ) ) {
@@ -135,14 +171,14 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step ) {
-			org.lgna.croquet.DropSite dropSite = step.getCurrentPotentialDropSite();
+		protected Model dragDroppedPostRejectorCheck( DragStep step ) {
+			DropSite dropSite = step.getCurrentPotentialDropSite();
 			if( dropSite != null ) {
-				org.lgna.croquet.DragModel dragModel = step.getModel();
-				if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
-					org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
-					org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
-					return org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement );
+				DragModel dragModel = step.getModel();
+				if( dragModel instanceof StatementDragModel ) {
+					StatementDragModel statementDragModel = (StatementDragModel)dragModel;
+					Statement statement = statementDragModel.getStatement();
+					return DeleteStatementOperation.getInstance( statement );
 				} else {
 					return null;
 				}
@@ -152,39 +188,39 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+		public void dragExited( DragStep step, boolean isDropRecipient ) {
 			//			step.getDragSource().showDragProxy();
 			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
 		@Override
-		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+		public void dragStopped( DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.IDLE );
 		}
 
 		@Override
-		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+		public TrackableShape getTrackableShape( DropSite potentialDropSite ) {
 			return MembersView.this;
 		}
 
 		@Override
-		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
+		public SwingComponentView<?> getViewController() {
 			return MembersView.this;
 		}
 
 	}
 
 	//todo
-	private static class RecycleBinDropSite implements org.lgna.croquet.DropSite {
+	private static class RecycleBinDropSite implements DropSite {
 		public RecycleBinDropSite() {
 		}
 
-		public RecycleBinDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		public RecycleBinDropSite( BinaryDecoder binaryDecoder ) {
 			//todo
 		}
 
 		@Override
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		public void encode( BinaryEncoder binaryEncoder ) {
 			//todo
 		}
 
@@ -199,7 +235,7 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 		}
 
 		@Override
-		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
+		public DropReceptor getOwningDropReceptor() {
 			return RecycleBin.SINGLETON.getDropReceptor();
 		}
 	}
@@ -208,19 +244,19 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 
 	private final RecycleBinDropReceptor recycleBinDropReceptor = new RecycleBinDropReceptor();
 
-	public MembersView( org.alice.ide.members.MembersComposite composite ) {
+	public MembersView( MembersComposite composite ) {
 		super( composite );
-		org.alice.ide.croquet.components.InstanceFactoryPopupButton instanceFactoryPopupButton = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
+		InstanceFactoryPopupButton instanceFactoryPopupButton = new InstanceFactoryPopupButton( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
 		//		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		//		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
 		//		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		//		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
 		//
 		//		this.addPageStartComponent( instancePanel );
-		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		this.addPageStartComponent( instanceFactoryPopupButton );
-		org.lgna.croquet.views.TabbedPane<?> tabbedPane;
-		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+		TabbedPane<?> tabbedPane;
+		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			tabbedPane = composite.getTabState().createFolderTabbedPane();
 		} else {
 			tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
@@ -229,26 +265,26 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
-		javax.swing.JPanel rv = new DefaultJPanel() {
+	protected JPanel createJPanel() {
+		JPanel rv = new DefaultJPanel() {
 			@Override
-			public void paint( java.awt.Graphics g ) {
+			public void paint( Graphics g ) {
 				super.paint( g );
 				if( recycleBinDropReceptor.dragReceptorState == DragReceptorState.IDLE ) {
 					//pass
 				} else {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Graphics2D g2 = (Graphics2D)g;
 					int width = this.getWidth();
 					int height = this.getHeight();
-					java.awt.Color colorA = recycleBinDropReceptor.dragReceptorState.getColorA();
-					java.awt.Color colorB = recycleBinDropReceptor.dragReceptorState.getColorB();
+					Color colorA = recycleBinDropReceptor.dragReceptorState.getColorA();
+					Color colorB = recycleBinDropReceptor.dragReceptorState.getColorB();
 					int gradientAmount = recycleBinDropReceptor.dragReceptorState.getGradientAmount();
-					java.awt.Paint paint = new java.awt.GradientPaint( width, 0, colorA, width - gradientAmount, gradientAmount, colorB );
+					Paint paint = new GradientPaint( width, 0, colorA, width - gradientAmount, gradientAmount, colorB );
 					g2.setPaint( paint );
 					g2.fillRect( 0, 0, width, height );
-					javax.swing.Icon icon = recycleBinDropReceptor.dragReceptorState.getIcon();
+					Icon icon = recycleBinDropReceptor.dragReceptorState.getIcon();
 					if( icon != null ) {
-						g2.setPaint( new java.awt.Color( 221, 221, 221 ) );
+						g2.setPaint( new Color( 221, 221, 221 ) );
 						int x = ( width - icon.getIconWidth() ) / 2;
 						int y = ( height - icon.getIconHeight() ) / 2;
 						y = Math.min( y, 100 );

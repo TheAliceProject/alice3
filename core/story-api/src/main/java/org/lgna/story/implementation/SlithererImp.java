@@ -42,28 +42,31 @@
  */
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Vector4;
+import org.lgna.story.SSlitherer;
 import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.SlithererResource;
 
 /**
  * @author dculyba
  */
-public final class SlithererImp extends JointedModelImp<org.lgna.story.SSlitherer, org.lgna.story.resources.SlithererResource> {
-	public SlithererImp( org.lgna.story.SSlitherer abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.SlithererResource> factory ) {
+public final class SlithererImp extends JointedModelImp<SSlitherer, SlithererResource> {
+	public SlithererImp( SSlitherer abstraction, JointImplementationAndVisualDataFactory<SlithererResource> factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
 	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.SlithererResource.JOINT_ID_ROOTS;
+		return SlithererResource.JOINT_ID_ROOTS;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.SlithererResource.HEAD ) );
+	protected Vector4 getThoughtBubbleOffset() {
+		return this.getTopOffsetForJoint( this.getJointImplementation( SlithererResource.HEAD ) );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.SlithererResource.MOUTH ) );
+	protected Vector4 getSpeechBubbleOffset() {
+		return this.getFrontOffsetForJoint( this.getJointImplementation( SlithererResource.MOUTH ) );
 	}
 }

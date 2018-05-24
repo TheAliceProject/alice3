@@ -43,33 +43,41 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Sphere;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.lgna.story.SSphere;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SphereImp extends ShapeImp {
-	public SphereImp( org.lgna.story.SSphere abstraction ) {
+	public SphereImp( SSphere abstraction ) {
 		this.abstraction = abstraction;
-		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgSphere } );
+		this.getSgVisuals()[ 0 ].geometries.setValue( new Geometry[] { this.sgSphere } );
 	}
 
 	@Override
-	public org.lgna.story.SSphere getAbstraction() {
+	public SSphere getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
-		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgSphere.radius };
+	protected InstanceProperty[] getScaleProperties() {
+		return new InstanceProperty[] { this.sgSphere.radius };
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
+	public Resizer[] getResizers() {
+		return new Resizer[] { Resizer.UNIFORM };
 	}
 
 	@Override
-	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+	public double getValueForResizer( Resizer resizer ) {
+		if( resizer == Resizer.UNIFORM ) {
 			return this.radius.getValue();
 		} else {
 			assert false : resizer;
@@ -78,8 +86,8 @@ public class SphereImp extends ShapeImp {
 	}
 
 	@Override
-	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
-		if( resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM ) {
+	public void setValueForResizer( Resizer resizer, double value ) {
+		if( resizer == Resizer.UNIFORM ) {
 			this.radius.setValue( value );
 		} else {
 			assert false : resizer;
@@ -87,15 +95,15 @@ public class SphereImp extends ShapeImp {
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		if( ( size.x != size.y ) || ( size.y != size.z ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
+			Logger.severe( "Invalid size for " + this.getClass().getSimpleName() + ": " + size );
 		}
 		this.radius.setValue( size.x * .5 );
 	}
 
-	private final org.lgna.story.SSphere abstraction;
-	private final edu.cmu.cs.dennisc.scenegraph.Sphere sgSphere = new edu.cmu.cs.dennisc.scenegraph.Sphere();
+	private final SSphere abstraction;
+	private final Sphere sgSphere = new Sphere();
 	public final DoubleProperty radius = new DoubleProperty( SphereImp.this ) {
 		@Override
 		public Double getValue() {

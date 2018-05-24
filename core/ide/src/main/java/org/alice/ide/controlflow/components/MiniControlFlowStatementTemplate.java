@@ -43,16 +43,32 @@
 
 package org.alice.ide.controlflow.components;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip;
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel;
+import org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel;
+import org.alice.ide.templates.StatementTemplate;
+import org.alice.ide.x.TemplateAstI18nFactory;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.Comment;
+import org.lgna.project.ast.Statement;
+
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
-	private final org.lgna.project.ast.Statement incompleteStatement;
-	private org.lgna.croquet.views.SwingComponentView<?> incompleteStatementPane;
-	private org.lgna.croquet.views.Label label;
+public class MiniControlFlowStatementTemplate extends StatementTemplate {
+	private final Statement incompleteStatement;
+	private SwingComponentView<?> incompleteStatementPane;
+	private Label label;
 	private javax.swing.JToolTip toolTip;
 
-	public MiniControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+	public MiniControlFlowStatementTemplate( StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
 		this.incompleteStatement = dragModel.getPossiblyIncompleteStatement();
 	}
@@ -64,34 +80,34 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 			//pass
 		} else {
 			Class<?> cls;
-			org.lgna.croquet.DragModel model = this.getModel();
-			if( model instanceof org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel ) {
-				org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel)model;
+			DragModel model = this.getModel();
+			if( model instanceof ExpressionStatementTemplateDragModel ) {
+				ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel = (ExpressionStatementTemplateDragModel)model;
 				cls = expressionStatementTemplateDragModel.getExpressionCls();
 			} else {
 				cls = this.getStatementCls();
 			}
-			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates");
+			this.labelText = ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates");
 		}
 		return this.labelText;
 	}
 
-	private org.lgna.croquet.views.SwingComponentView<?> getIncompleteStatementPane() {
+	private SwingComponentView<?> getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {
-			this.incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createStatementPane( this.incompleteStatement );
+			this.incompleteStatementPane = TemplateAstI18nFactory.getInstance().createStatementPane( this.incompleteStatement );
 		}
 		return this.incompleteStatementPane;
 	}
 
 	@Override
-	public org.lgna.croquet.views.SwingComponentView<?> getSubject() {
+	public SwingComponentView<?> getSubject() {
 		return this.getIncompleteStatementPane();
 	}
 
 	@Override
-	protected java.awt.Point getToolTipLocation( java.awt.Point location, java.awt.event.MouseEvent event ) {
+	protected Point getToolTipLocation( Point location, MouseEvent event ) {
 		javax.swing.JToolTip toolTip = this.createToolTip( null );
 		if( toolTip != null ) {
 			int offset = toolTip.getPreferredSize().height;
@@ -102,7 +118,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 			//				offset = toolTip.getPreferredSize().height;
 			//			}
 			offset += 4;
-			return new java.awt.Point( 0, -offset );
+			return new Point( 0, -offset );
 		} else {
 			return location;
 		}
@@ -113,7 +129,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		if( this.toolTip != null ) {
 			//pass
 		} else {
-			this.toolTip = new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.getIncompleteStatementPane().getAwtComponent() );
+			this.toolTip = new JToolTip( this.getIncompleteStatementPane().getAwtComponent() );
 		}
 		return this.toolTip;
 	}
@@ -124,9 +140,9 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = new org.lgna.croquet.views.Label( this.getLabelText() );
-			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
-				this.label.setForegroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
+			this.label = new Label( this.getLabelText() );
+			if( Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
+				this.label.setForegroundColor( ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
 			}
 			//this.label.setFontToScaledFont( 1.2f );
 			this.addComponent( this.label );

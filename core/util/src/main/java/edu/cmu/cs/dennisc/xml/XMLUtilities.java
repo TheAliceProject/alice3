@@ -42,111 +42,137 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.xml;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class XMLUtilities {
-	private static javax.xml.parsers.DocumentBuilderFactory s_documentBuilderFactory = null;
-	private static javax.xml.parsers.DocumentBuilder s_documentBuilder = null;
-	private static javax.xml.transform.TransformerFactory s_transformerFactory = null;
-	private static javax.xml.transform.Transformer s_transformer = null;
+	private static DocumentBuilderFactory s_documentBuilderFactory = null;
+	private static DocumentBuilder s_documentBuilder = null;
+	private static TransformerFactory s_transformerFactory = null;
+	private static Transformer s_transformer = null;
 
-	private static javax.xml.parsers.DocumentBuilderFactory getDocumentBuilderFactory() {
+	private static DocumentBuilderFactory getDocumentBuilderFactory() {
 		if( s_documentBuilderFactory != null ) {
 			//pass
 		} else {
-			s_documentBuilderFactory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
+			s_documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		}
 		return s_documentBuilderFactory;
 	}
 
-	private static javax.xml.parsers.DocumentBuilder getDocumentBuilder() {
+	private static DocumentBuilder getDocumentBuilder() {
 		if( s_documentBuilder != null ) {
 			//pass
 		} else {
 			try {
 				s_documentBuilder = getDocumentBuilderFactory().newDocumentBuilder();
-			} catch( javax.xml.parsers.ParserConfigurationException pce ) {
+			} catch( ParserConfigurationException pce ) {
 				throw new RuntimeException( pce );
 			}
 		}
 		return s_documentBuilder;
 	}
 
-	public static org.w3c.dom.Document createDocument() {
+	public static Document createDocument() {
 		return getDocumentBuilder().newDocument();
 	}
 
-	private static javax.xml.transform.TransformerFactory getTransformerFactory() {
+	private static TransformerFactory getTransformerFactory() {
 		if( s_transformerFactory != null ) {
 			//pass
 		} else {
-			s_transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+			s_transformerFactory = TransformerFactory.newInstance();
 		}
 		return s_transformerFactory;
 	}
 
-	private static javax.xml.transform.Transformer getTransformer() {
+	private static Transformer getTransformer() {
 		if( s_transformer != null ) {
 			//pass
 		} else {
 			try {
 				s_transformer = getTransformerFactory().newTransformer();
-			} catch( javax.xml.transform.TransformerConfigurationException tce ) {
+			} catch( TransformerConfigurationException tce ) {
 				throw new RuntimeException( tce );
 			}
 		}
 		return s_transformer;
 	}
 
-	public static void write( org.w3c.dom.Document xmlDocument, java.io.OutputStream os ) {
+	public static void write( Document xmlDocument, OutputStream os ) {
 		xmlDocument.getDocumentElement().normalize();
 		try {
-			javax.xml.transform.stream.StreamResult streamResult = new javax.xml.transform.stream.StreamResult( os );
-			getTransformer().transform( new javax.xml.transform.dom.DOMSource( xmlDocument ), streamResult );
-		} catch( javax.xml.transform.TransformerException te ) {
+			StreamResult streamResult = new StreamResult( os );
+			getTransformer().transform( new DOMSource( xmlDocument ), streamResult );
+		} catch( TransformerException te ) {
 			throw new RuntimeException( te );
 		}
 	}
 
-	public static void write( org.w3c.dom.Document xmlDocument, java.io.File file ) {
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+	public static void write( Document xmlDocument, File file ) {
+		FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+			FileOutputStream fos = new FileOutputStream( file );
 			write( xmlDocument, fos );
 			fos.flush();
 			fos.close();
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
 	}
 
-	public static void write( org.w3c.dom.Document xmlDocument, String path ) {
-		write( xmlDocument, new java.io.File( path ) );
+	public static void write( Document xmlDocument, String path ) {
+		write( xmlDocument, new File( path ) );
 	}
 
-	public static org.w3c.dom.Document read( java.io.InputStream is ) {
+	public static Document read( InputStream is ) {
 		try {
 			//todo?
-			javax.xml.parsers.DocumentBuilder documentBuilder = getDocumentBuilder();
+			DocumentBuilder documentBuilder = getDocumentBuilder();
 			synchronized( documentBuilder ) {
-				org.w3c.dom.Document rv = documentBuilder.parse( is );
+				Document rv = documentBuilder.parse( is );
 				// TODO: we should validate this document with a schema and call DocumentBuilderFactory.setIgnoringElementContentWhitespace() instead.
 				// but this work-around will at least allow us to load files that have empty white space.
 				removeWhitespaceNodes( rv.getDocumentElement() );
 				return rv;
 			}
-		} catch( java.io.IOException ioe ) {
+		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
-		} catch( org.xml.sax.SAXException saxe ) {
+		} catch( SAXException saxe ) {
 			throw new RuntimeException( saxe );
 		}
 	}
 
-	public static org.w3c.dom.Document read( java.io.File file ) {
+	public static Document read( File file ) {
 		try {
-			return read( new java.io.FileInputStream( file ) );
-		} catch( java.io.IOException ioe ) {
+			return read( new FileInputStream( file ) );
+		} catch( IOException ioe ) {
 			throw new RuntimeException( file.toString(), ioe );
 		}
 		//		try {
@@ -163,23 +189,23 @@ public class XMLUtilities {
 		//		}
 	}
 
-	public static org.w3c.dom.Document read( String path ) {
-		return read( new java.io.File( path ) );
+	public static Document read( String path ) {
+		return read( new File( path ) );
 	}
 
 	// TODO: This removes the indent whitespace from the xml. This is a hack. We should define
 	// an xml schema for project files and validate the document. This is the right way to do this 
 	// anyway... not just because of whitespace.
 	@Deprecated
-	private static void removeWhitespaceNodes( org.w3c.dom.Element e ) {
-		org.w3c.dom.NodeList children = e.getChildNodes();
+	private static void removeWhitespaceNodes( Element e ) {
+		NodeList children = e.getChildNodes();
 		for( int i = children.getLength() - 1; i >= 0; i-- ) {
-			org.w3c.dom.Node child = children.item( i );
-			if( ( child instanceof org.w3c.dom.Text ) && ( ( (org.w3c.dom.Text)child ).getData().trim().length() == 0 ) ) {
+			Node child = children.item( i );
+			if( ( child instanceof Text ) && ( ( (Text)child ).getData().trim().length() == 0 ) ) {
 				e.removeChild( child );
 			}
-			else if( child instanceof org.w3c.dom.Element ) {
-				removeWhitespaceNodes( (org.w3c.dom.Element)child );
+			else if( child instanceof Element ) {
+				removeWhitespaceNodes( (Element)child );
 			}
 		}
 	}
@@ -209,14 +235,14 @@ public class XMLUtilities {
 	//		return (org.w3c.dom.Element)node0;
 	//	}
 
-	public static java.util.List<org.w3c.dom.Element> getChildElementsByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
-		java.util.List<org.w3c.dom.Element> rv = new java.util.LinkedList<org.w3c.dom.Element>();
-		org.w3c.dom.NodeList nodeList = xmlParent.getChildNodes();
+	public static List<Element> getChildElementsByTagName( Element xmlParent, String tagName ) {
+		List<Element> rv = new LinkedList<Element>();
+		NodeList nodeList = xmlParent.getChildNodes();
 		final int N = nodeList.getLength();
 		for( int i = 0; i < N; i++ ) {
-			org.w3c.dom.Node node = nodeList.item( i );
-			if( node instanceof org.w3c.dom.Element ) {
-				org.w3c.dom.Element element = (org.w3c.dom.Element)node;
+			Node node = nodeList.item( i );
+			if( node instanceof Element ) {
+				Element element = (Element)node;
 				if( tagName.equals( element.getTagName() ) ) {
 					rv.add( element );
 				}
@@ -225,13 +251,13 @@ public class XMLUtilities {
 		return rv;
 	}
 
-	public static org.w3c.dom.Element getSingleChildElementByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
-		org.w3c.dom.NodeList nodeList = xmlParent.getChildNodes();
+	public static Element getSingleChildElementByTagName( Element xmlParent, String tagName ) {
+		NodeList nodeList = xmlParent.getChildNodes();
 		final int N = nodeList.getLength();
 		for( int i = 0; i < N; i++ ) {
-			org.w3c.dom.Node node = nodeList.item( i );
-			if( node instanceof org.w3c.dom.Element ) {
-				org.w3c.dom.Element element = (org.w3c.dom.Element)node;
+			Node node = nodeList.item( i );
+			if( node instanceof Element ) {
+				Element element = (Element)node;
 				if( tagName.equals( element.getTagName() ) ) {
 					return element;
 				}

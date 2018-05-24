@@ -42,32 +42,49 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
+import edu.cmu.cs.dennisc.property.ListProperty;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 import org.lgna.project.ast.localizer.AstLocalizer;
+import org.lgna.project.ast.localizer.AstLocalizerFactory;
+import org.lgna.project.ast.localizer.DefaultAstLocalizerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNode extends Element implements Node {
 
-	private static org.lgna.project.ast.localizer.AstLocalizerFactory astLocalizerFactory = new org.lgna.project.ast.localizer.DefaultAstLocalizerFactory();
+	private static AstLocalizerFactory astLocalizerFactory = new DefaultAstLocalizerFactory();
 
-	public static org.lgna.project.ast.localizer.AstLocalizerFactory getAstLocalizerFactory() {
+	public static AstLocalizerFactory getAstLocalizerFactory() {
 		return AbstractNode.astLocalizerFactory;
 	}
 
-	public static void setAstLocalizerFactory( org.lgna.project.ast.localizer.AstLocalizerFactory astLocalizerFactory ) {
+	public static void setAstLocalizerFactory( AstLocalizerFactory astLocalizerFactory ) {
 		AbstractNode.astLocalizerFactory = astLocalizerFactory;
 	}
 
-	private java.util.UUID id = java.util.UUID.randomUUID();
+	private UUID id = UUID.randomUUID();
 	private AbstractNode parent;
 
 	@Override
-	public final java.util.UUID getId() {
+	public final UUID getId() {
 		return this.id;
 	}
 
-	public final void setId( java.util.UUID id ) {
+	public final void setId( UUID id ) {
 		this.id = id;
 	}
 
@@ -80,7 +97,7 @@ public abstract class AbstractNode extends Element implements Node {
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
 				if( parent != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "previous not null", this, this.parent );
+					Logger.warning( "previous not null", this, this.parent );
 				}
 			}
 			this.parent = parent;
@@ -110,9 +127,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+	public void firePropertyChanging( PropertyEvent e ) {
 		super.firePropertyChanging( e );
-		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = e.getTypedSource();
+		InstanceProperty<?> property = e.getTypedSource();
 		if( property instanceof NodeProperty<?> ) {
 			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
@@ -133,8 +150,8 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = e.getTypedSource();
+	public void firePropertyChanged( PropertyEvent e ) {
+		InstanceProperty<?> property = e.getTypedSource();
 		if( property instanceof NodeProperty<?> ) {
 			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
@@ -156,9 +173,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
+	public void fireClearing( ClearListPropertyEvent e ) {
 		super.fireClearing( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			NodeListProperty<?> nodeListProperty = (NodeListProperty<?>)listProperty;
 			for( Node node : nodeListProperty ) {
@@ -170,9 +187,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
+	public void fireRemoving( RemoveListPropertyEvent e ) {
 		super.fireRemoving( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -184,9 +201,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+	public void fireSetting( SetListPropertyEvent e ) {
 		super.fireSetting( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -198,8 +215,8 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+	public void fireSet( SetListPropertyEvent e ) {
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -212,9 +229,9 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
+	public void fireAdding( AddListPropertyEvent e ) {
 		super.fireAdding( e );
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -226,8 +243,8 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.ListProperty<?> listProperty = (edu.cmu.cs.dennisc.property.ListProperty<?>)e.getSource();
+	public void fireAdded( AddListPropertyEvent e ) {
+		ListProperty<?> listProperty = (ListProperty<?>)e.getSource();
 		if( listProperty instanceof NodeListProperty<?> ) {
 			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
 			for( Object o : e.getElements() ) {
@@ -239,7 +256,7 @@ public abstract class AbstractNode extends Element implements Node {
 		super.fireAdded( e );
 	}
 
-	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, Object value, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter ) {
+	private static void acceptIfCrawlable( Crawler crawler, Set<Crawlable> visited, Object value, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter ) {
 		if( value instanceof AbstractNode ) {
 			AbstractNode node = (AbstractNode)value;
 			if( declarationFilter != null ) {
@@ -248,24 +265,24 @@ public abstract class AbstractNode extends Element implements Node {
 					if( declarationFilter.accept( declaration ) ) {
 						//pass
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping", declaration );
+						Logger.errln( "skipping", declaration );
 						return;
 					}
 				}
 			}
 			node.accept( crawler, visited, crawlPolicy, declarationFilter );
-		} else if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
-			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
+		} else if( value instanceof Crawlable ) {
+			Crawlable crawlable = (Crawlable)value;
 			crawlable.accept( crawler, visited );
 		}
 	}
 
 	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited ) {
+	public void accept( Crawler crawler, Set<Crawlable> visited ) {
 		this.accept( crawler, visited, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
 	}
 
-	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter ) {
+	private void accept( Crawler crawler, Set<Crawlable> visited, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter ) {
 		if( visited.contains( this ) ) {
 			//pass
 		} else {
@@ -273,7 +290,7 @@ public abstract class AbstractNode extends Element implements Node {
 			crawler.visit( this );
 
 			// Look through this nodes properties to see if any have anything to crawl
-			for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
+			for( InstanceProperty<?> property : this.getProperties() ) {
 				// Check if this is a reference
 				if( property instanceof DeclarationProperty<?> ) {
 					DeclarationProperty<?> declarationProperty = (DeclarationProperty<?>)property;
@@ -314,11 +331,11 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> criterion ) {
-		this.accept( crawler, new java.util.HashSet<edu.cmu.cs.dennisc.pattern.Crawlable>(), crawlPolicy, criterion );
+	public final synchronized void crawl( Crawler crawler, CrawlPolicy crawlPolicy, Criterion<Declaration> criterion ) {
+		this.accept( crawler, new HashSet<Crawlable>(), crawlPolicy, criterion );
 	}
 
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy ) {
+	public final synchronized void crawl( Crawler crawler, CrawlPolicy crawlPolicy ) {
 		this.crawl( crawler, crawlPolicy, null );
 	}
 
@@ -327,9 +344,9 @@ public abstract class AbstractNode extends Element implements Node {
 	//		return System.identityHashCode( declaration );
 	//	}
 
-	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
+	protected Set<AbstractDeclaration> fillInDeclarationSet( Set<AbstractDeclaration> rv, Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
+		for( InstanceProperty<?> property : this.getProperties() ) {
 			Object value = property.getValue();
 			if( value instanceof AbstractNode ) {
 				if( nodes.contains( value ) ) {
@@ -352,15 +369,15 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	public java.util.Set<AbstractDeclaration> createDeclarationSet() {
-		java.util.Set<AbstractDeclaration> rv = new java.util.HashSet<AbstractDeclaration>();
-		fillInDeclarationSet( rv, new java.util.HashSet<AbstractNode>() );
+	public Set<AbstractDeclaration> createDeclarationSet() {
+		Set<AbstractDeclaration> rv = new HashSet<AbstractDeclaration>();
+		fillInDeclarationSet( rv, new HashSet<AbstractNode>() );
 		return rv;
 	}
 
-	private java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
+	private Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( Set<AbstractDeclaration> rv, Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
+		for( InstanceProperty<?> property : this.getProperties() ) {
 			if( property instanceof DeclarationProperty ) {
 				DeclarationProperty<? extends AbstractDeclaration> declarationProperty = (DeclarationProperty<? extends AbstractDeclaration>)property;
 				if( declarationProperty.isReference() ) {
@@ -391,8 +408,8 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	public java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv ) {
-		return removeDeclarationsThatNeedToBeCopied( rv, new java.util.HashSet<AbstractNode>() );
+	public Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( Set<AbstractDeclaration> rv ) {
+		return removeDeclarationsThatNeedToBeCopied( rv, new HashSet<AbstractNode>() );
 	}
 
 	//	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

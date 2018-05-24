@@ -42,12 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.member.views;
 
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.member.FunctionTabComposite;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FunctionTabView extends MemberTabView {
-	public FunctionTabView( org.alice.ide.member.FunctionTabComposite composite ) {
+	public FunctionTabView( FunctionTabComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getFunctionColor() );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getFunctionColor() );
 	}
 }

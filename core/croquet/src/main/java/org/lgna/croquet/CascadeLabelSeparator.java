@@ -43,13 +43,21 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	private String menuItemText;
 
-	public CascadeLabelSeparator( java.util.UUID id ) {
+	public CascadeLabelSeparator( UUID id ) {
 		super( id );
 	}
 
@@ -75,12 +83,12 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	}
 
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> step ) {
+	protected final JComponent createMenuItemIconProxy( ItemNode<? super Void, Void> step ) {
 		String text = getMenuItemIconProxyText();
 		if( isValid(text) ) {
-			javax.swing.JLabel rv = new javax.swing.JLabel();
+			JLabel rv = new JLabel();
 			rv.setText( text + ":" );
-			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			FontUtilities.setFontToDerivedFont( rv, TextPosture.OBLIQUE );
 			return rv;
 		} else {
 			return null;
@@ -88,7 +96,7 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> step ) {
+	public String getMenuItemText( ItemNode<? super Void, Void> step ) {
 		return null;
 		//		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 	}

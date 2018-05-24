@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.numberpad;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import org.lgna.project.ast.FloatLiteral;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FloatModel extends NumberModel<org.lgna.project.ast.FloatLiteral> {
+public class FloatModel extends NumberModel<FloatLiteral> {
 	private static class SingletonHolder {
 		private static FloatModel instance = new FloatModel();
 	}
@@ -55,7 +60,7 @@ public class FloatModel extends NumberModel<org.lgna.project.ast.FloatLiteral> {
 	}
 
 	private FloatModel() {
-		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" ) );
+		super( NUMBER_PAD_GROUP, UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" ) );
 	}
 
 	@Override
@@ -64,12 +69,12 @@ public class FloatModel extends NumberModel<org.lgna.project.ast.FloatLiteral> {
 	}
 
 	@Override
-	protected org.lgna.project.ast.FloatLiteral valueOf( String s ) {
-		float f = (float)edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
+	protected FloatLiteral valueOf( String s ) {
+		float f = (float)DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );
 		if( Float.isNaN( f ) ) {
 			return null;
 		} else {
-			return new org.lgna.project.ast.FloatLiteral( f );
+			return new FloatLiteral( f );
 		}
 	}
 }

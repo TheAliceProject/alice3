@@ -43,7 +43,11 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+import java.awt.Rectangle;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -64,7 +68,7 @@ public class BubbleManager
 	private Hashtable<Bubble, OnscreenBubble> bubbleMap = new Hashtable<Bubble, OnscreenBubble>();
 	private List<OnscreenBubble> activeBubbles = new LinkedList<OnscreenBubble>();
 
-	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, float textScale, java.awt.Rectangle viewport )
+	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, Point2D.Float originOfTail, Dimension2D textSize, float padding, float textScale, Rectangle viewport )
 	{
 		Bubble.PositionPreference positionPreference = bubbleOwner.getPositionPreference();
 		if( positionPreference == Bubble.PositionPreference.AUTOMATIC ) {
@@ -83,7 +87,7 @@ public class BubbleManager
 		}
 		double IPAD = padding;
 		Rectangle2D.Double bubbleBounds = getRectForBubble( ( textSize.getWidth() + ( IPAD * 2 ) ), ( textSize.getHeight() + ( IPAD * 2 ) ), positionPreference, viewport );
-		java.awt.geom.RoundRectangle2D.Double roundRect = new java.awt.geom.RoundRectangle2D.Double();
+		RoundRectangle2D.Double roundRect = new RoundRectangle2D.Double();
 		roundRect.width = bubbleBounds.width;
 		roundRect.height = bubbleBounds.height;
 		roundRect.x = bubbleBounds.x;
@@ -91,7 +95,7 @@ public class BubbleManager
 		roundRect.arcwidth = IPAD;
 		roundRect.archeight = IPAD;
 
-		java.awt.geom.Rectangle2D.Double textBounds = new java.awt.geom.Rectangle2D.Double(
+		Rectangle2D.Double textBounds = new Rectangle2D.Double(
 				roundRect.x + IPAD,
 				roundRect.y + IPAD,
 				textSize.getWidth(),
@@ -99,7 +103,7 @@ public class BubbleManager
 
 		double percentOriginAcrossScreen = originOfTail.getX() / viewport.width;
 		double tailEndX = roundRect.getMinX() + IPAD + ( percentOriginAcrossScreen * textSize.getWidth() );
-		java.awt.geom.Point2D.Float endOfTail = new java.awt.geom.Point2D.Float( (float)tailEndX, (float)roundRect.getMaxY() );
+		Point2D.Float endOfTail = new Point2D.Float( (float)tailEndX, (float)roundRect.getMaxY() );
 
 		OnscreenBubble bubble = new OnscreenBubble( originOfTail, endOfTail, roundRect, textBounds, positionPreference );
 		placeBubble( bubble, viewport, textScale );
@@ -108,7 +112,7 @@ public class BubbleManager
 		return bubble;
 	}
 
-	private Rectangle2D.Double getRectForBubble( double width, double height, Bubble.PositionPreference positionPreference, java.awt.Rectangle viewport )
+	private Rectangle2D.Double getRectForBubble( double width, double height, Bubble.PositionPreference positionPreference, Rectangle viewport )
 	{
 		Rectangle2D.Double bubbleRect = new Rectangle2D.Double();
 		bubbleRect.width = width;
@@ -119,7 +123,7 @@ public class BubbleManager
 		return bubbleRect;
 	}
 
-	private void placeBubble( OnscreenBubble bubble, java.awt.Rectangle viewport, float textScale )
+	private void placeBubble( OnscreenBubble bubble, Rectangle viewport, float textScale )
 	{
 		double scaledYGap = Y_GAP * textScale;
 		double scaledXGap = X_GAP * textScale;
@@ -159,7 +163,7 @@ public class BubbleManager
 		bubble.setPosition( x, y );
 	}
 
-	public void packBubbles( java.awt.Rectangle viewport )
+	public void packBubbles( Rectangle viewport )
 	{
 
 	}

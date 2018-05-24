@@ -42,6 +42,9 @@
  */
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.DragAndDropCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
@@ -52,6 +55,7 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.JointRotationRingHandle;
+import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
@@ -66,6 +70,8 @@ import org.lgna.story.implementation.ModelImp;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
+import java.awt.event.MouseEvent;
 
 /**
  * @author Matt May
@@ -84,26 +90,26 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	private void setUpControls() {
-		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
 
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( orbiter );
 		//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
 		cameraOrbit.addCondition( middleMouseAndAnything );
 		this.manipulators.add( cameraOrbit );
 
-		JointRotationRingHandle rotateJointAboutZAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
+		JointRotationRingHandle rotateJointAboutZAxis = new JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
 		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
 
-		JointRotationRingHandle rotateJointAboutYAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN );
+		JointRotationRingHandle rotateJointAboutYAxis = new JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN );
 		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
 
-		JointRotationRingHandle rotateJointAboutXAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED );
+		JointRotationRingHandle rotateJointAboutXAxis = new JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED );
 		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
@@ -121,7 +127,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		selectObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
 
 		selectObject.setEnabled( false );
-		selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
+		selectObject.addCondition( new MousePressCondition( MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
 		selectObject.addCondition( new DragAndDropCondition() );
 
 		InteractionGroup group = new InteractionGroup( new InteractionGroup.InteractionInfo( new InteractionGroup.PossibleObjects( ObjectType.JOINT ), HandleSet.JOINT_ROTATION_INTERACTION, selectObject, PickType.JOINT ) );
@@ -160,12 +166,12 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Angle getRotationSnapAngle() {
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( Math.PI / 16.0 );
+	public Angle getRotationSnapAngle() {
+		return new AngleInRadians( Math.PI / 16.0 );
 	}
 
 	@Override
-	public void undoRedoEndManipulation( org.alice.interact.manipulator.AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
+	public void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation ) {
 	}
 
 	public final void setTarget( SModel model ) {
@@ -174,12 +180,12 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		super.setOnscreenRenderTarget( onscreenRenderTarget );
 		initDragAdapter( onscreenRenderTarget );
 	}
 
-	private void initDragAdapter( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	private void initDragAdapter( OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		dragAdapter = new PoserPicturePlaneInteraction( onscreenRenderTarget, poserScene );
 		dragAdapter.startUp();
 	}

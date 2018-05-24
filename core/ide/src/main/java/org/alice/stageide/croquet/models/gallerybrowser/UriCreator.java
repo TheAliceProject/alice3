@@ -42,29 +42,40 @@
  *******************************************************************************/
 package org.alice.stageide.croquet.models.gallerybrowser;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.ValueCreator;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriCreator<T> extends org.lgna.croquet.ValueCreator<T> {
-	public UriCreator( java.util.UUID migrationId ) {
+public abstract class UriCreator<T> extends ValueCreator<T> {
+	public UriCreator( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	protected abstract java.io.File getInitialDirectory();
+	protected abstract File getInitialDirectory();
 
 	protected abstract String getExtension();
 
-	protected abstract T internalGetValueFrom( java.io.File file );
+	protected abstract T internalGetValueFrom( File file );
 
 	@Override
-	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		org.lgna.croquet.DocumentFrame documentFrame = application.getDocumentFrame();
-		java.io.File directory = this.getInitialDirectory();
+	protected T createValue( Transaction transaction, Trigger trigger ) {
+		Application application = Application.getActiveInstance();
+		DocumentFrame documentFrame = application.getDocumentFrame();
+		File directory = this.getInitialDirectory();
 		String extension = this.getExtension();
-		org.lgna.croquet.history.TransactionHistory subtTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, subtTransactionHistory );
-		java.io.File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
+		TransactionHistory subtTransactionHistory = new TransactionHistory();
+		CompletionStep<?> step = CompletionStep.createAndAddToTransaction( transaction, this, trigger, subtTransactionHistory );
+		File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
 			T rv = this.internalGetValueFrom( file );
 			step.finish();

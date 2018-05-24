@@ -42,22 +42,45 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
-class MethodPane extends org.lgna.croquet.views.BorderPanel {
-	public MethodPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserMethod method ) {
-		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.addPageStartComponent( new org.alice.ide.codeeditor.MethodHeaderPane( factory, method, false ) );
-		this.addLineStartComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 12 ) );
+import org.alice.ide.ThemeUtilities;
+import org.alice.ide.codeeditor.MethodHeaderPane;
+import org.alice.ide.codeeditor.ParametersPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.GridPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.AnonymousUserConstructor;
+import org.lgna.project.ast.AnonymousUserType;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.UserMethod;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.LayoutManager;
+
+class MethodPane extends BorderPanel {
+	public MethodPane( AstI18nFactory factory, UserMethod method ) {
+		ParametersPane parametersPane = new ParametersPane( factory, method );
+		this.addPageStartComponent( new MethodHeaderPane( factory, method, false ) );
+		this.addLineStartComponent( BoxUtilities.createHorizontalSliver( 12 ) );
 		this.addCenterComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ) );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getProcedureColor() );
+		this.setAlignmentX( Component.LEFT_ALIGNMENT );
+		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getProcedureColor() );
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		class MouseEventEnabledPanel extends DefaultJPanel {
 			public MouseEventEnabledPanel() {
-				this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+				this.enableEvents( AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK );
 			}
 		}
 		MouseEventEnabledPanel rv = new MouseEventEnabledPanel();
@@ -69,47 +92,47 @@ class MethodPane extends org.lgna.croquet.views.BorderPanel {
  * @author Dennis Cosgrove
  */
 public class AnonymousConstructorPane extends ExpressionLikeSubstance {
-	private org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor;
+	private AnonymousUserConstructor anonymousConstructor;
 
-	public AnonymousConstructorPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.AnonymousUserConstructor anonymousConstructor ) {
+	public AnonymousConstructorPane( AstI18nFactory factory, AnonymousUserConstructor anonymousConstructor ) {
 		super( null );
 		this.anonymousConstructor = anonymousConstructor;
-		boolean isJava = org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava();
+		boolean isJava = FormatterState.isJava();
 		if( isJava ) {
-			org.lgna.croquet.views.LineAxisPanel header = new org.lgna.croquet.views.LineAxisPanel(
-					new org.lgna.croquet.views.Label( "new " ),
+			LineAxisPanel header = new LineAxisPanel(
+					new Label( "new " ),
 					TypeComponent.createInstance( anonymousConstructor.getDeclaringType().getSuperType() ),
-					new org.lgna.croquet.views.Label( "() {" )
+					new Label( "() {" )
 					);
-			header.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+			header.setAlignmentX( Component.LEFT_ALIGNMENT );
 			this.addComponent( header );
 		}
 
-		org.lgna.project.ast.AnonymousUserType type = this.anonymousConstructor.getDeclaringType();
-		for( org.lgna.project.ast.UserMethod method : type.getDeclaredMethods() ) {
-			org.lgna.croquet.views.GridPanel pane = org.lgna.croquet.views.GridPanel.createGridPane( 1, 1 );
+		AnonymousUserType type = this.anonymousConstructor.getDeclaringType();
+		for( UserMethod method : type.getDeclaredMethods() ) {
+			GridPanel pane = GridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;
 			if( isJava ) {
 				left += 12;
 			}
-			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
+			pane.setBorder( BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
 			pane.addComponent( new MethodPane( factory, method ) );
 			this.addComponent( pane );
 		}
 		if( isJava ) {
-			this.addComponent( new org.lgna.croquet.views.Label( "}" ) );
+			this.addComponent( new Label( "}" ) );
 		}
-		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.InstanceCreation.class ) );
+		this.setBackgroundColor( ThemeUtilities.getActiveTheme().getColorFor( InstanceCreation.class ) );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
-		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.PAGE_AXIS );
+	protected LayoutManager createLayoutManager( JPanel jComponent ) {
+		return new BoxLayout( jComponent, BoxLayout.PAGE_AXIS );
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
+	public AbstractType<?, ?, ?> getExpressionType() {
 		return this.anonymousConstructor.getDeclaringType();
 	}
 

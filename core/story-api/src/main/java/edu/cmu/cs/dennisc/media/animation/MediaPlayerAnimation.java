@@ -42,14 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.media.animation;
 
+import edu.cmu.cs.dennisc.animation.Animation;
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
 import edu.cmu.cs.dennisc.media.MediaPlayerObserver;
+import edu.cmu.cs.dennisc.media.Player;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animation {
+public class MediaPlayerAnimation implements Animation {
 	//	private static final double CLOSE_ENOUGH_TO_ZERO = 0.0001;
-	private edu.cmu.cs.dennisc.media.Player player;
+	private Player player;
 	private boolean isStarted = false;
 
 	private double startTime = 0;
@@ -60,7 +63,7 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 		EPIC_HACK_mediaPlayerObserver = mediaPlayerObserver;
 	}
 
-	public MediaPlayerAnimation( edu.cmu.cs.dennisc.media.Player player ) {
+	public MediaPlayerAnimation( Player player ) {
 		this.player = player;
 		this.isStarted = false;
 	}
@@ -71,7 +74,7 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 	}
 
 	@Override
-	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		if( this.isStarted ) {
 			//pass
 		} else {
@@ -119,14 +122,14 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 	}
 
 	@Override
-	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	public void complete( AnimationObserver animationObserver ) {
 		this.player.stop();
 		if( animationObserver != null ) {
 			animationObserver.finished( this );
 		}
 	}
 
-	public edu.cmu.cs.dennisc.media.Player getPlayer()
+	public Player getPlayer()
 	{
 		return this.player;
 	}

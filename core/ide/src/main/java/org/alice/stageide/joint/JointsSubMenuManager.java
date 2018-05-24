@@ -43,26 +43,36 @@
 
 package org.alice.stageide.joint;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SQuadruped;
+
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JointsSubMenuManager {
-	private static final java.util.Map<org.lgna.project.ast.JavaType, Class<? extends JointsSubMenu>[]> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<JavaType, Class<? extends JointsSubMenu>[]> map = Maps.newHashMap();
 	static {
-		addToMap( org.lgna.story.SBiped.class, OtherSBipedJointsSubMenu.class );
-		addToMap( org.lgna.story.SQuadruped.class, OtherSQuadrupedJointsSubMenu.class );
-		addToMap( org.lgna.story.SFlyer.class, OtherSFlyerJointsSubMenu.class );
+		addToMap( SBiped.class, OtherSBipedJointsSubMenu.class );
+		addToMap( SQuadruped.class, OtherSQuadrupedJointsSubMenu.class );
+		addToMap( SFlyer.class, OtherSFlyerJointsSubMenu.class );
 	}
 
-	private static void addToMap( Class<? extends org.lgna.story.SJointedModel> cls, Class<? extends JointsSubMenu>... subMenuClses ) {
-		map.put( org.lgna.project.ast.JavaType.getInstance( cls ), subMenuClses );
+	private static void addToMap( Class<? extends SJointedModel> cls, Class<? extends JointsSubMenu>... subMenuClses ) {
+		map.put( JavaType.getInstance( cls ), subMenuClses );
 	}
 
 	private JointsSubMenuManager() {
 		throw new AssertionError();
 	}
 
-	public static <FB> JointsSubMenu<FB>[] getSubMenusForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static <FB> JointsSubMenu<FB>[] getSubMenusForType( AbstractType<?, ?, ?> type ) {
 		Class<? extends JointsSubMenu>[] subMenuClses = map.get( type );
 		if( subMenuClses != null ) {
 			JointsSubMenu[] rv = new JointsSubMenu[ subMenuClses.length ];

@@ -43,43 +43,50 @@
 
 package org.alice.ide;
 
+import org.alice.ide.type.TypeCache;
+import org.lgna.croquet.Document;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.undo.UndoHistory;
+import org.lgna.project.Project;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectDocument implements org.lgna.croquet.Document {
+public class ProjectDocument implements Document {
 
-	private final org.lgna.project.Project project;
-	private final org.lgna.croquet.history.TransactionHistory transactionHistory;
-	private final org.alice.ide.ProjectHistoryManager projectHistoryManager;
+	private final Project project;
+	private final TransactionHistory transactionHistory;
+	private final ProjectHistoryManager projectHistoryManager;
 
-	private final org.alice.ide.type.TypeCache typeCache;
+	private final TypeCache typeCache;
 
-	public ProjectDocument( org.lgna.project.Project project ) {
+	public ProjectDocument( Project project ) {
 		this.project = project;
-		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		this.projectHistoryManager = new org.alice.ide.ProjectHistoryManager( this );
+		this.transactionHistory = new TransactionHistory();
+		this.projectHistoryManager = new ProjectHistoryManager( this );
 
 		// TODO: We need to store this transaction history as part of the profile file
 		//this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
 
-		this.typeCache = new org.alice.ide.type.TypeCache( this.project );
+		this.typeCache = new TypeCache( this.project );
 	}
 
-	public org.lgna.project.Project getProject() {
+	public Project getProject() {
 		return this.project;
 	}
 
-	public org.alice.ide.type.TypeCache getTypeCache() {
+	public TypeCache getTypeCache() {
 		return this.typeCache;
 	}
 
 	@Override
-	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+	public TransactionHistory getRootTransactionHistory() {
 		return this.transactionHistory;
 	}
 
 	@Override
-	public org.lgna.croquet.undo.UndoHistory getUndoHistory( org.lgna.croquet.Group group ) {
+	public UndoHistory getUndoHistory( Group group ) {
 		return this.projectHistoryManager.getGroupHistory( group );
 	}
 }

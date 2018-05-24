@@ -43,19 +43,35 @@
 
 package org.lgna.story.implementation.alice;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.JointArrayId;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.JointedModelResource;
+
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
-public class JointImplementationAndVisualDataFactory implements org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory {
-	private static java.util.Map<org.lgna.story.resources.JointedModelResource, JointImplementationAndVisualDataFactory> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class JointImplementationAndVisualDataFactory implements JointedModelImp.JointImplementationAndVisualDataFactory {
+	private static Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
-	private static class VisualData implements org.lgna.story.implementation.JointedModelImp.VisualData {
-		private edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] texturedAppearances;
-		private edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual;
+	private static class VisualData implements JointedModelImp.VisualData {
+		private TexturedAppearance[] texturedAppearances;
+		private SkeletonVisual sgSkeletonVisual;
 
-		public VisualData( org.lgna.story.resources.JointedModelResource resource ) {
+		public VisualData( JointedModelResource resource ) {
 			assert resource != null;
 			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
 			//Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
@@ -68,13 +84,13 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
-			return new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { (edu.cmu.cs.dennisc.scenegraph.SimpleAppearance)this.sgSkeletonVisual.frontFacingAppearance.getValue() };
+		public SimpleAppearance[] getSgAppearances() {
+			return new SimpleAppearance[] { (SimpleAppearance)this.sgSkeletonVisual.frontFacingAppearance.getValue() };
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
-			return new edu.cmu.cs.dennisc.scenegraph.Visual[] { this.sgSkeletonVisual };
+		public Visual[] getSgVisuals() {
+			return new Visual[] { this.sgSkeletonVisual };
 		}
 
 		@Override
@@ -83,9 +99,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 
 		@Override
-		public void setSGParent( edu.cmu.cs.dennisc.scenegraph.Composite parent ) {
+		public void setSGParent( Composite parent ) {
 			sgSkeletonVisual.setParent( parent );
-			for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			for( Visual sgVisual : this.getSgVisuals() ) {
 				sgVisual.setParent( parent );
 			}
 		}
@@ -102,7 +118,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 	}
 
-	public static JointImplementationAndVisualDataFactory getInstance( org.lgna.story.resources.JointedModelResource resource ) {
+	public static JointImplementationAndVisualDataFactory getInstance( JointedModelResource resource ) {
 		synchronized( map ) {
 			JointImplementationAndVisualDataFactory rv = map.get( resource );
 			if( rv != null ) {
@@ -115,35 +131,35 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 	}
 
-	private final org.lgna.story.resources.JointedModelResource resource;
+	private final JointedModelResource resource;
 
-	private JointImplementationAndVisualDataFactory( org.lgna.story.resources.JointedModelResource resource ) {
+	private JointImplementationAndVisualDataFactory( JointedModelResource resource ) {
 		this.resource = resource;
 	}
 
 	@Override
-	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource( org.lgna.story.resources.JointedModelResource resource ) {
+	public JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource( JointedModelResource resource ) {
 		return JointImplementationAndVisualDataFactory.getInstance( resource );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointedModelResource getResource() {
+	public JointedModelResource getResource() {
 		return this.resource;
 	}
 
 	@Override
-	public org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
+	public JointImp createJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
+		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
 		if( sgSkeletonVisual != null ) {
 			String key = jointId.toString();
-			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+			Joint sgJoint = sgSkeletonRoot.getJoint( key );
 			if( sgJoint != null ) {
 				sgJoint.setName( key );
-				return new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoint );
+				return new JointImplementation( jointedModelImplementation, jointId, sgJoint );
 			} else {
-				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( jointId, "not found for", resource.getClass(), resource );
+				JointedModelResource resource = jointedModelImplementation.getResource();
+				Logger.severe( jointId, "not found for", resource.getClass(), resource );
 				return null;
 			}
 		} else {
@@ -152,17 +168,17 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 
 	@Override
-	public boolean hasJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
+	public boolean hasJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
+		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
 		if( sgSkeletonVisual != null ) {
 			String key = jointId.toString();
-			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+			Joint sgJoint = sgSkeletonRoot.getJoint( key );
 			if( sgJoint != null ) {
 				return true;
 			} else {
-				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( jointId, "not found for", resource.getClass(), resource );
+				JointedModelResource resource = jointedModelImplementation.getResource();
+				Logger.severe( jointId, "not found for", resource.getClass(), resource );
 				return false;
 			}
 		} else {
@@ -171,26 +187,26 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 
 	@Override
-	public org.lgna.story.implementation.JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
+	public JointImp[] createJointArrayImplementation( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
+		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
 		if( sgSkeletonVisual != null ) {
 			String key = jointArrayId.getElementNamePattern();
-			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-			edu.cmu.cs.dennisc.scenegraph.Joint[] sgJoints = sgSkeletonRoot.getJoints( key );
+			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+			Joint[] sgJoints = sgSkeletonRoot.getJoints( key );
 			if( sgJoints != null ) {
-				org.lgna.story.implementation.JointImp[] jointImps = new org.lgna.story.implementation.JointImp[ sgJoints.length ];
+				JointImp[] jointImps = new JointImp[ sgJoints.length ];
 				for( int i = 0; i < sgJoints.length; i++ ) {
 					final String jointName = sgJoints[ i ].jointID.getValue();
 					sgJoints[ i ].setName( jointName );
-					org.lgna.story.resources.JointId parentJointId;
+					JointId parentJointId;
 					if( i == 0 ) {
 						parentJointId = jointArrayId.getRoot();
 					} else {
 						parentJointId = jointImps[ i - 1 ].getJointId();
 					}
 					if( sgSkeletonRoot.getJoint( parentJointId.toString() ) != sgJoints[ i ].getParent() ) {
-						org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid implicit array structure:", jointName, "'s parent is not set to", parentJointId.toString(), "on", resource.getClass(), resource );
+						JointedModelResource resource = jointedModelImplementation.getResource();
+						Logger.severe( "Invalid implicit array structure:", jointName, "'s parent is not set to", parentJointId.toString(), "on", resource.getClass(), resource );
 						return null;
 					}
 
@@ -198,19 +214,19 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 					//(meaning this is an array that is declared on the class but is ultimately implemented by an individual resource)
 					//Given this fact, these joint ids need to be tied to the resource rather than the class
 					//Maybe pass parent in as null if the parent joint is the root joint? this seems like a bad idea though...
-					org.lgna.story.resources.JointId jointId = new org.lgna.story.resources.JointId( parentJointId, jointArrayId.getContainingClass(), resource) {
+					JointId jointId = new JointId( parentJointId, jointArrayId.getContainingClass(), resource) {
 						@Override
 						public String toString( ) {
 							return jointName;
 						}
 					};
 
-					jointImps[ i ] = new org.lgna.story.implementation.alice.JointImplementation( jointedModelImplementation, jointId, sgJoints[ i ] );
+					jointImps[ i ] = new JointImplementation( jointedModelImplementation, jointId, sgJoints[ i ] );
 				}
 				return jointImps;
 			} else {
-				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( jointArrayId, " array not found for ", resource.getClass(), resource );
+				JointedModelResource resource = jointedModelImplementation.getResource();
+				Logger.severe( jointArrayId, " array not found for ", resource.getClass(), resource );
 				return null;
 			}
 		} else {
@@ -219,17 +235,17 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
+	public UnitQuaternion getOriginalJointOrientation( JointId jointId ) {
 		return AliceResourceUtilties.getOriginalJointOrientation( this.resource, jointId );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
+	public AffineMatrix4x4 getOriginalJointTransformation( JointId jointId ) {
 		return AliceResourceUtilties.getOriginalJointTransformation( this.resource, jointId );
 	}
 
 	@Override
-	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData() {
+	public JointedModelImp.VisualData createVisualData() {
 		return new VisualData( this.resource );
 	}
 }

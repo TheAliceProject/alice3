@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.lgna.story.implementation.overlay;
 
+import edu.cmu.cs.dennisc.animation.AbstractAnimation;
+import edu.cmu.cs.dennisc.animation.AnimationObserver;
+
 /**
  * @author dculyba
  * 
  */
-public abstract class OpenUpdateCloseOverlayGraphicAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimation {
+public abstract class OpenUpdateCloseOverlayGraphicAnimation extends AbstractAnimation {
 	protected static enum State {
 		OPENNING,
 		UPDATING,
@@ -67,7 +70,7 @@ public abstract class OpenUpdateCloseOverlayGraphicAnimation extends edu.cmu.cs.
 	}
 
 	@Override
-	protected final double update( double deltaSincePrologue, double deltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+	protected final double update( double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver ) {
 		State state;
 		double portion;
 		if( ( this.openingDuration > 0.0 ) && ( deltaSincePrologue <= this.openingDuration ) ) {

@@ -42,8 +42,15 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.alice.stageide.gallerybrowser.shapes.DiscDragModel;
 import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.SDisc;
+import org.lgna.story.SetRadius;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -57,26 +64,26 @@ public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite 
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, org.lgna.story.SDisc.class, "setRadius", Number.class, org.lgna.story.SetRadius.Detail[].class );
+	private final CustomItemState<Expression> radiusState = this.createInitialPropertyValueExpressionState( "radiusState", 0.5, SDisc.class, "setRadius", Number.class, SetRadius.Detail[].class );
 
 	private AddDiscManagedFieldComposite() {
-		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ), org.lgna.story.SDisc.class );
+		super( UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ), SDisc.class );
 	}
 
 	@Override protected ShapeDragModel getDragModel() {
 		return DiscDragModel.getInstance();
 	}
 
-	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {
+	public CustomItemState<Expression> getRadiusState() {
 		return this.radiusState;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 updateInitialTransformIfNecessary( edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform ) {
+	protected AffineMatrix4x4 updateInitialTransformIfNecessary( AffineMatrix4x4 initialTransform ) {
 		if( initialTransform != null ) {
 			//pass
 		} else {
-			initialTransform = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
+			initialTransform = new AffineMatrix4x4();
 		}
 		initialTransform.translation.y += 0.01;
 		return initialTransform;

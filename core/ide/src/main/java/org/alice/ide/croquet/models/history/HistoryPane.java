@@ -42,9 +42,30 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.history;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JBorderPane;
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocument;
+import org.alice.ide.project.ProjectDocumentState;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.undo.UndoHistory;
+import org.lgna.croquet.undo.event.HistoryClearEvent;
+import org.lgna.croquet.undo.event.HistoryInsertionIndexEvent;
+import org.lgna.croquet.undo.event.HistoryListener;
+import org.lgna.croquet.undo.event.HistoryPushEvent;
 
-class HistoryStackModel extends javax.swing.AbstractListModel {
+import javax.swing.AbstractListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.Dimension;
+
+class HistoryStackModel extends AbstractListModel {
 	private UndoHistory projectHistory;
 
 	public HistoryStackModel( UndoHistory historyManager ) {
@@ -74,9 +95,9 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.croquet.edits.Edit> {
+class HistoryCellRenderer extends ListCellRenderer<Edit> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.edits.Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
 			rv.setText( "---open project---" );
 		} else {
@@ -94,45 +115,45 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListC
 	}
 }
 
-public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
-	private org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+public class HistoryPane extends JBorderPane {
+	private HistoryListener historyListener = new HistoryListener() {
 		@Override
-		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+		public void operationPushing( HistoryPushEvent e ) {
 		}
 
 		@Override
-		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
+		public void operationPushed( HistoryPushEvent e ) {
 		}
 
 		@Override
-		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanging( HistoryInsertionIndexEvent e ) {
 		}
 
 		@Override
-		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
+		public void insertionIndexChanged( HistoryInsertionIndexEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
 			HistoryPane.this.list.repaint();
 		}
 
 		@Override
-		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		public void clearing( HistoryClearEvent e ) {
 		}
 
 		@Override
-		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
+		public void cleared( HistoryClearEvent e ) {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( 0 );
 		}
 	};
 
-	private org.lgna.croquet.Group group;
-	private javax.swing.JList list;
+	private Group group;
+	private JList list;
 	private HistoryStackModel historyStackModel;
 	private UndoHistory projectHistory;
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+	private ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+		public void valueChanged( ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
@@ -142,26 +163,26 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ProjectDocument>() {
+	private final ValueListener<ProjectDocument> projectListener = new ValueListener<ProjectDocument>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ProjectDocument> e ) {
-			org.alice.ide.ProjectDocument nextValue = e.getNextValue();
+		public void valueChanged( ValueEvent<ProjectDocument> e ) {
+			ProjectDocument nextValue = e.getNextValue();
 			HistoryPane.this.initializeProjectHistory( nextValue != null ? nextValue : null );
 		}
 	};
 
-	public HistoryPane( org.lgna.croquet.Group group ) {
+	public HistoryPane( Group group ) {
 		this.group = group;
-		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
-		this.list = new javax.swing.JList();
+		ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
+		this.list = new JList();
 		this.list.setCellRenderer( new HistoryCellRenderer() );
 		this.list.addListSelectionListener( this.listSelectionListener );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
+		JScrollPane scrollPane = new JScrollPane( this.list );
 		this.add( scrollPane );
-		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDocument() );
+		this.initializeProjectHistory( IDE.getActiveInstance().getDocumentFrame().getDocument() );
 	}
 
-	public void initializeProjectHistory( org.alice.ide.ProjectDocument projectDocument ) {
+	public void initializeProjectHistory( ProjectDocument projectDocument ) {
 		this.projectHistory = projectDocument.getUndoHistory( this.group );
 		this.historyStackModel = new HistoryStackModel( this.projectHistory );
 		this.list.setModel( this.historyStackModel );
@@ -170,7 +191,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return new java.awt.Dimension( 240, 768 );
+	public Dimension getPreferredSize() {
+		return new Dimension( 240, 768 );
 	}
 }

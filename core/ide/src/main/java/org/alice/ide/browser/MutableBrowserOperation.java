@@ -42,29 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.browser;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MutableBrowserOperation extends BrowserOperation {
-	private java.net.URL url;
+	private URL url;
 
-	public MutableBrowserOperation( java.util.UUID id ) {
+	public MutableBrowserOperation( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	protected java.net.URL getUrl() {
+	protected URL getUrl() {
 		return this.url;
 	}
 
-	public void setUrl( java.net.URL url ) {
+	public void setUrl( URL url ) {
 		this.url = url;
 	}
 
 	public void setUrl( String spec ) {
 		try {
-			this.setUrl( new java.net.URL( spec ) );
-		} catch( java.net.MalformedURLException murle ) {
+			this.setUrl( new URL( spec ) );
+		} catch( MalformedURLException murle ) {
 			throw new RuntimeException( spec, murle );
 		}
 	}

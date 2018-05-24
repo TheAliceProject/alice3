@@ -55,7 +55,7 @@ public final class LambdaExpression extends Expression {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		Lambda lambda = this.value.getValue();
 		if( lambda != null ) {
 			return lambda.getReturnType();

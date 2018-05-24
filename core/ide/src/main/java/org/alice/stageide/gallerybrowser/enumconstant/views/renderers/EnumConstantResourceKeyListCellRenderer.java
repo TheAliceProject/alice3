@@ -42,19 +42,28 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.enumconstant.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.Theme;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.lgna.croquet.icon.IconFactory;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.SwingConstants;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantResourceKeyListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.stageide.modelresource.EnumConstantResourceKey> {
+public class EnumConstantResourceKeyListCellRenderer extends ListCellRenderer<EnumConstantResourceKey> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.stageide.modelresource.EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {
 			rv.setText( value.getLocalizedDisplayText() );
-			org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
-			rv.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
-			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-			rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
+			IconFactory iconFactory = value.getIconFactory();
+			rv.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+			rv.setHorizontalTextPosition( SwingConstants.CENTER );
+			rv.setVerticalTextPosition( SwingConstants.BOTTOM );
+			rv.setHorizontalAlignment( SwingConstants.CENTER );
 		}
 		return rv;
 	}

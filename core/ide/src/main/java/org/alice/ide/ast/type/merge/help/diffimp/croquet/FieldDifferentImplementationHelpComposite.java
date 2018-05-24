@@ -43,12 +43,15 @@
 package org.alice.ide.ast.type.merge.help.diffimp.croquet;
 
 import org.alice.ide.ast.type.merge.croquet.DifferentImplementation;
+import org.lgna.project.ast.UserField;
+
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<org.lgna.project.ast.UserField> {
-	public FieldDifferentImplementationHelpComposite( DifferentImplementation<org.lgna.project.ast.UserField> differentImplementation ) {
-		super( java.util.UUID.fromString( "b550ff2b-ac86-408d-b6f8-8ad8ed3365ab" ), differentImplementation, "the same value class", "initializers" );
+public final class FieldDifferentImplementationHelpComposite extends DifferentImplementationHelpComposite<UserField> {
+	public FieldDifferentImplementationHelpComposite( DifferentImplementation<UserField> differentImplementation ) {
+		super( UUID.fromString( "b550ff2b-ac86-408d-b6f8-8ad8ed3365ab" ), differentImplementation, "the same value class", "initializers" );
 	}
 }

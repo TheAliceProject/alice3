@@ -42,16 +42,24 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.AsynchronousImageCapturer;
+import edu.cmu.cs.dennisc.render.ImageBuffer;
+import edu.cmu.cs.dennisc.render.ImageCaptureObserver;
+import edu.cmu.cs.dennisc.render.ImageOrientationRequirement;
+import edu.cmu.cs.dennisc.render.RenderTask;
+
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrAsynchronousImageCapturer implements edu.cmu.cs.dennisc.render.AsynchronousImageCapturer {
+/*package-private*/class NrAsynchronousImageCapturer implements AsynchronousImageCapturer {
 	@Override
-	public void captureImageBuffer( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
+	public void captureImageBuffer( RenderTask renderTask, Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
 	}
 
 	@Override
-	public final void captureImageBuffer( edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
+	public final void captureImageBuffer( ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, ImageCaptureObserver observer ) {
 		this.captureImageBuffer( null, null, imageBuffer, imageOrientationRequirement, observer );
 	}
 }

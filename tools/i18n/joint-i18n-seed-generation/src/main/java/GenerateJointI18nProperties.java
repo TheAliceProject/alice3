@@ -41,6 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.identifier.IdentifierNameGenerator;
 import org.lgna.project.annotations.FieldTemplate;
@@ -51,7 +53,9 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -66,7 +70,7 @@ public class GenerateJointI18nProperties {
 					"/Users/daniel/.m2/repository/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar";
 
 	private static void listJoints() {
-		java.util.Set<String> methodNames = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		Set<String> methodNames = Sets.newHashSet();
 
 		for( String className : getJointedSubclasses() ) {
 			try {
@@ -85,8 +89,8 @@ public class GenerateJointI18nProperties {
 				e.printStackTrace();
 			}
 		}
-		List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( methodNames );
-		java.util.Collections.sort( list );
+		List<String> list = Lists.newArrayList( methodNames );
+		Collections.sort( list );
 		StringBuilder sb = new StringBuilder();
 		for( String methodName : list ) {
 			sb.append( methodName );

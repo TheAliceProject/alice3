@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video;
 
+import edu.cmu.cs.dennisc.video.nil.NilVideoPlayer;
+import edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +52,7 @@ public class VideoUtilities {
 	public static VideoPlayer createVideoPlayer() {
 		VideoPlayer rv = null;
 		try {
-			rv = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
+			rv = VlcjUtilities.createVideoPlayer();
 		} catch( Throwable t ) {
 			t.printStackTrace();
 			rv = null;
@@ -57,7 +60,7 @@ public class VideoUtilities {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new edu.cmu.cs.dennisc.video.nil.NilVideoPlayer();
+			rv = new NilVideoPlayer();
 		}
 		return rv;
 	}

@@ -42,14 +42,20 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.BooleanState;
+import org.lgna.project.ast.Member;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class IsMemberDesiredState<M extends org.lgna.project.ast.Member> extends org.lgna.croquet.BooleanState {
+public final class IsMemberDesiredState<M extends Member> extends BooleanState {
 	private final M member;
 
 	public IsMemberDesiredState( M member, boolean initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), initialValue );
+		super( Application.INHERIT_GROUP, UUID.fromString( "02910edd-4bc6-404d-bf23-88e2e29fe539" ), initialValue );
 		this.member = member;
 	}
 

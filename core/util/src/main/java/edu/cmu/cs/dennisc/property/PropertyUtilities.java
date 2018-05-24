@@ -42,6 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+import java.lang.reflect.Method;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +53,7 @@ public final class PropertyUtilities {
 	private PropertyUtilities() {
 	}
 
-	public static java.lang.reflect.Method getGetter( Class<?> cls, String propertyName ) {
+	public static Method getGetter( Class<?> cls, String propertyName ) {
 		Class<?>[] parameterTypes = {};
 		String methodName;
 		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
@@ -57,16 +61,16 @@ public final class PropertyUtilities {
 		} else {
 			methodName = "get" + propertyName;
 		}
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
+		return ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 	}
 
-	private static java.lang.reflect.Method getSetter( Class<?> cls, String methodName, Class<?>[] parameterTypes ) {
-		java.lang.reflect.Method rv;
+	private static Method getSetter( Class<?> cls, String methodName, Class<?>[] parameterTypes ) {
+		Method rv;
 		try {
 			rv = cls.getMethod( methodName, parameterTypes );
 		} catch( NoSuchMethodException nsme ) {
 			rv = null;
-			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
+			for( Method mthd : cls.getMethods() ) {
 				if( methodName.equals( mthd.getName() ) ) {
 					if( mthd.isVarArgs() ) {
 						Class<?>[] mthdParameterTypes = mthd.getParameterTypes();
@@ -92,8 +96,8 @@ public final class PropertyUtilities {
 		return rv;
 	}
 
-	public static java.lang.reflect.Method getSetter( Class<?> cls, String propertyName ) {
-		java.lang.reflect.Method getter = getGetter( cls, propertyName );
+	public static Method getSetter( Class<?> cls, String propertyName ) {
+		Method getter = getGetter( cls, propertyName );
 		Class<?> valueClass = getter.getReturnType();
 		Class<?>[] parameterTypes = { valueClass };
 		String methodName;
@@ -103,7 +107,7 @@ public final class PropertyUtilities {
 			methodName = "set" + propertyName;
 		}
 
-		java.lang.reflect.Method rv = getSetter( cls, methodName, parameterTypes );
+		Method rv = getSetter( cls, methodName, parameterTypes );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -131,7 +135,7 @@ public final class PropertyUtilities {
 		}
 	}
 
-	public static String getPropertyNameForGetter( java.lang.reflect.Method method ) {
+	public static String getPropertyNameForGetter( Method method ) {
 		Class<?> valueClass = method.getReturnType();
 		boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
 		String prefix;
@@ -152,7 +156,7 @@ public final class PropertyUtilities {
 		}
 	}
 
-	private static String getPropertyNameForSetter( java.lang.reflect.Method method, boolean isExtraParametersAcceptable ) {
+	private static String getPropertyNameForSetter( Method method, boolean isExtraParametersAcceptable ) {
 		String prefix = "set";
 		String name = method.getName();
 		if( name.startsWith( prefix ) ) {
@@ -173,11 +177,11 @@ public final class PropertyUtilities {
 		}
 	}
 
-	public static String getPropertyNameForSetter( java.lang.reflect.Method method ) {
+	public static String getPropertyNameForSetter( Method method ) {
 		return getPropertyNameForSetter( method, false );
 	}
 
-	public static boolean isGetterAndSetterExists( java.lang.reflect.Method method ) {
+	public static boolean isGetterAndSetterExists( Method method ) {
 		String propertyName = getPropertyNameForGetter( method );
 		if( propertyName != null ) {
 			return hasSetter( method.getDeclaringClass(), propertyName );
@@ -186,7 +190,7 @@ public final class PropertyUtilities {
 		}
 	}
 
-	public static boolean isSetterAndGetterExists( java.lang.reflect.Method method ) {
+	public static boolean isSetterAndGetterExists( Method method ) {
 		String propertyName = getPropertyNameForSetter( method, false );
 		if( propertyName != null ) {
 			return hasGetter( method.getDeclaringClass(), propertyName );
@@ -195,7 +199,7 @@ public final class PropertyUtilities {
 		}
 	}
 
-	public static boolean isSetterWithExtraParametersAndGetterExists( java.lang.reflect.Method method ) {
+	public static boolean isSetterWithExtraParametersAndGetterExists( Method method ) {
 		String propertyName = getPropertyNameForSetter( method, true );
 		if( propertyName != null ) {
 			return hasGetter( method.getDeclaringClass(), propertyName );
@@ -204,27 +208,27 @@ public final class PropertyUtilities {
 		}
 	}
 
-	public static java.lang.reflect.Method getSetterForGetter( java.lang.reflect.Method method, Class<?> cls ) {
+	public static Method getSetterForGetter( Method method, Class<?> cls ) {
 		return getSetter( cls, getPropertyNameForGetter( method ) );
 	}
 
-	public static java.lang.reflect.Method getSetterForGetter( java.lang.reflect.Method method ) {
+	public static Method getSetterForGetter( Method method ) {
 		return getSetterForGetter( method, method.getDeclaringClass() );
 	}
 
-	public static java.lang.reflect.Method getGetterForSetter( java.lang.reflect.Method method ) {
+	public static Method getGetterForSetter( Method method ) {
 		return getGetter( method.getDeclaringClass(), getPropertyNameForSetter( method ) );
 	}
 
 	public static Object getPropertyValue( Object o, String propertyName ) {
-		java.lang.reflect.Method getter = getGetter( o.getClass(), propertyName );
+		Method getter = getGetter( o.getClass(), propertyName );
 		Object[] args = {};
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( o, getter, args );
+		return ReflectionUtilities.invoke( o, getter, args );
 	}
 
 	public static void setPropertyValue( Object o, String propertyName, Object value ) {
-		java.lang.reflect.Method setter = getSetter( o.getClass(), propertyName );
+		Method setter = getSetter( o.getClass(), propertyName );
 		Object[] args = { value };
-		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( o, setter, args );
+		ReflectionUtilities.invoke( o, setter, args );
 	}
 }

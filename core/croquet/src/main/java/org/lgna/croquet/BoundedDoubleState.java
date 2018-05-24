@@ -43,6 +43,14 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import javax.swing.BoundedRangeModel;
+import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.SpinnerNumberModel;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,7 +73,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 		private static class DoubleSwingModel implements SwingModel<Double> {
 			private boolean isInTheMidstOfStateChanged = false;
 
-			private class CustomSpinnerNumberModel extends javax.swing.SpinnerNumberModel {
+			private class CustomSpinnerNumberModel extends SpinnerNumberModel {
 				public CustomSpinnerNumberModel( Details details ) {
 					super( details.initialValue, details.minimum, details.maximum, details.stepSize );
 				}
@@ -94,7 +102,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 				}
 			}
 
-			private class CustomBoundedRangeModel extends javax.swing.DefaultBoundedRangeModel {
+			private class CustomBoundedRangeModel extends DefaultBoundedRangeModel {
 				public CustomBoundedRangeModel( Details details ) {
 					super( details.toIntInitialValue(), EXTENT, MINIMUM, details.toIntMaximum() );
 				}
@@ -126,12 +134,12 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 			}
 
 			@Override
-			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+			public BoundedRangeModel getBoundedRangeModel() {
 				return this.boundedRangeModel;
 			}
 
 			@Override
-			public javax.swing.SpinnerNumberModel getSpinnerModel() {
+			public SpinnerNumberModel getSpinnerModel() {
 				return this.spinnerModel;
 			}
 
@@ -178,13 +186,13 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 		}
 
 		private final Group group;
-		private final java.util.UUID id;
+		private final UUID id;
 		private double minimum = 0.0;
 		private double maximum = 1.0;
 		private double stepSize = 0.01;
 		private double initialValue = 0.5;
 
-		public Details( Group group, java.util.UUID id ) {
+		public Details( Group group, UUID id ) {
 			this.group = group;
 			this.id = id;
 		}
@@ -232,12 +240,12 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 	}
 
 	@Override
-	public Double decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Double decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeDouble();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Double value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Double value ) {
 		binaryEncoder.encode( value );
 	}
 

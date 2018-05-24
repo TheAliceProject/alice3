@@ -42,52 +42,69 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
+import org.alice.ide.common.TypeIcon;
+import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
+import org.alice.ide.member.views.UserMethodsSubView;
+import org.lgna.croquet.Operation;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UserMethodsSubComposite extends MethodsSubComposite {
-	private final org.lgna.project.ast.NamedUserType type;
-	private final org.lgna.croquet.Operation addMethodOperation;
+	private final NamedUserType type;
+	private final Operation addMethodOperation;
 
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod> methodPropertyListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserMethod>() {
+	private final ListPropertyListener<UserMethod> methodPropertyListener = new SimplifiedListPropertyAdapter<UserMethod>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
+		protected void changing( ListPropertyEvent<UserMethod> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
+		protected void changed( ListPropertyEvent<UserMethod> e ) {
 			getView().refreshLater();
 		}
 	};
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserField> fieldPropertyListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField>() {
+	private final ListPropertyListener<UserField> fieldPropertyListener = new SimplifiedListPropertyAdapter<UserField>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		protected void changing( ListPropertyEvent<UserField> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
+		protected void changed( ListPropertyEvent<UserField> e ) {
 			getView().refreshLater();
 		}
 	};
 
-	public UserMethodsSubComposite( java.util.UUID migrationId, org.lgna.project.ast.NamedUserType type, org.lgna.croquet.Operation addMethodOperation ) {
+	public UserMethodsSubComposite( UUID migrationId, NamedUserType type, Operation addMethodOperation ) {
 		super( migrationId, true );
 		this.type = type;
 		this.addMethodOperation = addMethodOperation;
-		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.type ) );
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new TypeIcon( this.type ) );
 
 		//todo: move to handlePreActivation/handlePostDeactivation
 		type.methods.addListPropertyListener( this.methodPropertyListener );
 		type.fields.addListPropertyListener( this.fieldPropertyListener );
 	}
 
-	public final org.lgna.croquet.Operation getAddMethodOperation() {
+	public final Operation getAddMethodOperation() {
 		return this.addMethodOperation;
 	}
 
-	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
+	protected abstract boolean isAcceptable( AbstractMethod method );
 
-	protected abstract org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field );
+	protected abstract AbstractMethod getGetterOrSetter( UserField field );
 
 	@Override
 	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
@@ -95,18 +112,18 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	}
 
 	@Override
-	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
-		java.util.List<org.lgna.project.ast.AbstractMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( org.lgna.project.ast.UserMethod method : this.type.getDeclaredMethods() ) {
-			org.lgna.project.ast.ManagementLevel managementLevel = method.managementLevel.getValue();
-			if( ( managementLevel == org.lgna.project.ast.ManagementLevel.NONE ) || ( managementLevel == org.lgna.project.ast.ManagementLevel.GENERATED ) ) {
+	public List<? extends AbstractMethod> getMethods() {
+		List<AbstractMethod> rv = Lists.newLinkedList();
+		for( UserMethod method : this.type.getDeclaredMethods() ) {
+			ManagementLevel managementLevel = method.managementLevel.getValue();
+			if( ( managementLevel == ManagementLevel.NONE ) || ( managementLevel == ManagementLevel.GENERATED ) ) {
 				if( this.isAcceptable( method ) ) {
 					rv.add( method );
 				}
 			}
 		}
-		for( org.lgna.project.ast.UserField field : this.type.getDeclaredFields() ) {
-			org.lgna.project.ast.AbstractMethod method = this.getGetterOrSetter( field );
+		for( UserField field : this.type.getDeclaredFields() ) {
+			AbstractMethod method = this.getGetterOrSetter( field );
 			if( method != null ) {
 				rv.add( method );
 			}
@@ -115,12 +132,12 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	}
 
 	@Override
-	protected org.alice.ide.member.views.UserMethodsSubView createView() {
-		return new org.alice.ide.member.views.UserMethodsSubView( this );
+	protected UserMethodsSubView createView() {
+		return new UserMethodsSubView( this );
 	}
 
 	public boolean isRelevant() {
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+		if( IsEmphasizingClassesState.getInstance().getValue() ) {
 			return true;
 		} else {
 			return this.getMethods().size() > 0;

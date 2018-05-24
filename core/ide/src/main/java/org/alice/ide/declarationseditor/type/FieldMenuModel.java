@@ -42,22 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.rename.RenameFieldComposite;
+import org.alice.ide.croquet.models.ast.DeleteFieldOperation;
+import org.alice.stageide.sceneeditor.side.MarkerColorIdCascade;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SMarker;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldMenuModel extends MemberMenuModel<org.lgna.project.ast.UserField> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, FieldMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class FieldMenuModel extends MemberMenuModel<UserField> {
+	private static InitializingIfAbsentMap<UserField, FieldMenuModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldMenuModel getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, FieldMenuModel>() {
+	public static FieldMenuModel getInstance( UserField field ) {
+		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<UserField, FieldMenuModel>() {
 			@Override
-			public FieldMenuModel initialize( org.lgna.project.ast.UserField key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				prepModels.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( key ).getMenuItemPrepModel() );
+			public FieldMenuModel initialize( UserField key ) {
+				List<StandardMenuItemPrepModel> prepModels = Lists.newLinkedList();
+				prepModels.add( RenameFieldComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
+				prepModels.add( DeleteFieldOperation.getInstance( key ).getMenuItemPrepModel() );
 
-				if( key.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
-					prepModels.add( org.alice.stageide.sceneeditor.side.MarkerColorIdCascade.getInstance( key ).getMenuModel() );
+				if( key.getValueType().isAssignableTo( SMarker.class ) ) {
+					prepModels.add( MarkerColorIdCascade.getInstance( key ).getMenuModel() );
 				}
 
 				return new FieldMenuModel( key, prepModels );
@@ -65,7 +78,7 @@ public final class FieldMenuModel extends MemberMenuModel<org.lgna.project.ast.U
 		} );
 	}
 
-	private FieldMenuModel( org.lgna.project.ast.UserField field, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
-		super( java.util.UUID.fromString( "cb192f6c-0f06-462d-9e4c-baa19ca49ce7" ), field, prepModels );
+	private FieldMenuModel( UserField field, List<StandardMenuItemPrepModel> prepModels ) {
+		super( UUID.fromString( "cb192f6c-0f06-462d-9e4c-baa19ca49ce7" ), field, prepModels );
 	}
 }

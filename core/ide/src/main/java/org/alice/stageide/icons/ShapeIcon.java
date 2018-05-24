@@ -42,38 +42,48 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import org.lgna.croquet.icon.AbstractIcon;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.geom.GeneralPath;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
-	protected static void drawLine( java.awt.Graphics2D g2, float x0, float y0, float x1, float y1 ) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+public abstract class ShapeIcon extends AbstractIcon {
+	protected static void drawLine( Graphics2D g2, float x0, float y0, float x1, float y1 ) {
+		GeneralPath path = new GeneralPath();
 		path.moveTo( x0, y0 );
 		path.lineTo( x1, y1 );
 		g2.draw( path );
 	}
 
 	protected static final int PAD = 2;
-	protected static final java.awt.Color FILL_PAINT = new java.awt.Color( 191, 191, 255 );
+	protected static final Color FILL_PAINT = new Color( 191, 191, 255 );
 
-	public ShapeIcon( java.awt.Dimension size ) {
+	public ShapeIcon( Dimension size ) {
 		super( size );
 	}
 
-	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
+	protected abstract void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint );
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	protected void paintIcon( Component c, Graphics2D g2 ) {
 		int xOffset = PAD;
 		int yOffset = PAD;
 		int width = this.getIconWidth() - PAD - PAD;
 		int height = this.getIconHeight() - PAD - PAD;
 
-		edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g2 );
+		GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
 		gc.pushAndSetAntialiasing( true );
 		try {
 			g2.translate( xOffset, yOffset );
-			this.paintIcon( c, g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
+			this.paintIcon( c, g2, width, height, FILL_PAINT, Color.BLACK );
 			g2.translate( -xOffset, -yOffset );
 		} finally {
 			gc.popAll();

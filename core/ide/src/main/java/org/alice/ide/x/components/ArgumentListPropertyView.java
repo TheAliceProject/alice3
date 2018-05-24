@@ -43,35 +43,44 @@
 
 package org.alice.ide.x.components;
 
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ListPropertyListener;
+import edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LineAxisPanel;
+import org.lgna.project.ast.AbstractArgument;
+import org.lgna.project.ast.ArgumentListProperty;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.views.LineAxisPanel {
+public abstract class ArgumentListPropertyView<N extends AbstractArgument> extends LineAxisPanel {
 	protected final static String SEPARATOR = ",";
-	private final org.alice.ide.x.AstI18nFactory factory;
-	private final org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<N> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<N>() {
+	private final AstI18nFactory factory;
+	private final ArgumentListProperty<N> argumentListProperty;
+	private ListPropertyListener<N> listPropertyAdapter = new SimplifiedListPropertyAdapter<N>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<N> e ) {
+		protected void changing( ListPropertyEvent<N> e ) {
 		}
 
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<N> e ) {
+		protected void changed( ListPropertyEvent<N> e ) {
 			ArgumentListPropertyView.this.refreshLater();
 		}
 	};
 
-	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty ) {
+	public ArgumentListPropertyView( AstI18nFactory factory, ArgumentListProperty<N> argumentListProperty ) {
 		this.factory = factory;
 		this.argumentListProperty = argumentListProperty;
 		this.refreshLater();
 	}
 
-	public org.alice.ide.x.AstI18nFactory getFactory() {
+	public AstI18nFactory getFactory() {
 		return this.factory;
 	}
 
-	public org.lgna.project.ast.ArgumentListProperty<N> getArgumentListProperty() {
+	public ArgumentListProperty<N> getArgumentListProperty() {
 		return this.argumentListProperty;
 	}
 
@@ -95,7 +104,7 @@ public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.Ab
 		String prefix = this.getInitialPrefix();
 		for( N argument : this.argumentListProperty ) {
 			if( prefix != null ) {
-				this.addComponent( new org.lgna.croquet.views.Label( prefix ) );
+				this.addComponent( new Label( prefix ) );
 			}
 			this.addComponent( this.factory.createArgumentPane( argument, null ) );
 			prefix = SEPARATOR;

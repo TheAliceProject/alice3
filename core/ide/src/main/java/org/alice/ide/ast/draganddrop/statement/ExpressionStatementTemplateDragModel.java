@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementTemplateDragModel extends StatementTemplateDragModel {
-	private final Class<? extends org.lgna.project.ast.Expression> expressionCls;
+	private final Class<? extends Expression> expressionCls;
 
-	public ExpressionStatementTemplateDragModel( java.util.UUID migrationId, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement, Class<? extends org.lgna.project.ast.Expression> expressionCls ) {
+	public ExpressionStatementTemplateDragModel( UUID migrationId, Class<? extends Statement> statementCls, Statement possiblyIncompleteStatement, Class<? extends Expression> expressionCls ) {
 		super( migrationId, statementCls, possiblyIncompleteStatement );
 		this.expressionCls = expressionCls;
 	}
 
-	public Class<? extends org.lgna.project.ast.Expression> getExpressionCls() {
+	public Class<? extends Expression> getExpressionCls() {
 		return this.expressionCls;
 	}
 }

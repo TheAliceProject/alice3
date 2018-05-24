@@ -42,41 +42,54 @@
  *******************************************************************************/
 package org.alice.stageide.personresource;
 
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import org.alice.stageide.personresource.views.FaceTabView;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.SimpleTabComposite;
+import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.views.Frame;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.story.resources.sims2.BaseEyeColor;
+import org.lgna.story.resources.sims2.BaseFace;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.FaceTabView> {
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createImmutableListStateForEnum( "baseEyeColorState", org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createImmutableListStateForEnum( "baseFaceState", org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
+public final class FaceTabComposite extends SimpleTabComposite<FaceTabView> {
+	private final ImmutableDataSingleSelectListState<BaseEyeColor> baseEyeColorState = this.createImmutableListStateForEnum( "baseEyeColorState", BaseEyeColor.class, BaseEyeColor.getRandom() );
+	private final ImmutableDataSingleSelectListState<BaseFace> baseFaceState = this.createImmutableListStateForEnum( "baseFaceState", BaseFace.class, BaseFace.getRandom() );
 
 	public FaceTabComposite() {
-		super( java.util.UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );
+		super( UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.FaceTabView createView() {
-		return new org.alice.stageide.personresource.views.FaceTabView( this );
+	protected FaceTabView createView() {
+		return new FaceTabView( this );
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
+	public ImmutableDataSingleSelectListState<BaseEyeColor> getBaseEyeColorState() {
 		return this.baseEyeColorState;
 	}
 
-	public org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
+	public ImmutableDataSingleSelectListState<BaseFace> getBaseFaceState() {
 		return this.baseFaceState;
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
-		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+		SimpleApplication app = new SimpleApplication();
+		DocumentFrame documentFrame = app.getDocumentFrame();
+		Frame frame = documentFrame.getFrame();
 
 		FaceTabComposite faceTabComposite = new FaceTabComposite();
 		frame.getContentPane().addCenterComponent( faceTabComposite.getRootComponent() );

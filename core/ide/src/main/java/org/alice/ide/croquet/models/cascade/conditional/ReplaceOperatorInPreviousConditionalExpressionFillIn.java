@@ -43,13 +43,21 @@
 
 package org.alice.ide.croquet.models.cascade.conditional;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks;
+import org.lgna.project.ast.ConditionalInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.ConditionalInfixExpression> {
-	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends PreviousExpressionBasedFillInWithoutBlanks<ConditionalInfixExpression> {
+	private static Map<ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = Maps.newHashMap();
 
-	public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
+	public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance( ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ReplaceOperatorInPreviousConditionalExpressionFillIn rv = map.get( operator );
 			if( rv != null ) {
@@ -62,10 +70,10 @@ public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.al
 		}
 	}
 
-	private final org.lgna.project.ast.ConditionalInfixExpression.Operator operator;
+	private final ConditionalInfixExpression.Operator operator;
 
-	private ReplaceOperatorInPreviousConditionalExpressionFillIn( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
-		super( java.util.UUID.fromString( "92c952b4-cb89-4cb5-9e6e-ff185c1dda41" ) );
+	private ReplaceOperatorInPreviousConditionalExpressionFillIn( ConditionalInfixExpression.Operator operator ) {
+		super( UUID.fromString( "92c952b4-cb89-4cb5-9e6e-ff185c1dda41" ) );
 		this.operator = operator;
 	}
 
@@ -74,10 +82,10 @@ public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.al
 	//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
 	//	}
 	@Override
-	protected org.lgna.project.ast.ConditionalInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {
-		assert previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
-		org.lgna.project.ast.ConditionalInfixExpression previousConditional = (org.lgna.project.ast.ConditionalInfixExpression)previousExpression;
-		return new org.lgna.project.ast.ConditionalInfixExpression(
+	protected ConditionalInfixExpression createValue( Expression previousExpression ) {
+		assert previousExpression instanceof ConditionalInfixExpression;
+		ConditionalInfixExpression previousConditional = (ConditionalInfixExpression)previousExpression;
+		return new ConditionalInfixExpression(
 				previousConditional.leftOperand.getValue(),
 				this.operator,
 				previousConditional.rightOperand.getValue() );

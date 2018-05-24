@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.models;
 
+import javax.swing.tree.TreePath;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,9 +63,9 @@ public class DefaultTreeModel<E> extends javax.swing.tree.DefaultTreeModel imple
 	}
 
 	@Override
-	public javax.swing.tree.TreePath getTreePath( TreeNode<E> e ) {
+	public TreePath getTreePath( TreeNode<E> e ) {
 		Object[] nodes = this.getPathToRoot( e );
-		javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
+		TreePath path = new TreePath( nodes );
 		return path;
 	}
 }

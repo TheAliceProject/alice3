@@ -43,6 +43,12 @@
 
 package edu.cmu.cs.dennisc.java.lang;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+
+import java.lang.reflect.Field;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +57,7 @@ public class EnumUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.lang.reflect.Field getFld( Enum<?> e ) {
+	public static Field getFld( Enum<?> e ) {
 		if( e != null ) {
 			try {
 				return e.getDeclaringClass().getDeclaredField( e.name() );
@@ -63,8 +69,8 @@ public class EnumUtilities {
 		}
 	}
 
-	public static <E> java.util.List<E> getEnumConstants( Class<? extends E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion ) {
-		java.util.List<E> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public static <E> List<E> getEnumConstants( Class<? extends E>[] clses, Criterion<E> criterion ) {
+		List<E> rv = Lists.newLinkedList();
 		for( Class<?> cls : clses ) {
 			E[] enumConstansts = (E[])cls.getEnumConstants();
 			for( E e : enumConstansts ) {

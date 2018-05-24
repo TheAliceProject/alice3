@@ -43,12 +43,21 @@
 
 package org.alice.ide.project;
 
+import org.alice.ide.ProjectDocument;
+import org.alice.ide.project.codecs.ProjectDocumentCodec;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ItemState;
 import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.edits.Edit;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectDocumentState extends org.lgna.croquet.ItemState<org.alice.ide.ProjectDocument> {
+public class ProjectDocumentState extends ItemState<ProjectDocument> {
 	private static class SingletonHolder {
 		private static ProjectDocumentState instance = new ProjectDocumentState();
 	}
@@ -57,15 +66,15 @@ public class ProjectDocumentState extends org.lgna.croquet.ItemState<org.alice.i
 		return SingletonHolder.instance;
 	}
 
-	private org.alice.ide.ProjectDocument value;
+	private ProjectDocument value;
 
 	private ProjectDocumentState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), null, org.alice.ide.project.codecs.ProjectDocumentCodec.SINGLETON );
+		super( Application.APPLICATION_UI_GROUP, UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), null, ProjectDocumentCodec.SINGLETON );
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -73,12 +82,12 @@ public class ProjectDocumentState extends org.lgna.croquet.ItemState<org.alice.i
 	}
 
 	@Override
-	protected void setSwingValue( org.alice.ide.ProjectDocument nextValue ) {
+	protected void setSwingValue( ProjectDocument nextValue ) {
 		this.value = nextValue;
 	}
 
 	@Override
-	protected org.alice.ide.ProjectDocument getSwingValue() {
+	protected ProjectDocument getSwingValue() {
 		return this.value;
 	}
 }

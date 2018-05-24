@@ -43,6 +43,8 @@
 
 package test.ik.croquet;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +58,6 @@ public class EndJointIdState extends JointIdState {
 	}
 
 	private EndJointIdState() {
-		super( java.util.UUID.fromString( "84b41b87-d780-4366-8d59-74ba93d8b3f6" ) );
+		super( UUID.fromString( "84b41b87-d780-4366-8d59-74ba93d8b3f6" ) );
 	}
 }

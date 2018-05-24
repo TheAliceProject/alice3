@@ -42,6 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.meta;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.perspectives.ProjectPerspective;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Code;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,85 +63,85 @@ public class DeclarationMeta {
 		throw new AssertionError();
 	}
 
-	private static final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+	private static final ValueListener<ProjectPerspective> perspectiveListener = new ValueListener<ProjectPerspective>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+		public void valueChanged( ValueEvent<ProjectPerspective> e ) {
 			handlePrespectiveChanged();
 		}
 	};
-	private static final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+	private static final ValueListener<DeclarationComposite<?, ?>> declarationTabListener = new ValueListener<DeclarationComposite<?, ?>>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
+		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
 			handleDeclarationTabChanged();
 		}
 	};
 
-	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration>> declarationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>>> typeListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private static final List<ValueListener<AbstractDeclaration>> declarationListeners = Lists.newCopyOnWriteArrayList();
+	private static final List<ValueListener<AbstractType<?, ?, ?>>> typeListeners = Lists.newCopyOnWriteArrayList();
 
-	private static org.lgna.project.ast.AbstractDeclaration prevDeclaration;
+	private static AbstractDeclaration prevDeclaration;
 	static {
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 		projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener( perspectiveListener );
 		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( declarationTabListener );
 		prevDeclaration = getDeclaration();
 	}
 
-	public static void addTypeMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener ) {
+	public static void addTypeMetaStateValueListener( ValueListener<AbstractType<?, ?, ?>> typeListener ) {
 		typeListeners.add( typeListener );
 	}
 
-	public static void removeTypeMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener ) {
+	public static void removeTypeMetaStateValueListener( ValueListener<AbstractType<?, ?, ?>> typeListener ) {
 		typeListeners.remove( typeListener );
 	}
 
-	public static void addDeclarationMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener ) {
+	public static void addDeclarationMetaStateValueListener( ValueListener<AbstractDeclaration> declarationListener ) {
 		declarationListeners.add( declarationListener );
 	}
 
-	public static void removeDeclarationMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener ) {
+	public static void removeDeclarationMetaStateValueListener( ValueListener<AbstractDeclaration> declarationListener ) {
 		declarationListeners.remove( declarationListener );
 	}
 
-	public static org.lgna.project.ast.AbstractDeclaration getDeclaration() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+	public static AbstractDeclaration getDeclaration() {
+		IDE ide = IDE.getActiveInstance();
 		if( ide.getDocumentFrame().isInSetupScenePerspective() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
-			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+			DeclarationComposite declarationComposite = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}
 
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getType( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.Code ) {
-			org.lgna.project.ast.Code code = (org.lgna.project.ast.Code)declaration;
+	private static AbstractType<?, ?, ?> getType( AbstractDeclaration declaration ) {
+		if( declaration instanceof Code ) {
+			Code code = (Code)declaration;
 			return code.getDeclaringType();
-		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+		} else if( declaration instanceof AbstractType<?, ?, ?> ) {
+			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
 			return type;
 		} else {
 			return null;
 		}
 	}
 
-	public static org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public static AbstractType<?, ?, ?> getType() {
 		return getType( getDeclaration() );
 	}
 
 	private static void fireChanged() {
-		org.lgna.project.ast.AbstractDeclaration nextDeclaration = getDeclaration();
+		AbstractDeclaration nextDeclaration = getDeclaration();
 		if( prevDeclaration != nextDeclaration ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> prevType = getType( prevDeclaration );
-			org.lgna.project.ast.AbstractType<?, ?, ?> nextType = getType( nextDeclaration );
+			AbstractType<?, ?, ?> prevType = getType( prevDeclaration );
+			AbstractType<?, ?, ?> nextType = getType( nextDeclaration );
 			if( prevType != nextType ) {
-				org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.AbstractType<?, ?, ?>> e = org.lgna.croquet.event.ValueEvent.createInstance( prevType, nextType );
-				for( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener : typeListeners ) {
+				ValueEvent<AbstractType<?, ?, ?>> e = ValueEvent.createInstance( prevType, nextType );
+				for( ValueListener<AbstractType<?, ?, ?>> typeListener : typeListeners ) {
 					typeListener.valueChanged( e );
 				}
 			}
-			org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.AbstractDeclaration> e = org.lgna.croquet.event.ValueEvent.createInstance( prevDeclaration, nextDeclaration );
-			for( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener : declarationListeners ) {
+			ValueEvent<AbstractDeclaration> e = ValueEvent.createInstance( prevDeclaration, nextDeclaration );
+			for( ValueListener<AbstractDeclaration> declarationListener : declarationListeners ) {
 				declarationListener.valueChanged( e );
 			}
 			prevDeclaration = nextDeclaration;

@@ -42,22 +42,30 @@
  *******************************************************************************/
 package org.alice.stageide.properties;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LinkScaleIcon implements javax.swing.Icon {
-	private static javax.swing.Icon createImageIcon( String path ) {
-		return new javax.swing.ImageIcon( LinkScaleButton.class.getResource( path ) );
+public class LinkScaleIcon implements Icon {
+	private static Icon createImageIcon( String path ) {
+		return new ImageIcon( LinkScaleButton.class.getResource( path ) );
 	}
 
-	/*package-private*/static final javax.swing.Icon SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/scaleLinked.png" ), createImageIcon( "images/scaleUnlinked.png" ) );
-	/*package-private*/static final javax.swing.Icon SUB_SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked.png" ), createImageIcon( "images/subScaleUnlinked.png" ) );
-	/*package-private*/static final javax.swing.Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked_long.png" ), createImageIcon( "images/subScaleUnlinked_long.png" ) );
+	/*package-private*/static final Icon SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/scaleLinked.png" ), createImageIcon( "images/scaleUnlinked.png" ) );
+	/*package-private*/static final Icon SUB_SCALE_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked.png" ), createImageIcon( "images/subScaleUnlinked.png" ) );
+	/*package-private*/static final Icon SUB_SCALE_LONG_ICON = new LinkScaleIcon( createImageIcon( "images/subScaleLinked_long.png" ), createImageIcon( "images/subScaleUnlinked_long.png" ) );
 
-	private final javax.swing.Icon selectedIcon;
-	private final javax.swing.Icon unselectedIcon;
+	private final Icon selectedIcon;
+	private final Icon unselectedIcon;
 
-	public LinkScaleIcon( javax.swing.Icon selectedIcon, javax.swing.Icon unselectedIcon ) {
+	public LinkScaleIcon( Icon selectedIcon, Icon unselectedIcon ) {
 		this.selectedIcon = selectedIcon;
 		this.unselectedIcon = unselectedIcon;
 	}
@@ -73,14 +81,14 @@ public class LinkScaleIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		if( c instanceof javax.swing.AbstractButton ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-			javax.swing.ButtonModel buttonModel = button.getModel();
-			javax.swing.Icon icon = buttonModel.isSelected() ? this.selectedIcon : this.unselectedIcon;
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		if( c instanceof AbstractButton ) {
+			AbstractButton button = (AbstractButton)c;
+			ButtonModel buttonModel = button.getModel();
+			Icon icon = buttonModel.isSelected() ? this.selectedIcon : this.unselectedIcon;
 			icon.paintIcon( c, g, x, y );
 		} else {
-			g.setColor( java.awt.Color.RED );
+			g.setColor( Color.RED );
 			g.fillRect( x, y, c.getWidth(), c.getHeight() );
 		}
 	}

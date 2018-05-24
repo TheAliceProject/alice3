@@ -42,13 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.video.nil;
 
+import edu.cmu.cs.dennisc.java.awt.Painter;
+import edu.cmu.cs.dennisc.video.VideoPlayer;
+import edu.cmu.cs.dennisc.video.event.MediaListener;
+
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
-public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
+public class NilVideoPlayer implements VideoPlayer {
 	private final NilVideoCanvas nilVideoCanvas = new NilVideoCanvas();
-	private java.net.URI uri;
-	private edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter;
+	private URI uri;
+	private Painter<VideoPlayer> painter;
 	private long timeInMilliseconds;
 	private float position;
 	private boolean isMuted;
@@ -56,27 +66,27 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private boolean isPrepared;
 
 	@Override
-	public java.awt.Canvas getVideoSurface() {
+	public Canvas getVideoSurface() {
 		return this.nilVideoCanvas;
 	}
 
 	@Override
-	public java.awt.Dimension getVideoSize() {
-		return new java.awt.Dimension( 0, 0 );
+	public Dimension getVideoSize() {
+		return new Dimension( 0, 0 );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
+	public Painter<VideoPlayer> getPainter() {
 		return this.painter;
 	}
 
 	@Override
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
+	public void setPainter( Painter<VideoPlayer> painter ) {
 		this.painter = painter;
 	}
 
 	@Override
-	public boolean prepareMedia( java.net.URI uri ) {
+	public boolean prepareMedia( URI uri ) {
 		this.uri = uri;
 		this.isPrepared = true; //?
 		return this.isPrepared;
@@ -162,16 +172,16 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	@Override
-	public boolean writeSnapshot( java.io.File file ) {
+	public boolean writeSnapshot( File file ) {
 		return false;
 	}
 
 	@Override
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
+	public void addMediaListener( MediaListener listener ) {
 	}
 
 	@Override
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
+	public void removeMediaListener( MediaListener listener ) {
 	}
 
 	@Override
@@ -179,7 +189,7 @@ public class NilVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	@Override
-	public java.awt.Image getSnapshot() {
+	public Image getSnapshot() {
 		return null;
 	}
 }

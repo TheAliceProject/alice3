@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
+import org.alice.stageide.personresource.IngredientsComposite;
+import org.alice.stageide.personresource.OutfitTabComposite;
+import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Slider;
+
+import javax.swing.BorderFactory;
+import java.awt.Color;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OutfitTabView extends org.lgna.croquet.views.BorderPanel {
-	public OutfitTabView( org.alice.stageide.personresource.OutfitTabComposite<?> composite ) {
+public abstract class OutfitTabView extends BorderPanel {
+	public OutfitTabView( OutfitTabComposite<?> composite ) {
 		super( composite );
-		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
-		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
-		org.lgna.croquet.views.Slider slider = ingredientsComposite.getObesityLevelState().createSlider();
+		Color backgroundColor = IngredientsView.BACKGROUND_COLOR;
+		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
+		Slider slider = ingredientsComposite.getObesityLevelState().createSlider();
 		slider.setBackgroundColor( backgroundColor );
 
-		org.lgna.croquet.views.BorderPanel obesityLevelPane = new org.lgna.croquet.views.BorderPanel.Builder()
+		BorderPanel obesityLevelPane = new BorderPanel.Builder()
 				.hgap( 4 )
 				.lineStart( ingredientsComposite.getObesityLevelState().getSidekickLabel().createLabel() )
 				.center( slider )
 				.build();
-		obesityLevelPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
+		obesityLevelPane.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
 		this.addPageEndComponent( obesityLevelPane );
 		this.setBackgroundColor( backgroundColor );
 	}

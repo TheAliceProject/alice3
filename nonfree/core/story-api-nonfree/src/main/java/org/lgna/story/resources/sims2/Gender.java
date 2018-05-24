@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.story.resources.sims2;
 
+import edu.cmu.cs.dennisc.random.RandomUtilities;
+
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,11 +53,11 @@ public enum Gender implements LocalizedResource {
 	FEMALE,
 	MALE;
 	public static Gender getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( Gender.class );
+		return RandomUtilities.getRandomEnumConstant( Gender.class );
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
-		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( java.util.Locale.ENGLISH ) );
+		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( Locale.ENGLISH ) );
 	}
 }

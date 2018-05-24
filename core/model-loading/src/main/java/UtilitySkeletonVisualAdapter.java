@@ -66,12 +66,12 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 			appearanceIdToMeshControllersMap.clear();
 			for( TexturedAppearance ta : this.owner.textures.getValue() )
 			{
-				List<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual.WeightedMeshControl> controls = new LinkedList<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual.WeightedMeshControl>();
+				List<GlrSkeletonVisual.WeightedMeshControl> controls = new LinkedList<GlrSkeletonVisual.WeightedMeshControl>();
 				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() )
 				{
 					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() )
 					{
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual.WeightedMeshControl control = new UtilityWeightedMeshControl();
+						GlrSkeletonVisual.WeightedMeshControl control = new UtilityWeightedMeshControl();
 						control.initialize( weightedMesh );
 						controls.add( control );
 					}
@@ -84,9 +84,9 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 		protected List<UtilityWeightedMeshControl> getUtilityWeightedMeshControls()
 		{
 			List<UtilityWeightedMeshControl> controlList = new LinkedList<UtilityWeightedMeshControl>();
-			for (Entry<Integer, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual.WeightedMeshControl[]> entry : this.appearanceIdToMeshControllersMap.entrySet())
+			for (Entry<Integer, GlrSkeletonVisual.WeightedMeshControl[]> entry : this.appearanceIdToMeshControllersMap.entrySet())
 			{
-				for (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual.WeightedMeshControl w : entry.getValue()) {
+				for (GlrSkeletonVisual.WeightedMeshControl w : entry.getValue()) {
 					if (!controlList.contains(w)) {
 						assert w instanceof UtilityWeightedMeshControl;
 						controlList.add((UtilityWeightedMeshControl)w);

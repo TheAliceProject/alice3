@@ -43,29 +43,31 @@
 
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class Size {
-	private final edu.cmu.cs.dennisc.math.Dimension3 internal;
+	private final Dimension3 internal;
 
-	private Size( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+	private Size( Dimension3 internal ) {
 		this.internal = internal;
 	}
 
 	public Size( Number leftToRight, Number bottomToTop, Number frontToBack ) {
-		this( new edu.cmu.cs.dennisc.math.Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
+		this( new Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
 	}
 
-	/* package-private */static Size createInstance( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+	/* package-private */static Size createInstance( Dimension3 internal ) {
 		return internal != null ? new Size( internal ) : null;
 	}
 
-	/* package-private */edu.cmu.cs.dennisc.math.Dimension3 getInternal() {
+	/* package-private */Dimension3 getInternal() {
 		return this.internal;
 	}
 
-	/* package-private */static edu.cmu.cs.dennisc.math.Dimension3 getInternal( Size size ) {
+	/* package-private */static Dimension3 getInternal( Size size ) {
 		return size != null ? size.internal : null;
 	}
 

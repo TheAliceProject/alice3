@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.perspectives.scenesetup.views;
 
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
+import org.lgna.croquet.views.BorderPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspectiveView extends org.lgna.croquet.views.BorderPanel {
-	public SetupScenePerspectiveView( org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite composite ) {
+public class SetupScenePerspectiveView extends BorderPanel {
+	public SetupScenePerspectiveView( SetupScenePerspectiveComposite composite ) {
 		super( composite );
 		this.addCenterComponent( composite.getSceneLayoutComposite().getView() );
 		this.addPageEndComponent( composite.getGalleryComposite().getView() );

@@ -42,13 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.rename.RenameMethodComposite;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.PredeterminedMenuModel;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodTemplateMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class MethodTemplateMenuModel extends PredeterminedMenuModel {
+	private static Map<UserMethod, MethodTemplateMenuModel> map = Maps.newHashMap();
 
-	public static synchronized MethodTemplateMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
+	public static synchronized MethodTemplateMenuModel getInstance( UserMethod method ) {
 		MethodTemplateMenuModel rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -59,14 +69,14 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 		return rv;
 	}
 
-	private org.lgna.project.ast.UserMethod method;
+	private UserMethod method;
 
-	private MethodTemplateMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
+	private MethodTemplateMenuModel( UserMethod method ) {
+		super( UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
+				RenameMethodComposite.getInstance( method ).getLaunchOperation().getMenuItemPrepModel(),
+				IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
+				DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 		this.method = method;
 	}
 }

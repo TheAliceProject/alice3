@@ -43,6 +43,16 @@
 
 package org.alice.stageide;
 
+import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.stageide.icons.RoomIconFactory;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.SRoom;
+import org.lgna.story.resources.sims2.PersonResource;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,13 +60,13 @@ public class SimsStoryApiConfigurationManager extends StoryApiConfigurationManag
 
 	public SimsStoryApiConfigurationManager() {
 		super();
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SRoom.class, org.alice.stageide.icons.RoomIconFactory.getInstance() );
+		IconFactoryManager.registerIconFactory( SRoom.class, RoomIconFactory.getInstance() );
 	}
 
-	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
+	private static final JavaType PERSON_RESOURCE_TYPE = JavaType.getInstance( PersonResource.class );
 
 	@Override
-	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.JavaType type ) {
+	public JavaType getGalleryResourceParentFor( JavaType type ) {
 		if( type == PERSON_RESOURCE_TYPE ) {
 			return BIPED_RESOURCE_TYPE;
 		} else {
@@ -65,8 +75,8 @@ public class SimsStoryApiConfigurationManager extends StoryApiConfigurationManag
 	}
 
 	@Override
-	public java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		java.util.List<org.lgna.project.ast.AbstractDeclaration> rv = super.getGalleryResourceChildrenFor( type );
+	public List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type ) {
+		List<AbstractDeclaration> rv = super.getGalleryResourceChildrenFor( type );
 		if( type == BIPED_RESOURCE_TYPE ) {
 			rv.add( 0, PERSON_RESOURCE_TYPE );
 		}

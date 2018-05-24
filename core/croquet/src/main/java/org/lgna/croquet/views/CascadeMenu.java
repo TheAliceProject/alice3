@@ -43,11 +43,13 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.CascadeItem;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeMenu extends AbstractMenu<org.lgna.croquet.CascadeItem<?, ?>> {
-	public CascadeMenu( org.lgna.croquet.CascadeItem<?, ?> model ) {
+public class CascadeMenu extends AbstractMenu<CascadeItem<?, ?>> {
+	public CascadeMenu( CascadeItem<?, ?> model ) {
 		super( model );
 	}
 

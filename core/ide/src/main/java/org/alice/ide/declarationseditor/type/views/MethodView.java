@@ -42,19 +42,28 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type.views;
 
+import org.alice.ide.IDE;
+import org.alice.ide.common.TypeComponent;
+import org.alice.ide.declarationseditor.DeclarationTabState;
+import org.alice.ide.declarationseditor.type.MethodMenuModel;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.Hyperlink;
+import org.lgna.project.ast.UserMethod;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MethodView extends MemberView {
-	public MethodView( org.lgna.project.ast.UserMethod method ) {
-		super( org.alice.ide.declarationseditor.type.MethodMenuModel.getInstance( method ) );
+	public MethodView( UserMethod method ) {
+		super( MethodMenuModel.getInstance( method ) );
 		if( method.isFunction() ) {
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ) );
-			this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+			this.addComponent( TypeComponent.createInstance( method.getReturnType() ) );
+			this.addComponent( BoxUtilities.createHorizontalSliver( 8 ) );
 		}
-		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForMethod( method );
-		org.lgna.croquet.views.Hyperlink hyperlink = operation.createHyperlink();
+		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
+		Operation operation = tabState.getItemSelectionOperationForMethod( method );
+		Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
 		//hyperlink.setClobberText( method.getName() );
 		this.addComponent( hyperlink );

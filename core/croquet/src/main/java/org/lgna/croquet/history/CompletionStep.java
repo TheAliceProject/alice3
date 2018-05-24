@@ -42,21 +42,30 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.event.CancelEvent;
+import org.lgna.croquet.history.event.EditCommittedEvent;
+import org.lgna.croquet.history.event.FinishedEvent;
+import org.lgna.croquet.history.event.TutorialCompletionEvent;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> extends Step<M> {
+public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 
 	private final TransactionHistory transactionHistory;
-	private org.lgna.croquet.edits.AbstractEdit<M> edit;
+	private AbstractEdit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
 
-	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
+	public static <M extends CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, Trigger trigger, TransactionHistory transactionHistory ) {
 		return new CompletionStep<M>( parent, model, trigger, transactionHistory );
 	}
 
-	public CompletionStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
+	public CompletionStep( Transaction parent, M model, Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger );
 		parent.setCompletionStep( this );
 		this.transactionHistory = transactionHistory;
@@ -96,25 +105,25 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		this.isSuccessfullyCompleted = isSuccessfullyCompleted;
 	}
 
-	public org.lgna.croquet.edits.AbstractEdit<?> getEdit() {
+	public AbstractEdit<?> getEdit() {
 		return this.edit;
 	}
 
-	private void setEdit( org.lgna.croquet.edits.Edit edit ) {
+	private void setEdit( Edit edit ) {
 		this.isSuccessfullyCompleted = true;
-		this.edit = (org.lgna.croquet.edits.AbstractEdit<M>)edit;
+		this.edit = (AbstractEdit<M>)edit;
 		this.isPending = false;
 	}
 
-	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.Edit edit ) {
-		org.lgna.croquet.history.event.TutorialCompletionEvent e = new org.lgna.croquet.history.event.TutorialCompletionEvent( this, edit );
+	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( Edit edit ) {
+		TutorialCompletionEvent e = new TutorialCompletionEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );
 		this.fireChanged( e );
 	}
 
-	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
-		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
+	public void commitAndInvokeDo( Edit edit ) {
+		EditCommittedEvent e = new EditCommittedEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );
 		edit.doOrRedo( true );
@@ -123,7 +132,7 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 
 	public void finish() {
 		this.isSuccessfullyCompleted = true;
-		org.lgna.croquet.history.event.FinishedEvent e = new org.lgna.croquet.history.event.FinishedEvent( this );
+		FinishedEvent e = new FinishedEvent( this );
 		this.fireChanging( e );
 		this.edit = null;
 		this.isPending = false;
@@ -132,7 +141,7 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 
 	public void cancel() {
 		this.isSuccessfullyCompleted = false;
-		org.lgna.croquet.history.event.CancelEvent e = new org.lgna.croquet.history.event.CancelEvent( this );
+		CancelEvent e = new CancelEvent( this );
 		this.fireChanging( e );
 		this.edit = null;
 		this.isPending = false;

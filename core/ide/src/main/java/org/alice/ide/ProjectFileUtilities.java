@@ -120,7 +120,7 @@ class ProjectFileUtilities {
 		};
 	}
 
-	private  void backupActiveProject() throws java.io.IOException {
+	private  void backupActiveProject() throws IOException {
 		File saved = UriUtilities.getFile(projectApp.getUri());
 		if (saved == null) {
 			return;

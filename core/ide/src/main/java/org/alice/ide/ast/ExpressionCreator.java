@@ -43,6 +43,20 @@
 
 package org.alice.ide.ast;
 
+import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
+import edu.cmu.cs.dennisc.java.lang.EnumUtilities;
+import org.lgna.project.ast.DoubleLiteral;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.IntegerLiteral;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.StringLiteral;
+import org.lgna.project.ast.TypeExpression;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -63,54 +77,54 @@ public abstract class ExpressionCreator {
 		}
 	}
 
-	protected org.lgna.project.ast.FieldAccess createPublicStaticFieldAccess( java.lang.reflect.Field fld ) {
+	protected FieldAccess createPublicStaticFieldAccess( Field fld ) {
 		int modifiers = fld.getModifiers();
-		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-			org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( fld.getDeclaringClass() );
-			org.lgna.project.ast.JavaField field = org.lgna.project.ast.JavaField.getInstance( fld );
-			return new org.lgna.project.ast.FieldAccess( typeExpression, field );
+		if( Modifier.isPublic( modifiers ) && Modifier.isStatic( modifiers ) ) {
+			TypeExpression typeExpression = new TypeExpression( fld.getDeclaringClass() );
+			JavaField field = JavaField.getInstance( fld );
+			return new FieldAccess( typeExpression, field );
 		} else {
 			throw new RuntimeException( fld.toGenericString() );
 		}
 	}
 
-	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value, int decimalPlaces ) {
-		value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.round( value, decimalPlaces );
-		return new org.lgna.project.ast.DoubleLiteral( value );
+	protected final Expression createDoubleExpression( Double value, int decimalPlaces ) {
+		value = DoubleUtilities.round( value, decimalPlaces );
+		return new DoubleLiteral( value );
 	}
 
-	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value ) {
+	protected final Expression createDoubleExpression( Double value ) {
 		return this.createDoubleExpression( value, DEFAULT_DECIMAL_PLACES );
 	}
 
-	protected final org.lgna.project.ast.Expression createIntegerExpression( Integer value ) {
-		return new org.lgna.project.ast.IntegerLiteral( value );
+	protected final Expression createIntegerExpression( Integer value ) {
+		return new IntegerLiteral( value );
 	}
 
 	//todo:
-	public final org.lgna.project.ast.Expression createStringExpression( String value ) {
+	public final Expression createStringExpression( String value ) {
 		if( value != null ) {
-			return new org.lgna.project.ast.StringLiteral( value );
+			return new StringLiteral( value );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
 	//todo:
-	public final org.lgna.project.ast.Expression createEnumExpression( Enum<?> value ) {
+	public final Expression createEnumExpression( Enum<?> value ) {
 		if( value != null ) {
-			return this.createPublicStaticFieldAccess( edu.cmu.cs.dennisc.java.lang.EnumUtilities.getFld( value ) );
+			return this.createPublicStaticFieldAccess( EnumUtilities.getFld( value ) );
 			//			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( value.getClass() );
 			//			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, value.name() );
 			//			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 
-	protected abstract org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException;
+	protected abstract Expression createCustomExpression( Object value ) throws CannotCreateExpressionException;
 
-	public org.lgna.project.ast.Expression createExpression( Object value ) throws CannotCreateExpressionException {
+	public Expression createExpression( Object value ) throws CannotCreateExpressionException {
 		if( value != null ) {
 			if( value instanceof Double ) {
 				return this.createDoubleExpression( (Double)value );
@@ -124,7 +138,7 @@ public abstract class ExpressionCreator {
 				return this.createCustomExpression( value );
 			}
 		} else {
-			return new org.lgna.project.ast.NullLiteral();
+			return new NullLiteral();
 		}
 	}
 }

@@ -42,19 +42,25 @@
  *******************************************************************************/
 package org.lgna.story.annotation;
 
+import org.lgna.project.annotations.PublicStaticFieldValueDetails;
+import org.lgna.story.ImagePaint;
+import org.lgna.story.SRoom;
+
+import java.lang.reflect.Field;
+
 /**
  * @author alice
  * 
  */
-public enum RoomWallAppearanceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.ImagePaint> {
+public enum RoomWallAppearanceDetails implements PublicStaticFieldValueDetails<ImagePaint> {
 	SINGLETON;
 	@Override
-	public Class<org.lgna.story.ImagePaint> getSupportedCls() {
-		return org.lgna.story.ImagePaint.class;
+	public Class<ImagePaint> getSupportedCls() {
+		return ImagePaint.class;
 	}
 
 	@Override
-	public java.lang.reflect.Field[] getFlds() {
-		return org.lgna.story.SRoom.WallAppearance.class.getFields();
+	public Field[] getFlds() {
+		return SRoom.WallAppearance.class.getFields();
 	}
 }

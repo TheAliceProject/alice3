@@ -42,38 +42,56 @@
  *******************************************************************************/
 package org.alice.ide.ast.declaration;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ast.declaration.views.AddParameterView;
+import org.alice.ide.croquet.edits.ast.AddParameterEdit;
+import org.alice.ide.name.validators.ParameterNameValidator;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.SimpleArgumentListProperty;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserParameter;
+import org.lgna.project.ast.UserType;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class AddParameterComposite extends DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserParameter> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+public final class AddParameterComposite extends DeclarationLikeSubstanceComposite<UserParameter> {
+	private static InitializingIfAbsentMap<UserCode, AddParameterComposite> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
-		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserCode, AddParameterComposite>() {
+	public static AddParameterComposite getInstance( UserCode code ) {
+		return map.getInitializingIfAbsent( code, new InitializingIfAbsentMap.Initializer<UserCode, AddParameterComposite>() {
 			@Override
-			public org.alice.ide.ast.declaration.AddParameterComposite initialize( org.lgna.project.ast.UserCode key ) {
+			public AddParameterComposite initialize( UserCode key ) {
 				return new AddParameterComposite( key );
 			}
 		} );
 	}
 
-	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( "isRequirementToUpdateInvocationsUnderstoodState", false );
+	private final BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( "isRequirementToUpdateInvocationsUnderstoodState", false );
 	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( "hasNotAgreedToUpdateInvocationsStatus" );
-	private final org.lgna.project.ast.UserCode code;
+	private final UserCode code;
 	//todo: remove
-	private final org.alice.ide.name.validators.ParameterNameValidator parameterNameValidator;
+	private final ParameterNameValidator parameterNameValidator;
 
-	private AddParameterComposite( org.lgna.project.ast.UserCode code ) {
-		super( java.util.UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
+	private AddParameterComposite( UserCode code ) {
+		super( UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
 				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
 				.name( ApplicabilityStatus.EDITABLE ) );
 		this.code = code;
-		this.parameterNameValidator = new org.alice.ide.name.validators.ParameterNameValidator( code );
+		this.parameterNameValidator = new ParameterNameValidator( code );
 	}
 
 	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+	public UserType<?> getDeclaringType() {
 		return null;
 	}
 
@@ -82,8 +100,8 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 		super.localize();
 		//todo
 		String codeText;
-		if( code instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)code;
+		if( code instanceof AbstractMethod ) {
+			AbstractMethod method = (AbstractMethod)code;
 			if( method.isProcedure() ) {
 				codeText = "procedure";
 			} else {
@@ -98,25 +116,25 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 		this.hasNotAgreedToUpdateInvocationsStatus.setText( "You must agree to update the invocations." );
 	}
 
-	public org.lgna.croquet.BooleanState getIsRequirementToUpdateInvocationsUnderstoodState() {
+	public BooleanState getIsRequirementToUpdateInvocationsUnderstoodState() {
 		return this.isRequirementToUpdateInvocationsUnderstoodState;
 	}
 
-	public org.lgna.project.ast.UserCode getCode() {
+	public UserCode getCode() {
 		return this.code;
 	}
 
 	@Override
-	protected org.alice.ide.ast.declaration.views.AddParameterView createView() {
-		return new org.alice.ide.ast.declaration.views.AddParameterView( this );
+	protected AddParameterView createView() {
+		return new AddParameterView( this );
 	}
 
-	private org.lgna.project.ast.UserParameter createParameter() {
-		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
+	private UserParameter createParameter() {
+		return new UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		Status rv = super.getStatusPreRejectorCheck( step );
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
 			if( this.isRequirementToUpdateInvocationsUnderstoodState.getValue() ) {
@@ -129,18 +147,18 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	public org.lgna.project.ast.UserParameter getPreviewValue() {
+	public UserParameter getPreviewValue() {
 		return this.createParameter();
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( completionStep, this.code, this.createParameter() );
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		return new AddParameterEdit( completionStep, this.code, this.createParameter() );
 	}
 
 	@Override
 	public void handlePreActivation() {
-		java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		List<SimpleArgumentListProperty> argumentLists = IDE.getActiveInstance().getArgumentLists( code );
 		this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly( argumentLists.size() == 0 );
 		super.handlePreActivation();
 	}

@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.property.DoubleProperty;
+
 /**
  * a point light emits rays in all directions.<br>
  * the position is inherent from absolute transformation of its composite.<br>
@@ -71,9 +73,9 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public class PointLight extends Light {
 	//todo Double -> Float?
-	public final edu.cmu.cs.dennisc.property.DoubleProperty constantAttenuation = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 1.0 );
+	public final DoubleProperty constantAttenuation = new DoubleProperty( this, 1.0 );
 	//todo Double -> Float?
-	public final edu.cmu.cs.dennisc.property.DoubleProperty linearAttenuation = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
+	public final DoubleProperty linearAttenuation = new DoubleProperty( this, 0.0 );
 	//todo Double -> Float?
-	public final edu.cmu.cs.dennisc.property.DoubleProperty quadraticAttenuation = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
+	public final DoubleProperty quadraticAttenuation = new DoubleProperty( this, 0.0 );
 }

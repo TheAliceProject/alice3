@@ -42,16 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class ThemeBasedResourceNode extends TagBasedResourceNode {
-	public ThemeBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
-		super( java.util.UUID.fromString( "ae62639f-2bf2-4eb4-b6aa-ebaf2aff976d" ), resourceKey, children );
+	public ThemeBasedResourceNode( ResourceKey resourceKey, List<ResourceNode> children ) {
+		super( UUID.fromString( "ae62639f-2bf2-4eb4-b6aa-ebaf2aff976d" ), resourceKey, children );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeState getState() {
+	protected ResourceNodeTreeState getState() {
 		return ThemeBasedResourceNodeTreeState.getInstance();
 	}
 }

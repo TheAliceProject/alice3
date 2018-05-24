@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.project.stats.croquet.views;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -59,12 +60,14 @@ import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposi
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.GridPanel;
 import org.lgna.croquet.views.HorizontalAlignment;
 import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.List;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.*;
 
@@ -86,7 +89,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 		userMethodList.addNewSchoolValueListener( statsDisplay );
 		statsDisplay.update( StatisticsFlowControlFrequencyComposite.root );
 		gridPanel.addComponent( statsDisplay.getLayout() );
-		org.lgna.croquet.views.List<UserMethod> list = new org.lgna.croquet.views.List<UserMethod>( userMethodList );
+		List<UserMethod> list = new List<UserMethod>( userMethodList );
 		list.setCellRenderer( new ListCellRenderer() );
 
 		ScrollPane scrollPane = new ScrollPane( list );
@@ -214,19 +217,19 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 			return componentMap.get( row ).get( col );
 		}
 
-		public int getCount( UserMethod method, Class<? extends org.lgna.project.ast.Statement> cls ) {
+		public int getCount( UserMethod method, Class<? extends Statement> cls ) {
 			return ( (StatisticsFlowControlFrequencyComposite)getComposite() ).getCount( method, cls );
 		}
 
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserMethod> e ) {
+		public void valueChanged( ValueEvent<UserMethod> e ) {
 			update( e.getNextValue() );
 		}
 	}
 
 	private class ListCellRenderer extends DefaultListCellRenderer {
 		@Override
-		public java.awt.Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 			Label rv = new Label();
 			if( isSelected ) {
 				rv.setBackgroundColor( Color.BLUE );

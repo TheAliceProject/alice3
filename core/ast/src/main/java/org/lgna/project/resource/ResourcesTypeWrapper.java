@@ -42,6 +42,23 @@
  *******************************************************************************/
 package org.lgna.project.resource;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.common.Resource;
+import org.lgna.project.Project;
+import org.lgna.project.ast.AccessLevel;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.StringLiteral;
+import org.lgna.project.ast.TypeLiteral;
+import org.lgna.project.ast.UserField;
+
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,27 +95,27 @@ public class ResourcesTypeWrapper {
 		return "Resources";
 	}
 
-	public static final String getFixedName( org.lgna.common.Resource resource ) {
+	public static final String getFixedName( Resource resource ) {
 		return fixNameIfNecessary( resource.getName() );
 	}
 
-	public ResourcesTypeWrapper( org.lgna.project.Project project ) {
-		java.util.Set<org.lgna.common.Resource> resources = project.getResources();
+	public ResourcesTypeWrapper( Project project ) {
+		Set<Resource> resources = project.getResources();
 		if( ( resources != null ) && ( resources.size() > 0 ) ) {
-			this.type = new org.lgna.project.ast.NamedUserType();
+			this.type = new NamedUserType();
 			this.type.name.setValue( getTypeName() );
-			this.type.superType.setValue( org.lgna.project.ast.JavaType.OBJECT_TYPE );
+			this.type.superType.setValue( JavaType.OBJECT_TYPE );
 			int unnamedCount = 0;
 			int duplicateCount = 0;
-			for( org.lgna.common.Resource resource : resources ) {
-				org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
-				field.accessLevel.setValue( org.lgna.project.ast.AccessLevel.PUBLIC );
+			for( Resource resource : resources ) {
+				UserField field = new UserField();
+				field.accessLevel.setValue( AccessLevel.PUBLIC );
 				field.isStatic.setValue( true );
-				field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
-				field.valueType.setValue( org.lgna.project.ast.JavaType.getInstance( resource.getClass() ) );
+				field.finalVolatileOrNeither.setValue( FieldModifierFinalVolatileOrNeither.FINAL );
+				field.valueType.setValue( JavaType.getInstance( resource.getClass() ) );
 
 				String name = getFixedName( resource );
-				for( org.lgna.project.ast.UserField prevField : type.fields ) {
+				for( UserField prevField : type.fields ) {
 					if( prevField.name.getValue().equals( name ) ) {
 						if( name.equals( NAME_FOR_UNNAMED ) ) {
 							name += "_" + unnamedCount;
@@ -111,35 +128,35 @@ public class ResourcesTypeWrapper {
 				}
 
 				field.name.setValue( name );
-				field.initializer.setValue( org.lgna.project.ast.AstUtilities.createInstanceCreation(
+				field.initializer.setValue( AstUtilities.createInstanceCreation(
 						resource.getClass(),
 						new Class<?>[] {
 								Class.class,
 								String.class,
 								String.class
 						},
-						new org.lgna.project.ast.Expression[] {
-								new org.lgna.project.ast.TypeLiteral( this.type ),
-								new org.lgna.project.ast.StringLiteral( "resources/" + resource.getOriginalFileName() ),
-								new org.lgna.project.ast.StringLiteral( resource.getContentType() )
+						new Expression[] {
+								new TypeLiteral( this.type ),
+								new StringLiteral( "resources/" + resource.getOriginalFileName() ),
+								new StringLiteral( resource.getContentType() )
 						}
 						) );
 
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( field );
+				Logger.outln( field );
 				this.type.fields.add( field );
 			}
-			this.mapResourceToField = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+			this.mapResourceToField = Maps.newHashMap();
 		} else {
 			this.type = null;
 			this.mapResourceToField = null;
 		}
 	}
 
-	public org.lgna.project.ast.NamedUserType getType() {
+	public NamedUserType getType() {
 		return this.type;
 	}
 
-	public org.lgna.project.ast.UserField getFieldForResource( org.lgna.common.Resource resource ) {
+	public UserField getFieldForResource( Resource resource ) {
 		if( this.mapResourceToField != null ) {
 			return this.mapResourceToField.get( resource );
 		} else {
@@ -147,6 +164,6 @@ public class ResourcesTypeWrapper {
 		}
 	}
 
-	private final org.lgna.project.ast.NamedUserType type;
-	private final java.util.Map<org.lgna.common.Resource, org.lgna.project.ast.UserField> mapResourceToField;
+	private final NamedUserType type;
+	private final Map<Resource, UserField> mapResourceToField;
 }

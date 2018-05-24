@@ -42,10 +42,15 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import org.lgna.croquet.Application;
+import org.lgna.croquet.StringState;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameState extends org.lgna.croquet.StringState {
+public class DeclarationNameState extends StringState {
 	private static class SingletonHolder {
 		private static DeclarationNameState instance = new DeclarationNameState();
 	}
@@ -55,6 +60,6 @@ public class DeclarationNameState extends org.lgna.croquet.StringState {
 	}
 
 	private DeclarationNameState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), "" );
+		super( Application.INHERIT_GROUP, UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), "" );
 	}
 }

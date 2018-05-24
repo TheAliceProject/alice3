@@ -42,28 +42,40 @@
  *******************************************************************************/
 package org.alice.ide.ast.code.edits;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.ast.code.EnvelopStatementsOperation;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.project.ProjectChangeOfInterestManager;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.NodeUtilities;
+import org.lgna.project.ast.Statement;
+
 /**
  * @author Dennis Cosgrove
  */
-public class EnvelopStatementsEdit extends org.lgna.croquet.edits.AbstractEdit<org.alice.ide.ast.code.EnvelopStatementsOperation> {
-	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
-	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
+public class EnvelopStatementsEdit extends AbstractEdit<EnvelopStatementsOperation> {
+	private BlockStatementIndexPair fromLocation;
+	private BlockStatementIndexPair toLocation;
 	private transient int count;
 
-	public EnvelopStatementsEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.EnvelopStatementsOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
+	public EnvelopStatementsEdit( CompletionStep<EnvelopStatementsOperation> completionStep, BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
 		super( completionStep );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 	}
 
-	public EnvelopStatementsEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public EnvelopStatementsEdit( BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fromLocation );
 		binaryEncoder.encode( this.toLocation );
@@ -71,20 +83,20 @@ public class EnvelopStatementsEdit extends org.lgna.croquet.edits.AbstractEdit<o
 
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: do", this );
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		Logger.outln( "todo: do", this );
 	}
 
 	@Override
 	public void undoInternal() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: undo", this );
-		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
+		Logger.outln( "todo: undo", this );
+		ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "envelop: " );
-		org.lgna.project.ast.Statement statement = this.fromLocation.getBlockStatement().statements.get( this.fromLocation.getIndex() );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
+		Statement statement = this.fromLocation.getBlockStatement().statements.get( this.fromLocation.getIndex() );
+		NodeUtilities.safeAppendRepr( rv, statement, Application.getLocale() );
 	}
 }

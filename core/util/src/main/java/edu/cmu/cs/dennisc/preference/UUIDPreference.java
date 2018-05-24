@@ -42,20 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import java.util.UUID;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
-public class UUIDPreference extends Preference<java.util.UUID> {
-	public UUIDPreference( java.util.UUID defaultValue ) {
+public class UUIDPreference extends Preference<UUID> {
+	public UUIDPreference( UUID defaultValue ) {
 		super( defaultValue );
 	}
 
 	@Override
-	protected java.util.UUID getValue( java.util.prefs.Preferences utilPrefs, String key, java.util.UUID defaultValue ) {
-		java.util.UUID rv;
+	protected UUID getValue( Preferences utilPrefs, String key, UUID defaultValue ) {
+		UUID rv;
 		String s = utilPrefs.get( key, null );
 		if( s != null ) {
-			rv = java.util.UUID.fromString( s );
+			rv = UUID.fromString( s );
 		} else {
 			rv = defaultValue;
 		}
@@ -63,7 +66,7 @@ public class UUIDPreference extends Preference<java.util.UUID> {
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, java.util.UUID nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, UUID nextValue ) {
 		String s;
 		if( nextValue != null ) {
 			s = nextValue.toString();

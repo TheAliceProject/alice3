@@ -42,28 +42,35 @@
  *******************************************************************************/
 package org.alice.ide.stencil;
 
+import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
+import org.lgna.croquet.views.SwingComponentView;
+
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomView extends org.lgna.croquet.views.SwingComponentView<javax.swing.JPanel> {
-	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+public abstract class CustomView extends SwingComponentView<JPanel> {
+	protected abstract void paintComponentPrologue( Graphics2D g2 );
 
-	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintComponentEpilogue( Graphics2D g2 );
 
-	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+	protected abstract void paintEpilogue( Graphics2D g2 );
 
 	protected abstract boolean contains( int x, int y, boolean superContains );
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
+	protected JPanel createAwtComponent() {
+		JPanel rv = new JPanel() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				edu.cmu.cs.dennisc.java.awt.GraphicsContext gc = edu.cmu.cs.dennisc.java.awt.GraphicsContext.getInstanceAndPushGraphics( g );
+			protected void paintComponent( Graphics g ) {
+				GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g );
 				gc.pushAndSetAntialiasing( true );
 				gc.pushPaint();
 				try {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					Graphics2D g2 = (Graphics2D)g;
 					CustomView.this.paintComponentPrologue( g2 );
 					super.paintComponent( g2 );
 					CustomView.this.paintComponentEpilogue( g2 );
@@ -73,9 +80,9 @@ public abstract class CustomView extends org.lgna.croquet.views.SwingComponentVi
 			}
 
 			@Override
-			public void paint( java.awt.Graphics g ) {
+			public void paint( Graphics g ) {
 				super.paint( g );
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Graphics2D g2 = (Graphics2D)g;
 				CustomView.this.paintEpilogue( g2 );
 			}
 

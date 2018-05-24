@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,11 +58,11 @@ public class ForwardCascade extends HistoryCascade {
 	}
 
 	private ForwardCascade() {
-		super( java.util.UUID.fromString( "fee210a0-bb0e-4c8c-8e93-fb2fdac683d7" ) );
+		super( UUID.fromString( "fee210a0-bb0e-4c8c-8e93-fb2fdac683d7" ) );
 	}
 
 	@Override
-	protected java.util.List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory ) {
+	protected List<DeclarationComposite<?, ?>> getList( DeclarationCompositeHistory declarationCompositeHistory ) {
 		return declarationCompositeHistory.getForwardList();
 	}
 }

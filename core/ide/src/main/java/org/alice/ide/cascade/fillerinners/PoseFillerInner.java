@@ -44,6 +44,7 @@ package org.alice.ide.cascade.fillerinners;
 
 import java.util.List;
 
+import org.alice.ide.IDE;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.ik.poser.croquet.PoseExpressionCreatorComposite;
@@ -66,14 +67,14 @@ public class PoseFillerInner extends ExpressionFillerInner {
 	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
 		NamedUserType declaringType;
 		if( prevExpression == null ) {
-			InstanceFactory value = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+			InstanceFactory value = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 			declaringType = (NamedUserType)value.getValueType();
 		} else {
 			MethodInvocation methodInv = prevExpression.getFirstAncestorAssignableTo( MethodInvocation.class );
 			declaringType = (NamedUserType)methodInv.expression.getValue().getType();
 		}
 
-		PoseExpressionCreatorComposite poseExpressionCreatorComposite = org.lgna.ik.poser.croquet.PoseExpressionCreatorComposite.getInstance( declaringType );
+		PoseExpressionCreatorComposite poseExpressionCreatorComposite = PoseExpressionCreatorComposite.getInstance( declaringType );
 		if( poseExpressionCreatorComposite != null ) {
 			items.add( poseExpressionCreatorComposite.getValueCreator().getFillIn() );
 		}

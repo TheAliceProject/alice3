@@ -42,6 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,26 +68,26 @@ public class BoxIcon extends ShapeIcon {
 	private static final float yC = 0.8f;
 	private static final float y1 = 1.0f;
 
-	private static final java.awt.geom.Point2D.Float a0 = new java.awt.geom.Point2D.Float( xA, y1 );
-	private static final java.awt.geom.Point2D.Float b0 = new java.awt.geom.Point2D.Float( x0, yC );
-	private static final java.awt.geom.Point2D.Float c0 = new java.awt.geom.Point2D.Float( x0, yA );
-	private static final java.awt.geom.Point2D.Float d0 = new java.awt.geom.Point2D.Float( xA, yB );
+	private static final Point2D.Float a0 = new Point2D.Float( xA, y1 );
+	private static final Point2D.Float b0 = new Point2D.Float( x0, yC );
+	private static final Point2D.Float c0 = new Point2D.Float( x0, yA );
+	private static final Point2D.Float d0 = new Point2D.Float( xA, yB );
 
-	private static final java.awt.geom.Point2D.Float a1 = c0;
-	private static final java.awt.geom.Point2D.Float b1 = d0;
-	private static final java.awt.geom.Point2D.Float c1 = new java.awt.geom.Point2D.Float( x1, yA );
-	private static final java.awt.geom.Point2D.Float d1 = new java.awt.geom.Point2D.Float( xB, y0 );
+	private static final Point2D.Float a1 = c0;
+	private static final Point2D.Float b1 = d0;
+	private static final Point2D.Float c1 = new Point2D.Float( x1, yA );
+	private static final Point2D.Float d1 = new Point2D.Float( xB, y0 );
 
-	private static final java.awt.geom.Point2D.Float a2 = c1;
-	private static final java.awt.geom.Point2D.Float b2 = b1;
-	private static final java.awt.geom.Point2D.Float c2 = a0;
-	private static final java.awt.geom.Point2D.Float d2 = new java.awt.geom.Point2D.Float( x1, yC );
+	private static final Point2D.Float a2 = c1;
+	private static final Point2D.Float b2 = b1;
+	private static final Point2D.Float c2 = a0;
+	private static final Point2D.Float d2 = new Point2D.Float( x1, yC );
 
-	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker();
-	private final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
+	private static final Color SHADOW_COLOR = FILL_PAINT.darker();
+	private final Stroke STROKE = new BasicStroke( 0.0f );
 
-	private static java.awt.Shape createFace( java.awt.geom.Point2D.Float a, java.awt.geom.Point2D.Float b, java.awt.geom.Point2D.Float c, java.awt.geom.Point2D.Float d, int width, int height ) {
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+	private static Shape createFace( Point2D.Float a, Point2D.Float b, Point2D.Float c, Point2D.Float d, int width, int height ) {
+		GeneralPath path = new GeneralPath();
 		path.moveTo( a.x * width, a.y * height );
 		path.lineTo( b.x * width, b.y * height );
 		path.lineTo( c.x * width, c.y * height );
@@ -85,18 +96,18 @@ public class BoxIcon extends ShapeIcon {
 		return path;
 	}
 
-	public BoxIcon( java.awt.Dimension size ) {
+	public BoxIcon( Dimension size ) {
 		super( size );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.Stroke prevStroke = g2.getStroke();
+	protected void paintIcon( Component c, Graphics2D g2, int width, int height, Paint fillPaint, Paint drawPaint ) {
+		Stroke prevStroke = g2.getStroke();
 		try {
 			g2.setStroke( STROKE );
-			java.awt.Shape face0 = createFace( a0, b0, c0, d0, width, height );
-			java.awt.Shape face1 = createFace( a1, b1, c1, d1, width, height );
-			java.awt.Shape face2 = createFace( a2, b2, c2, d2, width, height );
+			Shape face0 = createFace( a0, b0, c0, d0, width, height );
+			Shape face1 = createFace( a1, b1, c1, d1, width, height );
+			Shape face2 = createFace( a2, b2, c2, d2, width, height );
 
 			g2.setPaint( SHADOW_COLOR );
 			g2.fill( face0 );

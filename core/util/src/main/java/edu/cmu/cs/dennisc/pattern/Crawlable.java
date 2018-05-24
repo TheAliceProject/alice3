@@ -42,9 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.pattern;
 
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Crawlable {
-	public void accept( Crawler crawler, java.util.Set<Crawlable> visited );
+	public void accept( Crawler crawler, Set<Crawlable> visited );
 }

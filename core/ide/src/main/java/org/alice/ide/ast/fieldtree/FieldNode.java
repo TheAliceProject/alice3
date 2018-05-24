@@ -43,17 +43,19 @@
 
 package org.alice.ide.ast.fieldtree;
 
+import org.lgna.project.ast.UserField;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FieldNode extends Node<org.lgna.project.ast.UserField> {
-	public static FieldNode createAndAddToParent( TypeNode parent, org.lgna.project.ast.UserField field ) {
+public class FieldNode extends Node<UserField> {
+	public static FieldNode createAndAddToParent( TypeNode parent, UserField field ) {
 		FieldNode rv = new FieldNode( parent, field );
 		parent.getFieldNodes().add( rv );
 		return rv;
 	}
 
-	private FieldNode( TypeNode parent, org.lgna.project.ast.UserField field ) {
+	private FieldNode( TypeNode parent, UserField field ) {
 		super( parent, field );
 	}
 }

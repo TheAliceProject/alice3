@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TagBasedResourceNode extends ResourceNode {
-	public TagBasedResourceNode( java.util.UUID migrationId, ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
+	public TagBasedResourceNode( UUID migrationId, ResourceKey resourceKey, List<ResourceNode> children ) {
 		super( migrationId, resourceKey, children );
 	}
 }

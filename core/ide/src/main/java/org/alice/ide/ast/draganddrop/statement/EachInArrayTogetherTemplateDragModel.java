@@ -43,6 +43,15 @@
 
 package org.alice.ide.ast.draganddrop.statement;
 
+import org.alice.ide.ast.IncompleteAstUtilities;
+import org.alice.ide.ast.declaration.InsertEachInArrayTogetherComposite;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.project.ast.EachInArrayTogether;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +65,11 @@ public class EachInArrayTogetherTemplateDragModel extends PotentiallyEnvelopingS
 	}
 
 	private EachInArrayTogetherTemplateDragModel() {
-		super( java.util.UUID.fromString( "34fe45c5-d5cf-4a22-a1b0-c76a9a08adba" ), org.lgna.project.ast.EachInArrayTogether.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteEachInArrayTogether() );
+		super( UUID.fromString( "34fe45c5-d5cf-4a22-a1b0-c76a9a08adba" ), EachInArrayTogether.class, IncompleteAstUtilities.createIncompleteEachInArrayTogether() );
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
-		return org.alice.ide.ast.declaration.InsertEachInArrayTogetherComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
+	protected Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+		return InsertEachInArrayTogetherComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
 	}
 }

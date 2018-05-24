@@ -42,33 +42,47 @@
  *******************************************************************************/
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities;
+import org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn;
+import org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn;
+import org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
-	public AbstractNumberFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public AbstractNumberFillerInner( AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
 
 	public AbstractNumberFillerInner( Class<?> cls ) {
-		this( org.lgna.project.ast.JavaType.getInstance( cls ) );
+		this( JavaType.getInstance( cls ) );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
 		if( isTop && ( prevExpression != null ) ) {
-			if( prevExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
-				org.lgna.project.ast.ArithmeticInfixExpression previousArithmeticInfixExpression = (org.lgna.project.ast.ArithmeticInfixExpression)prevExpression;
-				org.lgna.project.ast.ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
-				for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
+			if( prevExpression instanceof ArithmeticInfixExpression ) {
+				ArithmeticInfixExpression previousArithmeticInfixExpression = (ArithmeticInfixExpression)prevExpression;
+				ArithmeticInfixExpression.Operator prevOperator = previousArithmeticInfixExpression.operator.getValue();
+				for( ArithmeticInfixExpression.Operator operator : ArithmeticUtilities.PRIME_TIME_DOUBLE_ARITHMETIC_OPERATORS ) {
 					if( operator != prevOperator ) {
-						items.add( org.alice.ide.croquet.models.cascade.arithmetic.ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
+						items.add( ReplaceOperatorInPreviousArithmeticExpressionFillIn.getInstance( operator ) );
 					}
 				}
-				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-				items.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				items.add( org.alice.ide.croquet.models.cascade.arithmetic.ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
-				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+				items.add( CascadeLineSeparator.getInstance() );
+				items.add( ReduceToLeftOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				items.add( ReduceToRightOperandInPreviousArithmeticExpressionFillIn.getInstance() );
+				items.add( CascadeLineSeparator.getInstance() );
 			}
 		}
 	}

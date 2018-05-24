@@ -43,13 +43,22 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.ThisExpression;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThisOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, ThisOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class ThisOperation extends ProjectExpressionPropertyOperation {
+	private static Map<ExpressionProperty, ThisOperation> map = Maps.newHashMap();
 
-	public static synchronized ThisOperation getInstance( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static synchronized ThisOperation getInstance( ExpressionProperty expressionProperty ) {
 		assert expressionProperty != null;
 		ThisOperation rv = map.get( expressionProperty );
 		if( rv != null ) {
@@ -61,12 +70,12 @@ public class ThisOperation extends org.alice.ide.croquet.models.ast.cascade.Proj
 		return rv;
 	}
 
-	private ThisOperation( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "b90478a4-6cfc-457b-be93-dfdde76c9e24" ), expressionProperty );
+	private ThisOperation( ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "b90478a4-6cfc-457b-be93-dfdde76c9e24" ), expressionProperty );
 	}
 
 	@Override
-	protected final org.lgna.project.ast.Expression createExpression() {
-		return new org.lgna.project.ast.ThisExpression();
+	protected final Expression createExpression() {
+		return new ThisExpression();
 	}
 }

@@ -42,10 +42,36 @@
  *******************************************************************************/
 package org.alice.stageide.run;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import org.alice.ide.IDE;
+import org.alice.stageide.program.RunProgramContext;
+import org.alice.stageide.run.views.RunView;
+import org.alice.stageide.run.views.icons.RunIcon;
+import org.lgna.common.ComponentExecutor;
+import org.lgna.croquet.PlainStringValue;
+import org.lgna.croquet.SimpleModalFrameComposite;
+import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.AwtAdapter;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.FixedAspectRatioPanel;
+import org.lgna.croquet.views.Frame;
+import org.lgna.story.implementation.ProgramImp;
+
+import javax.swing.AbstractAction;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org.alice.stageide.run.views.RunView> {
+public class RunComposite extends SimpleModalFrameComposite<RunView> {
 	private static class SingletonHolder {
 		private static RunComposite instance = new RunComposite();
 	}
@@ -54,21 +80,21 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue restartLabel = this.createStringValue( "restart" );
-	private final org.lgna.croquet.PlainStringValue speedFormat= this.createStringValue( "speed" );
+	private final PlainStringValue restartLabel = this.createStringValue( "restart" );
+	private final PlainStringValue speedFormat= this.createStringValue( "speed" );
 
 	private RunComposite() {
-		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
+		super( UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), IDE.RUN_GROUP );
 		//todo: move to localize
-		this.getLaunchOperation().setButtonIcon( new org.alice.stageide.run.views.icons.RunIcon() );
+		this.getLaunchOperation().setButtonIcon( new RunIcon() );
 	}
 
-	private transient org.alice.stageide.program.RunProgramContext programContext;
+	private transient RunProgramContext programContext;
 	public static final double WIDTH_TO_HEIGHT_RATIO = 16.0 / 9.0;
 	private static final int DEFAULT_WIDTH = 640;
 	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO );
-	private java.awt.Point location = null;
-	private java.awt.Dimension size = null;
+	private Point location = null;
+	private Dimension size = null;
 
 	@Override
 	protected GoldenRatioPolicy getGoldenRatioPolicy() {
@@ -76,12 +102,12 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	@Override
-	protected java.awt.Point getDesiredWindowLocation() {
+	protected Point getDesiredWindowLocation() {
 		return this.location;
 	}
 
 	@Override
-	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	protected Dimension calculateWindowSize( AbstractWindow<?> window ) {
 		if( this.size != null ) {
 			return this.size;
 		} else {
@@ -90,8 +116,8 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	private class ProgramRunnable implements Runnable {
-		public ProgramRunnable( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
-			RunComposite.this.programContext = new org.alice.stageide.program.RunProgramContext();
+		public ProgramRunnable( ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
+			RunComposite.this.programContext = new RunProgramContext();
 			RunComposite.this.programContext.getProgramImp().setRestartAction( RunComposite.this.restartAction );
 			RunComposite.this.programContext.getProgramImp().setSpeedFormat( RunComposite.this.speedFormat.getText());
 			RunComposite.this.programContext.initializeInContainer( awtContainerInitializer );
@@ -103,17 +129,17 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		}
 	}
 
-	private final class RunAwtContainerInitializer implements org.lgna.story.implementation.ProgramImp.AwtContainerInitializer {
+	private final class RunAwtContainerInitializer implements ProgramImp.AwtContainerInitializer {
 		@Override
-		public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
-			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
+		public void addComponents( OnscreenRenderTarget<?> onscreenRenderTarget, JPanel controlPanel ) {
+			RunView runView = RunComposite.this.getView();
 			runView.forgetAndRemoveAllComponents();
 
-			org.lgna.croquet.views.AwtComponentView<?> lookingGlassContainer = new org.lgna.croquet.views.AwtAdapter( onscreenRenderTarget.getAwtComponent() );
-			org.lgna.croquet.views.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.views.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
-			fixedAspectRatioPanel.setBackgroundColor( java.awt.Color.BLACK );
+			AwtComponentView<?> lookingGlassContainer = new AwtAdapter( onscreenRenderTarget.getAwtComponent() );
+			FixedAspectRatioPanel fixedAspectRatioPanel = new FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
+			fixedAspectRatioPanel.setBackgroundColor( Color.BLACK );
 			if( controlPanel != null ) {
-				runView.getAwtComponent().add( controlPanel, java.awt.BorderLayout.PAGE_START );
+				runView.getAwtComponent().add( controlPanel, BorderLayout.PAGE_START );
 			}
 			runView.addCenterComponent( fixedAspectRatioPanel );
 			runView.revalidateAndRepaint();
@@ -123,7 +149,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
 
 	private void startProgram() {
-		new org.lgna.common.ComponentExecutor( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getImp().getName() ).start();
+		new ComponentExecutor( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getImp().getName() ).start();
 		if( this.fastForwardToStatementOperation != null ) {
 			this.fastForwardToStatementOperation.pre( this.programContext );
 		}
@@ -134,13 +160,13 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 			this.programContext.cleanUpProgram();
 			this.programContext = null;
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
+			Logger.warning( this );
 		}
 	}
 
-	private class RestartAction extends javax.swing.AbstractAction {
+	private class RestartAction extends AbstractAction {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			RunComposite.this.stopProgram();
 			RunComposite.this.startProgram();
 		}
@@ -155,19 +181,19 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	@Override
-	protected void handlePreShowWindow( org.lgna.croquet.views.Frame frame ) {
+	protected void handlePreShowWindow( Frame frame ) {
 		super.handlePreShowWindow( frame );
 		this.startProgram();
 		if( this.size != null ) {
 			frame.setSize( this.size );
 		} else {
-			this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
+			this.programContext.getOnscreenRenderTarget().getAwtComponent().setPreferredSize( new Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
 			frame.pack();
 		}
 		if( this.location != null ) {
 			frame.setLocation( this.location );
 		} else {
-			org.lgna.croquet.views.Frame documentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getFrame();
+			Frame documentFrame = IDE.getActiveInstance().getDocumentFrame().getFrame();
 			if( documentFrame != null ) {
 				frame.setLocationRelativeTo( documentFrame );
 			} else {
@@ -177,8 +203,8 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	@Override
-	protected void handlePostHideWindow( org.lgna.croquet.views.Frame frame ) {
-		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( frame.getAwtComponent() );
+	protected void handlePostHideWindow( Frame frame ) {
+		Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( frame.getAwtComponent() );
 		this.location = bounds.getLocation();
 		this.size = bounds.getSize();
 		super.handlePostHideWindow( frame );
@@ -195,8 +221,8 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	@Override
-	protected org.alice.stageide.run.views.RunView createView() {
-		return new org.alice.stageide.run.views.RunView( this );
+	protected RunView createView() {
+		return new RunView( this );
 	}
 
 	public void setFastForwardToStatementOperation( FastForwardToStatementOperation fastForwardToStatementOperation ) {

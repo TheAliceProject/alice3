@@ -43,10 +43,14 @@
 
 package org.alice.ide.croquet.models.cascade.blanks;
 
+import org.alice.ide.croquet.models.cascade.ExpressionBlank;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TypeUnhandledBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
+public class TypeUnhandledBlank extends ExpressionBlank {
 	private static class SingletonHolder {
 		private static TypeUnhandledBlank instance = new TypeUnhandledBlank();
 	}
@@ -56,6 +60,6 @@ public class TypeUnhandledBlank extends org.alice.ide.croquet.models.cascade.Exp
 	}
 
 	private TypeUnhandledBlank() {
-		super( java.util.UUID.fromString( "186ea575-21b4-4b34-b292-96efadc6321b" ), Void.class );
+		super( UUID.fromString( "186ea575-21b4-4b34-b292-96efadc6321b" ), Void.class );
 	}
 }

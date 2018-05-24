@@ -43,30 +43,41 @@
 
 package org.alice.ide.ast.draganddrop.expression;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation;
+import org.lgna.croquet.Model;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public class FieldAccessDragModel extends AbstractExpressionDragModel {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractField, FieldAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<AbstractField, FieldAccessDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static FieldAccessDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldAccessDragModel>() {
+	public static FieldAccessDragModel getInstance( AbstractField field ) {
+		return map.getInitializingIfAbsent( field, new InitializingIfAbsentMap.Initializer<AbstractField, FieldAccessDragModel>() {
 			@Override
-			public FieldAccessDragModel initialize( org.lgna.project.ast.AbstractField field ) {
+			public FieldAccessDragModel initialize( AbstractField field ) {
 				return new FieldAccessDragModel( field );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractField field;
+	private final AbstractField field;
 
-	private FieldAccessDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "55de38ae-a90e-4c6a-9208-4a83f3f303d9" ) );
+	private FieldAccessDragModel( AbstractField field ) {
+		super( UUID.fromString( "55de38ae-a90e-4c6a-9208-4a83f3f303d9" ) );
 		this.field = field;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.field.getValueType();
 	}
 
@@ -76,12 +87,12 @@ public class FieldAccessDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+	protected Model getDropModel( BlockStatementIndexPair blockStatementIndexPair ) {
 		throw new AssertionError();
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );
+	protected Model getDropModel( ExpressionProperty expressionProperty ) {
+		return FieldAccessOperation.getInstance( this.field, expressionProperty );
 	}
 }

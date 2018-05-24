@@ -42,49 +42,57 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import org.lgna.project.ast.Code;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Paint;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Theme {
-	public static final java.awt.Dimension DEFAULT_SMALLER_ICON_SIZE = new java.awt.Dimension( 32, 24 );
-	public static final java.awt.Dimension DEFAULT_SMALL_ICON_SIZE = new java.awt.Dimension( 40, 30 );
-	public static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 120, 90 );
+	public static final Dimension DEFAULT_SMALLER_ICON_SIZE = new Dimension( 32, 24 );
+	public static final Dimension DEFAULT_SMALL_ICON_SIZE = new Dimension( 40, 30 );
+	public static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension( 120, 90 );
 
-	public java.awt.Color getTypeColor();
+	public Color getTypeColor();
 
-	public java.awt.Color getMutedTypeColor();
+	public Color getMutedTypeColor();
 
-	public java.awt.Color getProcedureColor();
+	public Color getProcedureColor();
 
-	public java.awt.Color getFunctionColor();
+	public Color getFunctionColor();
 
-	public java.awt.Color getConstructorColor();
+	public Color getConstructorColor();
 
-	public java.awt.Color getFieldColor();
+	public Color getFieldColor();
 
-	public java.awt.Color getLocalColor();
+	public Color getLocalColor();
 
-	public java.awt.Color getParameterColor();
+	public Color getParameterColor();
 
-	public java.awt.Color getEventColor();
+	public Color getEventColor();
 
-	public java.awt.Color getEventBodyColor();
+	public Color getEventBodyColor();
 
-	public java.awt.Paint getPaintFor( Class<? extends org.lgna.project.ast.Statement> cls, int x, int y, int width, int height );
+	public Paint getPaintFor( Class<? extends Statement> cls, int x, int y, int width, int height );
 
-	public java.awt.Color getColorFor( Class<? extends org.lgna.project.ast.Node> cls );
+	public Color getColorFor( Class<? extends Node> cls );
 
-	public java.awt.Color getColorFor( org.lgna.project.ast.Node node );
+	public Color getColorFor( Node node );
 
-	public java.awt.Color getCommentForegroundColor();
+	public Color getCommentForegroundColor();
 
-	public java.awt.Color getCodeColor( org.lgna.project.ast.Code code );
+	public Color getCodeColor( Code code );
 
-	public java.awt.Color getSelectedColor();
+	public Color getSelectedColor();
 
-	public java.awt.Color getUnselectedColor();
+	public Color getUnselectedColor();
 
-	public java.awt.Color getPrimaryBackgroundColor();
+	public Color getPrimaryBackgroundColor();
 
-	public java.awt.Color getSecondaryBackgroundColor();
+	public Color getSecondaryBackgroundColor();
 }

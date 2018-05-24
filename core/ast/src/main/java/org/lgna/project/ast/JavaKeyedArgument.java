@@ -59,7 +59,7 @@ public final class JavaKeyedArgument extends AbstractArgument {
 	}
 
 	public JavaKeyedArgument( AbstractParameter parameter, JavaMethod keyMethod, Expression... argumentExpressions ) {
-		super( parameter, org.lgna.project.ast.AstUtilities.createStaticMethodInvocation( keyMethod, argumentExpressions ) );
+		super( parameter, AstUtilities.createStaticMethodInvocation( keyMethod, argumentExpressions ) );
 	}
 
 	public JavaMethod getKeyMethod() {

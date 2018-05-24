@@ -50,11 +50,12 @@ import org.lgna.croquet.history.Step;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 public class OpenProjectFromOsOperation extends UriPotentialClearanceIteratingOperation {
 
 	public OpenProjectFromOsOperation( File file) {
-		super( java.util.UUID.fromString( "f51873eb-06da-4974-9890-7345adff3ac4" ), IDE.getActiveInstance().getDocumentFrame(), null );
+		super( UUID.fromString( "f51873eb-06da-4974-9890-7345adff3ac4" ), IDE.getActiveInstance().getDocumentFrame(), null );
 		this.file = file;
 	}
 

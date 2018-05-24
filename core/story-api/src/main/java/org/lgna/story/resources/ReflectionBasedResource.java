@@ -6,7 +6,7 @@ import org.lgna.story.implementation.JointedModelImp;
 
 public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
 
-	Class<? extends org.lgna.story.resources.ModelResource> resourceCls;
+	Class<? extends ModelResource> resourceCls;
 
 	public ReflectionBasedResource() {
 

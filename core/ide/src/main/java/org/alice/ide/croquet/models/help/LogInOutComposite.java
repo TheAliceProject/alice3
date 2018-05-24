@@ -45,6 +45,8 @@ package org.alice.ide.croquet.models.help;
 import java.util.UUID;
 
 import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
 
 /**
  * @author Matt May
@@ -54,9 +56,9 @@ public class LogInOutComposite extends CardOwnerComposite {
 	private final LogInCard logInCard;
 	private final LogOutCard logOutCard;
 	private AbstractLoginComposite composite;
-	private final org.lgna.croquet.event.ValueListener<Boolean> isLoggedInListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+	private final ValueListener<Boolean> isLoggedInListener = new ValueListener<Boolean>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+		public void valueChanged( ValueEvent<Boolean> e ) {
 			updateLogInOutComposite();
 		}
 	};

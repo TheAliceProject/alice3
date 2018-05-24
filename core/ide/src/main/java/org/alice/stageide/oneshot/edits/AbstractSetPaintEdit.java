@@ -42,27 +42,38 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot.edits;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Paint;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.PaintProperty;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetPaintEdit<I extends org.lgna.story.implementation.ModelImp> extends MethodInvocationEdit {
+public abstract class AbstractSetPaintEdit<I extends ModelImp> extends MethodInvocationEdit {
 	private transient I modelImp;
-	private transient org.lgna.story.Paint value;
+	private transient Paint value;
 
-	public AbstractSetPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public AbstractSetPaintEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	protected abstract org.lgna.story.implementation.PaintProperty getPaintProperty( I modelImp );
+	protected abstract PaintProperty getPaintProperty( I modelImp );
 
 	@Override
 	protected final void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.SThing ) {
-			org.lgna.story.SThing thing = (org.lgna.story.SThing)instance;
-			this.modelImp = org.lgna.story.EmployeesOnly.getImplementation( thing );
+		if( instance instanceof SThing ) {
+			SThing thing = (SThing)instance;
+			this.modelImp = EmployeesOnly.getImplementation( thing );
 			this.value = this.getPaintProperty( this.modelImp ).getValue();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+			Logger.severe( instance );
 			this.modelImp = null;
 			this.value = null;
 		}

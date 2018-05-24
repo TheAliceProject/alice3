@@ -43,6 +43,16 @@
 
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,7 +63,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		private final AbstractCompletionModel completionModel;
 
 		public SidekickLabel( AbstractCompletionModel completionModel ) {
-			super( java.util.UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
+			super( UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
 			this.completionModel = completionModel;
 		}
 
@@ -70,7 +80,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	private SidekickLabel sidekickLabel;
 
-	public AbstractCompletionModel( Group group, java.util.UUID id ) {
+	public AbstractCompletionModel( Group group, UUID id ) {
 		super( id );
 		this.group = group;
 	}
@@ -80,11 +90,11 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.group;
 	}
 
-	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract void perform( Transaction transaction, Trigger trigger );
 
-	protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+	protected CompletionStep<?> createTransactionAndInvokePerform( Trigger trigger ) {
+		TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		Transaction transaction = history.acquireActiveTransaction();
 		this.perform( transaction, trigger );
 		return transaction.getCompletionStep();
 	}
@@ -95,11 +105,11 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 
 	@Override
-	public final org.lgna.croquet.history.CompletionStep<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final CompletionStep<?> fire( Trigger trigger ) {
 		Model surrogateModel = this.getSurrogateModel();
 		if( surrogateModel != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: end use of surrogate", this );
-			org.lgna.croquet.history.Step<?> step = surrogateModel.fire( trigger );
+			Logger.errln( "todo: end use of surrogate", this );
+			Step<?> step = surrogateModel.fire( trigger );
 			return step.getOwnerTransaction().getCompletionStep();
 		} else {
 			if( this.isEnabled() ) {
@@ -112,8 +122,8 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	}
 
 	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire() {
-		return fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+	public final CompletionStep<?> fire() {
+		return fire( NullTrigger.createUserInstance() );
 	}
 
 	public synchronized PlainStringValue getSidekickLabel() {

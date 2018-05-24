@@ -43,18 +43,23 @@
 
 package org.alice.ide.croquet.components;
 
+import org.alice.ide.preview.components.PanelWithPreview;
+import org.lgna.croquet.views.BorderPanel;
+
+import javax.swing.JPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewPanel extends org.lgna.croquet.views.BorderPanel {
-	private final org.alice.ide.preview.components.PanelWithPreview panelWithPreview;
+public class PreviewPanel extends BorderPanel {
+	private final PanelWithPreview panelWithPreview;
 
-	public PreviewPanel( org.alice.ide.preview.components.PanelWithPreview panelWithPreview ) {
+	public PreviewPanel( PanelWithPreview panelWithPreview ) {
 		this.panelWithPreview = panelWithPreview;
 	}
 
 	@Override
-	protected javax.swing.JPanel createJPanel() {
+	protected JPanel createJPanel() {
 		class PreviewJPanel extends DefaultJPanel {
 			@Override
 			public boolean contains( int x, int y ) {

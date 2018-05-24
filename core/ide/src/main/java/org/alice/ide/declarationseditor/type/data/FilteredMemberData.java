@@ -43,19 +43,25 @@
 
 package org.alice.ide.declarationseditor.type.data;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+import org.alice.ide.ast.data.FilteredListPropertyData;
+import org.alice.ide.croquet.codecs.NodeCodec;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.UserMember;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredMemberData<T extends org.lgna.project.ast.UserMember> extends org.alice.ide.ast.data.FilteredListPropertyData<T> {
-	private final org.lgna.project.ast.NamedUserType type;
+public abstract class FilteredMemberData<T extends UserMember> extends FilteredListPropertyData<T> {
+	private final NamedUserType type;
 
-	public FilteredMemberData( Class<T> cls, org.lgna.project.ast.NamedUserType type, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
-		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ) );
+	public FilteredMemberData( Class<T> cls, NamedUserType type, ListProperty<T> listProperty ) {
+		super( NodeCodec.getInstance( cls ) );
 		this.type = type;
 		this.setListProperty( listProperty );
 	}
 
-	public org.lgna.project.ast.NamedUserType getType() {
+	public NamedUserType getType() {
 		return this.type;
 	}
 }

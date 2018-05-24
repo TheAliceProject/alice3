@@ -42,36 +42,40 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.property;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.property.CopyableInstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.AffineMatrix4x4> {
-	public AffineMatrix4x4Property( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+public class AffineMatrix4x4Property extends CopyableInstanceProperty<AffineMatrix4x4> {
+	public AffineMatrix4x4Property( InstancePropertyOwner owner, AffineMatrix4x4 value ) {
 		super( owner, value );
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+	public void setValue( AffineMatrix4x4 value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
 		super.setValue( value );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getCopy( AffineMatrix4x4 rv ) {
 		rv.set( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy() {
-		return this.getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public final AffineMatrix4x4 getCopy() {
+		return this.getCopy( AffineMatrix4x4.createNaN() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+	public void setCopy( AffineMatrix4x4 value ) {
 		//todo?
-		this.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( value ) );
+		this.setValue( new AffineMatrix4x4( value ) );
 	}
 
 	@Deprecated

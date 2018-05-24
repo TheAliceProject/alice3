@@ -48,13 +48,15 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.SFlyer;
 
+import java.util.UUID;
+
 /**
  * @author Matt May
  */
 public class FlyerAnimator extends AnimatorComposite<SFlyer> {
 
 	public FlyerAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( java.util.UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ), valueType, editedMethod );
+		super( UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ), valueType, editedMethod );
 	}
 
 	@Override

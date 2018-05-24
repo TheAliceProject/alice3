@@ -42,25 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact.croquet.edits;
 
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.SCamera;
+import org.lgna.story.SThing;
+
 /**
  * @author dculyba
  * 
  */
-public class GetAGoodLookAtEdit extends org.alice.stageide.oneshot.edits.LocalTransformationEdit {
-	private final org.lgna.story.SCamera camera;
-	private final org.lgna.story.SThing toLookAt;
+public class GetAGoodLookAtEdit extends LocalTransformationEdit {
+	private final SCamera camera;
+	private final SThing toLookAt;
 
-	public GetAGoodLookAtEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory cameraInstanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt ) {
+	public GetAGoodLookAtEdit( CompletionStep completionStep, InstanceFactory cameraInstanceFactory, AbstractMethod method, Expression[] argumentExpressions, SCamera camera, SThing toLookAt ) {
 		super( completionStep, cameraInstanceFactory, method, argumentExpressions );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}
 
-	public org.lgna.story.SCamera getCamera() {
+	public SCamera getCamera() {
 		return this.camera;
 	}
 
-	public org.lgna.story.SThing getTarget() {
+	public SThing getTarget() {
 		return this.toLookAt;
 	}
 }

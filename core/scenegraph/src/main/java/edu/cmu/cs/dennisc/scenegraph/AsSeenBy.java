@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,19 +67,19 @@ public enum AsSeenBy implements ReferenceFrame {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
 			rv.setIdentity();
 			return rv;
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
 			rv.setIdentity();
 			return rv;
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, ReferenceFrame other ) {
+		public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame other ) {
 			other.getInverseAbsoluteTransformation( rv );
 			return rv;
 		}
@@ -100,19 +102,19 @@ public enum AsSeenBy implements ReferenceFrame {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
 			//todo
 			throw new RuntimeException();
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
 			//todo
 			throw new RuntimeException();
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, ReferenceFrame other ) {
+		public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame other ) {
 			other.getTransformation( rv, this );
 			rv.invert();
 			return rv;
@@ -136,19 +138,19 @@ public enum AsSeenBy implements ReferenceFrame {
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		public AffineMatrix4x4 getAbsoluteTransformation( AffineMatrix4x4 rv ) {
 			//todo
 			throw new RuntimeException();
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		public AffineMatrix4x4 getInverseAbsoluteTransformation( AffineMatrix4x4 rv ) {
 			//todo
 			throw new RuntimeException();
 		}
 
 		@Override
-		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, ReferenceFrame other ) {
+		public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, ReferenceFrame other ) {
 			other.getTransformation( rv, this );
 			rv.invert();
 			return rv;
@@ -156,17 +158,17 @@ public enum AsSeenBy implements ReferenceFrame {
 	};
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
-		return getAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
+	public final AffineMatrix4x4 getAbsoluteTransformation() {
+		return getAbsoluteTransformation( new AffineMatrix4x4() );
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation() {
-		return getInverseAbsoluteTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4() );
+	public final AffineMatrix4x4 getInverseAbsoluteTransformation() {
+		return getInverseAbsoluteTransformation( new AffineMatrix4x4() );
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame other ) {
-		return getTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4(), other );
+	public final AffineMatrix4x4 getTransformation( ReferenceFrame other ) {
+		return getTransformation( new AffineMatrix4x4(), other );
 	}
 }

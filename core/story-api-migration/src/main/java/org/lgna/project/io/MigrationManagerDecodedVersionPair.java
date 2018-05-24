@@ -42,23 +42,26 @@
  *******************************************************************************/
 package org.lgna.project.io;
 
+import org.lgna.project.Version;
+import org.lgna.project.migration.MigrationManager;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MigrationManagerDecodedVersionPair {
-	private final org.lgna.project.migration.MigrationManager migrationManager;
-	private final org.lgna.project.Version decodedVersion;
+	private final MigrationManager migrationManager;
+	private final Version decodedVersion;
 
-	public MigrationManagerDecodedVersionPair( org.lgna.project.migration.MigrationManager migrationManager, org.lgna.project.Version decodedVersion ) {
+	public MigrationManagerDecodedVersionPair( MigrationManager migrationManager, Version decodedVersion ) {
 		this.migrationManager = migrationManager;
 		this.decodedVersion = decodedVersion;
 	}
 
-	public org.lgna.project.migration.MigrationManager getMigrationManager() {
+	public MigrationManager getMigrationManager() {
 		return this.migrationManager;
 	}
 
-	public org.lgna.project.Version getDecodedVersion() {
+	public Version getDecodedVersion() {
 		return this.decodedVersion;
 	}
 }

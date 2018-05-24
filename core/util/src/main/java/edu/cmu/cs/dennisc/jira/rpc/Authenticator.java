@@ -42,9 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.jira.rpc;
 
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcFault;
+
 /**
  * @author Dennis Cosgrove
  */
 public interface Authenticator {
-	public Object login( redstone.xmlrpc.XmlRpcClient xmlRpcStruct ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault;
+	public Object login( XmlRpcClient xmlRpcStruct ) throws XmlRpcException, XmlRpcFault;
 }

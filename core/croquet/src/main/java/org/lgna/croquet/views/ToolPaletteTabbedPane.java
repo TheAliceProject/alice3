@@ -43,38 +43,50 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.TabComposite;
+import org.lgna.croquet.TabState;
+
+import javax.swing.ButtonModel;
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.LayoutManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends TabbedPane<E> {
+public class ToolPaletteTabbedPane<E extends TabComposite<?>> extends TabbedPane<E> {
 
-	private static class AccordionLayoutManager implements java.awt.LayoutManager {
+	private static class AccordionLayoutManager implements LayoutManager {
 		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 		@Override
-		public void addLayoutComponent( String name, java.awt.Component awtComponent ) {
+		public void addLayoutComponent( String name, Component awtComponent ) {
 			//this.awtComponents.add( awtComponent );
 		}
 
 		@Override
-		public void removeLayoutComponent( java.awt.Component awtComponent ) {
+		public void removeLayoutComponent( Component awtComponent ) {
 			//this.awtComponents.remove( awtComponent );
 		}
 
 		@Override
-		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-			return new java.awt.Dimension( 0, 0 );
+		public Dimension minimumLayoutSize( Container parent ) {
+			return new Dimension( 0, 0 );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+		public Dimension preferredLayoutSize( Container parent ) {
 			final int N = parent.getComponentCount();
 			if( ( N % 2 ) == 0 ) {
-				java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+				Dimension rv = new Dimension( 0, 0 );
 				for( int i = 0; i < N; i += 2 ) {
 					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
-					java.awt.Component contents = parent.getComponent( i + 1 );
-					javax.swing.ButtonModel buttonModel = button.getModel();
+					Component contents = parent.getComponent( i + 1 );
+					ButtonModel buttonModel = button.getModel();
 					rv.width = Math.max( rv.width, button.getPreferredSize().width );
 					rv.width = Math.max( rv.width, contents.getPreferredSize().width );
 
@@ -86,16 +98,16 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 				}
 				return rv;
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( N );
-				return new java.awt.Dimension( 100, 100 );
+				Logger.severe( N );
+				return new Dimension( 100, 100 );
 			}
 		}
 
 		@Override
-		public void layoutContainer( java.awt.Container parent ) {
+		public void layoutContainer( Container parent ) {
 			final int N = parent.getComponentCount();
 			if( ( N % 2 ) == 0 ) {
-				java.awt.Dimension parentSize = parent.getSize();
+				Dimension parentSize = parent.getSize();
 				int consumedHeight = 0;
 				for( int i = 0; i < N; i += 2 ) {
 					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
@@ -105,8 +117,8 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 				}
 				for( int i = 0; i < N; i += 2 ) {
 					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
-					java.awt.Component contents = parent.getComponent( i + 1 );
-					javax.swing.ButtonModel buttonModel = button.getModel();
+					Component contents = parent.getComponent( i + 1 );
+					ButtonModel buttonModel = button.getModel();
 					if( buttonModel.isSelected() ) {
 						contents.setSize( parentSize.width, parentSize.height - consumedHeight );
 					} else {
@@ -115,12 +127,12 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 				}
 				int y = 0;
 				for( int i = 0; i < N; i++ ) {
-					java.awt.Component component = parent.getComponent( i );
+					Component component = parent.getComponent( i );
 					component.setLocation( 0, y );
 					y += component.getHeight();
 				}
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( N );
+				Logger.severe( N );
 			}
 		}
 
@@ -128,12 +140,12 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	//	private E card;
 
-	public ToolPaletteTabbedPane( org.lgna.croquet.TabState<E, ?> model ) {
+	public ToolPaletteTabbedPane( TabState<E, ?> model ) {
 		super( model );
 	}
 
 	@Override
-	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState ) {
 		ToolPaletteTitle rv = new ToolPaletteTitle( itemSelectedState );
 		rv.setPartOfAccordion( true );
 		rv.setHorizontalAlignment( HorizontalAlignment.LEADING );
@@ -141,7 +153,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
 		return new AccordionLayoutManager();
 	}
 

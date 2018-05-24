@@ -53,6 +53,7 @@ import org.lgna.story.SScene;
 import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
+import org.lgna.story.implementation.JointedModelImp;
 
 /**
  * @author Dennis Cosgrove
@@ -102,7 +103,7 @@ public class IkScene extends SScene {
 		//if you want the skeleton visualization to be co-located
 		//		this.ogre.setOpacity( 0.25 );
 
-		org.lgna.story.implementation.JointedModelImp impl = EmployeesOnly.getImplementation( this.ogre );
+		JointedModelImp impl = EmployeesOnly.getImplementation( this.ogre );
 		impl.showVisualization();
 	}
 

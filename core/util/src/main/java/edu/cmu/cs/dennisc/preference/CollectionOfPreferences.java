@@ -42,44 +42,53 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CollectionOfPreferences {
-	private java.util.prefs.Preferences utilPrefs;
-	private edu.cmu.cs.dennisc.preference.Preference<?>[] preferences;
+	private Preferences utilPrefs;
+	private Preference<?>[] preferences;
 
 	public void initialize() {
 		assert this.preferences == null;
 		assert this.utilPrefs == null;
-		this.utilPrefs = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+		this.utilPrefs = Preferences.userNodeForPackage( this.getClass() );
+		if( SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			try {
 				this.utilPrefs.clear();
-			} catch( java.util.prefs.BackingStoreException bse ) {
+			} catch( BackingStoreException bse ) {
 				throw new RuntimeException( bse );
 			}
 		}
-		java.util.List<java.lang.reflect.Field> fields = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
-		this.preferences = new edu.cmu.cs.dennisc.preference.Preference<?>[ fields.size() ];
+		List<Field> fields = ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
+		this.preferences = new Preference<?>[ fields.size() ];
 		int i = 0;
-		for( java.lang.reflect.Field field : fields ) {
-			this.preferences[ i ] = (Preference)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
-			this.preferences[ i ].initialize( this, field.getName(), java.lang.reflect.Modifier.isTransient( field.getModifiers() ) );
+		for( Field field : fields ) {
+			this.preferences[ i ] = (Preference)ReflectionUtilities.get( field, this );
+			this.preferences[ i ].initialize( this, field.getName(), Modifier.isTransient( field.getModifiers() ) );
 			i++;
 		}
 		this.setOrder( this.preferences );
 	}
 
-	public java.util.prefs.Preferences getUtilPrefs() {
+	public Preferences getUtilPrefs() {
 		return this.utilPrefs;
 	}
 
-	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder( edu.cmu.cs.dennisc.preference.Preference<?>[] rv ) {
+	protected Preference<?>[] setOrder( Preference<?>[] rv ) {
 		return rv;
 	}
 
-	public final edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
+	public final Preference<?>[] getPreferences() {
 		assert this.preferences != null;
 		return this.preferences;
 	}

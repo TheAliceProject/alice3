@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
+import java.lang.annotation.Annotation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,7 +66,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 							}
 						}
 						if( rv != null ) {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.info( "MIGRATION: varArgs version used", rv );
+							Logger.info( "MIGRATION: varArgs version used", rv );
 							return rv;
 						}
 					}
@@ -117,7 +121,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 				if( varArgsMthd != null ) {
 					return new MethodReflectionProxy( varArgsMthd );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( original );
+					Logger.severe( original );
 				}
 			}
 		}
@@ -148,7 +152,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 	}
 
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy<?> o ) {
 		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
 			MethodReflectionProxy other = (MethodReflectionProxy)o;
 			return this.name != null ? this.name.equals( other.name ) : other.name == null;
@@ -199,7 +203,7 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 	}
 
 	@Override
-	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {
+	protected Annotation[][] getReifiedParameterAnnotations() {
 		java.lang.reflect.Method mthd = this.getReification();
 		if( mthd != null ) {
 			return mthd.getParameterAnnotations();

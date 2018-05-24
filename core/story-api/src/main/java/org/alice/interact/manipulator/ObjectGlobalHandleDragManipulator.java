@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
+import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 
@@ -90,12 +92,12 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 		if( this.activeManipulator instanceof OnscreenPicturePlaneInformedManipulator ) {
 			( (OnscreenPicturePlaneInformedManipulator)this.activeManipulator ).setOnscreenRenderTarget( onscreenRenderTarget );
@@ -168,7 +170,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 
 	@Override
-	public org.alice.interact.event.ManipulationEvent getMainManipulationEvent() {
+	public ManipulationEvent getMainManipulationEvent() {
 		if( this.activeManipulator != null ) {
 			return this.activeManipulator.getMainManipulationEvent();
 		} else {
@@ -245,7 +247,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 
 	private AbstractManipulator activeManipulator;
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
+	private OnscreenRenderTarget onscreenRenderTarget;
 	private ManipulationHandle activeHandle = null;
 	private AbstractCamera camera = null;
 }

@@ -42,23 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.history;
 
+import org.alice.ide.ProjectApplication;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.DocumentFrame;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.undo.UndoHistory;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryOperation extends org.lgna.croquet.ActionOperation {
-	public HistoryOperation( java.util.UUID id, org.lgna.croquet.DocumentFrame documentFrame ) {
-		super( org.alice.ide.ProjectApplication.HISTORY_GROUP, id );
+public abstract class HistoryOperation extends ActionOperation {
+	public HistoryOperation( UUID id, DocumentFrame documentFrame ) {
+		super( ProjectApplication.HISTORY_GROUP, id );
 		this.documentFrame = documentFrame;
 	}
 
-	protected abstract void performInternal( org.lgna.croquet.undo.UndoHistory historyManager );
+	protected abstract void performInternal( UndoHistory historyManager );
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.undo.UndoHistory historyManager = this.documentFrame.getDocument().getUndoHistory( org.lgna.croquet.Application.PROJECT_GROUP );
+	protected void perform( CompletionStep<?> step ) {
+		UndoHistory historyManager = this.documentFrame.getDocument().getUndoHistory( Application.PROJECT_GROUP );
 		this.performInternal( historyManager );
 		step.finish();
 	}
 
-	private final org.lgna.croquet.DocumentFrame documentFrame;
+	private final DocumentFrame documentFrame;
 }

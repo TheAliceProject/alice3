@@ -42,31 +42,42 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class FileDialogOperation extends Operation {
-	public FileDialogOperation( Group group, java.util.UUID migrationId ) {
+	public FileDialogOperation( Group group, UUID migrationId ) {
 		super( group, migrationId );
 	}
 
-	protected abstract java.io.File showFileDialog( java.awt.Component awtComponent );
+	protected abstract File showFileDialog( Component awtComponent );
 
-	protected abstract void handleFile( java.io.File file ) throws CancelException, java.io.IOException;
+	protected abstract void handleFile( File file ) throws CancelException, IOException;
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		java.awt.Component awtComponent = null; //todo
-		java.io.File file = this.showFileDialog( awtComponent );
+	protected void perform( Transaction transaction, Trigger trigger ) {
+		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		Component awtComponent = null; //todo
+		File file = this.showFileDialog( awtComponent );
 		if( file != null ) {
 			try {
 				this.handleFile( file );
 				step.finish();
-			} catch( java.io.IOException ioe ) {
-				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( ioe.getMessage() )
+			} catch( IOException ioe ) {
+				new OkDialog.Builder( ioe.getMessage() )
 						.title( this.getImp().getName() )
-						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+						.messageType( MessageType.ERROR )
 						.buildAndShow();
 				step.cancel();
 			} catch( CancelException ce ) {

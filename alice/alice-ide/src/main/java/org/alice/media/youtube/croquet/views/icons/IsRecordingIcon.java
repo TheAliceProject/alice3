@@ -42,9 +42,15 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views.icons;
 
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.RenderingHints;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -56,8 +62,8 @@ import javax.swing.Icon;
 public class IsRecordingIcon implements Icon {
 	private static final int SIZE = 20;
 	private static final Color RECORD_BASE_COLOR = new Color( 191, 63, 63 );
-	private static final Color RECORD_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 1.5 );
-	private static final Color RECORD_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 0.5 );
+	private static final Color RECORD_HIGHLIGHT_COLOR = ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 1.5 );
+	private static final Color RECORD_SHADOW_COLOR = ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 0.5 );
 	private static final Color STOP_COLOR = Color.BLACK;
 
 	@Override
@@ -72,9 +78,9 @@ public class IsRecordingIcon implements Icon {
 
 	@Override
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint prevPaint = g2.getPaint();
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		Graphics2D g2 = (Graphics2D)g;
+		Paint prevPaint = g2.getPaint();
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 		if( c instanceof AbstractButton ) {
 			AbstractButton button = (AbstractButton)c;
 			ButtonModel buttonModel = button.getModel();
@@ -82,7 +88,7 @@ public class IsRecordingIcon implements Icon {
 				g.setColor( STOP_COLOR );
 				g.fillRect( x, y, SIZE, SIZE );
 			} else {
-				g2.setPaint( new java.awt.GradientPaint( x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR ) );
+				g2.setPaint( new GradientPaint( x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR ) );
 				g.fillOval( x, y, SIZE, SIZE );
 				g.setColor( Color.BLACK );
 				g.drawOval( x, y, SIZE, SIZE );

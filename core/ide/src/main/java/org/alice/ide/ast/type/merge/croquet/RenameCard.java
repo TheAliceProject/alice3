@@ -42,25 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import edu.cmu.cs.dennisc.javax.swing.ColorCustomizer;
+import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.Panel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class RenameCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+public final class RenameCard extends SimpleComposite<Panel> {
 	private final MemberHubWithNameState<?> memberHubWithNameState;
-	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer;
+	private final ColorCustomizer foregroundCustomizer;
 
-	public RenameCard( MemberHubWithNameState<?> memberHubWithNameState, edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer ) {
-		super( java.util.UUID.fromString( "6551b6a3-b2be-43dd-a7fc-78e397765344" ) );
+	public RenameCard( MemberHubWithNameState<?> memberHubWithNameState, ColorCustomizer foregroundCustomizer ) {
+		super( UUID.fromString( "6551b6a3-b2be-43dd-a7fc-78e397765344" ) );
 		this.memberHubWithNameState = memberHubWithNameState;
 		this.foregroundCustomizer = foregroundCustomizer;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
+	protected Panel createView() {
 		MemberNameState<?> nameState = this.memberHubWithNameState.getNameState();
 
-		org.lgna.croquet.views.MigPanel rv = new org.lgna.croquet.views.MigPanel( this, "fill, insets 0", "[grow,shrink]" );
-		rv.addComponent( org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.createTextField( nameState, this.foregroundCustomizer ) );
+		MigPanel rv = new MigPanel( this, "fill, insets 0", "[grow,shrink]" );
+		rv.addComponent( MemberViewUtilities.createTextField( nameState, this.foregroundCustomizer ) );
 		return rv;
 	}
 }

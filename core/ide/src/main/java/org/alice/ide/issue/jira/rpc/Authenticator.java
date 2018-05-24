@@ -42,12 +42,16 @@
  *******************************************************************************/
 package org.alice.ide.issue.jira.rpc;
 
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcFault;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Authenticator implements edu.cmu.cs.dennisc.jira.rpc.Authenticator {
 	@Override
-	public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
+	public Object login( XmlRpcClient client ) throws XmlRpcException, XmlRpcFault {
 		return client.invoke( "jira1.login", new Object[] { "alice3_rpc", "iNw6aFRhNia6SirM" } );
 	}
 }

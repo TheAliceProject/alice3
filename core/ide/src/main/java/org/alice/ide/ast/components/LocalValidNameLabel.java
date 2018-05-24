@@ -42,16 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.ast.components;
 
+import org.lgna.project.ast.UserLocal;
+
 /**
  * @author Dennis Cosgrove
  */
 public class LocalValidNameLabel extends DeclarationNameLabel {
-	public LocalValidNameLabel( org.lgna.project.ast.UserLocal local ) {
+	public LocalValidNameLabel( UserLocal local ) {
 		super( local );
 	}
 
 	@Override
 	protected String getTextForNullName() {
-		return ( (org.lgna.project.ast.UserLocal)getDeclaration() ).getValidName();
+		return ( (UserLocal)getDeclaration() ).getValidName();
 	}
 }

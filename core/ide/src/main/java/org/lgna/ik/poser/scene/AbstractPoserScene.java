@@ -43,10 +43,13 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.PoserAnimatorDragAdapter;
+import org.alice.interact.handle.HandleStyle;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.core.IKCore;
@@ -108,7 +111,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		for( List<JointSelectionSphere> list : limbToJointMap.values() ) {
 			temp.addAll( list );
 		}
-		this.allJointSelectionSpheres = java.util.Collections.unmodifiableList( temp );
+		this.allJointSelectionSpheres = Collections.unmodifiableList( temp );
 	}
 
 	protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( T model );
@@ -179,7 +182,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		addCustomDragAdapter();
 	}
 
-	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	private OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getOnscreenRenderTarget();
 	}
 
@@ -196,7 +199,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		synchronized( dragListeners ) {
 			poserAnimatorDragAdapter = new PoserAnimatorDragAdapter( this );
 			poserAnimatorDragAdapter.setAnimator( ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getAnimator() );
-			poserAnimatorDragAdapter.setInteractionState( org.alice.interact.handle.HandleStyle.ROTATION );
+			poserAnimatorDragAdapter.setInteractionState( HandleStyle.ROTATION );
 			poserAnimatorDragAdapter.setTarget( model );
 			poserAnimatorDragAdapter.setOnscreenRenderTarget( getOnscreenRenderTarget() );
 			poserAnimatorDragAdapter.setHandleVisibility( adapter.getJointRotationHandleVisibilityState().getValue() );
@@ -241,7 +244,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		}
 	}
 
-	public java.util.List<JointSelectionSphere> getJointSelectionSpheres() {
+	public List<JointSelectionSphere> getJointSelectionSpheres() {
 		return this.allJointSelectionSpheres;
 	}
 

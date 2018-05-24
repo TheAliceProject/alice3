@@ -42,10 +42,37 @@
  *******************************************************************************/
 package org.alice.ide.member;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon;
+import org.alice.ide.member.views.MemberTabView;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
+import org.lgna.croquet.event.ValueEvent;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.views.BooleanStateButton;
+import org.lgna.croquet.views.HorizontalTextPosition;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMember;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+
+import javax.swing.JComponent;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabComposite<V extends org.alice.ide.member.views.MemberTabView> extends MemberOrControlFlowTabComposite<V> {
+public abstract class MemberTabComposite<V extends MemberTabView> extends MemberOrControlFlowTabComposite<V> {
 	public static boolean ARE_TOOL_PALETTES_INERT = true;
 
 	public static boolean getExpandedAccountingForInert( boolean isExpanded ) {
@@ -59,29 +86,29 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	protected static final String GROUP_BY_CATEGORY_KEY = "groupByCategory";
 	protected static final String SORT_ALPHABETICALLY_KEY = "sortAlphabetically";
 
-	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
+	public static MethodsSubComposite SEPARATOR = null;
 
-	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
-		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
+	protected static boolean isInclusionDesired( AbstractMember member ) {
+		if( member instanceof AbstractMethod ) {
+			AbstractMethod method = (AbstractMethod)member;
 			if( method.isStatic() ) {
 				return false;
 			}
-		} else if( member instanceof org.lgna.project.ast.AbstractField ) {
-			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
+		} else if( member instanceof AbstractField ) {
+			AbstractField field = (AbstractField)member;
 			if( field.isStatic() ) {
 				return false;
 			}
 		}
 		if( member.isPublicAccess() || member.isUserAuthored() ) {
-			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
-			return ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
+			Visibility visibility = member.getVisibility();
+			return ( visibility == null ) || visibility.equals( Visibility.PRIME_TIME );
 		} else {
 			return false;
 		}
 	}
 
-	private class InstanceFactoryListener implements org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> {
+	private class InstanceFactoryListener implements ValueListener<InstanceFactory> {
 		private boolean isActive;
 
 		public boolean isActive() {
@@ -93,7 +120,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+		public void valueChanged( ValueEvent<InstanceFactory> e ) {
 			if( e.isAdjusting() ) {
 				//pass
 			} else {
@@ -107,24 +134,24 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 	private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
 
-	private final org.lgna.croquet.event.ValueListener<String> sortListener = new org.lgna.croquet.event.ValueListener<String>() {
+	private final ValueListener<String> sortListener = new ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
+		public void valueChanged( ValueEvent<String> e ) {
 			MemberTabComposite.this.getView().refreshLater();
 		}
 	};
 
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationCompositeListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+	private final ValueListener<DeclarationComposite<?, ?>> declarationCompositeListener = new ValueListener<DeclarationComposite<?, ?>>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
+		public void valueChanged( ValueEvent<DeclarationComposite<?, ?>> e ) {
 			MemberTabComposite.this.refreshContentsLater();
 		}
 	};
 
-	private final java.util.List<javax.swing.JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final List<JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = Lists.newCopyOnWriteArrayList();
 	private final AddMethodMenuModel addMethodMenuModel;
 
-	public MemberTabComposite( java.util.UUID migrationId, AddMethodMenuModel addMethodMenuModel ) {
+	public MemberTabComposite( UUID migrationId, AddMethodMenuModel addMethodMenuModel ) {
 		super( migrationId );
 		this.addMethodMenuModel = addMethodMenuModel;
 	}
@@ -136,19 +163,19 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	@Override
 	protected void initialize() {
 		super.initialize();
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addNewSchoolValueListener( this.instanceFactoryListener );
+		IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
-	public abstract org.lgna.croquet.ImmutableDataSingleSelectListState<String> getSortState();
+	public abstract ImmutableDataSingleSelectListState<String> getSortState();
 
 	@Override
-	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected final ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	private void repaintTitles() {
 		try {
-			for( javax.swing.JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges ) {
+			for( JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges ) {
 				jComponent.repaint();
 			}
 		} catch( Throwable t ) {
@@ -166,32 +193,32 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		this.getView().refreshLater();
 	}
 
-	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
+	protected abstract boolean isAcceptable( AbstractMethod method );
 
-	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
+	protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
 
-	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
+	protected abstract List<FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
 
-	protected abstract UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type );
+	protected abstract UserMethodsSubComposite getUserMethodsSubComposite( NamedUserType type );
 
 	protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
 
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public List<MethodsSubComposite> getSubComposites() {
+		List<MethodsSubComposite> rv = Lists.newLinkedList();
 
-		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<JavaMethod> javaMethods = Lists.newLinkedList();
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
+		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+			AbstractType<?, ?, ?> type = instanceFactory.getValueType();
 			while( type != null ) {
-				if( type instanceof org.lgna.project.ast.NamedUserType ) {
-					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+				if( type instanceof NamedUserType ) {
+					NamedUserType namedUserType = (NamedUserType)type;
 					UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite( namedUserType );
 					rv.add( userMethodsSubComposite );
-				} else if( type instanceof org.lgna.project.ast.JavaType ) {
-					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
+				} else if( type instanceof JavaType ) {
+					JavaType javaType = (JavaType)type;
+					for( JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
 						if( this.isAcceptable( javaMethod ) ) {
 							if( isInclusionDesired( javaMethod ) ) {
 								javaMethods.add( javaMethod );
@@ -215,12 +242,12 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		if( SORT_ALPHABETICALLY_KEY.equals( sortValue ) ) {
 			//todo
 		} else {
-			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
+			List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
 			for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
-				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
+				List<JavaMethod> acceptedMethods = Lists.newLinkedList();
+				ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
 				while( methodIterator.hasNext() ) {
-					org.lgna.project.ast.JavaMethod method = methodIterator.next();
+					JavaMethod method = methodIterator.next();
 					if( potentialSubComposite.isAcceptingOf( method ) ) {
 						acceptedMethods.add( method );
 						methodIterator.remove();
@@ -234,14 +261,14 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			}
 		}
 
-		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> postSubComposites = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<FilteredJavaMethodsSubComposite> postSubComposites = Lists.newLinkedList();
 
-		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
+		List<FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
 		for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
-			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
+			List<JavaMethod> acceptedMethods = Lists.newLinkedList();
+			ListIterator<JavaMethod> methodIterator = javaMethods.listIterator();
 			while( methodIterator.hasNext() ) {
-				org.lgna.project.ast.JavaMethod method = methodIterator.next();
+				JavaMethod method = methodIterator.next();
 				if( potentialSubComposite.isAcceptingOf( method ) ) {
 					acceptedMethods.add( method );
 					methodIterator.remove();
@@ -270,26 +297,26 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		super.handlePreActivation();
 		this.instanceFactoryListener.setActive( true );
 		this.getSortState().addNewSchoolValueListener( this.sortListener );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationCompositeListener );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationCompositeListener );
 		this.refreshContentsLater();
 		this.repaintTitles();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationCompositeListener );
+		IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationCompositeListener );
 		this.getSortState().removeNewSchoolValueListener( this.sortListener );
 		this.instanceFactoryListener.setActive( false );
 		super.handlePostDeactivation();
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.views.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
-		final boolean IS_ICON_DESIRED = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() == false;
+		final boolean IS_ICON_DESIRED = IsAlwaysShowingBlocksState.getInstance().getValue() == false;
 		if( IS_ICON_DESIRED ) {
-			button.getModel().setIconForBothTrueAndFalse( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
-			button.setHorizontalTextPosition( org.lgna.croquet.views.HorizontalTextPosition.TRAILING );
+			button.getModel().setIconForBothTrueAndFalse( IndirectCurrentAccessibleTypeIcon.SINGLTON );
+			button.setHorizontalTextPosition( HorizontalTextPosition.TRAILING );
 			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
 		}
 	}

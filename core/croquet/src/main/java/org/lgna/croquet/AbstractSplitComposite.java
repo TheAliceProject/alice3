@@ -42,11 +42,16 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.AbstractSplitPane;
+import org.lgna.croquet.views.ScrollPane;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSplitComposite<SP extends org.lgna.croquet.views.AbstractSplitPane<?>> extends AbstractComposite<SP> {
-	public AbstractSplitComposite( java.util.UUID id ) {
+public abstract class AbstractSplitComposite<SP extends AbstractSplitPane<?>> extends AbstractComposite<SP> {
+	public AbstractSplitComposite( UUID id ) {
 		super( id );
 	}
 
@@ -55,12 +60,12 @@ public abstract class AbstractSplitComposite<SP extends org.lgna.croquet.views.A
 	public abstract Composite<?> getTrailingComposite();
 
 	@Override
-	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected final ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
+	public final boolean contains( Model model ) {
 		if( super.contains( model ) ) {
 			return true;
 		} else {

@@ -42,16 +42,20 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import org.lgna.story.SJointedModel;
+import org.lgna.story.resources.BasicResource;
+import org.lgna.story.resources.JointId;
+
 /**
  * @author dculyba
  */
-public class BasicJointedModelImp extends JointedModelImp<org.lgna.story.SJointedModel, org.lgna.story.resources.BasicResource> {
-	public BasicJointedModelImp( org.lgna.story.SJointedModel abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.BasicResource> factory ) {
+public class BasicJointedModelImp extends JointedModelImp<SJointedModel, BasicResource> {
+	public BasicJointedModelImp( SJointedModel abstraction, JointImplementationAndVisualDataFactory<BasicResource> factory ) {
 		super( abstraction, factory );
 	}
 
 	@Override
-	public org.lgna.story.resources.JointId[] getRootJointIds() {
+	public JointId[] getRootJointIds() {
 		return this.getResource().getRootJointIds();
 	}
 

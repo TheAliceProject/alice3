@@ -42,14 +42,16 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt.geom;
 
+import java.awt.geom.Ellipse2D;
+
 /**
  * @author Dennis Cosgrove
  */
 public class Ellipse extends Shape {
-	private java.awt.geom.Ellipse2D m_ellipse;
+	private Ellipse2D m_ellipse;
 
 	public Ellipse( double xHalfLength, double yHalfLength ) {
-		m_ellipse = new java.awt.geom.Ellipse2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
+		m_ellipse = new Ellipse2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
 	}
 
 	@Override

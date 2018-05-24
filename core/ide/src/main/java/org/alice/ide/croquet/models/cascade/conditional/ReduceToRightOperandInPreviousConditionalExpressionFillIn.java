@@ -43,6 +43,11 @@
 
 package org.alice.ide.croquet.models.cascade.conditional;
 
+import org.lgna.project.ast.ConditionalInfixExpression;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +61,11 @@ public class ReduceToRightOperandInPreviousConditionalExpressionFillIn extends R
 	}
 
 	private ReduceToRightOperandInPreviousConditionalExpressionFillIn() {
-		super( java.util.UUID.fromString( "56cba468-e24c-461d-acdd-163bb2e6dbb0" ) );
+		super( UUID.fromString( "56cba468-e24c-461d-acdd-163bb2e6dbb0" ) );
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ConditionalInfixExpression previousConditional ) {
+	protected Expression getOperand( ConditionalInfixExpression previousConditional ) {
 		return previousConditional.rightOperand.getValue();
 	}
 }

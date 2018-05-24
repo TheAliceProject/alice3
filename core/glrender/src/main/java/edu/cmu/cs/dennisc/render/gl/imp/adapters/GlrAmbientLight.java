@@ -43,9 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.scenegraph.AmbientLight;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrAmbientLight extends GlrLight<edu.cmu.cs.dennisc.scenegraph.AmbientLight> {
+public class GlrAmbientLight extends GlrLight<AmbientLight> {
 }

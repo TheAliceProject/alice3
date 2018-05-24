@@ -43,12 +43,13 @@
 package org.alice.stageide.modelresource;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.lgna.story.resources.ModelResource;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class InstanceCreatorKey extends ResourceKey {
-	public abstract Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls();
+	public abstract Class<? extends ModelResource> getModelResourceCls();
 
 	@Override
 	public boolean isInstanceCreator() {

@@ -42,10 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class Matrix4x4 extends AbstractMatrix4x4 implements BinaryEncodableAndDecodable {
 	public final Vector4 right = new Vector4( 1, 0, 0, 0 );
 	public final Vector4 up = new Vector4( 0, 1, 0, 0 );
 	public final Vector4 backward = new Vector4( 0, 0, 1, 0 );
@@ -104,7 +112,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		}
 	}
 
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		right.decode( binaryDecoder );
 		up.decode( binaryDecoder );
 		backward.decode( binaryDecoder );
@@ -112,7 +120,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		right.encode( binaryEncoder );
 		up.encode( binaryEncoder );
 		backward.encode( binaryEncoder );
@@ -186,7 +194,7 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	}
 
 	@Override
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;
 			rv.append( "+-" );
@@ -714,10 +722,10 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		} else {
 			if( o instanceof Matrix4x4 ) {
 				Matrix4x4 other = (Matrix4x4)o;
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.right, other.right )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.up, other.up )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.backward, other.backward )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.translation, other.translation );
+				return Objects.equals( this.right, other.right )
+						&& Objects.equals( this.up, other.up )
+						&& Objects.equals( this.backward, other.backward )
+						&& Objects.equals( this.translation, other.translation );
 			} else {
 				return false;
 			}

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,7 +51,7 @@ public class JMigPane extends JPane {
 	private static final String DEFAULT_CONSTRAINT = "";
 
 	public JMigPane( String layoutConstraints, String columnConstraints, String rowConstraints ) {
-		net.miginfocom.swing.MigLayout layout = new net.miginfocom.swing.MigLayout();
+		MigLayout layout = new MigLayout();
 		layout.setLayoutConstraints( layoutConstraints );
 		layout.setColumnConstraints( columnConstraints );
 		layout.setRowConstraints( rowConstraints );

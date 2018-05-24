@@ -42,31 +42,37 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.animation.affine;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PointOfViewAnimation extends AffineAnimation {
-	public static final edu.cmu.cs.dennisc.math.AffineMatrix4x4 USE_EXISTING_VALUE_AT_RUN_TIME = null;
+	public static final AffineMatrix4x4 USE_EXISTING_VALUE_AT_RUN_TIME = null;
 
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_povBegin = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_povEnd = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+	private AffineMatrix4x4 m_povBegin = AffineMatrix4x4.createNaN();
+	private AffineMatrix4x4 m_povEnd = AffineMatrix4x4.createNaN();
 
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_pov0Runtime = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_povRuntime = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+	private AffineMatrix4x4 m_pov0Runtime = AffineMatrix4x4.createNaN();
+	private AffineMatrix4x4 m_povRuntime = AffineMatrix4x4.createNaN();
 
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_q0 = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_q1 = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
-	private edu.cmu.cs.dennisc.math.UnitQuaternion m_q = edu.cmu.cs.dennisc.math.UnitQuaternion.createNaN();
+	private UnitQuaternion m_q0 = UnitQuaternion.createNaN();
+	private UnitQuaternion m_q1 = UnitQuaternion.createNaN();
+	private UnitQuaternion m_q = UnitQuaternion.createNaN();
 
-	private edu.cmu.cs.dennisc.math.Point3 m_t0 = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_t1 = new edu.cmu.cs.dennisc.math.Point3();
-	private edu.cmu.cs.dennisc.math.Point3 m_t = new edu.cmu.cs.dennisc.math.Point3();
+	private Point3 m_t0 = new Point3();
+	private Point3 m_t1 = new Point3();
+	private Point3 m_t = new Point3();
 
 	public PointOfViewAnimation() {
 		this( null, null, null, null );
 	}
 
-	public PointOfViewAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.AffineMatrix4x4 povBegin, edu.cmu.cs.dennisc.math.AffineMatrix4x4 povEnd ) {
+	public PointOfViewAnimation( AbstractTransformable sgSubject, ReferenceFrame sgAsSeenBy, AffineMatrix4x4 povBegin, AffineMatrix4x4 povEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		setPointOfViewBegin( povBegin );
 		setPointOfViewEnd( povEnd );
@@ -80,33 +86,33 @@ public class PointOfViewAnimation extends AffineAnimation {
 		m_t.setNaN();
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessPointOfViewBeginUsedAtRuntime() {
+	public AffineMatrix4x4 accessPointOfViewBeginUsedAtRuntime() {
 		return m_pov0Runtime;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime( AffineMatrix4x4 rv ) {
 		rv.set( m_pov0Runtime );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime() {
-		return getPointOfViewBeginUsedAtRuntime( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public AffineMatrix4x4 getPointOfViewBeginUsedAtRuntime() {
+		return getPointOfViewBeginUsedAtRuntime( AffineMatrix4x4.createNaN() );
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessPointOfViewBegin() {
+	public AffineMatrix4x4 accessPointOfViewBegin() {
 		return m_povBegin;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPointOfViewBegin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getPointOfViewBegin( AffineMatrix4x4 rv ) {
 		rv.set( m_povBegin );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPointOfViewBegin() {
-		return getPointOfViewBegin( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public AffineMatrix4x4 getPointOfViewBegin() {
+		return getPointOfViewBegin( AffineMatrix4x4.createNaN() );
 	}
 
-	public void setPointOfViewBegin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 povBegin ) {
+	public void setPointOfViewBegin( AffineMatrix4x4 povBegin ) {
 		if( povBegin != USE_EXISTING_VALUE_AT_RUN_TIME ) {
 			m_povBegin.set( povBegin );
 		} else {
@@ -114,20 +120,20 @@ public class PointOfViewAnimation extends AffineAnimation {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessPointOfViewEnd() {
+	public AffineMatrix4x4 accessPointOfViewEnd() {
 		return m_povEnd;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPointOfViewEnd( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getPointOfViewEnd( AffineMatrix4x4 rv ) {
 		rv.set( m_povEnd );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPointOfViewEnd() {
-		return getPointOfViewEnd( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public AffineMatrix4x4 getPointOfViewEnd() {
+		return getPointOfViewEnd( AffineMatrix4x4.createNaN() );
 	}
 
-	public void setPointOfViewEnd( edu.cmu.cs.dennisc.math.AffineMatrix4x4 povEnd ) {
+	public void setPointOfViewEnd( AffineMatrix4x4 povEnd ) {
 		if( povEnd != null ) {
 			m_povEnd.set( povEnd );
 		} else {

@@ -42,23 +42,33 @@
  */
 package edu.cmu.cs.dennisc.ui.lookingglass;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.rigidbody.TranslationDerivative;
+import edu.cmu.cs.dennisc.math.rigidbody.TranslationFunction;
+
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-class CameraNavigationDerivative extends edu.cmu.cs.dennisc.math.rigidbody.TranslationDerivative {
+class CameraNavigationDerivative extends TranslationDerivative {
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.TranslationFunction<CameraNavigationDerivative> {
+public class CameraNavigationFunction extends TranslationFunction<CameraNavigationDerivative> {
 	private static final double DISTANCE_MINIMUM = 4.0;
 	private static final double DISTANCE_MAXIMUM = 100.0;
 
 	private static final double FORCE_FOR_ACCELERATION = +4.0;
 	private static final double FORCE_FOR_DECELERATION = -8.0;
 
-	private edu.cmu.cs.dennisc.math.Vector3 m_velocityRequested = new edu.cmu.cs.dennisc.math.Vector3();
+	private Vector3 m_velocityRequested = new Vector3();
 
 	//private double m_distance = Double.NaN;
 	private double m_distanceRequested = 16.0;
@@ -76,16 +86,16 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 
 	public void setKeyPressed( int keyCode, boolean isKeyPressed ) {
 		switch( keyCode ) {
-		case java.awt.event.KeyEvent.VK_UP:
+		case KeyEvent.VK_UP:
 			m_isForwardKeyPressed = isKeyPressed;
 			break;
-		case java.awt.event.KeyEvent.VK_DOWN:
+		case KeyEvent.VK_DOWN:
 			m_isBackwardKeyPressed = isKeyPressed;
 			break;
-		case java.awt.event.KeyEvent.VK_LEFT:
+		case KeyEvent.VK_LEFT:
 			m_isLeftKeyPressed = isKeyPressed;
 			break;
-		case java.awt.event.KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_RIGHT:
 			m_isRightKeyPressed = isKeyPressed;
 			break;
 		}
@@ -96,7 +106,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		return new CameraNavigationDerivative();
 	}
 
-	public void requestVelocity( edu.cmu.cs.dennisc.math.Vector3 velocityRequested ) {
+	public void requestVelocity( Vector3 velocityRequested ) {
 		m_velocityRequested.set( velocityRequested );
 	}
 
@@ -113,7 +123,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		m_distanceRequested = Math.max( Math.min( distance, DISTANCE_MAXIMUM ), DISTANCE_MINIMUM );
 	}
 
-	public void requestYaw( edu.cmu.cs.dennisc.math.Angle yaw ) {
+	public void requestYaw( Angle yaw ) {
 		m_yawRequested = yaw.getAsRadians();
 	}
 
@@ -122,7 +132,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	}
 
 	public void requestTarget( double x, double y, double z ) {
-		edu.cmu.cs.dennisc.math.Point3 translation = accessTranslation();
+		Point3 translation = accessTranslation();
 		translation.set( x, y, z );
 	}
 
@@ -131,29 +141,29 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		m_pitchRequested += pitchDelta;
 	}
 
-	public edu.cmu.cs.dennisc.math.Angle getYawRequested() {
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( m_yawRequested );
+	public Angle getYawRequested() {
+		return new AngleInRadians( m_yawRequested );
 	}
 
-	public edu.cmu.cs.dennisc.math.Angle getPitchRequested() {
-		return new edu.cmu.cs.dennisc.math.AngleInRadians( m_pitchRequested );
+	public Angle getPitchRequested() {
+		return new AngleInRadians( m_pitchRequested );
 	}
 
 	public double getDistanceRequested() {
 		return m_distanceRequested;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 accessTargetRequested() {
+	public Point3 accessTargetRequested() {
 		return accessTranslation();
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested( edu.cmu.cs.dennisc.math.Point3 rv ) {
+	public Point3 getTargetRequested( Point3 rv ) {
 		rv.set( accessTargetRequested() );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 getTargetRequested() {
-		return getTargetRequested( new edu.cmu.cs.dennisc.math.Point3() );
+	public Point3 getTargetRequested() {
+		return getTargetRequested( new Point3() );
 	}
 
 	private static double getHeight( double distance ) {
@@ -166,9 +176,9 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Vector3 getForce( edu.cmu.cs.dennisc.math.Vector3 rv, double t ) {
+	protected Vector3 getForce( Vector3 rv, double t ) {
 		final double LENGTH_SQUARED_THRESHOLD = 0.25;
-		edu.cmu.cs.dennisc.math.Vector3 velocity = accessVelocity();
+		Vector3 velocity = accessVelocity();
 		if( m_velocityRequested.isZero() && ( velocity.calculateMagnitudeSquared() < LENGTH_SQUARED_THRESHOLD ) ) {
 			setMomentum( 0, 0, 0 );
 			rv.set( 0, 0, 0 );
@@ -232,7 +242,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 
 		double delta = 2.0 * dt;
 
-		edu.cmu.cs.dennisc.math.Point3 translation = accessTranslation();
+		Point3 translation = accessTranslation();
 		translation.y = Math.max( translation.y, 0 );
 		if( m_isForwardKeyPressed ) {
 			translation.z -= delta;
@@ -249,7 +259,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "update:", a );
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+	public AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv ) {
 		//		m_distance = m_distanceRequested;
 		//		double height = getHeight( m_distance );
 		//		m_pitch = Math.max( m_pitchRequested, getPitchMinimum( height, m_distance ) );
@@ -264,32 +274,32 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation() {
-		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
+	public AffineMatrix4x4 getTransformation() {
+		return getTransformation( AffineMatrix4x4.createNaN() );
 	}
 
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation ) {
+	public static AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation ) {
 		double height = getHeight( distance );
 		pitch = Math.max( pitch, getPitchMinimum( height, distance ) );
 
 		rv.setIdentity();
-		rv.applyRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( yaw ) );
+		rv.applyRotationAboutYAxis( new AngleInRadians( yaw ) );
 		rv.applyTranslation( 0, height, distance );
 		rv.applyTranslation( xTranslation, yTranslation, zTranslation );
-		rv.applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -pitch ) );
+		rv.applyRotationAboutXAxis( new AngleInRadians( -pitch ) );
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation ) {
-		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), yaw, pitch, distance, xTranslation, yTranslation, zTranslation );
+	public static AffineMatrix4x4 getTransformation( double yaw, double pitch, double distance, double xTranslation, double yTranslation, double zTranslation ) {
+		return getTransformation( AffineMatrix4x4.createNaN(), yaw, pitch, distance, xTranslation, yTranslation, zTranslation );
 	}
 
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, double yaw, double pitch, double distance, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	public static AffineMatrix4x4 getTransformation( AffineMatrix4x4 rv, double yaw, double pitch, double distance, Point3 translation ) {
 		return getTransformation( rv, yaw, pitch, distance, translation.x, translation.y, translation.z );
 	}
 
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( double yaw, double pitch, double distance, edu.cmu.cs.dennisc.math.Point3 translation ) {
-		return getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), yaw, pitch, distance, translation );
+	public static AffineMatrix4x4 getTransformation( double yaw, double pitch, double distance, Point3 translation ) {
+		return getTransformation( AffineMatrix4x4.createNaN(), yaw, pitch, distance, translation );
 	}
 
 }

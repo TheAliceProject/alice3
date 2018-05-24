@@ -42,6 +42,19 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.ide.ast.rename.RenameFieldComposite;
+import org.alice.ide.croquet.models.ast.DeleteFieldOperation;
+import org.alice.ide.croquet.models.ast.RevertFieldOperation;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.instancefactory.ThisFieldAccessFactory;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.project.ast.UserField;
+import org.lgna.story.SCamera;
+import org.lgna.story.SScene;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,25 +63,25 @@ public class OneShotUtilities {
 		throw new AssertionError();
 	}
 
-	public static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createMenuItemPrepModels( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	public static List<StandardMenuItemPrepModel> createMenuItemPrepModels( InstanceFactory instanceFactory ) {
+		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 		models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
 		models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-			org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-			org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-			models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
+		if( instanceFactory instanceof ThisFieldAccessFactory ) {
+			ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
+			UserField field = thisFieldAccessFactory.getField();
+			models.add( RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
 			//Prevent users from deleting the camera or the scene
-			if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
+			if( field.getValueType().isAssignableTo( SCamera.class ) || field.getValueType().isAssignableTo( SScene.class ) ) {
 				//pass
 			} else {
-				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				models.add( DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 			}
 			//			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
 			//				models.add( new AnimatorInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
 			//				models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
 			//			}
-			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+			models.add( RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 		}
 		return models;
 	}

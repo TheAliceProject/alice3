@@ -42,23 +42,45 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.triggers.DocumentEventTrigger;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.PasswordField;
+import org.lgna.croquet.views.SubduedTextField;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.TextArea;
+import org.lgna.croquet.views.TextComponent;
+import org.lgna.croquet.views.TextField;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends SimpleValueState<String> {
 	private final class DocumentListener implements javax.swing.event.DocumentListener {
-		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+		private void handleUpdate( DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {
 				try {
 					javax.swing.text.Document document = e.getDocument();
 					String nextValue = document.getText( 0, document.getLength() );
-					StringState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
-				} catch( javax.swing.text.BadLocationException ble ) {
+					StringState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, DocumentEventTrigger.createUserInstance( e ) );
+				} catch( BadLocationException ble ) {
 					throw new RuntimeException( ble );
 				}
 			} else {
 				if( this.ignoreCount < 0 ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( StringState.this );
+					Logger.severe( StringState.this );
 				}
 			}
 		}
@@ -74,17 +96,17 @@ public abstract class StringState extends SimpleValueState<String> {
 		}
 
 		@Override
-		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+		public void changedUpdate( DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
 
 		@Override
-		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+		public void insertUpdate( DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
 
 		@Override
-		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+		public void removeUpdate( DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
 	};
@@ -92,22 +114,22 @@ public abstract class StringState extends SimpleValueState<String> {
 	private final DocumentListener documentListener = new DocumentListener();
 
 	public static class SwingModel {
-		private final java.util.List<org.lgna.croquet.views.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+		private final List<TextComponent<?>> textComponents = Lists.newCopyOnWriteArrayList();
+		private final javax.swing.text.Document document = new PlainDocument();
 
 		private SwingModel() {
 		}
 
-		public void install( org.lgna.croquet.views.TextComponent<?> textComponent ) {
+		public void install( TextComponent<?> textComponent ) {
 			this.textComponents.add( textComponent );
 			textComponent.getAwtComponent().setDocument( this.document );
 		}
 
-		public void deinstall( org.lgna.croquet.views.TextComponent<?> textComponent ) {
+		public void deinstall( TextComponent<?> textComponent ) {
 			this.textComponents.remove( textComponent );
 		}
 
-		public Iterable<org.lgna.croquet.views.TextComponent<?>> getTextComponents() {
+		public Iterable<TextComponent<?>> getTextComponents() {
 			return this.textComponents;
 		}
 
@@ -120,19 +142,19 @@ public abstract class StringState extends SimpleValueState<String> {
 
 	private String textForBlankCondition;
 
-	public StringState( Group group, java.util.UUID id, String initialValue ) {
+	public StringState( Group group, UUID id, String initialValue ) {
 		super( group, id, initialValue );
 		try {
 			this.swingModel.document.insertString( 0, initialValue, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 		this.swingModel.document.addDocumentListener( this.documentListener );
 	}
 
 	@Override
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		return java.util.Collections.emptyList();
+	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -146,12 +168,12 @@ public abstract class StringState extends SimpleValueState<String> {
 	}
 
 	@Override
-	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public String decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
 
@@ -166,7 +188,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
-			for( org.lgna.croquet.views.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
+			for( TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
 				textComponent.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}
@@ -182,7 +204,7 @@ public abstract class StringState extends SimpleValueState<String> {
 		try {
 			this.swingModel.document.remove( 0, this.swingModel.document.getLength() );
 			this.swingModel.document.insertString( 0, nextValue, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		} finally {
 			this.documentListener.popIgnore();
@@ -200,9 +222,9 @@ public abstract class StringState extends SimpleValueState<String> {
 
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
-		for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.lgna.croquet.views.TextComponent<?> ) {
-				org.lgna.croquet.views.TextComponent<?> textComponent = (org.lgna.croquet.views.TextComponent<?>)component;
+		for( SwingComponentView<?> component : ComponentManager.getComponents( this ) ) {
+			if( component instanceof TextComponent<?> ) {
+				TextComponent<?> textComponent = (TextComponent<?>)component;
 				textComponent.updateTextForBlankCondition( this.textForBlankCondition );
 			}
 		}
@@ -216,43 +238,43 @@ public abstract class StringState extends SimpleValueState<String> {
 	protected String getSwingValue() {
 		try {
 			return this.swingModel.document.getText( 0, this.swingModel.document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
+		} catch( BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
 
-	public org.lgna.croquet.views.TextField createTextField() {
+	public TextField createTextField() {
 		return this.createTextField( null );
 	}
 
-	public org.lgna.croquet.views.PasswordField createPasswordField() {
+	public PasswordField createPasswordField() {
 		return this.createPasswordField( null );
 	}
 
-	public org.lgna.croquet.views.TextField createTextField( Operation operation ) {
-		return new org.lgna.croquet.views.TextField( this, operation );
+	public TextField createTextField( Operation operation ) {
+		return new TextField( this, operation );
 	}
 
-	public org.lgna.croquet.views.PasswordField createPasswordField( Operation operation ) {
-		return new org.lgna.croquet.views.PasswordField( this, operation );
+	public PasswordField createPasswordField( Operation operation ) {
+		return new PasswordField( this, operation );
 	}
 
-	public org.lgna.croquet.views.SubduedTextField createSubduedTextField() {
-		return new org.lgna.croquet.views.SubduedTextField( this );
+	public SubduedTextField createSubduedTextField() {
+		return new SubduedTextField( this );
 	}
 
-	public org.lgna.croquet.views.TextArea createTextArea() {
-		return new org.lgna.croquet.views.TextArea( this );
+	public TextArea createTextArea() {
+		return new TextArea( this );
 	}
 
 	public void selectAll() {
-		for( org.lgna.croquet.views.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
+		for( TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
 			textComponent.selectAll();
 		}
 	}
 
 	public void requestFocus() {
-		for( org.lgna.croquet.views.AwtComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( this ) ) {
+		for( AwtComponentView<?> component : ComponentManager.getComponents( this ) ) {
 			//todo: find the most appropriate candidate?
 			component.requestFocus();
 		}

@@ -43,16 +43,20 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.BooleanState;
+
+import javax.swing.JCheckBox;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CheckBox extends BooleanStateButton<javax.swing.JCheckBox> {
-	public CheckBox( org.lgna.croquet.BooleanState model ) {
+public class CheckBox extends BooleanStateButton<JCheckBox> {
+	public CheckBox( BooleanState model ) {
 		super( model, "CheckBox" );
 	}
 
 	@Override
-	protected javax.swing.JCheckBox createAwtComponent() {
-		return new javax.swing.JCheckBox();
+	protected JCheckBox createAwtComponent() {
+		return new JCheckBox();
 	}
 }

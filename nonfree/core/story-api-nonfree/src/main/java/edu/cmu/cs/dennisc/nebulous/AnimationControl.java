@@ -43,13 +43,15 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
+import edu.cmu.cs.dennisc.eula.LicenseRejectedException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AnimationControl {
 	private native void initialize( Object o, Model model );
 
-	public AnimationControl( Object o, Model model ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public AnimationControl( Object o, Model model ) throws LicenseRejectedException {
 		Manager.initializeIfNecessary();
 		initialize( o, model );
 	}

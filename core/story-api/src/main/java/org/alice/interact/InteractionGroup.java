@@ -71,7 +71,7 @@ public final class InteractionGroup {
 	}
 
 	public static class InteractionInfo {
-		public InteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, org.alice.interact.PickHint.PickType... acceptableTypes ) {
+		public InteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes ) {
 			this.possibleObjects = possibleObjects;
 			this.handleSet = handleSet;
 			this.manipulator = manipulator;
@@ -110,7 +110,7 @@ public final class InteractionGroup {
 		groups.add( info );
 	}
 
-	public void addInteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, org.alice.interact.PickHint.PickType... acceptableTypes ) {
+	public void addInteractionInfo( PossibleObjects possibleObjects, HandleSet handleSet, ManipulatorConditionSet manipulator, PickHint.PickType... acceptableTypes ) {
 		groups.add( new InteractionInfo( possibleObjects, handleSet, manipulator, acceptableTypes ) );
 	}
 

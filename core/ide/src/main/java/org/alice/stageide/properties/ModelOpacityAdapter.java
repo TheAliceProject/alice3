@@ -46,12 +46,13 @@ package org.alice.stageide.properties;
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.Property;
 import org.lgna.story.implementation.Property.Listener;
 
 public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelImp> {
 
 	private Listener<Float> propertyListener;
-	private org.lgna.story.implementation.Property<Float> property;
+	private Property<Float> property;
 
 	private void initializeListenersIfNecessary()
 	{
@@ -60,7 +61,7 @@ public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelIm
 			this.propertyListener = new Listener<Float>()
 			{
 				@Override
-				public void propertyChanged( org.lgna.story.implementation.Property<Float> property, Float prevValue, Float nextValue ) {
+				public void propertyChanged( Property<Float> property, Float prevValue, Float nextValue ) {
 					handleInternalValueChanged();
 				}
 			};

@@ -43,32 +43,60 @@
 
 package org.lgna.croquet.views;
 
+import edu.cmu.cs.dennisc.java.awt.KnurlUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup;
+import org.lgna.croquet.data.MutableListData;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonModel;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.plaf.basic.BasicButtonUI;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.LayoutManager;
+import java.awt.Paint;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPanel> {
+public abstract class MutableList<E> extends SwingComponentView<JPanel> {
 
-	private class MutableListLayout implements java.awt.LayoutManager {
+	private class MutableListLayout implements LayoutManager {
 		@Override
-		public void addLayoutComponent( String name, java.awt.Component comp ) {
+		public void addLayoutComponent( String name, Component comp ) {
 		}
 
 		@Override
-		public void removeLayoutComponent( java.awt.Component comp ) {
+		public void removeLayoutComponent( Component comp ) {
 		}
 
 		@Override
-		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
-			return new java.awt.Dimension( 0, 0 );
+		public Dimension minimumLayoutSize( Container parent ) {
+			return new Dimension( 0, 0 );
 		}
 
 		@Override
-		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+		public Dimension preferredLayoutSize( Container parent ) {
 			final int M = data.getItemCount();
-			java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+			Dimension rv = new Dimension( 0, 0 );
 			for( int i = 0; i < M; i++ ) {
-				java.awt.Component componentI = parent.getComponent( i );
-				java.awt.Dimension size = componentI.getPreferredSize();
+				Component componentI = parent.getComponent( i );
+				Dimension size = componentI.getPreferredSize();
 				rv.width = Math.max( rv.width, size.width );
 				rv.height += size.height;
 			}
@@ -76,36 +104,36 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 		}
 
 		@Override
-		public void layoutContainer( java.awt.Container parent ) {
-			java.awt.Dimension parentSize = parent.getSize();
+		public void layoutContainer( Container parent ) {
+			Dimension parentSize = parent.getSize();
 			int y = 0;
 			final int N = parent.getComponentCount();
 			final int M = data.getItemCount();
 			for( int i = 0; i < M; i++ ) {
-				java.awt.Component componentI = parent.getComponent( i );
+				Component componentI = parent.getComponent( i );
 				componentI.setLocation( 0, y );
 				int height = componentI.getPreferredSize().height;
 				componentI.setSize( parentSize.width, height );
 				y += height;
 			}
 			for( int i = M; i < N; i++ ) {
-				java.awt.Component componentI = parent.getComponent( i );
+				Component componentI = parent.getComponent( i );
 				componentI.setSize( 0, 0 );
 			}
 		}
 	}
 
-	private static java.awt.Color BASE_COLOR = new java.awt.Color( 221, 221, 255 );
-	private static java.awt.Color HIGHLIGHT_COLOR = BASE_COLOR.brighter();
+	private static Color BASE_COLOR = new Color( 221, 221, 255 );
+	private static Color HIGHLIGHT_COLOR = BASE_COLOR.brighter();
 
-	private static java.awt.Color SELECTED_BASE_COLOR = new java.awt.Color( 57, 105, 138 );
-	private static java.awt.Color SELECTED_HIGHLIGHT_COLOR = SELECTED_BASE_COLOR.brighter();
+	private static Color SELECTED_BASE_COLOR = new Color( 57, 105, 138 );
+	private static Color SELECTED_HIGHLIGHT_COLOR = SELECTED_BASE_COLOR.brighter();
 
-	protected abstract class JItemAtIndexButton extends javax.swing.JToggleButton {
+	protected abstract class JItemAtIndexButton extends JToggleButton {
 		public JItemAtIndexButton() {
 			this.setOpaque( false );
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
-			this.setLayout( new java.awt.BorderLayout() );
+			this.setBorder( BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+			this.setLayout( new BorderLayout() );
 			this.setRolloverEnabled( true );
 		}
 
@@ -113,47 +141,47 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 
 		@Override
 		public void updateUI() {
-			this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
+			this.setUI( new BasicButtonUI() );
 		}
 
 		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
+		protected void paintComponent( Graphics g ) {
 			//super.paintComponent( g );
-			javax.swing.ButtonModel model = this.getModel();
-			java.awt.Paint paint;
+			ButtonModel model = this.getModel();
+			Paint paint;
 			int width = this.getWidth() - 1;
 			int height = this.getHeight() - 1;
 			if( model.isSelected() ) {
 				if( model.isRollover() ) {
-					paint = new java.awt.GradientPaint( 0, 0, SELECTED_HIGHLIGHT_COLOR, 0, height, SELECTED_BASE_COLOR );
+					paint = new GradientPaint( 0, 0, SELECTED_HIGHLIGHT_COLOR, 0, height, SELECTED_BASE_COLOR );
 				} else {
 					paint = SELECTED_BASE_COLOR;
 				}
 			} else {
 				if( model.isRollover() ) {
-					paint = new java.awt.GradientPaint( 0, 0, HIGHLIGHT_COLOR, 0, height, BASE_COLOR );
+					paint = new GradientPaint( 0, 0, HIGHLIGHT_COLOR, 0, height, BASE_COLOR );
 				} else {
 					paint = BASE_COLOR;
 				}
 			}
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			Graphics2D g2 = (Graphics2D)g;
 			if( paint != null ) {
-				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
 				g2.setPaint( paint );
 				g2.fillRoundRect( 0, 0, width, height, 8, 8 );
-				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.setPaint( Color.DARK_GRAY );
 				g2.drawRoundRect( 0, 0, width, height, 8, 8 );
 				if( model.isRollover() ) {
-					paint = java.awt.Color.LIGHT_GRAY;
+					paint = Color.LIGHT_GRAY;
 				} else {
-					paint = java.awt.Color.GRAY;
+					paint = Color.GRAY;
 				}
 				g2.setPaint( paint );
-				edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, height - 5 );
+				KnurlUtilities.paintKnurl5( g, 2, 2, 6, height - 5 );
 
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+				g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 			} else {
 				//						g2.setPaint( MutableList.this.getUnselectedBackgroundColor() );
 				//						g.clearRect( 0, 0, width, height );
@@ -161,33 +189,33 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 		}
 	}
 
-	private final org.lgna.croquet.data.MutableListData<E> data;
-	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup buttonGroup = new edu.cmu.cs.dennisc.javax.swing.ClearableButtonGroup();
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+	private final MutableListData<E> data;
+	private final java.util.List<JItemAtIndexButton> jButtons = Lists.newCopyOnWriteArrayList();
+	private final ClearableButtonGroup buttonGroup = new ClearableButtonGroup();
+	private final ListDataListener listDataListener = new ListDataListener() {
 		@Override
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+		public void intervalAdded( ListDataEvent e ) {
 			MutableList.this.handleListDataChanged();
 		}
 
 		@Override
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+		public void intervalRemoved( ListDataEvent e ) {
 			MutableList.this.handleListDataChanged();
 		}
 
 		@Override
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+		public void contentsChanged( ListDataEvent e ) {
 			MutableList.this.handleListDataChanged();
 		}
 	};
 
-	public MutableList( org.lgna.croquet.data.MutableListData<E> data ) {
+	public MutableList( MutableListData<E> data ) {
 		this.data = data;
 		this.data.addListener( this.listDataListener );
 		this.handleListDataChanged();
 	}
 
-	public org.lgna.croquet.data.MutableListData<E> getData() {
+	public MutableListData<E> getData() {
 		return this.data;
 	}
 
@@ -222,35 +250,35 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 	}
 
 	@Override
-	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
+	protected JPanel createAwtComponent() {
+		JPanel rv = new JPanel();
 		rv.setLayout( new MutableListLayout() );
 		return rv;
 	}
 
-	private static final javax.swing.KeyStroke DELETE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DELETE, 0 );
-	private static final javax.swing.KeyStroke BACK_SPACE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_BACK_SPACE, 0 );
+	private static final KeyStroke DELETE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_DELETE, 0 );
+	private static final KeyStroke BACK_SPACE_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_BACK_SPACE, 0 );
 	//note: ups/downs do not seem to work
-	private static final javax.swing.KeyStroke UP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_UP, 0 );
-	private static final javax.swing.KeyStroke KEYPAD_UP_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_KP_UP, 0 );
-	private static final javax.swing.KeyStroke DOWN_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DOWN, 0 );
-	private static final javax.swing.KeyStroke KEYPAD_DOWN_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_KP_DOWN, 0 );
-	private final java.awt.event.ActionListener removeSelectedListener = new java.awt.event.ActionListener() {
+	private static final KeyStroke UP_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_UP, 0 );
+	private static final KeyStroke KEYPAD_UP_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_KP_UP, 0 );
+	private static final KeyStroke DOWN_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_DOWN, 0 );
+	private static final KeyStroke KEYPAD_DOWN_KEY_STROKE = KeyStroke.getKeyStroke( KeyEvent.VK_KP_DOWN, 0 );
+	private final ActionListener removeSelectedListener = new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			System.out.println( "removeSelectedItem" );
 			//MutableList.this.removeSelectedItem();
 		}
 	};
-	private final java.awt.event.ActionListener moveSelectionUpListener = new java.awt.event.ActionListener() {
+	private final ActionListener moveSelectionUpListener = new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			System.out.println( "moveSelectionUp" );
 		}
 	};
-	private final java.awt.event.ActionListener moveSelectionDownListener = new java.awt.event.ActionListener() {
+	private final ActionListener moveSelectionDownListener = new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			System.out.println( "moveSelectionDown" );
 		}
 	};

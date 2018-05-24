@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.property;
 
+import edu.cmu.cs.dennisc.java.util.Objects;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,7 +66,7 @@ public class NumberProperty extends InstanceProperty<Number> {
 		if( value instanceof Double ) {
 			assert ( Double.isNaN( (Double)value ) == false ) || this.isNaNAcceptable : this;
 		}
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+		if( Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( value );
 		}
 	}

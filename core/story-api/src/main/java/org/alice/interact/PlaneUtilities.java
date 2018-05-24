@@ -42,16 +42,19 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.render.RenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
 public class PlaneUtilities {
-	public static edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, edu.cmu.cs.dennisc.math.Ray ray ) {
+	public static Point3 getPointInPlane( Plane plane, Ray ray ) {
 		double t = plane.intersect( ray );
 		if( Double.isNaN( t ) || ( t < 0 ) ) {
 			return null;
@@ -60,9 +63,9 @@ public class PlaneUtilities {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel ) {
-		edu.cmu.cs.dennisc.math.Ray ray = renderTarget.getRayAtPixel( xPixel, yPixel, camera );
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = camera.getAbsoluteTransformation();
+	public static Ray getRayFromPixel( RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel ) {
+		Ray ray = renderTarget.getRayAtPixel( xPixel, yPixel, camera );
+		AffineMatrix4x4 m = camera.getAbsoluteTransformation();
 		ray.transform( m );
 		return ray;
 	}

@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.lgna.story.ast;
 
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import org.lgna.common.EachInTogetherRunnable;
+import org.lgna.common.ThreadUtilities;
+import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
 /**
@@ -53,8 +57,8 @@ public class JavaCodeUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
-		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
+	public static JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
+		return new JavaCodeGenerator.Builder()
 				.isLambdaSupported( true )
 				.isPublicStaticFinalFieldGetterDesired( false )
 				.addCommentsLocalizationBundleName( "org.lgna.story.CodeComments" )
@@ -63,19 +67,19 @@ public class JavaCodeUtilities {
 				.addCodeOrganizerDefinition( "Scene", CodeOrganizer.sceneClassCodeOrganizer )
 				.addCodeOrganizerDefinition( "Program", CodeOrganizer.programClassCodeOrganizer )
 				.addImportStaticMethod(
-						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
-								org.lgna.common.ThreadUtilities.class,
+						ReflectionUtilities.getMethod(
+								ThreadUtilities.class,
 								"doTogether",
 								Runnable[].class ) )
 				.addImportStaticMethod(
-						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
-								org.lgna.common.ThreadUtilities.class,
+						ReflectionUtilities.getMethod(
+								ThreadUtilities.class,
 								"eachInTogether",
-								org.lgna.common.EachInTogetherRunnable.class,
+								EachInTogetherRunnable.class,
 								Object[].class ) );
 	}
 
-	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
+	public static JavaCodeGenerator createJavaCodeGenerator() {
 		return createJavaCodeGeneratorBuilder().build();
 	}
 }

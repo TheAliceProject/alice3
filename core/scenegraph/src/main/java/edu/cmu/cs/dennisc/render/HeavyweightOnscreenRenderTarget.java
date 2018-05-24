@@ -42,8 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface HeavyweightOnscreenRenderTarget extends OnscreenRenderTarget<java.awt.Component> {
+public interface HeavyweightOnscreenRenderTarget extends OnscreenRenderTarget<Component> {
 }

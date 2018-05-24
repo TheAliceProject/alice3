@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.croquet;
 
+import org.alice.ide.ast.type.merge.croquet.views.MethodsView;
+import org.lgna.project.ast.UserMethod;
+
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsToolPalette<V extends org.alice.ide.ast.type.merge.croquet.views.MethodsView> extends MembersToolPalette<V, org.lgna.project.ast.UserMethod> {
-	public MethodsToolPalette( java.util.UUID migrationId, java.net.URI uriForDescriptionPurposesOnly, java.util.List<org.lgna.project.ast.UserMethod> projectMethods ) {
+public abstract class MethodsToolPalette<V extends MethodsView> extends MembersToolPalette<V, UserMethod> {
+	public MethodsToolPalette( UUID migrationId, URI uriForDescriptionPurposesOnly, List<UserMethod> projectMethods ) {
 		super( migrationId, uriForDescriptionPurposesOnly, projectMethods );
 	}
 }

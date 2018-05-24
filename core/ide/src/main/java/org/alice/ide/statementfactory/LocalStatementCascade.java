@@ -43,42 +43,60 @@
 
 package org.alice.ide.statementfactory;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.Cascade;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeWithInternalBlank;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalBlank<org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class LocalStatementCascade extends CascadeWithInternalBlank<Expression> {
+	private static MapToMap<UserLocal, BlockStatementIndexPair, LocalStatementCascade> mapToMap = MapToMap.newInstance();
 
-	public static synchronized LocalStatementCascade getInstance( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return mapToMap.getInitializingIfAbsent( local, blockStatementIndexPair, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade>() {
+	public static synchronized LocalStatementCascade getInstance( UserLocal local, BlockStatementIndexPair blockStatementIndexPair ) {
+		return mapToMap.getInitializingIfAbsent( local, blockStatementIndexPair, new MapToMap.Initializer<UserLocal, BlockStatementIndexPair, LocalStatementCascade>() {
 			@Override
-			public LocalStatementCascade initialize( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+			public LocalStatementCascade initialize( UserLocal local, BlockStatementIndexPair blockStatementIndexPair ) {
 				return new LocalStatementCascade( local, blockStatementIndexPair );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserLocal local;
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+	private final UserLocal local;
+	private final BlockStatementIndexPair blockStatementIndexPair;
 
-	private LocalStatementCascade( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, java.util.UUID.fromString( "0c4a6b56-3935-4e4b-a4e0-7828338d0f8c" ), org.lgna.project.ast.Expression.class );
+	private LocalStatementCascade( UserLocal local, BlockStatementIndexPair blockStatementIndexPair ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "0c4a6b56-3935-4e4b-a4e0-7828338d0f8c" ), Expression.class );
 		this.local = local;
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
+	protected Edit createEdit( CompletionStep<Cascade<Expression>> completionStep, Expression[] values ) {
+		return new InsertStatementEdit(
 				completionStep,
 				this.blockStatementIndexPair,
-				new org.lgna.project.ast.ExpressionStatement( values[ 0 ] ) );
+				new ExpressionStatement( values[ 0 ] ) );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<Expression> blankNode ) {
 		rv.add( LocalAssignmentFillIn.getInstance( this.local ) );
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.local.getValueType();
+		AbstractType<?, ?, ?> type = this.local.getValueType();
 		if( type.isArray() ) {
 			rv.add( LocalArrayAtIndexAssignmentFillIn.getInstance( this.local ) );
 		}

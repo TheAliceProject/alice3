@@ -42,33 +42,39 @@
  *******************************************************************************/
 package org.alice.ide.sceneeditor;
 
+import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.views.BorderPanel;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.BorderPanel> {
+public final class SceneComposite extends SimpleComposite<BorderPanel> {
 	public SceneComposite() {
-		super( java.util.UUID.fromString( "b334790e-d706-456b-b519-8fc3f585c098" ) );
+		super( UUID.fromString( "b334790e-d706-456b-b519-8fc3f585c098" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.BorderPanel createView() {
-		return new org.lgna.croquet.views.BorderPanel( this );
+	protected BorderPanel createView() {
+		return new BorderPanel( this );
 	}
 
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.lgna.croquet.views.BorderPanel view = this.getView();
+		BorderPanel view = this.getView();
 		synchronized( view.getTreeLock() ) {
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleShowing();
-			view.addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+			StorytellingSceneEditor.getInstance().handleShowing();
+			view.addCenterComponent( StorytellingSceneEditor.getInstance() );
 		}
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleHiding();
-		org.lgna.croquet.views.BorderPanel view = this.getView();
+		StorytellingSceneEditor.getInstance().handleHiding();
+		BorderPanel view = this.getView();
 		synchronized( view.getTreeLock() ) {
 			this.getView().removeAllComponents();
 		}

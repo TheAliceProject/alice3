@@ -42,38 +42,56 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.imageio;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import org.w3c.dom.NodeList;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class PngUtilities {
-	private static javax.imageio.metadata.IIOMetadataNode getFirstPhysNodeCreatingAndAddingIfNecessary( javax.imageio.metadata.IIOMetadataNode parentNode ) {
+	private static IIOMetadataNode getFirstPhysNodeCreatingAndAddingIfNecessary( IIOMetadataNode parentNode ) {
 		final String NAME = "pHYs";
-		javax.imageio.metadata.IIOMetadataNode rv;
-		org.w3c.dom.NodeList nodeList = parentNode.getElementsByTagName( NAME );
+		IIOMetadataNode rv;
+		NodeList nodeList = parentNode.getElementsByTagName( NAME );
 		switch( nodeList.getLength() ) {
 		case 0:
-			rv = new javax.imageio.metadata.IIOMetadataNode( NAME );
+			rv = new IIOMetadataNode( NAME );
 			parentNode.appendChild( rv );
 			break;
 		default:
-			rv = (javax.imageio.metadata.IIOMetadataNode)nodeList.item( 0 );
+			rv = (IIOMetadataNode)nodeList.item( 0 );
 		}
 		return rv;
 	}
 
-	public static void write( java.awt.image.RenderedImage image, int dpi, javax.imageio.stream.ImageOutputStream ios ) throws java.io.IOException {
-		javax.imageio.ImageTypeSpecifier imageTypeSpecifier = javax.imageio.ImageTypeSpecifier.createFromRenderedImage( image );
+	public static void write( RenderedImage image, int dpi, ImageOutputStream ios ) throws IOException {
+		ImageTypeSpecifier imageTypeSpecifier = ImageTypeSpecifier.createFromRenderedImage( image );
 
 		int pixelsPerMeter = (int)Math.round( dpi / 0.0254 );
 		String pixelsPerMeterText = Integer.toString( pixelsPerMeter );
-		java.util.Iterator<javax.imageio.ImageWriter> imageWriterIter = javax.imageio.ImageIO.getImageWritersByFormatName( "png" );
+		Iterator<ImageWriter> imageWriterIter = ImageIO.getImageWritersByFormatName( "png" );
 		//todo: convert to while loop?
 		if( imageWriterIter.hasNext() ) {
-			javax.imageio.ImageWriter imageWriter = imageWriterIter.next();
-			javax.imageio.ImageWriteParam imageWriteParam = imageWriter.getDefaultWriteParam();
+			ImageWriter imageWriter = imageWriterIter.next();
+			ImageWriteParam imageWriteParam = imageWriter.getDefaultWriteParam();
 
 			//seems to create new metadata
-			javax.imageio.metadata.IIOMetadata metadata = imageWriter.getDefaultImageMetadata( imageTypeSpecifier, imageWriteParam );
+			IIOMetadata metadata = imageWriter.getDefaultImageMetadata( imageTypeSpecifier, imageWriteParam );
 
 			//access restricted
 			//if( metadata instanceof com.sun.imageio.plugins.png.PNGMetadata ) {
@@ -85,15 +103,15 @@ public class PngUtilities {
 			//}
 
 			String formatName = metadata.getNativeMetadataFormatName();
-			javax.imageio.metadata.IIOMetadataNode root = (javax.imageio.metadata.IIOMetadataNode)metadata.getAsTree( formatName );
-			javax.imageio.metadata.IIOMetadataNode physNode = getFirstPhysNodeCreatingAndAddingIfNecessary( root );
+			IIOMetadataNode root = (IIOMetadataNode)metadata.getAsTree( formatName );
+			IIOMetadataNode physNode = getFirstPhysNodeCreatingAndAddingIfNecessary( root );
 			physNode.setAttribute( "pixelsPerUnitXAxis", pixelsPerMeterText );
 			physNode.setAttribute( "pixelsPerUnitYAxis", pixelsPerMeterText );
 			physNode.setAttribute( "unitSpecifier", "meter" );
 			metadata.setFromTree( formatName, root );
 
-			java.util.List<java.awt.image.BufferedImage> thumbnails = null;
-			javax.imageio.IIOImage iioImage = new javax.imageio.IIOImage( image, thumbnails, metadata );
+			List<BufferedImage> thumbnails = null;
+			IIOImage iioImage = new IIOImage( image, thumbnails, metadata );
 			imageWriter.setOutput( ios );
 			imageWriter.write( iioImage );
 			ios.flush();
@@ -103,8 +121,8 @@ public class PngUtilities {
 		}
 	}
 
-	public static void write( java.awt.image.RenderedImage image, int dpi, java.io.File file ) throws java.io.IOException {
-		javax.imageio.stream.ImageOutputStream ios = javax.imageio.ImageIO.createImageOutputStream( file );
+	public static void write( RenderedImage image, int dpi, File file ) throws IOException {
+		ImageOutputStream ios = ImageIO.createImageOutputStream( file );
 		try {
 			write( image, dpi, ios );
 		} finally {
@@ -112,14 +130,14 @@ public class PngUtilities {
 		}
 	}
 
-	public static void main( String[] args ) throws java.io.IOException {
-		java.io.File normalFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "test.png" );
-		java.io.File dpiFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "test300.png" );
-		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( 1200, 600, java.awt.image.BufferedImage.TYPE_INT_RGB );
+	public static void main( String[] args ) throws IOException {
+		File normalFile = new File( FileUtilities.getDefaultDirectory(), "test.png" );
+		File dpiFile = new File( FileUtilities.getDefaultDirectory(), "test300.png" );
+		BufferedImage image = new BufferedImage( 1200, 600, BufferedImage.TYPE_INT_RGB );
 
 		//test to make sure not messing up future image io writes
 		write( image, 300, dpiFile );
-		javax.imageio.ImageIO.write( image, "png", normalFile );
+		ImageIO.write( image, "png", normalFile );
 
 	}
 }

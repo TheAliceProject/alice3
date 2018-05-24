@@ -43,25 +43,33 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import org.alice.ide.croquet.edits.ast.ConvertStatementWithBodyEdit;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractStatementWithBody;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ConvertStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
-	private org.lgna.project.ast.AbstractStatementWithBody original;
+public abstract class ConvertStatementWithBodyOperation extends ActionOperation {
+	private AbstractStatementWithBody original;
 
-	public ConvertStatementWithBodyOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractStatementWithBody original ) {
-		super( org.lgna.croquet.Application.PROJECT_GROUP, individualId );
+	public ConvertStatementWithBodyOperation( UUID individualId, AbstractStatementWithBody original ) {
+		super( Application.PROJECT_GROUP, individualId );
 		this.original = original;
 	}
 
-	public org.lgna.project.ast.AbstractStatementWithBody getOriginal() {
+	public AbstractStatementWithBody getOriginal() {
 		return this.original;
 	}
 
-	protected abstract org.lgna.project.ast.AbstractStatementWithBody createReplacement();
+	protected abstract AbstractStatementWithBody createReplacement();
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.ConvertStatementWithBodyEdit( step, this.createReplacement() ) );
+	protected void perform( CompletionStep<?> step ) {
+		step.commitAndInvokeDo( new ConvertStatementWithBodyEdit( step, this.createReplacement() ) );
 	}
 }

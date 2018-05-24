@@ -43,22 +43,34 @@
 
 package org.alice.ide.croquet.models;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.IDE;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StandardExpressionState extends ExpressionState {
-	public StandardExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue ) {
+	public StandardExpressionState( Group group, UUID id, Expression initialValue ) {
 		super( group, id, initialValue );
 	}
 
-	protected abstract org.lgna.project.ast.AbstractType<?, ?, ?> getType();
+	protected abstract AbstractType<?, ?, ?> getType();
 
-	protected abstract org.lgna.project.annotations.ValueDetails<?> getValueDetails();
+	protected abstract ValueDetails<?> getValueDetails();
 
 	@Override
-	protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+	protected void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<Expression> blankNode ) {
 		//org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getValue(), null );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate cascade context" );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.getType(), this.getValueDetails() );
+		Logger.errln( "todo: investigate cascade context" );
+		IDE.getActiveInstance().getExpressionCascadeManager().appendItems( blankChildren, blankNode, this.getType(), this.getValueDetails() );
 	}
 }

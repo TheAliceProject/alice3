@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.LayoutManager;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,13 +57,13 @@ public class ScrollingPopupMenuUtilities {
 		throw new AssertionError();
 	}
 
-	private static final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+	private static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 		@Override
-		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
-			java.awt.Component component = e.getComponent();
-			if( component instanceof javax.swing.JPopupMenu ) {
-				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)component;
-				java.awt.LayoutManager layoutManager = jPopupMenu.getLayout();
+		public void mouseWheelMoved( MouseWheelEvent e ) {
+			Component component = e.getComponent();
+			if( component instanceof JPopupMenu ) {
+				JPopupMenu jPopupMenu = (JPopupMenu)component;
+				LayoutManager layoutManager = jPopupMenu.getLayout();
 				if( layoutManager instanceof ScrollingPopupMenuLayout ) {
 					ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout)layoutManager;
 					scrollingPopupMenuLayout.adjustIndex( e.getWheelRotation() );
@@ -66,7 +73,7 @@ public class ScrollingPopupMenuUtilities {
 		}
 	};
 
-	public static void initializeScrollingCapability( javax.swing.JPopupMenu jPopupMenu ) {
+	public static void initializeScrollingCapability( JPopupMenu jPopupMenu ) {
 		ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout( jPopupMenu );
 		jPopupMenu.setLayout( layout );
 		jPopupMenu.addMouseWheelListener( mouseWheelListener );
@@ -74,12 +81,12 @@ public class ScrollingPopupMenuUtilities {
 		jPopupMenu.add( new JScrollMenuItem( layout, ScrollDirection.DOWN ), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END );
 	}
 
-	public static void addSideMenu( javax.swing.JPopupMenu jPopupMenu, javax.swing.JMenu jSideMenu ) {
+	public static void addSideMenu( JPopupMenu jPopupMenu, JMenu jSideMenu ) {
 		jPopupMenu.add( jSideMenu, ScrollingPopupMenuLayout.ColumnConstraint.SIDE );
 	}
 
-	public static void removeAllNonScrollComponents( javax.swing.JPopupMenu jPopupMenu ) {
-		for( java.awt.Component component : jPopupMenu.getComponents() ) {
+	public static void removeAllNonScrollComponents( JPopupMenu jPopupMenu ) {
+		for( Component component : jPopupMenu.getComponents() ) {
 			if( component instanceof JScrollMenuItem ) {
 				//pass
 			} else {

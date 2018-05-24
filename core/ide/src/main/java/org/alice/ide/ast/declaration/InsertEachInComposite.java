@@ -43,11 +43,18 @@
 
 package org.alice.ide.ast.declaration;
 
+import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserLocal;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InsertEachInComposite<S extends org.lgna.project.ast.Statement> extends InsertStatementComposite<S> {
-	public InsertEachInComposite( java.util.UUID migrationId, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+public abstract class InsertEachInComposite<S extends Statement> extends InsertStatementComposite<S> {
+	public InsertEachInComposite( UUID migrationId, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		super( migrationId, new Details()
 				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
@@ -56,11 +63,11 @@ public abstract class InsertEachInComposite<S extends org.lgna.project.ast.State
 				blockStatementIndexPair, isEnveloping );
 	}
 
-	protected abstract S createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer );
+	protected abstract S createStatement( UserLocal item, Expression initializer );
 
 	@Override
 	protected final S createStatement() {
-		org.lgna.project.ast.UserLocal item = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
+		UserLocal item = new UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueComponentType(), true );
 		return this.createStatement( item, this.getInitializer() );
 	}
 }

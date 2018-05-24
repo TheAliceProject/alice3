@@ -43,11 +43,22 @@
 
 package org.alice.stageide.typecontext;
 
-enum SceneTypeCallable implements java.util.concurrent.Callable<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> {
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.DeclarationComposite;
+import org.alice.ide.declarationseditor.TypeComposite;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.typecontext.components.NonSceneTypeView;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.SimpleComposite;
+
+import java.util.UUID;
+import java.util.concurrent.Callable;
+
+enum SceneTypeCallable implements Callable<DeclarationComposite<?, ?>> {
 	SINGLEON() {
 		@Override
-		public org.alice.ide.declarationseditor.TypeComposite call() throws Exception {
-			return org.alice.ide.declarationseditor.TypeComposite.getInstance( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
+		public TypeComposite call() throws Exception {
+			return TypeComposite.getInstance( StageIDE.getActiveInstance().getSceneType() );
 		}
 	};
 }
@@ -55,17 +66,17 @@ enum SceneTypeCallable implements java.util.concurrent.Callable<org.alice.ide.de
 /**
  * @author Dennis Cosgrove
  */
-public final class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.typecontext.components.NonSceneTypeView> {
+public final class NonSceneTypeComposite extends SimpleComposite<NonSceneTypeView> {
 	public NonSceneTypeComposite() {
-		super( java.util.UUID.fromString( "866337e5-9309-4f31-9214-c319056e705d" ) );
+		super( UUID.fromString( "866337e5-9309-4f31-9214-c319056e705d" ) );
 	}
 
-	public org.lgna.croquet.Operation getSelectSceneTypeOperation() {
-		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+	public Operation getSelectSceneTypeOperation() {
+		return IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
 	}
 
 	@Override
-	protected org.alice.stageide.typecontext.components.NonSceneTypeView createView() {
-		return new org.alice.stageide.typecontext.components.NonSceneTypeView( this );
+	protected NonSceneTypeView createView() {
+		return new NonSceneTypeView( this );
 	}
 }

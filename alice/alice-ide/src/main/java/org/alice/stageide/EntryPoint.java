@@ -42,7 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide;
 
+import edu.cmu.cs.dennisc.crash.CrashDetector;
+import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
+import edu.cmu.cs.dennisc.javax.swing.WindowStack;
+import edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities;
 import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
+import org.alice.ide.story.AliceIde;
+import org.lgna.project.ProjectVersion;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.awt.Frame;
+import java.io.File;
+import java.util.Locale;
 
 /**
  * @author Dennis Cosgrove
@@ -54,51 +72,51 @@ public class EntryPoint {
 	private static HeapWatchDog heapMonitor;
 
 	public static void main( final String[] args ) {
-		final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector = new edu.cmu.cs.dennisc.crash.CrashDetector( EntryPoint.class );
+		final CrashDetector crashDetector = new CrashDetector( EntryPoint.class );
 		if( crashDetector.isPreviouslyOpenedButNotSucessfullyClosed() ) {
 			String propertyName = "org.alice.stageide.isCrashDetectionDesired";
 			String isCrashDetectionDesiredText = System.getProperty( propertyName, "true" );
-			if( "true".equals( isCrashDetectionDesiredText.toLowerCase( java.util.Locale.ENGLISH ) ) ) {
-				javax.swing.JOptionPane.showMessageDialog( null, "Alice did not successfully close last time." );
+			if( "true".equals( isCrashDetectionDesiredText.toLowerCase( Locale.ENGLISH ) ) ) {
+				JOptionPane.showMessageDialog( null, "Alice did not successfully close last time." );
 			}
 		}
 		crashDetector.open();
 
-		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
+		String text = ProjectVersion.getCurrentVersionText()/* + " BETA" */;
 		System.out.println( "version: " + text );
 
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
 
-				if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
+				if( PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
 					final Object macMenuBarUI;
-					if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-						if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "apple.laf.useScreenMenuBar" ) ) {
-							macMenuBarUI = javax.swing.UIManager.get( MENU_BAR_UI_NAME );
+					if( SystemUtilities.isMac() ) {
+						if( SystemUtilities.isPropertyTrue( "apple.laf.useScreenMenuBar" ) ) {
+							macMenuBarUI = UIManager.get( MENU_BAR_UI_NAME );
 						} else {
 							macMenuBarUI = null;
 						}
 					} else {
 						macMenuBarUI = null;
 					}
-					edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( NIMBUS_LOOK_AND_FEEL_NAME );
+					UIManagerUtilities.setLookAndFeel( NIMBUS_LOOK_AND_FEEL_NAME );
 					if( macMenuBarUI != null ) {
-						javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
+						UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
 					}
 				}
 
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.scaleFontIAppropriate();
+				UIManagerUtilities.scaleFontIAppropriate();
 
-				javax.swing.UIManager.put( "ScrollBar.width", 13 );
-				javax.swing.UIManager.put( "ScrollBar.incrementButtonGap", 0 );
-				javax.swing.UIManager.put( "ScrollBar.decrementButtonGap", 0 );
-				javax.swing.UIManager.put( "ScrollBar.thumb", edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 140 ) );
+				UIManager.put( "ScrollBar.width", 13 );
+				UIManager.put( "ScrollBar.incrementButtonGap", 0 );
+				UIManager.put( "ScrollBar.decrementButtonGap", 0 );
+				UIManager.put( "ScrollBar.thumb", ColorUtilities.createGray( 140 ) );
 
 				//java.awt.Font defaultFont = new java.awt.Font( null, java.awt.Font.BOLD, 14 );
 				//javax.swing.UIManager.getLookAndFeelDefaults().put( "defaultFont", defaultFont );
 
-				edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
+				ConsistentMouseDragEventQueue.pushIfAppropriate();
 
 				final int DEFAULT_WIDTH = 1000;
 				final int DEFAULT_HEIGHT = 740;
@@ -107,7 +125,7 @@ public class EntryPoint {
 				int width = DEFAULT_WIDTH;
 				int height = DEFAULT_HEIGHT;
 				boolean isMaximizationDesired = true;
-				java.io.File file = null;
+				File file = null;
 				String localeString = null;
 				int index = 0;
 				if( args.length > 0 ) {
@@ -123,7 +141,7 @@ public class EntryPoint {
 						}
 					}
 					if( args.length > index ) {
-						file = new java.io.File( args[ index ] );
+						file = new File( args[ index ] );
 					}
 					if( args.length > ( index + 2 ) ) {
 						try {
@@ -143,12 +161,12 @@ public class EntryPoint {
 					}
 				}
 
-				javax.swing.JFrame rootFrame = edu.cmu.cs.dennisc.javax.swing.WindowStack.getRootFrame();
+				JFrame rootFrame = WindowStack.getRootFrame();
 				rootFrame.setLocation( xLocation, yLocation );
 				rootFrame.setSize( width, height );
 
 				if( isMaximizationDesired ) {
-					rootFrame.setExtendedState( rootFrame.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+					rootFrame.setExtendedState( rootFrame.getExtendedState() | Frame.MAXIMIZED_BOTH );
 				}
 				if( localeString != null ) {
 					System.setProperty( "org.alice.ide.locale", localeString );
@@ -156,12 +174,12 @@ public class EntryPoint {
 					System.out.println( localeTest );
 				}
 
-				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde( crashDetector );
+				AliceIde ide = new AliceIde( crashDetector );
 				if( file != null ) {
 					if( file.exists() ) {
 						ide.setProjectFileToLoadOnWindowOpened( file );
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "file does not exist:", file );
+						Logger.warning( "file does not exist:", file );
 					}
 				}
 				ide.initialize( args );

@@ -44,6 +44,9 @@ package org.lgna.project.ast;
 
 import org.lgna.project.code.CodeAppender;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,8 +62,8 @@ public class Getter extends AbstractMethodContainedByUserField implements CodeAp
 	}
 
 	@Override
-	public java.util.List<AbstractParameter> getRequiredParameters() {
-		return java.util.Collections.emptyList();
+	public List<AbstractParameter> getRequiredParameters() {
+		return Collections.emptyList();
 	}
 
 	@Override

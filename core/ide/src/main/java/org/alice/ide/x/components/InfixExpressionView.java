@@ -43,18 +43,30 @@
 
 package org.alice.ide.x.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.FontUtilities;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+import org.alice.ide.i18n.Page;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.project.ast.InfixExpression;
+
+import javax.swing.JLabel;
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InfixExpressionView extends AbstractExpressionView<org.lgna.project.ast.InfixExpression> {
-	public InfixExpressionView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.InfixExpression<? extends Enum<?>> infixExpression ) {
+public class InfixExpressionView extends AbstractExpressionView<InfixExpression> {
+	public InfixExpressionView( AstI18nFactory factory, InfixExpression<? extends Enum<?>> infixExpression ) {
 		super( factory, infixExpression );
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
-		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( formatter.getInfixExpressionText( infixExpression ) );
-		org.lgna.croquet.views.SwingComponentView<?> component = factory.createComponent( page, infixExpression );
-		for( java.awt.Component child : component.getAwtComponent().getComponents() ) {
-			if( child instanceof javax.swing.JLabel ) {
-				javax.swing.JLabel label = (javax.swing.JLabel)child;
+		Formatter formatter = FormatterState.getInstance().getValue();
+		Page page = new Page( formatter.getInfixExpressionText( infixExpression ) );
+		SwingComponentView<?> component = factory.createComponent( page, infixExpression );
+		for( Component child : component.getAwtComponent().getComponents() ) {
+			if( child instanceof JLabel ) {
+				JLabel label = (JLabel)child;
 				String text = label.getText();
 				//todo: remove this terrible hack
 				boolean isScaleDesired = false;
@@ -72,9 +84,9 @@ public class InfixExpressionView extends AbstractExpressionView<org.lgna.project
 				} else if( text.length() == 4 ) {
 					isScaleDesired = " >= ".equals( text ) || " <= ".equals( text ) || " == ".equals( text );
 				}
-				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				FontUtilities.setFontToDerivedFont( label, TextWeight.BOLD );
 				if( isScaleDesired ) {
-					edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.5f );
+					FontUtilities.setFontToScaledFont( label, 1.5f );
 				}
 				//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 			}

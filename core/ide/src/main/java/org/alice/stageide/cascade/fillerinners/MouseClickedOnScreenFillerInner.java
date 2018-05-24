@@ -42,13 +42,22 @@
  *******************************************************************************/
 package org.alice.stageide.cascade.fillerinners;
 
-public class MouseClickedOnScreenFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+import org.alice.ide.cascade.fillerinners.ExpressionFillerInner;
+import org.alice.stageide.croquet.models.cascade.adapters.MouseClickedOnScreenAdapterFillIn;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.event.MouseClickOnScreenListener;
+
+import java.util.List;
+
+public class MouseClickedOnScreenFillerInner extends ExpressionFillerInner {
 	public MouseClickedOnScreenFillerInner() {
-		super( org.lgna.story.event.MouseClickOnScreenListener.class );
+		super( MouseClickOnScreenListener.class );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.adapters.MouseClickedOnScreenAdapterFillIn.getInstance() );
+	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
+		items.add( MouseClickedOnScreenAdapterFillIn.getInstance() );
 	}
 }

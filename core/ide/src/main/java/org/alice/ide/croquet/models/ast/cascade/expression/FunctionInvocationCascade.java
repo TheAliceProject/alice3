@@ -43,32 +43,43 @@
 
 package org.alice.ide.croquet.models.ast.cascade.expression;
 
+import edu.cmu.cs.dennisc.map.MapToMap;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
+import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionProperty;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class FunctionInvocationCascade extends ProjectExpressionPropertyCascade {
+	private static MapToMap<AbstractMethod, ExpressionProperty, FunctionInvocationCascade> mapToMap = MapToMap.newInstance();
 
-	public static FunctionInvocationCascade getInstance( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FunctionInvocationCascade getInstance( AbstractMethod method, ExpressionProperty expressionProperty ) {
 		assert method != null;
 		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( method, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade>() {
+		return mapToMap.getInitializingIfAbsent( method, expressionProperty, new MapToMap.Initializer<AbstractMethod, ExpressionProperty, FunctionInvocationCascade>() {
 			@Override
-			public FunctionInvocationCascade initialize( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+			public FunctionInvocationCascade initialize( AbstractMethod method, ExpressionProperty expressionProperty ) {
 				return new FunctionInvocationCascade( method, expressionProperty );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.AbstractMethod method;
+	private final AbstractMethod method;
 
-	private FunctionInvocationCascade( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
+	private FunctionInvocationCascade( AbstractMethod method, ExpressionProperty expressionProperty ) {
+		super( UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
-		return org.lgna.project.ast.AstUtilities.createMethodInvocation( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions );
+	protected Expression createExpression( Expression[] expressions ) {
+		return AstUtilities.createMethodInvocation( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(), this.method, expressions );
 	}
 }

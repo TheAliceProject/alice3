@@ -42,16 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.x.components;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
+import org.alice.ide.croquet.components.AbstractListPropertyPane;
+import org.alice.ide.x.AstI18nFactory;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+
+import javax.swing.BoxLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ListPropertyLabelsView extends org.alice.ide.croquet.components.AbstractListPropertyPane<edu.cmu.cs.dennisc.property.ListProperty<Object>, Object> {
-	public ListPropertyLabelsView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.ListProperty<Object> property ) {
-		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
+public class ListPropertyLabelsView extends AbstractListPropertyPane<ListProperty<Object>, Object> {
+	public ListPropertyLabelsView( AstI18nFactory factory, ListProperty<Object> property ) {
+		super( factory, property, BoxLayout.LINE_AXIS );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.AwtComponentView<?> createComponent( Object instance ) {
-		return new org.lgna.croquet.views.Label( instance.toString() );
+	protected AwtComponentView<?> createComponent( Object instance ) {
+		return new Label( instance.toString() );
 	}
 }

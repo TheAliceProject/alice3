@@ -42,17 +42,22 @@
  *******************************************************************************/
 package org.alice.media.youtube.croquet.views;
 
+import org.alice.media.youtube.croquet.ImageRecordComposite;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.MigPanel;
+
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.views.MigPanel {
-	private final org.lgna.croquet.views.BorderPanel lookingGlassRemoveableContainer = new org.lgna.croquet.views.BorderPanel();
-	private final org.lgna.croquet.views.BorderPanel lookingGlassPermanentContainer = new org.lgna.croquet.views.BorderPanel();
+public class ImageRecordView extends MigPanel {
+	private final BorderPanel lookingGlassRemoveableContainer = new BorderPanel();
+	private final BorderPanel lookingGlassPermanentContainer = new BorderPanel();
 	private final TimeLabel timeLabel;
 
-	private final org.lgna.croquet.views.AwtComponentView<?> listPane;
+	private final AwtComponentView<?> listPane;
 
-	public ImageRecordView( org.alice.media.youtube.croquet.ImageRecordComposite recordComposite ) {
+	public ImageRecordView( ImageRecordComposite recordComposite ) {
 		super( recordComposite, "fill, insets 0", "[grow 0,shrink]16[grow,shrink]" );
 
 		this.listPane = new EventScriptPane( recordComposite.getEventList() );
@@ -69,7 +74,7 @@ public class ImageRecordView extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
 	}
 
-	public org.lgna.croquet.views.BorderPanel getLookingGlassContainer() {
+	public BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassRemoveableContainer;
 	}
 

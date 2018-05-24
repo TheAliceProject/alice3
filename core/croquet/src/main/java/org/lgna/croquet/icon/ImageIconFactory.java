@@ -42,41 +42,52 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.net.URL;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+	public ImageIconFactory( ImageIcon imageIcon ) {
 		super( imageIcon );
 	}
 
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	public ImageIconFactory( URL resource ) {
+		this( IconUtilities.createImageIcon( resource ) );
 	}
 
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	public ImageIconFactory( Image image ) {
+		this( IconUtilities.createImageIcon( image ) );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
+	protected Icon createIcon( Dimension size ) {
+		ImageIcon imageIcon = this.getSourceImageIcon();
 		if( imageIcon != null ) {
 			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
 				return imageIcon;
 			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
+				return new ScaledIcon( imageIcon, size.width, size.height );
 			}
 		} else {
-			return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
+			return new ColorIcon( Color.RED, size.width, size.height );
 		}
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
+		ImageIcon imageIcon = this.getSourceImageIcon();
 		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
+			return new Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
 		} else {
 			return sizeIfResolutionIndependent;
 		}

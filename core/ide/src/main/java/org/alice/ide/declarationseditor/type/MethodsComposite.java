@@ -42,16 +42,22 @@
  *******************************************************************************/
 package org.alice.ide.declarationseditor.type;
 
+import org.alice.ide.declarationseditor.type.data.MethodData;
+import org.alice.ide.declarationseditor.type.views.MethodsView;
+import org.lgna.project.ast.UserMethod;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsComposite extends MembersComposite<org.lgna.project.ast.UserMethod> {
-	public MethodsComposite( java.util.UUID id, org.alice.ide.declarationseditor.type.data.MethodData data ) {
+public abstract class MethodsComposite extends MembersComposite<UserMethod> {
+	public MethodsComposite( UUID id, MethodData data ) {
 		super( id, data );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.views.MethodsView createView() {
-		return new org.alice.ide.declarationseditor.type.views.MethodsView( this );
+	protected MethodsView createView() {
+		return new MethodsView( this );
 	}
 }

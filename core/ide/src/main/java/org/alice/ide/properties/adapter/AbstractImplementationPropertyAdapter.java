@@ -44,12 +44,13 @@
 package org.alice.ide.properties.adapter;
 
 import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.story.implementation.Property;
 import org.lgna.story.implementation.Property.Listener;
 
 public abstract class AbstractImplementationPropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 
 	private Listener<P> propertyListener;
-	private org.lgna.story.implementation.Property<P> property;
+	private Property<P> property;
 	private boolean isPropertyListening = false;
 	private boolean isPropertyUpdate = false;
 
@@ -60,7 +61,7 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 			this.propertyListener = new Listener<P>()
 			{
 				@Override
-				public void propertyChanged( org.lgna.story.implementation.Property<P> property, P prevValue, P nextValue ) {
+				public void propertyChanged( Property<P> property, P prevValue, P nextValue ) {
 					isPropertyUpdate = true;
 					handleInternalValueChanged();
 					isPropertyUpdate = false;
@@ -90,13 +91,13 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 		}
 	}
 
-	public AbstractImplementationPropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ) {
+	public AbstractImplementationPropertyAdapter( String repr, O instance, Property<P> property, StandardExpressionState expressionState ) {
 		super( repr, instance, expressionState );
 		setProperty( property );
 		this.initializeExpressionState();
 	}
 
-	private void setProperty( org.lgna.story.implementation.Property<P> property ) {
+	private void setProperty( Property<P> property ) {
 		stopPropertyListening();
 		this.property = property;
 		startPropertyListening();

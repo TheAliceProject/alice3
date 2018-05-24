@@ -43,35 +43,42 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.Matrix4x4;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
+import edu.cmu.cs.dennisc.scenegraph.ProjectionCamera;
+
+import java.awt.Rectangle;
+import java.nio.DoubleBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrProjectionCamera extends GlrAbstractCamera<edu.cmu.cs.dennisc.scenegraph.ProjectionCamera> {
+public class GlrProjectionCamera extends GlrAbstractCamera<ProjectionCamera> {
 	@Override
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
+	public Ray getRayAtPixel( Ray rv, int xPixel, int yPixel, Rectangle actualViewport ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
+	public Matrix4x4 getActualProjectionMatrix( Matrix4x4 rv, Rectangle actualViewport ) {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	protected java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv ) {
+	protected Rectangle performLetterboxing( Rectangle rv ) {
 		//todo
 		return rv;
 	}
 
 	@Override
-	protected void setupProjection( Context context, java.awt.Rectangle actualViewport ) {
+	protected void setupProjection( Context context, Rectangle actualViewport ) {
 		context.gl.glLoadMatrixd( this.projectionBuffer );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.projection ) {
 			owner.projection.getValue().getAsColumnMajorArray16( this.projection );
 		} else {
@@ -80,5 +87,5 @@ public class GlrProjectionCamera extends GlrAbstractCamera<edu.cmu.cs.dennisc.sc
 	}
 
 	private final double[] projection = new double[ 16 ];
-	private final java.nio.DoubleBuffer projectionBuffer = java.nio.DoubleBuffer.wrap( this.projection );
+	private final DoubleBuffer projectionBuffer = DoubleBuffer.wrap( this.projection );
 }

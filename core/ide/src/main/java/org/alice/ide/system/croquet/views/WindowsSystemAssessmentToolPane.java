@@ -42,18 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.system.croquet.views;
 
+import org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite;
+import org.lgna.croquet.views.MigPanel;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.croquet.views.TextArea;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WindowsSystemAssessmentToolPane extends org.lgna.croquet.views.MigPanel {
-	public WindowsSystemAssessmentToolPane( org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite composite ) {
+public class WindowsSystemAssessmentToolPane extends MigPanel {
+	public WindowsSystemAssessmentToolPane( WindowsSystemAssessmentToolComposite composite ) {
 		super( composite, "fill", "[grow]", "[grow 0, shrink 0][grow 0, shrink 0][grow 100, shrink 100]" );
 		this.addComponent( composite.getHeader().createLabel(), "wrap" );
 		this.addComponent( composite.getExecuteWinsatOperation().createButton(), "wrap" );
 
-		org.lgna.croquet.views.TextArea textArea = composite.getStardardOutAndStandardErrorState().createTextArea();
+		TextArea textArea = composite.getStardardOutAndStandardErrorState().createTextArea();
 		textArea.setEditable( false );
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( textArea );
+		ScrollPane scrollPane = new ScrollPane( textArea );
 		scrollPane.setMinimumPreferredHeight( 300 );
 		this.addComponent( scrollPane, "grow" );
 	}

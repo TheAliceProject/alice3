@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.project.ast.localizer.AstLocalizer;
 
 import edu.cmu.cs.dennisc.property.PropertyFilter;
@@ -68,7 +69,7 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
+	public InstanceProperty<AbstractType<?, ?, ?>> getValueProperty() {
 		return this.value;
 	}
 

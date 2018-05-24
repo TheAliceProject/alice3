@@ -43,23 +43,28 @@
 
 package org.alice.ide.name.validators;
 
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
+
 public class MethodNameValidator extends MemberNameValidator {
-	public MethodNameValidator( org.lgna.project.ast.UserMethod method ) {
+	public MethodNameValidator( UserMethod method ) {
 		super( method, method.getDeclaringType() );
 	}
 
-	public MethodNameValidator( org.lgna.project.ast.UserType<?> type ) {
+	public MethodNameValidator( UserType<?> type ) {
 		super( null, type );
 	}
 
 	@Override
 	public boolean isNameAvailable( String name ) {
-		org.lgna.project.ast.Node node = this.getNode();
+		Node node = this.getNode();
 		if( node != null ) {
-			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, (org.lgna.project.ast.UserMethod)node );
+			return StaticAnalysisUtilities.isAvailableMethodName( name, (UserMethod)node );
 		} else {
-			org.lgna.project.ast.UserType<?> type = this.getType();
-			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, type );
+			UserType<?> type = this.getType();
+			return StaticAnalysisUtilities.isAvailableMethodName( name, type );
 		}
 	}
 }

@@ -42,15 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot.edits;
 
+import org.alice.ide.IDE;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.ExpressionStatement;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.AbstractEdit {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+public abstract class MethodInvocationEdit extends AbstractEdit {
+	private final InstanceFactory instanceFactory;
+	private final AbstractMethod method;
+	private final Expression[] argumentExpressions;
 
-	public MethodInvocationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public MethodInvocationEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		super( completionStep );
 		this.instanceFactory = instanceFactory;
 		this.method = method;
@@ -61,16 +71,16 @@ public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.Abstra
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = ide.getSceneEditor();
+		IDE ide = IDE.getActiveInstance();
+		AbstractSceneEditor sceneEditor = ide.getSceneEditor();
 		Object instance = sceneEditor.getInstanceInJavaVMForExpression( this.instanceFactory.createExpression() );
 		this.preserveUndoInfo( instance, isDo );
-		org.lgna.project.ast.Expression methodInvocation = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+		Expression methodInvocation = AstUtilities.createMethodInvocation(
 				this.instanceFactory.createExpression(),
 				method,
 				argumentExpressions
 				);
-		org.lgna.project.ast.ExpressionStatement statement = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
+		ExpressionStatement statement = new ExpressionStatement( methodInvocation );
 		sceneEditor.executeStatements( statement );
 	}
 

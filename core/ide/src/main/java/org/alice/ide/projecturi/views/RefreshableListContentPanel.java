@@ -42,25 +42,32 @@
  *******************************************************************************/
 package org.alice.ide.projecturi.views;
 
+import org.alice.ide.projecturi.RefreshableListUriTab;
+
+import javax.swing.KeyStroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class RefreshableListContentPanel extends ListContentPanel {
-	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
+	private final ActionListener refreshListener = new ActionListener() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 			RefreshableListContentPanel.this.handleRefresh();
 		}
 	};
 
 	private void handleRefresh() {
-		org.alice.ide.projecturi.RefreshableListUriTab composite = (org.alice.ide.projecturi.RefreshableListUriTab)this.getComposite();
+		RefreshableListUriTab composite = (RefreshableListUriTab)this.getComposite();
 		composite.refresh();
 		this.revalidateAndRepaint();
 	}
 
-	public RefreshableListContentPanel( org.alice.ide.projecturi.RefreshableListUriTab composite ) {
+	public RefreshableListContentPanel( RefreshableListUriTab composite ) {
 		super( composite );
-		this.getList().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.getList().registerKeyboardAction( this.refreshListener, KeyStroke.getKeyStroke( KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
 	}
 }

@@ -43,13 +43,21 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.importer.Importer;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
-	private final org.lgna.croquet.importer.Importer<I> importer;
+	private final Importer<I> importer;
 
-	public ImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<I> importer ) {
+	public ImportValueCreator( UUID migrationId, Importer<I> importer ) {
 		super( migrationId );
 		this.importer = importer;
 	}
@@ -57,8 +65,8 @@ public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
 	protected abstract T createValueFromImportedValue( I importedValue );
 
 	@Override
-	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+	protected T createValue( Transaction transaction, Trigger trigger ) {
+		CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, new TransactionHistory() );
 		String dialogTitle = "Import";
 		T rv;
 		I importedValue = this.importer.createValue( dialogTitle );

@@ -51,18 +51,23 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_QUADRATIC_ATTENUATIO
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPOT_CUTOFF;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPOT_DIRECTION;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPOT_EXPONENT;
+
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Light;
+
+import java.nio.FloatBuffer;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> extends GlrAffector<T> {
-	private static java.nio.FloatBuffer s_ambientBlackBuffer = null;
+public abstract class GlrLight<T extends Light> extends GlrAffector<T> {
+	private static FloatBuffer s_ambientBlackBuffer = null;
 
 	private static float[] s_position = new float[ 4 ];
-	private static java.nio.FloatBuffer s_positionBuffer = java.nio.FloatBuffer.wrap( s_position );
+	private static FloatBuffer s_positionBuffer = FloatBuffer.wrap( s_position );
 	private static float[] s_spotDirection = new float[ 3 ];
-	private static java.nio.FloatBuffer s_spotDirectionBuffer = java.nio.FloatBuffer.wrap( s_spotDirection );
+	private static FloatBuffer s_spotDirectionBuffer = FloatBuffer.wrap( s_spotDirection );
 
 	protected float[] getPosition( float[] rv ) {
 		rv[ 0 ] = 0;
@@ -104,7 +109,7 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 
 		//todo: investigate
 		if( s_ambientBlackBuffer == null ) {
-			s_ambientBlackBuffer = java.nio.FloatBuffer.allocate( 4 );
+			s_ambientBlackBuffer = FloatBuffer.allocate( 4 );
 			s_ambientBlackBuffer.put( 0 );
 			s_ambientBlackBuffer.put( 0 );
 			s_ambientBlackBuffer.put( 0 );
@@ -145,7 +150,7 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.color ) {
 			owner.color.getValue().getAsArray( this.color );
 		} else if( property == owner.brightness ) {

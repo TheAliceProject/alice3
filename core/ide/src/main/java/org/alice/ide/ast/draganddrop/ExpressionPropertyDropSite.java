@@ -43,36 +43,47 @@
 
 package org.alice.ide.ast.draganddrop;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import org.alice.ide.croquet.codecs.PropertyOfNodeCodec;
+import org.alice.ide.declarationseditor.CodeComposite;
+import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.DropSite;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.Node;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
-	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+public class ExpressionPropertyDropSite implements DropSite {
+	private final ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropSite( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropSite( ExpressionProperty expressionProperty ) {
 		this.expressionProperty = expressionProperty;
 	}
 
-	public ExpressionPropertyDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.alice.ide.croquet.codecs.PropertyOfNodeCodec<org.lgna.project.ast.ExpressionProperty> codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
+	public ExpressionPropertyDropSite( BinaryDecoder binaryDecoder ) {
+		PropertyOfNodeCodec<ExpressionProperty> codec = PropertyOfNodeCodec.getInstance( ExpressionProperty.class );
 		this.expressionProperty = codec.decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		org.alice.ide.croquet.codecs.PropertyOfNodeCodec<org.lgna.project.ast.ExpressionProperty> codec = org.alice.ide.croquet.codecs.PropertyOfNodeCodec.getInstance( org.lgna.project.ast.ExpressionProperty.class );
+	public void encode( BinaryEncoder binaryEncoder ) {
+		PropertyOfNodeCodec<ExpressionProperty> codec = PropertyOfNodeCodec.getInstance( ExpressionProperty.class );
 		codec.encodeValue( binaryEncoder, this.expressionProperty );
 	}
 
-	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
+	public ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
 
 	@Override
-	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
-		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
-		org.lgna.project.ast.AbstractCode code = node.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
-		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
+	public DropReceptor getOwningDropReceptor() {
+		Node node = (Node)this.expressionProperty.getOwner();
+		AbstractCode code = node.getFirstAncestorAssignableTo( AbstractCode.class );
+		return CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();
 	}
 
 	@Override
@@ -82,7 +93,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 		}
 		if( o instanceof ExpressionPropertyDropSite ) {
 			ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite)o;
-			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.expressionProperty, epds.expressionProperty );
+			return Objects.equals( this.expressionProperty, epds.expressionProperty );
 		} else {
 			return false;
 		}

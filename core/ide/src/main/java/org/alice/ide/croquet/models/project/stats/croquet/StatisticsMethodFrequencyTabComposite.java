@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.project.stats.croquet;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import org.alice.ide.IDE;
+import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsMethodFrequencyView;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
@@ -60,6 +67,7 @@ import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.story.SProgram;
 
 /**
  * @author Matt May
@@ -70,19 +78,19 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	private final BooleanState showProceduresState = this.createBooleanState( "areProceduresShowing", true );
 	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Maps.newHashMap();
 
-	private final org.lgna.croquet.MutableDataSingleSelectListState<UserMethod> userMethodListState = createMutableListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final MutableDataSingleSelectListState<UserMethod> userMethodListState = createMutableListState( "userMethodList", UserMethod.class, NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod root = new UserMethod();
 	private Integer maximum;
 
 	public StatisticsMethodFrequencyTabComposite() {
-		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ), IsCloseable.FALSE );
+		super( UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ), IsCloseable.FALSE );
 		refresh();
 	}
 
 	private void refresh() {
 		userMethodListState.clear();
 		mapMethodToInvocationCounts.clear();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		IDE ide = IDE.getActiveInstance();
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
 		ide.crawlFilteredProgramType( crawler );
 
@@ -91,7 +99,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 			for( MethodInvocation invocation : invocations ) {
 				UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo( UserMethod.class );
 				InvocationCounts invocationCounts = this.getMapMethodToInvocationCounts().get( invocationOwner );
-				if( ( invocationOwner != null ) && !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class ) ) {
+				if( ( invocationOwner != null ) && !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( SProgram.class ) ) {
 					if( invocationCounts != null ) {
 						//pass
 					} else {
@@ -174,7 +182,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	private void sort( List<? extends AbstractMethod> a ) {
-		java.util.Collections.sort( a, new Comparator<AbstractMethod>() {
+		Collections.sort( a, new Comparator<AbstractMethod>() {
 
 			@Override
 			public int compare( AbstractMethod o1, AbstractMethod o2 ) {
@@ -208,11 +216,11 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		this.mapMethodToInvocationCounts = mapMethodToInvocationCounts;
 	}
 
-	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
+	private static class MethodInvocationCrawler implements Crawler {
 		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Maps.newHashMap();
 
 		@Override
-		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+		public void visit( Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
 				MethodInvocation methodInvocation = (MethodInvocation)crawlable;
 				AbstractMethod method = methodInvocation.method.getValue();
@@ -220,13 +228,13 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 				if( list != null ) {
 					list.add( methodInvocation );
 				} else {
-					list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( methodInvocation );
+					list = Lists.newLinkedList( methodInvocation );
 					this.mapMethodToInvocations.put( method, list );
 				}
 			}
 		}
 
-		public java.util.Set<AbstractMethod> getMethods() {
+		public Set<AbstractMethod> getMethods() {
 			return this.mapMethodToInvocations.keySet();
 		}
 
@@ -322,7 +330,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		}
 
 		private void sort() {
-			java.util.Collections.sort( methodCountPairs, new Comparator<MethodCountPair>() {
+			Collections.sort( methodCountPairs, new Comparator<MethodCountPair>() {
 
 				@Override
 				public int compare( MethodCountPair o1, MethodCountPair o2 ) {

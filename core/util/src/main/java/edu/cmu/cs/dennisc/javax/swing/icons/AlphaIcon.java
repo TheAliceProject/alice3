@@ -43,14 +43,21 @@
 
 package edu.cmu.cs.dennisc.javax.swing.icons;
 
+import javax.swing.Icon;
+import java.awt.AlphaComposite;
+import java.awt.Component;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AlphaIcon implements javax.swing.Icon {
-	private final javax.swing.Icon icon;
+public class AlphaIcon implements Icon {
+	private final Icon icon;
 	private final float alpha;
 
-	public AlphaIcon( javax.swing.Icon icon, float alpha ) {
+	public AlphaIcon( Icon icon, float alpha ) {
 		this.icon = icon;
 		this.alpha = alpha;
 	}
@@ -66,10 +73,10 @@ public class AlphaIcon implements javax.swing.Icon {
 	}
 
 	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Composite prevComposite = g2.getComposite();
-		g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, this.alpha ) );
+	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Composite prevComposite = g2.getComposite();
+		g2.setComposite( AlphaComposite.getInstance( AlphaComposite.SRC_OVER, this.alpha ) );
 		try {
 			this.icon.paintIcon( c, g2, x, y );
 		} finally {

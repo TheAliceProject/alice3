@@ -42,30 +42,39 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Objects;
+import edu.cmu.cs.dennisc.print.Printable;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.print.Printable {
+public abstract class AbstractMatrix3x3 implements BinaryEncodableAndDecodable, Printable {
 	public final Vector3 right = Vector3.createPositiveXAxis();
 	public final Vector3 up = Vector3.createPositiveYAxis();
 	public final Vector3 backward = Vector3.createPositiveZAxis();
 
 	@Deprecated
-	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public void decode( BinaryDecoder binaryDecoder ) {
 		right.decode( binaryDecoder );
 		up.decode( binaryDecoder );
 		backward.decode( binaryDecoder );
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		right.encode( binaryEncoder );
 		up.encode( binaryEncoder );
 		backward.encode( binaryEncoder );
 	}
 
 	@Override
-	public Appendable append( Appendable rv, java.text.DecimalFormat decimalFormat, boolean isLines ) throws java.io.IOException {
+	public Appendable append( Appendable rv, DecimalFormat decimalFormat, boolean isLines ) throws IOException {
 		if( isLines ) {
 			int n = decimalFormat.format( 0.0 ).length() + 1;
 			rv.append( "+-" );
@@ -310,9 +319,9 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		} else {
 			if( o instanceof Matrix3x3 ) {
 				Matrix3x3 other = (Matrix3x3)o;
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.right, other.right )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.up, other.up )
-						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.backward, other.backward );
+				return Objects.equals( this.right, other.right )
+						&& Objects.equals( this.up, other.up )
+						&& Objects.equals( this.backward, other.backward );
 			} else {
 				return false;
 			}

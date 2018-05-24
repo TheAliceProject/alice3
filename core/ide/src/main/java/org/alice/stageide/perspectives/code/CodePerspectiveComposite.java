@@ -43,22 +43,32 @@
 
 package org.alice.stageide.perspectives.code;
 
+import org.alice.ide.ProjectDocumentFrame;
+import org.alice.stageide.run.RunComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.LazyImmutableSplitComposite;
+import org.lgna.croquet.views.SplitPane;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSplitComposite<CodeContextSplitComposite, org.lgna.croquet.Composite<?>> {
-	public CodePerspectiveComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ) );
+public class CodePerspectiveComposite extends LazyImmutableSplitComposite<CodeContextSplitComposite, Composite<?>> {
+	public CodePerspectiveComposite( ProjectDocumentFrame projectDocumentFrame ) {
+		super( UUID.fromString( "55b694a1-da0e-4820-b138-6cf285be4ed3" ) );
 		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	@Override
-	protected org.alice.stageide.perspectives.code.CodeContextSplitComposite createLeadingComposite() {
+	protected CodeContextSplitComposite createLeadingComposite() {
 		return new CodeContextSplitComposite( this );
 	}
 
 	@Override
-	protected org.lgna.croquet.Composite<?> createTrailingComposite() {
+	protected Composite<?> createTrailingComposite() {
 		return this.projectDocumentFrame.getDeclarationsEditorComposite();
 	}
 
@@ -71,8 +81,8 @@ public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSpli
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SplitPane createView() {
-		org.lgna.croquet.views.SplitPane rv = this.createHorizontalSplitPane();
+	protected SplitPane createView() {
+		SplitPane rv = this.createHorizontalSplitPane();
 		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		//todo
@@ -81,17 +91,17 @@ public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSpli
 	}
 
 	private int ignoreDividerChangeCount = 0;
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
-	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
+	private final ProjectDocumentFrame projectDocumentFrame;
+	private final PropertyChangeListener dividerLocationListener = new PropertyChangeListener() {
 		@Override
-		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+		public void propertyChange( PropertyChangeEvent e ) {
 			if( ignoreDividerChangeCount > 0 ) {
 				//pass
 			} else {
 				CodeContextSplitComposite otherComposite = getLeadingComposite();
-				org.lgna.croquet.views.SplitPane otherSplitPane = otherComposite.getView();
+				SplitPane otherSplitPane = otherComposite.getView();
 				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue() / org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
+				int nextValue = (int)( (Integer)e.getNewValue() / RunComposite.WIDTH_TO_HEIGHT_RATIO );
 				if( prevValue != nextValue ) {
 					otherComposite.incrementIgnoreDividerLocationChangeCount();
 					try {

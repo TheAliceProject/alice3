@@ -42,54 +42,82 @@
  *******************************************************************************/
 package org.alice.ide.formatter;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.lgna.project.ast.ArithmeticInfixExpression;
+import org.lgna.project.ast.BooleanExpressionBodyPair;
+import org.lgna.project.ast.ConditionalInfixExpression;
+import org.lgna.project.ast.ConditionalStatement;
+import org.lgna.project.ast.CountLoop;
+import org.lgna.project.ast.DoInOrder;
+import org.lgna.project.ast.DoTogether;
+import org.lgna.project.ast.EachInArrayTogether;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.ForEachInArrayLoop;
+import org.lgna.project.ast.InfixExpression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.LambdaExpression;
+import org.lgna.project.ast.LocalDeclarationStatement;
+import org.lgna.project.ast.LogicalComplement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NullLiteral;
+import org.lgna.project.ast.RelationalInfixExpression;
+import org.lgna.project.ast.TypeExpression;
+import org.lgna.project.ast.UserCode;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.WhileLoop;
+
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * Formats code on Alice tiles in a Java style.
  *
  * @author Dennis Cosgrove
  */
 public class JavaFormatter extends Formatter {
-	private static final java.util.Map<Class<?>, String> templateMap;
-	private static final java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, String> arithmeticOperatorMap;
-	private static final java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, String> conditionalOperatorMap;
-	private static final java.util.Map<org.lgna.project.ast.RelationalInfixExpression.Operator, String> relationalOperatorMap;
+	private static final Map<Class<?>, String> templateMap;
+	private static final Map<ArithmeticInfixExpression.Operator, String> arithmeticOperatorMap;
+	private static final Map<ConditionalInfixExpression.Operator, String> conditionalOperatorMap;
+	private static final Map<RelationalInfixExpression.Operator, String> relationalOperatorMap;
 	static {
-		java.util.Map<Class<?>, String> tempTemplateMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		tempTemplateMap.put( org.lgna.project.ast.ExpressionStatement.class, "</expression/>;" );
-		tempTemplateMap.put( org.lgna.project.ast.WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.CountLoop.class, "for( </__variable__/> = 0; </_variable_/> < </count/>; </_variable_/>++ ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>" );
-		tempTemplateMap.put( org.lgna.project.ast.ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)" );
-		tempTemplateMap.put( org.lgna.project.ast.FieldAccess.class, "</expression/>.</field/>" );
-		tempTemplateMap.put( org.lgna.project.ast.LocalDeclarationStatement.class, "</__local__/> = </initializer/> ;" );
-		tempTemplateMap.put( org.lgna.project.ast.DoInOrder.class, "/*do in order*/ {\n\t</body/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.DoTogether.class, "ThreadUtilities.doTogether( ()-> {\n\t</body/>\n} );" );
-		tempTemplateMap.put( org.lgna.project.ast.ForEachInArrayLoop.class, "for( </__item__/> : </array/> ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.TypeExpression.class, "</value/>" );
-		tempTemplateMap.put( org.lgna.project.ast.InstanceCreation.class, "new </constructor/>( </requiredArguments/></variableArguments/></keyedArguments/> )" );
-		tempTemplateMap.put( org.lgna.project.ast.LogicalComplement.class, "!</operand/>" );
-		tempTemplateMap.put( org.lgna.project.ast.NullLiteral.class, "null" );
-		tempTemplateMap.put( org.lgna.project.ast.LambdaExpression.class, "{# </value/> }" );
-		tempTemplateMap.put( org.lgna.project.ast.EachInArrayTogether.class, "ThreadUtilities.eachInTogether( ( </__item__/> ) -> {\n\t</body/>\n}, </array/> );" );
-		templateMap = java.util.Collections.unmodifiableMap( tempTemplateMap );
+		Map<Class<?>, String> tempTemplateMap = Maps.newHashMap();
+		tempTemplateMap.put( ExpressionStatement.class, "</expression/>;" );
+		tempTemplateMap.put( WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( CountLoop.class, "for( </__variable__/> = 0; </_variable_/> < </count/>; </_variable_/>++ ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>" );
+		tempTemplateMap.put( ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}" );
+		tempTemplateMap.put( MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)" );
+		tempTemplateMap.put( FieldAccess.class, "</expression/>.</field/>" );
+		tempTemplateMap.put( LocalDeclarationStatement.class, "</__local__/> = </initializer/> ;" );
+		tempTemplateMap.put( DoInOrder.class, "/*do in order*/ {\n\t</body/>\n}" );
+		tempTemplateMap.put( DoTogether.class, "ThreadUtilities.doTogether( ()-> {\n\t</body/>\n} );" );
+		tempTemplateMap.put( ForEachInArrayLoop.class, "for( </__item__/> : </array/> ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( TypeExpression.class, "</value/>" );
+		tempTemplateMap.put( InstanceCreation.class, "new </constructor/>( </requiredArguments/></variableArguments/></keyedArguments/> )" );
+		tempTemplateMap.put( LogicalComplement.class, "!</operand/>" );
+		tempTemplateMap.put( NullLiteral.class, "null" );
+		tempTemplateMap.put( LambdaExpression.class, "{# </value/> }" );
+		tempTemplateMap.put( EachInArrayTogether.class, "ThreadUtilities.eachInTogether( ( </__item__/> ) -> {\n\t</body/>\n}, </array/> );" );
+		templateMap = Collections.unmodifiableMap( tempTemplateMap );
 
-		java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, String> tempArithmeticOperatorMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		tempArithmeticOperatorMap.put( org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, "</leftOperand/> / </rightOperand/>" );
-		tempArithmeticOperatorMap.put( org.lgna.project.ast.ArithmeticInfixExpression.Operator.REAL_REMAINDER, "Math.IEEEremainder( </leftOperand/>, </rightOperand/> )" );
-		tempArithmeticOperatorMap.put( org.lgna.project.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER, "</leftOperand/> % </rightOperand/>" );
-		arithmeticOperatorMap = java.util.Collections.unmodifiableMap( tempArithmeticOperatorMap );
+		Map<ArithmeticInfixExpression.Operator, String> tempArithmeticOperatorMap = Maps.newHashMap();
+		tempArithmeticOperatorMap.put( ArithmeticInfixExpression.Operator.INTEGER_DIVIDE, "</leftOperand/> / </rightOperand/>" );
+		tempArithmeticOperatorMap.put( ArithmeticInfixExpression.Operator.REAL_REMAINDER, "Math.IEEEremainder( </leftOperand/>, </rightOperand/> )" );
+		tempArithmeticOperatorMap.put( ArithmeticInfixExpression.Operator.INTEGER_REMAINDER, "</leftOperand/> % </rightOperand/>" );
+		arithmeticOperatorMap = Collections.unmodifiableMap( tempArithmeticOperatorMap );
 
-		java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, String> tempConditionalOperatorMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		tempConditionalOperatorMap.put( org.lgna.project.ast.ConditionalInfixExpression.Operator.AND, "</leftOperand/> && </rightOperand/>" );
-		tempConditionalOperatorMap.put( org.lgna.project.ast.ConditionalInfixExpression.Operator.OR, "</leftOperand/> || </rightOperand/>" );
-		conditionalOperatorMap = java.util.Collections.unmodifiableMap( tempConditionalOperatorMap );
+		Map<ConditionalInfixExpression.Operator, String> tempConditionalOperatorMap = Maps.newHashMap();
+		tempConditionalOperatorMap.put( ConditionalInfixExpression.Operator.AND, "</leftOperand/> && </rightOperand/>" );
+		tempConditionalOperatorMap.put( ConditionalInfixExpression.Operator.OR, "</leftOperand/> || </rightOperand/>" );
+		conditionalOperatorMap = Collections.unmodifiableMap( tempConditionalOperatorMap );
 
-		java.util.Map<org.lgna.project.ast.RelationalInfixExpression.Operator, String> tempRelationalOperatorMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.LESS_EQUALS, "</leftOperand/> <= </rightOperand/>" );
-		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, "</leftOperand/> >= </rightOperand/>" );
-		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.EQUALS, "</leftOperand/> == </rightOperand/>" );
-		tempRelationalOperatorMap.put( org.lgna.project.ast.RelationalInfixExpression.Operator.NOT_EQUALS, "</leftOperand/> != </rightOperand/>" );
-		relationalOperatorMap = java.util.Collections.unmodifiableMap( tempRelationalOperatorMap );
+		Map<RelationalInfixExpression.Operator, String> tempRelationalOperatorMap = Maps.newHashMap();
+		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.LESS_EQUALS, "</leftOperand/> <= </rightOperand/>" );
+		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.GREATER_EQUALS, "</leftOperand/> >= </rightOperand/>" );
+		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.EQUALS, "</leftOperand/> == </rightOperand/>" );
+		tempRelationalOperatorMap.put( RelationalInfixExpression.Operator.NOT_EQUALS, "</leftOperand/> != </rightOperand/>" );
+		relationalOperatorMap = Collections.unmodifiableMap( tempRelationalOperatorMap );
 	}
 
 	private static class SingletonHolder {
@@ -105,9 +133,9 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
-	public String getHeaderTextForCode( org.lgna.project.ast.UserCode code ) {
+	public String getHeaderTextForCode( UserCode code ) {
 		StringBuilder sb = new StringBuilder();
-		if( code instanceof org.lgna.project.ast.UserMethod ) {
+		if( code instanceof UserMethod ) {
 			sb.append( "</getReturnType()/> </getName()/>" );
 		} else {
 			sb.append( "</getDeclaringType()/>" );
@@ -117,7 +145,7 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
-	public String getTrailerTextForCode( org.lgna.project.ast.UserCode code ) {
+	public String getTrailerTextForCode( UserCode code ) {
 		return "}";
 	}
 
@@ -133,16 +161,16 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
-	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
+	public String getInfixExpressionText( InfixExpression<?> infixExpression ) {
 		String rv;
-		if( infixExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression ) {
-			org.lgna.project.ast.ArithmeticInfixExpression arithmeticInfixExpression = (org.lgna.project.ast.ArithmeticInfixExpression)infixExpression;
+		if( infixExpression instanceof ArithmeticInfixExpression ) {
+			ArithmeticInfixExpression arithmeticInfixExpression = (ArithmeticInfixExpression)infixExpression;
 			rv = arithmeticOperatorMap.get( arithmeticInfixExpression.operator.getValue() );
-		} else if( infixExpression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
-			org.lgna.project.ast.ConditionalInfixExpression conditionalInfixExpression = (org.lgna.project.ast.ConditionalInfixExpression)infixExpression;
+		} else if( infixExpression instanceof ConditionalInfixExpression ) {
+			ConditionalInfixExpression conditionalInfixExpression = (ConditionalInfixExpression)infixExpression;
 			rv = conditionalOperatorMap.get( conditionalInfixExpression.operator.getValue() );
-		} else if( infixExpression instanceof org.lgna.project.ast.RelationalInfixExpression ) {
-			org.lgna.project.ast.RelationalInfixExpression relationalInfixExpression = (org.lgna.project.ast.RelationalInfixExpression)infixExpression;
+		} else if( infixExpression instanceof RelationalInfixExpression ) {
+			RelationalInfixExpression relationalInfixExpression = (RelationalInfixExpression)infixExpression;
 			rv = relationalOperatorMap.get( relationalInfixExpression.operator.getValue() );
 		} else {
 			rv = null;

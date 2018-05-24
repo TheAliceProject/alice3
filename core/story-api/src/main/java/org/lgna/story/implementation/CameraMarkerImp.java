@@ -42,17 +42,19 @@
  *******************************************************************************/
 package org.lgna.story.implementation;
 
+import org.lgna.story.CameraMarker;
+
 /**
  * @author dculyba
  * 
  */
 public abstract class CameraMarkerImp extends MarkerImp {
-	protected CameraMarkerImp( org.lgna.story.CameraMarker abstraction ) {
+	protected CameraMarkerImp( CameraMarker abstraction ) {
 		super( abstraction );
 	}
 
 	@Override
-	public org.lgna.story.CameraMarker getAbstraction() {
-		return (org.lgna.story.CameraMarker)super.getAbstraction();
+	public CameraMarker getAbstraction() {
+		return (CameraMarker)super.getAbstraction();
 	}
 }

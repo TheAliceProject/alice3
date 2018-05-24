@@ -42,18 +42,24 @@
  *******************************************************************************/
 package org.alice.ide.croquet.codecs;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.ItemCodec;
+
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> {
+public enum LocaleCodec implements ItemCodec<Locale> {
 	SINGLETON;
 	@Override
-	public Class<java.util.Locale> getValueClass() {
-		return java.util.Locale.class;
+	public Class<Locale> getValueClass() {
+		return Locale.class;
 	}
 
 	@Override
-	public void appendRepresentation( StringBuilder sb, java.util.Locale value ) {
+	public void appendRepresentation( StringBuilder sb, Locale value ) {
 		if( value != null ) {
 			sb.append( value.getDisplayName( value ) );
 		} else {
@@ -62,20 +68,20 @@ public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> 
 	}
 
 	@Override
-	public java.util.Locale decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public Locale decodeValue( BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String language = binaryDecoder.decodeString();
 			String country = binaryDecoder.decodeString();
 			String variant = binaryDecoder.decodeString();
-			return new java.util.Locale( language, country, variant );
+			return new Locale( language, country, variant );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Locale value ) {
+	public void encodeValue( BinaryEncoder binaryEncoder, Locale value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.getLanguage() );

@@ -42,10 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.ast.icons;
 
+import org.alice.ide.IDE;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
+import org.lgna.project.ast.AbstractType;
+
+import javax.swing.Icon;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+public class ThisInstanceIconFactory extends ResolutionIndependantIconFactory {
 	private static class SingletonHolder {
 		private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
 	}
@@ -59,8 +70,8 @@ public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionInd
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( final java.awt.Dimension size ) {
-		return new javax.swing.Icon() {
+	protected Icon createIcon( final Dimension size ) {
+		return new Icon() {
 			@Override
 			public int getIconWidth() {
 				return size.width;
@@ -72,12 +83,12 @@ public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionInd
 			}
 
 			@Override
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
+			public void paintIcon( Component c, Graphics g, int x, int y ) {
+				AbstractType<?, ?, ?> type = IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 				if( type != null ) {
-					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
+					IconFactory iconFactory = IconFactoryManager.getIconFactoryForType( type );
 					if( iconFactory != null ) {
-						javax.swing.Icon typeIcon = iconFactory.getIcon( size );
+						Icon typeIcon = iconFactory.getIcon( size );
 						if( typeIcon != null ) {
 							typeIcon.paintIcon( c, g, x, y );
 						}

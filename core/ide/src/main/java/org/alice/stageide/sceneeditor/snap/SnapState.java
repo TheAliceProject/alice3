@@ -43,6 +43,8 @@
 
 package org.alice.stageide.sceneeditor.snap;
 
+import org.alice.stageide.sceneeditor.side.SideComposite;
+import org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedDoubleState;
 
@@ -64,11 +66,11 @@ public class SnapState
 	{
 	}
 
-	private static org.alice.stageide.sceneeditor.side.SideComposite getSideComposite() {
-		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance();
+	private static SideComposite getSideComposite() {
+		return SideComposite.getInstance();
 	}
 
-	private org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+	private SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
 		return getSideComposite().getSnapDetailsToolPaletteCoreComposite();
 	}
 

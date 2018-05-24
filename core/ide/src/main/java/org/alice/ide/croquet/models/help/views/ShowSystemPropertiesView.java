@@ -42,35 +42,46 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
+import org.alice.ide.IdeApp;
+import org.alice.ide.croquet.models.help.ShowPathPropertyComposite;
+import org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite;
+import org.lgna.croquet.views.BoxUtilities;
+import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.LabeledFormRow;
+
+import javax.swing.BorderFactory;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ShowSystemPropertiesView extends org.lgna.croquet.views.FormPanel {
-	public ShowSystemPropertiesView( org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite composite ) {
+public class ShowSystemPropertiesView extends FormPanel {
+	public ShowSystemPropertiesView( ShowSystemPropertiesComposite composite ) {
 		super( composite );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
+	protected void appendRows( List<LabeledFormRow> rows ) {
 		String[] propertyNames = { "java.version", "os.name", "os.version", "os.arch", "sun.arch.data.model" };
 		for( String propertyName : propertyNames ) {
 			String value = System.getProperty( propertyName );
-			rows.add( org.lgna.croquet.views.LabeledFormRow.createFromLabel( new org.lgna.croquet.views.Label( propertyName + ":" ), new org.lgna.croquet.views.Label( value ) ) );
+			rows.add( LabeledFormRow.createFromLabel( new Label( propertyName + ":" ), new Label( value ) ) );
 		}
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) ) );
-		org.alice.ide.croquet.models.help.ShowPathPropertyComposite[] showPathPropertyComposites = {
-				org.alice.ide.IdeApp.INSTANCE.getShowClassPathPropertyComposite(),
-				org.alice.ide.IdeApp.INSTANCE.getShowLibraryPathPropertyComposite()
+		rows.add( new LabeledFormRow( null, BoxUtilities.createVerticalSliver( 8 ) ) );
+		ShowPathPropertyComposite[] showPathPropertyComposites = {
+				IdeApp.INSTANCE.getShowClassPathPropertyComposite(),
+				IdeApp.INSTANCE.getShowLibraryPathPropertyComposite()
 		};
-		for( org.alice.ide.croquet.models.help.ShowPathPropertyComposite showPathPropertyComposite : showPathPropertyComposites ) {
+		for( ShowPathPropertyComposite showPathPropertyComposite : showPathPropertyComposites ) {
 			String propertyName = showPathPropertyComposite.getPropertyName();
-			rows.add( org.lgna.croquet.views.LabeledFormRow.createFromLabel(
-					new org.lgna.croquet.views.Label( propertyName + ":" ),
+			rows.add( LabeledFormRow.createFromLabel(
+					new Label( propertyName + ":" ),
 					showPathPropertyComposite.getLaunchOperation().createHyperlink()
 					) );
 		}
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) ) );
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.alice.ide.IdeApp.INSTANCE.getShowAllSystemPropertiesComposite().getLaunchOperation().createHyperlink() ) );
+		rows.add( new LabeledFormRow( null, BoxUtilities.createVerticalSliver( 8 ) ) );
+		rows.add( new LabeledFormRow( null, IdeApp.INSTANCE.getShowAllSystemPropertiesComposite().getLaunchOperation().createHyperlink() ) );
 	}
 }

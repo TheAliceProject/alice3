@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.lgna.project.reflect;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+
+import java.lang.reflect.Method;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MethodInfo extends MemberWithParametersInfo {
-	private transient java.lang.reflect.Method mthd;
+	private transient Method mthd;
 	private final String name;
 
 	public MethodInfo( ClassInfo classInfo, String name, String[] parameterClassNames, String[] parameterNames ) {
@@ -54,7 +60,7 @@ public class MethodInfo extends MemberWithParametersInfo {
 		this.name = name;
 	}
 
-	public MethodInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public MethodInfo( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.name = binaryDecoder.decodeString();
 	}
@@ -64,16 +70,16 @@ public class MethodInfo extends MemberWithParametersInfo {
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public void encode( BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.name );
 	}
 
-	public java.lang.reflect.Method getMthd() {
+	public Method getMthd() {
 		if( this.mthd != null ) {
 			//pass
 		} else {
-			this.mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( getDeclaringCls(), this.name, getParameterClses() );
+			this.mthd = ReflectionUtilities.getMethod( getDeclaringCls(), this.name, getParameterClses() );
 		}
 		return this.mthd;
 	}

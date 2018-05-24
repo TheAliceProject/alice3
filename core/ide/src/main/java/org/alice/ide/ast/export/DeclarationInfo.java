@@ -42,21 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.ast.export;
 
+import org.lgna.project.ast.Declaration;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.JCheckBox;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration> {
+public abstract class DeclarationInfo<D extends Declaration> {
 	private final ProjectInfo projectInfo;
 	private final D declaration;
-	private final javax.swing.Action action = new javax.swing.AbstractAction() {
+	private final Action action = new AbstractAction() {
 		@Override
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed( ActionEvent e ) {
 		}
 	};
-	private final javax.swing.JCheckBox checkBox = new javax.swing.JCheckBox( this.action );
-	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+	private final JCheckBox checkBox = new JCheckBox( this.action );
+	private final ItemListener itemListener = new ItemListener() {
 		@Override
-		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+		public void itemStateChanged( ItemEvent e ) {
 			handleItemStateChanged( e );
 		}
 	};
@@ -67,7 +79,7 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 	public DeclarationInfo( ProjectInfo projectInfo, D declaration ) {
 		this.projectInfo = projectInfo;
 		this.declaration = declaration;
-		this.action.putValue( javax.swing.Action.NAME, this.declaration.getName() );
+		this.action.putValue( Action.NAME, this.declaration.getName() );
 		this.checkBox.getModel().addItemListener( this.itemListener );
 	}
 
@@ -79,15 +91,15 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 		return this.declaration;
 	}
 
-	public javax.swing.JCheckBox getCheckBox() {
+	public JCheckBox getCheckBox() {
 		return this.checkBox;
 	}
 
-	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+	private void handleItemStateChanged( ItemEvent e ) {
 		if( this.projectInfo.isInTheMidstOfChange() ) {
 			//pass
 		} else {
-			this.isDesired = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+			this.isDesired = e.getStateChange() == ItemEvent.SELECTED;
 			this.projectInfo.update();
 		}
 	}
@@ -96,18 +108,18 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 		this.isRequired = false;
 	}
 
-	public void appendDesired( java.util.List<DeclarationInfo<?>> desired ) {
+	public void appendDesired( List<DeclarationInfo<?>> desired ) {
 		if( this.isDesired ) {
 			desired.add( this );
 		}
 	}
 
-	protected void addRequired( java.util.Set<DeclarationInfo<?>> visited ) {
+	protected void addRequired( Set<DeclarationInfo<?>> visited ) {
 		visited.add( this );
 		this.isRequired = true;
 	}
 
-	public final void updateRequired( java.util.Set<DeclarationInfo<?>> visited ) {
+	public final void updateRequired( Set<DeclarationInfo<?>> visited ) {
 		if( visited.contains( this ) ) {
 			//pass
 		} else {
@@ -116,7 +128,7 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 	}
 
 	public void updateSwing() {
-		javax.swing.ButtonModel buttonModel = this.checkBox.getModel();
+		ButtonModel buttonModel = this.checkBox.getModel();
 		buttonModel.setSelected( this.isDesired || this.isRequired );
 		buttonModel.setEnabled( this.isDesired || ( this.isRequired == false ) );
 	}

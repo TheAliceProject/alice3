@@ -42,18 +42,22 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.components;
 
+import javax.swing.text.JTextComponent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 /**
  * @author Dennis Cosgrove
  */
-class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
-	private javax.swing.text.JTextComponent textComponent;
+class SuggestiveTextFocusAdapter implements FocusListener {
+	private JTextComponent textComponent;
 
-	public SuggestiveTextFocusAdapter( javax.swing.text.JTextComponent textComponent ) {
+	public SuggestiveTextFocusAdapter( JTextComponent textComponent ) {
 		this.textComponent = textComponent;
 	}
 
 	@Override
-	public void focusGained( java.awt.event.FocusEvent e ) {
+	public void focusGained( FocusEvent e ) {
 		if( this.textComponent.getText().length() == 0 ) {
 			this.textComponent.repaint();
 		}
@@ -61,7 +65,7 @@ class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
 	}
 
 	@Override
-	public void focusLost( java.awt.event.FocusEvent e ) {
+	public void focusLost( FocusEvent e ) {
 		//Thread.dumpStack();
 		if( this.textComponent.getText().length() == 0 ) {
 			this.textComponent.repaint();

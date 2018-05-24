@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.lang;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,8 +61,8 @@ public class DoubleUtilities {
 	}
 
 	public static double parseDoubleInCurrentDefaultLocale( String text ) {
-		java.text.ParsePosition parsePosition = new java.text.ParsePosition( 0 );
-		Number number = java.text.NumberFormat.getNumberInstance().parse( text, parsePosition );
+		ParsePosition parsePosition = new ParsePosition( 0 );
+		Number number = NumberFormat.getNumberInstance().parse( text, parsePosition );
 		if( ( number != null ) && ( parsePosition.getIndex() == text.length() ) ) {
 			return number.doubleValue();
 		} else {
@@ -64,14 +70,14 @@ public class DoubleUtilities {
 		}
 	}
 
-	public static String format( double d, java.text.NumberFormat format ) {
+	public static String format( double d, NumberFormat format ) {
 		synchronized( format ) {
 			return format.format( d );
 		}
 	}
 
 	public static String formatInCurrentDefaultLocale( double d ) {
-		return format( d, java.text.NumberFormat.getNumberInstance() );
+		return format( d, NumberFormat.getNumberInstance() );
 	}
 
 	//	public static double formatAndParse( double d, java.text.NumberFormat format, double valueInCaseOfThrowable ) {
@@ -92,8 +98,8 @@ public class DoubleUtilities {
 	//		}
 	//	}
 	public static double round( double value, int decimalPlaces ) {
-		java.math.BigDecimal bigDecimal = new java.math.BigDecimal( value );
-		bigDecimal = bigDecimal.round( new java.math.MathContext( decimalPlaces, java.math.RoundingMode.HALF_DOWN ) );
+		BigDecimal bigDecimal = new BigDecimal( value );
+		bigDecimal = bigDecimal.round( new MathContext( decimalPlaces, RoundingMode.HALF_DOWN ) );
 		return bigDecimal.doubleValue();
 	}
 }

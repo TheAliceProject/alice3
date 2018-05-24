@@ -42,12 +42,17 @@
  *******************************************************************************/
 package org.lgna.croquet.views.imp;
 
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.DragComponent;
+
+import javax.swing.JPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JDragView extends javax.swing.JPanel {
+public class JDragView extends JPanel {
 	public boolean isActuallyDraggable() {
-		org.lgna.croquet.views.DragComponent<?> dragComponent = (org.lgna.croquet.views.DragComponent<?>)org.lgna.croquet.views.AwtComponentView.lookup( this );
+		DragComponent<?> dragComponent = (DragComponent<?>)AwtComponentView.lookup( this );
 		return dragComponent.getModel() != null;
 	}
 }

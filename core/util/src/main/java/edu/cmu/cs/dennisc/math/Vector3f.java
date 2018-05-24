@@ -140,8 +140,8 @@ public final class Vector3f extends Tuple3f {
 
 	@Deprecated
 	public static boolean isWithinEpsilonOfPositiveOrNegativeYAxis( Vector3f v, float epsilon ) {
-		return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon )
-				&& edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon );
+		return EpsilonUtilities.isWithinEpsilon( Math.abs( v.y ), 1.0, epsilon ) && EpsilonUtilities.isWithinEpsilon( v.x, 0.0, epsilon )
+				&& EpsilonUtilities.isWithinEpsilon( v.z, 0.0, epsilon );
 	}
 
 	private static final Vector3f ORIGIN = new Vector3f( 0, 0, 0 );

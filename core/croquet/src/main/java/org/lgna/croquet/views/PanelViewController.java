@@ -43,10 +43,15 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.Model;
+
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelViewController<M extends org.lgna.croquet.Model> extends ViewController<javax.swing.JPanel, M> {
+public abstract class PanelViewController<M extends Model> extends ViewController<JPanel, M> {
 	private final Panel internalPanel;
 
 	public PanelViewController( M model, Panel internalPanel ) {
@@ -55,9 +60,9 @@ public abstract class PanelViewController<M extends org.lgna.croquet.Model> exte
 	}
 
 	@Override
-	protected final javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		rv.setLayout( new java.awt.BorderLayout() );
+	protected final JPanel createAwtComponent() {
+		JPanel rv = new JPanel();
+		rv.setLayout( new BorderLayout() );
 		rv.add( this.internalPanel.getAwtComponent() );
 		return rv;
 	}

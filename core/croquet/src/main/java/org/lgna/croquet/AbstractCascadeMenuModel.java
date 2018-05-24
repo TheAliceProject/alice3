@@ -42,31 +42,44 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.AbstractItemNode;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F, B> {
 	private class InternalBlank extends CascadeBlank<B> {
 		public InternalBlank() {
-			super( java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
+			super( UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
 		}
 
 		@Override
-		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<B> blankNode ) {
+		protected void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode ) {
 			AbstractCascadeMenuModel.this.updateBlankChildren( children, blankNode );
 		}
 	}
 
 	private String menuItemText;
 
-	private final java.util.List<InternalBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new InternalBlank() ) );
+	private final List<InternalBlank> blanks = Collections.unmodifiableList( Lists.newArrayList( new InternalBlank() ) );
 
-	public AbstractCascadeMenuModel( java.util.UUID id ) {
+	public AbstractCascadeMenuModel( UUID id ) {
 		super( id );
 	}
 
 	@Override
-	public java.util.List<? extends CascadeBlank<B>> getBlanks() {
+	public List<? extends CascadeBlank<B>> getBlanks() {
 		return this.blanks;
 	}
 
@@ -76,22 +89,22 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 		this.menuItemText = this.findDefaultLocalizedText();
 	}
 
-	protected abstract void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<B> blankNode );
+	protected abstract void updateBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<B> blankNode );
 
-	private org.lgna.croquet.imp.cascade.AbstractItemNode<B, ?, ?> getSelectedFillInContext( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode ) {
-		org.lgna.croquet.imp.cascade.BlankNode<B> blankNode = itemNode.getBlankStepAt( 0 );
+	private AbstractItemNode<B, ?, ?> getSelectedFillInContext( ItemNode<? super F, B> itemNode ) {
+		BlankNode<B> blankNode = itemNode.getBlankStepAt( 0 );
 		return blankNode.getSelectedFillInContext();
 	}
 
 	protected abstract F convertValue( B value );
 
 	@Override
-	public F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode ) {
+	public F getTransientValue( ItemNode<? super F, B> itemNode ) {
 		return this.convertValue( this.getSelectedFillInContext( itemNode ).getTransientValue() );
 	}
 
 	@Override
-	public F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public F createValue( ItemNode<? super F, B> itemNode, TransactionHistory transactionHistory ) {
 		return this.convertValue( this.getSelectedFillInContext( itemNode ).createValue( transactionHistory ) );
 	}
 
@@ -100,12 +113,12 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> itemNode ) {
-		return new javax.swing.JLabel( this.menuItemText );
+	protected JComponent createMenuItemIconProxy( ItemNode<? super F, B> itemNode ) {
+		return new JLabel( this.menuItemText );
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public String getMenuItemText( ItemNode<? super F, B> node ) {
 		if( this.isBackedByIconProxy() ) {
 			return super.getMenuItemText( node );
 		} else {
@@ -114,7 +127,7 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public Icon getMenuItemIcon( ItemNode<? super F, B> node ) {
 		if( this.isBackedByIconProxy() ) {
 			return super.getMenuItemIcon( node );
 		} else {

@@ -43,14 +43,18 @@
 
 package org.alice.ide.projecturi.views;
 
+import org.alice.ide.projecturi.SelectProjectUriComposite;
+import org.lgna.croquet.Composite;
+import org.lgna.croquet.views.BorderPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SelectProjectUriView extends org.lgna.croquet.views.BorderPanel {
-	public SelectProjectUriView( org.alice.ide.projecturi.SelectProjectUriComposite composite ) {
+public class SelectProjectUriView extends BorderPanel {
+	public SelectProjectUriView( SelectProjectUriComposite composite ) {
 		super( composite );
-		this.addCenterComponent( org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getTabState().createFolderTabbedPane() );
-		org.lgna.croquet.Composite<?> sideSubComposite = composite.getSideSubComposite();
+		this.addCenterComponent( SelectProjectUriComposite.getInstance().getTabState().createFolderTabbedPane() );
+		Composite<?> sideSubComposite = composite.getSideSubComposite();
 		if( sideSubComposite != null ) {
 			this.addLineEndComponent( sideSubComposite.getView() );
 		}

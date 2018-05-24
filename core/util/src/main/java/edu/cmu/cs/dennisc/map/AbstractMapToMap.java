@@ -42,25 +42,33 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.map;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMapToMap<A, B, V> {
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> outerMap = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private final InitializingIfAbsentMap<A, InitializingIfAbsentMap<B, V>> outerMap = Maps.newInitializingIfAbsentHashMap();
 
 	public static interface Initializer<A, B, V> {
 		public V initialize( A a, B b );
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> mapInitializer = new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>>() {
+	private final InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>> mapInitializer = new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
 		@Override
-		public edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> initialize( A key ) {
-			return edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+		public InitializingIfAbsentMap<B, V> initialize( A key ) {
+			return Maps.newInitializingIfAbsentHashMap();
 		}
 	};
 
 	public V get( A a, B b ) {
-		java.util.Map<B, V> innerMap = this.outerMap.get( a );
+		Map<B, V> innerMap = this.outerMap.get( a );
 		if( innerMap != null ) {
 			return innerMap.get( b );
 		} else {
@@ -69,8 +77,8 @@ public abstract class AbstractMapToMap<A, B, V> {
 	}
 
 	public final synchronized V getInitializingIfAbsent( final A a, B b, final Initializer<A, B, V> initializer ) {
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, this.mapInitializer );
-		return innerMap.getInitializingIfAbsent( b, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<B, V>() {
+		InitializingIfAbsentMap<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, this.mapInitializer );
+		return innerMap.getInitializingIfAbsent( b, new InitializingIfAbsentMap.Initializer<B, V>() {
 			@Override
 			public V initialize( B key ) {
 				return initializer.initialize( a, key );
@@ -79,18 +87,18 @@ public abstract class AbstractMapToMap<A, B, V> {
 	}
 
 	public final void put( A a, B b, V value ) {
-		java.util.Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>>() {
+		Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, new InitializingIfAbsentMap.Initializer<A, InitializingIfAbsentMap<B, V>>() {
 			@Override
-			public edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> initialize( A key ) {
-				return edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+			public InitializingIfAbsentMap<B, V> initialize( A key ) {
+				return Maps.newInitializingIfAbsentHashMap();
 			}
 		} );
 		innerMap.put( b, value );
 	}
 
-	public final java.util.Collection<V> values() {
-		java.util.List<V> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		for( java.util.Map<B, V> innerMap : this.outerMap.values() ) {
+	public final Collection<V> values() {
+		List<V> rv = Lists.newLinkedList();
+		for( Map<B, V> innerMap : this.outerMap.values() ) {
 			rv.addAll( innerMap.values() );
 		}
 		return rv;

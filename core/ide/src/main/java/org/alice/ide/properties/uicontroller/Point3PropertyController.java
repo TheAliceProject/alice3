@@ -50,6 +50,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
+import org.alice.ide.properties.adapter.croquet.ModelPositionPropertyValueOperation;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.GridBagPanel;
 import org.lgna.croquet.views.Label;
@@ -282,8 +285,8 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 				{
 					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newPoint ) )
 					{
-						org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelPositionPropertyValueOperation( this.propertyAdapter, newPoint );
-						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+						Operation operation = new ModelPositionPropertyValueOperation( this.propertyAdapter, newPoint );
+						operation.fire( ActionEventTrigger.createUserInstance( e ) );
 					}
 				}
 			}

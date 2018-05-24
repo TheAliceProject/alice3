@@ -43,6 +43,8 @@
 
 package org.lgna.story.fontattributes;
 
+import java.awt.font.TextAttribute;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +56,8 @@ public class FamilyValue implements FamilyAttribute {
 	}
 
 	@Override
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.FAMILY;
+	public TextAttribute getKey() {
+		return TextAttribute.FAMILY;
 	}
 
 	@Override

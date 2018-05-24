@@ -43,24 +43,30 @@
 
 package org.lgna.croquet.triggers;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.event.TreeSelectionEvent;
+import java.awt.Point;
+
 /**
  * @author Dennis Cosgrove
  */
-public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.event.TreeSelectionEvent> {
-	public static TreeSelectionEventTrigger createUserInstance( javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+public class TreeSelectionEventTrigger extends EventObjectTrigger<TreeSelectionEvent> {
+	public static TreeSelectionEventTrigger createUserInstance( TreeSelectionEvent treeSelectionEvent ) {
 		return new TreeSelectionEventTrigger( null, treeSelectionEvent );
 	}
 
-	private TreeSelectionEventTrigger( org.lgna.croquet.views.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+	private TreeSelectionEventTrigger( ViewController<?, ?> viewController, TreeSelectionEvent treeSelectionEvent ) {
 		super( viewController, treeSelectionEvent );
 	}
 
-	public TreeSelectionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public TreeSelectionEventTrigger( BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
-	protected java.awt.Point getPoint() {
+	protected Point getPoint() {
 		return null;
 	}
 }

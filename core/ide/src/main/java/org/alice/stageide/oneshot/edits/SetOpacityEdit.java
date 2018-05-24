@@ -42,25 +42,34 @@
  *******************************************************************************/
 package org.alice.stageide.oneshot.edits;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.ide.instancefactory.InstanceFactory;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.ModelImp;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SetOpacityEdit extends MethodInvocationEdit {
-	private transient org.lgna.story.implementation.ModelImp modelImp;
+	private transient ModelImp modelImp;
 	private transient Float value;
 
-	public SetOpacityEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+	public SetOpacityEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.SThing ) {
-			org.lgna.story.SThing thing = (org.lgna.story.SThing)instance;
-			this.modelImp = org.lgna.story.EmployeesOnly.getImplementation( thing );
+		if( instance instanceof SThing ) {
+			SThing thing = (SThing)instance;
+			this.modelImp = EmployeesOnly.getImplementation( thing );
 			this.value = this.modelImp.opacity.getValue();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+			Logger.severe( instance );
 			this.modelImp = null;
 			this.value = null;
 		}

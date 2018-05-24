@@ -43,13 +43,18 @@
 
 package org.alice.stageide.about;
 
+import org.alice.stageide.about.views.EulaView;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EulaComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.EulaView> {
+public abstract class EulaComposite extends LazyOperationUnadornedDialogCoreComposite<EulaView> {
 	private final String eulaText;
 
-	public EulaComposite( java.util.UUID migrationId, String text ) {
+	public EulaComposite( UUID migrationId, String text ) {
 		super( migrationId );
 		this.eulaText = text;
 	}
@@ -59,7 +64,7 @@ public abstract class EulaComposite extends org.lgna.croquet.LazyOperationUnador
 	}
 
 	@Override
-	protected org.alice.stageide.about.views.EulaView createView() {
-		return new org.alice.stageide.about.views.EulaView( this );
+	protected EulaView createView() {
+		return new EulaView( this );
 	}
 }

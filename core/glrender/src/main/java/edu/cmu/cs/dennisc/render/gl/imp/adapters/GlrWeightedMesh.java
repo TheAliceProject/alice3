@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
@@ -51,7 +52,7 @@ public class GlrWeightedMesh<E extends WeightedMesh> extends GlrMesh<E>
 {
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( ( property == owner.vertexBuffer ) ||
 				( property == owner.normalBuffer ) ||
 				( property == owner.textCoordBuffer ) ||

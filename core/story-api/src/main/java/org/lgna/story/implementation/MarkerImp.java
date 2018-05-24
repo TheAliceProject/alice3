@@ -44,15 +44,19 @@ package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.scale.Resizer;
+import org.lgna.story.SMarker;
 
 /**
  * @author dculyba
  * 
  */
 public abstract class MarkerImp extends VisualScaleModelImp {
-	protected MarkerImp( org.lgna.story.SMarker abstraction ) {
+	protected MarkerImp( SMarker abstraction ) {
 		super();
 		this.initializeData();
 		this.abstraction = abstraction;
@@ -68,23 +72,23 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public org.lgna.story.SMarker getAbstraction() {
+	public SMarker getAbstraction() {
 		return this.abstraction;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
-		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] {};
+	public Resizer[] getResizers() {
+		return new Resizer[] {};
 	}
 
 	@Override
-	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
+	public double getValueForResizer( Resizer resizer ) {
 		assert false : resizer;
 		return Double.NaN;
 	}
 
 	@Override
-	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
+	public void setValueForResizer( Resizer resizer, double value ) {
 		assert false : resizer;
 	}
 
@@ -95,7 +99,7 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+	public void setSize( Dimension3 size ) {
 		setScale( getScaleForSize( size ) );
 	}
 
@@ -164,7 +168,7 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 
 	public Color4f getMarkerColor()
 	{
-		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgPaintAppearances();
+		SimpleAppearance[] appearances = this.getSgPaintAppearances();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
 			return appearances[ 0 ].diffuseColor.getValue();
 		}
@@ -173,16 +177,16 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 
 	public void setMarkerColor( Color4f color )
 	{
-		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgPaintAppearances();
+		SimpleAppearance[] appearances = this.getSgPaintAppearances();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
-			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
+			for( SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
 				sgAppearance.diffuseColor.setValue( color );
 			}
 		}
 	}
 
 	public float getMarkerOpacity() {
-		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgOpacityAppearances();
+		SimpleAppearance[] appearances = this.getSgOpacityAppearances();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
 			float actualValue = appearances[ 0 ].opacity.getValue();
 			float scaledValue = actualValue / this.getDefaultMarkerOpacity();
@@ -193,16 +197,16 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 
 	protected void setMarkerOpacity( float opacity )
 	{
-		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgOpacityAppearances();
+		SimpleAppearance[] appearances = this.getSgOpacityAppearances();
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
 		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
-			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
+			for( SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
 				sgAppearance.opacity.setValue( scaledValue );
 			}
 		}
 	}
 
-	private final org.lgna.story.SMarker abstraction;
+	private final SMarker abstraction;
 
 	private boolean isShowing = true;
 	private boolean displayEnabled = true;

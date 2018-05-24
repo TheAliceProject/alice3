@@ -43,32 +43,39 @@
 
 package org.alice.ide.projecturi.views;
 
+import org.alice.ide.projecturi.ListUriTab;
+import org.lgna.croquet.views.List;
+import org.lgna.croquet.views.ScrollPane;
+
+import javax.swing.ListCellRenderer;
+import java.net.URI;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ListContentPanel extends TabContentPanel {
-	private final org.lgna.croquet.views.List<java.net.URI> list;
+	private final List<URI> list;
 
-	public ListContentPanel( org.alice.ide.projecturi.ListUriTab tab ) {
+	public ListContentPanel( ListUriTab tab ) {
 		super( tab );
 		this.list = tab.getListSelectionState().createList();
 		this.list.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		this.list.setCellRenderer( this.createListCellRenderer() );
-		this.list.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.list.setLayoutOrientation( List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( -1 );
 		this.list.enableClickingDefaultButtonOnDoubleClick();
 		this.list.setMaximumSizeClampedToPreferredSize( true );
-		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( this.list );
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		scrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.views.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
+		ScrollPane scrollPane = new ScrollPane( this.list );
+		scrollPane.setHorizontalScrollbarPolicy( ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		scrollPane.setVerticalScrollbarPolicy( ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
 		this.addCenterComponent( scrollPane );
 	}
 
-	public org.lgna.croquet.views.List<java.net.URI> getList() {
+	public List<URI> getList() {
 		return this.list;
 	}
 
-	protected javax.swing.ListCellRenderer createListCellRenderer() {
+	protected ListCellRenderer createListCellRenderer() {
 		return new ProjectSnapshotListCellRenderer();
 	}
 }

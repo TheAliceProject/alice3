@@ -42,11 +42,17 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.render.ImageBuffer;
+
+import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuffer {
-	public GlrImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor ) {
+public final class GlrImageBuffer implements ImageBuffer {
+	public GlrImageBuffer( Color4f backgroundColor ) {
 		this.backgroundColor = backgroundColor;
 	}
 
@@ -56,7 +62,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.color.Color4f getBackgroundColor() {
+	public Color4f getBackgroundColor() {
 		return this.backgroundColor;
 	}
 
@@ -64,10 +70,10 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 		return this.backgroundColor == null;
 	}
 
-	/*package-private*/java.awt.image.BufferedImage acquireImage( int width, int height ) {
+	/*package-private*/BufferedImage acquireImage( int width, int height ) {
 		//TODO
 		//int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_4BYTE_ABGR : java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
-		int imageType = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		int imageType = BufferedImage.TYPE_4BYTE_ABGR;
 		if( this.image != null ) {
 			if( ( this.image.getWidth() == width ) && ( this.image.getHeight() == height ) && ( this.image.getType() == imageType ) ) {
 				//pass
@@ -78,7 +84,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 		if( this.image != null ) {
 			//pass
 		} else {
-			this.image = new java.awt.image.BufferedImage( width, height, imageType );
+			this.image = new BufferedImage( width, height, imageType );
 		}
 		return this.image;
 	}
@@ -87,7 +93,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 		this.isRightSideUp = true;
 	}
 
-	/*package-private*/java.nio.FloatBuffer acquireFloatBuffer( int width, int height ) {
+	/*package-private*/FloatBuffer acquireFloatBuffer( int width, int height ) {
 		if( this.isAlphaRequired() ) {
 			int capacity = width * height;
 			if( this.depthBuffer != null ) {
@@ -100,7 +106,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 			if( this.depthBuffer != null ) {
 				//pass
 			} else {
-				this.depthBuffer = java.nio.FloatBuffer.allocate( capacity );
+				this.depthBuffer = FloatBuffer.allocate( capacity );
 			}
 			return this.depthBuffer;
 		} else {
@@ -109,7 +115,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 	}
 
 	@Override
-	public java.awt.image.BufferedImage getImage() {
+	public BufferedImage getImage() {
 		return this.image;
 	}
 
@@ -119,8 +125,8 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.render.ImageBuff
 	}
 
 	private final Object imageLock = "imageLock";
-	private final edu.cmu.cs.dennisc.color.Color4f backgroundColor;
-	private java.awt.image.BufferedImage image;
+	private final Color4f backgroundColor;
+	private BufferedImage image;
 	private boolean isRightSideUp;
-	private java.nio.FloatBuffer depthBuffer;
+	private FloatBuffer depthBuffer;
 }

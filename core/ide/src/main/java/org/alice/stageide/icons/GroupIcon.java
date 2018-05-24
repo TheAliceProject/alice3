@@ -42,25 +42,33 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
+import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
+
+import java.awt.Dimension;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GroupIcon extends CollageIcon {
-	public GroupIcon( java.awt.Dimension size, java.util.List<? extends org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
+	public GroupIcon( Dimension size, List<? extends AbstractSingleSourceImageIconFactory> iconFactories ) {
 		super( size, iconFactories );
 	}
 
 	private static final double ROUND = 10;
 
 	@Override
-	protected java.awt.Shape createBackShape( double width, double height ) {
-		java.awt.geom.RoundRectangle2D a = new java.awt.geom.RoundRectangle2D.Double( 0, 0, width * 0.4, height, ROUND, ROUND );
-		java.awt.geom.RoundRectangle2D b = new java.awt.geom.RoundRectangle2D.Double( 0, height * 0.1, width, height * 0.9, ROUND, ROUND );
-		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( a, b );
+	protected Shape createBackShape( double width, double height ) {
+		RoundRectangle2D a = new RoundRectangle2D.Double( 0, 0, width * 0.4, height, ROUND, ROUND );
+		RoundRectangle2D b = new RoundRectangle2D.Double( 0, height * 0.1, width, height * 0.9, ROUND, ROUND );
+		return AreaUtilities.createUnion( a, b );
 	}
 
 	@Override
-	protected java.awt.Shape createFrontShape( double width, double height ) {
-		return new java.awt.geom.RoundRectangle2D.Double( 0, height * 0.5, width, height * 0.5, ROUND, ROUND );
+	protected Shape createFrontShape( double width, double height ) {
+		return new RoundRectangle2D.Double( 0, height * 0.5, width, height * 0.5, ROUND, ROUND );
 	}
 }

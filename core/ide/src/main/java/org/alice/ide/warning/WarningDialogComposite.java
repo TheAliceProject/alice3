@@ -42,16 +42,21 @@
  *******************************************************************************/
 package org.alice.ide.warning;
 
+import org.alice.ide.warning.components.WarningView;
+import org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class WarningDialogComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.warning.components.WarningView> {
+public class WarningDialogComposite extends LazyOperationUnadornedDialogCoreComposite<WarningView> {
 	public WarningDialogComposite() {
-		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ) );
+		super( UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ) );
 	}
 
 	@Override
-	protected org.alice.ide.warning.components.WarningView createView() {
-		return new org.alice.ide.warning.components.WarningView( this );
+	protected WarningView createView() {
+		return new WarningView( this );
 	}
 }

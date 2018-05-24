@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
+import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
@@ -52,6 +53,8 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
@@ -60,6 +63,8 @@ import org.lgna.ik.poser.animation.edits.DeleteKeyFrameFromTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
 import org.lgna.story.Pose;
+
+import java.util.UUID;
 
 /**
  * @author Matt May
@@ -72,7 +77,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final SingleSelectListState<KeyFrameStyles, ?> styleSelectionState = this.createImmutableListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
-		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
+		super( UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
 		this.composite = composite;
 		currentTime = createBoundedDoubleState( "currentTime",
 				new BoundedDoubleDetails().initialValue( 0 ).minimum( 0 ).maximum( composite.getTimeLine().getEndTime() ).stepSize( .1 ) );
@@ -144,9 +149,9 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 			//			if( isAdjusting ) {
 			//			System.out.println( "time changed" );
 			if( ( selectedKeyFrame != null ) ) {
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+				TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				Transaction transaction = history.acquireActiveTransaction();
+				CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 
 				step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
 			}
@@ -173,7 +178,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
 			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
 			return null;

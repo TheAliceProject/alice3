@@ -42,34 +42,38 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.property;
 
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.property.CopyableInstanceProperty;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ClippedZPlaneProperty extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.ClippedZPlane> {
-	public ClippedZPlaneProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.ClippedZPlane value ) {
+public class ClippedZPlaneProperty extends CopyableInstanceProperty<ClippedZPlane> {
+	public ClippedZPlaneProperty( InstancePropertyOwner owner, ClippedZPlane value ) {
 		super( owner, value );
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.math.ClippedZPlane value ) {
+	public void setValue( ClippedZPlane value ) {
 		assert value != null : this;
 		super.setValue( value );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.ClippedZPlane getCopy( edu.cmu.cs.dennisc.math.ClippedZPlane rv ) {
+	public ClippedZPlane getCopy( ClippedZPlane rv ) {
 		rv.set( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public final edu.cmu.cs.dennisc.math.ClippedZPlane getCopy() {
-		return this.getCopy( edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN() );
+	public final ClippedZPlane getCopy() {
+		return this.getCopy( ClippedZPlane.createNaN() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.math.ClippedZPlane value ) {
+	public void setCopy( ClippedZPlane value ) {
 		//todo?
-		this.setValue( new edu.cmu.cs.dennisc.math.ClippedZPlane( value ) );
+		this.setValue( new ClippedZPlane( value ) );
 	}
 }

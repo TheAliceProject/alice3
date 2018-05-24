@@ -42,10 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.member;
 
+import org.alice.ide.member.NameFilteredJavaFunctionsComposite;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AppearanceFunctionsComposite extends org.alice.ide.member.NameFilteredJavaFunctionsComposite {
+public class AppearanceFunctionsComposite extends NameFilteredJavaFunctionsComposite {
 	private static class SingletonHolder {
 		private static AppearanceFunctionsComposite instance = new AppearanceFunctionsComposite();
 	}
@@ -55,6 +59,6 @@ public class AppearanceFunctionsComposite extends org.alice.ide.member.NameFilte
 	}
 
 	private AppearanceFunctionsComposite() {
-		super( java.util.UUID.fromString( "7909d450-b4f3-4107-ae56-a6a372e53238" ), "getPaint", "getBackPaint", "getFloorPaint", "getWallPaint", "getCeilingPaint", "getOpacity" );
+		super( UUID.fromString( "7909d450-b4f3-4107-ae56-a6a372e53238" ), "getPaint", "getBackPaint", "getFloorPaint", "getWallPaint", "getCeilingPaint", "getOpacity" );
 	}
 }

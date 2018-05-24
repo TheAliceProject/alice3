@@ -42,15 +42,23 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.jira.rpc;
 
+import edu.cmu.cs.dennisc.java.lang.SystemProperty;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.jira.JIRAReport;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcStruct;
+
+import java.util.List;
+import java.util.Vector;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RPCUtilities {
-	private static redstone.xmlrpc.XmlRpcStruct createCustomField( int id, String value ) {
-		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
-		java.util.Vector<String> values = new java.util.Vector<String>();
+	private static XmlRpcStruct createCustomField( int id, String value ) {
+		XmlRpcStruct rv = new XmlRpcStruct();
+		Vector<String> values = new Vector<String>();
 		values.add( value );
 		rv.put( "customfieldId", "customfield_" + id );
 		rv.put( "values", values );
@@ -67,13 +75,13 @@ public class RPCUtilities {
 	//	    rv.put( "values", values );
 	//	    return rv;
 	//	}
-	public static Object logIn( redstone.xmlrpc.XmlRpcClient client, String id, String password ) throws redstone.xmlrpc.XmlRpcFault {
+	public static Object logIn( XmlRpcClient client, String id, String password ) throws XmlRpcFault {
 		return client.invoke( "jira1.login", new Object[] { id, password } );
 	}
 
-	public static redstone.xmlrpc.XmlRpcStruct createIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, redstone.xmlrpc.XmlRpcClient client, Object token ) throws redstone.xmlrpc.XmlRpcFault {
+	public static XmlRpcStruct createIssue( JIRAReport jiraReport, XmlRpcClient client, Object token ) throws XmlRpcFault {
 		String project = jiraReport.getProjectKey();
-		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
+		XmlRpcStruct rv = new XmlRpcStruct();
 		rv.put( "project", project );
 		rv.put( "type", jiraReport.getTypeID() );
 		rv.put( "summary", jiraReport.getTruncatedSummary() );
@@ -81,8 +89,8 @@ public class RPCUtilities {
 		StringBuilder sb = new StringBuilder();
 		sb.append( jiraReport.getDescription() );
 		sb.append( "\n\nsystem properties:\n" );
-		java.util.List<edu.cmu.cs.dennisc.java.lang.SystemProperty> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
-		for( edu.cmu.cs.dennisc.java.lang.SystemProperty property : propertyList ) {
+		List<SystemProperty> propertyList = SystemUtilities.getSortedPropertyList();
+		for( SystemProperty property : propertyList ) {
 			sb.append( property.getKey() );
 			sb.append( ": " );
 			sb.append( property.getValue() );
@@ -95,13 +103,13 @@ public class RPCUtilities {
 		if( ( affectsVersions != null ) && ( affectsVersions.length > 0 ) ) {
 			String affectsVersion = affectsVersions[ 0 ];
 
-			java.util.List<redstone.xmlrpc.XmlRpcStruct> versions = (java.util.List<redstone.xmlrpc.XmlRpcStruct>)client.invoke( "jira1.getVersions", new Object[] { token, project } );
+			List<XmlRpcStruct> versions = (List<XmlRpcStruct>)client.invoke( "jira1.getVersions", new Object[] { token, project } );
 			//System.out.println( "versions: " );
-			for( redstone.xmlrpc.XmlRpcStruct version : versions ) {
+			for( XmlRpcStruct version : versions ) {
 				//System.out.println( "\t" + version );
 				if( affectsVersion.equals( version.get( "name" ) ) ) {
-					java.util.Vector<redstone.xmlrpc.XmlRpcStruct> remoteAffectsVersions = new java.util.Vector<redstone.xmlrpc.XmlRpcStruct>();
-					redstone.xmlrpc.XmlRpcStruct remoteAffectsVersion = new redstone.xmlrpc.XmlRpcStruct();
+					Vector<XmlRpcStruct> remoteAffectsVersions = new Vector<XmlRpcStruct>();
+					XmlRpcStruct remoteAffectsVersion = new XmlRpcStruct();
 					remoteAffectsVersion.put( "id", version.get( "id" ) );
 					remoteAffectsVersions.add( remoteAffectsVersion );
 					rv.put( "affectsVersions", remoteAffectsVersions );
@@ -110,11 +118,11 @@ public class RPCUtilities {
 			}
 		}
 		rv.put( "environment", jiraReport.getEnvironment() );
-		java.util.Vector<redstone.xmlrpc.XmlRpcStruct> customFields = new java.util.Vector<redstone.xmlrpc.XmlRpcStruct>();
+		Vector<XmlRpcStruct> customFields = new Vector<XmlRpcStruct>();
 		customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );
 		customFields.add( createCustomField( 10001, jiraReport.getException() ) );
 		rv.put( "customFieldValues", customFields );
-		return (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
+		return (XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
 	}
 
 	public static String getKey( XmlRpcStruct issue ) {

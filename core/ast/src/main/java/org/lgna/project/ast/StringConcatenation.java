@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.ast.localizer.AstLocalizer;
 import org.lgna.project.code.PrecedentedAppender;
 
 /**
@@ -62,7 +63,7 @@ public final class StringConcatenation extends Expression implements Precedented
 	}
 
 	@Override
-	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
+	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.leftOperand.getValue() );
 		localizer.appendText( " + " );
 		safeAppendRepr( localizer, this.rightOperand.getValue() );

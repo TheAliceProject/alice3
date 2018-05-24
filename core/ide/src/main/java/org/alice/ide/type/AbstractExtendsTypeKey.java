@@ -43,18 +43,20 @@
 
 package org.alice.ide.type;
 
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractExtendsTypeKey extends TypeKey {
-	private final org.lgna.project.ast.AbstractType<?, ?, ?> superType;
+	private final AbstractType<?, ?, ?> superType;
 
-	public AbstractExtendsTypeKey( org.lgna.project.ast.AbstractType<?, ?, ?> superType ) {
+	public AbstractExtendsTypeKey( AbstractType<?, ?, ?> superType ) {
 		assert superType != null;
 		this.superType = superType;
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getSuperType() {
+	public AbstractType<?, ?, ?> getSuperType() {
 		return this.superType;
 	}
 
@@ -69,7 +71,7 @@ public abstract class AbstractExtendsTypeKey extends TypeKey {
 	//		return userType.superType.getValue() == this.superType;
 	//	}
 	@Override
-	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
+	protected boolean contentEquals( TypeKey other ) {
 		// super class's equals methods ensures this.getClass() == other.getClass()
 		return this.superType == ( (AbstractExtendsTypeKey)other ).superType;
 	}

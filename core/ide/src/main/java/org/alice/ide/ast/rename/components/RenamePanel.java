@@ -43,17 +43,22 @@
 
 package org.alice.ide.ast.rename.components;
 
+import org.alice.ide.ast.rename.RenameComposite;
+import org.lgna.croquet.views.BorderPanel;
+
+import javax.swing.BorderFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RenamePanel extends org.lgna.croquet.views.BorderPanel {
-	public RenamePanel( org.alice.ide.ast.rename.RenameComposite composite ) {
+public class RenamePanel extends BorderPanel {
+	public RenamePanel( RenameComposite composite ) {
 		super( composite );
-		org.lgna.croquet.views.BorderPanel line = new org.lgna.croquet.views.BorderPanel.Builder()
+		BorderPanel line = new BorderPanel.Builder()
 				.lineStart( composite.getNameState().getSidekickLabel().createLabel() )
 				.center( composite.getNameState().createTextField() )
 				.build();
 		this.addPageStartComponent( line );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }

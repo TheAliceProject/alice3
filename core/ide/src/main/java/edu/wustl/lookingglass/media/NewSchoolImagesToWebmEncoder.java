@@ -42,6 +42,18 @@
  *******************************************************************************/
 package edu.wustl.lookingglass.media;
 
+import edu.cmu.cs.dennisc.java.io.InputStreamUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import javax.imageio.ImageIO;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,17 +61,17 @@ public class NewSchoolImagesToWebmEncoder {
 	private static final String WEBM_EXTENSION = "webm";
 
 	private final int frameRate;
-	private final java.awt.Dimension size;
+	private final Dimension size;
 	private final boolean isUpsideDown;
 
-	private java.io.File encodedVideoFile = null;
+	private File encodedVideoFile = null;
 	private ProcessBuilder processBuilder;
 	private Process process;
 
-	private final java.io.ByteArrayOutputStream stdout = new java.io.ByteArrayOutputStream();
-	private final java.io.ByteArrayOutputStream stderr = new java.io.ByteArrayOutputStream();
+	private final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+	private final ByteArrayOutputStream stderr = new ByteArrayOutputStream();
 
-	public NewSchoolImagesToWebmEncoder( int frameRate, java.awt.Dimension size, boolean isUpsideDown ) {
+	public NewSchoolImagesToWebmEncoder( int frameRate, Dimension size, boolean isUpsideDown ) {
 		this.frameRate = frameRate;
 		this.size = size;
 		this.isUpsideDown = isUpsideDown;
@@ -69,12 +81,12 @@ public class NewSchoolImagesToWebmEncoder {
 	}
 
 	public void start() throws Exception {
-		javax.imageio.ImageIO.setUseCache( false );
+		ImageIO.setUseCache( false );
 
-		this.encodedVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+		this.encodedVideoFile = File.createTempFile( "project", "." + WEBM_EXTENSION );
 		this.encodedVideoFile.deleteOnExit();
 
-		java.util.List<String> args = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		List<String> args = Lists.newLinkedList();
 
 		// overwrite output files without asking
 		args.add( "-y" );
@@ -144,45 +156,45 @@ public class NewSchoolImagesToWebmEncoder {
 		this.process = this.processBuilder.start();
 	}
 
-	public java.io.File getEncodedVideoFile() {
+	public File getEncodedVideoFile() {
 		return this.encodedVideoFile;
 	}
 
 	private void drainInputStreams() throws Exception {
-		java.io.InputStream isOut = this.process.getInputStream();
-		java.io.InputStream isErr = this.process.getErrorStream();
-		edu.cmu.cs.dennisc.java.io.InputStreamUtilities.drain( isOut, this.stdout );
-		edu.cmu.cs.dennisc.java.io.InputStreamUtilities.drain( isErr, this.stderr );
+		InputStream isOut = this.process.getInputStream();
+		InputStream isErr = this.process.getErrorStream();
+		InputStreamUtilities.drain( isOut, this.stdout );
+		InputStreamUtilities.drain( isErr, this.stderr );
 	}
 
-	public void addBufferedImage( java.awt.image.BufferedImage image, boolean isUpsideDown ) throws Exception {
+	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) throws Exception {
 		assert image != null;
 		assert image.getWidth() == this.size.getWidth();
 		assert image.getHeight() == this.size.getHeight();
 		assert isUpsideDown == this.isUpsideDown;
 
 		this.drainInputStreams();
-		java.io.OutputStream os = this.process.getOutputStream();
-		javax.imageio.ImageIO.write( image, "ppm", os );
+		OutputStream os = this.process.getOutputStream();
+		ImageIO.write( image, "ppm", os );
 	}
 
 	public int stop() throws Exception {
 		this.drainInputStreams();
-		java.io.OutputStream os = this.process.getOutputStream();
+		OutputStream os = this.process.getOutputStream();
 		os.flush();
 		os.close();
 		this.drainInputStreams();
 		int status = this.process.waitFor();
 		this.drainInputStreams();
-		javax.imageio.ImageIO.setUseCache( true );
+		ImageIO.setUseCache( true );
 		return status;
 	}
 
-	public java.io.ByteArrayOutputStream getStdout() {
+	public ByteArrayOutputStream getStdout() {
 		return this.stdout;
 	}
 
-	public java.io.ByteArrayOutputStream getStderr() {
+	public ByteArrayOutputStream getStderr() {
 		return this.stderr;
 	}
 }

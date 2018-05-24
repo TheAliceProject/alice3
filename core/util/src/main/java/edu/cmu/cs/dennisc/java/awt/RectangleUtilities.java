@@ -42,11 +42,19 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.math.immutable.MRectangleI;
+
+import javax.swing.SwingConstants;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 /**
  * @author Dennis Cosgrove
  */
 public class RectangleUtilities {
-	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, int width, int height ) {
+	public static Rectangle createCenteredRectangle( Rectangle bound, int width, int height ) {
 		int x0 = bound.x;
 		int x1 = ( bound.x + bound.width ) - 1;
 		int xC = ( x0 + x1 ) / 2;
@@ -55,14 +63,14 @@ public class RectangleUtilities {
 		int y1 = ( bound.y + bound.height ) - 1;
 		int yC = ( y0 + y1 ) / 2;
 
-		return new java.awt.Rectangle( xC - ( width / 2 ), yC - ( height / 2 ), width, height );
+		return new Rectangle( xC - ( width / 2 ), yC - ( height / 2 ), width, height );
 	}
 
-	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, java.awt.Dimension size ) {
+	public static Rectangle createCenteredRectangle( Rectangle bound, Dimension size ) {
 		return createCenteredRectangle( bound, size.width, size.height );
 	}
 
-	public static java.awt.Rectangle grow( java.awt.Rectangle rv, int xPad, int yPad ) {
+	public static Rectangle grow( Rectangle rv, int xPad, int yPad ) {
 		rv.x -= xPad;
 		rv.y -= yPad;
 		rv.width += xPad + xPad;
@@ -70,33 +78,33 @@ public class RectangleUtilities {
 		return rv;
 	}
 
-	public static java.awt.Rectangle grow( java.awt.Rectangle rv, int pad ) {
+	public static Rectangle grow( Rectangle rv, int pad ) {
 		return grow( rv, pad, pad );
 	}
 
-	public static java.awt.Point getPoint( java.awt.Rectangle rect, int xConstraint, int yConstraint ) {
-		java.awt.Point rv = new java.awt.Point();
+	public static Point getPoint( Rectangle rect, int xConstraint, int yConstraint ) {
+		Point rv = new Point();
 		switch( xConstraint ) {
-		case javax.swing.SwingConstants.LEADING:
+		case SwingConstants.LEADING:
 			rv.x = rect.x;
 			break;
-		case javax.swing.SwingConstants.TRAILING:
+		case SwingConstants.TRAILING:
 			rv.x = rect.x + rect.width;
 			break;
-		case javax.swing.SwingConstants.CENTER:
+		case SwingConstants.CENTER:
 			rv.x = rect.x + ( rect.width / 2 );
 			break;
 		default:
 			assert false : xConstraint;
 		}
 		switch( yConstraint ) {
-		case javax.swing.SwingConstants.LEADING:
+		case SwingConstants.LEADING:
 			rv.y = rect.y;
 			break;
-		case javax.swing.SwingConstants.TRAILING:
+		case SwingConstants.TRAILING:
 			rv.y = rect.y + rect.height;
 			break;
-		case javax.swing.SwingConstants.CENTER:
+		case SwingConstants.CENTER:
 			rv.y = rect.y + ( rect.height / 2 );
 			break;
 		default:
@@ -105,7 +113,7 @@ public class RectangleUtilities {
 		return rv;
 	}
 
-	public static java.awt.Rectangle inset( java.awt.Rectangle rv, java.awt.Insets insets ) {
+	public static Rectangle inset( Rectangle rv, Insets insets ) {
 		if( insets != null ) {
 			if( rv != null ) {
 				rv.x -= insets.left;
@@ -120,18 +128,18 @@ public class RectangleUtilities {
 		return rv;
 	}
 
-	public static void setBounds( java.awt.Rectangle hole, int xA, int yA, int xB, int yB ) {
+	public static void setBounds( Rectangle hole, int xA, int yA, int xB, int yB ) {
 		hole.x = Math.min( xA, xB );
 		hole.y = Math.min( yA, yB );
 		hole.width = Math.abs( xB - xA );
 		hole.height = Math.abs( yB - yA );
 	}
 
-	public static java.awt.Rectangle toAwtRectangle( edu.cmu.cs.dennisc.math.immutable.MRectangleI rectangle ) {
-		return rectangle != null ? new java.awt.Rectangle( rectangle.x, rectangle.y, rectangle.width, rectangle.height ) : null;
+	public static Rectangle toAwtRectangle( MRectangleI rectangle ) {
+		return rectangle != null ? new Rectangle( rectangle.x, rectangle.y, rectangle.width, rectangle.height ) : null;
 	}
 
-	public static edu.cmu.cs.dennisc.math.immutable.MRectangleI toMRectangleI( java.awt.Rectangle rectangle ) {
-		return rectangle != null ? new edu.cmu.cs.dennisc.math.immutable.MRectangleI( rectangle.x, rectangle.y, rectangle.width, rectangle.height ) : null;
+	public static MRectangleI toMRectangleI( Rectangle rectangle ) {
+		return rectangle != null ? new MRectangleI( rectangle.x, rectangle.y, rectangle.width, rectangle.height ) : null;
 	}
 }

@@ -42,8 +42,10 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import javax.swing.JPanel;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface LightweightOnscreenRenderTarget extends OnscreenRenderTarget<javax.swing.JPanel> {
+public interface LightweightOnscreenRenderTarget extends OnscreenRenderTarget<JPanel> {
 }

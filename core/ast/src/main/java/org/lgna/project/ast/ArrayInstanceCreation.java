@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.ListProperty;
 import org.lgna.project.code.PrecedentedAppender;
 
 /**
@@ -107,6 +108,6 @@ public final class ArrayInstanceCreation extends Expression implements Precedent
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
-	public final edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
+	public final ListProperty<Integer> lengths = new ListProperty<Integer>( this );
 	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
 }

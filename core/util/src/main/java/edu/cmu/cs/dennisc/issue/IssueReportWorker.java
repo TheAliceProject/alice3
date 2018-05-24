@@ -47,14 +47,25 @@ import com.atlassian.jira.rest.client.api.domain.BasicIssue;
 import com.atlassian.jira.rpc.soap.client.JiraSoapService;
 import com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator;
 import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 import edu.cmu.cs.dennisc.jira.rest.RestUtilities;
+import edu.cmu.cs.dennisc.jira.rpc.RPCUtilities;
 import edu.cmu.cs.dennisc.jira.soap.SOAPUtilities;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcStruct;
+
+import javax.swing.SwingWorker;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, String> {
+public final class IssueReportWorker extends SwingWorker<Boolean, String> {
 	private final WorkerListener workerListener;
 	private final ReportGenerator issueReportGenerator;
 	private final ReportSubmissionConfiguration reportSubmissionConfiguration;
@@ -68,12 +79,12 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 	}
 
 	@Override
-	protected void process( java.util.List<String> chunks ) {
+	protected void process( List<String> chunks ) {
 		this.workerListener.process( chunks );
 	}
 
 	private void process( String... chunks ) {
-		this.process( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( chunks ) );
+		this.process( Lists.newArrayList( chunks ) );
 	}
 
 	private void uploadToJiraViaRest() throws Exception {
@@ -82,7 +93,7 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 			BasicIssue result = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
 			this.key = result.getKey();
 
-			java.util.List<Attachment> attachments = jiraReport.getAttachments();
+			List<Attachment> attachments = jiraReport.getAttachments();
 			if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
 				this.process( "\n" );
 				for( Attachment attachment : attachments ) {
@@ -97,23 +108,23 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 	}
 
 	private boolean uploadToJIRAViaSOAP() throws Exception {
-		edu.cmu.cs.dennisc.jira.JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
+		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
 		if( jiraReport != null ) {
 			JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
 			JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
 			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
 			RemoteIssue result = SOAPUtilities.createIssue( jiraReport, service, token );
 
-			java.util.List<Attachment> attachments = jiraReport.getAttachments();
+			List<Attachment> attachments = jiraReport.getAttachments();
 			boolean rv = true;
 			if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
 				this.process( "\n" );
 				for( Attachment attachment : attachments ) {
 					this.process( "\t" + attachment.getFileName() + "... " );
 					try {
-						edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.addAttachment( result, attachment, service, token );
+						SOAPUtilities.addAttachment( result, attachment, service, token );
 						rv = true;
-					} catch( java.rmi.RemoteException re ) {
+					} catch( RemoteException re ) {
 						re.printStackTrace();
 						rv = false;
 					}
@@ -131,14 +142,14 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 	}
 
 	private void uploadToJIRAViaRPC() throws Exception {
-		edu.cmu.cs.dennisc.jira.JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
+		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
 		if( jiraReport != null ) {
 			final boolean STREAM_MESSAGES = true;
-			redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES );
+			XmlRpcClient client = new XmlRpcClient( this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES );
 			Object token = this.reportSubmissionConfiguration.getJIRAViaRPCAuthenticator().login( client );
 			try {
-				redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( jiraReport, client, token );
-				this.key = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.getKey( remote );
+				XmlRpcStruct remote = RPCUtilities.createIssue( jiraReport, client, token );
+				this.key = RPCUtilities.getKey( remote );
 			} finally {
 				client.invoke( "jira1.logout", new Object[] { token } );
 			}
@@ -230,12 +241,12 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 		try {
 			Boolean isSuccessful = this.get();
 			if( isSuccessful != null ) {
-				java.net.URL urlResult;
+				URL urlResult;
 				if( this.key != null ) {
 					try {
-						java.net.URL urlSOAP = this.reportSubmissionConfiguration.getJIRAViaSOAPServer();
-						urlResult = new java.net.URL( urlSOAP.getProtocol(), urlSOAP.getHost(), urlSOAP.getPort(), "/browse/" + this.key );
-					} catch( java.net.MalformedURLException murle ) {
+						URL urlSOAP = this.reportSubmissionConfiguration.getJIRAViaSOAPServer();
+						urlResult = new URL( urlSOAP.getProtocol(), urlSOAP.getHost(), urlSOAP.getPort(), "/browse/" + this.key );
+					} catch( MalformedURLException murle ) {
 						urlResult = null;
 					}
 				} else {
@@ -245,7 +256,7 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 			} else {
 				System.out.println( "IssueReportWorker: isSuccessful is null." );
 			}
-		} catch( java.util.concurrent.ExecutionException ee ) {
+		} catch( ExecutionException ee ) {
 			ee.printStackTrace();
 		} catch( InterruptedException ie ) {
 			ie.printStackTrace();

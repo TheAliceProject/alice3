@@ -43,16 +43,30 @@
 
 package org.alice.ide.declarationseditor;
 
+import edu.cmu.cs.dennisc.property.StringProperty;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import org.alice.ide.IDE;
+import org.alice.ide.declarationseditor.components.DeclarationView;
+import org.lgna.croquet.AbstractTabComposite;
+import org.lgna.croquet.views.ScrollPane;
+import org.lgna.project.ast.AbstractCode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationComposite<D extends org.lgna.project.ast.AbstractDeclaration, V extends org.alice.ide.declarationseditor.components.DeclarationView> extends org.lgna.croquet.AbstractTabComposite<V> {
+public abstract class DeclarationComposite<D extends AbstractDeclaration, V extends DeclarationView> extends AbstractTabComposite<V> {
 	@Deprecated
-	public static synchronized DeclarationComposite<?, ?> getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return CodeComposite.getInstance( (org.lgna.project.ast.AbstractCode)declaration );
-		} else if( declaration instanceof org.lgna.project.ast.NamedUserType ) {
-			return TypeComposite.getInstance( (org.lgna.project.ast.NamedUserType)declaration );
+	public static synchronized DeclarationComposite<?, ?> getInstance( AbstractDeclaration declaration ) {
+		if( declaration instanceof AbstractCode ) {
+			return CodeComposite.getInstance( (AbstractCode)declaration );
+		} else if( declaration instanceof NamedUserType ) {
+			return TypeComposite.getInstance( (NamedUserType)declaration );
 		} else {
 			if( declaration != null ) {
 				throw new RuntimeException( "todo " + declaration );
@@ -65,22 +79,22 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 	private final D declaration;
 	private final Class<D> declarationCls;
 
-	public DeclarationComposite( java.util.UUID id, D declaration, Class<D> declarationCls ) {
+	public DeclarationComposite( UUID id, D declaration, Class<D> declarationCls ) {
 		super( id );
 		this.declaration = declaration;
 		this.declarationCls = declarationCls;
 
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+		StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
-			edu.cmu.cs.dennisc.property.event.PropertyListener nameListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			PropertyListener nameListener = new PropertyListener() {
 				@Override
-				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanging( PropertyEvent e ) {
 				}
 
 				@Override
-				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				public void propertyChanged( PropertyEvent e ) {
 					String nextName = (String)e.getValue();
-					org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
+					IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
 				}
 			};
 			nameProperty.addPropertyListener( nameListener );
@@ -96,12 +110,12 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 		return this.declaration;
 	}
 
-	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getType();
+	public abstract AbstractType<?, ?, ?> getType();
 
 	public abstract boolean isValid();
 
 	@Override
-	protected final org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+	protected final ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

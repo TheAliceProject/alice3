@@ -42,20 +42,30 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.ui.imageeditor;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.javax.swing.transfer.FileTransferHandler;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditor extends javax.swing.JFrame {
+public class ImageEditor extends JFrame {
 	private ImagePane m_imagePane = new ImagePane();
 
 	public ImageEditor() {
-		class MyFileTransferHandler extends edu.cmu.cs.dennisc.javax.swing.transfer.FileTransferHandler {
+		class MyFileTransferHandler extends FileTransferHandler {
 			@Override
-			protected void handleFiles( java.util.List<java.io.File> files ) {
-				java.io.File file0 = files.get( 0 );
+			protected void handleFiles( List<File> files ) {
+				File file0 = files.get( 0 );
 				try {
 					ImageEditor.this.load( file0 );
-				} catch( java.io.IOException ioe ) {
+				} catch( IOException ioe ) {
 					throw new RuntimeException( file0.getAbsolutePath(), ioe );
 				}
 			}
@@ -63,16 +73,16 @@ public class ImageEditor extends javax.swing.JFrame {
 
 		MyFileTransferHandler myFileTransferHandler = new MyFileTransferHandler();
 		m_imagePane.setTransferHandler( myFileTransferHandler );
-		getContentPane().add( m_imagePane, java.awt.BorderLayout.CENTER );
+		getContentPane().add( m_imagePane, BorderLayout.CENTER );
 	}
 
-	private void load( java.io.File file ) throws java.io.IOException {
-		m_imagePane.setImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( file ) );
+	private void load( File file ) throws IOException {
+		m_imagePane.setImage( ImageUtilities.read( file ) );
 	}
 
 	public static void main( String[] args ) {
 		ImageEditor imageEditor = new ImageEditor();
-		imageEditor.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		imageEditor.setDefaultCloseOperation( WindowConstants.EXIT_ON_CLOSE );
 		imageEditor.pack();
 		imageEditor.setVisible( true );
 	}

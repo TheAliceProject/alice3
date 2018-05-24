@@ -43,13 +43,24 @@
 package org.lgna.croquet.imp.operation;
 
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.imp.cascade.ItemNode;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class OperationFauxCascadeItem<F, B> extends org.lgna.croquet.CascadeFillIn<F, B> {
-	public OperationFauxCascadeItem( org.lgna.croquet.Operation operation ) {
-		super( java.util.UUID.fromString( "68f2167d-0763-4a43-8ce3-592e1562877c" ) );
+/*package-private*/class OperationFauxCascadeItem<F, B> extends CascadeFillIn<F, B> {
+	public OperationFauxCascadeItem( Operation operation ) {
+		super( UUID.fromString( "68f2167d-0763-4a43-8ce3-592e1562877c" ) );
 		this.operation = operation;
 	}
 
@@ -60,35 +71,35 @@ import org.lgna.croquet.CancelException;
 	}
 
 	@Override
-	public java.util.List<? extends org.lgna.croquet.CascadeBlank<B>> getBlanks() {
-		return java.util.Collections.emptyList();
+	public List<? extends CascadeBlank<B>> getBlanks() {
+		return Collections.emptyList();
 	}
 
 	@Override
-	public F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public F getTransientValue( ItemNode<? super F, B> node ) {
 		return null;
 	}
 
 	@Override
-	public F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public F createValue( ItemNode<? super F, B> node, TransactionHistory transactionHistory ) {
 		this.operation.fire();
 		throw new CancelException();
 	}
 
 	@Override
-	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public String getMenuItemText( ItemNode<? super F, B> node ) {
 		return this.operation.getImp().getName();
 	}
 
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public Icon getMenuItemIcon( ItemNode<? super F, B> node ) {
 		return this.operation.getImp().getSmallIcon();
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	protected JComponent createMenuItemIconProxy( ItemNode<? super F, B> node ) {
 		throw new Error( "Override of getMenuItemText and getMenuItemIcon should prevent this" );
 	}
 
-	private final org.lgna.croquet.Operation operation;
+	private final Operation operation;
 }

@@ -42,6 +42,11 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.issue;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Lists;
+
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -113,7 +118,7 @@ public class Issue {
 		private String reportedBy;
 		private String emailAddress;
 
-		private java.util.List<Attachment> attachments = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		private List<Attachment> attachments = Lists.newLinkedList();
 	}
 
 	private Issue( Builder builder ) {
@@ -127,7 +132,7 @@ public class Issue {
 		this.version = builder.version;
 		this.reportedBy = builder.reportedBy;
 		this.emailAddress = builder.emailAddress;
-		this.attachments = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( builder.attachments, Attachment.class );
+		this.attachments = ArrayUtilities.createArray( builder.attachments, Attachment.class );
 	}
 
 	public IssueType getType() {

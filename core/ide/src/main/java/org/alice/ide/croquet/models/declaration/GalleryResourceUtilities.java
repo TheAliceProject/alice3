@@ -43,7 +43,16 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import org.alice.ide.IDE;
 import org.alice.nonfree.NebulousIde;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractType;
+
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -53,22 +62,22 @@ public class GalleryResourceUtilities {
 		throw new AssertionError();
 	}
 
-	public static <B> void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<B> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		Iterable<org.lgna.project.ast.AbstractDeclaration> declarations = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
-		for( org.lgna.project.ast.AbstractDeclaration declaration : declarations ) {
-			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> childType = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+	public static <B> void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode, AbstractType<?, ?, ?> type ) {
+		Iterable<AbstractDeclaration> declarations = IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
+		for( AbstractDeclaration declaration : declarations ) {
+			if( declaration instanceof AbstractType<?, ?, ?> ) {
+				AbstractType<?, ?, ?> childType = (AbstractType<?, ?, ?>)declaration;
 				if( NebulousIde.nonfree.isAssignableToPersonResource( childType ) ) {
-					org.lgna.croquet.CascadeBlankChild personFillIn = NebulousIde.nonfree.getGalleryPersonResourceFillInInstance( childType );
+					CascadeBlankChild personFillIn = NebulousIde.nonfree.getGalleryPersonResourceFillInInstance( childType );
 					if( personFillIn != null ) {
 						children.add( personFillIn );
 					}
-					children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+					children.add( CascadeLineSeparator.getInstance() );
 				} else {
 					children.add( GalleryResourceMenu.getInstance( childType ) );
 				}
-			} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
-				org.lgna.project.ast.AbstractField childField = (org.lgna.project.ast.AbstractField)declaration;
+			} else if( declaration instanceof AbstractField ) {
+				AbstractField childField = (AbstractField)declaration;
 				children.add( GalleryResourceFieldFillIn.getInstance( childField ) );
 			} else {
 				throw new AssertionError();

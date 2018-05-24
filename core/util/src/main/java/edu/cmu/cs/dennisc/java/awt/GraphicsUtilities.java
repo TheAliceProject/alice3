@@ -42,7 +42,28 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 
 /**
  * @author Dennis Cosgrove
@@ -52,43 +73,43 @@ public class GraphicsUtilities {
 		throw new Error();
 	}
 
-	private static java.awt.image.BufferedImage s_bufferedImage = null;
+	private static BufferedImage s_bufferedImage = null;
 
-	public static java.awt.Graphics getGraphics() {
+	public static Graphics getGraphics() {
 		if( s_bufferedImage != null ) {
 			//pass
 		} else {
-			s_bufferedImage = new java.awt.image.BufferedImage( 1, 1, java.awt.image.BufferedImage.TYPE_3BYTE_BGR );
+			s_bufferedImage = new BufferedImage( 1, 1, BufferedImage.TYPE_3BYTE_BGR );
 		}
 		return s_bufferedImage.getGraphics();
 	}
 
-	public static void setRenderingHint( java.awt.Graphics g, java.awt.RenderingHints.Key key, Object value ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	public static void setRenderingHint( Graphics g, RenderingHints.Key key, Object value ) {
+		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint( key, value );
 	}
 
-	public static Object setAntialiasing( java.awt.Graphics g, Object nextAntialiasing ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, nextAntialiasing );
+	public static Object setAntialiasing( Graphics g, Object nextAntialiasing ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Object prevAntialiasing = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, nextAntialiasing );
 		return prevAntialiasing;
 	}
 
-	public static java.awt.Shape setClip( java.awt.Graphics g, java.awt.Shape nextClip ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Shape prevClip = g2.getClip();
+	public static Shape setClip( Graphics g, Shape nextClip ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Shape prevClip = g2.getClip();
 		g2.setClip( nextClip );
 		return prevClip;
 	}
 
-	public static void drawCenteredImage( java.awt.Graphics g, java.awt.Image image, java.awt.Component component ) {
+	public static void drawCenteredImage( Graphics g, Image image, Component component ) {
 		int x = ( component.getWidth() - image.getWidth( component ) ) / 2;
 		int y = ( component.getHeight() - image.getHeight( component ) ) / 2;
 		g.drawImage( image, x, y, component );
 	}
 
-	public static void drawCenteredScaledToFitImage( java.awt.Graphics g, java.awt.Image image, java.awt.Component component ) {
+	public static void drawCenteredScaledToFitImage( Graphics g, Image image, Component component ) {
 		int imageWidth = image.getWidth( component );
 		int imageHeight = image.getHeight( component );
 		int componentWidth = component.getWidth();
@@ -103,14 +124,14 @@ public class GraphicsUtilities {
 			heightFactor = componentHeight;
 		}
 		if( ( widthFactor > 0 ) || ( heightFactor > 0 ) ) {
-			image = image.getScaledInstance( widthFactor, heightFactor, java.awt.Image.SCALE_SMOOTH );
+			image = image.getScaledInstance( widthFactor, heightFactor, Image.SCALE_SMOOTH );
 		}
 		drawCenteredImage( g, image, component );
 	}
 
 	//Scales an image to fit a destination image and then draws that image centered in the destination image
-	public static void drawCenteredScaledToFitImage( java.awt.Image image, java.awt.Image destImage ) {
-		java.awt.Graphics g = destImage.getGraphics();
+	public static void drawCenteredScaledToFitImage( Image image, Image destImage ) {
+		Graphics g = destImage.getGraphics();
 		int imageWidth = image.getWidth( null );
 		int imageHeight = image.getHeight( null );
 		int destWidth = destImage.getWidth( null );
@@ -129,13 +150,13 @@ public class GraphicsUtilities {
 		g.drawImage( image, x, y, imageWidth, imageHeight, null );
 	}
 
-	public static java.awt.Image getImageForIcon( javax.swing.Icon icon ) {
-		if( icon instanceof javax.swing.ImageIcon ) {
-			return ( (javax.swing.ImageIcon)icon ).getImage();
+	public static Image getImageForIcon( Icon icon ) {
+		if( icon instanceof ImageIcon ) {
+			return ( (ImageIcon)icon ).getImage();
 		} else {
 			int width = icon.getIconWidth();
 			int height = icon.getIconHeight();
-			java.awt.image.BufferedImage newIconImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+			BufferedImage newIconImage = new BufferedImage( width, height, BufferedImage.TYPE_4BYTE_ABGR );
 			Graphics2D g = newIconImage.createGraphics();
 			icon.paintIcon( null, g, 0, 0 );
 			g.dispose();
@@ -143,9 +164,9 @@ public class GraphicsUtilities {
 		}
 	}
 
-	public static void drawCenteredText( java.awt.Graphics g, String s, int x, int y, int width, int height ) {
+	public static void drawCenteredText( Graphics g, String s, int x, int y, int width, int height ) {
 		if( s != null ) {
-			java.awt.FontMetrics fm = g.getFontMetrics();
+			FontMetrics fm = g.getFontMetrics();
 			int messageWidth = fm.stringWidth( s );
 			int ascent = fm.getMaxAscent();
 			int descent = fm.getMaxDescent();
@@ -153,19 +174,19 @@ public class GraphicsUtilities {
 		}
 	}
 
-	public static void drawCenteredText( java.awt.Graphics g, String s, java.awt.Dimension size ) {
+	public static void drawCenteredText( Graphics g, String s, Dimension size ) {
 		drawCenteredText( g, s, 0, 0, size.width, size.height );
 	}
 
-	public static void drawCenteredText( java.awt.Graphics g, String s, java.awt.Rectangle rect ) {
+	public static void drawCenteredText( Graphics g, String s, Rectangle rect ) {
 		drawCenteredText( g, s, rect.x, rect.y, rect.width, rect.height );
 	}
 
-	public static void drawCenteredText( java.awt.Graphics g, String s, java.awt.geom.Rectangle2D rect ) {
+	public static void drawCenteredText( Graphics g, String s, Rectangle2D rect ) {
 		drawCenteredText( g, s, (int)rect.getX(), (int)rect.getY(), (int)rect.getWidth(), (int)rect.getHeight() );
 	}
 
-	private static void renderTriangle( java.awt.Graphics g, Heading heading, int x, int y, int width, int height, boolean isFill ) {
+	private static void renderTriangle( Graphics g, Heading heading, int x, int y, int width, int height, boolean isFill ) {
 		if( heading != null ) {
 			int x0 = x;
 			int x1 = ( x + width ) - 1;
@@ -209,32 +230,32 @@ public class GraphicsUtilities {
 		WEST
 	}
 
-	public static void drawTriangle( java.awt.Graphics g, Heading heading, int x, int y, int width, int height ) {
+	public static void drawTriangle( Graphics g, Heading heading, int x, int y, int width, int height ) {
 		renderTriangle( g, heading, x, y, width, height, false );
 	}
 
-	public static void drawTriangle( java.awt.Graphics g, Heading heading, java.awt.Dimension size ) {
+	public static void drawTriangle( Graphics g, Heading heading, Dimension size ) {
 		drawTriangle( g, heading, 0, 0, size.width, size.height );
 	}
 
-	public static void drawTriangle( java.awt.Graphics g, Heading heading, java.awt.Rectangle rect ) {
+	public static void drawTriangle( Graphics g, Heading heading, Rectangle rect ) {
 		drawTriangle( g, heading, rect.x, rect.y, rect.width, rect.height );
 	}
 
-	public static void fillTriangle( java.awt.Graphics g, Heading heading, int x, int y, int width, int height ) {
+	public static void fillTriangle( Graphics g, Heading heading, int x, int y, int width, int height ) {
 		renderTriangle( g, heading, x, y, width, height, true );
 	}
 
-	public static void fillTriangle( java.awt.Graphics g, Heading heading, java.awt.Dimension size ) {
+	public static void fillTriangle( Graphics g, Heading heading, Dimension size ) {
 		fillTriangle( g, heading, 0, 0, size.width, size.height );
 	}
 
-	public static void fillTriangle( java.awt.Graphics g, Heading heading, java.awt.Rectangle rect ) {
+	public static void fillTriangle( Graphics g, Heading heading, Rectangle rect ) {
 		fillTriangle( g, heading, rect.x, rect.y, rect.width, rect.height );
 	}
 
-	private static java.awt.geom.GeneralPath createPath( float x, float y, float width, float height, boolean isTopLeft ) {
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+	private static GeneralPath createPath( float x, float y, float width, float height, boolean isTopLeft ) {
+		GeneralPath rv = new GeneralPath();
 		float halfSize = Math.min( width / 2, height / 2 );
 		if( isTopLeft ) {
 			rv.moveTo( x, y );
@@ -249,23 +270,23 @@ public class GraphicsUtilities {
 		return rv;
 	}
 
-	private static java.awt.Shape createClip( java.awt.Shape prevClip, java.awt.Shape shape, boolean isTopLeft ) {
-		java.awt.geom.Rectangle2D bounds = shape.getBounds2D();
-		java.awt.geom.Area rv = new java.awt.geom.Area( shape );
+	private static Shape createClip( Shape prevClip, Shape shape, boolean isTopLeft ) {
+		Rectangle2D bounds = shape.getBounds2D();
+		Area rv = new Area( shape );
 		if( prevClip != null ) {
-			rv.intersect( new java.awt.geom.Area( prevClip ) );
+			rv.intersect( new Area( prevClip ) );
 		}
-		rv.subtract( new java.awt.geom.Area( createPath( (float)bounds.getX(), (float)bounds.getY(), (float)bounds.getWidth(), (float)bounds.getHeight(), isTopLeft == false ) ) );
+		rv.subtract( new Area( createPath( (float)bounds.getX(), (float)bounds.getY(), (float)bounds.getWidth(), (float)bounds.getHeight(), isTopLeft == false ) ) );
 		return rv;
 	}
 
-	public static void draw3DRoundRectangle( java.awt.Graphics g, java.awt.geom.RoundRectangle2D rr, java.awt.Paint topLeftPaint, java.awt.Paint bottomRightPaint, java.awt.Stroke stroke ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Paint prevPaint = g2.getPaint();
-		java.awt.Stroke prevStroke = g2.getStroke();
-		java.awt.Shape prevClip = g2.getClip();
-		Object antialiasingValue = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+	public static void draw3DRoundRectangle( Graphics g, RoundRectangle2D rr, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Paint prevPaint = g2.getPaint();
+		Stroke prevStroke = g2.getStroke();
+		Shape prevClip = g2.getClip();
+		Object antialiasingValue = g2.getRenderingHint( RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
 
 		g2.setStroke( stroke );
 		g2.setClip( createClip( prevClip, rr, true ) );
@@ -280,12 +301,12 @@ public class GraphicsUtilities {
 		g2.setStroke( prevStroke );
 		g2.setPaint( prevPaint );
 
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, antialiasingValue );
+		g2.setRenderingHint( RenderingHints.KEY_ANTIALIASING, antialiasingValue );
 	}
 
-	public static void draw3DishShape( java.awt.Graphics g, java.awt.Shape shape, java.awt.Paint topLeftPaint, java.awt.Paint bottomRightPaint, java.awt.Stroke stroke ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Shape prevClip = g2.getClip();
+	public static void draw3DishShape( Graphics g, Shape shape, Paint topLeftPaint, Paint bottomRightPaint, Stroke stroke ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Shape prevClip = g2.getClip();
 
 		GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
 		try {
@@ -307,9 +328,9 @@ public class GraphicsUtilities {
 		}
 	}
 
-	public static void fillGradientRectangle( java.awt.Graphics g, java.awt.Rectangle rect, java.awt.Color colorA, float yA, java.awt.Color colorB, float yB, java.awt.Color colorC, float yC, java.awt.Color colorD, float yD ) {
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Shape prevClip = g2.getClip();
+	public static void fillGradientRectangle( Graphics g, Rectangle rect, Color colorA, float yA, Color colorB, float yB, Color colorC, float yC, Color colorD, float yD ) {
+		Graphics2D g2 = (Graphics2D)g;
+		Shape prevClip = g2.getClip();
 		GraphicsContext gc = GraphicsContext.getInstanceAndPushGraphics( g2 );
 
 		try {
@@ -321,15 +342,15 @@ public class GraphicsUtilities {
 			int y1 = y0 + rect.height;
 			int yCenter = y1 / 2;
 
-			java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y0 + ( yA * rect.height ), colorA, x, y0 + ( yB * rect.height ), colorB );
+			GradientPaint paintTop = new GradientPaint( x, y0 + ( yA * rect.height ), colorA, x, y0 + ( yB * rect.height ), colorB );
 
-			java.awt.geom.Area topArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, rect.y, rect.width, yCenter - rect.y ) );
+			Area topArea = AreaUtilities.createIntersection( prevClip, new Rectangle( x, rect.y, rect.width, yCenter - rect.y ) );
 			g2.setClip( topArea );
 			g2.setPaint( paintTop );
 			g2.fill( rect );
 
-			java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, y0 + ( yC * rect.height ), colorC, x, y0 + ( yD * rect.height ), colorD );
-			java.awt.geom.Area bottomArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, yCenter, rect.width, y1 - yCenter ) );
+			GradientPaint paintBottom = new GradientPaint( x, y0 + ( yC * rect.height ), colorC, x, y0 + ( yD * rect.height ), colorD );
+			Area bottomArea = AreaUtilities.createIntersection( prevClip, new Rectangle( x, yCenter, rect.width, y1 - yCenter ) );
 			g2.setClip( bottomArea );
 			g2.setPaint( paintBottom );
 			g2.fill( rect );
@@ -339,11 +360,11 @@ public class GraphicsUtilities {
 
 	}
 
-	public static void fillGradientRectangle( java.awt.Graphics g, java.awt.Rectangle rect, java.awt.Color colorTop, java.awt.Color colorInner, java.awt.Color colorBottom, float portion ) {
+	public static void fillGradientRectangle( Graphics g, Rectangle rect, Color colorTop, Color colorInner, Color colorBottom, float portion ) {
 		fillGradientRectangle( g, rect, colorTop, 0.0f, colorInner, portion, colorInner, 1.0f - portion, colorBottom, 1.0f );
 	}
 
-	public static void paintIconCentered( javax.swing.Icon icon, java.awt.Component c, java.awt.Graphics g ) {
+	public static void paintIconCentered( Icon icon, Component c, Graphics g ) {
 		int x = ( c.getWidth() - icon.getIconWidth() ) / 2;
 		int y = ( c.getHeight() - icon.getIconHeight() ) / 2;
 		icon.paintIcon( c, g, x, y );

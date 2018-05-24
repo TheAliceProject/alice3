@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.imp.cascade.BlankNode;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,28 +57,28 @@ public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
 		private final CascadeWithInternalBlank<T> cascade;
 
 		private InternalBlank( CascadeWithInternalBlank<T> cascade ) {
-			super( java.util.UUID.fromString( "b3dfbbd6-6932-4208-b9de-98fda5ef7145" ) );
+			super( UUID.fromString( "b3dfbbd6-6932-4208-b9de-98fda5ef7145" ) );
 			this.cascade = cascade;
 		}
 
 		@Override
-		protected void updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> children, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
+		protected void updateChildren( List<CascadeBlankChild> children, BlankNode<T> blankNode ) {
 			this.cascade.updateBlankChildren( children, blankNode );
 		}
 	}
 
-	private final java.util.List<InternalBlank<T>> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new InternalBlank<T>( this ) ) );
+	private final List<InternalBlank<T>> blanks = Collections.unmodifiableList( Lists.newArrayList( new InternalBlank<T>( this ) ) );
 
-	public CascadeWithInternalBlank( Group group, java.util.UUID id, Class<T> componentType ) {
+	public CascadeWithInternalBlank( Group group, UUID id, Class<T> componentType ) {
 		super( group, id, componentType );
 	}
 
 	@Override
-	protected java.util.List<? extends CascadeBlank<T>> getBlanks() {
+	protected List<? extends CascadeBlank<T>> getBlanks() {
 		return this.blanks;
 	}
 
-	protected abstract java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode );
+	protected abstract List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
 
 	private InternalBlank<T> getInternalBlank() {
 		return this.blanks.get( 0 );

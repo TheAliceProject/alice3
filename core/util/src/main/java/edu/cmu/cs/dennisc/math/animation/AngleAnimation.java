@@ -42,29 +42,32 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.math.animation;
 
+import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AngleAnimation extends InterpolationAnimation<edu.cmu.cs.dennisc.math.Angle> {
-	public AngleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Angle a0, edu.cmu.cs.dennisc.math.Angle a1 ) {
+public abstract class AngleAnimation extends InterpolationAnimation<Angle> {
+	public AngleAnimation( Number duration, Style style, Angle a0, Angle a1 ) {
 		super( duration, style, a0, a1 );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Angle newE( edu.cmu.cs.dennisc.math.Angle other ) {
-		edu.cmu.cs.dennisc.math.Angle rv;
+	protected Angle newE( Angle other ) {
+		Angle rv;
 		if( other != null ) {
-			rv = new edu.cmu.cs.dennisc.math.AngleInRadians( other );
+			rv = new AngleInRadians( other );
 		} else {
-			rv = new edu.cmu.cs.dennisc.math.AngleInRadians( Double.NaN );
+			rv = new AngleInRadians( Double.NaN );
 		}
 		return rv;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.math.Angle interpolate( edu.cmu.cs.dennisc.math.Angle rv, edu.cmu.cs.dennisc.math.Angle v0, edu.cmu.cs.dennisc.math.Angle v1, double portion ) {
+	protected Angle interpolate( Angle rv, Angle v0, Angle v1, double portion ) {
 		assert v0.isNaN() == false;
 		assert v1.isNaN() == false;
 		rv.setToInterpolation( v0, v1, portion );

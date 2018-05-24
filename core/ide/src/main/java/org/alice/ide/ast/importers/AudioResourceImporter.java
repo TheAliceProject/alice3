@@ -43,10 +43,20 @@
 
 package org.alice.ide.ast.importers;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.croquet.importer.Importer;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<org.lgna.common.resources.AudioResource> {
+public class AudioResourceImporter extends Importer<AudioResource> {
 	private static class SingletonHolder {
 		private static AudioResourceImporter instance = new AudioResourceImporter();
 	}
@@ -57,15 +67,15 @@ public class AudioResourceImporter extends org.lgna.croquet.importer.Importer<or
 
 	private AudioResourceImporter() {
 		super(
-				java.util.UUID.randomUUID(),
-				org.lgna.story.implementation.StoryApiDirectoryUtilities.getSoundGalleryDirectory(),
-				edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
-				org.lgna.common.resources.AudioResource.createFilenameFilter( true ),
+				UUID.randomUUID(),
+				StoryApiDirectoryUtilities.getSoundGalleryDirectory(),
+				SystemUtilities.isWindows() ? "*.mp3;*.wav;*.au" : null,
+				AudioResource.createFilenameFilter( true ),
 				"mp3", "wav", "au" );
 	}
 
 	@Override
-	protected org.lgna.common.resources.AudioResource createFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );
+	protected AudioResource createFromFile( File file ) throws IOException {
+		return MediaFactory.getSingleton().createAudioResource( file );
 	}
 }

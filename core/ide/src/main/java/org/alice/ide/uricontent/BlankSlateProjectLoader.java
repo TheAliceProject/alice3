@@ -43,30 +43,36 @@
 package org.alice.ide.uricontent;
 
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.ast.BootstrapUtilties;
+import org.alice.stageide.openprojectpane.models.TemplateUriState;
+import org.lgna.project.Project;
+import org.lgna.project.ast.NamedUserType;
+
+import java.net.URI;
 
 /**
  * @author Dennis Cosgrove
  */
 public class BlankSlateProjectLoader extends UriProjectLoader {
-	private final org.alice.stageide.openprojectpane.models.TemplateUriState.Template template;
+	private final TemplateUriState.Template template;
 
-	public BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriState.Template template ) {
+	public BlankSlateProjectLoader( TemplateUriState.Template template ) {
 		this.template = template;
 	}
 
 	@Override
-	public java.net.URI getUri() {
+	public URI getUri() {
 		return this.template.getUri();
 	}
 
 	@Override
-	protected org.lgna.project.Project load() {
-		org.lgna.project.ast.NamedUserType programType;
+	protected Project load() {
+		NamedUserType programType;
 		if( template.isRoom() ) {
 			programType = NebulousIde.nonfree.createProgramType( this.template );
 		} else {
-			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
+			programType = BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
 		}
-		return new org.lgna.project.Project( programType );
+		return new Project( programType );
 	}
 }

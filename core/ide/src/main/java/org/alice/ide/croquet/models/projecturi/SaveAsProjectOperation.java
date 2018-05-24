@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import java.io.File;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,11 +58,11 @@ public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
 	}
 
 	private SaveAsProjectOperation() {
-		super( java.util.UUID.fromString( "14986f74-fb95-40f1-a39e-7cf89f5cd720" ) );
+		super( UUID.fromString( "14986f74-fb95-40f1-a39e-7cf89f5cd720" ) );
 	}
 
 	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
+	protected boolean isPromptNecessary( File file ) {
 		return true;
 	}
 }

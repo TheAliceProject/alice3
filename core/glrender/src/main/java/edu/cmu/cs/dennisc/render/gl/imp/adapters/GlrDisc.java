@@ -43,14 +43,19 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.scenegraph.Disc;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GlrDisc extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Disc> {
+public class GlrDisc extends GlrShape<Disc> {
 	//todo: add scenegraph hint
 	private static final int SLICE_COUNT = 50;
 	private static final int LOOP_COUNT = 1;
@@ -60,10 +65,10 @@ public class GlrDisc extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Disc> {
 		double outerRadius = owner.outerRadius.getValue();
 		c.gl.glPushMatrix();
 		try {
-			edu.cmu.cs.dennisc.scenegraph.Disc.Axis axis = owner.axis.getValue();
-			if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.X ) {
+			Disc.Axis axis = owner.axis.getValue();
+			if( axis == Disc.Axis.X ) {
 				c.gl.glRotated( 90.0, 0.0, 1.0, 0.0 );
-			} else if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.Y ) {
+			} else if( axis == Disc.Axis.Y ) {
 				c.gl.glRotated( 90.0, 1.0, 0.0, 0.0 );
 			}
 			if( owner.isFrontFaceVisible.getValue() ) {
@@ -100,12 +105,12 @@ public class GlrDisc extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Disc> {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
+	public Point3 getIntersectionInSource( Point3 rv, Ray ray, AffineMatrix4x4 m, int subElement ) {
 		return GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, 0, 1, 0 );
 	}
 
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( InstanceProperty<?> property ) {
 		if( property == owner.innerRadius ) {
 			setIsGeometryChanged( true );
 		} else if( property == owner.outerRadius ) {

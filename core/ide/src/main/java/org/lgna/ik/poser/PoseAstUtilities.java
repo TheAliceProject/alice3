@@ -42,14 +42,17 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.JavaMethod;
+
 /**
  * @author Matt May
  */
 public class PoseAstUtilities {
 	public static final String STRIKE_POSE_METHOD_NAME = "strikePose";
 
-	public static boolean isStrikePoseMethod( org.lgna.project.ast.AbstractMethod method ) {
-		if( method instanceof org.lgna.project.ast.JavaMethod ) {
+	public static boolean isStrikePoseMethod( AbstractMethod method ) {
+		if( method instanceof JavaMethod ) {
 			return method.getName().equals( "strikePose" );
 		} else {
 			return false;

@@ -43,25 +43,31 @@
 
 package org.lgna.project.properties;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CodablePropertyKey<T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> extends PropertyKey<T> {
-	public static <T extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable> CodablePropertyKey<T> createInstance( java.util.UUID id, String repr ) {
+public class CodablePropertyKey<T extends BinaryEncodableAndDecodable> extends PropertyKey<T> {
+	public static <T extends BinaryEncodableAndDecodable> CodablePropertyKey<T> createInstance( UUID id, String repr ) {
 		return new CodablePropertyKey<T>( id, repr );
 	}
 
-	private CodablePropertyKey( java.util.UUID id, String repr ) {
+	private CodablePropertyKey( UUID id, String repr ) {
 		super( id, repr );
 	}
 
 	@Override
-	protected T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	protected T decodeValue( BinaryDecoder binaryDecoder ) {
 		return (T)binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
 	@Override
-	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	protected void encodeValue( BinaryEncoder binaryEncoder, T value ) {
 		binaryEncoder.encode( value );
 	}
 }

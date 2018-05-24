@@ -42,20 +42,33 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.ManagementLevel;
+import org.lgna.project.ast.NodeListProperty;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserType;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project.ast.UserField> {
-	private static java.util.Map<org.lgna.project.ast.UserField, DeleteFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class DeleteFieldOperation extends DeleteMemberOperation<UserField> {
+	private static Map<UserField, DeleteFieldOperation> map = Maps.newHashMap();
 
-	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
+	public static synchronized DeleteFieldOperation getInstance( UserField field ) {
 		return getInstance( field, field.getDeclaringType() );
 	}
 
-	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType<?> declaringType ) {
+	public static synchronized DeleteFieldOperation getInstance( UserField field, UserType<?> declaringType ) {
 		DeleteFieldOperation rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -66,34 +79,34 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 		return rv;
 	}
 
-	private org.lgna.project.ast.Statement[] doStatements;
-	private org.lgna.project.ast.Statement[] undoStatements;
+	private Statement[] doStatements;
+	private Statement[] undoStatements;
 	private transient int index;
 
-	private DeleteFieldOperation( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType<?> declaringType ) {
-		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
+	private DeleteFieldOperation( UserField field, UserType<?> declaringType ) {
+		super( UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 		this.setEnabled( field.isDeletionAllowed.getValue() );
 	}
 
 	@Override
-	public Class<org.lgna.project.ast.UserField> getNodeParameterType() {
-		return org.lgna.project.ast.UserField.class;
+	public Class<UserField> getNodeParameterType() {
+		return UserField.class;
 	}
 
 	@Override
-	public org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
+	public NodeListProperty<UserField> getNodeListProperty( UserType<?> declaringType ) {
 		return declaringType.fields;
 	}
 
 	@Override
-	protected boolean isClearToDelete( org.lgna.project.ast.UserField field ) {
-		java.util.List<org.lgna.project.ast.FieldAccess> references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
+	protected boolean isClearToDelete( UserField field ) {
+		List<FieldAccess> references = IDE.getActiveInstance().getFieldAccesses( field );
 		final int N = references.size();
 		if( N > 0 ) {
 			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
 			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
 			if( step.isSuccessfullyCompleted() ) {
-				org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+				ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( field ).fire();
 			}
 			return false;
@@ -104,14 +117,14 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.UserField field = this.getMember();
-		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+		UserField field = this.getMember();
+		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
 			//Save the index position of the field so we can insert it correctly on undo
 			this.index = this.getDeclaringType().fields.indexOf( field );
 			//Save the state of field by precomputing the undo and redo statements
-			this.doStatements = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getDoStatementsForRemoveField( field );
-			this.undoStatements = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getUndoStatementsForRemoveField( field );
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField(
+			this.doStatements = IDE.getActiveInstance().getSceneEditor().getDoStatementsForRemoveField( field );
+			this.undoStatements = IDE.getActiveInstance().getSceneEditor().getUndoStatementsForRemoveField( field );
+			IDE.getActiveInstance().getSceneEditor().removeField(
 					this.getDeclaringType(),
 					field,
 					this.doStatements
@@ -123,9 +136,9 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 
 	@Override
 	public void undoInternal() {
-		org.lgna.project.ast.UserField field = this.getMember();
-		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField(
+		UserField field = this.getMember();
+		if( field.managementLevel.getValue() == ManagementLevel.MANAGED ) {
+			IDE.getActiveInstance().getSceneEditor().addField(
 					this.getDeclaringType(),
 					field,
 					this.index,

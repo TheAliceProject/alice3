@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet.icon;
 
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResolutionIndependantIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+public abstract class ResolutionIndependantIconFactory extends AbstractIconFactory {
 	public ResolutionIndependantIconFactory( IsCachingDesired isCachingDesired ) {
 		super( isCachingDesired );
 	}
@@ -55,7 +57,7 @@ public abstract class ResolutionIndependantIconFactory extends org.lgna.croquet.
 	}
 
 	@Override
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+	public Dimension getDefaultSize( Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}
 }

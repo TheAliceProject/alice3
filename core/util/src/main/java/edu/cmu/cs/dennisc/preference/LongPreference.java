@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.preference;
 
+import java.util.prefs.Preferences;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,12 +53,12 @@ public class LongPreference extends Preference<Long> {
 	}
 
 	@Override
-	protected Long getValue( java.util.prefs.Preferences utilPrefs, String key, Long defaultValue ) {
+	protected Long getValue( Preferences utilPrefs, String key, Long defaultValue ) {
 		return utilPrefs.getLong( key, defaultValue );
 	}
 
 	@Override
-	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, Long nextValue ) {
+	protected void setAndCommitValue( Preferences utilPrefs, String key, Long nextValue ) {
 		utilPrefs.putLong( key, nextValue );
 	}
 }

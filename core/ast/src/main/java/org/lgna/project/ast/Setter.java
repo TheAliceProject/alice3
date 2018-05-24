@@ -42,7 +42,11 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.code.CodeAppender;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -58,7 +62,7 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 	}
 
 	@Override
-	public java.util.List<SetterParameter> getRequiredParameters() {
+	public List<SetterParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
@@ -80,5 +84,5 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 		return sb.toString();
 	}
 
-	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new SetterParameter( this ) ) );
+	private final List<SetterParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
 }

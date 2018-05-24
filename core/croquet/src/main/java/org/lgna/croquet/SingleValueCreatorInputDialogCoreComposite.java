@@ -42,13 +42,17 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.views.CompositeView;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, T> extends ValueCreatorInputDialogCoreComposite<V, T> {
+public abstract class SingleValueCreatorInputDialogCoreComposite<V extends CompositeView<?, ?>, T> extends ValueCreatorInputDialogCoreComposite<V, T> {
 	private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>( this );
 
-	public SingleValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
+	public SingleValueCreatorInputDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 

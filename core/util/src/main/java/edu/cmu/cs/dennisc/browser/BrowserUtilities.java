@@ -42,14 +42,20 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.browser;
 
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Locale;
+
 public class BrowserUtilities {
 	//this code is heavily based on public domain software by Dem Pilafian
 	//http://www.centerkey.com/java/browser/
 	public static void browse( String url ) throws Exception {
-		String lcOSName = System.getProperty( "os.name" ).toLowerCase( java.util.Locale.ENGLISH );
+		String lcOSName = System.getProperty( "os.name" ).toLowerCase( Locale.ENGLISH );
 		if( lcOSName.startsWith( "mac os" ) ) {
 			Class<?> fileMgr = Class.forName( "com.apple.eio.FileManager" );
-			java.lang.reflect.Method openURL = fileMgr.getDeclaredMethod( "openURL", new Class[] { String.class } );
+			Method openURL = fileMgr.getDeclaredMethod( "openURL", new Class[] { String.class } );
 			openURL.invoke( null, new Object[] { url } );
 		} else {
 			Runtime runtime = Runtime.getRuntime();
@@ -66,17 +72,17 @@ public class BrowserUtilities {
 					}
 				}
 				if( !found ) {
-					throw new RuntimeException( "unable to find browser from amongst: " + java.util.Arrays.toString( browsers ) );
+					throw new RuntimeException( "unable to find browser from amongst: " + Arrays.toString( browsers ) );
 				}
 			}
 		}
 	}
 
-	public static void browse( java.net.URI uri ) throws Exception {
+	public static void browse( URI uri ) throws Exception {
 		browse( uri.getRawPath() );
 	}
 
-	public static void browse( java.net.URL url ) throws Exception {
+	public static void browse( URL url ) throws Exception {
 		browse( url.toExternalForm() );
 	}
 }

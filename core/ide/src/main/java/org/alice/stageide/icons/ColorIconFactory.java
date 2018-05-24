@@ -42,20 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.icons;
 
+import edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon;
+import org.lgna.croquet.icon.ResolutionIndependantIconFactory;
+
+import javax.swing.Icon;
+import java.awt.Color;
+import java.awt.Dimension;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ColorIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
-	private final java.awt.Color color;
+public class ColorIconFactory extends ResolutionIndependantIconFactory {
+	private final Color color;
 
-	public ColorIconFactory( java.awt.Color color ) {
+	public ColorIconFactory( Color color ) {
 		super( IsCachingDesired.FALSE );
 		this.color = color;
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon( this.color, size.width, size.height );
+	protected Icon createIcon( Dimension size ) {
+		return new ColorIcon( this.color, size.width, size.height );
 	}
 
 	@Override

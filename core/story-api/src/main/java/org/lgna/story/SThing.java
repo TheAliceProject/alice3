@@ -43,16 +43,19 @@
 
 package org.lgna.story;
 
+import org.lgna.common.LgnaIllegalArgumentException;
+import org.lgna.project.annotations.ClassTemplate;
 import org.lgna.project.annotations.GetterTemplate;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.story.implementation.EntityImp;
 
 /**
  * @author Dennis Cosgrove
  */
-@org.lgna.project.annotations.ClassTemplate( isFollowToSuperClassDesired = false )
+@ClassTemplate( isFollowToSuperClassDesired = false )
 public abstract class SThing implements Rider {
-	/* package-private */abstract org.lgna.story.implementation.EntityImp getImplementation();
+	/* package-private */abstract EntityImp getImplementation();
 
 	@GetterTemplate( isPersistent = true )
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
@@ -69,30 +72,30 @@ public abstract class SThing implements Rider {
 	@GetterTemplate( isPersistent = true )
 	@MethodTemplate( )
 	public SThing getVehicle() {
-		org.lgna.story.implementation.EntityImp vehicleImplementation = this.getImplementation().getVehicle();
+		EntityImp vehicleImplementation = this.getImplementation().getVehicle();
 		return vehicleImplementation != null ? vehicleImplementation.getAbstraction() : null;
 	}
 
 	public VantagePoint getVantagePoint( SThing entity ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( entity, 0 );
 		return VantagePoint.createInstance( this.getImplementation().getTransformation( entity.getImplementation() ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public void delay( Number duration ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNumber( duration, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNumber( duration, 0 );
 		this.getImplementation().delay( duration.doubleValue() );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public void playAudio( AudioSource audioSource ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( audioSource, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( audioSource, 0 );
 		this.getImplementation().playAudio( audioSource );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public Boolean isCollidingWith( SThing other ) {
-		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 );
+		LgnaIllegalArgumentException.checkArgumentIsNotNull( other, 0 );
 		return this.getImplementation().isCollidingWith( other );
 	}
 

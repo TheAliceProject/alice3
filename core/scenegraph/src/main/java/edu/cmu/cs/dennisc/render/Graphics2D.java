@@ -42,6 +42,12 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render;
 
+import edu.cmu.cs.dennisc.image.ImageGenerator;
+
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.geom.Rectangle2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,31 +58,31 @@ public abstract class Graphics2D extends java.awt.Graphics2D {
 	//public abstract void transform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
 	//public abstract void setTransform( edu.cmu.cs.dennisc.math.Matrix3x3 transform );
 
-	public abstract boolean isRemembered( java.awt.Font font );
+	public abstract boolean isRemembered( Font font );
 
-	public abstract void remember( java.awt.Font font );
+	public abstract void remember( Font font );
 
-	public abstract void forget( java.awt.Font font );
+	public abstract void forget( Font font );
 
 	public abstract void disposeForgottenFonts();
 
-	public abstract java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font );
+	public abstract Rectangle2D getBounds( String text, Font font );
 
-	public abstract boolean isRemembered( java.awt.Image image );
+	public abstract boolean isRemembered( Image image );
 
-	public abstract void remember( java.awt.Image image );
+	public abstract void remember( Image image );
 
-	public abstract void forget( java.awt.Image image );
+	public abstract void forget( Image image );
 
 	public abstract void disposeForgottenImages();
 
-	public abstract boolean isRemembered( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator );
+	public abstract boolean isRemembered( ImageGenerator imageGenerator );
 
-	public abstract void remember( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator );
+	public abstract void remember( ImageGenerator imageGenerator );
 
-	public abstract void paint( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator, float x, float y, float alpha );
+	public abstract void paint( ImageGenerator imageGenerator, float x, float y, float alpha );
 
-	public abstract void forget( edu.cmu.cs.dennisc.image.ImageGenerator imageGenerator );
+	public abstract void forget( ImageGenerator imageGenerator );
 
 	public abstract void disposeForgottenImageGenerators();
 }

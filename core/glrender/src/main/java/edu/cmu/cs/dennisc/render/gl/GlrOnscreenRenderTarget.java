@@ -43,11 +43,16 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
+import java.awt.Component;
+
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class GlrOnscreenRenderTarget<C extends java.awt.Component> extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OnscreenRenderTarget<C> {
-	protected GlrOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+/*package-private*/abstract class GlrOnscreenRenderTarget<C extends Component> extends GlrRenderTarget implements OnscreenRenderTarget<C> {
+	protected GlrOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 	}
 

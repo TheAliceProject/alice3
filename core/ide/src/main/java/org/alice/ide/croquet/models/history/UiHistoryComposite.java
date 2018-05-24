@@ -43,6 +43,10 @@
 
 package org.alice.ide.croquet.models.history;
 
+import org.lgna.croquet.Application;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +60,7 @@ public class UiHistoryComposite extends HistoryComposite {
 	}
 
 	private UiHistoryComposite() {
-		super( java.util.UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+		super( UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), Application.DOCUMENT_UI_GROUP );
 	}
 
 	@Override

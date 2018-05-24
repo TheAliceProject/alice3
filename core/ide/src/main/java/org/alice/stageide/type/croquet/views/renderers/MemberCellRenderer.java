@@ -42,17 +42,25 @@
  *******************************************************************************/
 package org.alice.stageide.type.croquet.views.renderers;
 
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
+import org.alice.ide.common.TypeIcon;
+import org.lgna.project.ast.Member;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.SwingConstants;
+
 /**
  * @author Dennis Cosgrove
  */
-public class MemberCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.Member> {
+public class MemberCellRenderer extends ListCellRenderer<Member> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.Member value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected JLabel getListCellRendererComponent( JLabel rv, JList list, Member value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {
 			rv.setText( value.getName() );
-			rv.setIcon( org.alice.ide.common.TypeIcon.getInstance( value.getDeclaringType() ) );
+			rv.setIcon( TypeIcon.getInstance( value.getDeclaringType() ) );
 			rv.setIconTextGap( 16 );
-			rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+			rv.setHorizontalTextPosition( SwingConstants.LEADING );
 		}
 		return rv;
 	}

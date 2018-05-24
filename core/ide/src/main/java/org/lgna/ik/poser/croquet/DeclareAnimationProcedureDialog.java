@@ -42,21 +42,27 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.NamedUserType;
+
+import java.util.UUID;
 
 /**
  * @author Matt May
  */
 public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, DeclareAnimationProcedureDialog> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<NamedUserType, DeclareAnimationProcedureDialog> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static DeclareAnimationProcedureDialog getInstance( org.lgna.project.ast.NamedUserType declaringType ) {
+	public static DeclareAnimationProcedureDialog getInstance( NamedUserType declaringType ) {
 		if( PoserComposite.isPoseable( declaringType ) ) {
-			return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, DeclareAnimationProcedureDialog>() {
+			return map.getInitializingIfAbsent( declaringType, new InitializingIfAbsentMap.Initializer<NamedUserType, DeclareAnimationProcedureDialog>() {
 				@Override
-				public DeclareAnimationProcedureDialog initialize( org.lgna.project.ast.NamedUserType declaringType ) {
+				public DeclareAnimationProcedureDialog initialize( NamedUserType declaringType ) {
 					return new DeclareAnimationProcedureDialog( declaringType );
 				}
 			} );
@@ -65,12 +71,12 @@ public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
 		}
 	}
 
-	private DeclareAnimationProcedureDialog( org.lgna.project.ast.NamedUserType declaringType ) {
-		super( java.util.UUID.fromString( "a403b127-9867-4c04-9878-b78e267b83ee" ), org.lgna.ik.poser.croquet.AnimatorComposite.getDialogForUserType( declaringType, null ) );
+	private DeclareAnimationProcedureDialog( NamedUserType declaringType ) {
+		super( UUID.fromString( "a403b127-9867-4c04-9878-b78e267b83ee" ), AnimatorComposite.getDialogForUserType( declaringType, null ) );
 	}
 
 	@Override
 	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
-		return new DeclareMethodEdit( completionStep, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody() );
+		return new DeclareMethodEdit( completionStep, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody() );
 	}
 }

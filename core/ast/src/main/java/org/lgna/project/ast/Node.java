@@ -42,11 +42,18 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
+import edu.cmu.cs.dennisc.pattern.Crawler;
+import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner, edu.cmu.cs.dennisc.pattern.Crawlable {
-	public java.util.UUID getId();
+public interface Node extends InstancePropertyOwner, Crawlable {
+	public UUID getId();
 
 	public Node getParent();
 
@@ -54,7 +61,7 @@ public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner,
 
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
 
-	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, org.lgna.project.ast.CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter );
+	public void crawl( Crawler crawler, CrawlPolicy crawlPolicy, Criterion<Declaration> declarationFilter );
 
 	public String getRepr();
 

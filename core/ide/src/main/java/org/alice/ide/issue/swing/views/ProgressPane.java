@@ -48,31 +48,43 @@ import edu.cmu.cs.dennisc.issue.ReportGenerator;
 import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 import edu.cmu.cs.dennisc.issue.WorkerListener;
 
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.net.URL;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ProgressPane extends javax.swing.JPanel {
-	private javax.swing.JTextPane console = new javax.swing.JTextPane();
+public class ProgressPane extends JPanel {
+	private JTextPane console = new JTextPane();
 	private IssueReportWorker issueReportWorker;
 	private boolean isDone = false;
 	private boolean isSuccessful = false;
-	private java.net.URL urlResult = null;
+	private URL urlResult = null;
 
 	public ProgressPane() {
-		this.console.setPreferredSize( new java.awt.Dimension( 400, 240 ) );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
+		this.console.setPreferredSize( new Dimension( 400, 240 ) );
+		this.setLayout( new BorderLayout() );
+		this.add( new JScrollPane( this.console ), BorderLayout.CENTER );
 	}
 
 	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
 		this.issueReportWorker = new IssueReportWorker( new WorkerListener() {
 			@Override
-			public void process( java.util.List<String> chunks ) {
+			public void process( List<String> chunks ) {
 				handleProcess( chunks );
 			}
 
 			@Override
-			public void done( boolean isSuccessful, java.net.URL urlResult ) {
+			public void done( boolean isSuccessful, URL urlResult ) {
 				handleDone( isSuccessful, urlResult );
 			}
 		}, issueReportGenerator, reportSubmissionConfiguration );
@@ -80,25 +92,25 @@ public class ProgressPane extends javax.swing.JPanel {
 	}
 
 	private void hideRoot() {
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
+		Component root = SwingUtilities.getRoot( this );
 		if( root != null ) {
 			root.setVisible( false );
 		}
 	}
 
-	public void handleProcess( java.util.List<String> chunks ) {
+	public void handleProcess( List<String> chunks ) {
 		for( String chunk : chunks ) {
-			javax.swing.text.Document document = ProgressPane.this.console.getDocument();
+			Document document = ProgressPane.this.console.getDocument();
 			try {
 				document.insertString( document.getLength(), chunk, null );
-			} catch( javax.swing.text.BadLocationException ble ) {
+			} catch( BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 			System.out.print( chunk );
 		}
 	}
 
-	public void handleDone( boolean isSuccessful, java.net.URL urlResult ) {
+	public void handleDone( boolean isSuccessful, URL urlResult ) {
 		this.isDone = true;
 		this.isSuccessful = isSuccessful;
 		this.urlResult = urlResult;
@@ -113,7 +125,7 @@ public class ProgressPane extends javax.swing.JPanel {
 		return this.isSuccessful;
 	}
 
-	public java.net.URL getURLResult() {
+	public URL getURLResult() {
 		return this.urlResult;
 	}
 }

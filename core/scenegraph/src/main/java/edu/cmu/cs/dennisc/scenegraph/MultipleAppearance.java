@@ -43,11 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
+
 /**
  * @author Dennis Cosgrove
  */
 public class MultipleAppearance extends Appearance {
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<SimpleAppearance> singleAppearances = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<SimpleAppearance>( this ) {
+	public final CopyableArrayProperty<SimpleAppearance> singleAppearances = new CopyableArrayProperty<SimpleAppearance>( this ) {
 		@Override
 		protected SimpleAppearance[] createArray( int length ) {
 			return new SimpleAppearance[ length ];
@@ -69,14 +72,14 @@ public class MultipleAppearance extends Appearance {
 	}
 
 	@Override
-	public void setAmbientColor( edu.cmu.cs.dennisc.color.Color4f ambientColor ) {
+	public void setAmbientColor( Color4f ambientColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setAmbientColor( ambientColor );
 		}
 	}
 
 	@Override
-	public void setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f diffuseColor ) {
+	public void setDiffuseColor( Color4f diffuseColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setDiffuseColor( diffuseColor );
 		}
@@ -97,14 +100,14 @@ public class MultipleAppearance extends Appearance {
 	}
 
 	@Override
-	public void setSpecularHighlightColor( edu.cmu.cs.dennisc.color.Color4f specularHighlightColor ) {
+	public void setSpecularHighlightColor( Color4f specularHighlightColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setSpecularHighlightColor( specularHighlightColor );
 		}
 	}
 
 	@Override
-	public void setEmissiveColor( edu.cmu.cs.dennisc.color.Color4f emissiveColor ) {
+	public void setEmissiveColor( Color4f emissiveColor ) {
 		for( SimpleAppearance singleAppearance : singleAppearances.getValue() ) {
 			singleAppearance.setEmissiveColor( emissiveColor );
 		}

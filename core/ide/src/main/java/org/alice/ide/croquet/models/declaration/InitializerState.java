@@ -43,24 +43,32 @@
 
 package org.alice.ide.croquet.models.declaration;
 
+import org.alice.ide.croquet.models.StandardExpressionState;
+import org.lgna.croquet.Application;
+import org.lgna.project.annotations.ValueDetails;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.Expression;
+
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class InitializerState extends org.alice.ide.croquet.models.StandardExpressionState {
+public class InitializerState extends StandardExpressionState {
 	private final InitializerStateOwner owner;
 
-	public InitializerState( InitializerStateOwner owner, org.lgna.project.ast.Expression initialValue ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), initialValue );
+	public InitializerState( InitializerStateOwner owner, Expression initialValue ) {
+		super( Application.INHERIT_GROUP, UUID.fromString( "4edd354e-da3c-400d-9c55-66da924c09a7" ), initialValue );
 		this.owner = owner;
 	}
 
 	@Override
-	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
+	protected ValueDetails<?> getValueDetails() {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+	protected AbstractType<?, ?, ?> getType() {
 		return this.owner.getValueType();
 	}
 }
