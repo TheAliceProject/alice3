@@ -92,8 +92,9 @@
 		<module>core/glrender</module>
 		<module>core/story-api-migration</module>
 		<module>core/story-api</module>
-		<module>core/util</module>
-		<module>core/tweedle</module>
+    <module>core/util</module>
+    <module>core/model-loading</module>
+    <module>core/tweedle</module>
 
 		<module>nonfree/core</module>
 		<module>nonfree/core/ide-nonfree</module>
@@ -174,8 +175,19 @@
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
+				<artifactId>model-loading</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
 				<artifactId>tweedle</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.alice.external</groupId>
+				<artifactId>collada-schema-1-4-1</artifactId>
+				<version>1.0</version>
 			</dependency>
 
 			<!-- Non-free libraries/models -->
@@ -260,6 +272,16 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.21.0</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.dddviewr</groupId>
+				<artifactId>collada</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun</groupId>
+				<artifactId>tools</artifactId>
+				<version>1.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
