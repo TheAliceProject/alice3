@@ -20,5 +20,10 @@ src_gen
 *.class
 *.lst
 *.marker
+*.tokens
+bin/*
 
-core/tweedle/src/main/antlr4/org/alice/tweedle/TweedleLexer\.tokens
+# IntelliJ
+.idea/*
+*.iml
+out/*
