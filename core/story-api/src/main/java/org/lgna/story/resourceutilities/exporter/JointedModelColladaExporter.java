@@ -123,6 +123,28 @@ public class JointedModelColladaExporter {
 		return asset;
 	}
 
+	private double[] getColladaReadyTransform( AffineMatrix4x4 transform ) {
+		double[] matrixValues = transform.getAsColumnMajorArray16();
+		double temp;
+
+		//Swap bottom row with 4th column because getAsColumnMajorArray16 puts the translation in the bottom row
+		temp = matrixValues[3];
+		matrixValues[3] = matrixValues[12];
+		matrixValues[12] = temp;
+		temp = matrixValues[7];
+		matrixValues[7] = matrixValues[13];
+		matrixValues[13] = temp;
+		temp = matrixValues[11];
+		matrixValues[11] = matrixValues[14];
+		matrixValues[14] = temp;
+
+		//Flip the X and Z position values
+		matrixValues[3] *= -1.0;
+		matrixValues[11] *= -1.0;
+
+		return matrixValues;
+	}
+
 	private Node createNodeForJoint( Joint joint ) {
 		Node node = factory.createNode();
 		node.setName( joint.jointID.getValue() );
@@ -132,7 +154,7 @@ public class JointedModelColladaExporter {
 
 		Matrix matrix = factory.createMatrix();
 		matrix.setSid( "matrix" );
-		double[] matrixValues = joint.getLocalTransformation().getAsColumnMajorArray12();
+		double[] matrixValues = getColladaReadyTransform(joint.getLocalTransformation());
 		for( double matrixValue : matrixValues ) {
 			matrix.getValue().add( matrixValue );
 		}
@@ -277,7 +299,7 @@ public class JointedModelColladaExporter {
 		}
 	}
 
-	private Source createFloatArraySourceFromInitializer( ListInitializer initializer, String name, int stride ) {
+	private Source createFloatArraySourceFromInitializer( ListInitializer initializer, String name, int stride, boolean flipXandZ ) {
 
 		Source source = factory.createSource();
 		source.setId( name );
@@ -287,6 +309,14 @@ public class JointedModelColladaExporter {
 		floatArray.setId( name + "-array" );
 		List<Double> values = floatArray.getValue();
 		initializer.initializeList( values );
+
+		if (flipXandZ) {
+			for (int i=0; i<values.size(); i+=3) {
+				values.set(i, -values.get(i));
+				values.set(i+2, -values.get(i+2));
+			}
+		}
+
 		int valueCount = values.size();
 		floatArray.setCount( BigInteger.valueOf( valueCount ) );
 
@@ -311,22 +341,22 @@ public class JointedModelColladaExporter {
 		String meshName = meshNameMap.get( sgMesh );
 		String meshIdName = getMeshIdForMeshName( meshName );
 		geometry.setId( meshIdName );
-		geometry.setName( meshName );
+		geometry.setName( meshName+"mesh" );
 
 		//Set up the Mesh node
 		Mesh mesh = factory.createMesh();
 
 		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
 		String positionName = meshName + "-POSITION";
-		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3 );
+		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, true );
 		mesh.getSource().add( positionSource );
 
 		String normalName = meshName + "-NORMAL";
-		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3 );
+		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, true );
 		mesh.getSource().add( normalSource );
 
 		String uvName = meshName + "-UV";
-		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2 );
+		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, false );
 		mesh.getSource().add( uvSource );
 
 		//Create and add vertices
@@ -340,11 +370,6 @@ public class JointedModelColladaExporter {
 		positionInput.setSource( "#" + positionName );
 		vertices.getInput().add( positionInput );
 
-		InputLocal normalInput = factory.createInputLocal();
-		normalInput.setSemantic( "NORMAL" );
-		normalInput.setSource( "#" + normalName );
-		vertices.getInput().add( normalInput );
-
 		mesh.setVertices( vertices );
 		//Build the triangle data
 		Triangles triangles = factory.createTriangles();
@@ -353,18 +378,36 @@ public class JointedModelColladaExporter {
 		vertexInput.setSource( "#" + vertexName );
 		vertexInput.setOffset( BigInteger.valueOf( 0 ) );
 		triangles.getInput().add( vertexInput );
+
+		InputLocalOffset normalInput = factory.createInputLocalOffset();
+		normalInput.setSemantic( "NORMAL" );
+		normalInput.setSource( "#" + normalName );
+		normalInput.setOffset( BigInteger.valueOf( 1 ) );
+		triangles.getInput().add( normalInput );
+
 		InputLocalOffset texCoordInput = factory.createInputLocalOffset();
 		texCoordInput.setSemantic( "TEXCOORD" );
 		texCoordInput.setSource( "#" + uvName );
-		texCoordInput.setOffset( BigInteger.valueOf( 1 ) );
+		texCoordInput.setOffset( BigInteger.valueOf( 2 ) );
 		texCoordInput.setSet( BigInteger.valueOf( 0 ) );
 		triangles.getInput().add( texCoordInput );
 		//Copy over the triangle indices
 		List<BigInteger> triangleList = triangles.getP();
 		IntBuffer ib = sgMesh.indexBuffer.getValue();
 		final int N = sgMesh.indexBuffer.getValue().limit();
-		for( int i = 0; i < N; i++ ) {
-			triangleList.add( BigInteger.valueOf( ib.get( i ) ) );
+		for( int i = 0; i < N; i+=3 ) {
+			//Reverse the order of the triangle indices because collada needs the indices in counter clockwise order
+			triangleList.add( BigInteger.valueOf( ib.get( i+0 ) ) ); //Position 0
+			triangleList.add( BigInteger.valueOf( ib.get( i+0 ) ) ); //Normal 0
+			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 0 placeholder
+
+			triangleList.add( BigInteger.valueOf( ib.get( i+1 ) ) ); //Position 1
+			triangleList.add( BigInteger.valueOf( ib.get( i+1 ) ) ); //Normal 1
+			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 1 placeholder
+
+			triangleList.add( BigInteger.valueOf( ib.get( i+2 ) ) ); //Position 2
+			triangleList.add( BigInteger.valueOf( ib.get( i+2 ) ) ); //Normal 2
+			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 0 placeholder
 		}
 		triangles.setCount( BigInteger.valueOf( N / 3 ) );
 		mesh.getLinesOrLinestripsOrPolygons().add( triangles );
@@ -445,7 +488,7 @@ public class JointedModelColladaExporter {
 		matricesArray.setId( controllerName + "-Matrices-array" );
 		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-			double[] matrix = iatwp.getInverseAbsoluteTransformation().getAsColumnMajorArray16();
+			double[] matrix = getColladaReadyTransform(iatwp.getInverseAbsoluteTransformation());
 			for( double element : matrix ) {
 				matricesArray.getValue().add( element );
 			}
@@ -495,7 +538,7 @@ public class JointedModelColladaExporter {
 
 		//Build the weights source.
 		String weightsSourceName = controllerName + "-Weights";
-		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1 );
+		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, false );
 		skin.getSourceAttribute2().add( weightsSource );
 
 		InputLocalOffset jointInput = factory.createInputLocalOffset();
@@ -528,19 +571,6 @@ public class JointedModelColladaExporter {
 
 		return controller;
 	}
-
-	private VisualScene createVisualScene( String sceneName ) {
-		VisualScene visualScene = factory.createVisualScene();
-
-		visualScene.setId( sceneName );
-		visualScene.setName( sceneName );
-
-		Node skeletonNodes = createSkeletonNodes();
-		visualScene.getNode().add( skeletonNodes );
-
-		return visualScene;
-	}
-
 	private void addMeshToNameMap( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
 		String meshName = sgMesh.getName();
 		if( ( meshName == null ) || ( meshName.length() == 0 ) ) {
@@ -589,12 +619,17 @@ public class JointedModelColladaExporter {
 		//Go through all the meshes in the sgVisual and find or create names for all of them
 		initializeMeshNameMap();
 
-		//Visual Scene
-		VisualScene visualScene = createVisualScene( this.modelInfo.getModelName() );
-		LibraryVisualScenes lvs = factory.createLibraryVisualScenes();
-		lvs.getVisualScene().add( visualScene );
-		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lvs );
+		//Create the Visual Scene, but don't add it yet because it needs to be at the end
+		String sceneName = this.modelInfo.getModelName();
+		VisualScene visualScene = factory.createVisualScene();
+		visualScene.setId( sceneName );
+		visualScene.setName( sceneName );
 
+		//Add the skeleton to the visual scene
+		Node skeletonNodes = createSkeletonNodes();
+		visualScene.getNode().add( skeletonNodes );
+
+		//Create the scene and add it
 		Scene scene = factory.createCOLLADAScene();
 		InstanceWithExtra sceneInstance = factory.createInstanceWithExtra();
 		sceneInstance.setUrl( "#" + visualScene.getId() );
@@ -604,6 +639,7 @@ public class JointedModelColladaExporter {
 		//Geometry
 		LibraryGeometries lg = factory.createLibraryGeometries();
 
+		//Grab the static geometry and the weighted meshes
 		for( edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue() ) {
 			if( g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
 				edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh)g;
@@ -617,7 +653,7 @@ public class JointedModelColladaExporter {
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lg );
 
-		//Controllers
+		//Weighted Mesh Controllers
 		LibraryControllers lc = factory.createLibraryControllers();
 		for( WeightedMesh sgWM : visual.weightedMeshes.getValue() ) {
 			Controller controller = createControllerForMesh( sgWM );
@@ -627,6 +663,11 @@ public class JointedModelColladaExporter {
 			visualScene.getNode().add(vsNode);
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lc );
+
+		//Finally add visual scene last so it's add the end
+		LibraryVisualScenes lvs = factory.createLibraryVisualScenes();
+		lvs.getVisualScene().add( visualScene );
+		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lvs );
 
 		JAXBContext jc;
 		try {
