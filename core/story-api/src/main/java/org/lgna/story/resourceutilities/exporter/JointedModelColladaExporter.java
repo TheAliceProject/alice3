@@ -53,15 +53,22 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import javax.xml.namespace.QName;
 
+import org.lgna.story.SGround;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ImplementationAndVisualType;
@@ -82,6 +89,7 @@ import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.WeightInfo;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
+import org.w3c.dom.Element;
 
 /**
  * @author Dave Culyba
@@ -91,13 +99,16 @@ public class JointedModelColladaExporter {
 	private final ObjectFactory factory;
 	private final SkeletonVisual visual;
 	private final ModelResourceInfo modelInfo;
+	private final Map<Integer, File> idToTextureFileMap;
 
 	private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
+	private final HashMap<Integer, String> textureNameMap = new HashMap<>();
 
-	public JointedModelColladaExporter( SkeletonVisual sv, ModelResourceInfo mi ) {
+	public JointedModelColladaExporter( SkeletonVisual sv, ModelResourceInfo mi, Map<Integer, File> idToTextureFileMap ) {
 		this.factory = new ObjectFactory();
 		this.visual = sv;
 		this.modelInfo = mi;
+		this.idToTextureFileMap = idToTextureFileMap;
 	}
 
 	private Asset createAsset() {
@@ -217,7 +228,7 @@ public class JointedModelColladaExporter {
 	}
 
 	private interface ListInitializer {
-		public void initializeList( List<Double> toInitialize );
+		public void initializeList(List<Double> toInitialize);
 	}
 
 	private class DoubleArrayInitializeList implements ListInitializer {
@@ -410,6 +421,11 @@ public class JointedModelColladaExporter {
 			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 0 placeholder
 		}
 		triangles.setCount( BigInteger.valueOf( N / 3 ) );
+
+		//Grab the texture ID number from the mesh and use that to make the material reference
+		Integer textureID = sgMesh.textureId.getValue();
+		triangles.setMaterial(getMaterialIDForID(textureID));
+
 		mesh.getLinesOrLinestripsOrPolygons().add( triangles );
 
 		geometry.setMesh( mesh );
@@ -591,6 +607,31 @@ public class JointedModelColladaExporter {
 		}
 	}
 
+	private void initializeTextureNameMap() {
+		textureNameMap.clear();
+		//Make names for all the texture IDs
+		//There's no naming convention. Naming is geared toward human readability--texture_0 is fine
+		for( Integer i : idToTextureFileMap.keySet() ) {
+			textureNameMap.put(i, "texture_"+i);
+		}
+	}
+
+	private String getImageNameForID(Integer id) {
+		return textureNameMap.get(id) + "_diffuseMap";
+	}
+
+	private String getImageIDForID(Integer id) {
+		return getImageNameForID(id) + "-image";
+	}
+
+	private String getMaterialNameForID(Integer id) {
+		return textureNameMap.get(id) + "_shader";
+	}
+
+	private String getMaterialIDForID(Integer id) {
+		return getMaterialNameForID(id) + "-fx";
+	}
+
 	private Node createVisualSceneNodeForWeightedMesh(WeightedMesh sgWeightedMesh) {
 		String meshName = meshNameMap.get( sgWeightedMesh );
 		String controllerURL = "#"+ meshName + "Controller";
@@ -602,9 +643,93 @@ public class JointedModelColladaExporter {
 
 		InstanceController instanceController = factory.createInstanceController();
 		instanceController.setUrl(controllerURL);
+		BindMaterial bindMaterial = factory.createBindMaterial();
+
+		BindMaterial.TechniqueCommon techniqueCommon = factory.createBindMaterialTechniqueCommon();
+		InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
+		techniqueCommon.getInstanceMaterial().add(instanceMaterial);
+		Integer textureID = sgWeightedMesh.textureId.getValue();
+		instanceMaterial.setSymbol(getMaterialNameForID(textureID));
+		instanceMaterial.setTarget("#"+getMaterialIDForID(textureID));
+		InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
+		instanceMaterial.getBindVertexInput().add(bindVertexInput);
+		bindVertexInput.setSemantic("UVMap");
+		bindVertexInput.setInputSet(BigInteger.ZERO);
+		bindVertexInput.setInputSemantic("TEXCOORD");
+
+		bindMaterial.setTechniqueCommon(techniqueCommon);
+		instanceController.setBindMaterial(bindMaterial);
 
 		visualSceneNode.getInstanceController().add(instanceController);
 		return visualSceneNode;
+	}
+
+	private CommonColorOrTextureType.Color createCommonColor( String sid, double r, double g, double b, double a) {
+		CommonColorOrTextureType.Color color = factory.createCommonColorOrTextureTypeColor();
+		color.setSid(sid);
+		color.getValue().add(r);
+		color.getValue().add(g);
+		color.getValue().add(b);
+		color.getValue().add(a);
+		return color;
+	}
+
+	private CommonColorOrTextureType createCommonColorType( String sid, double r, double g, double b, double a ) {
+		CommonColorOrTextureType colorType = factory.createCommonColorOrTextureType();
+		colorType.setColor( createCommonColor("emission", 0, 0, 0, 1) );
+		return colorType;
+	}
+
+	private Effect createEffect(Integer textureID) {
+		Effect effect = factory.createEffect();
+		effect.setId( getMaterialIDForID(textureID) );
+		effect.setName( getMaterialNameForID(textureID)) ;
+
+		ProfileCOMMON profile = factory.createProfileCOMMON();
+
+		//Create the surface param
+		CommonNewparamType surfaceParam = factory.createCommonNewparamType();
+		surfaceParam.setSid(getImageNameForID(textureID)+"-surface");
+		FxSurfaceCommon surface = factory.createFxSurfaceCommon();
+		surface.setType("2D");
+		FxSurfaceInitFromCommon surfaceInit = factory.createFxSurfaceInitFromCommon();
+		//This "setValue" needs something that has an ID.
+		//We're using the same pattern we used for making the Image entries for the library_images section
+		Image image = factory.createImage();
+		image.setName(getImageNameForID(textureID));
+		image.setId(getImageIDForID(textureID));
+		surfaceInit.setValue(image);
+		
+		surface.getInitFrom().add(surfaceInit);
+		surfaceParam.setSurface(surface);
+		profile.getImageOrNewparam().add(surfaceParam);
+
+		//Create the sampler param
+		CommonNewparamType samplerParam = factory.createCommonNewparamType();
+		samplerParam.setSid(getImageNameForID(textureID)+"-sampler");
+		FxSampler2DCommon sampler = factory.createFxSampler2DCommon();
+		sampler.setSource(getImageNameForID(textureID)+"-surface");
+		samplerParam.setSampler2D(sampler);
+		profile.getImageOrNewparam().add(samplerParam);
+
+		ProfileCOMMON.Technique technique = factory.createProfileCOMMONTechnique();
+		technique.setSid("standard");
+
+		ProfileCOMMON.Technique.Lambert lambert = factory.createProfileCOMMONTechniqueLambert();
+		lambert.setEmission( createCommonColorType("emission", 0, 0, 0, 1) );
+		lambert.setAmbient( createCommonColorType("ambient", 0, 0, 0, 1) );
+		CommonColorOrTextureType diffuse = factory.createCommonColorOrTextureType();
+		CommonColorOrTextureType.Texture texture = factory.createCommonColorOrTextureTypeTexture();
+		texture.setTexture( getImageNameForID(textureID)+"-sampler" );
+		texture.setTexcoord( "UVMap" ); //Based on generated example collada file
+		diffuse.setTexture(texture);
+		lambert.setDiffuse(diffuse);
+		technique.setLambert(lambert);
+		profile.setTechnique(technique);
+		JAXBElement<ProfileCOMMON> profileCOMMONJAXBElement = new JAXBElement<ProfileCOMMON>(new QName("http://www.collada.org/2005/11/COLLADASchema", "profile_COMMON"), ProfileCOMMON.class, profile);
+		effect.getFxProfileAbstract().add(profileCOMMONJAXBElement);
+
+		return effect;
 	}
 
 	public void writeColladaFile( File outputFile ) {
@@ -618,6 +743,9 @@ public class JointedModelColladaExporter {
 
 		//Go through all the meshes in the sgVisual and find or create names for all of them
 		initializeMeshNameMap();
+		//Go through all the textures and create names based on the IDs
+		initializeTextureNameMap();
+
 
 		//Create the Visual Scene, but don't add it yet because it needs to be at the end
 		String sceneName = this.modelInfo.getModelName();
@@ -635,6 +763,32 @@ public class JointedModelColladaExporter {
 		sceneInstance.setUrl( "#" + visualScene.getId() );
 		scene.setInstanceVisualScene( sceneInstance );
 		collada.setScene( scene );
+
+		//Images and Materials
+		LibraryImages libraryImages = factory.createLibraryImages();
+		LibraryMaterials libraryMaterials = factory.createLibraryMaterials();
+		LibraryEffects libraryEffects = factory.createLibraryEffects();
+		for ( Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
+			Image image = factory.createImage();
+			image.setName(getImageNameForID(entry.getKey()));
+			image.setId(getImageIDForID(entry.getKey()));
+			image.setInitFrom(entry.getValue().getName());
+			libraryImages.getImage().add(image);
+
+			Material material = factory.createMaterial();
+			material.setName(getMaterialNameForID(entry.getKey()));
+			material.setId(getMaterialNameForID(entry.getKey()));
+			InstanceEffect instanceEffect = factory.createInstanceEffect();
+			instanceEffect.setUrl("#"+getMaterialIDForID(entry.getKey()));
+			material.setInstanceEffect(instanceEffect);
+			libraryMaterials.getMaterial().add(material);
+
+			Effect effect = createEffect(entry.getKey());
+			libraryEffects.getEffect().add(effect);
+		}
+		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryImages);
+		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryMaterials);
+		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryEffects);
 
 		//Geometry
 		LibraryGeometries lg = factory.createLibraryGeometries();
@@ -696,7 +850,11 @@ public class JointedModelColladaExporter {
 		ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo( ColaBottleResource.class, "DEFAULT" );
 		SkeletonVisual sgSkeletonVisual = loadAliceModel( ColaBottleResource.DEFAULT );
 
-		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo );
+		Map<Integer, File> idToTextureFileMap = new HashMap();
+		idToTextureFileMap.put(0, new File("cola_diffuse.png"));
+		idToTextureFileMap.put(1, new File("colaFull_diffuse.png"));
+
+		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo, idToTextureFileMap );
 		File outputFile = new File( modelInfo.getModelName() + ".dae" );
 		exporter.writeColladaFile( outputFile );
 		System.out.println("Wrote collada to: "+outputFile.getAbsolutePath());
