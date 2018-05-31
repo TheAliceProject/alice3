@@ -851,8 +851,8 @@ public class JointedModelColladaExporter {
 		SkeletonVisual sgSkeletonVisual = loadAliceModel( ColaBottleResource.DEFAULT );
 
 		Map<Integer, File> idToTextureFileMap = new HashMap();
-		idToTextureFileMap.put(0, new File("cola_diffuse.png"));
-		idToTextureFileMap.put(1, new File("colaFull_diffuse.png"));
+		idToTextureFileMap.put(1, new File("cola_diffuse.png"));
+		idToTextureFileMap.put(2, new File("colaFull_diffuse.png"));
 
 		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo, idToTextureFileMap );
 		File outputFile = new File( modelInfo.getModelName() + ".dae" );
