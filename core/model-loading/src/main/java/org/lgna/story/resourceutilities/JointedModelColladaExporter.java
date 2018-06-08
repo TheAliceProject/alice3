@@ -40,8 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.story.resourceutilities.exporter;
+package org.lgna.story.resourceutilities;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,55 +53,56 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
-import org.lgna.story.SGround;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.biped.AliceResource;
-import org.lgna.story.resources.prop.ColaBottleResource;
-import org.lgna.story.resourceutilities.ModelResourceInfo;
+import org.lgna.story.resources.prop.SledResource;
 import org.lgna.story.resourceutilities.exporterutils.collada.*;
 import org.lgna.story.resourceutilities.exporterutils.collada.Asset.Unit;
 import org.lgna.story.resourceutilities.exporterutils.collada.COLLADA.Scene;
+import org.lgna.story.resourceutilities.exporterutils.collada.Geometry;
+import org.lgna.story.resourceutilities.exporterutils.collada.Image;
+import org.lgna.story.resourceutilities.exporterutils.collada.Mesh;
 import org.lgna.story.resourceutilities.exporterutils.collada.Skin.VertexWeights;
 import org.lgna.story.resourceutilities.exporterutils.collada.Source.TechniqueCommon;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.WeightInfo;
-import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
-import org.w3c.dom.Element;
 
 /**
  * @author Dave Culyba
  */
 public class JointedModelColladaExporter {
 
+	//Controls whether or not we flip the coordinate space during our conversion
+	private static final boolean FLIP_COORDINATE_SPACE = true;
+	private static final boolean SCALE_MODEL = true;
+	private static final double MODEL_SCALE = 10.0;
+
 	private final ObjectFactory factory;
 	private final SkeletonVisual visual;
 	private final ModelResourceInfo modelInfo;
+	private final String modelName;
 	private final Map<Integer, File> idToTextureFileMap;
 
 	private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
@@ -109,6 +113,15 @@ public class JointedModelColladaExporter {
 		this.visual = sv;
 		this.modelInfo = mi;
 		this.idToTextureFileMap = idToTextureFileMap;
+		this.modelName = null;
+	}
+
+	public JointedModelColladaExporter( SkeletonVisual sv, String modelName, Map<Integer, File> idToTextureFileMap ) {
+		this.factory = new ObjectFactory();
+		this.visual = sv;
+		this.modelInfo = null;
+		this.idToTextureFileMap = idToTextureFileMap;
+		this.modelName = modelName;
 	}
 
 	private Asset createAsset() {
@@ -134,28 +147,6 @@ public class JointedModelColladaExporter {
 		return asset;
 	}
 
-	private double[] getColladaReadyTransform( AffineMatrix4x4 transform ) {
-		double[] matrixValues = transform.getAsColumnMajorArray16();
-		double temp;
-
-		//Swap bottom row with 4th column because getAsColumnMajorArray16 puts the translation in the bottom row
-		temp = matrixValues[3];
-		matrixValues[3] = matrixValues[12];
-		matrixValues[12] = temp;
-		temp = matrixValues[7];
-		matrixValues[7] = matrixValues[13];
-		matrixValues[13] = temp;
-		temp = matrixValues[11];
-		matrixValues[11] = matrixValues[14];
-		matrixValues[14] = temp;
-
-		//Flip the X and Z position values
-		matrixValues[3] *= -1.0;
-		matrixValues[11] *= -1.0;
-
-		return matrixValues;
-	}
-
 	private Node createNodeForJoint( Joint joint ) {
 		Node node = factory.createNode();
 		node.setName( joint.jointID.getValue() );
@@ -165,7 +156,15 @@ public class JointedModelColladaExporter {
 
 		Matrix matrix = factory.createMatrix();
 		matrix.setSid( "matrix" );
-		double[] matrixValues = getColladaReadyTransform(joint.getLocalTransformation());
+		AffineMatrix4x4 newTransform = new AffineMatrix4x4( joint.localTransformation.getValue() );
+		if (SCALE_MODEL) {
+			newTransform.translation.multiply(MODEL_SCALE);
+		}
+		double[] matrixValues = ColladaTransformUtilities.createColladaTransformFromAliceTransform(newTransform);
+		//Flip the values from Alice space to Collada space
+		if (FLIP_COORDINATE_SPACE) {
+			matrixValues = ColladaTransformUtilities.createFlippedColladaTransform(matrixValues);
+		}
 		for( double matrixValue : matrixValues ) {
 			matrix.getValue().add( matrixValue );
 		}
@@ -310,7 +309,7 @@ public class JointedModelColladaExporter {
 		}
 	}
 
-	private Source createFloatArraySourceFromInitializer( ListInitializer initializer, String name, int stride, boolean flipXandZ ) {
+	private Source createFloatArraySourceFromInitializer( ListInitializer initializer, String name, int stride, double scale, boolean flipXandZ ) {
 
 		Source source = factory.createSource();
 		source.setId( name );
@@ -321,10 +320,14 @@ public class JointedModelColladaExporter {
 		List<Double> values = floatArray.getValue();
 		initializer.initializeList( values );
 
-		if (flipXandZ) {
+		//Flip X and Z as part of flipping the normals and positions from Alice space to Collada space
+		if (flipXandZ || scale != 1.0) {
+			//Combine whether or not we're flipping with the scale value so we can do it all in one multiply
+			double flipScale = flipXandZ ? scale * -1.0 : scale;
 			for (int i=0; i<values.size(); i+=3) {
-				values.set(i, -values.get(i));
-				values.set(i+2, -values.get(i+2));
+				values.set(i, values.get(i) * flipScale); //Only flip X and Z
+				values.set(i+1, values.get(i+1) * scale);
+				values.set(i+2, values.get(i+2) * flipScale); //Only flip X and Z
 			}
 		}
 
@@ -359,15 +362,19 @@ public class JointedModelColladaExporter {
 
 		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
 		String positionName = meshName + "-POSITION";
-		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, true );
+		double scale = SCALE_MODEL ? MODEL_SCALE : 1.0;
+		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
+		//Only pass scale to position. Normals and UVs should not be scaled
+		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, scale, FLIP_COORDINATE_SPACE );
 		mesh.getSource().add( positionSource );
 
 		String normalName = meshName + "-NORMAL";
-		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, true );
+		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
+		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, 1.0, FLIP_COORDINATE_SPACE );
 		mesh.getSource().add( normalSource );
 
 		String uvName = meshName + "-UV";
-		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, false );
+		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, 1.0, false );
 		mesh.getSource().add( uvSource );
 
 		//Create and add vertices
@@ -410,15 +417,15 @@ public class JointedModelColladaExporter {
 			//Reverse the order of the triangle indices because collada needs the indices in counter clockwise order
 			triangleList.add( BigInteger.valueOf( ib.get( i+0 ) ) ); //Position 0
 			triangleList.add( BigInteger.valueOf( ib.get( i+0 ) ) ); //Normal 0
-			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 0 placeholder
+			triangleList.add( BigInteger.valueOf( ib.get( i+0 ) ) ); //UV 0
 
 			triangleList.add( BigInteger.valueOf( ib.get( i+1 ) ) ); //Position 1
 			triangleList.add( BigInteger.valueOf( ib.get( i+1 ) ) ); //Normal 1
-			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 1 placeholder
+			triangleList.add( BigInteger.valueOf( ib.get( i+1 ) ) ); //UV 1
 
 			triangleList.add( BigInteger.valueOf( ib.get( i+2 ) ) ); //Position 2
 			triangleList.add( BigInteger.valueOf( ib.get( i+2 ) ) ); //Normal 2
-			triangleList.add( BigInteger.valueOf( 0 ) ); //UV 0 placeholder
+			triangleList.add( BigInteger.valueOf( ib.get( i+2 ) ) ); //UV 2
 		}
 		triangles.setCount( BigInteger.valueOf( N / 3 ) );
 
@@ -434,9 +441,9 @@ public class JointedModelColladaExporter {
 	}
 
 	private double[] getBindShapeMatrix( WeightedMesh sgWeightedMesh ) {
-		//TODO: have this return the correct bind shape matrix
+		//All Alice models have a bind shape of the identity
 		AffineMatrix4x4 bindShapeMatrix = AffineMatrix4x4.createIdentity();
-		return bindShapeMatrix.getAsColumnMajorArray16();
+		return ColladaTransformUtilities.createColladaTransformFromAliceTransform( bindShapeMatrix );
 	}
 
 	//	Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
@@ -474,7 +481,7 @@ public class JointedModelColladaExporter {
 		controller.setSkin( skin );
 		skin.setSourceAttribute( "#" + getMeshIdForMeshName( meshName ) );
 
-		//Set the bind shape matrix
+//		//Set the bind shape matrix
 		double[] bindShapeMatrix = getBindShapeMatrix( sgWeightedMesh );
 		for( double element : bindShapeMatrix ) {
 			skin.getBindShapeMatrix().add( element );
@@ -504,7 +511,15 @@ public class JointedModelColladaExporter {
 		matricesArray.setId( controllerName + "-Matrices-array" );
 		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-			double[] matrix = getColladaReadyTransform(iatwp.getInverseAbsoluteTransformation());
+			AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation();
+			if (SCALE_MODEL) {
+				inverseBindMatrix.translation.multiply(MODEL_SCALE);
+			}
+			//Invert matrix, flip its values from Alice space to Collada space and then invert it back
+			double[] matrix = ColladaTransformUtilities.createColladaTransformFromAliceTransform(inverseBindMatrix);
+			if (FLIP_COORDINATE_SPACE) {
+				matrix = ColladaTransformUtilities.createFlippedColladaTransform(matrix);
+			}
 			for( double element : matrix ) {
 				matricesArray.getValue().add( element );
 			}
@@ -554,7 +569,7 @@ public class JointedModelColladaExporter {
 
 		//Build the weights source.
 		String weightsSourceName = controllerName + "-Weights";
-		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, false );
+		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, 1.0,false );
 		skin.getSourceAttribute2().add( weightsSource );
 
 		InputLocalOffset jointInput = factory.createInputLocalOffset();
@@ -629,28 +644,21 @@ public class JointedModelColladaExporter {
 	}
 
 	private String getMaterialIDForID(Integer id) {
-		return getMaterialNameForID(id) + "-fx";
+		return getMaterialNameForID(id);
 	}
 
-	private Node createVisualSceneNodeForWeightedMesh(WeightedMesh sgWeightedMesh) {
-		String meshName = meshNameMap.get( sgWeightedMesh );
-		String controllerURL = "#"+ meshName + "Controller";
+	private String getEffectNameForID(Integer id) { return textureNameMap.get(id) + "_fx"; }
 
-		Node visualSceneNode = factory.createNode();
-		visualSceneNode.setName(meshName);
-		visualSceneNode.setId(meshName);
-		visualSceneNode.setSid(meshName);
+	private String getEffectIDForID(Integer id) { return getEffectNameForID(id); }
 
-		InstanceController instanceController = factory.createInstanceController();
-		instanceController.setUrl(controllerURL);
+	private BindMaterial createBindMaterialForTextureID( Integer textureID ) {
 		BindMaterial bindMaterial = factory.createBindMaterial();
 
 		BindMaterial.TechniqueCommon techniqueCommon = factory.createBindMaterialTechniqueCommon();
 		InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
 		techniqueCommon.getInstanceMaterial().add(instanceMaterial);
-		Integer textureID = sgWeightedMesh.textureId.getValue();
 		instanceMaterial.setSymbol(getMaterialNameForID(textureID));
-		instanceMaterial.setTarget("#"+getMaterialIDForID(textureID));
+		instanceMaterial.setTarget("#"+ getMaterialIDForID(textureID));
 		InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
 		instanceMaterial.getBindVertexInput().add(bindVertexInput);
 		bindVertexInput.setSemantic("UVMap");
@@ -658,9 +666,40 @@ public class JointedModelColladaExporter {
 		bindVertexInput.setInputSemantic("TEXCOORD");
 
 		bindMaterial.setTechniqueCommon(techniqueCommon);
-		instanceController.setBindMaterial(bindMaterial);
+		return bindMaterial;
+	}
 
+	private Node createVisualSceneNode( String name ) {
+		Node visualSceneNode = factory.createNode();
+		visualSceneNode.setName(name);
+		visualSceneNode.setId(name);
+		visualSceneNode.setSid(name);
+		return visualSceneNode;
+	}
+
+	private Node createVisualSceneNodeForMesh(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh) {
+		String meshName = meshNameMap.get( sgMesh );
+		String geometryURL = "#"+ getMeshIdForMeshName( meshName );
+
+		Node visualSceneNode = createVisualSceneNode(meshName);
+		InstanceGeometry instanceGeometry = factory.createInstanceGeometry();
+		instanceGeometry.setUrl(geometryURL);
+		instanceGeometry.setBindMaterial(createBindMaterialForTextureID(sgMesh.textureId.getValue()));
+		visualSceneNode.getInstanceGeometry().add(instanceGeometry);
+
+		return visualSceneNode;
+	}
+
+	private Node createVisualSceneNodeForWeightedMesh(WeightedMesh sgWeightedMesh) {
+		String meshName = meshNameMap.get( sgWeightedMesh );
+		String controllerURL = "#"+ meshName + "Controller";
+
+		Node visualSceneNode = createVisualSceneNode(meshName);
+		InstanceController instanceController = factory.createInstanceController();
+		instanceController.setUrl(controllerURL);
+		instanceController.setBindMaterial(createBindMaterialForTextureID(sgWeightedMesh.textureId.getValue()));
 		visualSceneNode.getInstanceController().add(instanceController);
+
 		return visualSceneNode;
 	}
 
@@ -682,8 +721,8 @@ public class JointedModelColladaExporter {
 
 	private Effect createEffect(Integer textureID) {
 		Effect effect = factory.createEffect();
-		effect.setId( getMaterialIDForID(textureID) );
-		effect.setName( getMaterialNameForID(textureID)) ;
+		effect.setId( getEffectIDForID(textureID) );
+		effect.setName( getEffectNameForID(textureID)) ;
 
 		ProfileCOMMON profile = factory.createProfileCOMMON();
 
@@ -699,7 +738,7 @@ public class JointedModelColladaExporter {
 		image.setName(getImageNameForID(textureID));
 		image.setId(getImageIDForID(textureID));
 		surfaceInit.setValue(image);
-		
+
 		surface.getInitFrom().add(surfaceInit);
 		surfaceParam.setSurface(surface);
 		profile.getImageOrNewparam().add(surfaceParam);
@@ -732,6 +771,15 @@ public class JointedModelColladaExporter {
 		return effect;
 	}
 
+	private String getModelName() {
+		if (modelInfo != null) {
+			return modelInfo.getModelName();
+		}
+		else {
+			return modelName;
+		}
+	}
+
 	public void writeColladaFile( File outputFile ) {
 		COLLADA collada = factory.createCOLLADA();
 
@@ -748,7 +796,7 @@ public class JointedModelColladaExporter {
 
 
 		//Create the Visual Scene, but don't add it yet because it needs to be at the end
-		String sceneName = this.modelInfo.getModelName();
+		String sceneName = getModelName();
 		VisualScene visualScene = factory.createVisualScene();
 		visualScene.setId( sceneName );
 		visualScene.setName( sceneName );
@@ -777,9 +825,9 @@ public class JointedModelColladaExporter {
 
 			Material material = factory.createMaterial();
 			material.setName(getMaterialNameForID(entry.getKey()));
-			material.setId(getMaterialNameForID(entry.getKey()));
+			material.setId(getMaterialIDForID(entry.getKey()));
 			InstanceEffect instanceEffect = factory.createInstanceEffect();
-			instanceEffect.setUrl("#"+getMaterialIDForID(entry.getKey()));
+			instanceEffect.setUrl("#"+ getEffectIDForID(entry.getKey()));
 			material.setInstanceEffect(instanceEffect);
 			libraryMaterials.getMaterial().add(material);
 
@@ -792,15 +840,18 @@ public class JointedModelColladaExporter {
 
 		//Geometry
 		LibraryGeometries lg = factory.createLibraryGeometries();
-
-		//Grab the static geometry and the weighted meshes
+		//Grab the static geometry and add them to the scene
 		for( edu.cmu.cs.dennisc.scenegraph.Geometry g : visual.geometries.getValue() ) {
 			if( g instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
 				edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh = (edu.cmu.cs.dennisc.scenegraph.Mesh)g;
 				Geometry geometry = createGeometryForMesh( sgMesh );
 				lg.getGeometry().add( geometry );
+
+				Node vsNode = createVisualSceneNodeForMesh(sgMesh);
+				visualScene.getNode().add(vsNode);
 			}
 		}
+		//Grab the weighted meshes and add their geometry to the scene
 		for( WeightedMesh sgWM : visual.weightedMeshes.getValue() ) {
 			Geometry geometry = createGeometryForMesh( sgWM );
 			lg.getGeometry().add( geometry );
@@ -809,6 +860,7 @@ public class JointedModelColladaExporter {
 
 		//Weighted Mesh Controllers
 		LibraryControllers lc = factory.createLibraryControllers();
+		//Create controllers for all the weighted meshes
 		for( WeightedMesh sgWM : visual.weightedMeshes.getValue() ) {
 			Controller controller = createControllerForMesh( sgWM );
 			lc.getController().add( controller );
@@ -830,7 +882,6 @@ public class JointedModelColladaExporter {
 			marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
 			FileOutputStream fos = new FileOutputStream( outputFile );
 			marshaller.marshal( collada, fos );
-			marshaller.marshal( collada, System.out );
 			fos.close();
 		} catch( JAXBException | IOException e ) {
 			e.printStackTrace();
@@ -843,21 +894,112 @@ public class JointedModelColladaExporter {
 		return sv;
 	}
 
-	public static void main( String[] args ) {
 
-		ModelResourceInfo modelInfoAlice = AliceResourceUtilties.getModelResourceInfo( AliceResource.class, "WONDERLAND" );
+	private static BufferedImage createFlippedImage(BufferedImage image)
+	{
+		AffineTransform at = new AffineTransform();
+		at.concatenate(AffineTransform.getScaleInstance(1, -1));
+		at.concatenate(AffineTransform.getTranslateInstance(0, -image.getHeight()));
 
-		ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo( ColaBottleResource.class, "DEFAULT" );
-		SkeletonVisual sgSkeletonVisual = loadAliceModel( ColaBottleResource.DEFAULT );
+		BufferedImage flippedImage = new BufferedImage( image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = flippedImage.createGraphics();
+		g.transform(at);
+		g.drawImage(image, 0, 0, null);
+		g.dispose();
 
+		return flippedImage;
+	}
+
+	private static File saveTexture(TexturedAppearance texture, File outputFile) {
+		BufferedImageTexture bufferedTexture = (BufferedImageTexture)texture.diffuseColorTexture.getValue();
+		try {
+			//Flip the textures because Alice uses flipped textures and things outside of Alice don't
+			BufferedImage flippedImage = createFlippedImage(bufferedTexture.getBufferedImage());
+			ImageIO.write(flippedImage, "png", outputFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return outputFile;
+	}
+
+	private static Map<Integer, File> saveTexturesToFile( File directory, String baseName, TexturedAppearance[] textures ) {
 		Map<Integer, File> idToTextureFileMap = new HashMap();
-		idToTextureFileMap.put(1, new File("cola_diffuse.png"));
-		idToTextureFileMap.put(2, new File("colaFull_diffuse.png"));
+		for ( TexturedAppearance texture : textures ) {
+			File textureFile = new File(directory, baseName + "_" + texture.textureId.getValue() + ".png");
+			try {
+				FileUtilities.createParentDirectoriesIfNecessary(textureFile);
+				textureFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			textureFile = saveTexture(texture, textureFile);
+			if (textureFile != null) {
+				idToTextureFileMap.put(texture.textureId.getValue(), textureFile);
+			}
+		}
+		return idToTextureFileMap;
+	}
+
+	private static List<File> exportAliceModel(SkeletonVisual sgSkeletonVisual, String modelName, File rootDir) {
+		Map<Integer, File> idToTextureFileMap  = saveTexturesToFile(rootDir, modelName, sgSkeletonVisual.textures.getValue());
+
+		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelName, idToTextureFileMap );
+		File colladaOutputFile = new File( rootDir, modelName + ".dae" );
+		exporter.writeColladaFile( colladaOutputFile );
+
+		List<File> outputFiles = new ArrayList<>(idToTextureFileMap.size() + 1);
+		for (Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
+			outputFiles.add(entry.getValue());
+		}
+		outputFiles.add(colladaOutputFile);
+
+		return outputFiles;
+	}
+
+	private static List<File> exportAliceModel(JointedModelResource modelResource, File rootDir) {
+		ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo( modelResource.getClass(), modelResource.toString() );
+		SkeletonVisual sgSkeletonVisual = loadAliceModel( modelResource );
+		Map<Integer, File> idToTextureFileMap  = saveTexturesToFile(rootDir, modelInfo.getModelName()+"_"+modelInfo.getResourceName(), sgSkeletonVisual.textures.getValue());
 
 		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo, idToTextureFileMap );
-		File outputFile = new File( modelInfo.getModelName() + ".dae" );
-		exporter.writeColladaFile( outputFile );
-		System.out.println("Wrote collada to: "+outputFile.getAbsolutePath());
+		File colladaOutputFile = new File( rootDir, modelInfo.getModelName() + ".dae" );
+		exporter.writeColladaFile( colladaOutputFile );
+
+		List<File> outputFiles = new ArrayList<>(idToTextureFileMap.size() + 1);
+		for (Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
+			outputFiles.add(entry.getValue());
+		}
+		outputFiles.add(colladaOutputFile);
+
+		return outputFiles;
+	}
+
+	private static void testModelExport(JointedModelResource modelResource, File rootDir) {
+		List<File> modelFiles = exportAliceModel(modelResource, rootDir);
+		Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
+		SkeletonVisual sv = null;
+		try {
+			String modelTestName = modelResource.getClass().getSimpleName()+"_TEST";
+			sv = AliceColladaModelLoader.loadAliceModelFromCollada(modelFiles.get(modelFiles.size() - 1), modelTestName, modelLogger);
+			List<File> modelTestFiles = exportAliceModel(sv, modelTestName, rootDir);
+		}
+		catch (ModelLoadingException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main( String[] args ) {
+
+//		File outputRootDir = Paths.get(".").toFile();
+//		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Unity\\trilibtest\\Win64");
+		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Code\\alice-unity-player\\Assets\\Models");
+
+		List<File> aliceFiles = exportAliceModel(AliceResource.WONDERLAND, outputRootDir);
+//		List<File> pirateShipFiles = exportAliceModel(PirateShipResource.DEFAULT, outputRootDir);
+//		List<File> colaBottleFiles = exportAliceModel(ColaBottleResource.DEFAULT, outputRootDir);
+		List<File> sledFiles = exportAliceModel(SledResource.DEFAULT, outputRootDir);
+//		testModelExport(YetiBabyResource.TUTU, new File(outputRootDir, "YetiBaby"));
 
 	}
 

@@ -1,4 +1,4 @@
-/*
+package org.lgna.story.resourceutilities;/*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -135,9 +135,9 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 				//                double boundingRadius = Double.NaN;
 				//                for (WeightedMeshControl control : this.meshControls)
 				//                {
-				//                    if (control instanceof UtilityWeightedMeshControl)
+				//                    if (control instanceof org.lgna.story.resourceutilities.UtilityWeightedMeshControl)
 				//                    {
-				//                        double radius = ((UtilityWeightedMeshControl)control).getBoundingRadiusForJoint((Joint)currentNode);
+				//                        double radius = ((org.lgna.story.resourceutilities.UtilityWeightedMeshControl)control).getBoundingRadiusForJoint((Joint)currentNode);
 				//                        if (Double.isNaN(boundingRadius))
 				//                        {
 				//                            boundingRadius = radius;

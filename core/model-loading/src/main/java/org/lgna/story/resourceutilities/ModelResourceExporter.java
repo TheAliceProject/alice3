@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.resourceutilities.exporterutils;
+package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -102,10 +102,6 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.QuadrupedResource;
 import org.lgna.story.resources.SlithererResource;
 import org.lgna.story.resources.SwimmerResource;
-import org.lgna.story.resourceutilities.JavaCodeUtilities;
-import org.lgna.story.resourceutilities.ModelClassData;
-import org.lgna.story.resourceutilities.ModelResourceInfo;
-import org.lgna.story.resourceutilities.ModelSubResourceExporter;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;

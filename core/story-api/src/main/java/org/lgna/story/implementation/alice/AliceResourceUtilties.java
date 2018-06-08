@@ -192,7 +192,6 @@ public class AliceResourceUtilties {
 
 	public static SkeletonVisual decodeVisual( URL url ) {
 		try {
-			System.out.println("Decoding visual from url " + url);
 			InputStream is = url.openStream();
 			BinaryDecoder decoder = new InputStreamBinaryDecoder( is );
 			return decoder.decodeReferenceableBinaryEncodableAndDecodable( new HashMap<Integer, ReferenceableBinaryEncodableAndDecodable>() );
@@ -204,7 +203,6 @@ public class AliceResourceUtilties {
 
 	public static TexturedAppearance[] decodeTexture( URL url ) {
 		try {
-			System.out.println("Decoding texture from url " + url);
 			InputStream is = url.openStream();
 			BinaryDecoder decoder = new InputStreamBinaryDecoder( is );
 			TexturedAppearance[] rv = decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new HashMap<Integer, ReferenceableBinaryEncodableAndDecodable>() );

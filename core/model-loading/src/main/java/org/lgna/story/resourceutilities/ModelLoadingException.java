@@ -1,3 +1,4 @@
+package org.lgna.story.resourceutilities;
 
 public class ModelLoadingException extends Exception {
 

@@ -1,8 +1,11 @@
+package org.lgna.story.resourceutilities;
+
 import com.dddviewr.collada.Collada;
 import com.dddviewr.collada.controller.Controller;
 import com.dddviewr.collada.controller.Skin;
 import com.dddviewr.collada.controller.VertexWeights;
 import com.dddviewr.collada.effects.Effect;
+import com.dddviewr.collada.effects.NewParam;
 import com.dddviewr.collada.geometry.Geometry;
 import com.dddviewr.collada.geometry.Primitives;
 import com.dddviewr.collada.geometry.Triangles;
@@ -80,41 +83,6 @@ public class AliceColladaModelLoader {
 		return null;
 	}
 
-	public static AffineMatrix4x4 createAliceMatrixFromArray12( double[] matrixArray ) {
-		assert matrixArray.length == 12;
-		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
-		rv.orientation.right.x = matrixArray[ 0 ];
-		rv.orientation.up.x = matrixArray[ 1 ];
-		rv.orientation.backward.x = matrixArray[ 2 ];
-		rv.translation.x = matrixArray[ 3 ];
-		rv.orientation.right.y = matrixArray[ 4 ];
-		rv.orientation.up.y = matrixArray[ 5 ];
-		rv.orientation.backward.y = matrixArray[ 6 ];
-		rv.translation.y = matrixArray[ 7 ];
-		rv.orientation.right.z = matrixArray[ 8 ];
-		rv.orientation.up.z = matrixArray[ 9 ];
-		rv.orientation.backward.z = matrixArray[ 10 ];
-		rv.translation.z = matrixArray[ 11 ];
-		return rv;
-	}
-
-	public static AffineMatrix4x4 createAliceMatrixFromArray16( double[] matrixArray ) {
-		assert matrixArray.length == 16;
-		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
-		rv.orientation.right.x = matrixArray[ 0 ];
-		rv.orientation.up.x = matrixArray[ 1 ];
-		rv.orientation.backward.x = matrixArray[ 2 ];
-		rv.translation.x = matrixArray[ 3 ];
-		rv.orientation.right.y = matrixArray[ 4 ];
-		rv.orientation.up.y = matrixArray[ 5 ];
-		rv.orientation.backward.y = matrixArray[ 6 ];
-		rv.translation.y = matrixArray[ 7 ];
-		rv.orientation.right.z = matrixArray[ 8 ];
-		rv.orientation.up.z = matrixArray[ 9 ];
-		rv.orientation.backward.z = matrixArray[ 10 ];
-		rv.translation.z = matrixArray[ 11 ];
-		return rv;
-	}
 
 	private static AffineMatrix4x4 floatArrayToAliceMatrix( float[] floatData ) throws ModelLoadingException {
 		double[] doubleData = new double[floatData.length];
@@ -122,10 +90,10 @@ public class AliceColladaModelLoader {
 			doubleData[i] = floatData[i];
 		}
 		if (doubleData.length == 12) {
-			return createAliceMatrixFromArray12( doubleData );
+			return ColladaTransformUtilities.createAliceTransformFromArray12( doubleData );
 		}
 		else if (doubleData.length == 16) {
-			return createAliceMatrixFromArray16( doubleData );
+			return ColladaTransformUtilities.createAliceTransformFromArray16( doubleData );
 		}
 		else {
 			throw new ModelLoadingException("Error converting collada matrix to Alice matrix. Expected array of size 12 or 16, instead got "+floatData.length);
@@ -376,7 +344,7 @@ public class AliceColladaModelLoader {
         	}
         }
         if (tris == null) {
-        	throw new ModelLoadingException( "Error conversing mesh "+geometry.getName()+", no triangle primitive data found." );
+        	throw new ModelLoadingException( "Error converting mesh "+geometry.getName()+", no triangle primitive data found." );
         }
 		int[] triangleIndexData = tris.getData();
         sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
@@ -386,26 +354,21 @@ public class AliceColladaModelLoader {
         	WeightInfo weightInfo = createWeightInfoForController( meshController );
         
         	//Since this is weighted mesh, we need to transform the mesh data into the bind space
-        	AffineMatrix4x4 bindMatrix = floatArrayToAliceMatrix( meshController.getSkin().getBindShapeMatrix() );
+			float[] bindMatrixData = meshController.getSkin().getBindShapeMatrix();
+        	AffineMatrix4x4 bindMatrix;
+        	if (bindMatrixData != null ) {
+        		bindMatrix = floatArrayToAliceMatrix( bindMatrixData );
+			}
+			else {
+        		bindMatrix = AffineMatrix4x4.createIdentity();
+			}
         	double[] bindSpaceVertexData = new double[vertexData.length];
             for (int i=0; i<vertexData.length; i+=3) {
             	bindMatrix.transformVertex( bindSpaceVertexData, i, doubleVertexData, i );
             }
             sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(bindSpaceVertexData) );
-        
-        
+
         	((WeightedMesh)sgMesh).weightInfo.setValue( weightInfo );
-        	System.out.println("\nCollada weight info for "+geometry.getName());
-        	printWeightInfo( weightInfo );
-        
-        
-//        	SkeletonVisual fish = loadAliceModel( ClownFishResource.DEFAULT );
-//        	int count = 0;
-//        	for (WeightedMesh wm : fish.weightedMeshes.getValue()) {
-//        		System.out.println("\nAlice weight info for "+count++);
-//        		WeightInfo wi = wm.weightInfo.getValue();
-//        		printWeightInfo( wi );
-//        	}
         }
         
         return sgMesh;
@@ -540,45 +503,29 @@ public class AliceColladaModelLoader {
 		InstanceEffect ie = material.getInstanceEffect();
 		Effect effect = colladaModel.findEffect( ie.getUrl() );
 		String textureName = effect.getEffectMaterial().getDiffuse().getTexture().getTexture();
+
+		NewParam textureParam = effect.findNewParam(textureName);
+		while (textureParam != null) {
+			if (textureParam.getSurface() != null) {
+				textureName = textureParam.getSurface().getInitFrom();
+				textureParam = null;
+				break;
+			}
+			else if (textureParam.getSampler2D() != null) {
+				textureParam = effect.findNewParam(textureParam.getSampler2D().getSource());
+			}
+			else {
+				textureParam = null;
+			}
+		}
+
 		return colladaModel.findImage( textureName );
 	}
 
 
-	/**
-	 * 	Alice models are in a different geometric space than maya models
-	 *	Maya models are modeled with:
-	 *	  forward = +z
-	 *	  right   = -x
-	 *	  up      = +y
-	 *
-	 *	Alice models are modeled with:
-	 *	  forward = -z
-	 *	  right   = +x
-	 *	  up      = +y
-	 *  This converts a transform in maya space into Alice space
-	 */
-	private static AffineMatrix4x4 flipTransform( AffineMatrix4x4 transform ) {
-		transform.orientation.right.y *= -1;
-
-		transform.orientation.up.x *= -1;
-		transform.orientation.up.z *= -1;
-
-		transform.orientation.backward.y *= -1;
-
-		transform.translation.x *= -1;
-		transform.translation.z *= -1;
-
-		return transform;
-	}
-
-	private static AffineMatrix4x4 scaleTransform( AffineMatrix4x4 transform, Vector3 scale ) {
-		transform.translation.multiply( scale );
-		return transform;
-	}
-
 	private static void flipJoints( Joint j ) {
 		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
-		flipTransform( newTransform );
+		newTransform = ColladaTransformUtilities.createFlippedAliceTransform( newTransform );
 		j.localTransformation.setValue( newTransform );
 		for( int i = 0; i < j.getComponentCount(); i++ )
 		{
@@ -591,7 +538,7 @@ public class AliceColladaModelLoader {
 
 	private static void scaleJoints( Joint j, Vector3 scale) {
 		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
-		scaleTransform( newTransform, scale );
+		newTransform.translation.multiply( scale );
 		j.localTransformation.setValue( newTransform );
 		for( int i = 0; i < j.getComponentCount(); i++ )
 		{
@@ -604,21 +551,11 @@ public class AliceColladaModelLoader {
 
 	private static Mesh flipMesh( Mesh mesh ) {
 		double[] vertices = BufferUtilities.convertDoubleBufferToArray( mesh.vertexBuffer.getValue() );
-		double[] newVertices = new double[vertices.length];
-		for (int i=0; i<vertices.length; i+=3) {
-			newVertices[i] = vertices[i] * -1;
-			newVertices[i+1] = vertices[i+1];
-			newVertices[i+2] = vertices[i+2] * -1;
-		}
+		double[] newVertices = ColladaTransformUtilities.createFlippedPoint3DoubleArray(vertices);
 		mesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(newVertices) );
 
 		float[] normals = BufferUtilities.convertFloatBufferToArray( mesh.normalBuffer.getValue() );
-		float[] newNormals = new float[normals.length];
-		for (int i=0; i<normals.length; i+=3) {
-			newNormals[i] = normals[i] * -1;
-			newNormals[i+1] = normals[i+1];
-			newNormals[i+2] = normals[i+2] * -1;
-		}
+		float[] newNormals = ColladaTransformUtilities.createFlippedPoint3FloatArray(normals);
 		mesh.normalBuffer.setValue( Buffers.newDirectFloatBuffer(newNormals) );
 
 		return mesh;
@@ -641,7 +578,7 @@ public class AliceColladaModelLoader {
 		for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
 			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
 			AffineMatrix4x4 originalTransform = AffineMatrix4x4.createInverse( iatwp.getInverseAbsoluteTransformation() );
-			AffineMatrix4x4 newTransform = flipTransform( originalTransform );
+			AffineMatrix4x4 newTransform = ColladaTransformUtilities.createFlippedAliceTransform( originalTransform );
 			newTransform.invert();
 			iatwp.setInverseAbsoluteTransformation( newTransform );
 		}
@@ -795,8 +732,7 @@ public class AliceColladaModelLoader {
 			throw new ModelLoadingException("Failed to load collada file "+colladaModelFile, e);
 		}
 		colladaModel.deindexMeshes();
-		colladaModel.dump( System.out, 0 );
-
+//		colladaModel.dump( System.out, 0 );
 
 		File rootPath = colladaModelFile.getParentFile();
 

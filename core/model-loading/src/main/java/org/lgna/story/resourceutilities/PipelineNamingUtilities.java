@@ -1,4 +1,4 @@
-package org.lgna.story.resourceutilities.exporterutils;
+package org.lgna.story.resourceutilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,6 @@ import org.lgna.story.SFlyer;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.SSwimmer;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 
 public class PipelineNamingUtilities {

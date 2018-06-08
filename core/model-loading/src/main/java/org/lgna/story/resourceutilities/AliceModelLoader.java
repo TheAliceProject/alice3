@@ -1,3 +1,5 @@
+package org.lgna.story.resourceutilities;
+
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
@@ -15,13 +17,6 @@ import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.fish.ClownFishResource;
-import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
-import org.lgna.story.resourceutilities.JavaCodeUtilities;
-import org.lgna.story.resourceutilities.ModelClassData;
-import org.lgna.story.resourceutilities.ModelResourceInfo;
-import org.lgna.story.resourceutilities.exporterutils.ModelResourceExporter;
-import org.lgna.story.resourceutilities.exporterutils.PipelineException;
-import org.lgna.story.resourceutilities.exporterutils.PipelineNamingUtilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -388,9 +383,9 @@ public class AliceModelLoader {
 	}
 	
 	public static void main( String[] args ) {
-			
-			File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/AliceColladaTestFiles/test cola/ColaBottle.dae" );
-			String modelName = "colaBottle";
+			File rootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Unity\\trilibtest\\Win64");
+			File colladaFile  = new File( rootDir, "YetiBaby\\Tutu.dae" );
+			String modelName = "yetiBaby";
 			SkeletonVisual sv = AliceModelLoader.loadAliceModelFromCollada( colladaFile, modelName);
 			
 			renameJoints(sv);
@@ -509,23 +504,8 @@ public class AliceModelLoader {
 	public static SkeletonVisual loadAliceModelFromCollada(File colladaModelFile, String modelName) {
 		SkeletonVisual sv = null;
 		try {
-			
-			SkeletonVisual alice_sv = AliceColladaModelLoader.loadAliceModel( ClownFishResource.DEFAULT );
-			
-			Logger modelLogger = Logger.getLogger( "AliceColladaModelLoader" );
+			Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
 			sv = AliceColladaModelLoader.loadAliceModelFromCollada( colladaModelFile, modelName, modelLogger );
-//			printJoints(sv.skeleton.getValue(), "");
-			printSkeletonVisual(sv);
-			
-			printSkeletonVisual(alice_sv);
-//			printJoints(alice_sv.skeleton.getValue(), "");
-			
-			
-//			BufferedImage chicken_image = AdaptiveRecenteringThumbnailMaker.getInstance(800, 600).createThumbnail(chicken_sv, false);
-			
-//			ImageUtilities.write(new File("C:\\Users\\dculyba\\Documents\\Alice\\colladaTest.png"), image);
-			
-			
 		}
 		catch (ModelLoadingException e) {
 			e.printStackTrace();

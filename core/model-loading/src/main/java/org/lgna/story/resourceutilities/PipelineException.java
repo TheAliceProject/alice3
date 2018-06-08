@@ -1,4 +1,4 @@
-package org.lgna.story.resourceutilities.exporterutils;
+package org.lgna.story.resourceutilities;
 
 public class PipelineException extends Throwable {
 	
