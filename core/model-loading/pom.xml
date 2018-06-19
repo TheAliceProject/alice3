@@ -21,13 +21,25 @@
   	<relativePath>../../core/</relativePath>
   </parent>
   <dependencies>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>ast</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>story-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>glrender</artifactId>
+    </dependency>
   	<dependency>
   		<groupId>org.alice</groupId>
-  		<artifactId>ide</artifactId>
+  		<artifactId>scenegraph</artifactId>
   	</dependency>
     <dependency>
       <groupId>org.alice</groupId>
-      <artifactId>alice-ide</artifactId>
+      <artifactId>util</artifactId>
     </dependency>
     <dependency>
       <groupId>com.dddviewr</groupId>
