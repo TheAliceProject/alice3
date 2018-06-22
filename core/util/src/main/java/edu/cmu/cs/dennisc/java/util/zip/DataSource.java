@@ -48,8 +48,16 @@ import java.io.OutputStream;
 /**
  * @author Dennis Cosgrove
  */
-public interface DataSource {
-	public String getName();
+public abstract class DataSource {
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof DataSource) {
+			return this.getName().equals(((DataSource) obj).getName());
+		}
+		return super.equals(obj);
+	}
 
-	public void write( OutputStream os ) throws IOException;
+	public abstract String getName();
+
+	public abstract void write(OutputStream os) throws IOException;
 }

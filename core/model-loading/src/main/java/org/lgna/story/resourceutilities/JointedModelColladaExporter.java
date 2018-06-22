@@ -48,6 +48,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -69,9 +70,12 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ImplementationAndVisualType;
@@ -94,6 +98,9 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public class JointedModelColladaExporter {
 
+	private static final String COLLADA_EXTENSION = "dae";
+	private static final String IMAGE_EXTENSION = "png";
+
 	//Controls whether or not we flip the coordinate space during our conversion
 	private static final boolean FLIP_COORDINATE_SPACE = true;
 	private static final boolean SCALE_MODEL = true;
@@ -103,25 +110,36 @@ public class JointedModelColladaExporter {
 	private final SkeletonVisual visual;
 	private final ModelResourceInfo modelInfo;
 	private final String modelName;
-	private final Map<Integer, File> idToTextureFileMap;
+//	private final Map<Integer, File> idToTextureFileMap;
 
 	private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
 	private final HashMap<Integer, String> textureNameMap = new HashMap<>();
 
-	public JointedModelColladaExporter( SkeletonVisual sv, ModelResourceInfo mi, Map<Integer, File> idToTextureFileMap ) {
+	private JointedModelColladaExporter( SkeletonVisual sv, ModelResourceInfo mi, String modelName ) {
 		this.factory = new ObjectFactory();
 		this.visual = sv;
 		this.modelInfo = mi;
-		this.idToTextureFileMap = idToTextureFileMap;
-		this.modelName = null;
+		this.modelName = modelName;
+		//Go through all the meshes in the sgVisual and find or create names for all of them
+		initializeMeshNameMap();
+		//Go through all the textures and create names based on the IDs
+		initializeTextureNameMap();
 	}
 
-	public JointedModelColladaExporter( SkeletonVisual sv, String modelName, Map<Integer, File> idToTextureFileMap ) {
-		this.factory = new ObjectFactory();
-		this.visual = sv;
-		this.modelInfo = null;
-		this.idToTextureFileMap = idToTextureFileMap;
-		this.modelName = modelName;
+	public JointedModelColladaExporter( SkeletonVisual sv, ModelResourceInfo mi ) {
+		this( sv, mi, null );
+	}
+
+	public JointedModelColladaExporter( SkeletonVisual sv, String modelName ) {
+		this( sv, null, modelName );
+	}
+
+	public String getImageExtension() {
+		return IMAGE_EXTENSION;
+	}
+
+	public String getModelExtension() {
+		return COLLADA_EXTENSION;
 	}
 
 	private Asset createAsset() {
@@ -226,6 +244,9 @@ public class JointedModelColladaExporter {
 		return accessorTechnique;
 	}
 
+
+	//Helper classes to initalize Collada lists of numbers from Alice data
+	//These are used to convert the lists of doubles and floats that represent normals, vertices, etc.
 	private interface ListInitializer {
 		public void initializeList(List<Double> toInitialize);
 	}
@@ -481,7 +502,7 @@ public class JointedModelColladaExporter {
 		controller.setSkin( skin );
 		skin.setSourceAttribute( "#" + getMeshIdForMeshName( meshName ) );
 
-//		//Set the bind shape matrix
+		//Set the bind shape matrix
 		double[] bindShapeMatrix = getBindShapeMatrix( sgWeightedMesh );
 		for( double element : bindShapeMatrix ) {
 			skin.getBindShapeMatrix().add( element );
@@ -597,11 +618,11 @@ public class JointedModelColladaExporter {
 		joints.getInput().add(localInvBindMatrixInput);
 
 		skin.setJoints(joints);
-
 		skin.setVertexWeights( vw );
 
 		return controller;
 	}
+
 	private void addMeshToNameMap( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
 		String meshName = sgMesh.getName();
 		if( ( meshName == null ) || ( meshName.length() == 0 ) ) {
@@ -626,14 +647,21 @@ public class JointedModelColladaExporter {
 		textureNameMap.clear();
 		//Make names for all the texture IDs
 		//There's no naming convention. Naming is geared toward human readability--texture_0 is fine
-		for( Integer i : idToTextureFileMap.keySet() ) {
-			textureNameMap.put(i, "texture_"+i);
+		for( TexturedAppearance texture : visual.textures.getValue()) {
+			textureNameMap.put(texture.textureId.getValue(), "texture_"+texture.textureId.getValue());
 		}
 	}
 
 	private String getImageNameForID(Integer id) {
 		return textureNameMap.get(id) + "_diffuseMap";
 	}
+
+	//Image file name must be unique to the model.
+	//We don't know if models share textures, so we must construct a unique file name to avoid collisions
+	//To support sharing textures, we will need to have a way to connect the texture id (a number) to a unique filename
+	private String getExternallyUniqueImageNameForID(Integer id) { return getFullResourceName() + "_" + getImageNameForID(id); }
+
+	private String getImageFileNameForID(Integer id) { return getExternallyUniqueImageNameForID(id) + "."+IMAGE_EXTENSION; }
 
 	private String getImageIDForID(Integer id) {
 		return getImageNameForID(id) + "-image";
@@ -773,14 +801,31 @@ public class JointedModelColladaExporter {
 
 	private String getModelName() {
 		if (modelInfo != null) {
-			return modelInfo.getModelName();
+			String modelName = "";
+			if (modelInfo.getParent() != null) {
+				modelName = modelInfo.getParent().getModelName()+ "_";
+			}
+			return modelName + modelInfo.getModelName();
 		}
 		else {
 			return modelName;
 		}
 	}
 
-	public void writeColladaFile( File outputFile ) {
+	private String getFullResourceName() {
+		if (modelInfo != null) {
+			String resourceName = "";
+			if (modelInfo.getParent() != null) {
+				resourceName = modelInfo.getParent().getModelName()+ "_";
+			}
+			return resourceName + modelInfo.getResourceName();
+		}
+		else {
+			return modelName;
+		}
+	}
+
+	public void writeCollada( OutputStream os ) throws IOException {
 		COLLADA collada = factory.createCOLLADA();
 
 		//Required part of a collada file
@@ -788,11 +833,6 @@ public class JointedModelColladaExporter {
 
 		Asset asset = createAsset();
 		collada.setAsset( asset );
-
-		//Go through all the meshes in the sgVisual and find or create names for all of them
-		initializeMeshNameMap();
-		//Go through all the textures and create names based on the IDs
-		initializeTextureNameMap();
 
 
 		//Create the Visual Scene, but don't add it yet because it needs to be at the end
@@ -816,22 +856,23 @@ public class JointedModelColladaExporter {
 		LibraryImages libraryImages = factory.createLibraryImages();
 		LibraryMaterials libraryMaterials = factory.createLibraryMaterials();
 		LibraryEffects libraryEffects = factory.createLibraryEffects();
-		for ( Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
+		for ( TexturedAppearance texture : visual.textures.getValue()) {
 			Image image = factory.createImage();
-			image.setName(getImageNameForID(entry.getKey()));
-			image.setId(getImageIDForID(entry.getKey()));
-			image.setInitFrom(entry.getValue().getName());
+			Integer textureID = texture.textureId.getValue();
+			image.setName(getImageNameForID(textureID));
+			image.setId(getImageIDForID(textureID));
+			image.setInitFrom(getImageFileNameForID(textureID));
 			libraryImages.getImage().add(image);
 
 			Material material = factory.createMaterial();
-			material.setName(getMaterialNameForID(entry.getKey()));
-			material.setId(getMaterialIDForID(entry.getKey()));
+			material.setName(getMaterialNameForID(textureID));
+			material.setId(getMaterialIDForID(textureID));
 			InstanceEffect instanceEffect = factory.createInstanceEffect();
-			instanceEffect.setUrl("#"+ getEffectIDForID(entry.getKey()));
+			instanceEffect.setUrl("#"+ getEffectIDForID(textureID));
 			material.setInstanceEffect(instanceEffect);
 			libraryMaterials.getMaterial().add(material);
 
-			Effect effect = createEffect(entry.getKey());
+			Effect effect = createEffect(textureID);
 			libraryEffects.getEffect().add(effect);
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryImages);
@@ -880,20 +921,11 @@ public class JointedModelColladaExporter {
 			jc = JAXBContext.newInstance( "org.lgna.story.resourceutilities.exporterutils.collada" );
 			final Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
-			FileOutputStream fos = new FileOutputStream( outputFile );
-			marshaller.marshal( collada, fos );
-			fos.close();
-		} catch( JAXBException | IOException e ) {
-			e.printStackTrace();
+			marshaller.marshal( collada, os );
+		} catch( JAXBException e ) {
+			throw new IOException(e);
 		}
 	}
-
-	private static SkeletonVisual loadAliceModel( JointedModelResource resource ) {
-		VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( resource ).createVisualData();
-		SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
-		return sv;
-	}
-
 
 	private static BufferedImage createFlippedImage(BufferedImage image)
 	{
@@ -910,83 +942,161 @@ public class JointedModelColladaExporter {
 		return flippedImage;
 	}
 
-	private static File saveTexture(TexturedAppearance texture, File outputFile) {
+	private static void writeTexture(TexturedAppearance texture, OutputStream os) throws IOException {
 		BufferedImageTexture bufferedTexture = (BufferedImageTexture)texture.diffuseColorTexture.getValue();
-		try {
-			//Flip the textures because Alice uses flipped textures and things outside of Alice don't
-			BufferedImage flippedImage = createFlippedImage(bufferedTexture.getBufferedImage());
-			ImageIO.write(flippedImage, "png", outputFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		return outputFile;
+		//Flip the textures because Alice uses flipped textures and things outside of Alice don't
+		BufferedImage flippedImage = createFlippedImage(bufferedTexture.getBufferedImage());
+		ImageIO.write(flippedImage, IMAGE_EXTENSION, os);
 	}
 
-	private static Map<Integer, File> saveTexturesToFile( File directory, String baseName, TexturedAppearance[] textures ) {
-		Map<Integer, File> idToTextureFileMap = new HashMap();
-		for ( TexturedAppearance texture : textures ) {
-			File textureFile = new File(directory, baseName + "_" + texture.textureId.getValue() + ".png");
+	public String getColladaFileName() {
+		return getModelName() + "." + COLLADA_EXTENSION;
+	}
+
+	public List<String> getTextureFileNames() {
+		List<String> textureFileNames = new ArrayList<>();
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			textureFileNames.add(getImageFileNameForID(textureID));
+		}
+		return textureFileNames;
+	}
+
+	public DataSource createColladaDataSource(String pathName) {
+		final String name = pathName + "/" + getColladaFileName();
+		return new DataSource() {
+			@Override public String getName() { return name; }
+
+			@Override public void write( OutputStream os ) throws IOException {
+				writeCollada(os);
+			}
+		};
+	}
+
+	public Map<Integer, String> createTextureIdToImageMap() {
+		Map<Integer, String> textureIdToFileMap = new HashMap<>();
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			textureIdToFileMap.put(textureID, getExternallyUniqueImageNameForID(textureID));
+		}
+		return textureIdToFileMap;
+	}
+
+	private TexturedAppearance getTextureAppearance(Integer textureId) {
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			if (textureId == texture.textureId.getValue()) {
+				return texture;
+			}
+		}
+		return null;
+	}
+
+	public ImageResource createImageResourceForTexture(Integer textureId) throws IOException {
+		TexturedAppearance texturedAppearance = getTextureAppearance(textureId);
+		BufferedImageTexture bufferedTexture = (BufferedImageTexture)texturedAppearance.diffuseColorTexture.getValue();
+		return ImageFactory.createImageResource(bufferedTexture.getBufferedImage(), getImageFileNameForID(textureId));
+	}
+
+	public Integer getTextureIdForName(String textureName) {
+		//Strip off any extension or path from the text name
+		String bsaeTextureName = FileUtilities.getBaseName(textureName);
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			String toCheck = getExternallyUniqueImageNameForID(textureID);
+			if (textureName.equals(toCheck)) {
+				return textureID;
+			}
+		}
+		return -1;
+	}
+
+	public List<DataSource> createImageDataSources(String pathName) {
+		List<DataSource> dataSources = new ArrayList<>();
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			final String textureName = pathName +"/"+getImageFileNameForID(textureID);
+			DataSource dataSource = new DataSource() {
+				@Override public String getName() { return textureName; }
+
+				@Override public void write( OutputStream os ) throws IOException {
+					writeTexture(texture, os);
+				}
+			};
+			dataSources.add(dataSource);
+		}
+		return dataSources;
+	}
+
+	public List<DataSource> createDataSources(String pathName) {
+		List<DataSource> dataSources = new ArrayList<>();
+		dataSources.add( createColladaDataSource(pathName));
+		dataSources.addAll(createImageDataSources(pathName));
+		return dataSources;
+
+	}
+
+	public List<File> saveTexturesToDirectory( File directory ) throws IOException {
+		List<File> textureFiles = new ArrayList<>();
+		for ( TexturedAppearance texture : visual.textures.getValue() ) {
+			File textureFile = new File(directory, getImageFileNameForID(texture.textureId.getValue()));
 			try {
 				FileUtilities.createParentDirectoriesIfNecessary(textureFile);
 				textureFile.createNewFile();
+				FileOutputStream fos = new FileOutputStream(textureFile);
+				writeTexture(texture, fos);
+				textureFiles.add(textureFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			textureFile = saveTexture(texture, textureFile);
-			if (textureFile != null) {
-				idToTextureFileMap.put(texture.textureId.getValue(), textureFile);
-			}
 		}
-		return idToTextureFileMap;
+		return textureFiles;
 	}
 
-	private static List<File> exportAliceModel(SkeletonVisual sgSkeletonVisual, String modelName, File rootDir) {
-		Map<Integer, File> idToTextureFileMap  = saveTexturesToFile(rootDir, modelName, sgSkeletonVisual.textures.getValue());
+	public File saveColladaToDirectory( File directory ) throws IOException {
+		File colladaOutputFile = new File( directory, getModelName() + ".dae" );
+		writeCollada(new FileOutputStream(colladaOutputFile));
+		return colladaOutputFile;
+	}
 
-		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelName, idToTextureFileMap );
-		File colladaOutputFile = new File( rootDir, modelName + ".dae" );
-		exporter.writeColladaFile( colladaOutputFile );
 
-		List<File> outputFiles = new ArrayList<>(idToTextureFileMap.size() + 1);
-		for (Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
-			outputFiles.add(entry.getValue());
-		}
-		outputFiles.add(colladaOutputFile);
+	//Local testing code
+
+	private static List<File> exportAliceModelToDir(JointedModelColladaExporter exporter, File rootDir) throws IOException {
+		List<File> outputFiles = new ArrayList<>();
+
+		outputFiles.add(exporter.saveColladaToDirectory(rootDir));
+		outputFiles.addAll(exporter.saveTexturesToDirectory(rootDir));
 
 		return outputFiles;
 	}
 
-	private static List<File> exportAliceModel(JointedModelResource modelResource, File rootDir) {
+	private static SkeletonVisual loadAliceModel( JointedModelResource resource ) {
+		VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( resource ).createVisualData();
+		SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
+		return sv;
+	}
+
+	private static List<File> exportAliceModelResourceToDir(JointedModelResource modelResource, File rootDir) throws IOException {
 		ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo( modelResource.getClass(), modelResource.toString() );
 		SkeletonVisual sgSkeletonVisual = loadAliceModel( modelResource );
-		Map<Integer, File> idToTextureFileMap  = saveTexturesToFile(rootDir, modelInfo.getModelName()+"_"+modelInfo.getResourceName(), sgSkeletonVisual.textures.getValue());
-
-		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo, idToTextureFileMap );
-		File colladaOutputFile = new File( rootDir, modelInfo.getModelName() + ".dae" );
-		exporter.writeColladaFile( colladaOutputFile );
-
-		List<File> outputFiles = new ArrayList<>(idToTextureFileMap.size() + 1);
-		for (Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
-			outputFiles.add(entry.getValue());
-		}
-		outputFiles.add(colladaOutputFile);
-
-		return outputFiles;
+		JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelInfo);
+		return exportAliceModelToDir(exporter, rootDir);
 	}
 
-	private static void testModelExport(JointedModelResource modelResource, File rootDir) {
-		List<File> modelFiles = exportAliceModel(modelResource, rootDir);
-		Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
-		SkeletonVisual sv = null;
-		try {
-			String modelTestName = modelResource.getClass().getSimpleName()+"_TEST";
-			sv = AliceColladaModelLoader.loadAliceModelFromCollada(modelFiles.get(modelFiles.size() - 1), modelTestName, modelLogger);
-			List<File> modelTestFiles = exportAliceModel(sv, modelTestName, rootDir);
-		}
-		catch (ModelLoadingException e) {
-			e.printStackTrace();
-		}
+	private static void testModelExport(JointedModelResource modelResource, File rootDir) throws IOException{
+
+//		List<File> modelFiles = exportAliceModelResourceToDir(modelResource, rootDir);
+//		Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
+//		SkeletonVisual sv = null;
+//		try {
+//			String modelTestName = modelResource.getClass().getSimpleName()+"_TEST";
+//			sv = AliceColladaModelLoader.loadAliceModelFromCollada(modelFiles.get(modelFiles.size() - 1), modelTestName, modelLogger);
+//			JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelTestName);
+//			List<File> modelTestFiles = exportAliceModelToDir(exporter, rootDir);
+//		}
+//		catch (ModelLoadingException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	public static void main( String[] args ) {
@@ -994,12 +1104,16 @@ public class JointedModelColladaExporter {
 //		File outputRootDir = Paths.get(".").toFile();
 //		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Unity\\trilibtest\\Win64");
 		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Code\\alice-unity-player\\Assets\\Models");
-
-		List<File> aliceFiles = exportAliceModel(AliceResource.WONDERLAND, outputRootDir);
-//		List<File> pirateShipFiles = exportAliceModel(PirateShipResource.DEFAULT, outputRootDir);
-//		List<File> colaBottleFiles = exportAliceModel(ColaBottleResource.DEFAULT, outputRootDir);
-		List<File> sledFiles = exportAliceModel(SledResource.DEFAULT, outputRootDir);
+		try {
+			List<File> aliceFiles = exportAliceModelResourceToDir(AliceResource.WONDERLAND, outputRootDir);
+//		List<File> pirateShipFiles = exportAliceModelResourceToDir(PirateShipResource.DEFAULT, outputRootDir);
+//		List<File> colaBottleFiles = exportAliceModelResourceToDir(ColaBottleResource.DEFAULT, outputRootDir);
+			List<File> sledFiles = exportAliceModelResourceToDir(SledResource.DEFAULT, outputRootDir);
 //		testModelExport(YetiBabyResource.TUTU, new File(outputRootDir, "YetiBaby"));
+		}
+		catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 
 	}
 

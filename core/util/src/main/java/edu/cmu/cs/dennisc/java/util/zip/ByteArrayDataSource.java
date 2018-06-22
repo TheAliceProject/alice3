@@ -48,7 +48,7 @@ import java.io.OutputStream;
 /**
  * @author Dennis Cosgrove
  */
-public class ByteArrayDataSource implements DataSource {
+public class ByteArrayDataSource extends DataSource {
 	private String name;
 	private byte[] data;
 

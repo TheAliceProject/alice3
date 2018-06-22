@@ -67,7 +67,7 @@ public class ModelResourceInfo {
 	private final String textureName;
 	private final boolean isDeprecated;
 	private final boolean placeOnGround;
-	private final ModelResourceInfo parentInfo;
+	private ModelResourceInfo parentInfo = null;
 	private final List<ModelResourceInfo> subResources = new LinkedList<ModelResourceInfo>();
 
 	private final String[] tags;
@@ -187,6 +187,10 @@ public class ModelResourceInfo {
 		this.placeOnGround = placeOnGround;
 	}
 
+	public ModelResourceInfo createShallowCopy() {
+		return new ModelResourceInfo( null, resourceName, creator, creationYear, boundingBox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround );
+	}
+
 	private static List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
 		List<Element> elements = new LinkedList<Element>();
 		NodeList children = node.getChildNodes();
@@ -280,6 +284,11 @@ public class ModelResourceInfo {
 		this.parentInfo = null;
 	}
 
+	public void addSubResource( ModelResourceInfo subResource ) {
+		subResources.add(subResource);
+		subResource.parentInfo = this;
+	}
+
 	public AxisAlignedBox getBoundingBox() {
 		if( ( this.boundingBox == null ) && ( parentInfo != null ) ) {
 			return this.parentInfo.boundingBox;
@@ -371,12 +380,25 @@ public class ModelResourceInfo {
 		return themeTags;
 	}
 
+	public List<ModelResourceInfo> getSubResources() {
+		return subResources;
+	}
+
+	public boolean matchesModelAndTexture(String modelName, String textureName) {
+		String thisModel = getModelName();
+		String thisTexture = getTextureName();
+		return ( ( thisModel != null ) && thisModel.equalsIgnoreCase( modelName ) &&
+				( thisTexture != null ) && thisTexture.equalsIgnoreCase( textureName ) );
+	}
+
+	public boolean matchesResource(String resourceName) {
+		String resource = getResourceName();
+		return ( resource != null ) && resource.equalsIgnoreCase( resourceName );
+	}
+
 	public ModelResourceInfo getSubResource( String modelName, String textureName ) {
 		for( ModelResourceInfo mri : this.subResources ) {
-			String subModel = mri.getModelName();
-			String subTexture = mri.getTextureName();
-			if( ( subModel != null ) && subModel.equalsIgnoreCase( modelName ) &&
-					( subTexture != null ) && subTexture.equalsIgnoreCase( textureName ) ) {
+			if( mri.matchesModelAndTexture(modelName, textureName)) {
 				return mri;
 			}
 		}
@@ -385,12 +407,15 @@ public class ModelResourceInfo {
 
 	public ModelResourceInfo getSubResource( String resourceName ) {
 		for( ModelResourceInfo mri : this.subResources ) {
-			String subResource = mri.getResourceName();
-			if( ( subResource != null ) && subResource.equalsIgnoreCase( resourceName ) ) {
+			if( mri.matchesResource(resourceName) ) {
 				return mri;
 			}
 		}
 		return null;
+	}
+
+	public ModelResourceInfo getParent() {
+		return parentInfo;
 	}
 
 }
