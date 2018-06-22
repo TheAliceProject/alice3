@@ -101,6 +101,17 @@ public final class ImageFactory {
 		return rv;
 	}
 
+	public static ImageResource createImageResource(BufferedImage image, String fileName) throws IOException {
+		String contentType = ImageResource.getContentType( fileName );
+		if( contentType != null ) {
+			ImageResource rv = new ImageResource(image, fileName, contentType );
+			ImageFactory.resourceToBufferedImageMap.put( rv, image );
+			return rv;
+		} else {
+			throw new RuntimeException( "content type not found for " + fileName );
+		}
+	}
+
 	public static ImageResource createImageResource( File file ) throws IOException {
 		String contentType = ImageResource.getContentType( file );
 		if( contentType != null ) {

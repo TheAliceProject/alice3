@@ -46,6 +46,9 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import org.lgna.common.Resource;
 import org.w3c.dom.Element;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -138,6 +141,22 @@ public class ImageResource extends Resource {
 
 	public ImageResource( File file ) throws IOException {
 		this( file, getContentType( file ) );
+	}
+
+	public ImageResource( BufferedImage image, String fileName, String contentType ) throws IOException{
+		super( fileName, contentType, null);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write( image, contentType, baos );
+		baos.flush();
+		byte[] imageBytes = baos.toByteArray();
+		baos.close();
+		setContent(contentType, imageBytes);
+		setWidth(image.getWidth());
+		setHeight(image.getHeight());
+	}
+
+	public ImageResource( BufferedImage image, String fileName ) throws IOException {
+		this( image, fileName, getContentType( fileName ));
 	}
 
 	public int getWidth() {
