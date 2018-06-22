@@ -368,65 +368,24 @@ public class JointedModelColladaExporter {
 		return meshName + "-id";
 	}
 
-	private Geometry createGeometryForMesh( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
-		//Geometry consists of a Geometry node with a single Mesh node inside
-		Geometry geometry = factory.createGeometry();
-
-		//Top level Geometry setup
-		String meshName = meshNameMap.get( sgMesh );
-		String meshIdName = getMeshIdForMeshName( meshName );
-		geometry.setId( meshIdName );
-		geometry.setName( meshName+"mesh" );
-
-		//Set up the Mesh node
-		Mesh mesh = factory.createMesh();
-
-		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
-		String positionName = meshName + "-POSITION";
-		double scale = SCALE_MODEL ? MODEL_SCALE : 1.0;
-		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
-		//Only pass scale to position. Normals and UVs should not be scaled
-		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, scale, FLIP_COORDINATE_SPACE );
-		mesh.getSource().add( positionSource );
-
-		String normalName = meshName + "-NORMAL";
-		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
-		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, 1.0, FLIP_COORDINATE_SPACE );
-		mesh.getSource().add( normalSource );
-
-		String uvName = meshName + "-UV";
-		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, 1.0, false );
-		mesh.getSource().add( uvSource );
-
-		//Create and add vertices
-		Vertices vertices = factory.createVertices();
-		String vertexName = meshName + "-VERTEX";
-		vertices.setId( vertexName );
-		//Vertices have two inputs: POSITION and NORMAL
-		//These are linked via a string with the prefix "#" to the source names
-		InputLocal positionInput = factory.createInputLocal();
-		positionInput.setSemantic( "POSITION" );
-		positionInput.setSource( "#" + positionName );
-		vertices.getInput().add( positionInput );
-
-		mesh.setVertices( vertices );
+	private Triangles createTriangles(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, String verticesName, String normalsName, String UVsName) {
 		//Build the triangle data
 		Triangles triangles = factory.createTriangles();
 		InputLocalOffset vertexInput = factory.createInputLocalOffset();
 		vertexInput.setSemantic( "VERTEX" );
-		vertexInput.setSource( "#" + vertexName );
+		vertexInput.setSource( "#" + verticesName );
 		vertexInput.setOffset( BigInteger.valueOf( 0 ) );
 		triangles.getInput().add( vertexInput );
 
 		InputLocalOffset normalInput = factory.createInputLocalOffset();
 		normalInput.setSemantic( "NORMAL" );
-		normalInput.setSource( "#" + normalName );
+		normalInput.setSource( "#" + normalsName );
 		normalInput.setOffset( BigInteger.valueOf( 1 ) );
 		triangles.getInput().add( normalInput );
 
 		InputLocalOffset texCoordInput = factory.createInputLocalOffset();
 		texCoordInput.setSemantic( "TEXCOORD" );
-		texCoordInput.setSource( "#" + uvName );
+		texCoordInput.setSource( "#" + UVsName );
 		texCoordInput.setOffset( BigInteger.valueOf( 2 ) );
 		texCoordInput.setSet( BigInteger.valueOf( 0 ) );
 		triangles.getInput().add( texCoordInput );
@@ -450,10 +409,58 @@ public class JointedModelColladaExporter {
 		}
 		triangles.setCount( BigInteger.valueOf( N / 3 ) );
 
+		return triangles;
+	}
+
+	private Vertices createVertices(String verticesName, String positionsName) {
+		Vertices vertices = factory.createVertices();
+		vertices.setId( verticesName );
+		//Vertices have two inputs: POSITION and NORMAL
+		//These are linked via a string with the prefix "#" to the source names
+		InputLocal positionInput = factory.createInputLocal();
+		positionInput.setSemantic( "POSITION" );
+		positionInput.setSource( "#" + positionsName );
+		vertices.getInput().add( positionInput );
+		return vertices;
+	}
+
+	private Geometry createGeometryForMesh( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
+		//Geometry consists of a Geometry node with a single Mesh node inside
+		Geometry geometry = factory.createGeometry();
+
+		//Top level Geometry setup
+		String meshName = meshNameMap.get( sgMesh );
+		String meshIdName = getMeshIdForMeshName( meshName );
+		geometry.setId( meshIdName );
+		geometry.setName( meshName+"mesh" );
+
+		//Set up the Mesh node
+		Mesh mesh = factory.createMesh();
+		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
+		String positionName = meshName + "-POSITION";
+		double scale = SCALE_MODEL ? MODEL_SCALE : 1.0;
+		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
+		//Only pass scale to position. Normals and UVs should not be scaled
+		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, scale, FLIP_COORDINATE_SPACE );
+		mesh.getSource().add( positionSource );
+
+		String normalName = meshName + "-NORMAL";
+		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
+		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, 1.0, FLIP_COORDINATE_SPACE );
+		mesh.getSource().add( normalSource );
+
+		String uvName = meshName + "-UV";
+		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, 1.0, false );
+		mesh.getSource().add( uvSource );
+		//Create and add vertices
+		String vertexName = meshName + "-VERTEX";
+		Vertices vertices = createVertices(vertexName, positionName);
+		mesh.setVertices( vertices );
+		//Create and add the triangles
+		Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName);
 		//Grab the texture ID number from the mesh and use that to make the material reference
 		Integer textureID = sgMesh.textureId.getValue();
 		triangles.setMaterial(getMaterialIDForID(textureID));
-
 		mesh.getLinesOrLinestripsOrPolygons().add( triangles );
 
 		geometry.setMesh( mesh );
@@ -492,44 +499,26 @@ public class JointedModelColladaExporter {
 
 	}
 
-	private Controller createControllerForMesh( WeightedMesh sgWeightedMesh ) {
-		Controller controller = factory.createController();
-		String meshName = meshNameMap.get( sgWeightedMesh );
-		String controllerName = meshName + "Controller";
-		controller.setId( controllerName );
-
-		Skin skin = factory.createSkin();
-		controller.setSkin( skin );
-		skin.setSourceAttribute( "#" + getMeshIdForMeshName( meshName ) );
-
-		//Set the bind shape matrix
-		double[] bindShapeMatrix = getBindShapeMatrix( sgWeightedMesh );
-		for( double element : bindShapeMatrix ) {
-			skin.getBindShapeMatrix().add( element );
-		}
-
-		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
-
-		//Build the Joint Source
+	private Source createJointSource(WeightInfo wi, String jointSourceName) {
 		Source jointSource = factory.createSource();
-		String jointSourceName = controllerName + "-Joints";
 		jointSource.setId( jointSourceName );
 		NameArray jointNameArray = factory.createNameArray();
-		jointNameArray.setId( controllerName + "-Joints-array" );
+		jointNameArray.setId( jointSourceName+"-array" );
 		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
 			jointNameArray.getValue().add( entry.getKey() );
 		}
 		jointNameArray.setCount( BigInteger.valueOf( jointNameArray.getValue().size() ) );
 		jointSource.setNameArray( jointNameArray );
 		jointSource.setTechniqueCommon( createTechniqueCommonForArray( jointNameArray.getId(), "name", jointNameArray.getValue().size(), 1 ) );
-		skin.getSourceAttribute2().add( jointSource );
+		return jointSource;
+	}
 
+	private Source createMatrixSource(WeightInfo wi, String matricesSourceName) {
 		//Build the Matrix Source
 		Source matricesSource = factory.createSource();
-		String matricesSourceName = controllerName + "-Matrices";
 		matricesSource.setId( matricesSourceName );
 		FloatArray matricesArray = factory.createFloatArray();
-		matricesArray.setId( controllerName + "-Matrices-array" );
+		matricesArray.setId( matricesSourceName+"-array" );
 		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
 			AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation();
@@ -549,6 +538,35 @@ public class JointedModelColladaExporter {
 		matricesArray.setCount( BigInteger.valueOf( matrixCount ) );
 		matricesSource.setFloatArray( matricesArray );
 		matricesSource.setTechniqueCommon( createTechniqueCommonForArray( matricesArray.getId(), "float4x4", matrixCount, 16 ) );
+
+		return matricesSource;
+	}
+
+	private Controller createControllerForMesh( WeightedMesh sgWeightedMesh ) {
+		Controller controller = factory.createController();
+		String meshName = meshNameMap.get( sgWeightedMesh );
+		String controllerName = meshName + "Controller";
+		controller.setId( controllerName );
+
+		Skin skin = factory.createSkin();
+		controller.setSkin( skin );
+		skin.setSourceAttribute( "#" + getMeshIdForMeshName( meshName ) );
+
+		//Set the bind shape matrix
+		double[] bindShapeMatrix = getBindShapeMatrix( sgWeightedMesh );
+		for( double element : bindShapeMatrix ) {
+			skin.getBindShapeMatrix().add( element );
+		}
+
+		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
+
+		//Build the Joint Source
+		String jointSourceName = controllerName + "-Joints";
+		Source jointSource = createJointSource(wi, jointSourceName);
+		skin.getSourceAttribute2().add( jointSource );
+
+		String matricesSourceName = controllerName + "-Matrices";
+		Source matricesSource = createMatrixSource(wi, matricesSourceName);
 		skin.getSourceAttribute2().add( matricesSource );
 
 		//Build the VertexWeights
