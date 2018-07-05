@@ -43,10 +43,49 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class WeightedMesh extends Mesh {
 	public final InstanceProperty<WeightInfo> weightInfo = new InstanceProperty<WeightInfo>( this, null );
 	public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>( this, null );
+
+	public void normalizeWeights() {
+		int nVertexCount = this.vertexBuffer.getValue().limit() / 3;
+
+		float[] weights = new float[nVertexCount];
+		for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : weightInfo.getValue().getMap().entrySet()) {
+			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
+			if (iatwp != null) {
+				iatwp.reset();
+				while (!iatwp.isDone()) {
+					int vertexIndex = iatwp.getIndex();
+					float weight = iatwp.getWeight();
+					weights[vertexIndex] += weight;
+					iatwp.advance();
+				}
+			}
+		}
+		for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> entry : weightInfo.getValue().getMap().entrySet()) {
+			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
+			if (iatwp != null) {
+				iatwp.reset();
+				float[] newWeights = new float[nVertexCount];
+				while (!iatwp.isDone()) {
+					int vertexIndex = iatwp.getIndex();
+					float weight = iatwp.getWeight();
+					newWeights[vertexIndex] = weight / weights[vertexIndex];
+					iatwp.advance();
+				}
+				iatwp.setWeights(newWeights);
+				iatwp.reset();
+			}
+		}
+	}
 
 }

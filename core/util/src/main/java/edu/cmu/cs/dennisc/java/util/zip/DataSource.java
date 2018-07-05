@@ -57,6 +57,11 @@ public abstract class DataSource {
 		return super.equals(obj);
 	}
 
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
+	}
+
 	public abstract String getName();
 
 	public abstract void write(OutputStream os) throws IOException;

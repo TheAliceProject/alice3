@@ -229,6 +229,19 @@ public class SkeletonVisual extends Visual {
 		return false;
 	}
 
+	//Used to normalize all the weights in the weighted meshes
+	//Weights for a given vertex should add up to 1
+	public void normalizeWeightedMeshes() {
+		for (WeightedMesh wm : weightedMeshes.getValue()) {
+			wm.normalizeWeights();
+		}
+		if (hasDefaultPoseWeightedMeshes.getValue()) {
+			for (WeightedMesh wm : defaultPoseWeightedMeshes.getValue()) {
+				wm.normalizeWeights();
+			}
+		}
+	}
+
 	public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>( this, null );
 	public final InstanceProperty<AxisAlignedBox> baseBoundingBox = new InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
 

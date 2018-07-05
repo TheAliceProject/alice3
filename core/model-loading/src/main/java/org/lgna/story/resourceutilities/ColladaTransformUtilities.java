@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class ColladaTransformUtilities {
 
     /**
-     * 	Alice models are in a different geometric space than Maya/Collada models
-     *	Maya/Collada models are modeled with:
+     * 	Alice models are in a different geometric space than Maya models
+     *	Maya models are modeled with:
      *	  forward = +z
      *	  right   = -x
      *	  up      = +y
@@ -19,7 +19,7 @@ public class ColladaTransformUtilities {
      *	  up      = +y
      */
 
-    public static AffineMatrix4x4 createFlippedAliceTransform( AffineMatrix4x4 transform ) {
+    public static AffineMatrix4x4 createFlippedAffineTransform(AffineMatrix4x4 transform ) {
         AffineMatrix4x4 flippedTransform = new AffineMatrix4x4(transform);
         flippedTransform.orientation.right.y *= -1;
 
@@ -34,19 +34,9 @@ public class ColladaTransformUtilities {
         return flippedTransform;
     }
 
-    public static double[] createFlippedColladaTransform( double transform[] ) {
+    public static double[] createFlippedRowMajorTransform(double transform[] ) {
         double[] flippedTransform = Arrays.copyOf(transform, transform.length);
-        double temp;
 
-        //Flip values to convert to Collada space
-        // Converting to Collada space:
-        //		orientation.right.y *= -1;
-        //		orientation.up.x *= -1;
-        //		orientation.up.z *= -1;
-        //		orientation.backward.y *= -1;
-        //
-        //		translation.x *= -1;
-        //		translation.z *= -1;
         flippedTransform[1] *= -1; //up.x
         flippedTransform[3] *= -1; //translation.x
 
@@ -77,70 +67,6 @@ public class ColladaTransformUtilities {
             flippedValues[i+2] = point3Values[i+2] * -1;
         }
         return flippedValues;
-    }
-
-
-    public static double[] createColladaTransformFromAliceTransform( AffineMatrix4x4 transform ) {
-        double[] colladaMatrixValues = new double[16];
-
-        //Pull the values from the Alice transform
-        colladaMatrixValues[0] = transform.orientation.right.x;
-        colladaMatrixValues[1] = transform.orientation.up.x;
-        colladaMatrixValues[2] = transform.orientation.backward.x;
-        colladaMatrixValues[3] = transform.translation.x;
-
-        colladaMatrixValues[4] = transform.orientation.right.y;
-        colladaMatrixValues[5] = transform.orientation.up.y;
-        colladaMatrixValues[6] = transform.orientation.backward.y;
-        colladaMatrixValues[7] = transform.translation.y;
-
-        colladaMatrixValues[8] = transform.orientation.right.z;
-        colladaMatrixValues[9] = transform.orientation.up.z;
-        colladaMatrixValues[10] = transform.orientation.backward.z;
-        colladaMatrixValues[11] = transform.translation.z;
-
-        colladaMatrixValues[12] = 0;
-        colladaMatrixValues[13] = 0;
-        colladaMatrixValues[14] = 0;
-        colladaMatrixValues[15] = 1;
-
-        return colladaMatrixValues;
-    }
-
-    public static AffineMatrix4x4 createAliceTransformFromArray12( double[] matrixArray ) {
-        assert matrixArray.length == 12;
-        AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
-        rv.orientation.right.x = matrixArray[ 0 ];
-        rv.orientation.up.x = matrixArray[ 1 ];
-        rv.orientation.backward.x = matrixArray[ 2 ];
-        rv.translation.x = matrixArray[ 3 ];
-        rv.orientation.right.y = matrixArray[ 4 ];
-        rv.orientation.up.y = matrixArray[ 5 ];
-        rv.orientation.backward.y = matrixArray[ 6 ];
-        rv.translation.y = matrixArray[ 7 ];
-        rv.orientation.right.z = matrixArray[ 8 ];
-        rv.orientation.up.z = matrixArray[ 9 ];
-        rv.orientation.backward.z = matrixArray[ 10 ];
-        rv.translation.z = matrixArray[ 11 ];
-        return rv;
-    }
-
-    public static AffineMatrix4x4 createAliceTransformFromArray16( double[] matrixArray ) {
-        assert matrixArray.length == 16;
-        AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
-        rv.orientation.right.x = matrixArray[0];
-        rv.orientation.up.x = matrixArray[1];
-        rv.orientation.backward.x = matrixArray[2];
-        rv.translation.x = matrixArray[3];
-        rv.orientation.right.y = matrixArray[4];
-        rv.orientation.up.y = matrixArray[5];
-        rv.orientation.backward.y = matrixArray[6];
-        rv.translation.y = matrixArray[7];
-        rv.orientation.right.z = matrixArray[8];
-        rv.orientation.up.z = matrixArray[9];
-        rv.orientation.backward.z = matrixArray[10];
-        rv.translation.z = matrixArray[11];
-        return rv;
     }
 
 }

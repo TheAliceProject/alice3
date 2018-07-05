@@ -90,10 +90,10 @@ public class AliceColladaModelLoader {
 			doubleData[i] = floatData[i];
 		}
 		if (doubleData.length == 12) {
-			return ColladaTransformUtilities.createAliceTransformFromArray12( doubleData );
+			return AffineMatrix4x4.createFromRowMajorArray12(doubleData );
 		}
 		else if (doubleData.length == 16) {
-			return ColladaTransformUtilities.createAliceTransformFromArray16( doubleData );
+			return AffineMatrix4x4.createFromRowMajorArray16(doubleData );
 		}
 		else {
 			throw new ModelLoadingException("Error converting collada matrix to Alice matrix. Expected array of size 12 or 16, instead got "+floatData.length);
@@ -525,7 +525,7 @@ public class AliceColladaModelLoader {
 
 	private static void flipJoints( Joint j ) {
 		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
-		newTransform = ColladaTransformUtilities.createFlippedAliceTransform( newTransform );
+		newTransform = ColladaTransformUtilities.createFlippedAffineTransform( newTransform );
 		j.localTransformation.setValue( newTransform );
 		for( int i = 0; i < j.getComponentCount(); i++ )
 		{
@@ -578,7 +578,7 @@ public class AliceColladaModelLoader {
 		for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
 			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
 			AffineMatrix4x4 originalTransform = AffineMatrix4x4.createInverse( iatwp.getInverseAbsoluteTransformation() );
-			AffineMatrix4x4 newTransform = ColladaTransformUtilities.createFlippedAliceTransform( originalTransform );
+			AffineMatrix4x4 newTransform = ColladaTransformUtilities.createFlippedAffineTransform( originalTransform );
 			newTransform.invert();
 			iatwp.setInverseAbsoluteTransformation( newTransform );
 		}
