@@ -79,7 +79,9 @@ public class WeightedMesh extends Mesh {
 				while (!iatwp.isDone()) {
 					int vertexIndex = iatwp.getIndex();
 					float weight = iatwp.getWeight();
-					newWeights[vertexIndex] = weight / weights[vertexIndex];
+					if (weights[vertexIndex] != 0) {
+						newWeights[vertexIndex] = weight / weights[vertexIndex];
+					}
 					iatwp.advance();
 				}
 				iatwp.setWeights(newWeights);

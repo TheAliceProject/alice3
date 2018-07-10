@@ -4,6 +4,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
@@ -31,6 +32,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class JsonModelIo extends DataSourceIo{
+
+    private static final boolean NORMALIZE_WEIGHTS = true;
 
     private ModelResourceInfo modelInfo;
     private List<JointedModelResource> modelResources;
@@ -146,27 +149,18 @@ public class JsonModelIo extends DataSourceIo{
         }
     }
 
-    private static List<Float> getOrientationAsFloatList(AffineMatrix4x4 transform) {
-        UnitQuaternion quaternion = transform.orientation.createUnitQuaternion();
-        List<Float> orientation = new ArrayList<>(4);
+    private static List<Float> getOrientationAsFloatList(OrthogonalMatrix3x3 orientation) {
+        UnitQuaternion quaternion = orientation.createUnitQuaternion();
+        List<Float> orientationList = new ArrayList<>(4);
 
-        orientation.add((float)quaternion.w);
-        orientation.add((float)quaternion.x);
-        orientation.add((float)quaternion.y);
-        orientation.add((float)quaternion.z);
+        orientationList.add((float)quaternion.w);
+        orientationList.add((float)quaternion.x);
+        orientationList.add((float)quaternion.y);
+        orientationList.add((float)quaternion.z);
 
-        return orientation;
+        return orientationList;
     }
 
-    private static List<Float> getPositionAsFloatList(AffineMatrix4x4 transform) {
-        List<Float> position = new ArrayList<>(3);
-
-        position.add((float)transform.translation.x);
-        position.add((float)transform.translation.y);
-        position.add((float)transform.translation.z);
-
-        return position;
-    }
 
     private ModelManifest.Pose createPose(Field poseField, JointedModelResource modelResource) {
         ModelManifest.Pose newPose = new ModelManifest.Pose();
@@ -181,8 +175,8 @@ public class JsonModelIo extends DataSourceIo{
         for (JointIdTransformationPair jointData : modelPose.getJointIdTransformationPairs()) {
             ModelManifest.JointTransform jointTransform = new ModelManifest.JointTransform();
             jointTransform.jointName = jointData.getJointId().toString();
-            jointTransform.orientation = getOrientationAsFloatList(jointData.getTransformation());
-            jointTransform.position = getPositionAsFloatList(jointData.getTransformation());
+            jointTransform.orientation = getOrientationAsFloatList(jointData.getTransformation().orientation);
+            jointTransform.position = jointData.getTransformation().translation.getAsFloatList();
             newPose.transforms.add(jointTransform);
         }
         return newPose;
@@ -402,6 +396,9 @@ public class JsonModelIo extends DataSourceIo{
                 if (modelResourceInfo.matchesModelAndTexture(AliceResourceUtilties.getVisualResourceName(modelResource), getTextureName(modelResource)) ) {
                     JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( modelResource ).createVisualData();
                     SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
+                    if (NORMALIZE_WEIGHTS) {
+                        sv.normalizeWeightedMeshes();
+                    }
                     return sv;
                 }
             }

@@ -100,7 +100,6 @@ public class JointedModelColladaExporter {
 	private static final String COLLADA_EXTENSION = "dae";
 	private static final String IMAGE_EXTENSION = "png";
 
-	private static final boolean NORMALIZE_WEIGHTS = true;
 	//Controls whether or not we flip the coordinate space during our conversion
 	//Keeping the current coordinates appears to be the right move for collada exporting
 	private static final boolean FLIP_COORDINATE_SPACE = false;
@@ -371,22 +370,13 @@ public class JointedModelColladaExporter {
 	private Triangles createTriangles(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, String verticesName, String normalsName, String UVsName) {
 		//Build the triangle data
 		Triangles triangles = factory.createTriangles();
-		InputLocalOffset vertexInput = factory.createInputLocalOffset();
-		vertexInput.setSemantic( "VERTEX" );
-		vertexInput.setSource( "#" + verticesName );
-		vertexInput.setOffset( BigInteger.valueOf( 0 ) );
+		InputLocalOffset vertexInput = createInputLocalOffset("VERTEX", verticesName, 0);
 		triangles.getInput().add( vertexInput );
 
-		InputLocalOffset normalInput = factory.createInputLocalOffset();
-		normalInput.setSemantic( "NORMAL" );
-		normalInput.setSource( "#" + normalsName );
-		normalInput.setOffset( BigInteger.valueOf( 1 ) );
+		InputLocalOffset normalInput = createInputLocalOffset("NORMAL", normalsName, 1);
 		triangles.getInput().add( normalInput );
 
-		InputLocalOffset texCoordInput = factory.createInputLocalOffset();
-		texCoordInput.setSemantic( "TEXCOORD" );
-		texCoordInput.setSource( "#" + UVsName );
-		texCoordInput.setOffset( BigInteger.valueOf( 2 ) );
+		InputLocalOffset texCoordInput = createInputLocalOffset("TEXCOORD", UVsName, 2);
 		texCoordInput.setSet( BigInteger.valueOf( 0 ) );
 		triangles.getInput().add( texCoordInput );
 		//Copy over the triangle indices
@@ -415,11 +405,7 @@ public class JointedModelColladaExporter {
 	private Vertices createVertices(String verticesName, String positionsName) {
 		Vertices vertices = factory.createVertices();
 		vertices.setId( verticesName );
-		//Vertices have two inputs: POSITION and NORMAL
-		//These are linked via a string with the prefix "#" to the source names
-		InputLocal positionInput = factory.createInputLocal();
-		positionInput.setSemantic( "POSITION" );
-		positionInput.setSource( "#" + positionsName );
+		InputLocal positionInput = createInputLocal("POSITION", positionsName);
 		vertices.getInput().add( positionInput );
 		return vertices;
 	}
@@ -794,7 +780,7 @@ public class JointedModelColladaExporter {
 
 	private CommonColorOrTextureType createCommonColorType( String sid, double r, double g, double b, double a ) {
 		CommonColorOrTextureType colorType = factory.createCommonColorOrTextureType();
-		colorType.setColor( createCommonColor("emission", 0, 0, 0, 1) );
+		colorType.setColor( createCommonColor(sid, r, g, b, a) );
 		return colorType;
 	}
 
@@ -938,12 +924,9 @@ public class JointedModelColladaExporter {
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lc );
 	}
 
-	public void writeCollada( OutputStream os ) throws IOException {
+	protected COLLADA createCollada() {
 		COLLADA collada = factory.createCOLLADA();
 
-		if (NORMALIZE_WEIGHTS) {
-			visual.normalizeWeightedMeshes();
-		}
 		//Required part of a collada file
 		collada.setVersion("1.4.1");
 		Asset asset = createAsset();
@@ -975,6 +958,12 @@ public class JointedModelColladaExporter {
 		LibraryVisualScenes lvs = factory.createLibraryVisualScenes();
 		lvs.getVisualScene().add( visualScene );
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lvs );
+
+		return collada;
+	}
+
+	public void writeCollada( OutputStream os ) throws IOException {
+		COLLADA collada = createCollada();
 
 		JAXBContext jc;
 		try {
