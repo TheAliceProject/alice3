@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AbstractMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -91,6 +92,17 @@ public class Mesh extends Geometry {
 	@Override
 	public void transform( AbstractMatrix4x4 trans ) {
 		//todo
+	}
+
+	public void scale(Vector3 scale) {
+		double[] vertices = BufferUtilities.convertDoubleBufferToArray( vertexBuffer.getValue() );
+		double[] newVertices = new double[vertices.length];
+		for (int i=0; i<vertices.length; i+=3) {
+			newVertices[i] = vertices[i] * scale.x;
+			newVertices[i+1] = vertices[i+1] * scale.y;
+			newVertices[i+2] = vertices[i+2] * scale.z;
+		}
+		vertexBuffer.setValue( BufferUtilities.createDirectDoubleBuffer(newVertices) );
 	}
 
 	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (DoubleBuffer)null ) {

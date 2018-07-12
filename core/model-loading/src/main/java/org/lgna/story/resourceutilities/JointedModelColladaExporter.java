@@ -1037,11 +1037,11 @@ public class JointedModelColladaExporter {
 
 	public Integer getTextureIdForName(String textureName) {
 		//Strip off any extension or path from the text name
-		String bsaeTextureName = FileUtilities.getBaseName(textureName);
+		String baseTextureName = FileUtilities.getBaseName(textureName);
 		for (TexturedAppearance texture : visual.textures.getValue()) {
 			Integer textureID = texture.textureId.getValue();
 			String toCheck = getExternallyUniqueImageNameForID(textureID);
-			if (textureName.equals(toCheck)) {
+			if (baseTextureName.equals(toCheck)) {
 				return textureID;
 			}
 		}

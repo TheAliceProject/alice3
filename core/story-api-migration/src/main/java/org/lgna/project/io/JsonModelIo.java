@@ -38,6 +38,7 @@ public class JsonModelIo extends DataSourceIo{
     private ModelResourceInfo modelInfo;
     private List<JointedModelResource> modelResources;
     private List<SkeletonVisual> skeletonVisuals;
+    private List<BufferedImage> thumbnails;
     private final ExportFormat exportFormat;
 
     public enum ExportFormat {
@@ -57,10 +58,14 @@ public class JsonModelIo extends DataSourceIo{
         this.exportFormat = exportFormat;
     }
 
-    public JsonModelIo(ModelResourceInfo modelInfo, List<SkeletonVisual> skeletonVisuals, ExportFormat exportFormat) {
+    public JsonModelIo(ModelResourceInfo modelInfo, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
         this(exportFormat);
         this.modelInfo = modelInfo;
-        this.skeletonVisuals = skeletonVisuals;
+        this.skeletonVisuals = new ArrayList<>();
+        this.skeletonVisuals.add(skeletonVisual);
+
+        this.thumbnails = new ArrayList<>();
+        this.thumbnails.add(thumbnail);
     }
 
     public JsonModelIo( List<JointedModelResource> modelResources, ExportFormat exportFormat) {
@@ -406,12 +411,16 @@ public class JsonModelIo extends DataSourceIo{
         return null;
     }
 
-    private BufferedImage getThumbnailImageForModelResource(ModelResourceInfo modelResourceInfo) {
+    private BufferedImage getThumbnailImageForSkeletonVisual(SkeletonVisual sv) {
         if (skeletonVisuals != null) {
-            //TODO: Implement a way to get thumbnails for models based on skeleton visuals
-            return null;
+           int index = this.skeletonVisuals.indexOf(sv);
+           return this.thumbnails.get(index);
         }
-        else if (modelResources != null){
+        return null;
+    }
+
+    private BufferedImage getThumbnailImageForModelResource(ModelResourceInfo modelResourceInfo) {
+        if (modelResources != null){
             for (JointedModelResource modelResource : modelResources) {
                 if (modelResourceInfo.matchesModelAndTexture(AliceResourceUtilties.getVisualResourceName(modelResource), getTextureName(modelResource)) ) {
                     BufferedImage thumbnailImage = AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelResource.toString());
@@ -522,14 +531,26 @@ public class JsonModelIo extends DataSourceIo{
                 Logger.warning("Not exporting "+getModelName()+"--Unsupported export format: "+exportFormat);
             }
             //Add DataSources for the thumbnails
-            BufferedImage thumbnailImage = getThumbnailImageForModelResource(subInfo);
+            BufferedImage thumbnailImage;
+            if (this.skeletonVisuals != null) {
+                thumbnailImage = getThumbnailImageForSkeletonVisual(sv);
+            }
+            else {
+                thumbnailImage = getThumbnailImageForModelResource(subInfo);
+            }
             dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ getThumbnailFilename(subInfo), thumbnailImage));
         }
 
         //The model manifest goes in the base model path directory
         dataToWrite.add(createDataSource(resourcePath +"/"+ getModelName()+".json", ManifestEncoderDecoder.toJson( manifest )));
         //Add the class thumbnail
-        BufferedImage thumbnailImage = getThumbnailImageForModelResource(modelInfo);
+        BufferedImage thumbnailImage;
+        if (this.thumbnails != null) {
+            thumbnailImage = this.thumbnails.get(0);
+        }
+        else {
+            thumbnailImage = getThumbnailImageForModelResource(modelInfo);
+        }
         dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ getModelName()+"_cls.png", thumbnailImage));
         return dataToWrite;
     }
