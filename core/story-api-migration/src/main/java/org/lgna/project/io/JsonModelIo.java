@@ -4,6 +4,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
@@ -35,7 +36,7 @@ public class JsonModelIo extends DataSourceIo{
 
     private static final boolean NORMALIZE_WEIGHTS = true;
 
-    private ModelResourceInfo modelInfo;
+    private ModelManifest modelManifest;
     private List<JointedModelResource> modelResources;
     private List<SkeletonVisual> skeletonVisuals;
     private List<BufferedImage> thumbnails;
@@ -58,9 +59,9 @@ public class JsonModelIo extends DataSourceIo{
         this.exportFormat = exportFormat;
     }
 
-    public JsonModelIo(ModelResourceInfo modelInfo, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
+    public JsonModelIo(ModelManifest modelManifest, SkeletonVisual skeletonVisual, BufferedImage thumbnail, ExportFormat exportFormat) {
         this(exportFormat);
-        this.modelInfo = modelInfo;
+        this.modelManifest = modelManifest;
         this.skeletonVisuals = new ArrayList<>();
         this.skeletonVisuals.add(skeletonVisual);
 
@@ -70,7 +71,7 @@ public class JsonModelIo extends DataSourceIo{
 
     public JsonModelIo( List<JointedModelResource> modelResources, ExportFormat exportFormat) {
         this(exportFormat);
-        this.modelInfo = createModelResourceInfo(modelResources);
+        this.modelManifest = createModelManifest(modelResources);
         this.modelResources = modelResources;
     }
 
@@ -104,45 +105,32 @@ public class JsonModelIo extends DataSourceIo{
         return toReturn;
     }
 
-    private static ModelManifest.BoundingBox createBoundingBox(ModelResourceInfo modelInfo) {
-        ModelManifest.BoundingBox boundingBox = new ModelManifest.BoundingBox();
-        boundingBox.max = modelInfo.getBoundingBox().getMaximum().getAsFloatList();
-        boundingBox.min = modelInfo.getBoundingBox().getMinimum().getAsFloatList();
-        return boundingBox;
-    }
+    //Build a new ModelResourceInfo that includes only the resources in the modelResources list
+    private static ModelManifest createModelManifest( List<JointedModelResource> modelResources ) {
+        //Get the ModelResourceInfo from the first resource in the list.
+        //The get the parent info for this ModelResourceInfo. This will be the ModelResourceInfo that represents the model class.
+        ModelResource firstResource = modelResources.get(0);
+        ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
-    private static String getTextureReferenceId(ModelResourceInfo modelInfo) {
-        //Textures sets are model specific, so must prepend the model name to the id
-        return modelInfo.getModelName() + "_"+ modelInfo.getTextureName();
-    }
+        //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
+        ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
+        for (JointedModelResource modelResource : modelResources) {
+            String visualName = AliceResourceUtilties.getVisualResourceName(modelResource);
+            String textureName = getTextureName(modelResource);
+            ModelResourceInfo subResource = rootInfo.getSubResource(visualName, textureName);
+            ModelResourceInfo newSubResource = subResource.createShallowCopy();
+            modelInfo.addSubResource(newSubResource);
+        }
 
-    private static ModelManifest.TextureSet createTextureSet(ModelResourceInfo modelInfo) {
-        ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
-        textureReference.id = getTextureReferenceId(modelInfo);
-        return textureReference;
-    }
+        ModelManifest modelManifest = modelInfo.createModelManifest();
 
-    private static StructureReference createStructureReference(ModelResourceInfo modelInfo) {
-        StructureReference structureReference = new StructureReference();
-        structureReference.boundingBox = createBoundingBox(modelInfo);
-        structureReference.id = modelInfo.getModelName();
-        return structureReference;
-    }
+        //If this model is defined by JointedModelResources, then add the model data from that
+        if (modelResources != null && modelResources.size() > 0) {
+            //We use the first resource because the poses are defined on the resource enum, not on each resource instance
+            addModelDataFromResource(modelManifest, modelResources.get(0));
+        }
 
-    private static String getThumbnailFilename(ModelResourceInfo modelInfo) {
-        //Use the resource name (TUTU_GREEN, etc.) as the thumbnail name
-        return modelInfo.getResourceName() + ".png";
-        //This is different than the AliceResourceUtilities process, but should produce comparable results
-//        return AliceResourceUtilties.getThumbnailResourceFileName(modelInfo.getModelName(), getTextureReferenceId(modelInfo));
-    }
-
-    private static ModelManifest.ModelVariant createModelVariant(ModelResourceInfo modelInfo, StructureReference structure, ModelManifest.TextureSet texture) {
-        ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
-        modelVariant.id = modelInfo.getResourceName();
-        modelVariant.structure = structure.id;
-        modelVariant.textureSet = texture.id;
-        modelVariant.icon = getThumbnailFilename(modelInfo);
-        return modelVariant;
+        return modelManifest;
     }
 
     private static boolean isFieldVisible( Field field ) {
@@ -167,7 +155,7 @@ public class JsonModelIo extends DataSourceIo{
     }
 
 
-    private ModelManifest.Pose createPose(Field poseField, JointedModelResource modelResource) {
+    private static ModelManifest.Pose createPose(Field poseField, JointedModelResource modelResource) {
         ModelManifest.Pose newPose = new ModelManifest.Pose();
         newPose.name = poseField.getName();
         JointedModelPose modelPose = null;
@@ -187,7 +175,7 @@ public class JsonModelIo extends DataSourceIo{
         return newPose;
     }
 
-    private ModelManifest.Joint createJoint(Field jointField, JointedModelResource modelResource) {
+    private static ModelManifest.Joint createJoint(Field jointField, JointedModelResource modelResource) {
         ModelManifest.Joint newJoint = new ModelManifest.Joint();
         newJoint.name = jointField.getName();
         if( jointField.isAnnotationPresent( FieldTemplate.class ) ) {
@@ -207,7 +195,7 @@ public class JsonModelIo extends DataSourceIo{
         return newJoint;
     }
 
-    private ModelManifest.JointArray createJointArray(Field jointArrayField, JointedModelResource modelResource) {
+    private static ModelManifest.JointArray createJointArray(Field jointArrayField, JointedModelResource modelResource) {
         ModelManifest.JointArray newJointArray = new ModelManifest.JointArray();
         newJointArray.name = jointArrayField.getName();
         if( jointArrayField.isAnnotationPresent( FieldTemplate.class ) ) {
@@ -228,7 +216,7 @@ public class JsonModelIo extends DataSourceIo{
         return newJointArray;
     }
 
-    private ModelManifest.JointArrayId createJointArrayId(Field jointArrayIdField, JointedModelResource modelResource) {
+    private static ModelManifest.JointArrayId createJointArrayId(Field jointArrayIdField, JointedModelResource modelResource) {
         ModelManifest.JointArrayId newJointArrayId = new ModelManifest.JointArrayId();
         newJointArrayId.name = jointArrayIdField.getName();
         if( jointArrayIdField.isAnnotationPresent( FieldTemplate.class ) ) {
@@ -248,7 +236,7 @@ public class JsonModelIo extends DataSourceIo{
         return newJointArrayId;
     }
 
-    private List<String> createRootJoints(Method getRootJointsMethod, JointedModelResource modelResource) {
+    private static List<String> createRootJoints(Method getRootJointsMethod, JointedModelResource modelResource) {
         List<String> rootJoints = new ArrayList<>();
 
         JointId[] rootJointIds = null;
@@ -269,7 +257,7 @@ public class JsonModelIo extends DataSourceIo{
 
     //Add poses, additionalJoints, additionalJointArrays, additionalJointArrayIds, and rootJoints
     //Derive this information from the given JointedModelResource via reflection
-    private void addModelDataFromResource(ModelManifest manifest, JointedModelResource modelResource) {
+    private static void addModelDataFromResource(ModelManifest manifest, JointedModelResource modelResource) {
         //Loop through the fields and use their type to determine what to add
         for( Field field : modelResource.getClass().getDeclaredFields() ) {
             if (Pose.class.isAssignableFrom(field.getType()) && isFieldVisible(field)) {
@@ -291,122 +279,53 @@ public class JsonModelIo extends DataSourceIo{
         }
     }
 
-    //Add TexturesReferences, StructureReferences and ModelVariants to the ModelManifest
-    private void addModelVariantInfo(ModelManifest manifest, ModelResourceInfo modelInfo) {
-        StructureReference structure = createStructureReference(modelInfo);
-        ModelManifest.TextureSet textureSet = createTextureSet(modelInfo);
-        //Only add the structures and textures if they aren't already in the manifest
-        //Multiple resources may reference the same structure or texture so repeats are likely
-        boolean hasStructure = false;
-        for (StructureReference existingStructure : manifest.structures) {
-            if (existingStructure.id.equals(structure.id)) {
-                hasStructure = true;
-                break;
-            }
-        }
-        if (!hasStructure) {
-            manifest.structures.add(structure);
-        }
-        boolean hasTexture = false;
-        for (ModelManifest.TextureSet existingTexture : manifest.textureSets) {
-            if (existingTexture.id.equals(textureSet.id)) {
-                hasTexture = true;
-                break;
-            }
-        }
-        if (!hasTexture) {
-            manifest.textureSets.add(textureSet);
-        }
-        //Add the model variant. Model variants are all unique.
-        ModelManifest.ModelVariant modelVariant = createModelVariant(modelInfo, structure, textureSet);
-        manifest.models.add(modelVariant);
-    }
-
-    private ModelManifest createModelManifest(){
-        ModelManifest manifest = new ModelManifest();
-
-        manifest.description.name = getModelName();
-        manifest.description.icon = getModelName()+".png";
-        manifest.description.tags.addAll(Arrays.asList(modelInfo.getTags()));
-        manifest.description.themeTags.addAll(Arrays.asList(modelInfo.getThemeTags()));
-        manifest.description.groupTags.addAll(Arrays.asList(modelInfo.getGroupTags()));
-
-        manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-        manifest.provenance.creationYear = String.valueOf(modelInfo.getCreationYear());
-        manifest.provenance.creator = modelInfo.getCreator();
-
-        manifest.metadata.identifier.id = modelInfo.getResourceName();
-        manifest.metadata.identifier.type = Manifest.ProjectType.Model;
-		manifest.metadata.formatVersion = "0.1+alpha";
-
-        manifest.placeOnGround = modelInfo.getPlaceOnGround();
-        manifest.boundingBox = createBoundingBox(modelInfo);
-
-        //If this model is defined by JointedModelResources, then add the model data from that
-        if (modelResources != null && modelResources.size() > 0) {
-            //We use the first resource because the poses are defined on the resource enum, not on each resource instance
-            addModelDataFromResource(manifest, modelResources.get(0));
-        }
-        else {
-            //TODO: initialize model data (poses, additionalJoints, additionalJointArrays, additionalJointArrayIds, and rootJoints) without a JointedModelResource
-        }
-        //Add the structures, textures, and model variants
-        for (ModelResourceInfo subResource : modelInfo.getSubResources()) {
-            addModelVariantInfo(manifest, subResource);
-        }
-
-        return manifest;
-    }
-
-    private ImageReference getImageReference(ModelManifest manifest, ModelResourceInfo modelInfo) {
-        String textureId = getTextureReferenceId(modelInfo);
-        for (ImageReference image : manifest.images) {
-            if (image.id.equals(textureId)) {
-                return image;
-            }
-        }
-        return null;
-    }
-
-    private ModelManifest.TextureSet getTextureSet(ModelManifest manifest, ModelResourceInfo modelInfo) {
-        String textureId = getTextureReferenceId(modelInfo);
+    private ModelManifest.TextureSet getTextureSet(ModelManifest manifest, ModelManifest.ModelVariant modelVariant) {
         for (ModelManifest.TextureSet textureSet : manifest.textureSets) {
-            if (textureSet.id.equals(textureId)) {
+            if (textureSet.id.equals(modelVariant.textureSet)) {
                 return textureSet;
             }
         }
         return null;
     }
 
-    private StructureReference getStructureReference(ModelManifest manifest, ModelResourceInfo modelInfo) {
-        String structureId = modelInfo.getModelName();
+    private StructureReference getStructureReference(ModelManifest manifest, ModelManifest.ModelVariant modelVariant) {
         for (StructureReference structureReference : manifest.structures) {
-            if (structureReference.id.equals(structureId)) {
+            if (structureReference.id.equals(modelVariant.structure)) {
                 return structureReference;
             }
         }
         return null;
     }
 
-    private SkeletonVisual getVisualForModelResource(ModelResourceInfo modelResourceInfo) {
-        if (skeletonVisuals != null) {
-            for (SkeletonVisual visual : skeletonVisuals) {
-                if (true /* TODO: implement this logic. perhaps require a visual based model to define this explicitly*/){
-                    return visual;
+    private JointedModelResource getResourceForVariant(ModelManifest.ModelVariant modelVariant) {
+        if (modelResources != null) {
+            for (JointedModelResource resource : modelResources) {
+                if (modelVariant.id.equals(resource.toString())) {
+                    return resource;
                 }
             }
         }
-        else if (modelResources != null){
-            for (JointedModelResource modelResource : modelResources) {
-                if (modelResourceInfo.matchesModelAndTexture(AliceResourceUtilties.getVisualResourceName(modelResource), getTextureName(modelResource)) ) {
-                    JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( modelResource ).createVisualData();
-                    SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
-                    if (NORMALIZE_WEIGHTS) {
-                        sv.normalizeWeightedMeshes();
-                    }
-                    return sv;
+        return null;
+    }
+
+    private SkeletonVisual getVisualForModelVariant(ModelManifest.ModelVariant modelVariant) {
+        if (skeletonVisuals != null) {
+            for (SkeletonVisual visual : skeletonVisuals) {
+                if (visual.getName().equals(modelVariant.structure)){
+                    return visual;
                 }
             }
+            Logger.warning("Could not find matching visual for "+modelVariant.structure+". Returning first skeleton visual in list.");
+            return skeletonVisuals.get(0);
+        }
+        else if (modelResources != null){
+            JointedModelResource modelResource = getResourceForVariant(modelVariant);
+            JointedModelImp.VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( modelResource ).createVisualData();
+            SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
+            if (NORMALIZE_WEIGHTS) {
+                sv.normalizeWeightedMeshes();
+            }
+            return sv;
         }
         return null;
     }
@@ -419,23 +338,17 @@ public class JsonModelIo extends DataSourceIo{
         return null;
     }
 
-    private BufferedImage getThumbnailImageForModelResource(ModelResourceInfo modelResourceInfo) {
+    private BufferedImage getThumbnailImageForModelVariant(ModelManifest.ModelVariant modelVariant) {
         if (modelResources != null){
-            for (JointedModelResource modelResource : modelResources) {
-                if (modelResourceInfo.matchesModelAndTexture(AliceResourceUtilties.getVisualResourceName(modelResource), getTextureName(modelResource)) ) {
-                    BufferedImage thumbnailImage = AliceResourceUtilties.getThumbnail(modelResource.getClass(), modelResource.toString());
-                    return thumbnailImage;
-                }
-            }
-            //If the modelResourceInfo doesn't match a JointedModelResource, return the class level image
-            BufferedImage classThumbnailImage = AliceResourceUtilties.getThumbnail(modelResources.get(0).getClass());
+            JointedModelResource modelResource = getResourceForVariant(modelVariant);
+            BufferedImage classThumbnailImage = AliceResourceUtilties.getThumbnail(modelResource.getClass());
             return classThumbnailImage;
         }
         return null;
     }
 
     private String getModelName() {
-        return modelInfo.getModelName();
+        return modelManifest.getName();
     }
 
     public ModelReference createModelReference(String basePath) {
@@ -447,52 +360,70 @@ public class JsonModelIo extends DataSourceIo{
         return modelReference;
     }
 
-    private void updateManifestResourceReference(ModelManifest manifest, ModelResourceInfo modelInfo, DataSource dataSource, String format) {
-        StructureReference resourceReference = getStructureReference(manifest, modelInfo);
-        //Strip the base and model path from the name to make it relative to the manifest
-        resourceReference.file = new File(dataSource.getName()).getName();
-        resourceReference.format = format;
+    private void updateManifestResourceReference(ModelManifest manifest, ModelManifest.ModelVariant modelVariant, DataSource dataSource, String format) {
+
     }
 
-    private void addAliceDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelResourceInfo modelInfo, ModelManifest manifest, String resourcePath) throws IOException{
+    private void addAliceDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException{
         TexturedAppearance[] texturedAppearancesToSave = sv.textures.getValue();
         // Null out the appearance since we save the textures separately
         sv.textures.setValue(new TexturedAppearance[0]);
-        String modelName = AliceResourceUtilties.getVisualResourceFileNameFromModelName(modelInfo.getModelName());
-        DataSource modelDataSource = createAliceStructureDataSource(resourcePath + "/" + modelName, sv);
+        String modelFileName = AliceResourceUtilties.getVisualResourceFileNameFromModelName(modelVariant.structure);
+        DataSource structureDataSource = createAliceStructureDataSource(resourcePath + "/" + modelFileName, sv);
 
-        if (!dataSources.contains(modelDataSource)) {
-            dataSources.add(modelDataSource);
-            updateManifestResourceReference(manifest, modelInfo, modelDataSource, ExportFormat.ALICE.modelExtension);
+        if (!dataSources.contains(structureDataSource)) {
+            dataSources.add(structureDataSource);
+            StructureReference structureReference = getStructureReference(manifest, modelVariant);
+            //Strip the base and model path from the name to make it relative to the manifest
+            structureReference.file = new File(structureDataSource.getName()).getName();
+            structureReference.format = ExportFormat.ALICE.modelExtension;
         }
 
-        String textureName = AliceResourceUtilties.getTextureResourceFileName(modelInfo.getModelName(), modelInfo.getTextureName());
+        String textureName = AliceResourceUtilties.getTextureResourceFileName(modelVariant.structure, modelVariant.textureSet);
         DataSource textureDataSource = createAliceTextureDataSource(resourcePath + "/" + textureName, texturedAppearancesToSave);
-        if (!dataSources.contains(textureDataSource)) {
-            dataSources.add(textureDataSource);
-            updateManifestResourceReference(manifest, modelInfo, textureDataSource, ExportFormat.ALICE.textureExtension);
-        }
+
+        //Get the existing texture set defined by the modelInfo.
+        ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
+        //Now that we have a model and exporter, use this to get the id to image map
+
+        ResourceReference textureSetResourceRef = new ResourceReference() {
+            @Override
+            public String getContentType() {
+                return "ALICE_TEXTURE_SET";
+            }
+        };
+
+        textureSetResourceRef.id = modelVariant.textureSet+"-resource";
+        textureSetResourceRef.file = new File(textureDataSource.getName()).getName();
+        textureSetResourceRef.format = "a3t";
     }
 
 
     //Uses the skeleton visual to create collada file and texture files
     //Adds appropriate DataSources and updates the manifest
-    private void addColladaDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelResourceInfo modelInfo, ModelManifest manifest, String resourcePath) throws IOException{
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelInfo);
+    private void addColladaDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException{
+        JointedModelColladaExporter exporter = new JointedModelColladaExporter(sv, modelVariant);
         //Create the collada model data source
         DataSource structureDataSource = exporter.createColladaDataSource(resourcePath);
         //Link manifest entries to the files created by the exporter
-        StructureReference structureReference = getStructureReference(manifest, modelInfo);
+        StructureReference structureReference = getStructureReference(manifest, modelVariant);
         //Strip the base and model path from the name to make it relative to the manifest
         structureReference.file = structureDataSource.getName().substring(resourcePath.length() + 1);
         structureReference.format = ExportFormat.COLLADA.modelExtension;
+        if (structureReference.boundingBox == null) {
+            AxisAlignedBox boundingBox = sv.getAxisAlignedMinimumBoundingBox();
+            structureReference.boundingBox = new ModelManifest.BoundingBox();
+            structureReference.boundingBox.max = boundingBox.getMaximum().getAsFloatList();
+            structureReference.boundingBox.min = boundingBox.getMinimum().getAsFloatList();
+        }
+
         //Only add new model files to the list to be written
         if (!dataSources.contains(structureDataSource)) {
             dataSources.add(structureDataSource);
         }
 
         //Get the existing texture set defined by the modelInfo.
-        ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelInfo);
+        ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
         //Now that we have a model and exporter, use this to get the id to image map
         textureSet.idToImageMap = exporter.createTextureIdToImageMap();
         //Get all the textures from the model as data sources
@@ -515,17 +446,16 @@ public class JsonModelIo extends DataSourceIo{
 
     public List<DataSource> createDataSources(String baseModelPath) throws IOException {
         List<DataSource> dataToWrite = new ArrayList<>();
-        ModelManifest manifest = createModelManifest();
 
         //Model resources and manifest go into a folder named the model name
         String resourcePath = baseModelPath + "/"+ getModelName();
-        for (ModelResourceInfo subInfo : modelInfo.getSubResources()) {
-            SkeletonVisual sv = getVisualForModelResource(subInfo);
+        for (ModelManifest.ModelVariant modelVariant : modelManifest.models) {
+            SkeletonVisual sv = getVisualForModelVariant(modelVariant);
             if (exportFormat == ExportFormat.COLLADA) {
-                addColladaDataSources(dataToWrite, sv, subInfo, manifest, resourcePath);
+                addColladaDataSources(dataToWrite, sv,  modelManifest, modelVariant, resourcePath);
             }
             else if (exportFormat == ExportFormat.ALICE) {
-                addAliceDataSources(dataToWrite, sv, subInfo, manifest, resourcePath);
+                addAliceDataSources(dataToWrite, sv, modelManifest, modelVariant, resourcePath);
             }
             else {
                 Logger.warning("Not exporting "+getModelName()+"--Unsupported export format: "+exportFormat);
@@ -536,20 +466,20 @@ public class JsonModelIo extends DataSourceIo{
                 thumbnailImage = getThumbnailImageForSkeletonVisual(sv);
             }
             else {
-                thumbnailImage = getThumbnailImageForModelResource(subInfo);
+                thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
             }
-            dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ getThumbnailFilename(subInfo), thumbnailImage));
+            dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ modelVariant.id + ".png", thumbnailImage));
         }
 
         //The model manifest goes in the base model path directory
-        dataToWrite.add(createDataSource(resourcePath +"/"+ getModelName()+".json", ManifestEncoderDecoder.toJson( manifest )));
+        dataToWrite.add(createDataSource(resourcePath +"/"+ getModelName()+".json", ManifestEncoderDecoder.toJson( modelManifest )));
         //Add the class thumbnail
         BufferedImage thumbnailImage;
         if (this.thumbnails != null) {
             thumbnailImage = this.thumbnails.get(0);
         }
         else {
-            thumbnailImage = getThumbnailImageForModelResource(modelInfo);
+            thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.get(0));
         }
         dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ getModelName()+"_cls.png", thumbnailImage));
         return dataToWrite;

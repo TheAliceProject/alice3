@@ -99,75 +99,75 @@ public class ModelExportTest {
         }
      */
 
-    private void aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAModelResourceInfo(JointedModelResource resource) {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(getVisualForResource(resource), getModelInfoForResource(resource));
-        assertNotNull("The JointedModelColladaExporter should have returned something being constructed from "+resource.getClass()+"."+resource, exporter );
-    }
-
-
-    @Test
-    public void aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAModelResourceInfo() {
-        aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAModelResourceInfo(AlienResource.DEFAULT);
-    }
-
-    @Test
-    public void aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAString() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, "Alien");
-        assertNotNull("The JointedModelColladaExporter should have returned something being constructed from Alien.DEFAULT.", exporter );
-    }
-
-    @Test
-    public void colladaDataShouldBeCreatedFromASkeletonVisualAndAString() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        COLLADA collada = exporter.createCollada();
-        assertNotNull("createCollada() should have returned something being constructed from Alien and 'Alien'.", collada );
-    }
-
-
-    @Test
-    public void aDataSourceForTheColladaFileShouldBeCreatedForAnEmptyPath() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        String exportPath = "";
-        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
-        assertNotNull("A DataSource for the Collada file should have been created for the export path '"+exportPath+"'", structureDataSource );
-    }
-
-    @Test
-    public void dataSourceForTheColladaFileShouldHaveANameWhenCreatedForAnEmptyPath() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        String exportPath = "";
-        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
-        assertNotNull("DataSource for the Collada file should have a name when created with the export path '"+exportPath+"'", structureDataSource.getName() );
-    }
-
-    @Test
-    public void dataSourceForTheColladaFileShouldHaveNonZeroLengthNameWhenCreatedForAnEmptyPath() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        String exportPath = "";
-        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
-        assertNotEquals("DataSource for the Collada file should have a name of non-zero length when created with the export path '"+exportPath+"'", structureDataSource.getName().length(), 0 );
-    }
-
-    @Test
-    public void dataSourceForTheColladaFileShouldHaveAValidFileNameWhenCreatedForAnEmptyPath() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        String exportPath = "";
-        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
-        assertTrue("DataSource for the Collada file should have a valid file name when created with the export path '"+exportPath+"'", FileUtilities.isValidPath(structureDataSource.getName()) );
-    }
-
-    @Test
-    public void dataSourcesForTheTextureFilesShouldBeCreatedForAnEmptyPath() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        String exportPath = "";
-        List<DataSource> textureDataSources = exporter.createImageDataSources(exportPath);
-        assertNotNull("DataSources for the texture files should have been created for the export path '"+exportPath+"'", textureDataSources );
-    }
-
-    @Test
-    public void idToImageMapShouldBeCreated() {
-        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-        Map<Integer, String> idToImageMap = exporter.createTextureIdToImageMap();
-        assertNotNull("idToImageMap should have been created", idToImageMap );
-    }
+//    private void aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAModelResourceInfo(JointedModelResource resource) {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(getVisualForResource(resource), getModelInfoForResource(resource));
+//        assertNotNull("The JointedModelColladaExporter should have returned something being constructed from "+resource.getClass()+"."+resource, exporter );
+//    }
+//
+//
+//    @Test
+//    public void aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAModelResourceInfo() {
+//        aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAModelResourceInfo(AlienResource.DEFAULT);
+//    }
+//
+//    @Test
+//    public void aJointedModelColladaExporterShouldBeCreatedFromASkeletonVisualAndAString() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, "Alien");
+//        assertNotNull("The JointedModelColladaExporter should have returned something being constructed from Alien.DEFAULT.", exporter );
+//    }
+//
+//    @Test
+//    public void colladaDataShouldBeCreatedFromASkeletonVisualAndAString() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        COLLADA collada = exporter.createCollada();
+//        assertNotNull("createCollada() should have returned something being constructed from Alien and 'Alien'.", collada );
+//    }
+//
+//
+//    @Test
+//    public void aDataSourceForTheColladaFileShouldBeCreatedForAnEmptyPath() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        String exportPath = "";
+//        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
+//        assertNotNull("A DataSource for the Collada file should have been created for the export path '"+exportPath+"'", structureDataSource );
+//    }
+//
+//    @Test
+//    public void dataSourceForTheColladaFileShouldHaveANameWhenCreatedForAnEmptyPath() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        String exportPath = "";
+//        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
+//        assertNotNull("DataSource for the Collada file should have a name when created with the export path '"+exportPath+"'", structureDataSource.getName() );
+//    }
+//
+//    @Test
+//    public void dataSourceForTheColladaFileShouldHaveNonZeroLengthNameWhenCreatedForAnEmptyPath() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        String exportPath = "";
+//        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
+//        assertNotEquals("DataSource for the Collada file should have a name of non-zero length when created with the export path '"+exportPath+"'", structureDataSource.getName().length(), 0 );
+//    }
+//
+//    @Test
+//    public void dataSourceForTheColladaFileShouldHaveAValidFileNameWhenCreatedForAnEmptyPath() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        String exportPath = "";
+//        DataSource structureDataSource = exporter.createColladaDataSource(exportPath);
+//        assertTrue("DataSource for the Collada file should have a valid file name when created with the export path '"+exportPath+"'", FileUtilities.isValidPath(structureDataSource.getName()) );
+//    }
+//
+//    @Test
+//    public void dataSourcesForTheTextureFilesShouldBeCreatedForAnEmptyPath() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        String exportPath = "";
+//        List<DataSource> textureDataSources = exporter.createImageDataSources(exportPath);
+//        assertNotNull("DataSources for the texture files should have been created for the export path '"+exportPath+"'", textureDataSources );
+//    }
+//
+//    @Test
+//    public void idToImageMapShouldBeCreated() {
+//        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
+//        Map<Integer, String> idToImageMap = exporter.createTextureIdToImageMap();
+//        assertNotNull("idToImageMap should have been created", idToImageMap );
+//    }
 }

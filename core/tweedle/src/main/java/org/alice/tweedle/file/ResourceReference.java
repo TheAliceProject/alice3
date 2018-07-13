@@ -16,7 +16,7 @@ abstract public class ResourceReference {
 	// Held in a variable so it is serialized
 	final public String type;
 
-	ResourceReference() {
+	public ResourceReference() {
 		type = getContentType();
 	}
 

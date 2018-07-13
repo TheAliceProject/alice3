@@ -61,6 +61,8 @@ import java.util.logging.Logger;
 public class JointedModelColladaImporter {
 
 //	private static Logger LOGGER;
+
+	private boolean FLIP_MODEL = true;
 	private final File colladaModelFile;
 	private final String modelName;
 	private final Logger modelLoadingLogger;
@@ -94,6 +96,9 @@ public class JointedModelColladaImporter {
 		return null;
 	}
 
+	public void setFlipModel(boolean flipModel) {
+		this.FLIP_MODEL = flipModel;
+	}
 
 	private static AffineMatrix4x4 floatArrayToAliceMatrix( float[] floatData ) throws ModelLoadingException {
 		double[] doubleData = new double[floatData.length];
@@ -691,7 +696,9 @@ public class JointedModelColladaImporter {
 			skeletonVisual.scale(new Vector3(extraScale, extraScale, extraScale));
 		}
 		//Convert the model from maya/collada space to Alice space
-		flipAliceModel( skeletonVisual );
+		if (FLIP_MODEL) {
+			flipAliceModel(skeletonVisual);
+		}
 
 
 		List<TexturedAppearance> sgTextureAppearances = createAliceMaterialsFromCollada( colladaModel, rootPath, aliceMeshes );
