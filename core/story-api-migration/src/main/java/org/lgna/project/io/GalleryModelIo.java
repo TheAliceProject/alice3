@@ -61,6 +61,7 @@ public class GalleryModelIo extends DataSourceIo {
         modelManifest.textureSets.add(textureSet);
 
         ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
+        modelVariant.id = modelName;
         modelVariant.structure = structureReference.id;
         modelVariant.textureSet = textureSet.id;
         modelManifest.models.add(modelVariant);
@@ -69,7 +70,8 @@ public class GalleryModelIo extends DataSourceIo {
     }
 
     public static void main( String[] args ) {
-        File colladaFile  = new File( "C:\\Users\\dculyba\\Documents\\Alice3\\MyProjects\\alienExport\\models\\Alien\\Alien_Alien.dae" );
+//        File colladaFile  = new File( "C:\\Users\\dculyba\\Documents\\Alice3\\MyProjects\\alienExport\\models\\Alien\\Alien_Alien.dae" );
+        File colladaFile = new File("/Users/dculyba/Documents/Projects/Alice/model export/Alien/Alien.dae");
         String modelName = "Alien2";
         Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
         JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelName, modelLogger);
@@ -91,7 +93,8 @@ public class GalleryModelIo extends DataSourceIo {
 
         GalleryModelIo modelIo = new GalleryModelIo(sv, thumbnail, modelManifest);
         try {
-            modelIo.writeModel(new File("C:\\Users\\dculyba\\Documents\\Alice3\\MyGallery"));
+            modelIo.writeModel(new File("/Users/dculyba/Alice3/MyGallery"));
+//            modelIo.writeModel(new File("C:\\Users\\dculyba\\Documents\\Alice3\\MyGallery"));
         }
         catch (IOException e) {
             e.printStackTrace();

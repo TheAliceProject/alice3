@@ -1,20 +1,20 @@
 package org.lgna.project.io;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.alice.tweedle.file.*;
-import org.lgna.project.ProjectVersion;
+import org.lgna.common.resources.ImageResource;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.JointedModelPose;
 import org.lgna.story.Pose;
+import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
@@ -360,9 +360,6 @@ public class JsonModelIo extends DataSourceIo{
         return modelReference;
     }
 
-    private void updateManifestResourceReference(ModelManifest manifest, ModelManifest.ModelVariant modelVariant, DataSource dataSource, String format) {
-
-    }
 
     private void addAliceDataSources(List<DataSource> dataSources, SkeletonVisual sv, ModelManifest manifest, ModelManifest.ModelVariant modelVariant, String resourcePath) throws IOException{
         TexturedAppearance[] texturedAppearancesToSave = sv.textures.getValue();
@@ -382,20 +379,18 @@ public class JsonModelIo extends DataSourceIo{
         String textureName = AliceResourceUtilties.getTextureResourceFileName(modelVariant.structure, modelVariant.textureSet);
         DataSource textureDataSource = createAliceTextureDataSource(resourcePath + "/" + textureName, texturedAppearancesToSave);
 
-        //Get the existing texture set defined by the modelInfo.
-        ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
-        //Now that we have a model and exporter, use this to get the id to image map
+        if (!dataSources.contains(textureDataSource)) {
+            dataSources.add(textureDataSource);
 
-        ResourceReference textureSetResourceRef = new ResourceReference() {
-            @Override
-            public String getContentType() {
-                return "ALICE_TEXTURE_SET";
-            }
-        };
+            AliceTextureReference aliceTextureReference = new AliceTextureReference();
+            aliceTextureReference.id = modelVariant.textureSet+"-textureReference";
+            aliceTextureReference.file = new File(textureDataSource.getName()).getName();
+            aliceTextureReference.format = "a3t";
+            manifest.resources.add(aliceTextureReference);
 
-        textureSetResourceRef.id = modelVariant.textureSet+"-resource";
-        textureSetResourceRef.file = new File(textureDataSource.getName()).getName();
-        textureSetResourceRef.format = "a3t";
+            ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
+            textureSet.idToResourceMap.put(0, aliceTextureReference.id);
+        }
     }
 
 
@@ -425,7 +420,7 @@ public class JsonModelIo extends DataSourceIo{
         //Get the existing texture set defined by the modelInfo.
         ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
         //Now that we have a model and exporter, use this to get the id to image map
-        textureSet.idToImageMap = exporter.createTextureIdToImageMap();
+        textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
         //Get all the textures from the model as data sources
         List<DataSource> imageDataSources = exporter.createImageDataSources(resourcePath);
         for (DataSource imageDataSource : imageDataSources) {
@@ -433,12 +428,12 @@ public class JsonModelIo extends DataSourceIo{
             //For each new image, create a new image reference and add it to the manifest
             if (!dataSources.contains(imageDataSource)) {
                 Integer imageId = exporter.getTextureIdForName(imageFileName);
-                String imageName = textureSet.idToImageMap.get(imageId);
+                String imageName = textureSet.idToResourceMap.get(imageId);
                 ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
                 //ResourceReference have their id initialized to the filename of the resource.
-                //We need it to be the imageName from the idToImageMap
+                //We need it to be the imageName from the idToResourceMap
                 imageReference.id = imageName;
-                manifest.images.add(imageReference);
+                manifest.resources.add(imageReference);
                 dataSources.add(imageDataSource);
             }
         }
@@ -468,12 +463,12 @@ public class JsonModelIo extends DataSourceIo{
             else {
                 thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
             }
-            dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ modelVariant.id + ".png", thumbnailImage));
+
+            DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, modelVariant.id+".png");
+            dataToWrite.add(thumbnailDataSource);
         }
 
-        //The model manifest goes in the base model path directory
-        dataToWrite.add(createDataSource(resourcePath +"/"+ getModelName()+".json", ManifestEncoderDecoder.toJson( modelManifest )));
-        //Add the class thumbnail
+
         BufferedImage thumbnailImage;
         if (this.thumbnails != null) {
             thumbnailImage = this.thumbnails.get(0);
@@ -481,8 +476,22 @@ public class JsonModelIo extends DataSourceIo{
         else {
             thumbnailImage = getThumbnailImageForModelVariant(modelManifest.models.get(0));
         }
-        dataToWrite.add(createPNGImageDataSource(resourcePath +"/"+ getModelName()+"_cls.png", thumbnailImage));
+        String classIconName = getModelName()+"_cls.png";
+        DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, classIconName);
+        dataToWrite.add(thumbnailDataSource);
+        modelManifest.description.icon = classIconName;
+
+        //The model manifest goes in the base model path directory
+        dataToWrite.add(createDataSource(resourcePath +"/"+ getModelName()+".json", ManifestEncoderDecoder.toJson( modelManifest )));
         return dataToWrite;
+    }
+
+    private DataSource createAndAddImageDataSource(ModelManifest modelManifest, BufferedImage image, String resourcePath, String imageName) throws IOException {
+        DataSource imageDataSource = createPNGImageDataSource(resourcePath +"/"+ imageName, image);
+        ImageReference imageReference = new ImageReference(ImageFactory.createImageResource(image, imageName));
+        imageReference.id = imageName;
+        modelManifest.resources.add(imageReference);
+        return imageDataSource;
     }
 
     private static DataSource createAliceStructureDataSource(final String fileName, final SkeletonVisual sv) {

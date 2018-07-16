@@ -992,7 +992,15 @@ public class JointedModelColladaExporter {
 	}
 
 	public String getColladaFileName() {
-		return getModelName() + "." + COLLADA_EXTENSION;
+		String fileName;
+		if (modelVariant != null) {
+			fileName = modelName + "_" + modelVariant.structure;
+		}
+		else {
+			fileName = modelName;
+		}
+
+		return fileName + "." + COLLADA_EXTENSION;
 	}
 
 	public List<String> getTextureFileNames() {
@@ -1095,7 +1103,7 @@ public class JointedModelColladaExporter {
 	}
 
 	public File saveColladaToDirectory( File directory ) throws IOException {
-		File colladaOutputFile = new File( directory, getModelName() + ".dae" );
+		File colladaOutputFile = new File( directory, getColladaFileName() );
 		writeCollada(new FileOutputStream(colladaOutputFile));
 		return colladaOutputFile;
 	}

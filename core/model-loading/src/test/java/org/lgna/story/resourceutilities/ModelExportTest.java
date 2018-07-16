@@ -80,7 +80,7 @@ public class ModelExportTest {
         //Get the existing texture set defined by the modelInfo.
         ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelInfo);
         //Now that we have a model and exporter, use this to get the id to image map
-        textureSet.idToImageMap = exporter.createTextureIdToImageMap();
+        textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
         //Get all the textures from the model as data sources
         List<DataSource> imageDataSources = exporter.createImageDataSources(resourcePath);
         for (DataSource imageDataSource : imageDataSources) {
@@ -88,10 +88,10 @@ public class ModelExportTest {
             //For each new image, create a new image reference and add it to the manifest
             if (!dataSources.contains(imageDataSource)) {
                 Integer imageId = exporter.getTextureIdForName(imageFileName);
-                String imageName = textureSet.idToImageMap.get(imageId);
+                String imageName = textureSet.idToResourceMap.get(imageId);
                 ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
                 //ResourceReference have their id initialized to the filename of the resource.
-                //We need it to be the imageName from the idToImageMap
+                //We need it to be the imageName from the idToResourceMap
                 imageReference.id = imageName;
                 manifest.images.add(imageReference);
                 dataSources.add(imageDataSource);
@@ -167,7 +167,7 @@ public class ModelExportTest {
 //    @Test
 //    public void idToImageMapShouldBeCreated() {
 //        JointedModelColladaExporter exporter = new JointedModelColladaExporter(ALIEN_VISUAL, ALIEN_MODEL_INFO);
-//        Map<Integer, String> idToImageMap = exporter.createTextureIdToImageMap();
-//        assertNotNull("idToImageMap should have been created", idToImageMap );
+//        Map<Integer, String> idToResourceMap = exporter.createTextureIdToImageMap();
+//        assertNotNull("idToResourceMap should have been created", idToResourceMap );
 //    }
 }

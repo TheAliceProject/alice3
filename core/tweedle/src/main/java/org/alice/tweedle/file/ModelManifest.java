@@ -17,7 +17,6 @@ public class ModelManifest extends Manifest {
 	public BoundingBox boundingBox;
 	public Boolean placeOnGround;
 	public List<TextureSet> textureSets = new ArrayList<>();
-	public List<ImageReference> images = new ArrayList<>();
 	public List<StructureReference> structures =  new ArrayList<>();
 	public List<ModelVariant> models =  new ArrayList<>();
 
@@ -36,8 +35,9 @@ public class ModelManifest extends Manifest {
 
 	public static class TextureSet {
 		public String id;
-		public Map<Integer, String> idToImageMap = new HashMap<>();
+		public Map<Integer, String> idToResourceMap = new HashMap<>();
 	}
+
 	public static class Joint {
 		public String name;
 		public String parent;
