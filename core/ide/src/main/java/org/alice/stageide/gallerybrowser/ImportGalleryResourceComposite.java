@@ -1,5 +1,7 @@
 package org.alice.stageide.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
@@ -17,10 +19,9 @@ import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
 import org.lgna.story.resourceutilities.JointedModelColladaImporter;
 import org.lgna.story.resourceutilities.ModelLoadingException;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -28,24 +29,22 @@ import java.util.logging.Logger;
 public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreComposite<Panel, DynamicResource> {
 
 	private Edit browseForCollada( CompletionStep<?> step, InternalActionOperation source ) {
-		JFileChooser fileChooser = new JFileChooser();
-
-		File directory = new File( selectedFileState.getValue() );
-		if ( directory.isDirectory() ) {
-			fileChooser.setCurrentDirectory( directory );
-		}
-		fileChooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
-		fileChooser.setFileFilter( new FileNameExtensionFilter( "*.dae", "dae" ) );
-		int option = fileChooser.showOpenDialog( null );
-		switch (option) {
-		case JFileChooser.APPROVE_OPTION:
-			File file = fileChooser.getSelectedFile();
+		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog(
+				UUID.randomUUID(),
+				"Import Collada",
+				FileUtilities.getDefaultDirectory(),
+				SystemUtilities.isWindows() ? "*.dae" : null,
+				filenameFilter() );
+		if (file != null) {
 			selectedFileState.setValueTransactionlessly( file.getAbsolutePath() );
-			break;
-		default:
-			throw new CancelException();
+			return null;
 		}
-		return null;
+		throw new CancelException();
+	}
+
+	private FilenameFilter filenameFilter() {
+		return ( dir, path ) -> !new File( dir, path ).isDirectory()
+				&& "dae".equals( FileUtilities.getExtension( path ) );
 	}
 
 	private Edit loadColladaFile( CompletionStep<?> step, InternalActionOperation source ) {
