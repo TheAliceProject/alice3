@@ -70,15 +70,13 @@ public class GalleryModelIo extends DataSourceIo {
 
     public static void main( String[] args ) {
         File colladaFile  = new File( "C:\\Users\\dculyba\\Documents\\Alice3\\MyProjects\\alienExport\\models\\Alien\\Alien_Alien.dae" );
-        String modelName = "Alien2";
         Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
-        JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelName, modelLogger);
+        JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelLogger);
         colladaImporter.setFlipModel(false);
 
         SkeletonVisual sv = null;
         try {
             sv = colladaImporter.loadSkeletonVisual();
-            sv.setName(modelName);
         }
         catch (ModelLoadingException e) {
             e.printStackTrace();
@@ -87,7 +85,7 @@ public class GalleryModelIo extends DataSourceIo {
 
         BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance(160, 120).createThumbnail(sv);
 
-        ModelManifest modelManifest = createSimpleManifest(modelName, "Dave");
+        ModelManifest modelManifest = createSimpleManifest(sv.getName(), "Dave");
 
         GalleryModelIo modelIo = new GalleryModelIo(sv, thumbnail, modelManifest);
         try {

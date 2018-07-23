@@ -107,24 +107,19 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		Logger modelLogger = Logger.getLogger( getClass().getCanonicalName() );
 		File colladaFile = new File( colladaFileName );
 
-		// TODO pick a model name
-		String modelName = "Alien2";
-
-		JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaFile, modelName,
-																																									 modelLogger );
+		JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaFile, modelLogger );
 		colladaImporter.setFlipModel( false );
 
 		SkeletonVisual sv = null;
 		try {
 			sv = colladaImporter.loadSkeletonVisual();
-			sv.setName( modelName );
 		} catch (ModelLoadingException e) {
 			throw new RuntimeException( "Failed to load model", e );
 		}
 
 		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( sv );
 		// TODO get a user name
-		ModelManifest modelManifest = createSimpleManifest( modelName, "Dave" );
+		ModelManifest modelManifest = createSimpleManifest( sv.getName(), "Dave" );
 		GalleryModelIo modelIo = new GalleryModelIo( sv, thumbnail, modelManifest );
 		try {
 			modelIo.writeModel( StageIDE.getActiveInstance().getGalleryDirectory() );

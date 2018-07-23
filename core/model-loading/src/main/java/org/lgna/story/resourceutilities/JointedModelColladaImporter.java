@@ -64,13 +64,11 @@ public class JointedModelColladaImporter {
 
 	private boolean FLIP_MODEL = true;
 	private final File colladaModelFile;
-	private final String modelName;
 	private final Logger modelLoadingLogger;
 	private final File rootPath;
 
-	public JointedModelColladaImporter(File colladaModelFile, String modelName, Logger modelLoadingLogger) {
+	public JointedModelColladaImporter(File colladaModelFile, Logger modelLoadingLogger) {
 		this.colladaModelFile = colladaModelFile;
-		this.modelName = modelName;
 		this.modelLoadingLogger = modelLoadingLogger;
 		this.rootPath = colladaModelFile.getParentFile();
 	}
@@ -668,7 +666,7 @@ public class JointedModelColladaImporter {
 		List<Mesh> aliceMeshes = createAliceMeshesFromCollada( colladaModel );
 
 		SkeletonVisual skeletonVisual = new SkeletonVisual();
-		skeletonVisual.setName( modelName );
+		skeletonVisual.setName( scene.getName() );
 		skeletonVisual.frontFacingAppearance.setValue( new SimpleAppearance() );
 		skeletonVisual.skeleton.setValue( aliceSkeleton );
 		List<Mesh> aliceGeometry = new ArrayList<Mesh>();
