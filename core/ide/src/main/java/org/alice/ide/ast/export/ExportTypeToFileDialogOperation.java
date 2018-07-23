@@ -46,8 +46,8 @@ import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.export.type.TypeSummary;
 import org.alice.ide.ast.export.type.TypeSummaryDataSource;
-import org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState;
 import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FileDialogOperation;
 import org.lgna.project.ast.NamedUserType;
@@ -71,7 +71,7 @@ public class ExportTypeToFileDialogOperation extends FileDialogOperation {
 	}
 
 	private File getDefaultDirectory() {
-		return UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+		return StageIDE.getActiveInstance().getTypesDirectory();
 	}
 
 	private String getExtension() {

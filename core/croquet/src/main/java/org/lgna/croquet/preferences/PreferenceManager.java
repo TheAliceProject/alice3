@@ -71,11 +71,11 @@ public class PreferenceManager {
 		throw new AssertionError();
 	}
 
-	public static Preferences getUserPreferences() {
+	static Preferences getUserPreferences() {
 		Application application = Application.getActiveInstance();
 		if( application != null ) {
 			Preferences rv = Preferences.userNodeForPackage( application.getClass() );
-			if( SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			if( SystemUtilities.isPropertyTrue( PreferencesManager.ORG_ALICE_CLEAR_ALL_PREFERENCES ) ) {
 				try {
 					rv.clear();
 				} catch( BackingStoreException bse ) {

@@ -55,6 +55,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.MenuSelection;
 import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.preferences.PreferencesManager;
 import org.lgna.croquet.triggers.AppleApplicationEventTrigger;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
 import org.lgna.croquet.triggers.Trigger;
@@ -83,13 +84,8 @@ public abstract class Application<D extends DocumentFrame> {
 	public static final Group INHERIT_GROUP = Group.getInstance( UUID.fromString( "488f8cf9-30cd-49fc-ab72-7fd6a3e13c3f" ), "INHERIT_GROUP" );
 	public static final Group PROJECT_GROUP = Group.getInstance( UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "PROJECT_GROUP" );
 
+	private final PreferencesManager preferencesManager;
 	private final TransactionHistory transactionHistory;
-	private final ChangeListener menuSelectionChangeListener = new ChangeListener() {
-		@Override
-		public void stateChanged( ChangeEvent e ) {
-			handleMenuSelectionStateChanged( e );
-		}
-	};
 
 	private static Application<?> singleton;
 
@@ -100,14 +96,19 @@ public abstract class Application<D extends DocumentFrame> {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
+		preferencesManager = new PreferencesManager( this );
 		this.transactionHistory = new TransactionHistory();
-		MenuSelectionManager.defaultManager().addChangeListener( this.menuSelectionChangeListener );
+		MenuSelectionManager.defaultManager().addChangeListener( this::handleMenuSelectionStateChanged );
 	}
 
 	public abstract D getDocumentFrame();
 
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
+	}
+
+	public PreferencesManager getPreferencesManager() {
+		return preferencesManager;
 	}
 
 	// TODO: Fix this the right way... if we *ever* support multiple documents... this is a hack for now...
@@ -236,4 +237,6 @@ public abstract class Application<D extends DocumentFrame> {
 			this.getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction().addMenuSelection( menuSelection );
 		}
 	}
+
+	public abstract String getApplicationSubPath();
 }

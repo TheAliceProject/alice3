@@ -52,6 +52,7 @@ import org.alice.ide.croquet.models.projecturi.RevertProjectOperation;
 import org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation;
 import org.alice.ide.croquet.models.projecturi.SaveProjectOperation;
 import org.alice.ide.recentprojects.RecentProjectsMenuModel;
+import org.alice.ide.resource.manager.ImportGalleryResourceOperation;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StandardMenuItemPrepModel;
@@ -81,10 +82,12 @@ public class FileMenuModel extends StaticMenuModel {
 				MenuModel.SEPARATOR,
 				RecentProjectsMenuModel.getInstance(),
 				MenuModel.SEPARATOR,
+				new ImportGalleryResourceOperation().getMenuItemPrepModel(),
+				MenuModel.SEPARATOR,
 				SaveProjectOperation.getInstance().getMenuItemPrepModel(),
 				SaveAsProjectOperation.getInstance().getMenuItemPrepModel());
 		if ( ENABLE_EXPORT ) {
-			list.add( ExportProjectOperation.getInstance().getMenuItemPrepModel() );
+			list.add( new ExportProjectOperation().getMenuItemPrepModel() );
 		}
 		list.add( MenuModel.SEPARATOR );
 		list.add( RevertProjectOperation.getInstance().getMenuItemPrepModel() );

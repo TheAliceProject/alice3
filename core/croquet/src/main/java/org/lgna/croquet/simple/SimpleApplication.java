@@ -86,4 +86,9 @@ public class SimpleApplication extends Application<DocumentFrame> {
 	}
 
 	private final DocumentFrame documentFrame = new SimpleDocumentFrame();
+
+  @Override
+  public String getApplicationSubPath() {
+    return null;
+  }
 }
