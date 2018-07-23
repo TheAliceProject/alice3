@@ -115,7 +115,7 @@ public class JointedModelColladaExporter {
 	private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
 	private final HashMap<Integer, String> textureNameMap = new HashMap<>();
 
-	private JointedModelColladaExporter( SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName ) {
+	public JointedModelColladaExporter( SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName ) {
 		this.factory = new ObjectFactory();
 		this.visual = sv;
 		this.modelVariant = modelVariant;
@@ -126,13 +126,13 @@ public class JointedModelColladaExporter {
 		initializeTextureNameMap();
 	}
 
-	public JointedModelColladaExporter( SkeletonVisual sv, ModelManifest.ModelVariant modelVariant ) {
-		this( sv, modelVariant, null );
-	}
-
-	public JointedModelColladaExporter( SkeletonVisual sv, String modelName ) {
-		this( sv, null, modelName );
-	}
+//	public JointedModelColladaExporter( SkeletonVisual sv, ModelManifest.ModelVariant modelVariant ) {
+//		this( sv, modelVariant, null );
+//	}
+//
+//	public JointedModelColladaExporter( SkeletonVisual sv, String modelName ) {
+//		this( sv, null, modelName );
+//	}
 
 	public String getImageExtension() {
 		return IMAGE_EXTENSION;
@@ -1129,7 +1129,7 @@ public class JointedModelColladaExporter {
 		ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo( modelResource.getClass(), modelResource.toString() );
 		SkeletonVisual sgSkeletonVisual = loadAliceModel( modelResource );
 		ModelManifest modelManifest = modelInfo.createModelManifest();
-		JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0));
+		JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0), modelManifest.description.name);
 		return exportAliceModelToDir(exporter, rootDir);
 	}
 

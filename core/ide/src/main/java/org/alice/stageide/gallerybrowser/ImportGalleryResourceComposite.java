@@ -140,10 +140,11 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		modelManifest.structures.add( structureReference );
 
 		ModelManifest.TextureSet textureSet = new ModelManifest.TextureSet();
-		textureSet.id = "DEFAULT";
+		textureSet.id = modelName;
 		modelManifest.textureSets.add( textureSet );
 
 		ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
+		modelVariant.id = modelName;
 		modelVariant.structure = structureReference.id;
 		modelVariant.textureSet = textureSet.id;
 		modelManifest.models.add( modelVariant );

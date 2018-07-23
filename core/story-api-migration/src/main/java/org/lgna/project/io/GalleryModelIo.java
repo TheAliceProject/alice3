@@ -49,7 +49,7 @@ public class GalleryModelIo extends DataSourceIo {
         ModelManifest modelManifest = new ModelManifest();
 
         modelManifest.description.name = modelName;
-        modelManifest.provenance.creator = "Dave";
+        modelManifest.provenance.creator = creatorName;
         modelManifest.provenance.aliceVersion = ProjectVersion.getCurrentVersionText();
 
         StructureReference structureReference = new StructureReference();
@@ -57,7 +57,7 @@ public class GalleryModelIo extends DataSourceIo {
         modelManifest.structures.add(structureReference);
 
         ModelManifest.TextureSet textureSet = new ModelManifest.TextureSet();
-        textureSet.id = "DEFAULT";
+        textureSet.id = modelName;
         modelManifest.textureSets.add(textureSet);
 
         ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
