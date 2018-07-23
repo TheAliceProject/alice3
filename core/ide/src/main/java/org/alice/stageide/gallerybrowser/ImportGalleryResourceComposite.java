@@ -1,5 +1,7 @@
 package org.alice.stageide.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
@@ -17,10 +19,9 @@ import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
 import org.lgna.story.resourceutilities.JointedModelColladaImporter;
 import org.lgna.story.resourceutilities.ModelLoadingException;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -28,24 +29,22 @@ import java.util.logging.Logger;
 public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreComposite<Panel, DynamicResource> {
 
 	private Edit browseForCollada( CompletionStep<?> step, InternalActionOperation source ) {
-		JFileChooser fileChooser = new JFileChooser();
-
-		File directory = new File( selectedFileState.getValue() );
-		if ( directory.isDirectory() ) {
-			fileChooser.setCurrentDirectory( directory );
-		}
-		fileChooser.setFileSelectionMode( JFileChooser.FILES_ONLY );
-		fileChooser.setFileFilter( new FileNameExtensionFilter( "*.dae", "dae" ) );
-		int option = fileChooser.showOpenDialog( null );
-		switch (option) {
-		case JFileChooser.APPROVE_OPTION:
-			File file = fileChooser.getSelectedFile();
+		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog(
+				UUID.randomUUID(),
+				"Import Collada",
+				FileUtilities.getDefaultDirectory(),
+				SystemUtilities.isWindows() ? "*.dae" : null,
+				filenameFilter() );
+		if (file != null) {
 			selectedFileState.setValueTransactionlessly( file.getAbsolutePath() );
-			break;
-		default:
-			throw new CancelException();
+			return null;
 		}
-		return null;
+		throw new CancelException();
+	}
+
+	private FilenameFilter filenameFilter() {
+		return ( dir, path ) -> !new File( dir, path ).isDirectory()
+				&& "dae".equals( FileUtilities.getExtension( path ) );
 	}
 
 	private Edit loadColladaFile( CompletionStep<?> step, InternalActionOperation source ) {
@@ -108,24 +107,19 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		Logger modelLogger = Logger.getLogger( getClass().getCanonicalName() );
 		File colladaFile = new File( colladaFileName );
 
-		// TODO pick a model name
-		String modelName = "Alien2";
-
-		JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaFile, modelName,
-																																									 modelLogger );
+		JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaFile, modelLogger );
 		colladaImporter.setFlipModel( false );
 
 		SkeletonVisual sv = null;
 		try {
 			sv = colladaImporter.loadSkeletonVisual();
-			sv.setName( modelName );
 		} catch (ModelLoadingException e) {
 			throw new RuntimeException( "Failed to load model", e );
 		}
 
 		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( sv );
 		// TODO get a user name
-		ModelManifest modelManifest = createSimpleManifest( modelName, "Dave" );
+		ModelManifest modelManifest = createSimpleManifest( sv.getName(), "Dave" );
 		GalleryModelIo modelIo = new GalleryModelIo( sv, thumbnail, modelManifest );
 		try {
 			modelIo.writeModel( StageIDE.getActiveInstance().getGalleryDirectory() );
