@@ -48,13 +48,13 @@ import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
-import org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriContentLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
@@ -171,7 +171,8 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		return ProjectVersion.getCurrentVersion().getMajorAndMinor();
 	}
 
-	public static final String getApplicationSubPath() {
+	@Override
+	public String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";
@@ -437,7 +438,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 	}
 
 	public File getMyProjectsDirectory() {
-		return UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
+		return StageIDE.getActiveInstance().getProjectsDirectory();
 	}
 
 	public final Project getUpToDateProject() {

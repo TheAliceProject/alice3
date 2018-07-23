@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
-import org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState;
+import org.alice.stageide.StageIDE;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.io.IoUtilities;
@@ -151,6 +151,6 @@ public class TypeFromUriProducer extends UriCreator<NamedUserType> {
 
 	@Override
 	protected File getInitialDirectory() {
-		return UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+		return StageIDE.getActiveInstance().getTypesDirectory();
 	}
 }

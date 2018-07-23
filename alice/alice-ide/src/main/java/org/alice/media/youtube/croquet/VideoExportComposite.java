@@ -47,9 +47,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
-import org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState;
 import org.alice.ide.video.preview.VideoComposite;
 import org.alice.media.youtube.croquet.views.ExportVideoView;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
@@ -79,7 +79,7 @@ public class VideoExportComposite extends WizardPageComposite<ExportVideoView, E
 		@Override
 		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
 
-			File videosDirectory = UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
+			File videosDirectory = StageIDE.getActiveInstance().getVideosDirectory();
 
 			String filename = "*.webm";
 

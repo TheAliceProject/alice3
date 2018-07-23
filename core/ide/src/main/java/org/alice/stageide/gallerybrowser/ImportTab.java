@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState;
 import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.gallerybrowser.views.ImportTabView;
 import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CancelException;
@@ -107,11 +107,11 @@ public final class ImportTab extends GalleryTab {
 	}
 
 	public boolean isDirectoryStateSetToDefault() {
-		return UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath().contentEquals( this.directoryState.getValue() );
+		return StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath().contentEquals( this.directoryState.getValue() );
 	}
 
 	private void restoreToDefault() {
-		this.directoryState.setValueTransactionlessly( UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance().getAbsolutePath() );
+		this.directoryState.setValueTransactionlessly( StageIDE.getActiveInstance().getTypesDirectory().getAbsolutePath() );
 	}
 
 	public PlainStringValue getNotDirectoryText() {

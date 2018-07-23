@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,75 +40,89 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.croquet.models.ui.preferences;
+package org.lgna.croquet.preferences;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import org.alice.ide.IDE;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * @author Kyle Harms, Dennis Cosgrove
- */
-public class UserApplicationDirectoryState extends DirectoryState {
-	public static final String KEY = "${user_application_documents}";
+public class PreferencesManager {
+
+	static final String ORG_ALICE_CLEAR_ALL_PREFERENCES = "org.alice.clearAllPreferences";
+	private static final String KEY = "${user_application_documents}";
 	private static final Pattern KEY_PATTERN = Pattern.compile( Pattern.quote( KEY ) );
 
-	public String substituteKeyIfNecessary( String value, String defaultValue ) {
-		Matcher matcher = KEY_PATTERN.matcher( value );
-		String userApplicationDirectoryValue = this.getValue();
-		try {
-			//throw new IllegalArgumentException();
-			return matcher.replaceAll( userApplicationDirectoryValue );
-		} catch( IllegalArgumentException iae ) {
-			//			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( value );
-			//			StringBuilder sb = new StringBuilder();
-			//			sb.append( "the following value has been copied to your clipboard: \n\n\t" );
-			//			sb.append( value );
-			//			sb.append( userApplicationDirectoryValue );
-			//			sb.append( "\n\nplease paste it in an email and send it to dennis." );
-			//
-			//			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
-			if( value.startsWith( KEY ) ) {
-				return userApplicationDirectoryValue + value.substring( KEY.length() );
-			} else if( defaultValue.startsWith( KEY ) ) {
-				return userApplicationDirectoryValue + defaultValue.substring( KEY.length() );
-			} else {
-				Matcher defaultMatcher = KEY_PATTERN.matcher( defaultValue );
-				return defaultMatcher.replaceAll( userApplicationDirectoryValue );
+	public PreferencesManager( Application application ) {
+		this.application = application;
+	}
+
+	private Preferences getUserPreferences() {
+		Preferences prefs = Preferences.userNodeForPackage( application.getClass() );
+		if ( SystemUtilities.isPropertyTrue( ORG_ALICE_CLEAR_ALL_PREFERENCES ) ) {
+			try {
+				prefs.clear();
+			} catch (BackingStoreException bse) {
+				throw new RuntimeException( bse );
 			}
+		}
+		return prefs;
+	}
+
+	private String getInitialUserDirectory() {
+		File defaultDirectory = FileUtilities.getDefaultDirectory();
+		File directory = new File( defaultDirectory, application.getApplicationSubPath() );
+		return directory.toURI().toString();
+	}
+
+	private String getUserDirectory() {
+		return getUserPreferences().get( "5f80de2f-5119-4131-96d0-c0b80919a589", getInitialUserDirectory() );
+	}
+
+	public File getUserDirectory( UUID leafMigrationId, String defaultLeafDirectory ) {
+		// Group g = Application.DOCUMENT_UI_GROUP;
+		final String userDirectory = getUserDirectory();
+		String path = getUserPreferences()
+				.get( leafMigrationId.toString(), Paths.get( userDirectory, defaultLeafDirectory ).toString() );
+
+		File dir = getDirectory( substituteKeyIfNecessary( path, userDirectory ) );
+		if ( !dir.exists() && !dir.mkdirs() ) {
+			System.err.println( "Unable to create user directory: " + dir );
+		}
+		return dir;
+	}
+
+	private String substituteKeyIfNecessary( String path, String userParentDirectory ) {
+		Matcher matcher = KEY_PATTERN.matcher( path );
+		try {
+			return matcher.replaceAll( userParentDirectory );
+		} catch (IllegalArgumentException iae) {
+			if ( path.startsWith( KEY ) ) {
+				return userParentDirectory + path.substring( KEY.length() );
+			}
+		}
+		return path;
+	}
+
+	private static File getDirectory( String path ) {
+		try {
+			URI uri = new URI( path );
+			return new File( uri );
+		} catch (URISyntaxException urise) {
+			Logger.throwable( urise, "URI failure:", path );
+			return new File( path );
 		}
 	}
 
-	private static String getInitialValue() {
-		File defaultDirectory = FileUtilities.getDefaultDirectory();
-		File directory = new File( defaultDirectory, IDE.getApplicationSubPath() );
-		URI uri = directory.toURI();
-		return uri.toString();
-	}
-
-	private static class SingletonHolder {
-		private static UserApplicationDirectoryState instance = new UserApplicationDirectoryState();
-	}
-
-	public static UserApplicationDirectoryState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private UserApplicationDirectoryState() {
-		super(
-				Application.DOCUMENT_UI_GROUP,
-				UUID.fromString( "5f80de2f-5119-4131-96d0-c0b80919a589" ),
-				getInitialValue() );
-	}
-
-	@Override
-	protected String getPath() {
-		return this.getValue();
-	}
+	private Application application;
 }

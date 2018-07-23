@@ -122,7 +122,9 @@ import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class StageIDE extends IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
@@ -505,4 +507,23 @@ public abstract class StageIDE extends IDE {
 		return this.getInstanceFactoryForSceneOrSceneField( field );
 	}
 
+  public File getGalleryDirectory() {
+		return getUserDirectory( UUID.fromString( "9894f0b8-a30d-460d-abc2-0e5cdbf885f0" ), "MyGallery" );
+  }
+
+  public File getTypesDirectory() {
+		return getUserDirectory( UUID.fromString( "7f431542-fedc-4c21-8719-4f751836addf" ), "MyClasses" );
+  }
+
+  public File getVideosDirectory() {
+		return getUserDirectory( UUID.fromString( "ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe" ), "MyVideos" );
+  }
+
+  public File getProjectsDirectory() {
+		return getUserDirectory( UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), "MyProjects" );
+  }
+
+  private File getUserDirectory( UUID uuid, String leaf ) {
+		return getPreferencesManager().getUserDirectory( uuid, leaf );
+  }
 }
