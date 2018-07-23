@@ -385,10 +385,9 @@ public class AliceModelLoader {
 	public static void main( String[] args ) {
 			File rootDir = new File("C:\\Users\\dculyba\\Documents\\Alice3\\MyProjects\\alienExport\\models\\Alien");
 			File colladaFile  = new File( rootDir, "Alien_Alien.dae" );
-			String modelName = "Alien2";
 
 			Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
-			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelName, modelLogger);
+			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelLogger);
 
 			SkeletonVisual sv = null;
 			try {
@@ -402,7 +401,7 @@ public class AliceModelLoader {
 			
 			JPanel imagePanel = showVisual( sv, null );
 			
-			ModelResourceExporter mre = createModelExporter( sv, modelName, ModelClassData.BIPED_CLASS_DATA );
+			ModelResourceExporter mre = createModelExporter( sv, sv.getName(), ModelClassData.BIPED_CLASS_DATA );
 			try {
 				saveModelResourceFiles(sv, mre, "C:/Users/dculyba/Documents/Alice/Alice Export/");
 			}
@@ -515,7 +514,7 @@ public class AliceModelLoader {
 		SkeletonVisual sv = null;
 		try {
 			Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
-			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaModelFile, modelName, modelLogger);
+			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaModelFile, modelLogger);
 			sv = colladaImporter.loadSkeletonVisual();
 		}
 		catch (ModelLoadingException e) {
