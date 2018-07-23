@@ -126,14 +126,6 @@ public class JointedModelColladaExporter {
 		initializeTextureNameMap();
 	}
 
-//	public JointedModelColladaExporter( SkeletonVisual sv, ModelManifest.ModelVariant modelVariant ) {
-//		this( sv, modelVariant, null );
-//	}
-//
-//	public JointedModelColladaExporter( SkeletonVisual sv, String modelName ) {
-//		this( sv, null, modelName );
-//	}
-
 	public String getImageExtension() {
 		return IMAGE_EXTENSION;
 	}
