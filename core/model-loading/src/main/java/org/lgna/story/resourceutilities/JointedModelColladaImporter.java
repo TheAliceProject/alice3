@@ -77,21 +77,46 @@ public class JointedModelColladaImporter {
 		return (n.getType() != null && n.getType().equals( "JOINT" ));
 	}
 
-	private static Node findRootNode( List<Node> nodes ) {
+	private static Node findNodeNamedRoot( List<Node> nodes ) {
 		for (Node n : nodes) {
-			if (nodeIsJoint(n)) {
-				if (n.getName().equalsIgnoreCase( "root" )) {
-					return n;
-				}
+			if ( nodeIsJoint( n ) && n.getName().equalsIgnoreCase( "root" ) ) {
+				return n;
 			}
 		}
 		for (Node n : nodes) {
-			Node childRoot = findRootNode(n.getChildNodes());
+			Node childRoot = findNodeNamedRoot(n.getChildNodes());
 			if (childRoot != null) {
 				return childRoot;
 			}
 		}
 		return null;
+	}
+
+	private static Node findFirstJoint( List<Node> nodes ) {
+		for (Node n : nodes) {
+			if ( nodeIsJoint( n ) ) {
+				return n;
+			}
+		}
+		for (Node n : nodes) {
+			Node childRoot = findFirstJoint(n.getChildNodes());
+			if (childRoot != null) {
+				return childRoot;
+			}
+		}
+		return null;
+	}
+
+	private static Node findRootNode( List<Node> nodes ) throws ModelLoadingException {
+		Node rootNode = findNodeNamedRoot( nodes );
+		if (rootNode != null) {
+			return rootNode;
+		}
+		rootNode = findFirstJoint(nodes);
+		if (rootNode != null) {
+			return rootNode;
+		}
+		throw new ModelLoadingException("No root node found in the scene.");
 	}
 
 	public void setFlipModel(boolean flipModel) {
@@ -319,7 +344,12 @@ public class JointedModelColladaImporter {
         	doubleVertexData[i] = vertexData[i];
         }
         sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(doubleVertexData) );
-        sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer(geometry.getMesh().getTexCoordData()) );
+        final float[] coordData = geometry.getMesh().getTexCoordData();
+        if (coordData == null)
+				{
+					throw new ModelLoadingException( "No texture coordinate data found in model." );
+				}
+        sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
         
         //Find the triangle data and use it to set the index data
         Triangles tris = null;

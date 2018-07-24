@@ -2,6 +2,7 @@ package org.alice.stageide.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
@@ -114,7 +115,10 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		try {
 			sv = colladaImporter.loadSkeletonVisual();
 		} catch (ModelLoadingException e) {
-			throw new RuntimeException( "Failed to load model", e );
+			final OkDialog.Builder builder = new OkDialog.Builder( e.getLocalizedMessage() + "\nTry to correct it and reimport." );
+			builder.title( "Problem during import" );
+			builder.buildAndShow();
+			return;
 		}
 
 		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( sv );
