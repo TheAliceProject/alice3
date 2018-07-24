@@ -47,37 +47,34 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.serialization.tweedle.TweedleEncoderDecoder;
-import org.alice.tweedle.file.AudioReference;
-import org.alice.tweedle.file.ImageReference;
-import org.alice.tweedle.file.Manifest;
-import org.alice.tweedle.file.ManifestEncoderDecoder;
-import org.alice.tweedle.file.ResourceReference;
-import org.alice.tweedle.file.TypeReference;
+import org.alice.tweedle.file.*;
 import org.lgna.common.Resource;
 import org.lgna.common.resources.AudioResource;
 import org.lgna.common.resources.ImageResource;
 import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.ResourceExpression;
+import org.lgna.project.ast.*;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
+import org.lgna.story.resources.JointedModelResource;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resources.biped.AliceResource;
+import org.lgna.story.resourceutilities.JointedModelColladaExporter;
+import org.lgna.story.resourceutilities.ModelResourceInfo;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.sql.Struct;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
 //TODO add migration on read - ProjectMigrationManager, MigrationManagerDecodedVersionPair, & AstMigrationUtilities
-public class JsonProjectIo implements ProjectIo{
+public class JsonProjectIo extends DataSourceIo implements ProjectIo{
 
 	private static final String MANIFEST_ENTRY_NAME = "manifest.json";
 	private static final String TWEEDLE_EXTENSION = "twe";
@@ -117,8 +114,8 @@ public class JsonProjectIo implements ProjectIo{
 	private static Resource readResource( ZipEntryContainer container, ResourceReference resourceReference ) {
 		String contentType = resourceReference.getContentType();
 		String id = resourceReference.id;
-		List<String> entries = resourceReference.files;
-		if( ( contentType != null ) && ( id != null ) && ( entries != null ) && ( entries.size() > 0 ) ) {
+		String entry = resourceReference.file;
+		if( ( contentType != null ) && ( id != null ) && ( entry != null ) ) {
 			// TODO Read all entries
 //			byte[] data = InputStreamUtilities.getBytes( container.getInputStream( entryName ) );
 //			if( data != null ) {
@@ -160,6 +157,14 @@ public class JsonProjectIo implements ProjectIo{
 
 		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
 		entries.addAll( createEntriesForTypes( manifest, project.getNamedUserTypes()) );
+
+		Map<Class, List<JointedModelResource>> modelResources = getJointedModelResources(project.getProgramType(), CrawlPolicy.COMPLETE);
+		for (Map.Entry<Class, List<JointedModelResource>> entry : modelResources.entrySet()) {
+			JsonModelIo modelIo = new JsonModelIo(entry.getValue(), JsonModelIo.ExportFormat.COLLADA);
+			entries.addAll(modelIo.createDataSources("models"));
+			manifest.resources.add(modelIo.createModelReference("models"));
+		}
+
 		entries.add( manifestDataSource( manifest ) );
 		writeDataSources( os, entries );
 	}
@@ -211,14 +216,28 @@ public class JsonProjectIo implements ProjectIo{
 		return createDataSource( MANIFEST_ENTRY_NAME, ManifestEncoderDecoder.toJson( manifest ) );
 	}
 
-	private static DataSource createDataSource( String name, String content ) {
-		return new DataSource() {
-			@Override public String getName() { return name; }
-
-			@Override public void write( OutputStream os ) throws IOException {
-				os.write( content.getBytes() );
+	private Map<Class, List<JointedModelResource>> getJointedModelResources(AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy ) {
+		IsInstanceCrawler<FieldAccess> modelResourceFieldAccessCrawler =
+				new IsInstanceCrawler<FieldAccess>( FieldAccess.class ) {
+					@Override protected boolean isAcceptable( FieldAccess fieldAccess ) {
+						AbstractType type = fieldAccess.field.getValue().getValueType();
+						return type.isAssignableTo(JointedModelResource.class);
+					}
+				};
+		type.crawl(modelResourceFieldAccessCrawler, crawlPolicy);
+		Map<Class, List<JointedModelResource>> modelResources = new HashMap<>();
+		for( FieldAccess fieldAccess : modelResourceFieldAccessCrawler.getList() ) {
+			JavaField field = (JavaField)fieldAccess.field.getValue();
+			JointedModelResource modelResource = null;
+			try {
+				modelResource = (JointedModelResource)field.getFieldReflectionProxy().getReification().get(null);
+				List<JointedModelResource> resourceList = modelResources.computeIfAbsent(modelResource.getClass(), k -> new ArrayList<>());
+				resourceList.add(modelResource);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace(); //TODO: Log this
 			}
-		};
+		}
+		return modelResources;
 	}
 
 	private Set<Resource> getResources( AbstractType<?, ?, ?> type, CrawlPolicy crawlPolicy ) {
@@ -228,21 +247,13 @@ public class JsonProjectIo implements ProjectIo{
 				return true;
 			}
 		};
+
 		type.crawl( crawler, crawlPolicy );
 		Set<Resource> resources = new HashSet<>();
 		for( ResourceExpression resourceExpression : crawler.getList() ) {
 			resources.add( resourceExpression.resource.getValue() );
 		}
 		return resources;
-	}
-
-	private void writeDataSources( OutputStream os, List<DataSource> dataSources ) throws IOException {
-		ZipOutputStream zos = new ZipOutputStream( os );
-		for( DataSource dataSource : dataSources ) {
-			ZipUtilities.write( zos, dataSource );
-		}
-		zos.flush();
-		zos.close();
 	}
 
 	private static void addResources( Manifest manifest, List<DataSource> dataSources, Set<Resource> resources ) {

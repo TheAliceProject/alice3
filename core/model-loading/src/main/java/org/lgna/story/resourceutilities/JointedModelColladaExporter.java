@@ -48,6 +48,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -56,7 +57,6 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBContext;
@@ -69,9 +69,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
+import org.alice.tweedle.file.ModelManifest;
+import org.lgna.common.resources.ImageResource;
+import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointedModelImp.VisualData;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ImplementationAndVisualType;
@@ -94,34 +98,40 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public class JointedModelColladaExporter {
 
+	private static final String COLLADA_EXTENSION = "dae";
+	private static final String IMAGE_EXTENSION = "png";
+
 	//Controls whether or not we flip the coordinate space during our conversion
-	private static final boolean FLIP_COORDINATE_SPACE = true;
-	private static final boolean SCALE_MODEL = true;
-	private static final double MODEL_SCALE = 10.0;
+	//Keeping the current coordinates appears to be the right move for collada exporting
+	private static final boolean FLIP_COORDINATE_SPACE = false;
+	private static final boolean SCALE_MODEL = false;
+	private static final double MODEL_SCALE = 1.0;
 
 	private final ObjectFactory factory;
 	private final SkeletonVisual visual;
-	private final ModelResourceInfo modelInfo;
+	private final ModelManifest.ModelVariant modelVariant;
 	private final String modelName;
-	private final Map<Integer, File> idToTextureFileMap;
 
 	private final HashMap<edu.cmu.cs.dennisc.scenegraph.Geometry, String> meshNameMap = new HashMap<>();
 	private final HashMap<Integer, String> textureNameMap = new HashMap<>();
 
-	public JointedModelColladaExporter( SkeletonVisual sv, ModelResourceInfo mi, Map<Integer, File> idToTextureFileMap ) {
+	public JointedModelColladaExporter( SkeletonVisual sv, ModelManifest.ModelVariant modelVariant, String modelName ) {
 		this.factory = new ObjectFactory();
 		this.visual = sv;
-		this.modelInfo = mi;
-		this.idToTextureFileMap = idToTextureFileMap;
-		this.modelName = null;
+		this.modelVariant = modelVariant;
+		this.modelName = modelName;
+		//Go through all the meshes in the sgVisual and find or create names for all of them
+		initializeMeshNameMap();
+		//Go through all the textures and create names based on the IDs
+		initializeTextureNameMap();
 	}
 
-	public JointedModelColladaExporter( SkeletonVisual sv, String modelName, Map<Integer, File> idToTextureFileMap ) {
-		this.factory = new ObjectFactory();
-		this.visual = sv;
-		this.modelInfo = null;
-		this.idToTextureFileMap = idToTextureFileMap;
-		this.modelName = modelName;
+	public String getImageExtension() {
+		return IMAGE_EXTENSION;
+	}
+
+	public String getModelExtension() {
+		return COLLADA_EXTENSION;
 	}
 
 	private Asset createAsset() {
@@ -160,10 +170,10 @@ public class JointedModelColladaExporter {
 		if (SCALE_MODEL) {
 			newTransform.translation.multiply(MODEL_SCALE);
 		}
-		double[] matrixValues = ColladaTransformUtilities.createColladaTransformFromAliceTransform(newTransform);
+		double[] matrixValues = newTransform.getAsRowMajorArray16();
 		//Flip the values from Alice space to Collada space
 		if (FLIP_COORDINATE_SPACE) {
-			matrixValues = ColladaTransformUtilities.createFlippedColladaTransform(matrixValues);
+			matrixValues = ColladaTransformUtilities.createFlippedRowMajorTransform(matrixValues);
 		}
 		for( double matrixValue : matrixValues ) {
 			matrix.getValue().add( matrixValue );
@@ -226,6 +236,9 @@ public class JointedModelColladaExporter {
 		return accessorTechnique;
 	}
 
+
+	//Helper classes to initalize Collada lists of numbers from Alice data
+	//These are used to convert the lists of doubles and floats that represent normals, vertices, etc.
 	private interface ListInitializer {
 		public void initializeList(List<Double> toInitialize);
 	}
@@ -347,66 +360,16 @@ public class JointedModelColladaExporter {
 		return meshName + "-id";
 	}
 
-	private Geometry createGeometryForMesh( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
-		//Geometry consists of a Geometry node with a single Mesh node inside
-		Geometry geometry = factory.createGeometry();
-
-		//Top level Geometry setup
-		String meshName = meshNameMap.get( sgMesh );
-		String meshIdName = getMeshIdForMeshName( meshName );
-		geometry.setId( meshIdName );
-		geometry.setName( meshName+"mesh" );
-
-		//Set up the Mesh node
-		Mesh mesh = factory.createMesh();
-
-		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
-		String positionName = meshName + "-POSITION";
-		double scale = SCALE_MODEL ? MODEL_SCALE : 1.0;
-		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
-		//Only pass scale to position. Normals and UVs should not be scaled
-		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, scale, FLIP_COORDINATE_SPACE );
-		mesh.getSource().add( positionSource );
-
-		String normalName = meshName + "-NORMAL";
-		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
-		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, 1.0, FLIP_COORDINATE_SPACE );
-		mesh.getSource().add( normalSource );
-
-		String uvName = meshName + "-UV";
-		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, 1.0, false );
-		mesh.getSource().add( uvSource );
-
-		//Create and add vertices
-		Vertices vertices = factory.createVertices();
-		String vertexName = meshName + "-VERTEX";
-		vertices.setId( vertexName );
-		//Vertices have two inputs: POSITION and NORMAL
-		//These are linked via a string with the prefix "#" to the source names
-		InputLocal positionInput = factory.createInputLocal();
-		positionInput.setSemantic( "POSITION" );
-		positionInput.setSource( "#" + positionName );
-		vertices.getInput().add( positionInput );
-
-		mesh.setVertices( vertices );
+	private Triangles createTriangles(edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh, String verticesName, String normalsName, String UVsName) {
 		//Build the triangle data
 		Triangles triangles = factory.createTriangles();
-		InputLocalOffset vertexInput = factory.createInputLocalOffset();
-		vertexInput.setSemantic( "VERTEX" );
-		vertexInput.setSource( "#" + vertexName );
-		vertexInput.setOffset( BigInteger.valueOf( 0 ) );
+		InputLocalOffset vertexInput = createInputLocalOffset("VERTEX", verticesName, 0);
 		triangles.getInput().add( vertexInput );
 
-		InputLocalOffset normalInput = factory.createInputLocalOffset();
-		normalInput.setSemantic( "NORMAL" );
-		normalInput.setSource( "#" + normalName );
-		normalInput.setOffset( BigInteger.valueOf( 1 ) );
+		InputLocalOffset normalInput = createInputLocalOffset("NORMAL", normalsName, 1);
 		triangles.getInput().add( normalInput );
 
-		InputLocalOffset texCoordInput = factory.createInputLocalOffset();
-		texCoordInput.setSemantic( "TEXCOORD" );
-		texCoordInput.setSource( "#" + uvName );
-		texCoordInput.setOffset( BigInteger.valueOf( 2 ) );
+		InputLocalOffset texCoordInput = createInputLocalOffset("TEXCOORD", UVsName, 2);
 		texCoordInput.setSet( BigInteger.valueOf( 0 ) );
 		triangles.getInput().add( texCoordInput );
 		//Copy over the triangle indices
@@ -429,10 +392,54 @@ public class JointedModelColladaExporter {
 		}
 		triangles.setCount( BigInteger.valueOf( N / 3 ) );
 
+		return triangles;
+	}
+
+	private Vertices createVertices(String verticesName, String positionsName) {
+		Vertices vertices = factory.createVertices();
+		vertices.setId( verticesName );
+		InputLocal positionInput = createInputLocal("POSITION", positionsName);
+		vertices.getInput().add( positionInput );
+		return vertices;
+	}
+
+	private Geometry createGeometryForMesh( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
+		//Geometry consists of a Geometry node with a single Mesh node inside
+		Geometry geometry = factory.createGeometry();
+
+		//Top level Geometry setup
+		String meshName = meshNameMap.get( sgMesh );
+		String meshIdName = getMeshIdForMeshName( meshName );
+		geometry.setId( meshIdName );
+		geometry.setName( meshName+"mesh" );
+
+		//Set up the Mesh node
+		Mesh mesh = factory.createMesh();
+		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
+		String positionName = meshName + "-POSITION";
+		double scale = SCALE_MODEL ? MODEL_SCALE : 1.0;
+		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
+		//Only pass scale to position. Normals and UVs should not be scaled
+		Source positionSource = createFloatArraySourceFromInitializer( new DoubleBufferInitializeList( sgMesh.vertexBuffer.getValue() ), positionName, 3, scale, FLIP_COORDINATE_SPACE );
+		mesh.getSource().add( positionSource );
+
+		String normalName = meshName + "-NORMAL";
+		//Pass flipXandZ = TRUE to flip Alice coordinate space to Collada coordinate space
+		Source normalSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.normalBuffer.getValue() ), normalName, 3, 1.0, FLIP_COORDINATE_SPACE );
+		mesh.getSource().add( normalSource );
+
+		String uvName = meshName + "-UV";
+		Source uvSource = createFloatArraySourceFromInitializer( new FloatBufferInitializeList( sgMesh.textCoordBuffer.getValue() ), uvName, 2, 1.0, false );
+		mesh.getSource().add( uvSource );
+		//Create and add vertices
+		String vertexName = meshName + "-VERTEX";
+		Vertices vertices = createVertices(vertexName, positionName);
+		mesh.setVertices( vertices );
+		//Create and add the triangles
+		Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName);
 		//Grab the texture ID number from the mesh and use that to make the material reference
 		Integer textureID = sgMesh.textureId.getValue();
 		triangles.setMaterial(getMaterialIDForID(textureID));
-
 		mesh.getLinesOrLinestripsOrPolygons().add( triangles );
 
 		geometry.setMesh( mesh );
@@ -443,7 +450,117 @@ public class JointedModelColladaExporter {
 	private double[] getBindShapeMatrix( WeightedMesh sgWeightedMesh ) {
 		//All Alice models have a bind shape of the identity
 		AffineMatrix4x4 bindShapeMatrix = AffineMatrix4x4.createIdentity();
-		return ColladaTransformUtilities.createColladaTransformFromAliceTransform( bindShapeMatrix );
+		return  bindShapeMatrix.getAsRowMajorArray16();
+	}
+
+	private Source createJointSource(WeightInfo wi, String jointSourceName) {
+		Source jointSource = factory.createSource();
+		jointSource.setId( jointSourceName );
+		NameArray jointNameArray = factory.createNameArray();
+		jointNameArray.setId( jointSourceName+"-array" );
+		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
+			jointNameArray.getValue().add( entry.getKey() );
+		}
+		jointNameArray.setCount( BigInteger.valueOf( jointNameArray.getValue().size() ) );
+		jointSource.setNameArray( jointNameArray );
+		jointSource.setTechniqueCommon( createTechniqueCommonForArray( jointNameArray.getId(), "name", jointNameArray.getValue().size(), 1 ) );
+		return jointSource;
+	}
+
+	private Source createMatrixSource(WeightInfo wi, String matricesSourceName) {
+		//Build the Matrix Source
+		Source matricesSource = factory.createSource();
+		matricesSource.setId( matricesSourceName );
+		FloatArray matricesArray = factory.createFloatArray();
+		matricesArray.setId( matricesSourceName+"-array" );
+		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
+			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
+			AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation();
+			if (SCALE_MODEL) {
+				inverseBindMatrix.translation.multiply(MODEL_SCALE);
+			}
+			double[] matrix = inverseBindMatrix.getAsRowMajorArray16();
+			if (FLIP_COORDINATE_SPACE) {
+				//Invert matrix, flip its values from Alice space to Collada space and then invert it back
+				matrix = ColladaTransformUtilities.createFlippedRowMajorTransform(matrix);
+			}
+			for( double element : matrix ) {
+				matricesArray.getValue().add( element );
+			}
+		}
+		int matrixCount = matricesArray.getValue().size();
+		matricesArray.setCount( BigInteger.valueOf( matrixCount ) );
+		matricesSource.setFloatArray( matricesArray );
+		matricesSource.setTechniqueCommon( createTechniqueCommonForArray( matricesArray.getId(), "float4x4", matrixCount, 16 ) );
+
+		return matricesSource;
+	}
+
+	private InputLocal createInputLocal(String semantic, String sourceName) {
+		InputLocal inputLocal = factory.createInputLocal();
+		inputLocal.setSemantic( semantic );
+		inputLocal.setSource( "#" + sourceName );
+		return inputLocal;
+	}
+
+	private InputLocalOffset createInputLocalOffset(String semantic, String sourceName, int offset) {
+		InputLocalOffset inputLocalOffset = factory.createInputLocalOffset();
+		inputLocalOffset.setSemantic( semantic );
+		inputLocalOffset.setSource( "#" + sourceName );
+		inputLocalOffset.setOffset( BigInteger.valueOf( offset ) );
+		return inputLocalOffset;
+	}
+
+	private List<Float> createWeightList(WeightedMesh sgWeightedMesh) {
+		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
+		//Array that all the individual weights stored in it. The weight indices in the skinWeights array will index into this
+		List<Float> weightArray = new ArrayList<Float>();
+		//Iterate through the WeightInfo and add the weights in order to the weightArray
+		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
+			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
+			iatwp.reset();
+			while( !iatwp.isDone() ) {
+				weightArray.add( iatwp.getWeight() );
+				iatwp.advance();
+			}
+		}
+		return weightArray;
+	}
+
+	//Helper class for storing weights as lists of indices
+	private class ColladaSkinWeights {
+		public final List<Integer> weightIndices = new ArrayList<Integer>();
+		public final List<Integer> jointIndices = new ArrayList<Integer>();
+
+	}
+
+	private ColladaSkinWeights[] createSkinWeights(WeightedMesh sgWeightedMesh) {
+		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
+		int vertexCount = sgWeightedMesh.vertexBuffer.getValue().limit() / 3;
+		ColladaSkinWeights[] skinWeights = new ColladaSkinWeights[ vertexCount ];
+		int jointIndex = 0;
+		//Counter for tracking the appropriate index value to the weightIndices array
+		int weightIndex = 0;
+		//Iterate through the WeightInfo and get the joint indices and weight indices
+		//ColladaSkinWeights is an array that uses a vertex index to index to a ColladaSkinWeights
+		//The ColladaSkinWeights object contains the joint indices the vertex is mapped to and the weight indices for those joints
+		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
+			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
+			iatwp.reset();
+			while( !iatwp.isDone() ) {
+				int vertexIndex = iatwp.getIndex();
+				if( skinWeights[ vertexIndex ] == null ) {
+					skinWeights[ vertexIndex ] = new ColladaSkinWeights();
+				}
+				ColladaSkinWeights vertexWeights = skinWeights[ vertexIndex ];
+				vertexWeights.jointIndices.add( jointIndex );
+				//weightIndex is the sequential count of the weights. It ends up mapping to the weight list created in createWeightList()
+				vertexWeights.weightIndices.add( weightIndex++ );
+				iatwp.advance();
+			}
+			jointIndex++;
+		}
+		return skinWeights;
 	}
 
 	//	Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
@@ -465,10 +582,63 @@ public class JointedModelColladaExporter {
 	//	 	</v>
 	//	 </vertex_weights>
 	//	</skin>
-	private class ColladaSkinWeights {
-		public final List<Integer> weightIndices = new ArrayList<Integer>();
-		public final List<Integer> jointIndices = new ArrayList<Integer>();
+	private Skin createSkin(WeightedMesh sgWeightedMesh, String controllerName) {
+		Skin skin = factory.createSkin();
+		String meshName = meshNameMap.get( sgWeightedMesh );
+		skin.setSourceAttribute( "#" + getMeshIdForMeshName( meshName ) );
 
+		//Set the bind shape matrix
+		double[] bindShapeMatrix = getBindShapeMatrix( sgWeightedMesh );
+		for( double element : bindShapeMatrix ) {
+			skin.getBindShapeMatrix().add( element );
+		}
+
+		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
+		String jointSourceName = controllerName + "-Joints";
+		Source jointSource = createJointSource(wi, jointSourceName);
+		skin.getSourceAttribute2().add( jointSource );
+
+		String matricesSourceName = controllerName + "-Matrices";
+		Source matricesSource = createMatrixSource(wi, matricesSourceName);
+		skin.getSourceAttribute2().add( matricesSource );
+
+		//Build the VertexWeights
+		int vertexCount = sgWeightedMesh.vertexBuffer.getValue().limit() / 3;
+		VertexWeights vw = factory.createSkinVertexWeights();
+		vw.setCount( BigInteger.valueOf( vertexCount ) );
+		//Array that contains the skin weight info (joint indices and weight indices) for each vertex
+		ColladaSkinWeights[] skinWeights = createSkinWeights(sgWeightedMesh);
+		//Array that all the individual weights stored in it. The weight indices in the skinWeights array will index into this
+		List<Float> weightArray = createWeightList(sgWeightedMesh);
+		//Add the ColladaSkinWeights to the VertexWeights structure by adding the indices to the V element
+		//See the Skin structure comment at the top for details
+		int skinIndex = 0;
+		for( ColladaSkinWeights vertexWeights : skinWeights ) {
+			vw.getVcount().add( BigInteger.valueOf( vertexWeights.jointIndices.size() ) );
+			for( int j = 0; j < vertexWeights.jointIndices.size(); j++ ) {
+				vw.getV().add( vertexWeights.jointIndices.get( j ).longValue() );
+				vw.getV().add( vertexWeights.weightIndices.get( j ).longValue() );
+			}
+			skinIndex++;
+		}
+
+		//Build the weights source.
+		String weightsSourceName = controllerName + "-Weights";
+		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, 1.0,false );
+		skin.getSourceAttribute2().add( weightsSource );
+
+		vw.getInput().add( createInputLocalOffset( "JOINT", jointSourceName, 0) );
+		vw.getInput().add( createInputLocalOffset( "WEIGHT", weightsSourceName, 1) );
+
+		//Create and add Joints object
+		Skin.Joints joints = factory.createSkinJoints();
+		joints.getInput().add(createInputLocal("JOINT", jointSourceName));
+		joints.getInput().add(createInputLocal("INV_BIND_MATRIX", matricesSourceName));
+
+		skin.setJoints(joints);
+		skin.setVertexWeights( vw );
+
+		return skin;
 	}
 
 	private Controller createControllerForMesh( WeightedMesh sgWeightedMesh ) {
@@ -477,131 +647,12 @@ public class JointedModelColladaExporter {
 		String controllerName = meshName + "Controller";
 		controller.setId( controllerName );
 
-		Skin skin = factory.createSkin();
+		Skin skin = createSkin(sgWeightedMesh, controllerName);
 		controller.setSkin( skin );
-		skin.setSourceAttribute( "#" + getMeshIdForMeshName( meshName ) );
-
-//		//Set the bind shape matrix
-		double[] bindShapeMatrix = getBindShapeMatrix( sgWeightedMesh );
-		for( double element : bindShapeMatrix ) {
-			skin.getBindShapeMatrix().add( element );
-		}
-
-		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
-
-		//Build the Joint Source
-		Source jointSource = factory.createSource();
-		String jointSourceName = controllerName + "-Joints";
-		jointSource.setId( jointSourceName );
-		NameArray jointNameArray = factory.createNameArray();
-		jointNameArray.setId( controllerName + "-Joints-array" );
-		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
-			jointNameArray.getValue().add( entry.getKey() );
-		}
-		jointNameArray.setCount( BigInteger.valueOf( jointNameArray.getValue().size() ) );
-		jointSource.setNameArray( jointNameArray );
-		jointSource.setTechniqueCommon( createTechniqueCommonForArray( jointNameArray.getId(), "name", jointNameArray.getValue().size(), 1 ) );
-		skin.getSourceAttribute2().add( jointSource );
-
-		//Build the Matrix Source
-		Source matricesSource = factory.createSource();
-		String matricesSourceName = controllerName + "-Matrices";
-		matricesSource.setId( matricesSourceName );
-		FloatArray matricesArray = factory.createFloatArray();
-		matricesArray.setId( controllerName + "-Matrices-array" );
-		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
-			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-			AffineMatrix4x4 inverseBindMatrix = iatwp.getInverseAbsoluteTransformation();
-			if (SCALE_MODEL) {
-				inverseBindMatrix.translation.multiply(MODEL_SCALE);
-			}
-			//Invert matrix, flip its values from Alice space to Collada space and then invert it back
-			double[] matrix = ColladaTransformUtilities.createColladaTransformFromAliceTransform(inverseBindMatrix);
-			if (FLIP_COORDINATE_SPACE) {
-				matrix = ColladaTransformUtilities.createFlippedColladaTransform(matrix);
-			}
-			for( double element : matrix ) {
-				matricesArray.getValue().add( element );
-			}
-		}
-		int matrixCount = matricesArray.getValue().size();
-		matricesArray.setCount( BigInteger.valueOf( matrixCount ) );
-		matricesSource.setFloatArray( matricesArray );
-		matricesSource.setTechniqueCommon( createTechniqueCommonForArray( matricesArray.getId(), "float4x4", matrixCount, 16 ) );
-		skin.getSourceAttribute2().add( matricesSource );
-
-		//Build the VertexWeights
-		int vertexCount = sgWeightedMesh.vertexBuffer.getValue().limit() / 3;
-		VertexWeights vw = factory.createSkinVertexWeights();
-		vw.setCount( BigInteger.valueOf( vertexCount ) );
-		ColladaSkinWeights[] skinWeights = new ColladaSkinWeights[ vertexCount ];
-		List<Float> weightArray = new ArrayList<Float>();
-		int jointIndex = 0;
-		//Iterate through the WeightInfo and get the joint indices and weight indices
-		//ColladaSkinWeights is an array that uses a vertex index to index to a ColladaSkinWeights
-		//The ColladaSkinWeights object contains the joint indices the vertex is mapped to and the weight indices for those joints
-		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
-			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-			iatwp.reset();
-			while( !iatwp.isDone() ) {
-				int vertexIndex = iatwp.getIndex();
-				float weight = iatwp.getWeight();
-				weightArray.add( weight );
-				if( skinWeights[ vertexIndex ] == null ) {
-					skinWeights[ vertexIndex ] = new ColladaSkinWeights();
-				}
-				ColladaSkinWeights vertexWeights = skinWeights[ vertexIndex ];
-				vertexWeights.jointIndices.add( jointIndex );
-				vertexWeights.weightIndices.add( weightArray.size() - 1 );
-
-				iatwp.advance();
-			}
-			jointIndex++;
-		}
-		//Add the ColladaSkinWeights to the VertexWeights structure
-		for( ColladaSkinWeights vertexWeights : skinWeights ) {
-			vw.getVcount().add( BigInteger.valueOf( vertexWeights.jointIndices.size() ) );
-			for( int j = 0; j < vertexWeights.jointIndices.size(); j++ ) {
-				vw.getV().add( vertexWeights.jointIndices.get( j ).longValue() );
-				vw.getV().add( vertexWeights.weightIndices.get( j ).longValue() );
-			}
-		}
-
-		//Build the weights source.
-		String weightsSourceName = controllerName + "-Weights";
-		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1, 1.0,false );
-		skin.getSourceAttribute2().add( weightsSource );
-
-		InputLocalOffset jointInput = factory.createInputLocalOffset();
-		jointInput.setSemantic( "JOINT" );
-		jointInput.setSource( "#" + jointSourceName );
-		jointInput.setOffset( BigInteger.valueOf( 0 ) );
-		vw.getInput().add( jointInput );
-
-		InputLocalOffset weightInput = factory.createInputLocalOffset();
-		weightInput.setSemantic( "WEIGHT" );
-		weightInput.setSource( "#" + weightsSourceName );
-		weightInput.setOffset( BigInteger.valueOf( 1 ) );
-		vw.getInput().add( weightInput );
-
-		//Create and add Joints object
-		Skin.Joints joints = factory.createSkinJoints();
-		InputLocal localJointInput = factory.createInputLocal();
-		localJointInput.setSemantic( "JOINT" );
-		localJointInput.setSource( "#" + jointSourceName );
-		joints.getInput().add(localJointInput);
-
-		InputLocal localInvBindMatrixInput = factory.createInputLocal();
-		localInvBindMatrixInput.setSemantic( "INV_BIND_MATRIX" );
-		localInvBindMatrixInput.setSource( "#" + matricesSourceName );
-		joints.getInput().add(localInvBindMatrixInput);
-
-		skin.setJoints(joints);
-
-		skin.setVertexWeights( vw );
 
 		return controller;
 	}
+
 	private void addMeshToNameMap( edu.cmu.cs.dennisc.scenegraph.Mesh sgMesh ) {
 		String meshName = sgMesh.getName();
 		if( ( meshName == null ) || ( meshName.length() == 0 ) ) {
@@ -626,14 +677,21 @@ public class JointedModelColladaExporter {
 		textureNameMap.clear();
 		//Make names for all the texture IDs
 		//There's no naming convention. Naming is geared toward human readability--texture_0 is fine
-		for( Integer i : idToTextureFileMap.keySet() ) {
-			textureNameMap.put(i, "texture_"+i);
+		for( TexturedAppearance texture : visual.textures.getValue()) {
+			textureNameMap.put(texture.textureId.getValue(), "texture_"+texture.textureId.getValue());
 		}
 	}
 
 	private String getImageNameForID(Integer id) {
 		return textureNameMap.get(id) + "_diffuseMap";
 	}
+
+	//Image file name must be unique to the model.
+	//We don't know if models share textures, so we must construct a unique file name to avoid collisions
+	//To support sharing textures, we will need to have a way to connect the texture id (a number) to a unique filename
+	private String getExternallyUniqueImageNameForID(Integer id) { return getFullResourceName() + "_" + getImageNameForID(id); }
+
+	private String getImageFileNameForID(Integer id) { return getExternallyUniqueImageNameForID(id) + "."+IMAGE_EXTENSION; }
 
 	private String getImageIDForID(Integer id) {
 		return getImageNameForID(id) + "-image";
@@ -715,7 +773,7 @@ public class JointedModelColladaExporter {
 
 	private CommonColorOrTextureType createCommonColorType( String sid, double r, double g, double b, double a ) {
 		CommonColorOrTextureType colorType = factory.createCommonColorOrTextureType();
-		colorType.setColor( createCommonColor("emission", 0, 0, 0, 1) );
+		colorType.setColor( createCommonColor(sid, r, g, b, a) );
 		return colorType;
 	}
 
@@ -772,72 +830,52 @@ public class JointedModelColladaExporter {
 	}
 
 	private String getModelName() {
-		if (modelInfo != null) {
-			return modelInfo.getModelName();
+		if (modelVariant != null) {
+			return modelVariant.structure;
 		}
 		else {
 			return modelName;
 		}
 	}
 
-	public void writeColladaFile( File outputFile ) {
-		COLLADA collada = factory.createCOLLADA();
+	private String getFullResourceName() {
+		if (modelVariant != null) {
+			return modelVariant.textureSet;
+		}
+		else {
+			return modelName;
+		}
+	}
 
-		//Required part of a collada file
-		collada.setVersion("1.4.1");
-
-		Asset asset = createAsset();
-		collada.setAsset( asset );
-
-		//Go through all the meshes in the sgVisual and find or create names for all of them
-		initializeMeshNameMap();
-		//Go through all the textures and create names based on the IDs
-		initializeTextureNameMap();
-
-
-		//Create the Visual Scene, but don't add it yet because it needs to be at the end
-		String sceneName = getModelName();
-		VisualScene visualScene = factory.createVisualScene();
-		visualScene.setId( sceneName );
-		visualScene.setName( sceneName );
-
-		//Add the skeleton to the visual scene
-		Node skeletonNodes = createSkeletonNodes();
-		visualScene.getNode().add( skeletonNodes );
-
-		//Create the scene and add it
-		Scene scene = factory.createCOLLADAScene();
-		InstanceWithExtra sceneInstance = factory.createInstanceWithExtra();
-		sceneInstance.setUrl( "#" + visualScene.getId() );
-		scene.setInstanceVisualScene( sceneInstance );
-		collada.setScene( scene );
-
-		//Images and Materials
+	private void createAndAddTextureComponents(COLLADA collada) {
 		LibraryImages libraryImages = factory.createLibraryImages();
 		LibraryMaterials libraryMaterials = factory.createLibraryMaterials();
 		LibraryEffects libraryEffects = factory.createLibraryEffects();
-		for ( Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
+		for ( TexturedAppearance texture : visual.textures.getValue()) {
 			Image image = factory.createImage();
-			image.setName(getImageNameForID(entry.getKey()));
-			image.setId(getImageIDForID(entry.getKey()));
-			image.setInitFrom(entry.getValue().getName());
+			Integer textureID = texture.textureId.getValue();
+			image.setName(getImageNameForID(textureID));
+			image.setId(getImageIDForID(textureID));
+			image.setInitFrom(getImageFileNameForID(textureID));
 			libraryImages.getImage().add(image);
 
 			Material material = factory.createMaterial();
-			material.setName(getMaterialNameForID(entry.getKey()));
-			material.setId(getMaterialIDForID(entry.getKey()));
+			material.setName(getMaterialNameForID(textureID));
+			material.setId(getMaterialIDForID(textureID));
 			InstanceEffect instanceEffect = factory.createInstanceEffect();
-			instanceEffect.setUrl("#"+ getEffectIDForID(entry.getKey()));
+			instanceEffect.setUrl("#"+ getEffectIDForID(textureID));
 			material.setInstanceEffect(instanceEffect);
 			libraryMaterials.getMaterial().add(material);
 
-			Effect effect = createEffect(entry.getKey());
+			Effect effect = createEffect(textureID);
 			libraryEffects.getEffect().add(effect);
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryImages);
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryMaterials);
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryEffects);
+	}
 
+	private void createAndAddMeshComponents(COLLADA collada, VisualScene visualScene) {
 		//Geometry
 		LibraryGeometries lg = factory.createLibraryGeometries();
 		//Grab the static geometry and add them to the scene
@@ -869,31 +907,59 @@ public class JointedModelColladaExporter {
 			visualScene.getNode().add(vsNode);
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lc );
+	}
+
+	protected COLLADA createCollada() {
+		COLLADA collada = factory.createCOLLADA();
+
+		//Required part of a collada file
+		collada.setVersion("1.4.1");
+		Asset asset = createAsset();
+		collada.setAsset( asset );
+
+		//Create the Visual Scene, but don't add it yet because it needs to be at the end
+		String sceneName = getModelName();
+		VisualScene visualScene = factory.createVisualScene();
+		visualScene.setId( sceneName );
+		visualScene.setName( sceneName );
+
+		//Add the skeleton to the visual scene
+		Node skeletonNodes = createSkeletonNodes();
+		visualScene.getNode().add( skeletonNodes );
+
+		//Create the scene and add it
+		Scene scene = factory.createCOLLADAScene();
+		InstanceWithExtra sceneInstance = factory.createInstanceWithExtra();
+		sceneInstance.setUrl( "#" + visualScene.getId() );
+		scene.setInstanceVisualScene( sceneInstance );
+		collada.setScene( scene );
+
+		//Images, Materials, and Effects
+		createAndAddTextureComponents(collada);
+		//Meshes, Weighted Meshes, and Controllers
+		createAndAddMeshComponents(collada, visualScene);
 
 		//Finally add visual scene last so it's add the end
 		LibraryVisualScenes lvs = factory.createLibraryVisualScenes();
 		lvs.getVisualScene().add( visualScene );
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lvs );
 
+		return collada;
+	}
+
+	public void writeCollada( OutputStream os ) throws IOException {
+		COLLADA collada = createCollada();
+
 		JAXBContext jc;
 		try {
 			jc = JAXBContext.newInstance( "org.lgna.story.resourceutilities.exporterutils.collada" );
 			final Marshaller marshaller = jc.createMarshaller();
 			marshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
-			FileOutputStream fos = new FileOutputStream( outputFile );
-			marshaller.marshal( collada, fos );
-			fos.close();
-		} catch( JAXBException | IOException e ) {
-			e.printStackTrace();
+			marshaller.marshal( collada, os );
+		} catch( JAXBException e ) {
+			throw new IOException(e);
 		}
 	}
-
-	private static SkeletonVisual loadAliceModel( JointedModelResource resource ) {
-		VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( resource ).createVisualData();
-		SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
-		return sv;
-	}
-
 
 	private static BufferedImage createFlippedImage(BufferedImage image)
 	{
@@ -910,96 +976,171 @@ public class JointedModelColladaExporter {
 		return flippedImage;
 	}
 
-	private static File saveTexture(TexturedAppearance texture, File outputFile) {
+	private static void writeTexture(TexturedAppearance texture, OutputStream os) throws IOException {
 		BufferedImageTexture bufferedTexture = (BufferedImageTexture)texture.diffuseColorTexture.getValue();
-		try {
-			//Flip the textures because Alice uses flipped textures and things outside of Alice don't
-			BufferedImage flippedImage = createFlippedImage(bufferedTexture.getBufferedImage());
-			ImageIO.write(flippedImage, "png", outputFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		return outputFile;
+		//Flip the textures because Alice uses flipped textures and things outside of Alice don't
+		BufferedImage flippedImage = createFlippedImage(bufferedTexture.getBufferedImage());
+		ImageIO.write(flippedImage, IMAGE_EXTENSION, os);
 	}
 
-	private static Map<Integer, File> saveTexturesToFile( File directory, String baseName, TexturedAppearance[] textures ) {
-		Map<Integer, File> idToTextureFileMap = new HashMap();
-		for ( TexturedAppearance texture : textures ) {
-			File textureFile = new File(directory, baseName + "_" + texture.textureId.getValue() + ".png");
+	public String getColladaFileName() {
+		String fileName;
+		if (modelVariant != null) {
+			fileName = modelName + "_" + modelVariant.structure;
+		}
+		else {
+			fileName = modelName;
+		}
+
+		return fileName + "." + COLLADA_EXTENSION;
+	}
+
+	public List<String> getTextureFileNames() {
+		List<String> textureFileNames = new ArrayList<>();
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			textureFileNames.add(getImageFileNameForID(textureID));
+		}
+		return textureFileNames;
+	}
+
+	public Map<Integer, String> createTextureIdToImageMap() {
+		Map<Integer, String> textureIdToFileMap = new HashMap<>();
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			textureIdToFileMap.put(textureID, getExternallyUniqueImageNameForID(textureID));
+		}
+		return textureIdToFileMap;
+	}
+
+	private TexturedAppearance getTextureAppearance(Integer textureId) {
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			if (textureId == texture.textureId.getValue()) {
+				return texture;
+			}
+		}
+		return null;
+	}
+
+	public ImageResource createImageResourceForTexture(Integer textureId) throws IOException {
+		TexturedAppearance texturedAppearance = getTextureAppearance(textureId);
+		BufferedImageTexture bufferedTexture = (BufferedImageTexture)texturedAppearance.diffuseColorTexture.getValue();
+		return ImageFactory.createImageResource(bufferedTexture.getBufferedImage(), getImageFileNameForID(textureId));
+	}
+
+	public Integer getTextureIdForName(String textureName) {
+		//Strip off any extension or path from the text name
+		String baseTextureName = FileUtilities.getBaseName(textureName);
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			String toCheck = getExternallyUniqueImageNameForID(textureID);
+			if (baseTextureName.equals(toCheck)) {
+				return textureID;
+			}
+		}
+		return -1;
+	}
+
+	public DataSource createColladaDataSource(String pathName) {
+		final String name = pathName + "/" + getColladaFileName();
+		return new DataSource() {
+			@Override public String getName() { return name; }
+
+			@Override public void write( OutputStream os ) throws IOException {
+				writeCollada(os);
+			}
+		};
+	}
+
+	public List<DataSource> createImageDataSources(String pathName) {
+		List<DataSource> dataSources = new ArrayList<>();
+		for (TexturedAppearance texture : visual.textures.getValue()) {
+			Integer textureID = texture.textureId.getValue();
+			final String textureName = pathName +"/"+getImageFileNameForID(textureID);
+			DataSource dataSource = new DataSource() {
+				@Override public String getName() { return textureName; }
+
+				@Override public void write( OutputStream os ) throws IOException {
+					writeTexture(texture, os);
+				}
+			};
+			dataSources.add(dataSource);
+		}
+		return dataSources;
+	}
+
+	public List<DataSource> createDataSources(String pathName) {
+		List<DataSource> dataSources = new ArrayList<>();
+		dataSources.add( createColladaDataSource(pathName));
+		dataSources.addAll(createImageDataSources(pathName));
+		return dataSources;
+
+	}
+
+	public List<File> saveTexturesToDirectory( File directory ) throws IOException {
+		List<File> textureFiles = new ArrayList<>();
+		for ( TexturedAppearance texture : visual.textures.getValue() ) {
+			File textureFile = new File(directory, getImageFileNameForID(texture.textureId.getValue()));
 			try {
 				FileUtilities.createParentDirectoriesIfNecessary(textureFile);
 				textureFile.createNewFile();
+				FileOutputStream fos = new FileOutputStream(textureFile);
+				writeTexture(texture, fos);
+				textureFiles.add(textureFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			textureFile = saveTexture(texture, textureFile);
-			if (textureFile != null) {
-				idToTextureFileMap.put(texture.textureId.getValue(), textureFile);
-			}
 		}
-		return idToTextureFileMap;
+		return textureFiles;
 	}
 
-	private static List<File> exportAliceModel(SkeletonVisual sgSkeletonVisual, String modelName, File rootDir) {
-		Map<Integer, File> idToTextureFileMap  = saveTexturesToFile(rootDir, modelName, sgSkeletonVisual.textures.getValue());
+	public File saveColladaToDirectory( File directory ) throws IOException {
+		File colladaOutputFile = new File( directory, getColladaFileName() );
+		writeCollada(new FileOutputStream(colladaOutputFile));
+		return colladaOutputFile;
+	}
 
-		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelName, idToTextureFileMap );
-		File colladaOutputFile = new File( rootDir, modelName + ".dae" );
-		exporter.writeColladaFile( colladaOutputFile );
 
-		List<File> outputFiles = new ArrayList<>(idToTextureFileMap.size() + 1);
-		for (Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
-			outputFiles.add(entry.getValue());
-		}
-		outputFiles.add(colladaOutputFile);
+	//Local testing code
+	private static List<File> exportAliceModelToDir(JointedModelColladaExporter exporter, File rootDir) throws IOException {
+		List<File> outputFiles = new ArrayList<>();
+
+		outputFiles.add(exporter.saveColladaToDirectory(rootDir));
+		outputFiles.addAll(exporter.saveTexturesToDirectory(rootDir));
 
 		return outputFiles;
 	}
 
-	private static List<File> exportAliceModel(JointedModelResource modelResource, File rootDir) {
+	private static SkeletonVisual loadAliceModel( JointedModelResource resource ) {
+		VisualData<JointedModelResource> v = ImplementationAndVisualType.ALICE.getFactory( resource ).createVisualData();
+		SkeletonVisual sv = (SkeletonVisual)v.getSgVisuals()[ 0 ];
+		return sv;
+	}
+
+	private static List<File> exportAliceModelResourceToDir(JointedModelResource modelResource, File rootDir) throws IOException {
 		ModelResourceInfo modelInfo = AliceResourceUtilties.getModelResourceInfo( modelResource.getClass(), modelResource.toString() );
 		SkeletonVisual sgSkeletonVisual = loadAliceModel( modelResource );
-		Map<Integer, File> idToTextureFileMap  = saveTexturesToFile(rootDir, modelInfo.getModelName()+"_"+modelInfo.getResourceName(), sgSkeletonVisual.textures.getValue());
-
-		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo, idToTextureFileMap );
-		File colladaOutputFile = new File( rootDir, modelInfo.getModelName() + ".dae" );
-		exporter.writeColladaFile( colladaOutputFile );
-
-		List<File> outputFiles = new ArrayList<>(idToTextureFileMap.size() + 1);
-		for (Entry<Integer, File> entry : idToTextureFileMap.entrySet()) {
-			outputFiles.add(entry.getValue());
-		}
-		outputFiles.add(colladaOutputFile);
-
-		return outputFiles;
+		ModelManifest modelManifest = modelInfo.createModelManifest();
+		JointedModelColladaExporter exporter = new JointedModelColladaExporter(sgSkeletonVisual, modelManifest.models.get(0), modelManifest.description.name);
+		return exportAliceModelToDir(exporter, rootDir);
 	}
 
-	private static void testModelExport(JointedModelResource modelResource, File rootDir) {
-		List<File> modelFiles = exportAliceModel(modelResource, rootDir);
-		Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
-		SkeletonVisual sv = null;
-		try {
-			String modelTestName = modelResource.getClass().getSimpleName()+"_TEST";
-			sv = AliceColladaModelLoader.loadAliceModelFromCollada(modelFiles.get(modelFiles.size() - 1), modelTestName, modelLogger);
-			List<File> modelTestFiles = exportAliceModel(sv, modelTestName, rootDir);
-		}
-		catch (ModelLoadingException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public static void main( String[] args ) {
 
 //		File outputRootDir = Paths.get(".").toFile();
 //		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Unity\\trilibtest\\Win64");
 		File outputRootDir = new File("C:\\Users\\dculyba\\Documents\\Projects\\Alice\\Code\\alice-unity-player\\Assets\\Models");
-
-		List<File> aliceFiles = exportAliceModel(AliceResource.WONDERLAND, outputRootDir);
-//		List<File> pirateShipFiles = exportAliceModel(PirateShipResource.DEFAULT, outputRootDir);
-//		List<File> colaBottleFiles = exportAliceModel(ColaBottleResource.DEFAULT, outputRootDir);
-		List<File> sledFiles = exportAliceModel(SledResource.DEFAULT, outputRootDir);
+		try {
+			List<File> aliceFiles = exportAliceModelResourceToDir(AliceResource.WONDERLAND, outputRootDir);
+//		List<File> pirateShipFiles = exportAliceModelResourceToDir(PirateShipResource.DEFAULT, outputRootDir);
+//		List<File> colaBottleFiles = exportAliceModelResourceToDir(ColaBottleResource.DEFAULT, outputRootDir);
+			List<File> sledFiles = exportAliceModelResourceToDir(SledResource.DEFAULT, outputRootDir);
 //		testModelExport(YetiBabyResource.TUTU, new File(outputRootDir, "YetiBaby"));
+		}
+		catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 
 	}
 

@@ -52,7 +52,7 @@ import java.io.OutputStream;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeSummaryDataSource implements DataSource {
+public class TypeSummaryDataSource extends DataSource {
 	public static final String FILENAME = "typeSummary.xml";
 	private final TypeSummary typeSummary;
 

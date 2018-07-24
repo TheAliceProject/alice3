@@ -100,6 +100,46 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		return rv;
 	}
 
+	public static AffineMatrix4x4 createFromRowMajorArray12( double[] rowMajorArray ) {
+		assert rowMajorArray.length == 12;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = rowMajorArray[ 0 ];
+		rv.orientation.up.x = rowMajorArray[ 1 ];
+		rv.orientation.backward.x = rowMajorArray[ 2 ];
+		rv.translation.x = rowMajorArray[ 3 ];
+		rv.orientation.right.y = rowMajorArray[ 4 ];
+		rv.orientation.up.y = rowMajorArray[ 5 ];
+		rv.orientation.backward.y = rowMajorArray[ 6 ];
+		rv.translation.y = rowMajorArray[ 7 ];
+		rv.orientation.right.z = rowMajorArray[ 8 ];
+		rv.orientation.up.z = rowMajorArray[ 9 ];
+		rv.orientation.backward.z = rowMajorArray[ 10 ];
+		rv.translation.z = rowMajorArray[ 11 ];
+		return rv;
+	}
+
+	public static AffineMatrix4x4 createFromRowMajorArray16( double[] rowMajorArray ) {
+		assert rowMajorArray.length == 16;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = rowMajorArray[0];
+		rv.orientation.up.x = rowMajorArray[1];
+		rv.orientation.backward.x = rowMajorArray[2];
+		rv.translation.x = rowMajorArray[3];
+		rv.orientation.right.y = rowMajorArray[4];
+		rv.orientation.up.y = rowMajorArray[5];
+		rv.orientation.backward.y = rowMajorArray[6];
+		rv.translation.y = rowMajorArray[7];
+		rv.orientation.right.z = rowMajorArray[8];
+		rv.orientation.up.z = rowMajorArray[9];
+		rv.orientation.backward.z = rowMajorArray[10];
+		rv.translation.z = rowMajorArray[11];
+		assert rowMajorArray[ 12 ] == 0.0;
+		assert rowMajorArray[ 13 ] == 0.0;
+		assert rowMajorArray[ 14 ] == 0.0;
+		assert rowMajorArray[ 15 ] == 1.0;
+		return rv;
+	}
+
 	//todo: reduce visibility to private
 	public AffineMatrix4x4() {
 	}
@@ -177,6 +217,58 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 
 	public final double[] getAsColumnMajorArray12() {
 		return getAsColumnMajorArray12( new double[ 12 ] );
+	}
+
+	public double[] getAsRowMajorArray16( double[] rv ) {
+		assert rv.length == 16;
+		rv[0] = orientation.right.x;
+		rv[1] = orientation.up.x;
+		rv[2] = orientation.backward.x;
+		rv[3] = translation.x;
+
+		rv[4] = orientation.right.y;
+		rv[5] = orientation.up.y;
+		rv[6] = orientation.backward.y;
+		rv[7] = translation.y;
+
+		rv[8] = orientation.right.z;
+		rv[9] = orientation.up.z;
+		rv[10] = orientation.backward.z;
+		rv[11] = translation.z;
+
+		rv[12] = 0;
+		rv[13] = 0;
+		rv[14] = 0;
+		rv[15] = 1;
+
+		return rv;
+	}
+
+	public double[] getAsRowMajorArray12( double[] rv ) {
+		assert rv.length == 12;
+		rv[0] = orientation.right.x;
+		rv[1] = orientation.up.x;
+		rv[2] = orientation.backward.x;
+		rv[3] = translation.x;
+
+		rv[4] = orientation.right.y;
+		rv[5] = orientation.up.y;
+		rv[6] = orientation.backward.y;
+		rv[7] = translation.y;
+
+		rv[8] = orientation.right.z;
+		rv[9] = orientation.up.z;
+		rv[10] = orientation.backward.z;
+		rv[11] = translation.z;
+		return rv;
+	}
+
+	public final double[] getAsRowMajorArray12() {
+		return getAsRowMajorArray12( new double[ 12 ] );
+	}
+
+	public final double[] getAsRowMajorArray16() {
+		return getAsRowMajorArray16( new double[ 16 ] );
 	}
 
 	@Override

@@ -66,9 +66,13 @@
 			<groupId>org.alice</groupId>
 			<artifactId>story-api</artifactId>
 		</dependency>
-    <dependency>
-      <groupId>org.alice</groupId>
-      <artifactId>tweedle</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>model-loading</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
+			<artifactId>tweedle</artifactId>
+		</dependency>
 	</dependencies>
 </project>

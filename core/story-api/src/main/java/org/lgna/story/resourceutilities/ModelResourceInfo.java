@@ -42,9 +42,15 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lgna.project.ProjectVersion;
+
+import org.alice.tweedle.file.Manifest;
+import org.alice.tweedle.file.ModelManifest;
+import org.alice.tweedle.file.StructureReference;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -67,7 +73,7 @@ public class ModelResourceInfo {
 	private final String textureName;
 	private final boolean isDeprecated;
 	private final boolean placeOnGround;
-	private final ModelResourceInfo parentInfo;
+	private ModelResourceInfo parentInfo = null;
 	private final List<ModelResourceInfo> subResources = new LinkedList<ModelResourceInfo>();
 
 	private final String[] tags;
@@ -187,6 +193,10 @@ public class ModelResourceInfo {
 		this.placeOnGround = placeOnGround;
 	}
 
+	public ModelResourceInfo createShallowCopy() {
+		return new ModelResourceInfo( null, resourceName, creator, creationYear, boundingBox, tags, groupTags, themeTags, modelName, textureName, isDeprecated, placeOnGround );
+	}
+
 	private static List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
 		List<Element> elements = new LinkedList<Element>();
 		NodeList children = node.getChildNodes();
@@ -280,6 +290,11 @@ public class ModelResourceInfo {
 		this.parentInfo = null;
 	}
 
+	public void addSubResource( ModelResourceInfo subResource ) {
+		subResources.add(subResource);
+		subResource.parentInfo = this;
+	}
+
 	public AxisAlignedBox getBoundingBox() {
 		if( ( this.boundingBox == null ) && ( parentInfo != null ) ) {
 			return this.parentInfo.boundingBox;
@@ -371,12 +386,25 @@ public class ModelResourceInfo {
 		return themeTags;
 	}
 
+	public List<ModelResourceInfo> getSubResources() {
+		return subResources;
+	}
+
+	public boolean matchesModelAndTexture(String modelName, String textureName) {
+		String thisModel = getModelName();
+		String thisTexture = getTextureName();
+		return ( ( thisModel != null ) && thisModel.equalsIgnoreCase( modelName ) &&
+				( thisTexture != null ) && thisTexture.equalsIgnoreCase( textureName ) );
+	}
+
+	public boolean matchesResource(String resourceName) {
+		String resource = getResourceName();
+		return ( resource != null ) && resource.equalsIgnoreCase( resourceName );
+	}
+
 	public ModelResourceInfo getSubResource( String modelName, String textureName ) {
 		for( ModelResourceInfo mri : this.subResources ) {
-			String subModel = mri.getModelName();
-			String subTexture = mri.getTextureName();
-			if( ( subModel != null ) && subModel.equalsIgnoreCase( modelName ) &&
-					( subTexture != null ) && subTexture.equalsIgnoreCase( textureName ) ) {
+			if( mri.matchesModelAndTexture(modelName, textureName)) {
 				return mri;
 			}
 		}
@@ -385,12 +413,108 @@ public class ModelResourceInfo {
 
 	public ModelResourceInfo getSubResource( String resourceName ) {
 		for( ModelResourceInfo mri : this.subResources ) {
-			String subResource = mri.getResourceName();
-			if( ( subResource != null ) && subResource.equalsIgnoreCase( resourceName ) ) {
+			if( mri.matchesResource(resourceName) ) {
 				return mri;
 			}
 		}
 		return null;
 	}
+
+	public ModelResourceInfo getParent() {
+		return parentInfo;
+	}
+
+	public ModelManifest createModelManifest() {
+		ModelManifest manifest = new ModelManifest();
+
+		manifest.description.name = getModelName();
+		manifest.description.icon = getModelName()+".png";
+		manifest.description.tags.addAll(Arrays.asList(getTags()));
+		manifest.description.themeTags.addAll(Arrays.asList(getThemeTags()));
+		manifest.description.groupTags.addAll(Arrays.asList(getGroupTags()));
+
+		manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
+		manifest.provenance.creationYear = String.valueOf(getCreationYear());
+		manifest.provenance.creator = getCreator();
+
+		manifest.metadata.identifier.id = getResourceName();
+		manifest.metadata.identifier.type = Manifest.ProjectType.Model;
+		manifest.metadata.formatVersion = "0.1+alpha";
+
+		manifest.placeOnGround = getPlaceOnGround();
+		manifest.boundingBox = createManifestBoundingBox();
+
+		//Add the structures, textures, and model variants
+		for (ModelResourceInfo subResource : getSubResources()) {
+			subResource.addModelVariantInfo(manifest);
+		}
+
+		return manifest;
+	}
+
+	private  ModelManifest.BoundingBox createManifestBoundingBox() {
+		ModelManifest.BoundingBox boundingBox = new ModelManifest.BoundingBox();
+		boundingBox.max = getBoundingBox().getMaximum().getAsFloatList();
+		boundingBox.min = getBoundingBox().getMinimum().getAsFloatList();
+		return boundingBox;
+	}
+
+	private  void addModelVariantInfo(ModelManifest manifest) {
+		StructureReference structure = createStructureReference();
+		ModelManifest.TextureSet textureSet = createTextureSet();
+		//Only add the structures and textures if they aren't already in the manifest
+		//Multiple resources may reference the same structure or texture so repeats are likely
+		boolean hasStructure = false;
+		for (StructureReference existingStructure : manifest.structures) {
+			if (existingStructure.id.equals(structure.id)) {
+				hasStructure = true;
+				break;
+			}
+		}
+		if (!hasStructure) {
+			manifest.structures.add(structure);
+		}
+		boolean hasTexture = false;
+		for (ModelManifest.TextureSet existingTexture : manifest.textureSets) {
+			if (existingTexture.id.equals(textureSet.id)) {
+				hasTexture = true;
+				break;
+			}
+		}
+		if (!hasTexture) {
+			manifest.textureSets.add(textureSet);
+		}
+		//Add the model variant. Model variants are all unique.
+		ModelManifest.ModelVariant modelVariant = createModelVariant(structure, textureSet);
+		manifest.models.add(modelVariant);
+	}
+
+	private ModelManifest.ModelVariant createModelVariant(StructureReference structure, ModelManifest.TextureSet texture) {
+		ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
+		modelVariant.id = getResourceName();
+		modelVariant.structure = structure.id;
+		modelVariant.textureSet = texture.id;
+		modelVariant.icon = getResourceName() + ".png";
+		return modelVariant;
+	}
+
+	private ModelManifest.TextureSet createTextureSet() {
+		ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
+		textureReference.id = getTextureReferenceId();
+		return textureReference;
+	}
+
+	private StructureReference createStructureReference() {
+		StructureReference structureReference = new StructureReference();
+		structureReference.boundingBox = createManifestBoundingBox();
+		structureReference.id = getModelName();
+		return structureReference;
+	}
+
+	private String getTextureReferenceId() {
+		//Textures sets are model specific, so must prepend the model name to the id
+		return getModelName() + "_"+ getTextureName();
+	}
+
 
 }

@@ -50,6 +50,8 @@ import java.util.Map.Entry;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Vector3;
 
 public class WeightInfo implements BinaryEncodableAndDecodable
 {
@@ -73,6 +75,19 @@ public class WeightInfo implements BinaryEncodableAndDecodable
 	public Map<String, InverseAbsoluteTransformationWeightsPair> getMap()
 	{
 		return this.mapReferencesToInverseAbsoluteTransformationWeightsPairs;
+	}
+
+	public void scale( Vector3 scale ) {
+		Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = getMap();
+		for (Map.Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
+			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
+			AffineMatrix4x4 originalInverseTransform = iatwp.getInverseAbsoluteTransformation();
+			AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( originalInverseTransform );
+			//These need to have the scale removed just from the translation
+			newTransform.translation.multiply( scale );
+			newTransform.invert();
+			iatwp.setInverseAbsoluteTransformation( newTransform );
+		}
 	}
 
 	public void decode( BinaryDecoder binaryDecoder )

@@ -44,10 +44,7 @@
 package org.lgna.story.implementation.alice;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +54,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+import javax.wsdl.Output;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -216,16 +214,26 @@ public class AliceResourceUtilties {
 		}
 	}
 
+	public static void encodeVisual( final SkeletonVisual toSave, OutputStream os ) throws IOException {
+		BinaryEncoder encoder = new OutputStreamBinaryEncoder( os );
+		encoder.encode( toSave, new HashMap<ReferenceableBinaryEncodableAndDecodable, Integer>() );
+		encoder.flush();
+	}
+
 	public static void encodeVisual( final SkeletonVisual toSave, File file ) throws IOException {
 		FileUtilities.createParentDirectoriesIfNecessary( file );
 		if( !file.exists() ) {
 			file.createNewFile();
 		}
 		FileOutputStream fos = new FileOutputStream( file );
-		BinaryEncoder encoder = new OutputStreamBinaryEncoder( fos );
+		encodeVisual(toSave, fos);
+		fos.close();
+	}
+
+	public static void encodeTexture( final TexturedAppearance[] toSave, OutputStream os ) throws IOException {
+		BinaryEncoder encoder = new OutputStreamBinaryEncoder( os );
 		encoder.encode( toSave, new HashMap<ReferenceableBinaryEncodableAndDecodable, Integer>() );
 		encoder.flush();
-		fos.close();
 	}
 
 	public static void encodeTexture( final TexturedAppearance[] toSave, File file ) throws IOException {
@@ -234,9 +242,7 @@ public class AliceResourceUtilties {
 			file.createNewFile();
 		}
 		FileOutputStream fos = new FileOutputStream( file );
-		BinaryEncoder encoder = new OutputStreamBinaryEncoder( fos );
-		encoder.encode( toSave, new HashMap<ReferenceableBinaryEncodableAndDecodable, Integer>() );
-		encoder.flush();
+		encodeTexture(toSave, fos);
 		fos.close();
 	}
 
@@ -517,12 +523,20 @@ public class AliceResourceUtilties {
 		return createTextureBaseName( modelName, textureName ) + ".png";
 	}
 
+	public static String getTextureResourceFileName( String modelName, String textureName, String extension ) {
+		return createTextureBaseName( modelName, textureName ) + "." + extension;
+	}
+
 	public static String getTextureResourceFileName( String modelName, String textureName ) {
-		return createTextureBaseName( modelName, textureName ) + "." + TEXTURE_RESOURCE_EXTENSION;
+		return getTextureResourceFileName( modelName, textureName, TEXTURE_RESOURCE_EXTENSION);
+	}
+
+	public static String getVisualResourceFileNameFromModelName( String modelName, String extension ) {
+		return modelName.toLowerCase( Locale.ENGLISH ) + "." + extension;
 	}
 
 	public static String getVisualResourceFileNameFromModelName( String modelName ) {
-		return modelName.toLowerCase( Locale.ENGLISH ) + "." + MODEL_RESOURCE_EXTENSION;
+		return getVisualResourceFileNameFromModelName( modelName, MODEL_RESOURCE_EXTENSION);
 	}
 
 	/*private*/protected static URL getThumbnailURLInternal( Class<?> modelResource, String resourceName ) {
@@ -546,7 +560,7 @@ public class AliceResourceUtilties {
 		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
-	private static SkeletonVisual getVisual( JointedModelResource resource ) {
+	public static SkeletonVisual getVisual( JointedModelResource resource ) {
 		URL resourceURL = getVisualURL( resource.getClass(), getVisualResourceFileName( resource ) );
 		if( urlToVisualMap.containsKey( resourceURL ) ) {
 			return urlToVisualMap.get( resourceURL );

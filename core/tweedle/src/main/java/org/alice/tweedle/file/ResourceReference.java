@@ -2,6 +2,7 @@ package org.alice.tweedle.file;
 
 import org.lgna.common.Resource;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,31 +10,26 @@ abstract public class ResourceReference {
 
 	public String id;
 	public String format;
-	public List<String> files;
+	public String file;
+	//Unitialized provenance is used to add additional info
+	public Manifest.Provenance provenance;
 	// Held in a variable so it is serialized
 	final public String type;
 
-	ResourceReference() {
+	public ResourceReference() {
 		type = getContentType();
 	}
 
 	ResourceReference( String id, String fileName, String format ) {
 		this.id = id;
-		this.files = Collections.singletonList( fileName );
-		this.format = format;
-		type = getContentType();
-	}
-
-	ResourceReference( String id, List<String> fileNames, String format ) {
-		this.id = id;
-		this.files = fileNames;
+		this.file = fileName;
 		this.format = format;
 		type = getContentType();
 	}
 
 	ResourceReference( Resource resource ) {
 		id = resource.getName();
-		files = Collections.singletonList( resource.getOriginalFileName());
+		file = resource.getOriginalFileName();
 		format = resource.getContentType();
 		type = getContentType();
 	}

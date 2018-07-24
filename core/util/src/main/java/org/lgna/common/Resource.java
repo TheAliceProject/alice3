@@ -86,6 +86,13 @@ public abstract class Resource implements Nameable, NameChangeListenable {
 		this.setContent( contentType, data );
 	}
 
+	protected Resource( String fileName, String contentType, byte[] data ) {
+		this( UUID.randomUUID() );
+		this.setOriginalFileName( fileName );
+		this.setName( fileName );
+		this.setContent( contentType, data );
+	}
+
 	@Override
 	public String getName() {
 		return this.name;

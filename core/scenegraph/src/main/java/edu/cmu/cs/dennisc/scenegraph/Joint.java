@@ -43,11 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.EulerAngles;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3f;
+import edu.cmu.cs.dennisc.math.*;
 import edu.cmu.cs.dennisc.math.property.EulerAnglesProperty;
 import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
@@ -93,6 +89,19 @@ public class Joint extends Transformable implements ModelJoint
 			}
 		}
 		return null;
+	}
+
+	public void scale( Vector3 scale) {
+		AffineMatrix4x4 newTransform = new AffineMatrix4x4( localTransformation.getValue() );
+		newTransform.translation.multiply( scale );
+		localTransformation.setValue( newTransform );
+		for( int i = 0; i < getComponentCount(); i++ )
+		{
+			Component comp = getComponentAt( i );
+			if (comp instanceof Joint) {
+				((Joint)comp).scale(scale);
+			}
+		}
 	}
 
 	public Joint getJoint( String jointID )

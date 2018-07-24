@@ -49,6 +49,8 @@ import edu.cmu.cs.dennisc.print.Printable;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -73,6 +75,22 @@ public abstract class Tuple3 implements BinaryEncodableAndDecodable, Printable {
 		x = binaryDecoder.decodeDouble();
 		y = binaryDecoder.decodeDouble();
 		z = binaryDecoder.decodeDouble();
+	}
+
+	public List<Double> getAsList() {
+		List<Double> list = new ArrayList<>(3);
+		list.add(x);
+		list.add(y);
+		list.add(z);
+		return list;
+	}
+
+	public List<Float> getAsFloatList() {
+		List<Float> list = new ArrayList<>(3);
+		list.add((float)x);
+		list.add((float)y);
+		list.add((float)z);
+		return list;
 	}
 
 	@Override

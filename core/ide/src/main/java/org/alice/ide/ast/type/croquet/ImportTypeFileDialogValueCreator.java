@@ -43,7 +43,7 @@
 package org.alice.ide.ast.type.croquet;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
-import org.alice.ide.croquet.models.ui.preferences.UserTypesDirectoryState;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.FileDialogValueCreator;
 import org.lgna.project.io.IoUtilities;
 
@@ -68,7 +68,7 @@ public final class ImportTypeFileDialogValueCreator extends FileDialogValueCreat
 	}
 
 	private File getDefaultDirectory() {
-		return UserTypesDirectoryState.getInstance().getDirectoryEnsuringExistance();
+		return StageIDE.getActiveInstance().getTypesDirectory();
 	}
 
 	private String getExtension() {

@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
 import org.alice.ide.croquet.models.help.LogInOutComposite;
 import org.alice.ide.croquet.models.help.LogInOutListener;
-import org.alice.ide.croquet.models.ui.preferences.UserVideosDirectoryState;
 import org.alice.ide.video.preview.VideoComposite;
 import org.alice.media.youtube.core.YouTubeEvent;
 import org.alice.media.youtube.core.YouTubeEvent.EventType;
@@ -65,6 +64,7 @@ import org.alice.media.youtube.core.YouTubeUploader;
 import org.alice.media.youtube.croquet.views.UploadToYouTubeStatusPane;
 import org.alice.media.youtube.croquet.views.UploadView;
 import org.alice.media.youtube.login.YouTubeLoginComposite;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -125,7 +125,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 		@Override
 		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
 
-			File videosDirectory = UserVideosDirectoryState.getInstance().getDirectoryEnsuringExistance();
+			File videosDirectory = StageIDE.getActiveInstance().getVideosDirectory();
 
 			String filename;
 			String title = titleState.getValue();

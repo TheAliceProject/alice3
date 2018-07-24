@@ -43,11 +43,16 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
+
+import java.util.Map;
 
 public class SkeletonVisual extends Visual {
 
@@ -227,6 +232,46 @@ public class SkeletonVisual extends Visual {
 			}
 		}
 		return false;
+	}
+
+	//Used to normalize all the weights in the weighted meshes
+	//Weights for a given vertex should add up to 1
+	public void normalizeWeightedMeshes() {
+		for (WeightedMesh wm : weightedMeshes.getValue()) {
+			wm.normalizeWeights();
+		}
+		if (hasDefaultPoseWeightedMeshes.getValue()) {
+			for (WeightedMesh wm : defaultPoseWeightedMeshes.getValue()) {
+				wm.normalizeWeights();
+			}
+		}
+	}
+
+	public void scale(Vector3 scale) {
+		skeleton.getValue().scale(scale);
+		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : geometries.getValue()) {
+			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
+			//If we start to support things like cylinders and boxes, then this would need to be updated
+			if (g instanceof Mesh) {
+				((Mesh)g).scale(scale);
+			}
+		}
+		for (WeightedMesh wm : weightedMeshes.getValue()) {
+			wm.scale(scale);
+		}
+	}
+
+	private void scaleJoints( Joint j, Vector3 scale) {
+		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
+		newTransform.translation.multiply( scale );
+		j.localTransformation.setValue( newTransform );
+		for( int i = 0; i < j.getComponentCount(); i++ )
+		{
+			Component comp = j.getComponentAt( i );
+			if (comp instanceof Joint) {
+				scaleJoints((Joint)comp, scale);
+			}
+		}
 	}
 
 	public final InstanceProperty<Joint> skeleton = new InstanceProperty<Joint>( this, null );
