@@ -31,7 +31,7 @@ public class SkeletonVisualViewer extends Viewer {
 		}
 	}
 
-	private void positionAndOrientCamera(double height, double duration) {
+	public void positionAndOrientCamera(double height, double duration) {
 		double xzFactor = 2.0 * .65 * height;
 		double pointAtFactor = 0.5;
 		double yFactor = 1.5 * 0.65;
