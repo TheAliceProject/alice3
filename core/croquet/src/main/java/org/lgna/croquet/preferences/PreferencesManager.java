@@ -50,18 +50,14 @@ import org.lgna.croquet.Application;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.UUID;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PreferencesManager {
 
 	static final String ORG_ALICE_CLEAR_ALL_PREFERENCES = "org.alice.clearAllPreferences";
 	private static final String KEY = "${user_application_documents}";
-	private static final Pattern KEY_PATTERN = Pattern.compile( Pattern.quote( KEY ) );
 
 	public PreferencesManager( Application application ) {
 		this.application = application;
@@ -91,11 +87,12 @@ public class PreferencesManager {
 
 	public File getUserDirectory( UUID leafMigrationId, String defaultLeafDirectory ) {
 		// Group g = Application.DOCUMENT_UI_GROUP;
-		final String userDirectory = getUserDirectory();
+		final String userDirName = getUserDirectory();
+		File userDirectory = getDirectory( userDirName );
 		String path = getUserPreferences()
-				.get( leafMigrationId.toString(), Paths.get( userDirectory, defaultLeafDirectory ).toString() );
+				.get( leafMigrationId.toString(), userDirectory.toPath().resolve(defaultLeafDirectory ).toString() );
 
-		File dir = getDirectory( substituteKeyIfNecessary( path, userDirectory ) );
+		File dir = getDirectory( substituteKeyIfNecessary( path, userDirName ) );
 		if ( !dir.exists() && !dir.mkdirs() ) {
 			System.err.println( "Unable to create user directory: " + dir );
 		}
@@ -103,13 +100,8 @@ public class PreferencesManager {
 	}
 
 	private String substituteKeyIfNecessary( String path, String userParentDirectory ) {
-		Matcher matcher = KEY_PATTERN.matcher( path );
-		try {
-			return matcher.replaceAll( userParentDirectory );
-		} catch (IllegalArgumentException iae) {
-			if ( path.startsWith( KEY ) ) {
-				return userParentDirectory + path.substring( KEY.length() );
-			}
+		if ( path.startsWith( KEY ) ) {
+			return userParentDirectory + path.substring( KEY.length() );
 		}
 		return path;
 	}
