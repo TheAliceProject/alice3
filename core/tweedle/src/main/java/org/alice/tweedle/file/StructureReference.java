@@ -5,6 +5,10 @@ public class StructureReference extends ResourceReference {
 
 	public ModelManifest.BoundingBox boundingBox;
 
+	public StructureReference() {
+		super();
+	}
+
 	@Override public String getContentType() {
 		return SKELETON_MESH;
 	}

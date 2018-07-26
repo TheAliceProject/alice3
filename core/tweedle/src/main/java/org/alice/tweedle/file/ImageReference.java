@@ -10,6 +10,10 @@ public class ImageReference extends ResourceReference {
 	public float height;
 	public float width;
 
+	public ImageReference() {
+		super();
+	}
+
 	public ImageReference( String id, String fileName, String format, int width, int height ) {
 		super(id, fileName, format);
 		uuid = UUID.randomUUID();
