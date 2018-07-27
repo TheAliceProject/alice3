@@ -9,6 +9,10 @@ public class AudioReference extends ResourceReference {
 	public UUID uuid;
 	public double duration;
 
+	public AudioReference() {
+		super();
+	}
+
 	public AudioReference( AudioResource resource ) {
 		super(resource);
 		uuid = resource.getId();
