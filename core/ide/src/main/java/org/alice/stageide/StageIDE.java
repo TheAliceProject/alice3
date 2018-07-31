@@ -56,6 +56,7 @@ import edu.cmu.cs.dennisc.render.RenderUtils;
 import org.alice.ide.IDE;
 import org.alice.ide.IdeApp;
 import org.alice.ide.IdeConfiguration;
+import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.cascade.ExpressionCascadeManager;
 import org.alice.ide.declarationseditor.CodeComposite;
@@ -110,9 +111,11 @@ import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
 import org.lgna.story.SThing;
 import org.lgna.story.STurnable;
+import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.AbstractThumbnailMaker;
+import org.lgna.story.resourceutilities.StorytellingResources;
 
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
@@ -152,6 +155,12 @@ public abstract class StageIDE extends IDE {
 				}
 			}
 		} );
+	}
+
+	@Override
+	public void initialize( String[] args ) {
+		super.initialize( args );
+		StoryApiDirectoryUtilities.setUserGalleryDirectory(this.getGalleryDirectory());
 	}
 
 	@Override

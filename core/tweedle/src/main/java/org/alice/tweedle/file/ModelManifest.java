@@ -2,6 +2,7 @@ package org.alice.tweedle.file;
 
 import org.lgna.project.annotations.Visibility;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,16 +10,18 @@ import java.util.Map;
 
 public class ModelManifest extends Manifest {
 
+	public String parentClass;
 	public List<String> rootJoints =  new ArrayList<>();
 	public List<Joint> additionalJoints =  new ArrayList<>();
 	public List<JointArray> additionalJointArrays = new ArrayList<>();
 	public List<JointArrayId> additionalJointArrayIds = new ArrayList<>();
 	public List<Pose> poses =  new ArrayList<>();
 	public BoundingBox boundingBox;
-	public Boolean placeOnGround;
+	public Boolean placeOnGround = true;
 	public List<TextureSet> textureSets = new ArrayList<>();
 	public List<StructureReference> structures =  new ArrayList<>();
 	public List<ModelVariant> models =  new ArrayList<>();
+
 
 	public static class BoundingBox
 	{
@@ -66,5 +69,32 @@ public class ModelManifest extends Manifest {
 		public String jointName;
 		public List<Float> orientation;
 		public List<Float> position;
+	}
+
+	public ModelVariant getModelVariant(String variantId) {
+		for (ModelVariant variant : models) {
+			if (variant.id.equals(variantId)) {
+				return variant;
+			}
+		}
+		return null;
+	}
+
+	public StructureReference getStructure(String structureId) {
+		for (StructureReference structure : structures) {
+			if (structure.id.equals(structureId)) {
+				return structure;
+			}
+		}
+		return null;
+	}
+
+	public TextureSet getTextureSet(String textureSetId) {
+		for (TextureSet textureSet : textureSets) {
+			if (textureSet.id.equals(textureSetId)) {
+				return textureSet;
+			}
+		}
+		return null;
 	}
 }

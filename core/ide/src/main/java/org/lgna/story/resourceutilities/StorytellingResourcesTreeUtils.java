@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
@@ -63,8 +64,11 @@ public enum StorytellingResourcesTreeUtils {
 
 	private ModelResourceTree getGalleryTreeInternal() {
 		if( this.galleryTree == null ) {
-			List<Class<? extends ModelResource>> classes = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
+			List<Class<? extends ModelResource>> classes = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
 			this.galleryTree = new ModelResourceTree( classes );
+
+			List<ModelManifest> userModelResources = StorytellingResources.INSTANCE.findAndLoadUserGalleryResourcesIfNecessary();
+			this.galleryTree.addUserModels(userModelResources);
 		}
 		return this.galleryTree;
 	}

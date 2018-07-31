@@ -69,30 +69,9 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public final class EnumConstantResourceKey extends InstanceCreatorKey {
-	private static Map<JavaType, JavaType> mapResourceTypeToAbstractionType;
 
 	private final Enum<? extends ModelResource> enumConstant;
 
-	public static JavaType getAbstractionTypeForResourceType( AbstractType<?, ?, ?> assignableFromResourceType ) {
-		if( mapResourceTypeToAbstractionType != null ) {
-			//pass
-		} else {
-			mapResourceTypeToAbstractionType = Maps.newHashMap();
-			List<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
-			for( JavaType abstractionType : abstractionTypes ) {
-				JavaType resourceType = (JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
-				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
-			}
-		}
-		JavaType abstractionType = null;
-		for( JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
-			if( resourceType.isAssignableFrom( assignableFromResourceType ) ) {
-				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
-				break;
-			}
-		}
-		return abstractionType;
-	}
 
 	public EnumConstantResourceKey( Enum<? extends ModelResource> enumConstant ) {
 		this.enumConstant = enumConstant;

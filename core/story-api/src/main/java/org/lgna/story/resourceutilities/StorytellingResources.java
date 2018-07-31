@@ -44,25 +44,23 @@ package org.lgna.story.resourceutilities;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.prefs.Preferences;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousStoryApi;
+import org.alice.tweedle.file.ManifestEncoderDecoder;
+import org.alice.tweedle.file.ModelManifest;
 import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
@@ -79,9 +77,11 @@ public enum StorytellingResources {
 
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
-	private List<Class<? extends ModelResource>> aliceClassesLoaded = null;
-
+	private List<File> userGalleryResourceFiles = null;
+	private List<ModelManifest> userGalleryModelManifests = null;
+	private List<Class<? extends ModelResource>> installedAliceClassesLoaded = null;
 	private List<URLClassLoader> resourceClassLoaders;
+
 	private static final FileFilter DIR_FILE_FILTER = new FileFilter() {
 		@Override
 		public boolean accept( File file ) {
@@ -243,6 +243,13 @@ public enum StorytellingResources {
 		return getDirsFromPref( GALLERY_DIRECTORY_PREF_KEY, "" );
 	}
 
+	private List<File> findMyGalleryResources() {
+		List<File> myGalleryResources = new ArrayList<>();
+		myGalleryResources.add(new File( "C:/Users/dculyba/Documents/Alice3/MyGallery" ));
+
+		return myGalleryResources;
+	}
+
 	private List<File> findAliceResources() {
 		File customResourcesPath = findResourcePath( "assets/custom" );
 		if( customResourcesPath != null ) {
@@ -321,6 +328,17 @@ public enum StorytellingResources {
 		return rv;
 	}
 
+	public List<File> getDynamicModelFiles( File... directoriesToSearch ) {
+		List<File> dynamicModelFiles = new ArrayList<>();
+		for( File directory : directoriesToSearch ) {
+			if (directory.isDirectory()) {
+				File[] modelFiles = FileUtilities.listDescendants(directory, "json");
+				dynamicModelFiles.addAll(Arrays.asList(modelFiles));
+			}
+		}
+		return dynamicModelFiles;
+	}
+
 	public List<String> getClassNamesFromResourceFiles( File... resourceFiles ) {
 		List<String> classNames = new LinkedList<String>();
 		Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
@@ -331,6 +349,7 @@ public enum StorytellingResources {
 		}
 		return classNames;
 	}
+
 
 	public List<Class<? extends ModelResource>> loadClassesFromResourceFiles( List<String> classNames, File... resourceFiles ) {
 		List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
@@ -363,49 +382,6 @@ public enum StorytellingResources {
 					} catch( ClassNotFoundException cnfe2 ) {
 						Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
 					}
-				}
-			}
-			if( this.resourceClassLoaders == null ) {
-				this.resourceClassLoaders = new LinkedList<URLClassLoader>();
-			}
-			this.resourceClassLoaders.add( cl );
-
-		} catch( Exception e ) {
-			e.printStackTrace();
-		}
-		return classes;
-	}
-
-	public List<Class<? extends ModelResource>> loadResourcesFromFiles( File... resourceFiles ) {
-		List<Class<? extends ModelResource>> classes = new LinkedList<Class<? extends ModelResource>>();
-
-		List<String> classNames = new LinkedList<String>();
-		LinkedList<URL> urls = new LinkedList<URL>();
-
-		Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
-
-		for( Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
-			try {
-				urls.add( entry.getKey().toURI().toURL() );
-				for( String className : entry.getValue() ) {
-					classNames.add( className );
-				}
-			} catch( MalformedURLException e ) {
-				Logger.severe( "Failed to load resources from jar: " + entry.getKey() );
-			}
-		}
-		try {
-			URL[] urlArray = urls.toArray( new URL[ urls.size() ] );
-			URLClassLoader cl = new URLClassLoader( urlArray );
-
-			for( String className : classNames ) {
-				try {
-					Class<?> cls = cl.loadClass( className );
-					if( ModelResource.class.isAssignableFrom( cls ) ) {
-						classes.add( (Class<? extends ModelResource>)cls );
-					}
-				} catch( ClassNotFoundException cnfe ) {
-					Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
 				}
 			}
 			if( this.resourceClassLoaders == null ) {
@@ -466,21 +442,42 @@ public enum StorytellingResources {
 	}
 
 	public static boolean initializeModelClassPath() {
-		List<Class<? extends ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
+		List<Class<? extends ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadInstalledAliceResourcesIfNecessary();
 		if( classesLoaded != null ) {
 			return true;
 		}
 		return false;
 	}
 
-	/*package-private*/List<Class<? extends ModelResource>> findAndLoadAliceResourcesIfNecessary() {
-		if( this.aliceClassesLoaded == null ) {
+	List<ModelManifest> findAndLoadUserGalleryResourcesIfNecessary() {
+		if (this.userGalleryModelManifests == null) {
+			this.userGalleryModelManifests = new ArrayList<>();
+			File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+			List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
+			for (File modelFile : dynamicModelFiles ) {
+				try {
+					String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+					modelManifest.setRootFile(modelFile.getParentFile());
+					this.userGalleryModelManifests.add(modelManifest);
+				}
+				catch (IOException e) {
+					Logger.warning("Error loading model data from "+modelFile);
+				}
+			}
+		}
+		return this.userGalleryModelManifests;
+	}
+
+	/*package-private*/List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
+		if( this.installedAliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 			if( resourcePaths.size() == 0 ) {
 				resourcePaths = findAliceResources();
 			}
-			this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
-			if( aliceClassesLoaded.size() == 0 ) {
+
+			this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+			if( installedAliceClassesLoaded.size() == 0 ) {
 				//Clear previously cached info
 				clearAliceResourceInfo();
 				File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
@@ -494,10 +491,10 @@ public enum StorytellingResources {
 					setGalleryResourceDirs( dirArray );
 					//Try finding the resources again
 					resourcePaths = findAliceResources();
-					this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+					this.installedAliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 				}
 			}
-			if( this.aliceClassesLoaded.size() == 0 ) {
+			if( this.installedAliceClassesLoaded.size() == 0 ) {
 				//No resources were found
 				//Clear the cached data and display an error
 				clearAliceResourceInfo();
@@ -528,7 +525,17 @@ public enum StorytellingResources {
 				setAliceResourceDirs( galleryDirs );
 			}
 		}
-		return this.aliceClassesLoaded;
+		return this.installedAliceClassesLoaded;
+	}
+
+	public ModelManifest getModelManifest(String modelName) {
+		this.findAndLoadUserGalleryResourcesIfNecessary();
+		for (ModelManifest modelManifest : this.userGalleryModelManifests) {
+			if (modelManifest.getName().equals(modelName)) {
+				return modelManifest;
+			}
+		}
+		return null;
 	}
 
 	public URL getAliceResource( String resourceString ) {
@@ -536,7 +543,7 @@ public enum StorytellingResources {
 			Logger.severe( resourceString );
 			resourceString = resourceString.replaceAll( "ı", "i" );
 		}
-		this.findAndLoadAliceResourcesIfNecessary();
+		this.findAndLoadInstalledAliceResourcesIfNecessary();
 		assert this.resourceClassLoaders != null;
 		URL foundResource = null;
 		for( URLClassLoader cl : this.resourceClassLoaders ) {
@@ -551,7 +558,7 @@ public enum StorytellingResources {
 	}
 
 	public InputStream getAliceResourceAsStream( String resourceString ) {
-		this.findAndLoadAliceResourcesIfNecessary();
+		this.findAndLoadInstalledAliceResourcesIfNecessary();
 		assert this.resourceClassLoaders != null;
 		InputStream foundResource = null;
 		for( URLClassLoader cl : this.resourceClassLoaders ) {

@@ -3,6 +3,7 @@ package org.alice.stageide.gallerybrowser;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
@@ -24,6 +25,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -123,7 +125,7 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 
 		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( sv );
 		// TODO get a user name
-		ModelManifest modelManifest = createSimpleManifest( sv.getName(), "Dave" );
+		ModelManifest modelManifest = createSimpleManifest( sv, "Dave", "Biped" );
 		GalleryModelIo modelIo = new GalleryModelIo( sv, thumbnail, modelManifest );
 		try {
 			modelIo.writeModel( StageIDE.getActiveInstance().getGalleryDirectory() );
@@ -132,12 +134,19 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		}
 	}
 
-	private static ModelManifest createSimpleManifest( String modelName, String creatorName ) {
-		ModelManifest modelManifest = new ModelManifest();
+	private static ModelManifest createSimpleManifest( SkeletonVisual sv, String creatorName, String parentClassName ) {
+		String modelName = sv.getName();
+		AxisAlignedBox boundingBox = sv.getAxisAlignedMinimumBoundingBox();
 
+		ModelManifest modelManifest = new ModelManifest();
+		modelManifest.parentClass = parentClassName;
 		modelManifest.description.name = modelName;
 		modelManifest.provenance.creator = creatorName;
 		modelManifest.provenance.aliceVersion = ProjectVersion.getCurrentVersionText();
+
+		modelManifest.boundingBox = new ModelManifest.BoundingBox();
+		modelManifest.boundingBox.max = boundingBox.getMaximum().getAsFloatList();
+		modelManifest.boundingBox.min = boundingBox.getMinimum().getAsFloatList();
 
 		StructureReference structureReference = new StructureReference();
 		structureReference.id = modelName;

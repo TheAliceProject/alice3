@@ -50,6 +50,7 @@ import java.util.Stack;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
@@ -83,6 +84,26 @@ public class ModelResourceTree {
 			}
 		}
 		return rootNodes;
+	}
+
+	public void addUserModels(List<ModelManifest> userModels) {
+		for (ModelManifest userModel : userModels) {
+			addUserModel(userModel);
+
+		}
+	}
+
+	private void addUserModel( ModelManifest userModel ){
+		ModelResourceTreeNode parentNode = null;
+		for (ModelResourceTreeNode classNode : this.smodelBasedClasses) {
+			if (classNode.getUserType().getName().equals(userModel.parentClass)) {
+				parentNode = classNode;
+				break;
+			}
+		}
+
+		ManifestDefinedModelResourceTreeNode manifestNode = new ManifestDefinedModelResourceTreeNode(userModel);
+		manifestNode.setParent(parentNode);
 	}
 
 	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( AbstractType<?, ?, ?> type ) {

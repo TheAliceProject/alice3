@@ -4,6 +4,8 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
 
+import java.net.URI;
+
 public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
 
 	Class<? extends ModelResource> resourceCls;
@@ -53,5 +55,20 @@ public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing>
 
 	@Override public boolean getPlaceOnGround() {
 		return false;
+	}
+
+	@Override
+	public URI getIconURI() {
+		return null;
+	}
+
+	@Override
+	public URI getVisualURI() {
+		return null;
+	}
+
+	@Override
+	public URI getTextureURI() {
+		return null;
 	}
 }

@@ -46,6 +46,8 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
 
+import java.net.URI;
+
 /**
  * Eventual replacement for ModelResource, but for now a child that can wrap the class mechanism
  */
@@ -68,4 +70,11 @@ public interface ModelStructure<I extends JointedModelImp, T extends SThing> ext
 	AxisAlignedBox getBoundingBox();
 
 	boolean getPlaceOnGround();
+
+	URI getIconURI();
+
+	URI getVisualURI();
+
+	URI getTextureURI();
+
 }

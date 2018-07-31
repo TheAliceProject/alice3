@@ -315,6 +315,6 @@ public class ModelResourceTreeNode implements TreeNode<JavaType>, Comparable<Mod
 	private Class<? extends SModel> modelClass = null;
 	private JavaField resourceJavaField = null;
 	private ModelResource modelResourceInstance = null;
-	private String name;
+	protected String name;
 	private boolean isSorted = false;
 }

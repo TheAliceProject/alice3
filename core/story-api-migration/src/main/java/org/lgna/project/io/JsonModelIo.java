@@ -17,6 +17,7 @@ import org.lgna.story.Pose;
 import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.JointedModelColladaExporter;
@@ -112,6 +113,7 @@ public class JsonModelIo extends DataSourceIo{
         ModelResource firstResource = modelResources.get(0);
         ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
+        String aliceClassName = AliceResourceClassUtilities.getAliceClassName( firstResource.getClass() );
         //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
         ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
         for (JointedModelResource modelResource : modelResources) {
@@ -123,7 +125,7 @@ public class JsonModelIo extends DataSourceIo{
         }
 
         ModelManifest modelManifest = modelInfo.createModelManifest();
-
+        modelManifest.parentClass = aliceClassName;
         //If this model is defined by JointedModelResources, then add the model data from that
         if (modelResources != null && modelResources.size() > 0) {
             //We use the first resource because the poses are defined on the resource enum, not on each resource instance

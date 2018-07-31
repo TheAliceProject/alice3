@@ -280,10 +280,14 @@ public class TypeManager {
 	private static final JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = JavaMethod.getInstance( SJointedModel.class, "setJointedModelResource", JointedModelResource.class );
 
 	private static NamedUserType getNamedUserTypeFor( JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField ) {
+		return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null);
+	}
+
+	private static NamedUserType getNamedUserTypeFor( JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, String className ) {
 		AbstractType<?, ?, ?> superType;
 		final int LAST_INDEX = argumentTypes.length - 1;
 		if( i < LAST_INDEX ) {
-			superType = getNamedUserTypeFor( ancestorType, argumentTypes, i + 1, null );
+			superType = getNamedUserTypeFor( ancestorType, argumentTypes, i + 1, null, className );
 		} else {
 			superType = ancestorType;
 		}
@@ -322,7 +326,11 @@ public class TypeManager {
 		} else {
 			expressions = USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER;
 		}
-		String name = createClassNameFromResourceType( argumentTypes[ i ] );
+		//Use the classname passed in to create a new named user type. If no class name is passed in, generate one
+		String name = className;
+		if (i > 0 || name == null) {
+			name = createClassNameFromResourceType(argumentTypes[i]);
+		}
 		NamedUserType rv = createTypeFor( superType, name, new AbstractType[] { argumentTypes[ i ] }, expressions );
 		if( argumentTypes[ i ] instanceof JavaType ) {
 			JavaType javaArgumentTypeI = (JavaType)argumentTypes[ i ];
@@ -393,6 +401,11 @@ public class TypeManager {
 	//		org.lgna.project.ast.AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( bipedType, org.lgna.project.ast.JavaType.getInstance( personResource.getClass() ) );
 	//		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
 	//	}
+
+	public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation( JavaType resourceType, InstanceCreation instanceCreation, String className ) {
+		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( resourceType, instanceCreation.getType() );
+		return getNamedUserTypeFor( resourceType, argumentTypes, 0, null, className );
+	}
 
 	public static NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation( InstanceCreation instanceCreation ) {
 		JavaType bipedType = JavaType.getInstance( SBiped.class );
