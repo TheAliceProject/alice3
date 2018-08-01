@@ -91,6 +91,11 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
+	public boolean isUserDefinedModel() {
+		return (this.resourceKey instanceof DynamicResourceKey);
+	}
+
+	@Override
 	public List<ResourceNode> getNodeChildren() {
 		return this.children;
 	}

@@ -56,10 +56,7 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.icons.PlusIconFactory;
-import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
-import org.alice.stageide.modelresource.InstanceCreatorKey;
-import org.alice.stageide.modelresource.ResourceKey;
-import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.*;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.IconSize;
@@ -69,6 +66,7 @@ import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.VerticalAlignment;
 import org.lgna.croquet.views.VerticalTextPosition;
+import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
 
 import javax.swing.Icon;
@@ -140,7 +138,14 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 	public GalleryDragComponent( GalleryDragModel model ) {
 		super( model, false );
 
-		if( model.isInstanceCreator() ) {
+		if (model.isUserDefinedModel()) {
+			this.baseColor = ColorUtilities.scaleHSB(DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR, 1.0, 2.0, 1.0);
+			this.highlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
+			this.shadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
+			this.activeHighlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
+			this.activeShadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
+		}
+		else if( model.isInstanceCreator() ) {
 			this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
 			this.highlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
 			this.shadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
