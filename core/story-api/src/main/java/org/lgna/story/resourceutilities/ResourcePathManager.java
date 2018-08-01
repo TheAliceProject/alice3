@@ -58,7 +58,7 @@ public class ResourcePathManager {
 	public static final String MODEL_RESOURCE_KEY = "org.alice.ide.modelResourcePath";
 	public static final String SIMS_RESOURCE_KEY = "org.alice.ide.simsResourcePath";
 
-	public static final String MY_GALLERY_MODEL_RESOURCE_KEY = "org.alice.ide.myGalleryResourcePath";
+//	public static final String MY_GALLERY_MODEL_RESOURCE_KEY = "org.alice.ide.myGalleryResourcePath";
 
 	private static final Map<String, List<File>> resourcePathMap = Maps.newHashMap();
 
@@ -67,7 +67,7 @@ public class ResourcePathManager {
 		ResourcePathManager.initializePath( IMAGE_RESOURCE_KEY );
 		ResourcePathManager.initializePath( MODEL_RESOURCE_KEY );
 		ResourcePathManager.initializePath( SIMS_RESOURCE_KEY );
-		ResourcePathManager.initializePath( MY_GALLERY_MODEL_RESOURCE_KEY );
+//		ResourcePathManager.initializePath( MY_GALLERY_MODEL_RESOURCE_KEY );
 	}
 
 	private ResourcePathManager() {
