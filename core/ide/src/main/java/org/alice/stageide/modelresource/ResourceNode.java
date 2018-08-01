@@ -134,8 +134,6 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
 		} if (this.resourceKey instanceof DynamicResourceKey) { //TODO: incorporate this into the case above. Separate for testing purposes
 			DynamicResourceKey dynamicResourceKey = (DynamicResourceKey)this.resourceKey;
-			//TODO: replace this with a different dialog? This goes to a composite that expects a resource constructed with a field reference
-			//Probably another form of the AddManagedFieldComposite
 			AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = AddResourceKeyManagedFieldComposite.getInstance();
 			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( dynamicResourceKey, true );
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
