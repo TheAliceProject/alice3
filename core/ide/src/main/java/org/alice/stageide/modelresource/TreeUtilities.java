@@ -59,10 +59,7 @@ import org.lgna.story.resourceutilities.ManifestDefinedModelResourceTreeNode;
 import org.lgna.story.resourceutilities.ModelResourceTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Dennis Cosgrove
@@ -73,6 +70,7 @@ public class TreeUtilities {
 	}
 
 	private static ClassHierarchyBasedResourceNode treeBasedOnClassHierarchy;
+	private static UserDefinedResourceNode treeBasedOnUserResources;
 	private static ThemeBasedResourceNode treeBasedOnTheme;
 	private static GroupBasedResourceNode treeBasedOnGroup;
 
@@ -123,6 +121,18 @@ public class TreeUtilities {
 		return treeBasedOnClassHierarchy;
 	}
 
+	public static UserDefinedResourceNode getTreeBasedOnUserResources() {
+		if ( treeBasedOnUserResources == null ) {
+			List<ResourceNode> userResourceNodes = new ArrayList<>();
+			getUserResourceNodes(getTreeBasedOnClassHierarchy(), userResourceNodes);
+
+			List<ResourceNode> convertedUserResourceNodes = convert( userResourceNodes, UserDefinedResourceNode.class.getSimpleName() );
+
+			treeBasedOnUserResources = new UserDefinedResourceNode( new RootResourceKey( "MyGallery", "My Gallery" ), convertedUserResourceNodes );
+		}
+		return treeBasedOnUserResources;
+	}
+
 	private static void addTags( InitializingIfAbsentListHashMap<String, ResourceNode> map, String[] tags, ResourceNode node ) {
 		if( tags != null ) {
 			for( String tag : tags ) {
@@ -132,6 +142,15 @@ public class TreeUtilities {
 				List<ResourceNode> list = map.getInitializingIfAbsentToLinkedList( tag );
 				list.add( node );
 			}
+		}
+	}
+
+	private static void getUserResourceNodes( ResourceNode node, List<ResourceNode> userResourceNodes ) {
+		if( node.isUserDefinedModel() ) {
+			userResourceNodes.add(node);
+		}
+		for( ResourceNode child : node.getNodeChildren() ) {
+			getUserResourceNodes( child, userResourceNodes );
 		}
 	}
 
@@ -152,16 +171,16 @@ public class TreeUtilities {
 		}
 	}
 
-	private static List<ResourceNode> convert( List<ResourceNode> srcNodes, boolean isTheme ) {
+	private static List<ResourceNode> convert( List<ResourceNode> srcNodes, String nodeClassName ) {
 		if( srcNodes != null ) {
 			List<ResourceNode> dstNodes = Lists.newLinkedList();
 			for( ResourceNode srcNode : srcNodes ) {
-				List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren(), isTheme );
-				ResourceNode node;
-				if( isTheme ) {
-					node = new ThemeBasedResourceNode( srcNode.getResourceKey(), dstChildNodes );
-				} else {
-					node = new GroupBasedResourceNode( srcNode.getResourceKey(), dstChildNodes );
+				List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren(), nodeClassName );
+				ResourceNode node = null;
+				switch (nodeClassName) {
+					case "ThemeBasedResourceNode" : node = new ThemeBasedResourceNode( srcNode.getResourceKey(), dstChildNodes ); break;
+					case "GroupBasedResourceNode" : node = new GroupBasedResourceNode( srcNode.getResourceKey(), dstChildNodes ); break;
+					case "UserDefinedResourceNode" : node = new UserDefinedResourceNode( srcNode.getResourceKey(), dstChildNodes ); break;
 				}
 				dstNodes.add( node );
 			}
@@ -223,7 +242,8 @@ public class TreeUtilities {
 				Logger.severe( tag );
 			} else {
 				List<ResourceNode> srcChildNodes = map.get( tag );
-				List<ResourceNode> dstChildNodes = convert( srcChildNodes, isTheme );
+				String nodeClassName = isTheme ? ThemeBasedResourceNode.class.getSimpleName() : GroupBasedResourceNode.class.getSimpleName();
+				List<ResourceNode> dstChildNodes = convert( srcChildNodes, nodeClassName );
 
 				addTagNode( tag, dstChildNodes, rv, mapInternal, isTheme );
 			}
