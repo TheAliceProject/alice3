@@ -1,5 +1,6 @@
 package org.lgna.story.resources;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.ResourceReference;
@@ -11,6 +12,8 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class DynamicResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
 
@@ -20,6 +23,7 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 	private String[] tags;
 	private String[] groupTags;
 	private String[] themeTags;
+	private JointId[] rootJointIds;
 	private AxisAlignedBox bbox;
 
 	public static DynamicResource createDynamicResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
@@ -28,7 +32,16 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 			case "Quadruped" : return new DynamicQuadrupedResource(modelManifest, modelVariant);
 			case "Flyer" : return new DynamicFlyerResource(modelManifest, modelVariant);
 			case "Slitherer" : return new DynamicSlithererResource(modelManifest, modelVariant);
-			default : return null;
+			case "Fish" : return new DynamicFishResource(modelManifest, modelVariant);
+			case "MarineMammal" : return new DynamicMarineMammalResource(modelManifest, modelVariant);
+			case "Prop" : return new DynamicPropResource(modelManifest, modelVariant);
+			case "Train" : return new DynamicTrainResource(modelManifest, modelVariant);
+			case "Automobile" : return new DynamicAutomobileResource(modelManifest, modelVariant);
+			case "Aircraft" : return new DynamicAircraftResource(modelManifest, modelVariant);
+			case "Watercraft" : return new DynamicWatercraftResource(modelManifest, modelVariant);
+			default :
+				Logger.severe("Unknown dynamic class type: "+modelManifest.parentClass);
+				return null;
 		}
 	}
 
@@ -44,10 +57,13 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 		initialize();
 	}
 
+
+
 	private void initialize() {
 		this.tags = modelManifest.description.tags.toArray(new String[modelManifest.description.tags.size()]);
 		this.groupTags = modelManifest.description.groupTags.toArray(new String[modelManifest.description.groupTags.size()]);
 		this.themeTags = modelManifest.description.themeTags.toArray(new String[modelManifest.description.themeTags.size()]);
+		this.rootJointIds = new JointId[0];
 		this.bbox = createBoundingBox();
 	}
 
@@ -66,6 +82,11 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 		return AxisAlignedBox.createNaN();
 	}
 
+	public List<JointId> getDynamicJoints() {
+		//TODO: implement this so that dynamic resources can declare joints
+		return new ArrayList<>();
+	}
+
 	@Override
 	public JointedModelImp.JointImplementationAndVisualDataFactory getImplementationAndVisualFactory() {
 		return org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory.getInstance( this );
@@ -73,7 +94,7 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 
 	@Override
 	public JointId[] getRootJointIds() {
-		return null;
+		return rootJointIds;
 	}
 
 	@Override

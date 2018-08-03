@@ -14,6 +14,7 @@ public class ManifestEncoderDecoder {
 	public static String toJson(Manifest manifest) {
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(ResourceReference.class, new SubClassSerializer<ResourceReference>())
+				.setPrettyPrinting()
 				.create();
 		return gson.toJson(manifest);
 	}

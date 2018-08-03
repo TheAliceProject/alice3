@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.annotations.ResourceTemplate;
 import org.lgna.story.SModel;
 import org.lgna.story.resources.ModelResource;
@@ -101,6 +102,16 @@ public class AliceResourceClassUtilities {
 			}
 		}
 		return null;
+	}
+
+	public static Class<? extends ModelResource> getResourceClassForAliceName( String aliceClassName ) {
+		String className = "org.lgna.story.resources." + aliceClassName + RESOURCE_SUFFIX;
+		try {
+			return (Class<? extends ModelResource>)Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			Logger.warning("No class found for "+className);
+			return null;
+		}
 	}
 
 	public static String getAliceMethodNameForEnum( String enumName ) {

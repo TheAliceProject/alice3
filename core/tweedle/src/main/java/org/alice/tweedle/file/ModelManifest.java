@@ -3,10 +3,7 @@ package org.alice.tweedle.file;
 import org.lgna.project.annotations.Visibility;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ModelManifest extends Manifest {
 
@@ -45,6 +42,20 @@ public class ModelManifest extends Manifest {
 		public String name;
 		public String parent;
 		public Visibility visibility;
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Joint) {
+				Joint objJoint = (Joint)obj;
+				return name.equals(objJoint.name) && parent.equals(objJoint.parent);
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(name, parent);
+		}
 	}
 
 	public static class JointArray {

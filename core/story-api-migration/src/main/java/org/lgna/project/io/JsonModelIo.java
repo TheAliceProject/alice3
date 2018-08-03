@@ -113,7 +113,7 @@ public class JsonModelIo extends DataSourceIo{
         ModelResource firstResource = modelResources.get(0);
         ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
-        String aliceClassName = AliceResourceClassUtilities.getAliceClassName( firstResource.getClass() );
+
         //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
         ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
         for (JointedModelResource modelResource : modelResources) {
@@ -125,7 +125,10 @@ public class JsonModelIo extends DataSourceIo{
         }
 
         ModelManifest modelManifest = modelInfo.createModelManifest();
-        modelManifest.parentClass = aliceClassName;
+        //Alice resources are enums that implement the base resource interfaces. For instance, the Alien implements the BipedResource interface
+        Class superClass = firstResource.getClass().getInterfaces()[0];
+        String parentClassName = AliceResourceClassUtilities.getAliceClassName( superClass );
+        modelManifest.parentClass = parentClassName;
         //If this model is defined by JointedModelResources, then add the model data from that
         if (modelResources != null && modelResources.size() > 0) {
             //We use the first resource because the poses are defined on the resource enum, not on each resource instance
