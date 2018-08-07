@@ -10,6 +10,11 @@ public class DynamicSlithererResource extends DynamicResource<SlithererImp, SSli
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return SlithererResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public SlithererImp createImplementation(SSlitherer abstraction ) {
 		return new SlithererImp(abstraction, this.getImplementationAndVisualFactory());
 	}

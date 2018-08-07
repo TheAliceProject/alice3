@@ -58,179 +58,18 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class JointId {
-	private static final Map<Class<? extends JointedModelResource>, Map<JointId, List<JointId>>> externalChildrenMap = Maps.newHashMap();
-
-	private static void addExternalChild( JointId parent, JointId child ) {
-		Class<? extends JointedModelResource> childClass = child.getContainingClass();
-		Map<JointId, List<JointId>> childClassMap = null;
-		if( externalChildrenMap.containsKey( childClass ) ) {
-			childClassMap = externalChildrenMap.get( childClass );
-		} else {
-			childClassMap = Maps.newHashMap();
-			externalChildrenMap.put( childClass, childClassMap );
-		}
-		List<JointId> externalChildList = null;
-		if( childClassMap.containsKey( parent ) ) {
-			externalChildList = childClassMap.get( parent );
-		} else {
-			externalChildList = Lists.newLinkedList();
-			childClassMap.put( parent, externalChildList );
-		}
-		externalChildList.add( child );
-	}
-
-	private static List<JointId> getChildList( Class<? extends JointedModelResource> forClass, JointId forJoint ) {
-		if( ( forClass == null ) || ( forJoint == null ) ) {
-			return null;
-		}
-		if( externalChildrenMap.containsKey( forClass ) ) {
-			Map<JointId, List<JointId>> classMap = externalChildrenMap.get( forClass );
-			if( classMap.containsKey( forJoint ) ) {
-				return classMap.get( forJoint );
-			}
-		}
-		return null;
-	}
-
-	private static class ExternalChildrenIterator implements Iterator<JointId> {
-		private final JointId forJoint;
-		private Class<? extends JointedModelResource> currentClass;
-		private Iterator<JointId> currentIterator;
-		private final JointedModelResource forResource;
-
-		public ExternalChildrenIterator( Class<? extends JointedModelResource> forClass, JointedModelResource forResource, JointId forJoint ) {
-			this.forJoint = forJoint;
-			this.currentClass = forClass;
-			this.forResource = forResource;
-			this.currentIterator = this.forJoint.getDeclaredChildren( this.forResource ).iterator();
-			if( !this.currentIterator.hasNext() ) {
-				this.currentIterator = getIteratorForExternalChildren();
-			} else {
-				this.forJoint.getDeclaredChildren( this.forResource );
-			}
-		}
-
-		private Iterator<JointId> getIteratorForExternalChildren() {
-			Iterator<JointId> externalIterator = null;
-			while( ( currentClass != null ) && ( externalIterator == null ) ) {
-				List<JointId> jointList = JointId.getChildList( currentClass, forJoint );
-				if( jointList != null ) {
-					externalIterator = jointList.iterator();
-				}
-
-				Class<?>[] interfaces = currentClass.getInterfaces();
-				Class<?> superClass = null;
-				if( interfaces.length > 0 ) {
-					superClass = interfaces[ 0 ];
-				} else {
-					superClass = currentClass.getSuperclass();
-				}
-				if( JointedModelResource.class.isAssignableFrom( superClass ) ) {
-					currentClass = (Class<? extends JointedModelResource>)superClass;
-				} else {
-					currentClass = null;
-				}
-			}
-			return externalIterator;
-		}
-
-		@Override
-		public boolean hasNext() {
-			if( currentIterator != null ) {
-				return currentIterator.hasNext();
-			}
-			return false;
-		}
-
-		@Override
-		public JointId next() {
-			if( currentIterator != null ) {
-				JointId next = currentIterator.next();
-				if( !currentIterator.hasNext() ) {
-					currentIterator = getIteratorForExternalChildren();
-				}
-
-				return next;
-			}
-			return null;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException( "remove" );
-		}
-	}
-
-	private static class ExternalChildrenIterable implements Iterable<JointId> {
-		private final Class<? extends JointedModelResource> forClass;
-		private final JointId forJoint;
-		private final JointedModelResource forResource;
-
-		public ExternalChildrenIterable( Class<? extends JointedModelResource> forClass, JointedModelResource forResource, JointId forJoint ) {
-			this.forClass = forClass;
-			this.forJoint = forJoint;
-			this.forResource = forResource;
-		}
-
-		@Override
-		public Iterator<JointId> iterator() {
-			return new ExternalChildrenIterator( this.forClass, this.forResource, this.forJoint );
-		}
-
-	}
 
 	private final JointId parent;
 	private final Class<? extends JointedModelResource> containingClass;
-	private final JointedModelResource resourceReference;
-	private final List<JointId> children = Lists.newLinkedList();
-	private final Map<JointedModelResource, List<JointId>> childrenMap = Maps.newHashMap();
 	private Field fld;
 
-	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass, JointedModelResource resourceReference ) {
+	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass ) {
 		this.parent = parent;
 		this.containingClass = containingClass;
-		this.resourceReference = resourceReference;
-		//Initialize the childrenMap such that there's an empty list to be gotten
-		this.childrenMap.put( resourceReference, new ArrayList<JointId>() );
-		if( this.parent != null ) {
-			if( this.parent.getContainingClass() == this.getContainingClass() ) {
-				this.parent.addChild( this.resourceReference, this );
-			} else {
-				JointId.addExternalChild( parent, this );
-			}
-		}
-	}
-
-	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass ) {
-		this( parent, containingClass, null );
 	}
 
 	public JointId getParent() {
 		return this.parent;
-	}
-
-	private void addChild( JointedModelResource resource, JointId child ) {
-		List<JointId> childList = null;
-		if( this.childrenMap.containsKey( resource ) ) {
-			childList = this.childrenMap.get( resource );
-		} else if( this.childrenMap.containsKey( null ) ) {
-			//Joints that are in the "null" resource child map are the base joints for this resource and are part of all resources in this group
-			List<JointId> baseChildList = this.childrenMap.get( null );
-			childList = Lists.newArrayList( baseChildList );
-			this.childrenMap.put( resource, childList );
-		} else {
-			childList = Lists.newArrayList();
-			this.childrenMap.put( resource, childList );
-		}
-		childList.add( child );
-	}
-
-	protected Class<? extends JointedModelResource> getContainingClass() {
-		return this.containingClass;
-	}
-
-	protected JointedModelResource getResourceReference() {
-		return this.resourceReference;
 	}
 
 	public Field getPublicStaticFinalFld() {
@@ -257,21 +96,6 @@ public class JointId {
 			}
 		}
 		return this.fld;
-	}
-
-	public Iterable<JointId> getDeclaredChildren( JointedModelResource forResource ) {
-		if( !this.childrenMap.containsKey( forResource ) ) {
-			return this.childrenMap.get( null );
-		}
-		return this.childrenMap.get( forResource );
-	}
-
-	public Iterable<JointId> getChildren( JointedModelResource resource ) {
-		return new ExternalChildrenIterable( resource.getClass(), resource, this );
-	}
-
-	public Iterable<JointId> getChildren( Class<? extends JointedModelResource> resourceClass ) {
-		return new ExternalChildrenIterable( resourceClass, null, this );
 	}
 
 	@Override

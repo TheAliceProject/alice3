@@ -15,7 +15,13 @@ public class DynamicAutomobileResource extends DynamicResource<TransportImp, STr
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return AutomobileResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public TransportImp createImplementation(STransport abstraction) {
 		return new TransportImp(abstraction, this.getImplementationAndVisualFactory());
 	}
+
 }

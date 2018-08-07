@@ -15,6 +15,11 @@ public class DynamicQuadrupedResource extends DynamicResource<QuadrupedImp, SQua
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return QuadrupedResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public QuadrupedImp createImplementation(SQuadruped abstraction ) {
 		return new QuadrupedImp(abstraction, this.getImplementationAndVisualFactory());
 	}

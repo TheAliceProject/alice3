@@ -15,6 +15,11 @@ public class DynamicTrainResource extends DynamicResource<TransportImp, STranspo
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return TrainResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public TransportImp createImplementation(STransport abstraction) {
 		return new TransportImp(abstraction, this.getImplementationAndVisualFactory());
 	}

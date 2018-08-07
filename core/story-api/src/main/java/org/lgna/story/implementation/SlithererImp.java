@@ -56,11 +56,6 @@ public final class SlithererImp extends JointedModelImp<SSlitherer, SlithererRes
 	}
 
 	@Override
-	public JointId[] getRootJointIds() {
-		return SlithererResource.JOINT_ID_ROOTS;
-	}
-
-	@Override
 	protected Vector4 getThoughtBubbleOffset() {
 		return this.getTopOffsetForJoint( this.getJointImplementation( SlithererResource.HEAD ) );
 	}

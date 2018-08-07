@@ -57,11 +57,6 @@ public final class QuadrupedImp extends JointedModelImp<SQuadruped, QuadrupedRes
 	}
 
 	@Override
-	public JointId[] getRootJointIds() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
-
-	@Override
 	protected Vector4 getThoughtBubbleOffset() {
 		return this.getTopOffsetForJoint( this.getJointImplementation( QuadrupedResource.HEAD ) );
 	}

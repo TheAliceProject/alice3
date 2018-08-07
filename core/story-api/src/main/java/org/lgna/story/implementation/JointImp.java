@@ -50,6 +50,9 @@ import edu.cmu.cs.dennisc.scenegraph.util.ModestAxes;
 import org.lgna.story.SJoint;
 import org.lgna.story.resources.JointId;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -124,6 +127,24 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 	}
 
+	public JointImp getJointParent() {
+		return jointParent;
+	}
+
+	public List<JointImp> getJointChildren() {
+		return jointChildren;
+	}
+
+	void setJointParent(JointImp jointParent) {
+		if (this.jointParent != null) {
+			this.jointParent.getJointChildren().remove(this);
+		}
+		this.jointParent = jointParent;
+		if (this.jointParent != null) {
+			jointParent.getJointChildren().add(this);
+		}
+	}
+
 	public JointedModelImp<?, ?> getJointedModelParent() {
 		return this.jointedModelImplementation;
 	}
@@ -155,5 +176,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 
 	private SJoint abstraction;
 	private final JointedModelImp<?, ?> jointedModelImplementation;
+	private JointImp jointParent;
+	private List<JointImp> jointChildren = new ArrayList<>();
 	private ModestAxes axes;
 }

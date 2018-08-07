@@ -15,6 +15,11 @@ public class DynamicFishResource extends DynamicResource<SwimmerImp, SSwimmer> i
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return SwimmerResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public SwimmerImp createImplementation(SSwimmer abstraction) {
 		return new SwimmerImp(abstraction, this.getImplementationAndVisualFactory());
 	}

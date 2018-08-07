@@ -16,6 +16,11 @@ public class DynamicFlyerResource extends DynamicResource<FlyerImp, SFlyer> impl
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return FlyerResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public FlyerImp createImplementation(SFlyer abstraction ) {
 		return new FlyerImp(abstraction, this.getImplementationAndVisualFactory());
 	}

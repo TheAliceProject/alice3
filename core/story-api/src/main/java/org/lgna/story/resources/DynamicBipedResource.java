@@ -15,6 +15,11 @@ public class DynamicBipedResource extends DynamicResource<BipedImp, SBiped> impl
 	}
 
 	@Override
+	public JointId[] getRootJointIds() {
+		return BipedResource.JOINT_ID_ROOTS;
+	}
+
+	@Override
 	public BipedImp createImplementation( SBiped abstraction ) {
 		return new BipedImp(abstraction, this.getImplementationAndVisualFactory());
 	}
