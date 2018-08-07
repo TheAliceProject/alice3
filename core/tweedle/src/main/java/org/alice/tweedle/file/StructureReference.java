@@ -1,7 +1,7 @@
 package org.alice.tweedle.file;
 
 public class StructureReference extends ResourceReference {
-	private static final String SKELETON_MESH = "skeletonMesh";
+	public static final String CONTENT_TYPE = "skeletonMesh";
 
 	public ModelManifest.BoundingBox boundingBox;
 
@@ -10,7 +10,7 @@ public class StructureReference extends ResourceReference {
 	}
 
 	@Override public String getContentType() {
-		return SKELETON_MESH;
+		return CONTENT_TYPE;
 	}
 
 }
