@@ -165,7 +165,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 							if( atIsUpsideDown[ 0 ] ) {
 								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
 							} else {
-								System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
+								System.out.println( "SEVERE: CONTENT_TYPE IS NOT UPSIDE DOWN" );
 							}
 						}
 						imageCount++;
