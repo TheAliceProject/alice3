@@ -663,26 +663,25 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 			return;
 		}
 		AffineMatrix4x4 oTransformationPost = oTransformationPre;
-		if( currentNode instanceof Transformable ) {
-			oTransformationPost = AffineMatrix4x4.createMultiplication( oTransformationPre, ( (Transformable)currentNode ).localTransformation.getValue() );
+		if( currentNode instanceof Joint ) {
+			Joint currentJoint = (Joint) currentNode;
+			oTransformationPost = AffineMatrix4x4.createMultiplication( oTransformationPre, ( currentJoint ).localTransformation.getValue() );
 
 			AffineMatrix4x4 unscaledTransform = new AffineMatrix4x4( oTransformationPost );
 			unscaledTransform.translation.x *= inverseScale.right.x;
 			unscaledTransform.translation.y *= inverseScale.up.y;
 			unscaledTransform.translation.z *= inverseScale.backward.z;
 
-			if( currentNode instanceof Joint ) {
-				for( Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
-					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
-						wmc.process( (Joint)currentNode, unscaledTransform );
-					}
+			for( Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
+				for( WeightedMeshControl wmc : controlEntry.getValue() ) {
+					wmc.process( currentJoint, unscaledTransform );
 				}
 			}
 		}
 		for( int i = 0; i < currentNode.getComponentCount(); i++ ) {
 			Component comp = currentNode.getComponentAt( i );
-			if( comp instanceof Composite ) {
-				Composite jointChild = (Composite)comp;
+			if( comp instanceof Joint ) {
+				Joint jointChild = (Joint)comp;
 				processWeightedMesh( jointChild, oTransformationPost, inverseScale );
 			}
 		}

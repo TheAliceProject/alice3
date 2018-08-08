@@ -65,14 +65,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Leaf;
-import edu.cmu.cs.dennisc.scenegraph.ModelJoint;
-import edu.cmu.cs.dennisc.scenegraph.Scalable;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
@@ -90,7 +83,6 @@ import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 
 /**
