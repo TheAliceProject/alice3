@@ -5,9 +5,13 @@ import org.lgna.common.resources.AudioResource;
 import java.util.UUID;
 
 public class AudioReference extends ResourceReference {
-	private static final String AUDIO = "audio";
+	public static final String CONTENT_TYPE = "audio";
 	public UUID uuid;
 	public double duration;
+
+	public AudioReference() {
+		super();
+	}
 
 	public AudioReference( AudioResource resource ) {
 		super(resource);
@@ -16,6 +20,6 @@ public class AudioReference extends ResourceReference {
 	}
 
 	@Override public String getContentType() {
-		return AUDIO;
+		return CONTENT_TYPE;
 	}
 }

@@ -1,9 +1,13 @@
 package org.alice.tweedle.file;
 
 public class ModelReference extends ResourceReference {
-	private static final String MODEL = "model";
+	public static final String CONTENT_TYPE = "model";
+
+	public ModelReference() {
+		super();
+	}
 
 	@Override public String getContentType() {
-		return MODEL;
+		return CONTENT_TYPE;
 	}
 }

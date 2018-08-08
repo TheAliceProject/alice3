@@ -5,8 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.junit.Assert.*;
 
 public class ManifestEncoderTest {
@@ -40,6 +38,8 @@ public class ManifestEncoderTest {
 					+ " \"max\": [ \"0.2\", \"1.4\", \"0.3\" ]"
 					+ " } } ], \"models\": [ { \"skeleton\": \"default\","
 					+ " \"textureSet\": \"default\", \"icon\": \"thumbnail.png\" } ]}";
+
+	private static final String SAMPLE_MODEL_WITH_3_RESOURCES = "{\"rootJoints\":[],\"additionalJoints\":[{\"name\":\"LOWER_LIP\",\"parent\":\"MOUTH\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_THUMB_TIP\",\"parent\":\"LEFT_THUMB_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_INDEX_FINGER_TIP\",\"parent\":\"LEFT_INDEX_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_MIDDLE_FINGER_TIP\",\"parent\":\"LEFT_MIDDLE_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_PINKY_FINGER_TIP\",\"parent\":\"LEFT_PINKY_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_THUMB_TIP\",\"parent\":\"RIGHT_THUMB_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_INDEX_FINGER_TIP\",\"parent\":\"RIGHT_INDEX_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_MIDDLE_FINGER_TIP\",\"parent\":\"RIGHT_MIDDLE_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_PINKY_FINGER_TIP\",\"parent\":\"RIGHT_PINKY_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_TOES\",\"parent\":\"LEFT_FOOT\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_TOES\",\"parent\":\"RIGHT_FOOT\",\"visibility\":\"COMPLETELY_HIDDEN\"}],\"additionalJointArrays\":[],\"additionalJointArrayIds\":[],\"poses\":[],\"boundingBox\":{\"min\":[-0.281617,7.213192E-4,-0.18244708],\"max\":[0.2846615,1.4431626,0.39562756]},\"placeOnGround\":false,\"textureSets\":[{\"id\":\"Alien_DEFAULT\",\"idToResourceMap\":{\"1\":\"Alien_DEFAULT_texture_1_diffuseMap\"}}],\"structures\":[{\"boundingBox\":{\"min\":[-0.281617,7.213192E-4,-0.18244708],\"max\":[0.2846615,1.4431626,0.39562756]},\"id\":\"Alien\",\"format\":\"dae\",\"file\":\"Alien_Alien.dae\",\"type\":\"skeletonMesh\"}],\"models\":[{\"id\":\"DEFAULT\",\"structure\":\"Alien\",\"textureSet\":\"Alien_DEFAULT\",\"icon\":\"DEFAULT.png\"}],\"description\":{\"name\":\"Alien\",\"icon\":\"Alien_cls.png\",\"tags\":[\"alien\",\"space\"],\"groupTags\":[\"characters\"],\"themeTags\":[\"*outer space\"]},\"provenance\":{\"aliceVersion\":\"3.4.0.0-alpha\",\"creationYear\":\"2011\",\"creator\":\"Laura Paoletti\"},\"metadata\":{\"formatVersion\":\"0.1+alpha\",\"identifier\":{\"version\":\"1.0\",\"type\":\"Model\"}},\"prerequisites\":[],\"resources\":[{\"uuid\":\"ec707422-033d-4c74-99f2-f4ebeea77642\",\"height\":512.0,\"width\":512.0,\"id\":\"Alien_DEFAULT_texture_1_diffuseMap\",\"format\":\"image/png\",\"file\":\"Alien_DEFAULT_texture_1_diffuseMap.png\",\"type\":\"image\"},{\"uuid\":\"d1cb1b8c-e08f-4e9a-8f89-3b6847fc1dbb\",\"height\":120.0,\"width\":43.0,\"id\":\"DEFAULT.png\",\"format\":\"image/png\",\"file\":\"DEFAULT.png\",\"type\":\"image\"},{\"uuid\":\"463c8b29-2fad-4203-9abe-5b7acad26544\",\"height\":120.0,\"width\":43.0,\"id\":\"Alien_cls.png\",\"format\":\"image/png\",\"file\":\"Alien_cls.png\",\"type\":\"image\"}]}";
 
 	@Test
 	public void aLibraryManifestShouldBeCreatedFromLibraryManifestJson() {
@@ -142,6 +142,27 @@ public class ManifestEncoderTest {
 		ModelManifest model = ManifestEncoderDecoder.fromJson( SAMPLE_MODEL, ModelManifest.class );
 
 		assertNotNull("The encoder should have returned something.", model );
+	}
+
+	@Test
+	public void aModelManifestShouldBeCreatedFromModelWithResourcesManifestJson() {
+		ModelManifest model = ManifestEncoderDecoder.fromJson(SAMPLE_MODEL_WITH_3_RESOURCES, ModelManifest.class );
+
+		assertNotNull("The encoder should have returned something.", model );
+	}
+
+	@Test
+	public void aResourcesShouldBeCreatedFromModelWithResourcesManifestJson() {
+		ModelManifest model = ManifestEncoderDecoder.fromJson(SAMPLE_MODEL_WITH_3_RESOURCES, ModelManifest.class );
+
+		assertNotNull("The model.resources should have been initialized to something.", model.resources );
+	}
+
+	@Test
+	public void theRightNumberOfResourceShouldBeCreatedFromModelWithResourcesManifestJson() {
+		ModelManifest model = ManifestEncoderDecoder.fromJson(SAMPLE_MODEL_WITH_3_RESOURCES, ModelManifest.class );
+
+		assertTrue("The model.resources should have 3 resources in it.", model.resources.size() == 3 );
 	}
 
 	private LibraryManifest getSimpleLibraryManifest() {

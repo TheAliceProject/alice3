@@ -5,10 +5,14 @@ import org.lgna.common.resources.ImageResource;
 import java.util.UUID;
 
 public class ImageReference extends ResourceReference {
-	private static final String IMAGE = "image";
+	public static final String CONTENT_TYPE = "image";
 	public UUID uuid;
 	public float height;
 	public float width;
+
+	public ImageReference() {
+		super();
+	}
 
 	public ImageReference( String id, String fileName, String format, int width, int height ) {
 		super(id, fileName, format);
@@ -25,6 +29,6 @@ public class ImageReference extends ResourceReference {
 	}
 
 	@Override public String getContentType() {
-		return IMAGE;
+		return CONTENT_TYPE;
 	}
 }
