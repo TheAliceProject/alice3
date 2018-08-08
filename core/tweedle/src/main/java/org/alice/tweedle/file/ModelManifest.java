@@ -2,7 +2,6 @@ package org.alice.tweedle.file;
 
 import org.lgna.project.annotations.Visibility;
 
-import java.io.File;
 import java.util.*;
 
 public class ModelManifest extends Manifest {
@@ -16,7 +15,6 @@ public class ModelManifest extends Manifest {
 	public BoundingBox boundingBox;
 	public Boolean placeOnGround = true;
 	public List<TextureSet> textureSets = new ArrayList<>();
-	public List<StructureReference> structures =  new ArrayList<>();
 	public List<ModelVariant> models =  new ArrayList<>();
 
 
@@ -27,14 +25,14 @@ public class ModelManifest extends Manifest {
 	}
 
 	public static class ModelVariant {
-		public String id;
+		public String name;
 		public String structure;
 		public String textureSet;
 		public String icon;
 	}
 
 	public static class TextureSet {
-		public String id;
+		public String name;
 		public Map<Integer, String> idToResourceMap = new HashMap<>();
 	}
 
@@ -82,27 +80,34 @@ public class ModelManifest extends Manifest {
 		public List<Float> position;
 	}
 
-	public ModelVariant getModelVariant(String variantId) {
+	public ModelVariant getModelVariant(String variantName) {
 		for (ModelVariant variant : models) {
-			if (variant.id.equals(variantId)) {
+			if (variant.name.equals(variantName)) {
 				return variant;
 			}
 		}
 		return null;
 	}
 
-	public StructureReference getStructure(String structureId) {
-		for (StructureReference structure : structures) {
-			if (structure.id.equals(structureId)) {
-				return structure;
-			}
+	public AliceTextureReference getAliceTextureReference(String textureName) {
+		ResourceReference resource = getResource(textureName);
+		if (resource instanceof AliceTextureReference) {
+			return (AliceTextureReference)resource;
 		}
 		return null;
 	}
 
-	public TextureSet getTextureSet(String textureSetId) {
+	public StructureReference getStructure(String structureName) {
+		ResourceReference resource = getResource(structureName);
+		if (resource instanceof StructureReference) {
+			return (StructureReference)resource;
+		}
+		return null;
+	}
+
+	public TextureSet getTextureSet(String textureSetName) {
 		for (TextureSet textureSet : textureSets) {
-			if (textureSet.id.equals(textureSetId)) {
+			if (textureSet.name.equals(textureSetName)) {
 				return textureSet;
 			}
 		}

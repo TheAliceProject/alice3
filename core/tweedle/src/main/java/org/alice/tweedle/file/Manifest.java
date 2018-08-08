@@ -56,9 +56,9 @@ public class Manifest {
 		Library, World, Model
 	}
 
-	public ResourceReference getResource(String resourceId) {
+	public ResourceReference getResource(String resourceName) {
 		for (ResourceReference resource : resources) {
-			if (resource.id.equals(resourceId)) {
+			if (resource.name.equals(resourceName)) {
 				return resource;
 			}
 		}

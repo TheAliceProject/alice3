@@ -2,13 +2,9 @@ package org.alice.tweedle.file;
 
 import org.lgna.common.Resource;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 abstract public class ResourceReference {
 
-	public String id;
+	public String name;
 	public String format;
 	public String file;
 	//Unitialized provenance is used to add additional info
@@ -20,15 +16,15 @@ abstract public class ResourceReference {
 		type = getContentType();
 	}
 
-	ResourceReference( String id, String fileName, String format ) {
-		this.id = id;
+	ResourceReference( String name, String fileName, String format ) {
+		this.name = name;
 		this.file = fileName;
 		this.format = format;
 		type = getContentType();
 	}
 
 	ResourceReference( Resource resource ) {
-		id = resource.getName();
+		name = resource.getName();
 		file = resource.getOriginalFileName();
 		format = resource.getContentType();
 		type = getContentType();

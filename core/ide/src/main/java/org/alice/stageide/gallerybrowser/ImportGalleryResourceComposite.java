@@ -5,7 +5,6 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
@@ -24,7 +23,6 @@ import org.lgna.project.io.GalleryModelIo;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
 import org.lgna.story.resourceutilities.JointedModelColladaImporter;
@@ -37,7 +35,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -332,17 +329,17 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		modelManifest.boundingBox.min = boundingBox.getMinimum().getAsFloatList();
 
 		StructureReference structureReference = new StructureReference();
-		structureReference.id = modelName;
-		modelManifest.structures.add( structureReference );
+		structureReference.name = modelName;
+		modelManifest.resources.add( structureReference );
 
 		ModelManifest.TextureSet textureSet = new ModelManifest.TextureSet();
-		textureSet.id = modelName;
+		textureSet.name = modelName;
 		modelManifest.textureSets.add( textureSet );
 
 		ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
-		modelVariant.id = modelName;
-		modelVariant.structure = structureReference.id;
-		modelVariant.textureSet = textureSet.id;
+		modelVariant.name = modelName;
+		modelVariant.structure = structureReference.name;
+		modelVariant.textureSet = textureSet.name;
 		modelManifest.models.add( modelVariant );
 
 		return modelManifest;

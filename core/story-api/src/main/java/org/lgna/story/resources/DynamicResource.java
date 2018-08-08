@@ -2,11 +2,11 @@ package org.lgna.story.resources;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.alice.tweedle.file.AliceTextureReference;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.ResourceReference;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.story.SThing;
-import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
@@ -113,7 +113,7 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 	}
 
 	public String getModelVariantName() {
-		return this.modelVariant.id;
+		return this.modelVariant.name;
 	}
 
 	@Override
@@ -152,8 +152,8 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 	@Override
 	public URI getTextureURI() {
 		ModelManifest.TextureSet textureSet = modelManifest.getTextureSet(modelVariant.textureSet);
-		String textureResourceId = textureSet.idToResourceMap.values().iterator().next();
-		ResourceReference textureReference = modelManifest.getResource(textureResourceId);
+		String textureResourceName = textureSet.idToResourceMap.values().iterator().next();
+		AliceTextureReference textureReference = modelManifest.getAliceTextureReference(textureResourceName);
 		File textureFile = modelManifest.getFile(textureReference.file);
 		return textureFile.toURI();
 	}
