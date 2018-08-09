@@ -53,8 +53,6 @@ import java.net.URI;
  */
 public interface ModelStructure<I extends JointedModelImp, T extends SThing> extends JointedModelResource {
 
-	JointId[] getRootJointIds();
-
 	I createImplementation(T abstraction );
 
 	String[] getTags();
@@ -66,6 +64,8 @@ public interface ModelStructure<I extends JointedModelImp, T extends SThing> ext
 	String getInternalModelClassName();
 
 	String[] getThemeTags();
+
+	JointId[] getModelSpecificJoints();
 
 	AxisAlignedBox getBoundingBox();
 

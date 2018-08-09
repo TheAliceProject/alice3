@@ -328,7 +328,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			}
 		}
 		if (resource instanceof DynamicResource) {
-			allJoints.addAll(((DynamicResource)resource).getDynamicJoints());
+			allJoints.addAll(Arrays.asList(((DynamicResource)resource).getModelSpecificJoints()));
 		}
 		//Handle joint arrays
 		for( JointArrayId arrayId : this.getJointArrayIds() ) {
@@ -357,7 +357,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 //	private List<JointId> getMissingJoints() {
 //		List<JointId> missingJoints = new ArrayList<JointId>();
 //		List<JointId> jointsToCheck = new ArrayList<JointId>();
-//		JointId[] rootIds = this.getRootJointIds();
+//		JointId[] rootIds = this.getRootJointImps();
 //		Collections.addAll( jointsToCheck, rootIds );
 //		while( !jointsToCheck.isEmpty() ) {
 //			JointId joint = jointsToCheck.remove( 0 );
@@ -495,6 +495,22 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
 	public JointImp getJointImplementation( JointId jointId ) {
 		JointImpWrapper wrapper = this.mapIdToJoint.get( jointId );
+		if( wrapper != null ) {
+			return wrapper;
+		}
+		return null;
+	}
+
+	//String based lookup for DynamicJointIds
+	public JointImp getJointImplementation( String jointName ) {
+		JointImpWrapper wrapper = null;
+		//TODO: Think about maintaining a map of names to joints. It would be double accounting and might be a pain though
+		for (Map.Entry<JointId, JointImpWrapper> entry : this.mapIdToJoint.entrySet()) {
+			if (entry.getKey().toString().equals(jointName)) {
+				wrapper = entry.getValue();
+				break;
+			}
+		}
 		if( wrapper != null ) {
 			return wrapper;
 		}
@@ -671,7 +687,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		}
 	}
 
-	private List<JointImp> getRootJointIds() {
+	private List<JointImp> getRootJointImps() {
 		List<JointImp> rootJoints = new ArrayList<>();
 		for (Map.Entry<JointId, JointImpWrapper> entry : mapIdToJoint.entrySet()) {
 			if (entry.getKey().getParent() == null) {
@@ -706,7 +722,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 	}
 
 	public void treeWalk( TreeWalkObserver observer ) {
-		for( JointImp root : this.getRootJointIds() ) {
+		for( JointImp root : this.getRootJointImps() ) {
 			this.treeWalk( root, observer );
 		}
 	}

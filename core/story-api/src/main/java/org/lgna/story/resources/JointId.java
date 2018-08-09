@@ -46,6 +46,8 @@ package org.lgna.story.resources;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -72,15 +74,24 @@ public class JointId {
 		return this.parent;
 	}
 
+	public Visibility getVisibility() {
+		Field jointField = getPublicStaticFinalFld();
+		if( jointField != null && jointField.isAnnotationPresent( FieldTemplate.class ) ) {
+			FieldTemplate propertyFieldTemplate = jointField.getAnnotation( FieldTemplate.class );
+			return propertyFieldTemplate.visibility();
+		}
+		return Visibility.PRIME_TIME;
+	}
+
 	public Field getPublicStaticFinalFld() {
 		if( this.fld != null ) {
 			//pass
-		} else {
+		} else if (this.containingClass != null ){
 			for( Field fld : this.containingClass.getFields() ) {
-				int modidiers = fld.getModifiers();
-				if( Modifier.isPublic( modidiers ) ) {
-					if( Modifier.isStatic( modidiers ) ) {
-						if( Modifier.isFinal( modidiers ) ) {
+				int modifiers = fld.getModifiers();
+				if( Modifier.isPublic( modifiers ) ) {
+					if( Modifier.isStatic( modifiers ) ) {
+						if( Modifier.isFinal( modifiers ) ) {
 							try {
 								Object o = fld.get( null );
 								if( o == this ) {

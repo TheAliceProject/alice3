@@ -45,6 +45,7 @@ package org.alice.stageide;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.ast.CurrentThisExpression;
 import org.alice.ide.ast.ExpressionCreator;
@@ -107,32 +108,7 @@ import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.ast.AbstractCode;
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractDeclaration;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.Code;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.ManagementLevel;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserLocal;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.UserParameter;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
 import org.lgna.story.AudioSource;
 import org.lgna.story.Color;
 import org.lgna.story.JointedModelPose;
@@ -167,9 +143,7 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.VantagePoint;
 import org.lgna.story.annotation.PortionDetails;
 import org.lgna.story.annotation.VolumeLevelDetails;
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.JointArrayId;
-import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.lang.reflect.Field;
@@ -547,91 +521,131 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 		return null;
 	}
 
+	private void addMethodsToType(UserType<?> userType, DynamicResource dynamicResource) {
+		//Get the string based "getJoint" method since we're working with dynamic resources and dynamic joints
+		JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", String.class );
+		for (JointId joint : dynamicResource.getModelSpecificJoints()) {
+			if (joint.getVisibility() != Visibility.COMPLETELY_HIDDEN) {
+				String methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( joint.toString(), "get" );
+				UserMethod method = AstUtilities.createFunction( methodName, SJoint.class );
+				method.managementLevel.setValue( ManagementLevel.GENERATED );
+				BlockStatement body = method.body.getValue();
+				Expression expression = AstUtilities.createMethodInvocation(
+						new ThisExpression(),
+						getJointMethod,
+						new StringLiteral( joint.toString() ) );
+				body.statements.add( AstUtilities.createReturnStatement( SJoint.class, expression ) );
+				userType.methods.add( method );
+			}
+		}
+	}
+
+	private void addMethodsToType(UserType<?> userType, AbstractType<?,?,?> resourceType) {
+		JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointId[].class );
+		JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointArrayId.class );
+		JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", JointId.class );
+		JavaMethod strikePoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "strikePose", Pose.class, StrikePose.Detail[].class );
+
+		for( AbstractField field : resourceType.getDeclaredFields() ) {
+			if( field.isStatic() ) {
+				if( field.getValueType().isAssignableTo( JointId.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
+					String methodName = getFieldMethodNameHint( field );
+					if( methodName == null ) {
+						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+					}
+					UserMethod method = AstUtilities.createFunction( methodName, SJoint.class );
+					method.managementLevel.setValue( ManagementLevel.GENERATED );
+					BlockStatement body = method.body.getValue();
+					Expression expression = AstUtilities.createMethodInvocation(
+							new ThisExpression(),
+							getJointMethod,
+							AstUtilities.createStaticFieldAccess( field ) );
+					body.statements.add( AstUtilities.createReturnStatement( SJoint.class, expression ) );
+					userType.methods.add( method );
+				} else if( field.getValueType().isAssignableTo( JointId[].class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
+					String methodName = getFieldMethodNameHint( field );
+					if( methodName == null ) {
+						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+					}
+					UserMethod method = AstUtilities.createFunction( methodName, SJoint[].class );
+					method.managementLevel.setValue( ManagementLevel.GENERATED );
+					BlockStatement body = method.body.getValue();
+					Expression expression = AstUtilities.createMethodInvocation(
+							new ThisExpression(),
+							getJointArrayMethod,
+							AstUtilities.createStaticFieldAccess( field ) );
+					body.statements.add( AstUtilities.createReturnStatement( SJoint[].class, expression ) );
+					userType.methods.add( method );
+				} else if( field.getValueType().isAssignableTo( JointArrayId.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
+					String methodName = getFieldMethodNameHint( field );
+					if( methodName == null ) {
+						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+					}
+					UserMethod method = AstUtilities.createFunction( methodName, SJoint[].class );
+					method.managementLevel.setValue( ManagementLevel.GENERATED );
+					BlockStatement body = method.body.getValue();
+					Expression expression = AstUtilities.createMethodInvocation(
+							new ThisExpression(),
+							getJointArrayIdMethod,
+							AstUtilities.createStaticFieldAccess( field ) );
+					body.statements.add( AstUtilities.createReturnStatement( SJoint[].class, expression ) );
+					userType.methods.add( method );
+				} else if( field.getValueType().isAssignableTo( Pose.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
+					String methodName = getFieldMethodNameHint( field );
+					if( methodName == null ) {
+						methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName() );
+					}
+					UserMethod method = AstUtilities.createProcedure( methodName );
+					method.managementLevel.setValue( ManagementLevel.GENERATED );
+					//								UserParameter detailsParameter = new UserParameter( "details", StrikePose.Detail.class );
+					//								method.getVariableLengthParameter().
+					//								method.requiredParameters.add( detailsParameter );
+					BlockStatement body = method.body.getValue();
+					MethodInvocation mi = AstUtilities.createMethodInvocation( new ThisExpression(), strikePoseMethod, AstUtilities.createStaticFieldAccess( field ) );
+					//mi.variableArguments.add( new SimpleArgument( strikePoseMethod.getVariableLengthParameter(), new ParameterAccess( detailsParameter ) ) );
+					body.statements.add( new ExpressionStatement( mi ) );
+					userType.methods.add( method );
+				}
+			}
+		}
+	}
+
 	@Override
 	public UserType<?> augmentTypeIfNecessary( UserType<?> rv ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
 			AbstractConstructor constructor0 = ConstructorArgumentUtilities.getContructor0( rv );
-			AbstractType<?, ?, ?> resourceType = ConstructorArgumentUtilities.getParameter0Type( constructor0 );
-			if( resourceType != null ) {
-				//pass
-			} else {
+			//We have multiple different types of constructors to consider:
+			// No parameters:
+			// public Alien() { super(AlienResource.DEFAULT); }
+			// public Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
+			//
+			// 1 parameter:
+			// public Alice(AliceResource resource) { super(resource); }
+			// public Biped(BipedResource resource) { super(resource); }
+
+			ModelResource modelResource = ConstructorArgumentUtilities.getModelResourcePassedToSuperConstructor(constructor0);
+			AbstractType<?,?,?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type( constructor0 );
+			AbstractType<?,?,?> inferredResourceType = constructorParameterType;
+			if( inferredResourceType == null ) {
 				JavaField field = ConstructorArgumentUtilities.getArgumentField( constructor0 );
 				if( field != null ) {
-					resourceType = field.getValueType();
+					inferredResourceType = field.getValueType();
 				}
 			}
-			if( resourceType != null ) {
+			if( inferredResourceType != null || modelResource != null ) {
 				JavaType ancestorType = rv.getFirstEncounteredJavaType();
-				if( resourceType == ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) {
-					//skip
+				if( constructorParameterType == ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) {
+					//Skip augmenting the given type because it matches the ancestor type
+					//Biped will equal SBiped because they both use a BipedResource as the parameter to their constructor
 				} else {
-					JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointId[].class );
-					JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", JointArrayId.class );
-					JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", JointId.class );
-					JavaMethod getPoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getPose", JointedModelPose.class );
-
-					JavaMethod strikePoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "strikePose", Pose.class, StrikePose.Detail[].class );
-					for( AbstractField field : resourceType.getDeclaredFields() ) {
-						if( field.isStatic() ) {
-							if( field.getValueType().isAssignableTo( JointId.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-								String methodName = getFieldMethodNameHint( field );
-								if( methodName == null ) {
-									methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
-								}
-								UserMethod method = AstUtilities.createFunction( methodName, SJoint.class );
-								method.managementLevel.setValue( ManagementLevel.GENERATED );
-								BlockStatement body = method.body.getValue();
-								Expression expression = AstUtilities.createMethodInvocation(
-										new ThisExpression(),
-										getJointMethod,
-										AstUtilities.createStaticFieldAccess( field ) );
-								body.statements.add( AstUtilities.createReturnStatement( SJoint.class, expression ) );
-								rv.methods.add( method );
-							} else if( field.getValueType().isAssignableTo( JointId[].class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-								String methodName = getFieldMethodNameHint( field );
-								if( methodName == null ) {
-									methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
-								}
-								UserMethod method = AstUtilities.createFunction( methodName, SJoint[].class );
-								method.managementLevel.setValue( ManagementLevel.GENERATED );
-								BlockStatement body = method.body.getValue();
-								Expression expression = AstUtilities.createMethodInvocation(
-										new ThisExpression(),
-										getJointArrayMethod,
-										AstUtilities.createStaticFieldAccess( field ) );
-								body.statements.add( AstUtilities.createReturnStatement( SJoint[].class, expression ) );
-								rv.methods.add( method );
-							} else if( field.getValueType().isAssignableTo( JointArrayId.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-								String methodName = getFieldMethodNameHint( field );
-								if( methodName == null ) {
-									methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
-								}
-								UserMethod method = AstUtilities.createFunction( methodName, SJoint[].class );
-								method.managementLevel.setValue( ManagementLevel.GENERATED );
-								BlockStatement body = method.body.getValue();
-								Expression expression = AstUtilities.createMethodInvocation(
-										new ThisExpression(),
-										getJointArrayIdMethod,
-										AstUtilities.createStaticFieldAccess( field ) );
-								body.statements.add( AstUtilities.createReturnStatement( SJoint[].class, expression ) );
-								rv.methods.add( method );
-							} else if( field.getValueType().isAssignableTo( Pose.class ) && ( field.getVisibility() != Visibility.COMPLETELY_HIDDEN ) ) {
-								String methodName = getFieldMethodNameHint( field );
-								if( methodName == null ) {
-									methodName = IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName() );
-								}
-								UserMethod method = AstUtilities.createProcedure( methodName );
-								method.managementLevel.setValue( ManagementLevel.GENERATED );
-								//								UserParameter detailsParameter = new UserParameter( "details", StrikePose.Detail.class );
-								//								method.getVariableLengthParameter().
-								//								method.requiredParameters.add( detailsParameter );
-								BlockStatement body = method.body.getValue();
-								MethodInvocation mi = AstUtilities.createMethodInvocation( new ThisExpression(), strikePoseMethod, AstUtilities.createStaticFieldAccess( field ) );
-								//mi.variableArguments.add( new SimpleArgument( strikePoseMethod.getVariableLengthParameter(), new ParameterAccess( detailsParameter ) ) );
-								body.statements.add( new ExpressionStatement( mi ) );
-								rv.methods.add( method );
-							}
-						}
+					if (inferredResourceType != null) {
+						addMethodsToType(rv, inferredResourceType);
+					}
+					else if (modelResource instanceof DynamicResource) {
+						addMethodsToType(rv, (DynamicResource)modelResource);
+					}
+					else {
+						Logger.severe("Failed to augment type " +rv+". Unable to find model resource type." );
 					}
 				}
 			}

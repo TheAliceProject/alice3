@@ -44,6 +44,7 @@ package org.lgna.story.implementation.alice;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,6 +52,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.annotations.ResourceTemplate;
 import org.lgna.story.SModel;
+import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.ModelResource;
 
 /**
@@ -212,6 +214,21 @@ public class AliceResourceClassUtilities {
 			}
 		}
 		return fieldsOfType.toArray( new Field[ fieldsOfType.size() ] );
+	}
+
+
+	public static List<JointId> getJoints(Class<? extends ModelResource> resourceClass) {
+		Field[] jointFields = getFieldsOfType(resourceClass, JointId.class);
+		List<JointId> baseJoints = new ArrayList<>();
+		for (Field f : jointFields) {
+			try {
+				JointId id = (JointId) f.get(null);
+				baseJoints.add(id);
+			} catch (IllegalAccessException iae) {
+				iae.printStackTrace();
+			}
+		}
+		return baseJoints;
 	}
 
 }

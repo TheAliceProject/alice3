@@ -188,17 +188,6 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		}
 	}
 
-	private static List<Field> getJointIdFields(Class<?> resourceClass) {
-		Field[] fields = resourceClass.getDeclaredFields();
-		List<Field> jointFields = new ArrayList<Field>();
-		for (Field f : fields) {
-			if (JointId.class.isAssignableFrom(f.getType())) {
-				jointFields.add(f);
-			}
-		}
-		return jointFields;
-	}
-
 	private static void addMissingJoints(SkeletonVisual sv, List<ModelManifest.Joint> missingJoints) {
 		int index = 0;
 		while (!missingJoints.isEmpty()) {
@@ -247,20 +236,11 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 		return rootJoints;
 	}
 
-	private static Visibility getJointVisibility( JointId jointId ) {
-		Field jointField = jointId.getPublicStaticFinalFld();
-		if( jointField.isAnnotationPresent( FieldTemplate.class ) ) {
-			FieldTemplate propertyFieldTemplate = jointField.getAnnotation( FieldTemplate.class );
-			return propertyFieldTemplate.visibility();
-		}
-		return Visibility.PRIME_TIME;
-	}
-
 	private static ModelManifest.Joint createJoint(JointId jointId) {
 		ModelManifest.Joint joint = new ModelManifest.Joint();
 		joint.name = jointId.toString();
 		joint.parent = jointId.getParent().toString();
-		joint.visibility = getJointVisibility(jointId);
+		joint.visibility = jointId.getVisibility();
 		return joint;
 	}
 
@@ -278,15 +258,10 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 	}
 
 	private static List<ModelManifest.Joint> getBaseJoints(Class<? extends ModelResource> resourceClass) {
-		List<Field> baseJointFields = getJointIdFields(resourceClass);
 		List<ModelManifest.Joint> baseJoints = new ArrayList<>();
-		for (Field f : baseJointFields) {
-			try {
-				JointId id = (JointId) f.get(null);
-				baseJoints.add(createJoint(id));
-			} catch (IllegalAccessException iae) {
-				iae.printStackTrace();
-			}
+		List<JointId> baseJointIds = AliceResourceClassUtilities.getJoints(resourceClass);
+		for (JointId jointId : baseJointIds) {
+			baseJoints.add(createJoint(jointId));
 		}
 		return baseJoints;
 	}

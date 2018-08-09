@@ -43,16 +43,10 @@
 
 package org.alice.ide.typemanager;
 
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.SimpleArgumentListProperty;
+import com.sun.tools.internal.ws.processor.model.java.JavaParameter;
+import org.lgna.project.ast.*;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resources.ModelStructure;
 
 import java.util.List;
 
@@ -107,6 +101,67 @@ public class ConstructorArgumentUtilities {
 			NamedUserConstructor namedUserConstructor = (NamedUserConstructor)constructor;
 			ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
 			return getField( constructorInvocationStatement.requiredArguments );
+		}
+		return null;
+	}
+
+	public static ModelResource getModelResourcePassedToSuperConstructor(AbstractConstructor constructor) {
+		if( constructor instanceof NamedUserConstructor ) {
+			NamedUserConstructor namedUserConstructor = (NamedUserConstructor)constructor;
+			ConstructorInvocationStatement superConstructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
+			SimpleArgumentListProperty arguments = superConstructorInvocationStatement.requiredArguments;
+			if( arguments.size() > 0 ) {
+				Expression expression = arguments.get( 0 ).expression.getValue();
+				if( expression instanceof FieldAccess ) {
+					FieldAccess fieldAccess = (FieldAccess)expression;
+					JavaField javaField = (JavaField)fieldAccess.field.getValue();
+					try {
+						Object value = javaField.getFieldReflectionProxy().getReification().get(null);
+						return (ModelResource)value;
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+				//This handles the case of a DynamicResource
+				//DynamicResources use a constructor that looks like this:
+				//	public DyanamicBipedResource(String modelName, String resourceName)
+				//And the InstanceCreation looks like this:
+				//	AstUtilities.createInstanceCreation(
+				//		DynamicBipedResource.class,
+				//		new Class<?>[] {
+				//			String.class,
+				//			String.class
+				//		},
+				//		new StringLiteral( dynamicResource.getModelClassName() ),
+				//		new StringLiteral( dynamicResource.getModelVariantName() ));
+				//This code pulls this information out of the InstanceCreation and then uses it to construct a new DynamicResource
+				else if (expression instanceof InstanceCreation) {
+					InstanceCreation instanceCreation = (InstanceCreation)expression;
+					if (instanceCreation.constructor.getValue() instanceof JavaConstructor) {
+						JavaConstructor instanceConstructor = (JavaConstructor)instanceCreation.constructor.getValue();
+						Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
+						int index = 0;
+						boolean canEvaluate = true;
+						for (SimpleArgument argument : instanceCreation.requiredArguments.getValue()) {
+							if (argument.expression.getValue() instanceof StringLiteral) {
+								StringLiteral literal = (StringLiteral)argument.expression.getValue();
+								String argumentValue = literal.getValueProperty().getValue();
+								constructorArguments[index++] = argumentValue;
+							}
+							else {
+								canEvaluate = false;
+								break;
+							}
+						}
+						if (canEvaluate) {
+							Object instanceValue = instanceConstructor.evaluate(null, null, constructorArguments);
+							if (instanceValue instanceof ModelResource) {
+								return (ModelResource)instanceValue;
+							}
+						}
+					}
+				}
+			}
 		}
 		return null;
 	}

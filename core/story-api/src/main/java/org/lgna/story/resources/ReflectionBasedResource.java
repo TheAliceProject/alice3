@@ -20,10 +20,6 @@ public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing>
 		return null;
 	}
 
-	@Override public JointId[] getRootJointIds() {
-		return new JointId[0];
-	}
-
 	@Override
 	public I createImplementation( T abstraction ) {
 		return null;//resourceCls.createImplementation(abstraction);
@@ -47,6 +43,11 @@ public class ReflectionBasedResource<I extends JointedModelImp,T extends SThing>
 
 	@Override public String[] getThemeTags() {
 		return new String[0];
+	}
+
+	@Override
+	public JointId[] getModelSpecificJoints() {
+		return new JointId[0];
 	}
 
 	@Override public AxisAlignedBox getBoundingBox() {

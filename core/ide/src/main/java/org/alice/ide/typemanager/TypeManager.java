@@ -446,13 +446,6 @@ public class TypeManager {
 		return getNamedUserTypeFor( ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly( argumentTypes[ 0 ] ) );
 	}
 
-	// Method not used
-	//	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
-	//		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
-	//		org.lgna.project.ast.AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( bipedType, org.lgna.project.ast.JavaType.getInstance( personResource.getClass() ) );
-	//		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
-	//	}
-
 	public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation( JavaType resourceType, InstanceCreation instanceCreation, String className ) {
 		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( resourceType, instanceCreation.getType() );
 		return getNamedUserTypeFor( resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className );

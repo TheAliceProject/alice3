@@ -8,12 +8,13 @@ import org.alice.tweedle.file.ResourceReference;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public abstract class DynamicResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
 
@@ -23,7 +24,7 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 	private String[] tags;
 	private String[] groupTags;
 	private String[] themeTags;
-	private JointId[] rootJointIds;
+	private JointId[] resourceSpecificJoints;
 	private AxisAlignedBox bbox;
 
 	public static DynamicResource createDynamicResource(ModelManifest modelManifest, ModelManifest.ModelVariant modelVariant) {
@@ -63,9 +64,45 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 		this.tags = modelManifest.description.tags.toArray(new String[modelManifest.description.tags.size()]);
 		this.groupTags = modelManifest.description.groupTags.toArray(new String[modelManifest.description.groupTags.size()]);
 		this.themeTags = modelManifest.description.themeTags.toArray(new String[modelManifest.description.themeTags.size()]);
-		this.rootJointIds = new JointId[0];
+		this.resourceSpecificJoints = createJointArray(modelManifest.additionalJoints);
 		this.bbox = createBoundingBox();
 	}
+
+
+
+	private JointId[] createJointArray(List<ModelManifest.Joint> manifestJoints) {
+		List<JointId> newJoints = new ArrayList<>();
+
+		//Get all the base joints from the parent class. These will be used where the model specific joints reference parent joints
+		//  that are defined on the parent class
+		Class<? extends ModelResource> parentClass = AliceResourceClassUtilities.getResourceClassForAliceName(modelManifest.parentClass);
+		List<JointId> baseJoints = AliceResourceClassUtilities.getJoints(parentClass);
+		Map<String, JointId> jointMap = new HashMap<>();
+		for (JointId jointId : baseJoints) {
+			jointMap.put(jointId.toString(), jointId);
+		}
+
+		//Loop through a list of the joints and build new JointIds from them
+		LinkedList<ModelManifest.Joint> jointsToProcess = new LinkedList<>(manifestJoints);
+		while (jointsToProcess.size() > 0) {
+			ModelManifest.Joint currentJoint = jointsToProcess.pop();
+			//If we already have a JointId for the parent or the parent is null, make a new JointId and add it to the newJoints list and the jointMap
+			if (currentJoint.parent == null || jointMap.containsKey(currentJoint.parent)) {
+				JointId parent = currentJoint.parent != null ? jointMap.get(currentJoint.parent) : null;
+				JointId newJoint = new DynamicJointId(currentJoint.name, parent, currentJoint.visibility);
+				newJoints.add(newJoint);
+				jointMap.put(newJoint.toString(), newJoint);
+			}
+			//If no parent is found, add it to the back of the queue
+			else {
+				jointsToProcess.push(currentJoint);
+			}
+		}
+
+		return newJoints.toArray(new JointId[newJoints.size()]);
+	}
+
+
 
 	private AxisAlignedBox createBoundingBox() {
 		StructureReference structure = modelManifest.getStructure(modelVariant.structure);
@@ -82,19 +119,19 @@ public abstract class DynamicResource<I extends JointedModelImp,T extends SThing
 		return AxisAlignedBox.createNaN();
 	}
 
-	public List<JointId> getDynamicJoints() {
-		//TODO: implement this so that dynamic resources can declare joints
-		return new ArrayList<>();
-	}
-
 	@Override
 	public JointedModelImp.JointImplementationAndVisualDataFactory getImplementationAndVisualFactory() {
 		return org.lgna.story.implementation.alice.JointImplementationAndVisualDataFactory.getInstance( this );
 	}
 
 	@Override
+	public JointId[] getModelSpecificJoints() {
+		return resourceSpecificJoints;
+	}
+
+	@Deprecated
 	public JointId[] getRootJointIds() {
-		return rootJointIds;
+		return new JointId[0];
 	}
 
 	@Override
