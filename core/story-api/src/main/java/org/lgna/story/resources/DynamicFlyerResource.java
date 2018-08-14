@@ -27,12 +27,12 @@ public class DynamicFlyerResource extends DynamicResource<FlyerImp, SFlyer> impl
 
 	@Override
 	public JointId[] getTailArray() {
-		return new JointId[0];
+		return DEFAULT_TAIL;
 	}
 
 	@Override
 	public JointId[] getNeckArray() {
-		return new JointId[0];
+		return DEFAULT_NECK;
 	}
 
 	@Override

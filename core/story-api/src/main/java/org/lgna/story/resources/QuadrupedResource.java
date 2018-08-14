@@ -87,6 +87,8 @@ public interface QuadrupedResource extends JointedModelResource {
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_2 = new JointId( TAIL_1, QuadrupedResource.class );
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_3 = new JointId( TAIL_2, QuadrupedResource.class );
 
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] DEFAULT_TAIL = { TAIL_0, TAIL_1, TAIL_2, TAIL_3 };
+
 	public static final JointId BACK_LEFT_HIP = new JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
 	public static final JointId BACK_LEFT_KNEE = new JointId( BACK_LEFT_HIP, QuadrupedResource.class );
 	public static final JointId BACK_LEFT_HOCK = new JointId( BACK_LEFT_KNEE, QuadrupedResource.class );

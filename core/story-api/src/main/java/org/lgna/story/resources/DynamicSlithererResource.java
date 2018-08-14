@@ -21,6 +21,6 @@ public class DynamicSlithererResource extends DynamicResource<SlithererImp, SSli
 
 	@Override
 	public JointId[] getTailArray() {
-		return new JointId[0];
+		return DEFAULT_TAIL;
 	}
 }

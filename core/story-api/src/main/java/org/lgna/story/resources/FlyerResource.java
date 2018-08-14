@@ -63,6 +63,7 @@ public interface FlyerResource extends JointedModelResource {
 	//Necks are now included as arrays access
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId NECK_0 = new JointId( SPINE_UPPER, FlyerResource.class );
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId NECK_1 = new JointId( NECK_0, FlyerResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId[] DEFAULT_NECK = { NECK_0, NECK_1 };
 
 	public static final JointId HEAD = new JointId( NECK_1, FlyerResource.class );
 	public static final JointId MOUTH = new JointId( HEAD, FlyerResource.class );
@@ -85,6 +86,7 @@ public interface FlyerResource extends JointedModelResource {
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_0 = new JointId( PELVIS_LOWER_BODY, FlyerResource.class );
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_1 = new JointId( TAIL_0, FlyerResource.class );
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_2 = new JointId( TAIL_1, FlyerResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId[] DEFAULT_TAIL = { TAIL_0, TAIL_1, TAIL_2 };
 
 	public static final JointId LEFT_HIP = new JointId( PELVIS_LOWER_BODY, FlyerResource.class );
 	public static final JointId LEFT_KNEE = new JointId( LEFT_HIP, FlyerResource.class );
