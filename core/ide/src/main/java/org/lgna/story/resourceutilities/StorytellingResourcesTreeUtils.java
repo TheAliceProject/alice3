@@ -53,7 +53,6 @@ import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
 
-import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 import org.lgna.story.resources.ModelResource;
 
 /**
@@ -73,23 +72,23 @@ public enum StorytellingResourcesTreeUtils {
 		return this.galleryTree;
 	}
 
-	private ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
+	private TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType(AbstractType<?, ?, ?> type ) {
 		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
 	}
 
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( AbstractType<?, ?, ?> type ) {
+	public TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForUserType(AbstractType<?, ?, ?> type ) {
 		return getGalleryTreeInternal().getGalleryResourceTreeNodeForUserType( type );
 	}
 
-	public ModelResourceTreeNode getGalleryTree() {
+	public GalleryResourceTreeNode getGalleryTree() {
 		return getGalleryTreeInternal().getTree();
 	}
 
 	public List<JavaType> getTopLevelGalleryTypes() {
 		if( this.rootTypes == null ) {
-			List<ModelResourceTreeNode> rootNodes = this.getGalleryTreeInternal().getSModelBasedNodes();
+			List<TypedDefinedGalleryTreeNode> rootNodes = this.getGalleryTreeInternal().getSModelBasedNodes();
 			this.rootTypes = Lists.newArrayList();
-			for( ModelResourceTreeNode node : rootNodes ) {
+			for( TypedDefinedGalleryTreeNode node : rootNodes ) {
 				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 			}
 		}
@@ -109,35 +108,40 @@ public enum StorytellingResourcesTreeUtils {
 	}
 
 	public JavaType getGalleryResourceParentFor( AbstractType<?, ?, ?> type ) {
-		TreeNode<JavaType> child = this.getGalleryResourceTreeNodeForJavaType( type );
+		GalleryResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( child != null ) {
-			ModelResourceTreeNode parent = (ModelResourceTreeNode)child.getParent();
+			GalleryResourceTreeNode parent = child.getParent();
 			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getResourceChildren)
 			if( ( parent != null ) && hasSingleLeafChild( parent ) ) {
-				parent = (ModelResourceTreeNode)parent.getParent();
+				parent = parent.getParent();
 			}
-			return parent.getResourceJavaType();
+			if (parent instanceof TypedDefinedGalleryTreeNode) {
+				return ((TypedDefinedGalleryTreeNode)parent).getResourceJavaType();
+			}
+			else {
+				return null;
+			}
 		} else {
 			return null;
 		}
 	}
 
-	private boolean hasSingleLeafChild( TreeNode<?> node ) {
+	private boolean hasSingleLeafChild( GalleryResourceTreeNode node ) {
 		return ( ( node.getChildCount() == 1 ) && ( node.getChildAt( 0 ).getChildCount() == 0 ) );
 	}
 
 	public List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type ) {
 		//System.out.println( "Getting children for type: " + type );
 		List<AbstractDeclaration> toReturn = Lists.newArrayList();
-		TreeNode<JavaType> typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
+		GalleryResourceTreeNode typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( typeNode != null ) {
 			for( int i = 0; i < typeNode.getChildCount(); i++ ) {
-				TreeNode<JavaType> child = typeNode.getChildAt( i );
+				GalleryResourceTreeNode child = typeNode.getChildAt( i );
 				//If the child has a single leaf child, go down a level and return that
 				if( hasSingleLeafChild( child ) ) {
 					child = child.getChildAt( 0 );
 				}
-				ModelResourceTreeNode node = (ModelResourceTreeNode)child;
+				TypedDefinedGalleryTreeNode node = (TypedDefinedGalleryTreeNode)child;
 				if( node.isLeaf() && ( node.getJavaField() != null ) ) {
 					//System.out.println( "  Returning field: " + node.getJavaField() );
 					toReturn.add( node.getJavaField() );

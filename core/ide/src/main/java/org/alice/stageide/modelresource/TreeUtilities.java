@@ -47,16 +47,10 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousIde;
-import org.alice.tweedle.file.ModelManifest;
 import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
 import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.DynamicResource;
-import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resourceutilities.ManifestDefinedModelResourceTreeNode;
-import org.lgna.story.resourceutilities.ModelResourceTreeNode;
+import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.util.*;
@@ -74,7 +68,7 @@ public class TreeUtilities {
 	private static ThemeBasedResourceNode treeBasedOnTheme;
 	private static GroupBasedResourceNode treeBasedOnGroup;
 
-	private static ClassHierarchyBasedResourceNode createNode( ModelResourceTreeNode source, ResourceKey key ) {
+	private static ClassHierarchyBasedResourceNode createNode( GalleryResourceTreeNode source, ResourceKey key ) {
 		List<ResourceNode> childNodes = Lists.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
@@ -83,32 +77,15 @@ public class TreeUtilities {
 				NebulousIde.nonfree.addBipedResourceResourceNodes( childNodes, emptyList );
 			}
 		}
-		for( ModelResourceTreeNode childSource : source.childrenList() ) {
-			ResourceKey childKey;
-			if (childSource instanceof ManifestDefinedModelResourceTreeNode) {
-				ModelManifest modelManifest = ((ManifestDefinedModelResourceTreeNode)childSource).getModelManifest();
-				childKey = new DynamicResourceKey(DynamicResource.createDynamicResource(modelManifest, modelManifest.models.get(0)));
-			}
-			else {
-				JavaType type = childSource.getResourceJavaType();
-				JavaField field = childSource.getJavaField();
-				if (field != null) {
-					try {
-						childKey = new EnumConstantResourceKey((Enum<? extends ModelResource>) field.getFieldReflectionProxy().getReification().get(null));
-					} catch (IllegalAccessException iae) {
-						throw new RuntimeException(iae);
-					}
-				} else {
-					childKey = new ClassResourceKey((Class<? extends ModelResource>) type.getClassReflectionProxy().getReification());
-				}
-			}
+		for( GalleryResourceTreeNode childSource : source.childrenList() ) {
+			ResourceKey childKey = childSource.createResourceKey();
 			childNodes.add( createNode( childSource, childKey ) );
 		}
 		return new ClassHierarchyBasedResourceNode( key, Collections.unmodifiableList( childNodes ) );
 	}
 
 	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
-		ModelResourceTreeNode root = StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree();
+		GalleryResourceTreeNode root = StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree();
 		return createNode( root, new RootResourceKey( "AllClasses", "all classes" ) );
 	}
 

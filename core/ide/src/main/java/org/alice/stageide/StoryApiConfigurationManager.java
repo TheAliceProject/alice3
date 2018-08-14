@@ -613,7 +613,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 	@Override
 	public UserType<?> augmentTypeIfNecessary( UserType<?> rv ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
-			AbstractConstructor constructor0 = ConstructorArgumentUtilities.getContructor0( rv );
+			AbstractConstructor constructor0 = rv.getFirstDeclaredConstructor();
 			//We have multiple different types of constructors to consider:
 			// No parameters:
 			// public Alien() { super(AlienResource.DEFAULT); }
@@ -622,8 +622,7 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 			// 1 parameter:
 			// public Alice(AliceResource resource) { super(resource); }
 			// public Biped(BipedResource resource) { super(resource); }
-
-			ModelResource modelResource = ConstructorArgumentUtilities.getModelResourcePassedToSuperConstructor(constructor0);
+			Object firstArgument = constructor0.instantiateFirstArgumentPassedToSuperConstructor();
 			AbstractType<?,?,?> constructorParameterType = ConstructorArgumentUtilities.getParameter0Type( constructor0 );
 			AbstractType<?,?,?> inferredResourceType = constructorParameterType;
 			if( inferredResourceType == null ) {
@@ -632,21 +631,16 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 					inferredResourceType = field.getValueType();
 				}
 			}
-			if( inferredResourceType != null || modelResource != null ) {
-				JavaType ancestorType = rv.getFirstEncounteredJavaType();
-				if( constructorParameterType == ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) {
-					//Skip augmenting the given type because it matches the ancestor type
-					//Biped will equal SBiped because they both use a BipedResource as the parameter to their constructor
-				} else {
-					if (inferredResourceType != null) {
-						addMethodsToType(rv, inferredResourceType);
-					}
-					else if (modelResource instanceof DynamicResource) {
-						addMethodsToType(rv, (DynamicResource)modelResource);
-					}
-					else {
-						Logger.severe("Failed to augment type " +rv+". Unable to find model resource type." );
-					}
+			JavaType ancestorType = rv.getFirstEncounteredJavaType();
+			if (constructorParameterType != ConstructorArgumentUtilities.getContructor0Parameter0Type(ancestorType)) {
+				if (inferredResourceType != null) {
+					addMethodsToType(rv, inferredResourceType);
+				}
+				else if (firstArgument instanceof DynamicResource) {
+					addMethodsToType(rv, (DynamicResource)firstArgument);
+				}
+				else {
+					Logger.severe("Failed to augment type " +rv+". Unable to find model resource type." );
 				}
 			}
 		}

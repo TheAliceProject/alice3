@@ -64,12 +64,10 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 		JavaType resourceType = getAbstractionTypeForResourceType( JavaType.getInstance( dynamicResource.getClass() ) );
 		NamedUserType type = TypeManager.getNamedUserTypeFromDynamicResourceInstanceCreation( resourceType, resourceInstanceCreation, dynamicResource.getModelClassName() );
 
-		InstanceCreation rv = AstUtilities.createInstanceCreation(
-				type.getDeclaredConstructors().get( 0 ),
+		return AstUtilities.createInstanceCreation(
+				type.getFirstDeclaredConstructor(),
 				resourceInstanceCreation
 		);
-
-		return rv;
 	}
 
 	@Override

@@ -59,17 +59,6 @@ public class ConstructorArgumentUtilities {
 		throw new AssertionError();
 	}
 
-	public static AbstractConstructor getContructor0( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			List<? extends AbstractConstructor> constructors = type.getDeclaredConstructors();
-			if( constructors.size() > 0 ) {
-				AbstractConstructor constructor0 = constructors.get( 0 );
-				return constructor0;
-			}
-		}
-		return null;
-	}
-
 	public static AbstractType<?, ?, ?> getParameter0Type( AbstractConstructor constructor ) {
 		if( constructor != null ) {
 			List<? extends AbstractParameter> requiredParameters = constructor.getRequiredParameters();
@@ -82,7 +71,7 @@ public class ConstructorArgumentUtilities {
 	}
 
 	public static AbstractType<?, ?, ?> getContructor0Parameter0Type( AbstractType<?, ?, ?> type ) {
-		return getParameter0Type( getContructor0( type ) );
+		return getParameter0Type( type.getFirstDeclaredConstructor() );
 	}
 
 	public static JavaField getField( SimpleArgumentListProperty arguments ) {
@@ -101,67 +90,6 @@ public class ConstructorArgumentUtilities {
 			NamedUserConstructor namedUserConstructor = (NamedUserConstructor)constructor;
 			ConstructorInvocationStatement constructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
 			return getField( constructorInvocationStatement.requiredArguments );
-		}
-		return null;
-	}
-
-	public static ModelResource getModelResourcePassedToSuperConstructor(AbstractConstructor constructor) {
-		if( constructor instanceof NamedUserConstructor ) {
-			NamedUserConstructor namedUserConstructor = (NamedUserConstructor)constructor;
-			ConstructorInvocationStatement superConstructorInvocationStatement = namedUserConstructor.body.getValue().constructorInvocationStatement.getValue();
-			SimpleArgumentListProperty arguments = superConstructorInvocationStatement.requiredArguments;
-			if( arguments.size() > 0 ) {
-				Expression expression = arguments.get( 0 ).expression.getValue();
-				if( expression instanceof FieldAccess ) {
-					FieldAccess fieldAccess = (FieldAccess)expression;
-					JavaField javaField = (JavaField)fieldAccess.field.getValue();
-					try {
-						Object value = javaField.getFieldReflectionProxy().getReification().get(null);
-						return (ModelResource)value;
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
-				}
-				//This handles the case of a DynamicResource
-				//DynamicResources use a constructor that looks like this:
-				//	public DyanamicBipedResource(String modelName, String resourceName)
-				//And the InstanceCreation looks like this:
-				//	AstUtilities.createInstanceCreation(
-				//		DynamicBipedResource.class,
-				//		new Class<?>[] {
-				//			String.class,
-				//			String.class
-				//		},
-				//		new StringLiteral( dynamicResource.getModelClassName() ),
-				//		new StringLiteral( dynamicResource.getModelVariantName() ));
-				//This code pulls this information out of the InstanceCreation and then uses it to construct a new DynamicResource
-				else if (expression instanceof InstanceCreation) {
-					InstanceCreation instanceCreation = (InstanceCreation)expression;
-					if (instanceCreation.constructor.getValue() instanceof JavaConstructor) {
-						JavaConstructor instanceConstructor = (JavaConstructor)instanceCreation.constructor.getValue();
-						Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
-						int index = 0;
-						boolean canEvaluate = true;
-						for (SimpleArgument argument : instanceCreation.requiredArguments.getValue()) {
-							if (argument.expression.getValue() instanceof StringLiteral) {
-								StringLiteral literal = (StringLiteral)argument.expression.getValue();
-								String argumentValue = literal.getValueProperty().getValue();
-								constructorArguments[index++] = argumentValue;
-							}
-							else {
-								canEvaluate = false;
-								break;
-							}
-						}
-						if (canEvaluate) {
-							Object instanceValue = instanceConstructor.evaluate(null, null, constructorArguments);
-							if (instanceValue instanceof ModelResource) {
-								return (ModelResource)instanceValue;
-							}
-						}
-					}
-				}
-			}
 		}
 		return null;
 	}

@@ -239,16 +239,6 @@ public enum StorytellingResources {
 
 	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );
 
-	public File[] getGalleryDirsFromPref() {
-		return getDirsFromPref( GALLERY_DIRECTORY_PREF_KEY, "" );
-	}
-
-	private List<File> findMyGalleryResources() {
-		List<File> myGalleryResources = new ArrayList<>();
-		myGalleryResources.add(new File( "C:/Users/dculyba/Documents/Alice3/MyGallery" ));
-
-		return myGalleryResources;
-	}
 
 	private List<File> findAliceResources() {
 		File customResourcesPath = findResourcePath( "assets/custom" );

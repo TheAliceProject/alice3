@@ -408,7 +408,7 @@ public class IconFactoryManager {
 			return iconFactory;
 		} else {
 			ResourceDeclaration resourceDeclaration = null;
-			AbstractConstructor constructor0 = ConstructorArgumentUtilities.getContructor0( type );
+			AbstractConstructor constructor0 =  type != null? type.getFirstDeclaredConstructor() : null;
 			if( constructor0 != null ) {
 				List<? extends AbstractParameter> parameters = constructor0.getRequiredParameters();
 				switch( parameters.size() ) {

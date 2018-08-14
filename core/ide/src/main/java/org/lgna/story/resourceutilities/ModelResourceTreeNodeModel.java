@@ -47,23 +47,23 @@ import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-public class ModelResourceTreeNodeModel extends DefaultTreeModel implements TreeModel<ModelResourceTreeNode> {
-	public ModelResourceTreeNodeModel( ModelResourceTreeNode root ) {
+public class ModelResourceTreeNodeModel extends DefaultTreeModel implements TreeModel<TypedDefinedGalleryTreeNode> {
+	public ModelResourceTreeNodeModel( TypedDefinedGalleryTreeNode root ) {
 		super( root );
 	}
 
 	@Override
-	public ModelResourceTreeNode getChild( Object parent, int index ) {
-		return (ModelResourceTreeNode)super.getChild( parent, index );
+	public TypedDefinedGalleryTreeNode getChild(Object parent, int index ) {
+		return (TypedDefinedGalleryTreeNode)super.getChild( parent, index );
 	}
 
 	@Override
-	public ModelResourceTreeNode getRoot() {
-		return (ModelResourceTreeNode)super.getRoot();
+	public TypedDefinedGalleryTreeNode getRoot() {
+		return (TypedDefinedGalleryTreeNode)super.getRoot();
 	}
 
 	@Override
-	public TreePath getTreePath( ModelResourceTreeNode e ) {
+	public TreePath getTreePath( TypedDefinedGalleryTreeNode e ) {
 		Object[] nodes = this.getPathToRoot( e );
 		TreePath path = new TreePath( nodes );
 		return path;
