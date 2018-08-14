@@ -80,9 +80,9 @@ public abstract class JointIdState extends CustomItemStateWithInternalBlank<Join
 		rv.add( JointIdFillIn.getInstance( id ) );
 		//TODO: Make this work for resource classes that have different joints based on different resources
 		//(this only happens when the resource class declares an array and different resources have a variable number of joint in that array, like railroad track pieces)
-		for( JointId childId : id.getDeclaredChildren( null ) ) {
-			fillIn( rv, childId );
-		}
+//		for( JointId childId : id.getDeclaredChildren( null ) ) {
+//			fillIn( rv, childId );
+//		}
 	}
 
 	@Override

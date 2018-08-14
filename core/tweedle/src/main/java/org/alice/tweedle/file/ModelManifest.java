@@ -2,23 +2,21 @@ package org.alice.tweedle.file;
 
 import org.lgna.project.annotations.Visibility;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ModelManifest extends Manifest {
 
+	public String parentClass;
 	public List<String> rootJoints =  new ArrayList<>();
 	public List<Joint> additionalJoints =  new ArrayList<>();
 	public List<JointArray> additionalJointArrays = new ArrayList<>();
 	public List<JointArrayId> additionalJointArrayIds = new ArrayList<>();
 	public List<Pose> poses =  new ArrayList<>();
 	public BoundingBox boundingBox;
-	public Boolean placeOnGround;
+	public Boolean placeOnGround = true;
 	public List<TextureSet> textureSets = new ArrayList<>();
-	public List<StructureReference> structures =  new ArrayList<>();
 	public List<ModelVariant> models =  new ArrayList<>();
+
 
 	public static class BoundingBox
 	{
@@ -27,14 +25,14 @@ public class ModelManifest extends Manifest {
 	}
 
 	public static class ModelVariant {
-		public String id;
+		public String name;
 		public String structure;
 		public String textureSet;
 		public String icon;
 	}
 
 	public static class TextureSet {
-		public String id;
+		public String name;
 		public Map<Integer, String> idToResourceMap = new HashMap<>();
 	}
 
@@ -42,6 +40,20 @@ public class ModelManifest extends Manifest {
 		public String name;
 		public String parent;
 		public Visibility visibility;
+
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof Joint) {
+				Joint objJoint = (Joint)obj;
+				return name.equals(objJoint.name) && parent.equals(objJoint.parent);
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(name, parent);
+		}
 	}
 
 	public static class JointArray {
@@ -66,5 +78,39 @@ public class ModelManifest extends Manifest {
 		public String jointName;
 		public List<Float> orientation;
 		public List<Float> position;
+	}
+
+	public ModelVariant getModelVariant(String variantName) {
+		for (ModelVariant variant : models) {
+			if (variant.name.equals(variantName)) {
+				return variant;
+			}
+		}
+		return null;
+	}
+
+	public AliceTextureReference getAliceTextureReference(String textureName) {
+		ResourceReference resource = getResource(textureName);
+		if (resource instanceof AliceTextureReference) {
+			return (AliceTextureReference)resource;
+		}
+		return null;
+	}
+
+	public StructureReference getStructure(String structureName) {
+		ResourceReference resource = getResource(structureName);
+		if (resource instanceof StructureReference) {
+			return (StructureReference)resource;
+		}
+		return null;
+	}
+
+	public TextureSet getTextureSet(String textureSetName) {
+		for (TextureSet textureSet : textureSets) {
+			if (textureSet.name.equals(textureSetName)) {
+				return textureSet;
+			}
+		}
+		return null;
 	}
 }

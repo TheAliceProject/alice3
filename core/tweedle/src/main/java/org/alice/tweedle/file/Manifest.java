@@ -1,6 +1,7 @@
 package org.alice.tweedle.file;
 
 
+import java.io.File;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ public class Manifest {
 	public MetaData metadata = new MetaData();
 	public List<ProjectIdentifier> prerequisites = new ArrayList<>();
 	public List<ResourceReference> resources = new ArrayList<>();
+
+	private File rootFile;
 
 	public String getId() {
 		return metadata.identifier.id;
@@ -51,5 +54,25 @@ public class Manifest {
 	public enum ProjectType
 	{
 		Library, World, Model
+	}
+
+	public ResourceReference getResource(String resourceName) {
+		for (ResourceReference resource : resources) {
+			if (resource.name.equals(resourceName)) {
+				return resource;
+			}
+		}
+		return null;
+	}
+
+	public void setRootFile(File rootFile) {
+		this.rootFile = rootFile;
+	}
+
+	public File getFile(String manifestRelativeFileName ) {
+		if (rootFile != null) {
+			return new File(rootFile, manifestRelativeFileName);
+		}
+		return new File(manifestRelativeFileName);
 	}
 }

@@ -45,6 +45,7 @@ package org.lgna.story.implementation.alice;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -74,10 +75,8 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 import edu.cmu.cs.dennisc.scenegraph.qa.Problem;
 import edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities;
 import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
-import org.lgna.story.resources.BasicResource;
-import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.SwimmerResource;
+import org.alice.tweedle.file.ModelManifest;
+import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
@@ -100,6 +99,7 @@ public class AliceResourceUtilties {
 	private static final Map<URL, SkeletonVisual> urlToVisualMap = Maps.newHashMap();
 	private static final Map<URL, TexturedAppearance[]> urlToTextureMap = Maps.newHashMap();
 	private static final Map<String, ModelResourceInfo> classToInfoMap = Maps.newHashMap();
+	private static final Map<String, ModelManifest> modelNameToManifestMap = Maps.newHashMap();
 	private static final Map<ResourceIdentifier, ResourceNames> resourceIdentifierToResourceNamesMap = Maps.newHashMap();
 
 	private static final class ResourceNames {
@@ -464,7 +464,7 @@ public class AliceResourceUtilties {
 		return getTextureResourceFileName( modelName, textureName );
 	}
 
-	public static String getTextureResourceFileName( Object resource ) {
+	public static String getTextureResourceFileName( JointedModelResource resource ) {
 		return getTextureResourceFileName( resource.getClass(), resource.toString() );
 	}
 
@@ -473,11 +473,11 @@ public class AliceResourceUtilties {
 		return getVisualResourceFileNameFromModelName( modelName );
 	}
 
-	public static String getVisualResourceName( Object resource ) {
+	public static String getVisualResourceName( JointedModelResource resource ) {
 		return getModelNameFromClassAndResource( resource.getClass(), resource.toString() );
 	}
 
-	public static String getTextureResourceName( Object resource ) {
+	public static String getTextureResourceName( JointedModelResource resource ) {
 		return getTextureNameFromClassAndResource( resource.getClass(), resource.toString() );
 	}
 
@@ -496,7 +496,7 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static String getThumbnailResourceFileName( Object resource ) {
+	public static String getThumbnailResourceFileName( JointedModelResource resource ) {
 		return getThumbnailResourceFileName( resource.getClass(), resource.toString() );
 	}
 
@@ -548,7 +548,16 @@ public class AliceResourceUtilties {
 		return getAliceResource( modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator( modelResource.getSimpleName() ) + thumbnailFilename );
 	}
 
-	public static URL getTextureURL( Object resource ) {
+	public static URL getTextureURL( JointedModelResource resource ) {
+		if (resource instanceof DynamicResource) {
+			try {
+				return ((DynamicResource) resource).getTextureURI().toURL();
+			}
+			catch (MalformedURLException e) {
+				Logger.severe( "Failed to get texture URL for "+((DynamicResource) resource).getTextureURI(), e );
+				return null;
+			}
+		}
 		return getTextureURL( resource.getClass(), getTextureResourceFileName( resource ) );
 	}
 
@@ -560,8 +569,21 @@ public class AliceResourceUtilties {
 		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
+	private  static URL getVisualURL( JointedModelResource resource ) {
+		if (resource instanceof DynamicResource) {
+			try {
+				return ((DynamicResource) resource).getVisualURI().toURL();
+			}
+			catch (MalformedURLException e) {
+				Logger.severe( "Failed to get visual URL for "+((DynamicResource) resource).getVisualURI(), e );
+				return null;
+			}
+		}
+		return getVisualURL( resource.getClass(), getVisualResourceFileName( resource ) );
+	}
+
 	public static SkeletonVisual getVisual( JointedModelResource resource ) {
-		URL resourceURL = getVisualURL( resource.getClass(), getVisualResourceFileName( resource ) );
+		URL resourceURL = getVisualURL(resource);
 		if( urlToVisualMap.containsKey( resourceURL ) ) {
 			return urlToVisualMap.get( resourceURL );
 		} else {
@@ -583,7 +605,7 @@ public class AliceResourceUtilties {
 		return createCopy( original );
 	}
 
-	public static TexturedAppearance[] getTexturedAppearances( Object resource ) {
+	public static TexturedAppearance[] getTexturedAppearances( JointedModelResource resource ) {
 		URL resourceURL = getTextureURL( resource );
 		if( urlToTextureMap.containsKey( resourceURL ) ) {
 			return urlToTextureMap.get( resourceURL );

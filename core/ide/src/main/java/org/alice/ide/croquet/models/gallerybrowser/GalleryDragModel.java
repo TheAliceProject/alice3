@@ -119,4 +119,8 @@ public abstract class GalleryDragModel extends DragModel {
 	public abstract boolean placeOnGround();
 
 	public abstract boolean isInstanceCreator();
+
+	public boolean isUserDefinedModel() {
+		return false;
+	}
 }

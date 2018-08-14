@@ -44,10 +44,8 @@ package org.lgna.project.io;
 
 import edu.cmu.cs.dennisc.java.util.zip.ByteArrayDataSource;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
-import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.serialization.tweedle.TweedleEncoderDecoder;
 import org.alice.tweedle.file.*;
 import org.lgna.common.Resource;
@@ -57,21 +55,12 @@ import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.*;
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
-import org.lgna.story.implementation.alice.ModelResourceIoUtilities;
 import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resources.biped.AliceResource;
-import org.lgna.story.resourceutilities.JointedModelColladaExporter;
-import org.lgna.story.resourceutilities.ModelResourceInfo;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.Struct;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.zip.ZipOutputStream;
 
 //TODO add migration on read - ProjectMigrationManager, MigrationManagerDecodedVersionPair, & AstMigrationUtilities
 public class JsonProjectIo extends DataSourceIo implements ProjectIo{
@@ -113,7 +102,7 @@ public class JsonProjectIo extends DataSourceIo implements ProjectIo{
 
 	private static Resource readResource( ZipEntryContainer container, ResourceReference resourceReference ) {
 		String contentType = resourceReference.getContentType();
-		String id = resourceReference.id;
+		String id = resourceReference.name;
 		String entry = resourceReference.file;
 		if( ( contentType != null ) && ( id != null ) && ( entry != null ) ) {
 			// TODO Read all entries

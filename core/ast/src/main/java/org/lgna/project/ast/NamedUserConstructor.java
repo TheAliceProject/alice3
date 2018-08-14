@@ -122,6 +122,70 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 		generator.appendConstructor( this );
 	}
 
+	@Override
+	public Object instantiateFirstArgumentPassedToSuperConstructor() {
+		ConstructorInvocationStatement superConstructorInvocationStatement = body.getValue().constructorInvocationStatement.getValue();
+		SimpleArgumentListProperty arguments = superConstructorInvocationStatement.requiredArguments;
+		if( arguments.size() > 0 ) {
+			Expression expression = arguments.get( 0 ).expression.getValue();
+			if( expression instanceof FieldAccess ) {
+				return instantiateFieldAccess((FieldAccess) expression);
+			}
+			else if (expression instanceof InstanceCreation) {
+				return instantiateInstanceCreation((InstanceCreation)expression);
+			}
+		}
+		return null;
+	}
+
+
+	//This handles the case of a DynamicResource
+	//DynamicResources use a constructor that looks like this:
+	//	public DyanamicBipedResource(String modelName, String resourceName)
+	//And the InstanceCreation looks like this:
+	//	AstUtilities.createInstanceCreation(
+	//		DynamicBipedResource.class,
+	//		new Class<?>[] {
+	//			String.class,
+	//			String.class
+	//		},
+	//		new StringLiteral( dynamicResource.getModelClassName() ),
+	//		new StringLiteral( dynamicResource.getModelVariantName() ));
+	//This code pulls this information out of the InstanceCreation and then uses it to construct a new DynamicResource
+	private Object instantiateInstanceCreation(InstanceCreation instanceCreation) {
+		if (instanceCreation.constructor.getValue() instanceof JavaConstructor) {
+			JavaConstructor instanceConstructor = (JavaConstructor)instanceCreation.constructor.getValue();
+			Object[] constructorArguments = new Object[instanceConstructor.getRequiredParameters().size()];
+			int index = 0;
+			boolean canEvaluate = true;
+			for (SimpleArgument argument : instanceCreation.requiredArguments.getValue()) {
+				if (argument.expression.getValue() instanceof StringLiteral) {
+					StringLiteral literal = (StringLiteral)argument.expression.getValue();
+					String argumentValue = literal.getValueProperty().getValue();
+					constructorArguments[index++] = argumentValue;
+				}
+				else {
+					canEvaluate = false;
+					break;
+				}
+			}
+			if (canEvaluate) {
+				return instanceConstructor.evaluate(null, null, constructorArguments);
+			}
+		}
+		return null;
+	}
+
+	private Object instantiateFieldAccess(FieldAccess fieldAccess) {
+		JavaField javaField = (JavaField)fieldAccess.field.getValue();
+		try {
+			return javaField.getFieldReflectionProxy().getReification().get(null);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
 	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final NodeProperty<ConstructorBlockStatement> body = new NodeProperty<ConstructorBlockStatement>( this );

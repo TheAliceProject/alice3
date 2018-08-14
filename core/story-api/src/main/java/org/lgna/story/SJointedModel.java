@@ -65,6 +65,11 @@ public abstract class SJointedModel extends SModel {
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public SJoint getJoint( String jointName ) {
+		return SJoint.getJoint( this, jointName );
+	}
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public SJoint[] getJointArray( JointId[] jointIdArray ) {
 		return SJoint.getJointArray( this, jointIdArray );
 	}

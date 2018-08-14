@@ -65,6 +65,7 @@ public interface SlithererResource extends JointedModelResource {
 	public static final JointId RIGHT_EYELID = new JointId( HEAD, SlithererResource.class );
 
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static final JointId TAIL_0 = new JointId( ROOT, SlithererResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] DEFAULT_TAIL = { TAIL_0 };
 
 	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN ) public static JointId[] JOINT_ID_ROOTS = { ROOT };
 

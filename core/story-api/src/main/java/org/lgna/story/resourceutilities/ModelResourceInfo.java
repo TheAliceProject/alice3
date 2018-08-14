@@ -464,24 +464,10 @@ public class ModelResourceInfo {
 		ModelManifest.TextureSet textureSet = createTextureSet();
 		//Only add the structures and textures if they aren't already in the manifest
 		//Multiple resources may reference the same structure or texture so repeats are likely
-		boolean hasStructure = false;
-		for (StructureReference existingStructure : manifest.structures) {
-			if (existingStructure.id.equals(structure.id)) {
-				hasStructure = true;
-				break;
-			}
+		if (manifest.getStructure(structure.name) == null) {
+			manifest.resources.add(structure);
 		}
-		if (!hasStructure) {
-			manifest.structures.add(structure);
-		}
-		boolean hasTexture = false;
-		for (ModelManifest.TextureSet existingTexture : manifest.textureSets) {
-			if (existingTexture.id.equals(textureSet.id)) {
-				hasTexture = true;
-				break;
-			}
-		}
-		if (!hasTexture) {
+		if (manifest.getTextureSet(textureSet.name) == null) {
 			manifest.textureSets.add(textureSet);
 		}
 		//Add the model variant. Model variants are all unique.
@@ -491,23 +477,23 @@ public class ModelResourceInfo {
 
 	private ModelManifest.ModelVariant createModelVariant(StructureReference structure, ModelManifest.TextureSet texture) {
 		ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
-		modelVariant.id = getResourceName();
-		modelVariant.structure = structure.id;
-		modelVariant.textureSet = texture.id;
+		modelVariant.name = getResourceName();
+		modelVariant.structure = structure.name;
+		modelVariant.textureSet = texture.name;
 		modelVariant.icon = getResourceName() + ".png";
 		return modelVariant;
 	}
 
 	private ModelManifest.TextureSet createTextureSet() {
 		ModelManifest.TextureSet textureReference = new ModelManifest.TextureSet();
-		textureReference.id = getTextureReferenceId();
+		textureReference.name = getTextureReferenceId();
 		return textureReference;
 	}
 
 	private StructureReference createStructureReference() {
 		StructureReference structureReference = new StructureReference();
 		structureReference.boundingBox = createManifestBoundingBox();
-		structureReference.id = getModelName();
+		structureReference.name = getModelName();
 		return structureReference;
 	}
 

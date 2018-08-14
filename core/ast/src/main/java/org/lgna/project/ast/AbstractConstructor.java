@@ -61,4 +61,8 @@ public abstract class AbstractConstructor extends AbstractCode {
 	}
 
 	public abstract Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments );
+
+	public Object instantiateFirstArgumentPassedToSuperConstructor() {
+		return null;
+	}
 }

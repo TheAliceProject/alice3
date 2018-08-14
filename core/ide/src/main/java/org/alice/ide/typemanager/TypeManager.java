@@ -145,6 +145,20 @@ public class TypeManager {
 		return rv;
 	}
 
+	private static class MatchesNameTypeCriterion implements Criterion<NamedUserType> {
+		private final String typeName;
+
+		public MatchesNameTypeCriterion( String typeName ) {
+			this.typeName = typeName;
+		}
+
+		@Override
+		public boolean accept( NamedUserType userType ) {
+			String userTypeName = userType.getName();
+			return userTypeName.equals(this.typeName);
+		}
+	}
+
 	private static abstract class ExtendsTypeCriterion implements Criterion<NamedUserType> {
 		private final AbstractType<?, ?, ?> superType;
 
@@ -220,6 +234,39 @@ public class TypeManager {
 		}
 	}
 
+	private static final class ExtendsTypeWithSuperArgumentExpressionsCriterion extends ExtendsTypeCriterion {
+		private final Expression[] superArgumentExpressions;
+
+		public ExtendsTypeWithSuperArgumentExpressionsCriterion( AbstractType<?, ?, ?> superType, Expression[] argumentExpressions ) {
+			super( superType );
+			assert argumentExpressions != null;
+			this.superArgumentExpressions = argumentExpressions;
+		}
+
+		@Override
+		public boolean accept( NamedUserType userType ) {
+			if( super.accept( userType ) ) {
+				NamedUserConstructor constructor = userType.getDeclaredConstructor();
+				if( constructor != null ) {
+					ConstructorInvocationStatement constructorInvocationStatement = constructor.body.getValue().constructorInvocationStatement.getValue();
+					if( constructorInvocationStatement instanceof SuperConstructorInvocationStatement ) {
+						if( constructorInvocationStatement.requiredArguments.size() == superArgumentExpressions.length ) {
+							for (int i=0; i<constructorInvocationStatement.requiredArguments.size(); i++) {
+								Expression requiredArgumentExpression = constructorInvocationStatement.requiredArguments.get( i ).expression.getValue();
+								Expression passedArgumentExpression = superArgumentExpressions[i];
+								if( !requiredArgumentExpression.isEquivalentTo(passedArgumentExpression)) {
+									return false;
+								}
+							}
+							return true;
+						}
+					}
+				}
+			}
+			return false;
+		}
+	}
+
 	private static List<AbstractType<?, ?, ?>> updateArgumentTypes( List<AbstractType<?, ?, ?>> rv, AbstractType<?, ?, ?> rootArgumentType,
 			AbstractType<?, ?, ?> argumentType ) {
 		rv.add( argumentType );
@@ -280,29 +327,37 @@ public class TypeManager {
 	private static final JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = JavaMethod.getInstance( SJointedModel.class, "setJointedModelResource", JointedModelResource.class );
 
 	private static NamedUserType getNamedUserTypeFor( JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField ) {
+		return getNamedUserTypeFor(ancestorType, argumentTypes, i, argumentField, null, null);
+	}
+
+	private static NamedUserType getNamedUserTypeFor( JavaType ancestorType, AbstractType<?, ?, ?>[] argumentTypes, int i, AbstractField argumentField, Expression[] argumentExpressions, String className ) {
 		AbstractType<?, ?, ?> superType;
 		final int LAST_INDEX = argumentTypes.length - 1;
 		if( i < LAST_INDEX ) {
-			superType = getNamedUserTypeFor( ancestorType, argumentTypes, i + 1, null );
+			superType = getNamedUserTypeFor( ancestorType, argumentTypes, i + 1, null, null, null );
 		} else {
 			superType = ancestorType;
 		}
-		Criterion<NamedUserType> criterion;
-		if( argumentField != null ) {
-			criterion = new ExtendsTypeWithSuperArgumentFieldCriterion( superType, argumentField );
-		} else {
-			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
+
+		//Use the classname passed in to create a new named user type. If no class name is passed in, generate one
+		String name = className;
+		if (name == null) {
+			name = createClassNameFromResourceType(argumentTypes[i]);
 		}
 
-		//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		//		if( ide != null ) {
-		//			org.alice.ide.ProjectDocument projectDocument = ide.getDocument();
-		//			if( projectDocument != null ) {
-		//				org.alice.ide.type.TypeCache typeCache = projectDocument.getTypeCache();
-		//				typeCache.getNamedUserTypeFor( ancestorType, argumentTypes, i, argumentField );
-		//			}
-		//		}
-
+		//Find a previously created matching type
+		//Dave: Why aren't we just checking names? All of our types need to be unique names, so this should be an easy check
+		//These criterions are checking type and referenced fields and at no point are names checked. Sigh.
+		//Let's try just checking names
+		Criterion<NamedUserType> criterion = new MatchesNameTypeCriterion(name);
+//		if( argumentField != null ) {
+//			criterion = new ExtendsTypeWithSuperArgumentFieldCriterion( superType, argumentField );
+//		} else if (argumentExpressions != null ) {
+//			criterion = new ExtendsTypeWithSuperArgumentExpressionsCriterion(superType, argumentExpressions);
+//		}
+//		else {
+//			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
+//		}
 		Project project = ProjectStack.peekProject();
 		if( project != null ) {
 			Set<NamedUserType> existingTypes = project.getNamedUserTypes();
@@ -313,16 +368,20 @@ public class TypeManager {
 			}
 		}
 		Expression[] expressions;
-		if( argumentField != null ) {
-			expressions = new Expression[] {
-					new FieldAccess(
-							new TypeExpression( argumentField.getDeclaringType() ),
-							argumentField )
-			};
-		} else {
-			expressions = USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER;
+		if (argumentExpressions != null) {
+			expressions = argumentExpressions;
 		}
-		String name = createClassNameFromResourceType( argumentTypes[ i ] );
+		else {
+			if (argumentField != null) {
+				expressions = new Expression[]{
+						new FieldAccess(
+								new TypeExpression(argumentField.getDeclaringType()),
+								argumentField)
+				};
+			} else {
+				expressions = USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER;
+			}
+		}
 		NamedUserType rv = createTypeFor( superType, name, new AbstractType[] { argumentTypes[ i ] }, expressions );
 		if( argumentTypes[ i ] instanceof JavaType ) {
 			JavaType javaArgumentTypeI = (JavaType)argumentTypes[ i ];
@@ -387,12 +446,10 @@ public class TypeManager {
 		return getNamedUserTypeFor( ancestorType, argumentTypes, 0, getEnumConstantFieldIfOneAndOnly( argumentTypes[ 0 ] ) );
 	}
 
-	// Method not used
-	//	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
-	//		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
-	//		org.lgna.project.ast.AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( bipedType, org.lgna.project.ast.JavaType.getInstance( personResource.getClass() ) );
-	//		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
-	//	}
+	public static NamedUserType getNamedUserTypeFromDynamicResourceInstanceCreation( JavaType resourceType, InstanceCreation instanceCreation, String className ) {
+		AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( resourceType, instanceCreation.getType() );
+		return getNamedUserTypeFor( resourceType, argumentTypes, 0, null, new Expression[] {instanceCreation}, className );
+	}
 
 	public static NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation( InstanceCreation instanceCreation ) {
 		JavaType bipedType = JavaType.getInstance( SBiped.class );

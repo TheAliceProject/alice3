@@ -1,26 +1,15 @@
 package org.lgna.project.io;
 
-import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import org.alice.tweedle.file.Manifest;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
-import org.lgna.common.Resource;
-import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
-import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.*;
 
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public class GalleryModelIo extends DataSourceIo {
@@ -53,17 +42,17 @@ public class GalleryModelIo extends DataSourceIo {
         modelManifest.provenance.aliceVersion = ProjectVersion.getCurrentVersionText();
 
         StructureReference structureReference = new StructureReference();
-        structureReference.id = modelName;
-        modelManifest.structures.add(structureReference);
+        structureReference.name = modelName;
+        modelManifest.resources.add(structureReference);
 
         ModelManifest.TextureSet textureSet = new ModelManifest.TextureSet();
-        textureSet.id = modelName;
+        textureSet.name = modelName;
         modelManifest.textureSets.add(textureSet);
 
         ModelManifest.ModelVariant modelVariant = new ModelManifest.ModelVariant();
-        modelVariant.id = modelName;
-        modelVariant.structure = structureReference.id;
-        modelVariant.textureSet = textureSet.id;
+        modelVariant.name = modelName;
+        modelVariant.structure = structureReference.name;
+        modelVariant.textureSet = textureSet.name;
         modelManifest.models.add(modelVariant);
 
         return modelManifest;

@@ -1,53 +1,73 @@
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.ide.typemanager.TypeManager;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.*;
+import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resources.ModelStructure;
+import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
+
+import java.util.List;
+import java.util.Map;
 
 
 public class DynamicResourceKey extends InstanceCreatorKey {
-	private ModelStructure resourceObject;
+	private DynamicResource dynamicResource;
 
-	public DynamicResourceKey( ModelStructure resource ) {
-		resourceObject = resource;
+	public DynamicResourceKey( DynamicResource resource ) {
+		dynamicResource = resource;
 	}
 
 	@Override
 	public Class<? extends ModelResource> getModelResourceCls() {
-		return resourceObject.getClass();
+		return dynamicResource.getClass();
 	}
 
 	@Override
 	public String getInternalText() {
-		return resourceObject.getInternalModelClassName();
+		return dynamicResource.getInternalModelClassName();
 	}
 
 	@Override
 	public String getSearchText() {
-		return resourceObject.getModelClassName();
+		return dynamicResource.getModelClassName();
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
 		Formatter formatter = FormatterState.getInstance().getValue();
-		return String.format(formatter.getNewFormat(), resourceObject.getModelClassName(), "");
+		return String.format(formatter.getNewFormat(), dynamicResource.getModelClassName(), "");
 	}
 
 	@Override
 	public IconFactory getIconFactory() {
-		return IconFactoryManager.getIconFactoryForResourceInstance( resourceObject );
+		return IconFactoryManager.getIconFactoryForModelStructure( dynamicResource );
 	}
 
 	@Override
 	public InstanceCreation createInstanceCreation() {
-		return null;
-		// TODO
-		// return AstUtilities.createInstanceCreation( constructor, argumentExpressions );
+		InstanceCreation resourceInstanceCreation = AstUtilities.createInstanceCreation(
+				dynamicResource.getClass(),
+				new Class<?>[] {
+						String.class,
+						String.class
+				},
+				new StringLiteral( dynamicResource.getModelClassName() ),
+				new StringLiteral( dynamicResource.getModelVariantName() ));
+
+		JavaType resourceType = getAbstractionTypeForResourceType( JavaType.getInstance( dynamicResource.getClass() ) );
+		NamedUserType type = TypeManager.getNamedUserTypeFromDynamicResourceInstanceCreation( resourceType, resourceInstanceCreation, dynamicResource.getModelClassName() );
+
+		return AstUtilities.createInstanceCreation(
+				type.getFirstDeclaredConstructor(),
+				resourceInstanceCreation
+		);
 	}
 
 	@Override
@@ -57,42 +77,42 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return resourceObject.getTags();
+		return dynamicResource.getTags();
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return resourceObject.getGroupTags();
+		return dynamicResource.getGroupTags();
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return resourceObject.getThemeTags();
+		return dynamicResource.getThemeTags();
 	}
 
 	@Override
 	public AxisAlignedBox getBoundingBox() {
-		return resourceObject.getBoundingBox();
+		return dynamicResource.getBoundingBox();
 	}
 
 	@Override
 	public boolean getPlaceOnGround() {
-		return resourceObject.getPlaceOnGround();
+		return dynamicResource.getPlaceOnGround();
 	}
 
 	@Override
 	public boolean equals( Object o ) {
 		return this == o ||
-						o instanceof DynamicResourceKey && resourceObject == ((DynamicResourceKey) o).resourceObject;
+						o instanceof DynamicResourceKey && dynamicResource == ((DynamicResourceKey) o).dynamicResource;
 	}
 
 	@Override
 	public int hashCode() {
-		return resourceObject.hashCode();
+		return dynamicResource.hashCode();
 	}
 
 	@Override
 	protected void appendRep( StringBuilder sb ) {
-		sb.append( resourceObject );
+		sb.append( dynamicResource );
 	}
 }

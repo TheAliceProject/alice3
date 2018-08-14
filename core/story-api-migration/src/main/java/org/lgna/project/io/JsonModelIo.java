@@ -7,9 +7,7 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
-import edu.cmu.cs.dennisc.texture.BufferedImageTexture;
 import org.alice.tweedle.file.*;
-import org.lgna.common.resources.ImageResource;
 import org.lgna.project.annotations.FieldTemplate;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.story.JointedModelPose;
@@ -17,6 +15,7 @@ import org.lgna.story.Pose;
 import org.lgna.story.implementation.ImageFactory;
 import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.*;
 import org.lgna.story.resourceutilities.JointedModelColladaExporter;
@@ -112,6 +111,7 @@ public class JsonModelIo extends DataSourceIo{
         ModelResource firstResource = modelResources.get(0);
         ModelResourceInfo rootInfo = AliceResourceUtilties.getModelResourceInfo(firstResource.getClass(), firstResource.toString()).getParent();
 
+
         //Make a copy of the rootInfo and then go through all the passed in modelResources and add ModelResourceInfos for them
         ModelResourceInfo modelInfo = rootInfo.createShallowCopy();
         for (JointedModelResource modelResource : modelResources) {
@@ -123,7 +123,10 @@ public class JsonModelIo extends DataSourceIo{
         }
 
         ModelManifest modelManifest = modelInfo.createModelManifest();
-
+        //Alice resources are enums that implement the base resource interfaces. For instance, the Alien implements the BipedResource interface
+        Class superClass = firstResource.getClass().getInterfaces()[0];
+        String parentClassName = AliceResourceClassUtilities.getAliceClassName( superClass );
+        modelManifest.parentClass = parentClassName;
         //If this model is defined by JointedModelResources, then add the model data from that
         if (modelResources != null && modelResources.size() > 0) {
             //We use the first resource because the poses are defined on the resource enum, not on each resource instance
@@ -279,28 +282,10 @@ public class JsonModelIo extends DataSourceIo{
         }
     }
 
-    private ModelManifest.TextureSet getTextureSet(ModelManifest manifest, ModelManifest.ModelVariant modelVariant) {
-        for (ModelManifest.TextureSet textureSet : manifest.textureSets) {
-            if (textureSet.id.equals(modelVariant.textureSet)) {
-                return textureSet;
-            }
-        }
-        return null;
-    }
-
-    private StructureReference getStructureReference(ModelManifest manifest, ModelManifest.ModelVariant modelVariant) {
-        for (StructureReference structureReference : manifest.structures) {
-            if (structureReference.id.equals(modelVariant.structure)) {
-                return structureReference;
-            }
-        }
-        return null;
-    }
-
     private JointedModelResource getResourceForVariant(ModelManifest.ModelVariant modelVariant) {
         if (modelResources != null) {
             for (JointedModelResource resource : modelResources) {
-                if (modelVariant.id.equals(resource.toString())) {
+                if (modelVariant.name.equals(resource.toString())) {
                     return resource;
                 }
             }
@@ -353,7 +338,7 @@ public class JsonModelIo extends DataSourceIo{
 
     public ModelReference createModelReference(String basePath) {
         ModelReference modelReference = new ModelReference();
-        modelReference.id = getModelName();
+        modelReference.name = getModelName();
         modelReference.format = "json";
         modelReference.file = basePath +"/"+ getModelName() +"/" + getModelName()+".json";
 
@@ -370,7 +355,8 @@ public class JsonModelIo extends DataSourceIo{
 
         if (!dataSources.contains(structureDataSource)) {
             dataSources.add(structureDataSource);
-            StructureReference structureReference = getStructureReference(manifest, modelVariant);
+
+            StructureReference structureReference = manifest.getStructure(modelVariant.structure);
             //Strip the base and model path from the name to make it relative to the manifest
             structureReference.file = new File(structureDataSource.getName()).getName();
             structureReference.format = ExportFormat.ALICE.modelExtension;
@@ -383,13 +369,13 @@ public class JsonModelIo extends DataSourceIo{
             dataSources.add(textureDataSource);
 
             AliceTextureReference aliceTextureReference = new AliceTextureReference();
-            aliceTextureReference.id = modelVariant.textureSet+"-textureReference";
+            aliceTextureReference.name = modelVariant.textureSet+"-textureReference";
             aliceTextureReference.file = new File(textureDataSource.getName()).getName();
             aliceTextureReference.format = "a3t";
             manifest.resources.add(aliceTextureReference);
 
-            ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
-            textureSet.idToResourceMap.put(0, aliceTextureReference.id);
+            ModelManifest.TextureSet textureSet = manifest.getTextureSet(modelVariant.textureSet);
+            textureSet.idToResourceMap.put(0, aliceTextureReference.name);
         }
     }
 
@@ -401,7 +387,7 @@ public class JsonModelIo extends DataSourceIo{
         //Create the collada model data source
         DataSource structureDataSource = exporter.createColladaDataSource(resourcePath);
         //Link manifest entries to the files created by the exporter
-        StructureReference structureReference = getStructureReference(manifest, modelVariant);
+        StructureReference structureReference = manifest.getStructure(modelVariant.structure);
         //Strip the base and model path from the name to make it relative to the manifest
         structureReference.file = structureDataSource.getName().substring(resourcePath.length() + 1);
         structureReference.format = ExportFormat.COLLADA.modelExtension;
@@ -418,7 +404,7 @@ public class JsonModelIo extends DataSourceIo{
         }
 
         //Get the existing texture set defined by the modelInfo.
-        ModelManifest.TextureSet textureSet = getTextureSet(manifest, modelVariant);
+        ModelManifest.TextureSet textureSet = manifest.getTextureSet(modelVariant.textureSet);
         //Now that we have a model and exporter, use this to get the id to image map
         textureSet.idToResourceMap = exporter.createTextureIdToImageMap();
         //Get all the textures from the model as data sources
@@ -432,7 +418,7 @@ public class JsonModelIo extends DataSourceIo{
                 ImageReference imageReference = new ImageReference(exporter.createImageResourceForTexture(imageId));
                 //ResourceReference have their id initialized to the filename of the resource.
                 //We need it to be the imageName from the idToResourceMap
-                imageReference.id = imageName;
+                imageReference.name = imageName;
                 manifest.resources.add(imageReference);
                 dataSources.add(imageDataSource);
             }
@@ -463,7 +449,7 @@ public class JsonModelIo extends DataSourceIo{
             else {
                 thumbnailImage = getThumbnailImageForModelVariant(modelVariant);
             }
-            String thumbnailName = modelVariant.id+".png";
+            String thumbnailName = modelVariant.name +".png";
             modelVariant.icon = thumbnailName;
             DataSource thumbnailDataSource = createAndAddImageDataSource(modelManifest, thumbnailImage, resourcePath, thumbnailName);
             dataToWrite.add(thumbnailDataSource);
@@ -490,7 +476,7 @@ public class JsonModelIo extends DataSourceIo{
     private DataSource createAndAddImageDataSource(ModelManifest modelManifest, BufferedImage image, String resourcePath, String imageName) throws IOException {
         DataSource imageDataSource = createPNGImageDataSource(resourcePath +"/"+ imageName, image);
         ImageReference imageReference = new ImageReference(ImageFactory.createImageResource(image, imageName));
-        imageReference.id = imageName;
+        imageReference.name = imageName;
         modelManifest.resources.add(imageReference);
         return imageDataSource;
     }

@@ -47,4 +47,6 @@ package org.lgna.story.resources;
  */
 public interface WatercraftResource extends TransportResource {
 
+
+
 }

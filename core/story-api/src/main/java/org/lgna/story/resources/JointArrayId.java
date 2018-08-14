@@ -62,17 +62,17 @@ public class JointArrayId {
 		return this.containingClass;
 	}
 
-	//Returns true if the given JointId  is a member of this array
-	public boolean isMemberOf( JointId jointId ) {
-		if( jointId != null ) {
-			if( this.containingClass.isAssignableFrom( jointId.getContainingClass() ) ) {
-				if( jointId.toString().startsWith( this.elementPattern ) ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+//	//Returns true if the given JointId  is a member of this array
+//	public boolean isMemberOf( JointId jointId ) {
+//		if( jointId != null ) {
+//			if( this.containingClass.isAssignableFrom( jointId.getContainingClass() ) ) {
+//				if( jointId.toString().startsWith( this.elementPattern ) ) {
+//					return true;
+//				}
+//			}
+//		}
+//		return false;
+//	}
 
 	public JointId getRoot()
 	{

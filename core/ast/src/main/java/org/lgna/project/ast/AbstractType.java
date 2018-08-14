@@ -173,6 +173,14 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		return getDeclaredConstructor( new AbstractType[] {} );
 	}
 
+	public AbstractConstructor getFirstDeclaredConstructor() {
+		List<? extends AbstractConstructor> constructors = getDeclaredConstructors();
+		if( constructors.size() > 0 ) {
+			return constructors.get( 0 );
+		}
+		return null;
+	}
+
 	public M getDeclaredMethod( String name, AbstractType<?, ?, ?>... parameterTypes ) {
 		M rv = null;
 		for( M method : getDeclaredMethods() ) {

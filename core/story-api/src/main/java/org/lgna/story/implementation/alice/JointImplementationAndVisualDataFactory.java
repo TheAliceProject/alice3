@@ -138,11 +138,6 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 	}
 
 	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource( JointedModelResource resource ) {
-		return JointImplementationAndVisualDataFactory.getInstance( resource );
-	}
-
-	@Override
 	public JointedModelResource getResource() {
 		return this.resource;
 	}
@@ -187,14 +182,14 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 	}
 
 	@Override
-	public JointImp[] createJointArrayImplementation( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
+	public JointId[] getJointArrayIds( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
 		SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
 		if( sgSkeletonVisual != null ) {
 			String key = jointArrayId.getElementNamePattern();
 			Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
 			Joint[] sgJoints = sgSkeletonRoot.getJoints( key );
 			if( sgJoints != null ) {
-				JointImp[] jointImps = new JointImp[ sgJoints.length ];
+				JointId[] jointIds = new JointId[ sgJoints.length ];
 				for( int i = 0; i < sgJoints.length; i++ ) {
 					final String jointName = sgJoints[ i ].jointID.getValue();
 					sgJoints[ i ].setName( jointName );
@@ -202,7 +197,7 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 					if( i == 0 ) {
 						parentJointId = jointArrayId.getRoot();
 					} else {
-						parentJointId = jointImps[ i - 1 ].getJointId();
+						parentJointId = jointIds[ i - 1 ];
 					}
 					if( sgSkeletonRoot.getJoint( parentJointId.toString() ) != sgJoints[ i ].getParent() ) {
 						JointedModelResource resource = jointedModelImplementation.getResource();
@@ -214,16 +209,17 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 					//(meaning this is an array that is declared on the class but is ultimately implemented by an individual resource)
 					//Given this fact, these joint ids need to be tied to the resource rather than the class
 					//Maybe pass parent in as null if the parent joint is the root joint? this seems like a bad idea though...
-					JointId jointId = new JointId( parentJointId, jointArrayId.getContainingClass(), resource) {
+					//Update 8/3/2018: Working on removing containing class dependency. Goal is to make joints just know about their id and their parent.
+					JointId jointId = new JointId( parentJointId, jointArrayId.getContainingClass()) {
 						@Override
 						public String toString( ) {
 							return jointName;
 						}
 					};
 
-					jointImps[ i ] = new JointImplementation( jointedModelImplementation, jointId, sgJoints[ i ] );
+					jointIds[ i ] = jointId;
 				}
-				return jointImps;
+				return jointIds;
 			} else {
 				JointedModelResource resource = jointedModelImplementation.getResource();
 				Logger.severe( jointArrayId, " array not found for ", resource.getClass(), resource );

@@ -54,9 +54,4 @@ public class BasicJointedModelImp extends JointedModelImp<SJointedModel, BasicRe
 		super( abstraction, factory );
 	}
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return this.getResource().getRootJointIds();
-	}
-
 }
