@@ -51,8 +51,4 @@ public final class TransportImp extends JointedModelImp<STransport, TransportRes
 		super( abstraction, factory );
 	}
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return this.getResource().getRootJointIds();
-	}
 }

@@ -88,14 +88,11 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 	}
 
 	@Override
-	public JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource( JointedModelResource resource ) {
-		return JointImplementationAndVisualDataFactory.getInstance( resource );
-	}
-
-	@Override
 	public JointedModelResource getResource() {
 		return this.resource;
 	}
+
+
 
 	@Override
 	public JointImp createJointImplementation( JointedModelImp jointedModelImplementation, JointId jointId ) {
@@ -113,8 +110,8 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 
 	//Not supported on nebulous models
 	@Override
-	public JointImp[] createJointArrayImplementation( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
-		return null;
+	public JointId[] getJointArrayIds(JointedModelImp jointedModelImplementation, JointArrayId jointArrayId) {
+		return new JointId[0];
 	}
 
 	@Override

@@ -50,6 +50,7 @@ import java.util.Stack;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
@@ -67,38 +68,58 @@ public class ModelResourceTree {
 		this.galleryTree = this.createClassTree( classes );
 	}
 
-	public ModelResourceTreeNode getTree() {
+	public GalleryResourceTreeNode getTree() {
 		return this.galleryTree;
 	}
 
-	public List<ModelResourceTreeNode> getSModelBasedNodes() {
+	public List<TypedDefinedGalleryTreeNode> getSModelBasedNodes() {
 		return this.smodelBasedClasses;
 	}
 
-	public List<ModelResourceTreeNode> getRootNodes() {
-		LinkedList<ModelResourceTreeNode> rootNodes = new LinkedList<ModelResourceTreeNode>();
+	public List<TypedDefinedGalleryTreeNode> getRootNodes() {
+		LinkedList<TypedDefinedGalleryTreeNode> rootNodes = new LinkedList<TypedDefinedGalleryTreeNode>();
 		if( this.galleryTree != null ) {
 			for( int i = 0; i < this.galleryTree.getChildCount(); i++ ) {
-				rootNodes.add( (ModelResourceTreeNode)this.galleryTree.getChildAt( i ) );
+				rootNodes.add( (TypedDefinedGalleryTreeNode)this.galleryTree.getChildAt( i ) );
 			}
 		}
 		return rootNodes;
 	}
 
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( AbstractType<?, ?, ?> type ) {
+	public void addUserModels(List<ModelManifest> userModels) {
+		for (ModelManifest userModel : userModels) {
+			addUserModel(userModel);
+
+		}
+	}
+
+	private void addUserModel( ModelManifest userModel ){
+		TypedDefinedGalleryTreeNode parentNode = null;
+		for (TypedDefinedGalleryTreeNode classNode : this.smodelBasedClasses) {
+			if (classNode.getUserType().getName().equals(userModel.parentClass)) {
+				parentNode = classNode;
+				break;
+			}
+		}
+
+		ManifestDefinedGalleryTreeNode manifestNode = new ManifestDefinedGalleryTreeNode(userModel);
+		manifestNode.setParent(parentNode);
+	}
+
+	public TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForUserType(AbstractType<?, ?, ?> type ) {
 		return this.galleryTree.getDescendantOfUserType( type );
 	}
 
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
+	public TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType(AbstractType<?, ?, ?> type ) {
 		return this.galleryTree.getDescendantOfJavaType( type );
 	}
 
-	public List<? extends ModelResourceTreeNode> getGalleryResourceChildrenForJavaType( AbstractType<?, ?, ?> type ) {
-		ModelResourceTreeNode node = this.galleryTree.getDescendantOfJavaType( type );
+	public List<? extends GalleryResourceTreeNode> getGalleryResourceChildrenForJavaType( AbstractType<?, ?, ?> type ) {
+		TypedDefinedGalleryTreeNode node = this.galleryTree.getDescendantOfJavaType( type );
 		if( node != null ) {
 			return node.childrenList();
 		} else {
-			return new LinkedList<ModelResourceTreeNode>();
+			return new LinkedList<TypedDefinedGalleryTreeNode>();
 		}
 	}
 
@@ -117,9 +138,9 @@ public class ModelResourceTree {
 	}
 
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
-	private ModelResourceTreeNode addNodes( ModelResourceTreeNode root, Stack<Class<? extends ModelResource>> classes ) {
+	private TypedDefinedGalleryTreeNode addNodes(TypedDefinedGalleryTreeNode root, Stack<Class<? extends ModelResource>> classes ) {
 		Class<?> rootClass = null;
-		ModelResourceTreeNode currentNode = root;
+		GalleryResourceTreeNode currentNode = root;
 		while( !classes.isEmpty() ) {
 			Class<? extends ModelResource> currentClass = classes.pop();
 			if( currentClass.isAnnotationPresent( Deprecated.class ) ) {
@@ -130,12 +151,12 @@ public class ModelResourceTree {
 			if( rootClass == null ) {
 				rootClass = currentClass;
 			}
-			ModelResourceTreeNode parentNode = currentNode;
-			ModelResourceTreeNode classNode = null;
+			GalleryResourceTreeNode parentNode = currentNode;
+			TypedDefinedGalleryTreeNode classNode = null;
 			if( resourceClassToNodeMap.containsKey( currentClass ) ) {
 				classNode = resourceClassToNodeMap.get( currentClass );
 			}
-			//Build a new ModelResourceTreeNode for the current class
+			//Build a new TypedDefinedGalleryTreeNode for the current class
 			if( classNode == null ) {
 
 				NamedUserType aliceType = null;
@@ -155,7 +176,7 @@ public class ModelResourceTree {
 				NamedUserConstructor[] noConstructors = {};
 				aliceType = new NamedUserType( aliceClassName, packageName, parentType, noConstructors, noMethods, noFields );
 
-				classNode = new ModelResourceTreeNode( aliceType, currentClass, modelClass );
+				classNode = new TypedDefinedGalleryTreeNode( aliceType, currentClass, modelClass );
 				resourceClassToNodeMap.put( currentClass, classNode );
 				if( root == null ) { //if the root node passed in is null, assign it to be the node from the first class we process
 					root = classNode;
@@ -168,10 +189,9 @@ public class ModelResourceTree {
 						String fieldClassName = AliceResourceClassUtilities.getClassNameFromName( f.getName() ) + aliceClassName;
 						NamedUserType subParentType = classNode.getUserType();
 						NamedUserType fieldType = new NamedUserType( fieldClassName, packageName, subParentType, noConstructors, noMethods, noFields );
-						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode( fieldType, currentClass, null );
+						TypedDefinedGalleryTreeNode fieldNode = new TypedDefinedGalleryTreeNode( fieldType, currentClass, null );
 						try {
 							ModelResource resource = (ModelResource)f.get( null );
-							fieldNode.setModelResourceInstance( resource );
 							JavaField javaField = JavaField.getInstance( f );
 							fieldNode.setJavaField( javaField );
 						} catch( Exception e ) {
@@ -188,8 +208,8 @@ public class ModelResourceTree {
 		return root;
 	}
 
-	private ModelResourceTreeNode createClassTree( List<Class<? extends ModelResource>> classes ) {
-		ModelResourceTreeNode topNode = new ModelResourceTreeNode( null, null, null );
+	private TypedDefinedGalleryTreeNode createClassTree(List<Class<? extends ModelResource>> classes ) {
+		TypedDefinedGalleryTreeNode topNode = new TypedDefinedGalleryTreeNode( null, null, null );
 
 		for( Class<? extends ModelResource> cls : classes ) {
 			Class<? extends ModelResource> currentClass = cls;
@@ -218,7 +238,7 @@ public class ModelResourceTree {
 		return topNode;
 	}
 
-	private final ModelResourceTreeNode galleryTree;
-	private final Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = Maps.newHashMap();
-	private final List<ModelResourceTreeNode> smodelBasedClasses = Lists.newArrayList();
+	private final TypedDefinedGalleryTreeNode galleryTree;
+	private final Map<Object, TypedDefinedGalleryTreeNode> resourceClassToNodeMap = Maps.newHashMap();
+	private final List<TypedDefinedGalleryTreeNode> smodelBasedClasses = Lists.newArrayList();
 }

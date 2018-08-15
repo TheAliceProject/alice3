@@ -12,7 +12,7 @@ public class ManifestEncoderDecoder {
 	private static final String TYPE_KEY = "type";
 
 	public static String toJson(Manifest manifest) {
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(manifest);
 	}
 

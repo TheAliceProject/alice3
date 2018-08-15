@@ -169,4 +169,20 @@ public class StoryApiDirectoryUtilities {
 			return getFallbackDirectory();
 		}
 	}
+
+	private static File userGalleryDirectory = null;
+
+	public static void setUserGalleryDirectory( File userGalleryDirectory ) {
+		StoryApiDirectoryUtilities.userGalleryDirectory = userGalleryDirectory;
+	}
+
+	public static File getUserGalleryDirectory() {
+		if (StoryApiDirectoryUtilities.userGalleryDirectory != null) {
+			return StoryApiDirectoryUtilities.userGalleryDirectory;
+		}
+		else {
+			File userDir = getDirectoryFromProperty( "user.dir" );
+			return new File(userDir,  "MyGallery");
+		}
+	}
 }

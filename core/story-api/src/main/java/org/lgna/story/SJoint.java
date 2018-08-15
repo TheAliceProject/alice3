@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
+import org.lgna.story.resources.DynamicJointId;
 import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 
@@ -55,18 +56,29 @@ import org.lgna.story.resources.JointId;
  */
 public class SJoint extends SMovableTurnable {
 
-	private static final MapToMap<SJointedModel, JointId, SJoint> mapToMap = MapToMap.newInstance();
+	private static final MapToMap<SJointedModel, JointId, SJoint> mapToJointIdJointMap = MapToMap.newInstance();
+	private static final MapToMap<SJointedModel, String, SJoint> mapToJointNameJointMap = MapToMap.newInstance();
 
 	private static final MapToMap<SJointedModel, JointId[], SJoint[]> mapToArrayMap = MapToMap.newInstance();
 
 	private static final MapToMap<SJointedModel, JointArrayId, SJoint[]> mapToArrayIdMap = MapToMap.newInstance();
 
 	/* package-private */static SJoint getJoint( SJointedModel jointedModel, JointId jointId ) {
-		return mapToMap.getInitializingIfAbsent( jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
+		return mapToJointIdJointMap.getInitializingIfAbsent( jointedModel, jointId, new MapToMap.Initializer<SJointedModel, JointId, SJoint>() {
 			@Override
 			public SJoint initialize( SJointedModel jointedModel, JointId jointId ) {
 				JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
 				return SJoint.getInstance( jointedModelImplementation, jointId );
+			}
+		} );
+	}
+
+	/* package-private */static SJoint getJoint( SJointedModel jointedModel, String jointName ) {
+		return mapToJointNameJointMap.getInitializingIfAbsent( jointedModel, jointName, new MapToMap.Initializer<SJointedModel, String, SJoint>() {
+			@Override
+			public SJoint initialize( SJointedModel jointedModel, String jointName ) {
+				JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+				return SJoint.getInstance( jointedModelImplementation, jointName);
 			}
 		} );
 	}
@@ -91,12 +103,22 @@ public class SJoint extends SMovableTurnable {
 
 	private static SJoint getInstance( JointedModelImp jointedModelImplementation, JointId jointId ) {
 		JointImp implementation = jointedModelImplementation.getJointImplementation( jointId );
-		SJoint rv = implementation.getAbstraction();
+		return getInstance(jointedModelImplementation, implementation);
+	}
+
+	//String based lookup for DynamicJointIds
+	private static SJoint getInstance( JointedModelImp jointedModelImplementation, String jointName ) {
+		JointImp implementation = jointedModelImplementation.getJointImplementation( jointName );
+		return getInstance(jointedModelImplementation, implementation);
+	}
+
+	private static SJoint getInstance( JointedModelImp jointedModelImplementation, JointImp jointImp ) {
+		SJoint rv = jointImp.getAbstraction();
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new SJoint( implementation );
-			implementation.setAbstraction( rv );
+			rv = new SJoint( jointImp );
+			jointImp.setAbstraction( rv );
 		}
 		return rv;
 	}

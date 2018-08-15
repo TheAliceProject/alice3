@@ -44,11 +44,8 @@
 package org.lgna.story.implementation;
 
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
@@ -56,6 +53,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
@@ -67,14 +65,7 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Leaf;
-import edu.cmu.cs.dennisc.scenegraph.ModelJoint;
-import edu.cmu.cs.dennisc.scenegraph.Scalable;
-import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.*;
 import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
@@ -86,12 +77,12 @@ import org.lgna.story.implementation.overlay.BubbleImp;
 import org.lgna.story.implementation.overlay.SpeechBubbleImp;
 import org.lgna.story.implementation.overlay.ThoughtBubbleImp;
 import org.lgna.story.implementation.visualization.JointedModelVisualization;
+import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.JointArrayId;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
 
 /**
@@ -117,15 +108,13 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
 		public boolean hasJointImplementation( JointedModelImp<?, ?> jointedModelImplementation, JointId jointId );
 
-		public JointImp[] createJointArrayImplementation( JointedModelImp<?, ?> jointedModelImplementation, JointArrayId jointArrayId );
+		public JointId[] getJointArrayIds( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId );
 
 		public VisualData createVisualData();
 
 		public UnitQuaternion getOriginalJointOrientation( JointId jointId );
 
 		public AffineMatrix4x4 getOriginalJointTransformation( JointId jointId );
-
-		public JointImplementationAndVisualDataFactory<R> getFactoryForResource( R resource );
 	}
 
 	private static class JointImpWrapper extends JointImp {
@@ -140,6 +129,24 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			super.setAbstraction( abstraction );
 			if( this.internalJointImp != null ) {
 				this.internalJointImp.setAbstraction( abstraction );
+			}
+		}
+
+		public JointImp getJointParent() {
+			return jointParentWrapper;
+		}
+
+		public List<JointImp> getJointChildren() {
+			return jointChildrenWrapper;
+		}
+
+		void setJointParent(JointImp jointParent) {
+			if (this.jointParentWrapper != null) {
+				this.jointParentWrapper.getJointChildren().remove(this);
+			}
+			this.jointParentWrapper = jointParent;
+			if (this.jointParentWrapper != null) {
+				jointParent.getJointChildren().add(this);
 			}
 		}
 
@@ -259,54 +266,31 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		}
 
 		private JointImp internalJointImp;
+		private JointImp jointParentWrapper;
+		private List<JointImp> jointChildrenWrapper = new ArrayList<>();
 	}
 
 	public JointedModelImp( A abstraction, JointImplementationAndVisualDataFactory<R> factory ) {
 		this.abstraction = abstraction;
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData();
+		this.sgScalable = null;
 
-		//Handle joint arrays
-		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval
-		for( JointArrayId arrayId : this.getJointArrayIds() ) {
-			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
+		List<JointId> allJointIds = getAllJoints();
+
+		Map<JointId, JointImp> jointMap = createJointImps(allJointIds);
+		//Make all the joint wrappers and put them in the map
+		for (Map.Entry<JointId, JointImp> entry : jointMap.entrySet()) {
+			JointImpWrapper wrapper = new JointImpWrapper( this, entry.getValue() );
+			mapIdToJoint.put(entry.getKey(), wrapper);
+		}
+		//Go through all the wrappers and link up the parent/child relationship
+		for (Map.Entry<JointId, JointImpWrapper> entry : mapIdToJoint.entrySet()) {
+			entry.getValue().setJointParent(mapIdToJoint.get(entry.getKey().getParent()));
 		}
 
-		JointId[] rootIds = this.getRootJointIds();
-		Composite sgComposite;
-		if( rootIds.length == 0 ) {
-			this.sgScalable = null;
-			sgComposite = this.getSgComposite();
-		} else {
-			final boolean isScalableDesired = false;
-			if( isScalableDesired ) {
-				this.sgScalable = new Scalable();
-				this.sgScalable.setParent( this.getSgComposite() );
-				this.sgScalable.putBonusDataFor( ENTITY_IMP_KEY, this );
-				sgComposite = this.sgScalable;
-			} else {
-				this.sgScalable = null;
-				sgComposite = this.getSgComposite();
-			}
-			for( JointId root : rootIds ) {
-				this.createWrapperJointTree( root, this, this.mapIdToJoint );
-			}
-		}
 
-		List<JointId> missingJoints = this.getMissingJoints();
-		if( !missingJoints.isEmpty() ) {
-			StringBuilder sb = new StringBuilder();
-			String resourceName = this.getResource().getClass().getSimpleName();
-			sb.append( resourceName + " missing joints: " );
-			boolean first = true;
-			for( JointId id : missingJoints ) {
-				sb.append( ( !first ? ", " : "" ) + id.toString() );
-				first = false;
-			}
-			throw new RuntimeException( sb.toString() );
-		}
-
-		this.visualData.setSGParent( sgComposite );
+		this.visualData.setSGParent( getSgComposite() );
 
 		for( Visual sgVisual : this.visualData.getSgVisuals() ) {
 			putInstance( sgVisual );
@@ -316,44 +300,45 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		}
 	}
 
-	//JointArrayId support
-	//This is for implicit array support. It iterates through declared joints and puts matching ones into an joint array
-	private void buildJointArrayMapHelper( JointId currentJointId, JointArrayId jointArrayId, List<JointId> arrayList ) {
-		if( jointArrayId.isMemberOf( currentJointId ) ) {
-			arrayList.add( currentJointId );
+	private Map<JointId, JointImp> createJointImps(List<JointId> allJointIds) {
+		Map<JointId, JointImp> jointMap = new HashMap<>();
+		for (JointId jointId : allJointIds) {
+			jointMap.put(jointId, this.createJointImplementation( jointId ));
 		}
-		//If the currentJointId is null, then use the root joints as a starting point for searching for array elements
-		if( currentJointId == null ) {
-			for( JointId childId : this.getRootJointIds() ) {
-				buildJointArrayMapHelper( childId, jointArrayId, arrayList );
-			}
-		} else {
-			for( JointId childId : currentJointId.getChildren( this.factory.getResource() ) ) {
-				buildJointArrayMapHelper( childId, jointArrayId, arrayList );
+		for (JointId jointId : allJointIds) {
+			JointImp jointImp = jointMap.get(jointId);
+			JointImp parentImp = jointMap.get(jointId.getParent());
+			jointImp.setJointParent(parentImp);
+			if( jointImp.getSgVehicle() == null ) {
+				jointImp.setVehicle( parentImp );
 			}
 		}
+		return jointMap;
 	}
 
-	//Makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval
-	private <J extends JointImp> void createJointImpsAsNeededForJointArrayIds( JointArrayId jointArrayId, Map<JointId, J> jointMap, boolean makeWrappers ) {
-		List<JointId> jointIdList = Lists.newArrayList();
-		//Look for declared joints for
-		this.buildJointArrayMapHelper( jointArrayId.getRoot(), jointArrayId, jointIdList );
-		//If there aren't any declared joints, look for hidden joints
-		if( jointIdList.isEmpty() ) {
-			JointImp[] jointImpArray = this.factory.createJointArrayImplementation( this, jointArrayId );
-			for( JointImp jointImp : jointImpArray ) {
-				if( makeWrappers ) {
-					jointMap.put( jointImp.getJointId(), (J)( new JointImpWrapper( this, jointImp ) ) );
-				} else {
-					jointMap.put( jointImp.getJointId(), (J)( jointImp ) );
-				}
+	private List<JointId> getAllJoints() {
+		List<JointId> allJoints = new ArrayList<>();
+		JointedModelResource resource = getResource();
+		for (Field jointField : ReflectionUtilities.getPublicStaticFinalFields(resource.getClass(), JointId.class)) {
+			try {
+				JointId joint = (JointId)jointField.get( null );
+				allJoints.add(joint);
+			} catch( IllegalAccessException iae ) {
+				Logger.throwable( iae, jointField );
 			}
-		} else {
-			//If the jointIdList has ids in it, then it means the array is already made up of existing JointImps, so skip making new ones
 		}
-		//Add a map to the jointArrayId for later lookup (see method getJointIdArray)
-		this.mapArrayIdToJointIdArray.put( jointArrayId, jointIdList.toArray( new JointId[ jointIdList.size() ] ) );
+		if (resource instanceof DynamicResource) {
+			allJoints.addAll(Arrays.asList(((DynamicResource)resource).getModelSpecificJoints()));
+		}
+		//Handle joint arrays
+		for( JointArrayId arrayId : this.getJointArrayIds() ) {
+			JointId[] jointArrayIds = this.factory.getJointArrayIds( this, arrayId);
+			for (JointId jointId : jointArrayIds) {
+				allJoints.add(jointId);
+			}
+		}
+
+		return allJoints;
 	}
 
 	public JointId[] getJointIdArray( JointArrayId jointArrayId ) {
@@ -369,22 +354,22 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		return this.jointArrayIds;
 	}
 
-	private List<JointId> getMissingJoints() {
-		List<JointId> missingJoints = new ArrayList<JointId>();
-		List<JointId> jointsToCheck = new ArrayList<JointId>();
-		JointId[] rootIds = this.getRootJointIds();
-		Collections.addAll( jointsToCheck, rootIds );
-		while( !jointsToCheck.isEmpty() ) {
-			JointId joint = jointsToCheck.remove( 0 );
-			if( !this.hasJointImplementation( joint ) ) {
-				missingJoints.add( joint );
-			}
-			for( JointId child : joint.getChildren( this.getResource() ) ) {
-				jointsToCheck.add( child );
-			}
-		}
-		return missingJoints;
-	}
+//	private List<JointId> getMissingJoints() {
+//		List<JointId> missingJoints = new ArrayList<JointId>();
+//		List<JointId> jointsToCheck = new ArrayList<JointId>();
+//		JointId[] rootIds = this.getRootJointImps();
+//		Collections.addAll( jointsToCheck, rootIds );
+//		while( !jointsToCheck.isEmpty() ) {
+//			JointId joint = jointsToCheck.remove( 0 );
+//			if( !this.hasJointImplementation( joint ) ) {
+//				missingJoints.add( joint );
+//			}
+//			for( JointId child : joint.getChildren( this.getResource() ) ) {
+//				jointsToCheck.add( child );
+//			}
+//		}
+//		return missingJoints;
+//	}
 
 	public void setNewResource( JointedModelResource resource ) {
 		if( resource != this.getResource() ) {
@@ -400,20 +385,9 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			float originalOpacity = this.opacity.getValue();
 			Paint originalPaint = this.paint.getValue();
 			this.visualData = this.factory.createVisualData();
-			JointId[] rootIds = this.getRootJointIds();
-			Map<JointId, JointImp> newJoints = Maps.newHashMap();
-			if( rootIds.length == 0 ) {
-				//pass
-			} else {
-				for( JointId root : rootIds ) {
-					this.createRegularJointTree( root, this, newJoints );
-				}
-			}
 
-			this.mapArrayIdToJointIdArray.clear();
-			for( JointArrayId arrayId : this.getJointArrayIds() ) {
-				this.createJointImpsAsNeededForJointArrayIds( arrayId, newJoints, false );
-			}
+			List<JointId> allJointIds = getAllJoints();
+			Map<JointId, JointImp> newJoints = createJointImps(allJointIds);
 
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
 
@@ -460,18 +434,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		return rv;
 	}
 
-	private boolean findJoint( JointId jointId, JointId toFind ) {
-		if( jointId.toString().equals( toFind.toString() ) ) {
-			return true;
-		}
-		for( JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			if( findJoint( childId, toFind ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private void matchNewDataToExistingJoints( Map<JointId, UnitQuaternion> mapIdToOriginalRotation, Map<JointId, JointImp> newJoints ) {
 		List<JointId> toRemove = Lists.newLinkedList();
 		for( Map.Entry<JointId, JointImpWrapper> jointEntry : this.mapIdToJoint.entrySet() ) {
@@ -483,38 +445,18 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			}
 		}
 		for( JointId id : toRemove ) {
-			this.mapIdToJoint.remove( id );
+			JointImpWrapper impToRemove = this.mapIdToJoint.remove( id );
+			//Reparent children
+			for (JointImp childImp : impToRemove.getJointChildren()) {
+				childImp.setJointParent(impToRemove.getJointParent());
+			}
+			impToRemove.setJointParent(null);
+			AbstractTransformable sgJoint = impToRemove.getSgComposite();
+			for (Component c : sgJoint.getComponents()) {
+				c.setParent(impToRemove.getJointParent().getSgComposite());
+			}
+			sgJoint.setParent(null);
 		}
-	}
-
-	private JointImp createRegularJointTree( JointId jointId, EntityImp parent, Map<JointId, JointImp> jointMap ) {
-		JointImp joint = this.createAndParentJointImp( jointId, parent );
-		jointMap.put( jointId, joint );
-		for( JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			JointImp childTree = createRegularJointTree( childId, joint, jointMap );
-		}
-		return joint;
-	}
-
-	private JointImp createAndParentJointImp( JointId jointId, EntityImp parent ) {
-		JointImp joint = this.createJointImplementation( jointId );
-		if( joint.getSgVehicle() == null ) {
-			joint.setVehicle( parent );
-		}
-		return joint;
-	}
-
-	private JointImpWrapper createJointWrapper( JointId jointId, EntityImp parent ) {
-		return new JointImpWrapper( this, this.createAndParentJointImp( jointId, parent ) );
-	}
-
-	private JointImp createWrapperJointTree( JointId jointId, EntityImp parent, Map<JointId, JointImpWrapper> jointMap ) {
-		JointImpWrapper joint = createJointWrapper( jointId, parent );
-		jointMap.put( jointId, joint );
-		for( JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			createWrapperJointTree( childId, joint, jointMap );
-		}
-		return joint;
 	}
 
 	public void setAllJointPivotsVisibile( boolean isPivotVisible ) {
@@ -559,6 +501,22 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		return null;
 	}
 
+	//String based lookup for DynamicJointIds
+	public JointImp getJointImplementation( String jointName ) {
+		JointImpWrapper wrapper = null;
+		//TODO: Think about maintaining a map of names to joints. It would be double accounting and might be a pain though
+		for (Map.Entry<JointId, JointImpWrapper> entry : this.mapIdToJoint.entrySet()) {
+			if (entry.getKey().toString().equals(jointName)) {
+				wrapper = entry.getValue();
+				break;
+			}
+		}
+		if( wrapper != null ) {
+			return wrapper;
+		}
+		return null;
+	}
+
 	protected Vector4 getFrontOffsetForJoint( JointImp jointImp ) {
 		Vector4 offsetAsSeenBySubject = new Vector4();
 		AxisAlignedBox bbox = jointImp.getAxisAlignedMinimumBoundingBox( this );
@@ -588,8 +546,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 	public AffineMatrix4x4 getOriginalJointTransformation( JointId jointId ) {
 		return this.factory.getOriginalJointTransformation( jointId );
 	}
-
-	public abstract JointId[] getRootJointIds();
 
 	public SkeletonVisual getSgSkeletonVisual() {
 		if( this.getSgVisuals()[ 0 ] instanceof SkeletonVisual ) {
@@ -731,6 +687,16 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		}
 	}
 
+	private List<JointImp> getRootJointImps() {
+		List<JointImp> rootJoints = new ArrayList<>();
+		for (Map.Entry<JointId, JointImpWrapper> entry : mapIdToJoint.entrySet()) {
+			if (entry.getKey().getParent() == null) {
+				rootJoints.add(entry.getValue());
+			}
+		}
+		return rootJoints;
+	}
+
 	public static interface TreeWalkObserver {
 		public void pushJoint( JointImp joint );
 
@@ -739,26 +705,24 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		public void popJoint( JointImp joint );
 	}
 
-	private void treeWalk( JointId parentId, TreeWalkObserver observer ) {
-		JointImp parentImp = this.getJointImplementation( parentId );
+	private void treeWalk( JointImp parentImp, TreeWalkObserver observer ) {
 		if( parentImp != null ) {
 			observer.pushJoint( parentImp );
 			R resource = this.getResource();
-			for( JointId childId : parentId.getChildren( resource ) ) {
-				JointImp childImp = this.getJointImplementation( childId );
+			for( JointImp childImp : parentImp.getJointChildren() ) {
 				if( childImp != null ) {
 					observer.handleBone( parentImp, childImp );
 				}
 			}
 			observer.popJoint( parentImp );
-			for( JointId childId : parentId.getChildren( resource ) ) {
-				treeWalk( childId, observer );
+			for(JointImp childImp : parentImp.getJointChildren() ) {
+				treeWalk( childImp, observer );
 			}
 		}
 	}
 
 	public void treeWalk( TreeWalkObserver observer ) {
-		for( JointId root : this.getRootJointIds() ) {
+		for( JointImp root : this.getRootJointImps() ) {
 			this.treeWalk( root, observer );
 		}
 	}

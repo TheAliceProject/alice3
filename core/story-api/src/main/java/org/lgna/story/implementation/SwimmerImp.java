@@ -50,11 +50,7 @@ import org.lgna.story.resources.SwimmerResource;
 public final class SwimmerImp extends JointedModelImp<SSwimmer, SwimmerResource> {
 	public SwimmerImp( SSwimmer abstraction, JointImplementationAndVisualDataFactory<SwimmerResource> factory ) {
 		super( abstraction, factory );
-	}
 
-	@Override
-	public JointId[] getRootJointIds() {
-		return SwimmerResource.JOINT_ID_ROOTS;
 	}
 
 	@Override

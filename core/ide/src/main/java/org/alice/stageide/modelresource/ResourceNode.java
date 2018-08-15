@@ -91,6 +91,11 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
+	public boolean isUserDefinedModel() {
+		return (this.resourceKey instanceof DynamicResourceKey);
+	}
+
+	@Override
 	public List<ResourceNode> getNodeChildren() {
 		return this.children;
 	}
@@ -122,12 +127,18 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 
 	@Override
 	public Model getDropModel( DragStep step, DropSite dropSite ) {
-		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
+		if( ( this.resourceKey instanceof EnumConstantResourceKey )) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 			AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = AddResourceKeyManagedFieldComposite.getInstance();
 			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, true );
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
-		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
+		} if (this.resourceKey instanceof DynamicResourceKey) { //TODO: incorporate this into the case above. Separate for testing purposes
+			DynamicResourceKey dynamicResourceKey = (DynamicResourceKey)this.resourceKey;
+			AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = AddResourceKeyManagedFieldComposite.getInstance();
+			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( dynamicResourceKey, true );
+			return addResourceKeyManagedFieldComposite.getLaunchOperation();
+		}
+		else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
 			return NebulousIde.nonfree.getPersonResourceDropModel( this.resourceKey );
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;

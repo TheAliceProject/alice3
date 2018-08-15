@@ -71,24 +71,11 @@ import org.lgna.project.ast.UserConstructor;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
-import org.lgna.story.resources.AircraftResource;
-import org.lgna.story.resources.AutomobileResource;
-import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.FishResource;
-import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.JointedModelResource;
-import org.lgna.story.resources.MarineMammalResource;
-import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resources.PropResource;
-import org.lgna.story.resources.QuadrupedResource;
-import org.lgna.story.resources.SlithererResource;
-import org.lgna.story.resources.SwimmerResource;
-import org.lgna.story.resources.TrainResource;
-import org.lgna.story.resources.TransportResource;
-import org.lgna.story.resources.WatercraftResource;
+import org.lgna.story.resources.*;
 
 import javax.swing.ImageIcon;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -154,33 +141,6 @@ public class IconFactoryManager {
 					//return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
 			}
-			//			if( modelResourceName != null ) {
-			//				//pass
-			//			} else {
-			//				if( modelResourceCls.isEnum() ) {
-			//					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
-			//					if( constants.length > 1 ) {
-			//						int MAXIMUM_CONSTANTS_TO_USE = 5;
-			//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
-			//
-			//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( constants );
-			//						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
-			//							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
-			//								return o1.toString().compareTo( o2.toString() );
-			//							}
-			//						} );
-			//						int i = 0;
-			//						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
-			//							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
-			//							i += 1;
-			//							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
-			//								break;
-			//							}
-			//						}
-			//						return new EnumConstantsIconFactory( iconFactories );
-			//					}
-			//				}
-			//			}
 			URL url;
 			if( modelResourceCls != null ) {
 				url = AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
@@ -190,18 +150,8 @@ public class IconFactoryManager {
 			if( url != null ) {
 				return new TrimmedImageIconFactory( url, 160, 120 );
 			} else {
-				//				if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( modelResourceCls ) ) {
-				//					org.alice.stageide.modelresource.PersonResourceKey personResourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( modelResourceCls );
-				//					if( personResourceKey != null ) {
-				//						return personResourceKey.getIconFactory();
-				//					} else {
-				//						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "no icon factory for:", modelResourceCls, modelResourceName );
-				//						return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
-				//					}
-				//				} else {
 				Logger.severe( this, this.getClass(), modelResourceCls, modelResourceName );
 				return EmptyIconFactory.getInstance();
-				//				}
 			}
 		}
 	}
@@ -289,7 +239,12 @@ public class IconFactoryManager {
 
 		@Override
 		public IconFactory createIconFactory() {
-			return NebulousIde.nonfree.createIconFactory( this.instance );
+			if (instance instanceof ModelStructure) {
+				return getIconFactoryForModelStructure((ModelStructure)instance);
+			}
+			else {
+				return NebulousIde.nonfree.createIconFactory(this.instance);
+			}
 		}
 
 		@Override
@@ -312,6 +267,7 @@ public class IconFactoryManager {
 
 	private static Map<JavaType, IconFactory> mapTypeToIconFactory = Maps.newHashMap();
 	private static Map<ResourceDeclaration, IconFactory> mapResourceDeclarationToIconFactory = Maps.newHashMap();
+	private static Map<ModelStructure, IconFactory> mapModelStructureToIconFactory = Maps.newHashMap();
 	private static Map<Color, IconFactory> mapColorToCameraMarkerIconFactory = Maps.newHashMap();
 	private static Map<Color, IconFactory> mapColorToObjectMarkerIconFactory = Maps.newHashMap();
 
@@ -402,6 +358,27 @@ public class IconFactoryManager {
 		return iconFactory;
 	}
 
+	public static IconFactory getIconFactoryForModelStructure(ModelStructure modelStructure) {
+		IconFactory iconFactory = mapModelStructureToIconFactory.get( modelStructure );
+		if( iconFactory != null ) {
+			//pass
+		} else {
+			URL url = null;
+			try {
+				url = modelStructure.getIconURI().toURL();
+			} catch (MalformedURLException e) {
+				Logger.severe( "Malformed URL: "+modelStructure.getIconURI() );
+			}
+			if( url != null ) {
+				iconFactory = new TrimmedImageIconFactory( url, 160, 120 );
+			} else {
+				iconFactory = EmptyIconFactory.getInstance();
+			}
+			mapModelStructureToIconFactory.put( modelStructure, iconFactory );
+		}
+		return iconFactory;
+	}
+
 	public static IconFactory getIconFactoryForResourceInstance( ModelResource modelResource ) {
 		ResourceDeclaration resourceDeclaration;
 		if( modelResource.getClass().isEnum() ) {
@@ -410,6 +387,11 @@ public class IconFactoryManager {
 		} else {
 			resourceDeclaration = new ResourceInstance( modelResource );
 		}
+		IconFactory iconFactory = getIconFactoryForResourceDeclaration( resourceDeclaration );
+		return iconFactory;
+	}
+
+	private static IconFactory getIconFactoryForResourceDeclaration( ResourceDeclaration resourceDeclaration ){
 		IconFactory iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
 		if( iconFactory != null ) {
 			//pass
@@ -426,7 +408,7 @@ public class IconFactoryManager {
 			return iconFactory;
 		} else {
 			ResourceDeclaration resourceDeclaration = null;
-			AbstractConstructor constructor0 = ConstructorArgumentUtilities.getContructor0( type );
+			AbstractConstructor constructor0 =  type != null? type.getFirstDeclaredConstructor() : null;
 			if( constructor0 != null ) {
 				List<? extends AbstractParameter> parameters = constructor0.getRequiredParameters();
 				switch( parameters.size() ) {
@@ -449,13 +431,7 @@ public class IconFactoryManager {
 					break;
 				}
 				if( resourceDeclaration != null ) {
-					iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
-					if( iconFactory != null ) {
-						//pass
-					} else {
-						iconFactory = resourceDeclaration.createIconFactory();
-						mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
-					}
+					iconFactory = getIconFactoryForResourceDeclaration( resourceDeclaration );
 					return iconFactory;
 				}
 			}
@@ -471,13 +447,7 @@ public class IconFactoryManager {
 			}
 			ResourceDeclaration resourceDeclaration = createResourceDeclarationFromField( userField );
 			if( resourceDeclaration != null ) {
-				iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
-				if( iconFactory != null ) {
-					//pass
-				} else {
-					iconFactory = resourceDeclaration.createIconFactory();
-					mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
-				}
+				iconFactory = getIconFactoryForResourceDeclaration( resourceDeclaration );
 				return iconFactory;
 			}
 			int requiredArgumentCount = getRequiredArgumentsInInitializer( userField );

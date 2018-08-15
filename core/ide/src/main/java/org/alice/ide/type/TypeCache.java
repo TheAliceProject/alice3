@@ -46,13 +46,7 @@ package org.alice.ide.type;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.Project;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.*;
 
 import java.util.List;
 import java.util.Map;
@@ -88,8 +82,12 @@ public class TypeCache {
 				case 1:
 					Expression expression = constructorInvocationStatement.requiredArguments.get( 0 ).expression.getValue();
 					if( expression instanceof FieldAccess ) {
+						//Cases like Alien() { super(AlienResource.DEFAULT); }
 						FieldAccess fieldAccess = (FieldAccess)expression;
 						return new ExtendsTypeWithSuperArgumentFieldKey( superType, fieldAccess.field.getValue() );
+					} else if (expression instanceof InstanceCreation) {
+						//Cases like Alien2() { super(new DynamicBipedResource("Alien2", "Alien2")); }
+						return new ExtendsTypeWithNamedType( superType, type.name.getName() );
 					} else {
 						throw new AssertionError( type + " " + expression );
 					}
@@ -97,6 +95,8 @@ public class TypeCache {
 					throw new AssertionError( type );
 				}
 			case 1:
+				//Cases like Alice(AliceResource resource) { super(resource); }
+				//Cases like AdultPerson(AdultPersonResource resource) { super(resource); }
 				AbstractParameter parameter0 = requiredParameters.get( 0 );
 				return new ExtendsTypeWithConstructorParameterTypeKey( superType, parameter0.getValueType() );
 			default:

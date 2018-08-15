@@ -43,16 +43,10 @@
 
 package org.alice.ide.typemanager;
 
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractParameter;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.InstanceCreation;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.SimpleArgumentListProperty;
+import com.sun.tools.internal.ws.processor.model.java.JavaParameter;
+import org.lgna.project.ast.*;
+import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resources.ModelStructure;
 
 import java.util.List;
 
@@ -63,17 +57,6 @@ import java.util.List;
 public class ConstructorArgumentUtilities {
 	private ConstructorArgumentUtilities() {
 		throw new AssertionError();
-	}
-
-	public static AbstractConstructor getContructor0( AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			List<? extends AbstractConstructor> constructors = type.getDeclaredConstructors();
-			if( constructors.size() > 0 ) {
-				AbstractConstructor constructor0 = constructors.get( 0 );
-				return constructor0;
-			}
-		}
-		return null;
 	}
 
 	public static AbstractType<?, ?, ?> getParameter0Type( AbstractConstructor constructor ) {
@@ -88,7 +71,7 @@ public class ConstructorArgumentUtilities {
 	}
 
 	public static AbstractType<?, ?, ?> getContructor0Parameter0Type( AbstractType<?, ?, ?> type ) {
-		return getParameter0Type( getContructor0( type ) );
+		return getParameter0Type( type.getFirstDeclaredConstructor() );
 	}
 
 	public static JavaField getField( SimpleArgumentListProperty arguments ) {

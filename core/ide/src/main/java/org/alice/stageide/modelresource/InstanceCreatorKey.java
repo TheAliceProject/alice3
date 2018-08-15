@@ -42,13 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.JavaType;
 import org.lgna.story.resources.ModelResource;
+import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class InstanceCreatorKey extends ResourceKey {
+	
+	private static Map<JavaType, JavaType> mapResourceTypeToAbstractionType;
+
+	public static JavaType getAbstractionTypeForResourceType( AbstractType<?, ?, ?> assignableFromResourceType ) {
+		if( mapResourceTypeToAbstractionType != null ) {
+			//pass
+		} else {
+			mapResourceTypeToAbstractionType = Maps.newHashMap();
+			List<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
+			for( JavaType abstractionType : abstractionTypes ) {
+				JavaType resourceType = (JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
+				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
+			}
+		}
+		JavaType abstractionType = null;
+		for( JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
+			if( resourceType.isAssignableFrom( assignableFromResourceType ) ) {
+				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
+				break;
+			}
+		}
+		return abstractionType;
+	}
+
+
 	public abstract Class<? extends ModelResource> getModelResourceCls();
 
 	@Override

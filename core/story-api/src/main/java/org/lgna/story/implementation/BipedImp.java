@@ -62,11 +62,6 @@ public final class BipedImp extends JointedModelImp<SBiped, BipedResource> {
 	}
 
 	@Override
-	public JointId[] getRootJointIds() {
-		return BipedResource.JOINT_ID_ROOTS;
-	}
-
-	@Override
 	protected Vector4 getThoughtBubbleOffset() {
 		return this.getTopOffsetForJoint( this.getJointImplementation( BipedResource.HEAD ) );
 	}

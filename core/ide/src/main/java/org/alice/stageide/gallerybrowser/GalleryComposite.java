@@ -66,10 +66,11 @@ public class GalleryComposite extends SimpleComposite<GalleryView> {
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
 	private final ImportTab importTab = new ImportTab();
+	private final CustomGalleryTab myGalleryTab = new CustomGalleryTab();
 	private final ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState( "tabState", 0, GalleryTab.class,
 			IsIncludingImportAndExportType.getValue()
-					? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab }
-					: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab }
+					? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab, this.myGalleryTab }
+					: new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.myGalleryTab }
 			);
 
 	public GalleryComposite() {
@@ -85,6 +86,7 @@ public class GalleryComposite extends SimpleComposite<GalleryView> {
 		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, SearchTabView.SEARCH_ICON );
 		this.tabState.setItemIconForBothTrueAndFalse( this.importTab, Icons.FOLDER_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.myGalleryTab, Icons.FOLDER_ICON_SMALL );
 	}
 
 	public ImmutableDataTabState<GalleryTab> getTabState() {

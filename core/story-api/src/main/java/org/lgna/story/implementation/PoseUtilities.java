@@ -205,9 +205,10 @@ public class PoseUtilities {
 
 	protected static ArrayList<JointId> tunnel( JointId id, Class<? extends JointedModelResource> resource ) {
 		ArrayList<JointId> rv = Lists.newArrayList( id );
-		for( JointId child : id.getChildren( resource ) ) {
-			rv.addAll( tunnel( child, resource ) );
-		}
+		//TODO: Removed getChildren functionality from joints. Need to adapt this code
+//		for( JointId child : id.getChildren( resource ) ) {
+//			rv.addAll( tunnel( child, resource ) );
+//		}
 		return rv;
 	}
 
