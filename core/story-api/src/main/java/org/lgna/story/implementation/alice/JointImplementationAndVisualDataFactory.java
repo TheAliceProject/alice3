@@ -199,12 +199,6 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 					} else {
 						parentJointId = jointIds[ i - 1 ];
 					}
-					if( sgSkeletonRoot.getJoint( parentJointId.toString() ) != sgJoints[ i ].getParent() ) {
-						JointedModelResource resource = jointedModelImplementation.getResource();
-						Logger.severe( "Invalid implicit array structure:", jointName, "'s parent is not set to", parentJointId.toString(), "on", resource.getClass(), resource );
-						return null;
-					}
-
 					//We're making the joint ids for an implicit array structure
 					//(meaning this is an array that is declared on the class but is ultimately implemented by an individual resource)
 					//Given this fact, these joint ids need to be tied to the resource rather than the class

@@ -116,7 +116,8 @@ public class JointedModelColladaImporter {
 		if (rootNode != null) {
 			return rootNode;
 		}
-		throw new ModelLoadingException("No root node found in the scene.");
+		//No joints are found, so return null
+		return null;
 	}
 
 	public void setFlipModel(boolean flipModel) {
@@ -206,10 +207,12 @@ public class JointedModelColladaImporter {
 	}
 
 	private static Controller getControllerForGeometry( Geometry geometry, Collada colladaModel ) {
-		for (Controller controller : colladaModel.getLibraryControllers().getControllers()) {
-			Geometry foundGeometry = colladaModel.findGeometry( controller.getSkin().getSource() );
-			if ( foundGeometry == geometry ) {
-				return controller;
+		if (colladaModel.getLibraryControllers() != null && colladaModel.getLibraryControllers().getControllers() != null) {
+			for (Controller controller : colladaModel.getLibraryControllers().getControllers()) {
+				Geometry foundGeometry = colladaModel.findGeometry(controller.getSkin().getSource());
+				if (foundGeometry == geometry) {
+					return controller;
+				}
 			}
 		}
 		return null;
@@ -359,15 +362,16 @@ public class JointedModelColladaImporter {
         			tris = (Triangles)p;
         		}
         		else {
-        			modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"', Unsupported primitive count: Found extra triangle primitives, only processing the first.");
+        			modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
         		}
         	}
         	else {
-				modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"', Unsupported primitive type: Skipping primitive of type "+p.getClass()+".");
+				modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive type "+p.getClass()+". Skipping this geometry.");
         	}
         }
         if (tris == null) {
-        	throw new ModelLoadingException( "Error converting mesh "+geometry.getName()+", no triangle primitive data found." );
+			modelLoadingLogger.log( Level.WARNING, "Error converting mesh "+geometry.getName()+". No triangle primitive data found. Skipping entire mesh." );
+			return null;
         }
 		int[] triangleIndexData = tris.getData();
         sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
@@ -402,7 +406,9 @@ public class JointedModelColladaImporter {
 		List<Mesh> meshes = new ArrayList<Mesh>();
 		for (Geometry geometry : geometries) {
 			Mesh mesh = createAliceSGMeshFromGeometry( geometry, colladaModel );
-			meshes.add( mesh );
+			if (mesh != null) {
+				meshes.add(mesh);
+			}
 		}
 		return meshes;
 	}
@@ -477,9 +483,15 @@ public class JointedModelColladaImporter {
 			}
 			if (isUsed) {
 				Image image = getColladaImageForMaterial( material, colladaModel );
+				if (image  == null) {
+					throw new ModelLoadingException("Error loading material "+material.getName()+": No valid image found.");
+				}
 				BufferedImage bufferedImage;
 				try {
 					File imageFile = resolveTextureFileName( image.getInitFrom(), rootPath );
+					if (imageFile == null) {
+						throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not found.");
+					}
 					bufferedImage = ImageUtilities.read( imageFile );
 				} catch( IOException e) {
 					throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+" not found.", e);
@@ -518,13 +530,28 @@ public class JointedModelColladaImporter {
 		if (localFile.exists()) {
 			return localFile;
 		}
-
 		return null;
 	}
 
-	private static Image getColladaImageForMaterial( Material material, Collada colladaModel ) {
+	private Image getColladaImageForMaterial( Material material, Collada colladaModel ) {
 		InstanceEffect ie = material.getInstanceEffect();
 		Effect effect = colladaModel.findEffect( ie.getUrl() );
+		if (effect.getEffectMaterial() == null) {
+			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect material found for '"+effect.getId()+"'");
+			return null;
+		}
+		else if (effect.getEffectMaterial().getDiffuse() == null) {
+			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse value found for effect '"+effect.getId()+"'");
+			return null;
+		}
+		else if (effect.getEffectMaterial().getDiffuse().getTexture() == null) {
+			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse texture found for effect '"+effect.getId()+"'");
+			return null;
+		}
+		else if (effect.getEffectMaterial().getDiffuse().getTexture().getTexture() == null) {
+			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse texture value found for effect '"+effect.getId()+"'");
+			return null;
+		}
 		String textureName = effect.getEffectMaterial().getDiffuse().getTexture().getTexture();
 
 		NewParam textureParam = effect.findNewParam(textureName);
@@ -649,17 +676,18 @@ public class JointedModelColladaImporter {
 	//Looks at the transforms in the skeleton and removes any scaling found in the orientation matrices
 	//Scaling is removed by applying that scale to the children of that joint and normalizing the matrix
 	private static void removeImplicitScale(SkeletonVisual sv) {
-		//Implicit scale is set on the orientation of the root joint of the skeleton
-		Vector3 rootScale = getImplicitScale( sv.skeleton.getValue() );
-		removeImplicitScaleFromSkeleton(sv.skeleton.getValue(), new Vector3(1,1,1));
-		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
-			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
-			//If we start to support things like cylinders and boxes, then this would need to be updated
-			if (g instanceof Mesh) {
-				((Mesh)g).scale(rootScale);
+		if (sv.skeleton.getValue() != null) {
+			//Implicit scale is set on the orientation of the root joint of the skeleton
+			Vector3 rootScale = getImplicitScale(sv.skeleton.getValue());
+			removeImplicitScaleFromSkeleton(sv.skeleton.getValue(), new Vector3(1, 1, 1));
+			for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
+				//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
+				//If we start to support things like cylinders and boxes, then this would need to be updated
+				if (g instanceof Mesh) {
+					((Mesh) g).scale(rootScale);
+				}
 			}
 		}
-
 	}
 
 	private static Vector3 getImplicitScale( Joint skeleton ) {
@@ -690,10 +718,16 @@ public class JointedModelColladaImporter {
 		VisualScene scene = colladaModel.getLibraryVisualScenes().getScene( colladaModel.getScene().getInstanceVisualScene().getUrl() );
 		//Find and build the skeleton first
 		Node rootNode = findRootNode(scene.getNodes());
-		Joint aliceSkeleton = createAliceSkeletonFromNode( rootNode );
+		Joint aliceSkeleton = null;
+		if (rootNode != null) {
+			aliceSkeleton = createAliceSkeletonFromNode(rootNode);
+		}
 
 		//Find and build meshes (both static and weighted) from the collada model
 		List<Mesh> aliceMeshes = createAliceMeshesFromCollada( colladaModel );
+		if (aliceMeshes.size() == 0) {
+			throw new ModelLoadingException("Error processing model: No valid meshes found.");
+		}
 
 		SkeletonVisual skeletonVisual = new SkeletonVisual();
 		skeletonVisual.setName( scene.getName() );
