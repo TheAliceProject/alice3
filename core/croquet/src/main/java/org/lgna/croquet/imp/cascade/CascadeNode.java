@@ -63,10 +63,5 @@ public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends Element
 		return this.elememt;
 	}
 
-	@Override
-	protected void appendContexts( List<Context> out ) {
-		Logger.todo( "?" );
-	}
-
 	private final E elememt;
 }

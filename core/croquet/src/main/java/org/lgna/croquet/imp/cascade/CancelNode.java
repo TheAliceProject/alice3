@@ -58,11 +58,6 @@ public class CancelNode<F> extends AbstractItemNode<F, Void, CascadeCancel<F>> {
 	}
 
 	@Override
-	public int getBlankStepCount() {
-		return 0;
-	}
-
-	@Override
 	public BlankNode<Void> getBlankStepAt( int index ) {
 		throw new AssertionError();
 	}

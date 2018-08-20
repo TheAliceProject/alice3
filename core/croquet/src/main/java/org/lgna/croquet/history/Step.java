@@ -119,15 +119,6 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 		this.dataMap.put( key, value );
 	}
 
-	public <T> void removeEphemeralDataFor( Key<T> key ) {
-		this.dataMap.remove( key );
-	}
-
-	@Override
-	protected void appendContexts( List<Context> out ) {
-		out.addAll( this.contexts );
-	}
-
 	/* package-private */Iterable<Context> getContexts() {
 		return this.contexts;
 	}

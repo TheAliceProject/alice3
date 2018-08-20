@@ -63,91 +63,13 @@ import java.util.NoSuchElementException;
  */
 public class Transaction extends TransactionNode<TransactionHistory> {
 
-	private static class DescendantStepIterator implements Iterator<Step<?>> {
-		private final List<Transaction> transactions = Lists.newLinkedList();
-		private int transactionIndex;
-		private int stepIndex;
-
-		public DescendantStepIterator( Transaction transaction, boolean isRecusionDesired ) {
-			this.addTransactionAndTransactionDescendants( transaction, isRecusionDesired );
-		}
-
-		private void addTransactionAndTransactionDescendants( Transaction transaction, boolean isRecusionDesired ) {
-			if( transaction.getChildStepCount() > 0 ) {
-				this.transactions.add( transaction );
-			}
-			if( isRecusionDesired ) {
-				CompletionStep<?> completionStep = transaction.getCompletionStep();
-				if( completionStep != null ) {
-					TransactionHistory transactionHistory = completionStep.getTransactionHistory();
-					if( transactionHistory != null ) {
-						for( Transaction child : transactionHistory ) {
-							this.addTransactionAndTransactionDescendants( child, isRecusionDesired );
-						}
-					}
-				}
-			}
-		}
-
-		@Override
-		public boolean hasNext() {
-			return this.transactionIndex < this.transactions.size();
-		}
-
-		@Override
-		public Step<?> next() {
-			if( this.transactionIndex < this.transactions.size() ) {
-				Step<?> rv;
-				Transaction transaction = this.transactions.get( transactionIndex );
-				rv = transaction.getChildStepAt( stepIndex );
-				stepIndex++;
-				if( stepIndex < transaction.getChildStepCount() ) {
-					//pass
-				} else {
-					stepIndex = 0;
-					transactionIndex++;
-				}
-				return rv;
-			} else {
-				throw new NoSuchElementException();
-			}
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException( "remove" );
-		}
-	}
-
 	private final List<PrepStep<?>> prepSteps;
 	private CompletionStep<?> completionStep;
-
-	public static Transaction createAndAddToHistory( TransactionHistory owner ) {
-		Transaction rv = new Transaction( owner );
-		owner.addTransaction( rv );
-		return rv;
-	}
 
 	public Transaction( TransactionHistory parent ) {
 		super( parent );
 		this.prepSteps = Lists.newLinkedList();
 		this.completionStep = null;
-	}
-
-	@Override
-	protected void appendContexts( List<Context> out ) {
-		for( PrepStep<?> prepStep : this.prepSteps ) {
-			prepStep.appendContexts( out );
-		}
-		if( this.completionStep != null ) {
-			this.completionStep.appendContexts( out );
-		}
-	}
-
-	public Iterable<Context> getAllContexts() {
-		List<Context> rv = Lists.newLinkedList();
-		this.appendContexts( rv );
-		return rv;
 	}
 
 	public <C extends Context> C findFirstContext( Step<?> step, Class<C> cls ) {
@@ -174,54 +96,12 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	public boolean containsPrepStep( Transaction transaction, PrepModel prepModel, Class<? extends PrepStep> cls ) {
-		Iterable<PrepStep<?>> prepSteps = transaction.getPrepSteps();
-		for( PrepStep<?> prepStep : prepSteps ) {
-			if( ( cls == null ) || cls.isAssignableFrom( prepStep.getClass() ) ) {
-				if( prepStep.getModel() == prepModel ) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public boolean isValid() {
 		if( this.completionStep != null ) {
 			return this.completionStep.isValid();
 		} else {
 			return false;
 		}
-	}
-
-	public ListIterator<PrepStep<?>> prepStepListIterator() {
-		return this.prepSteps.listIterator();
-	}
-
-	public Iterator<Step<?>> childStepIterator() {
-		return new DescendantStepIterator( this, false );
-	}
-
-	public Iterator<Step<?>> descendantStepIterator() {
-		return new DescendantStepIterator( this, true );
-	}
-
-	public Iterable<Step<?>> getChildSteps() {
-		return new Iterable<Step<?>>() {
-			@Override
-			public Iterator<Step<?>> iterator() {
-				return Transaction.this.childStepIterator();
-			}
-		};
-	}
-
-	public Iterable<Step<?>> getDescendantSteps() {
-		return new Iterable<Step<?>>() {
-			@Override
-			public Iterator<Step<?>> iterator() {
-				return Transaction.this.descendantStepIterator();
-			}
-		};
 	}
 
 	public void addMenuSelection( MenuSelection menuSelection ) {
@@ -279,23 +159,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	public void removeAllPrepSteps() {
-		this.prepSteps.clear();
-	}
-
-	public PrepStep<?>[] getPrepStepsAsArray() {
-		PrepStep<?>[] rv = new PrepStep[ this.prepSteps.size() ];
-		return this.prepSteps.toArray( rv );
-	}
-
-	public void setPrepSteps( PrepStep<?>... prepSteps ) {
-		ArrayUtilities.set( this.prepSteps, prepSteps );
-	}
-
-	public Iterable<PrepStep<?>> getPrepSteps() {
-		return this.prepSteps;
-	}
-
 	public int getIndexOfPrepStep( PrepStep<?> prepStep ) {
 		return this.prepSteps.indexOf( prepStep );
 	}
@@ -344,19 +207,11 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	}
 
 	public boolean isPending() {
-		if( this.completionStep != null ) {
-			return this.completionStep.isPending();
-		} else {
-			return true;
-		}
+		return completionStep == null || completionStep.isPending();
 	}
 
 	public boolean isSuccessfullyCompleted() {
-		if( this.completionStep != null ) {
-			return this.completionStep.isSuccessfullyCompleted();
-		} else {
-			return false;
-		}
+		return completionStep != null && completionStep.isSuccessfullyCompleted();
 	}
 
 	@Override

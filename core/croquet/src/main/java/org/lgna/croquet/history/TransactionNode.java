@@ -75,8 +75,6 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		this.owner = owner;
 	}
 
-	protected abstract void appendContexts( List<Context> out );
-
 	private <N extends TransactionNode<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
 		TransactionNode<?> rv;
 		if( isThisIncludedInSearch ) {

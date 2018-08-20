@@ -55,9 +55,6 @@ public abstract class AbstractItemNode<F, B, M extends CascadeItem<F, B>> extend
 	}
 
 	@Override
-	public abstract int getBlankStepCount();
-
-	@Override
 	public abstract BlankNode<B> getBlankStepAt( int index );
 
 	@Override

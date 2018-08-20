@@ -43,13 +43,9 @@
 package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.Context;
-import org.lgna.croquet.history.event.AddTransactionEvent;
-import org.lgna.croquet.history.event.Event;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * @author Dennis Cosgrove
@@ -58,7 +54,7 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 	private final List<Transaction> transactions;
 
 	public TransactionHistory() {
-		super( (CompletionStep<?>)null );
+		super( null );
 		this.transactions = Lists.newCopyOnWriteArrayList();
 	}
 
@@ -66,52 +62,19 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		Transaction transaction = getLastTransaction();
 		if( ( transaction != null ) && transaction.isPending() ) {
 			CompletionStep<?> completionStep = transaction.getCompletionStep();
-			if( completionStep == null ) {
-				return this;
+			if( completionStep != null ) {
+				TransactionHistory history = completionStep.getTransactionHistory();
+				if ( history != null ) {
+					return history.getActiveTransactionHistory();
+				}
 			}
-			TransactionHistory history = completionStep.getTransactionHistory();
-			if( history == null ) {
-				return this;
-			}
-			return history.getActiveTransactionHistory();
-		} else {
-			return this;
 		}
-	}
-
-	@Override
-	protected void appendContexts( List<Context> out ) {
-		for( Transaction transaction : this.transactions ) {
-			transaction.appendContexts( out );
-		}
-	}
-
-	public void addTransaction( Transaction transaction ) {
-		assert transaction != null;
-		Event<?> e = new AddTransactionEvent( transaction, this.transactions.size() );
-		this.fireChanging( e );
-		transaction.setOwner( this );
-		this.transactions.add( transaction );
-		this.fireChanged( e );
-	}
-
-	public void addTransaction( int index, Transaction transaction ) {
-		assert transaction != null;
-		assert index >= 0;
-		Event<?> e = new AddTransactionEvent( transaction, index );
-		this.fireChanging( e );
-		transaction.setOwner( this );
-		this.transactions.add( index, transaction );
-		this.fireChanged( e );
+		return this;
 	}
 
 	@Override
 	public Iterator<Transaction> iterator() {
 		return this.transactions.iterator();
-	}
-
-	public ListIterator<Transaction> listIterator() {
-		return this.transactions.listIterator();
 	}
 
 	public int getIndexOfTransaction( Transaction transaction ) {
@@ -137,16 +100,12 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 
 	public Transaction acquireActiveTransaction() {
 		Transaction lastTransaction = this.getLastTransaction();
-		Transaction transaction = null;
-		if( lastTransaction != null ) {
-			if( lastTransaction.isPending() ) {
-				transaction = lastTransaction;
-			}
+		if ( lastTransaction != null && lastTransaction.isPending() ) {
+			return lastTransaction;
 		}
-		if( transaction == null ) {
-			transaction = new Transaction( this );
-			this.transactions.add( transaction );
-		}
+
+		Transaction transaction = new Transaction( this );
+		this.transactions.add( transaction );
 		return transaction;
 	}
 }

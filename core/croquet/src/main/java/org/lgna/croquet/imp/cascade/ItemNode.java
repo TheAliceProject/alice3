@@ -49,7 +49,6 @@ import org.lgna.croquet.history.TransactionHistory;
  * @author Dennis Cosgrove
  */
 public interface ItemNode<F, B> {
-	public int getBlankStepCount();
 
 	public BlankNode<B> getBlankStepAt( int index );
 
