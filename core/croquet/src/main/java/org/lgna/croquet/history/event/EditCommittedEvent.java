@@ -49,7 +49,7 @@ import org.lgna.croquet.history.CompletionStep;
 /**
  * @author Dennis Cosgrove
  */
-public class EditCommittedEvent extends SuccessfulCompletionEvent {
+public class EditCommittedEvent extends Event<CompletionStep<?>> {
 	private final Edit edit;
 
 	public EditCommittedEvent( CompletionStep<?> step, Edit edit ) {

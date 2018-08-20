@@ -48,7 +48,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.event.CancelEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
-import org.lgna.croquet.history.event.TutorialCompletionEvent;
 import org.lgna.croquet.triggers.Trigger;
 
 /**
@@ -58,7 +57,7 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 
 	private final TransactionHistory transactionHistory;
 	private AbstractEdit<M> edit;
-	private boolean isSuccessfullyCompleted;
+	private boolean isSuccessfullyCompleted = false;
 	private boolean isPending = true;
 
 	public static <M extends CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, Trigger trigger, TransactionHistory transactionHistory ) {
@@ -72,9 +71,6 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 		if( this.transactionHistory != null ) {
 			this.transactionHistory.setOwner( this );
 		}
-	}
-
-	/* package-private */void reifyIfNecessary() {
 	}
 
 	public boolean isValid() {
@@ -94,16 +90,9 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 	}
 
 	public boolean isCanceled() {
-		return ( this.isPending() == false ) && ( this.isSuccessfullyCompleted() == false );
+		return !isPending() && !isSuccessfullyCompleted();
 	}
 
-	protected void setPending( boolean isPending ) {
-		this.isPending = isPending;
-	}
-
-	protected void setSuccessfullyCompleted( boolean isSuccessfullyCompleted ) {
-		this.isSuccessfullyCompleted = isSuccessfullyCompleted;
-	}
 
 	public AbstractEdit<?> getEdit() {
 		return this.edit;
@@ -113,13 +102,6 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 		this.isSuccessfullyCompleted = true;
 		this.edit = (AbstractEdit<M>)edit;
 		this.isPending = false;
-	}
-
-	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( Edit edit ) {
-		TutorialCompletionEvent e = new TutorialCompletionEvent( this, edit );
-		this.fireChanging( e );
-		this.setEdit( edit );
-		this.fireChanged( e );
 	}
 
 	public void commitAndInvokeDo( Edit edit ) {
