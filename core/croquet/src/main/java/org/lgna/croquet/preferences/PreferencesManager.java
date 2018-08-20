@@ -110,7 +110,7 @@ public class PreferencesManager {
 		try {
 			URI uri = new URI( path );
 			return new File( uri );
-		} catch (URISyntaxException urise) {
+		} catch (Exception urise) {
 			Logger.throwable( urise, "URI failure:", path );
 			return new File( path );
 		}
