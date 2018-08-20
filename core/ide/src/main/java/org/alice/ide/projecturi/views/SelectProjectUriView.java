@@ -53,7 +53,7 @@ import org.lgna.croquet.views.BorderPanel;
 public class SelectProjectUriView extends BorderPanel {
 	public SelectProjectUriView( SelectProjectUriComposite composite ) {
 		super( composite );
-		this.addCenterComponent( SelectProjectUriComposite.getInstance().getTabState().createFolderTabbedPane() );
+		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 		Composite<?> sideSubComposite = composite.getSideSubComposite();
 		if( sideSubComposite != null ) {
 			this.addLineEndComponent( sideSubComposite.getView() );

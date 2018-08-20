@@ -155,9 +155,6 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 	}
 
 	@Override
-	protected abstract Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
-
-	@Override
 	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
 		step.finish();
 		this.resourceKey = null;

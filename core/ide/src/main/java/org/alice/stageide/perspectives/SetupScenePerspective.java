@@ -47,13 +47,13 @@ import edu.cmu.cs.dennisc.pattern.Lazy;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.codedrop.CodePanelWithDropReceptor;
 import org.alice.ide.croquet.models.IdeDragModel;
-import org.alice.ide.croquet.models.MenuBarComposite;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
 import org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.MenuBarComposite;
 import org.lgna.croquet.ToolBarComposite;
 import org.lgna.croquet.views.TrackableShape;
 

@@ -81,21 +81,11 @@ public class OperationImp {
 		this.swingModel.action.putValue( Action.NAME, name );
 	}
 
-	public String getShortDescription() {
-		return String.class.cast( this.swingModel.action.getValue( Action.SHORT_DESCRIPTION ) );
-	}
 
 	public void setShortDescription( String shortDescription ) {
 		this.swingModel.action.putValue( Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
-	public String getLongDescription() {
-		return String.class.cast( this.swingModel.action.getValue( Action.LONG_DESCRIPTION ) );
-	}
-
-	public void setLongDescription( String longDescription ) {
-		this.swingModel.action.putValue( Action.LONG_DESCRIPTION, longDescription );
-	}
 
 	public Icon getSmallIcon() {
 		return Icon.class.cast( this.swingModel.action.getValue( Action.SMALL_ICON ) );

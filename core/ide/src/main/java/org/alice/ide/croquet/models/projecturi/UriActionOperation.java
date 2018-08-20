@@ -50,12 +50,8 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriActionOperation extends ActionOperation {
-	public UriActionOperation( UUID individualUUID ) {
+abstract class UriActionOperation extends ActionOperation {
+	UriActionOperation( UUID individualUUID ) {
 		super( ProjectApplication.URI_GROUP, individualUUID );
-	}
-
-	protected ProjectApplication getProjectApplication() {
-		return ProjectApplication.getActiveInstance();
 	}
 }

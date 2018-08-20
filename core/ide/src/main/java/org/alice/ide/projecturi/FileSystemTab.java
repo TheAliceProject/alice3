@@ -48,6 +48,7 @@ import org.alice.ide.ProjectApplication;
 import org.alice.ide.projecturi.views.FileSystemPane;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
@@ -69,7 +70,8 @@ public class FileSystemTab extends SelectUriTab {
 	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
 		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
-			File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, IoUtilities.PROJECT_EXTENSION, true );
+			final StageIDE ide = StageIDE.getActiveInstance();
+			File file = ide.getDocumentFrame().showOpenFileDialog( ide.getProjectsDirectory(), null, IoUtilities.PROJECT_EXTENSION, true );
 			if( file != null ) {
 				FileSystemTab.this.pathState.setValueTransactionlessly( FileUtilities.getCanonicalPathIfPossible( file ) );
 			}

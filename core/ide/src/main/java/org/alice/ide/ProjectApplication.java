@@ -54,7 +54,6 @@ import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriContentLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.alice.stageide.StageIDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
@@ -435,10 +434,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
 	public final void exportProjectTo( File file ) throws IOException {
 		projectFileUtilities.exportCopyOfProjectTo( file );
-	}
-
-	public File getMyProjectsDirectory() {
-		return StageIDE.getActiveInstance().getProjectsDirectory();
 	}
 
 	public final Project getUpToDateProject() {
