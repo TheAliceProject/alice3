@@ -49,6 +49,7 @@ import org.alice.ide.custom.components.CustomExpressionCreatorView;
 import org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.project.ast.Expression;
 
 import java.util.UUID;
@@ -70,11 +71,11 @@ public abstract class CustomExpressionCreatorComposite<V extends CustomExpressio
 	protected abstract void initializeToPreviousExpression( Expression expression );
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		ExpressionCascadeManager expressionCascadeManager = IDE.getActiveInstance().getExpressionCascadeManager();
 		this.initializeToPreviousExpression( expressionCascadeManager.getPreviousExpression() );
 		expressionCascadeManager.pushNullContext();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog, step );
 	}
 
 	@Override

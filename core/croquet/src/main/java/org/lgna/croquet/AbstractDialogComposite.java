@@ -45,7 +45,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.AbstractWindow;
@@ -64,7 +63,6 @@ import java.util.UUID;
  */
 public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> extends AbstractWindowComposite<V> {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
-	protected static final Step.Key<Dialog> DIALOG_KEY = Step.Key.createInstance( "AbstractDialogComposite.DIALOG_KEY" );
 
 	protected static enum IsModal {
 		TRUE( true ),
@@ -78,6 +76,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 
 	private final boolean isModal;
 	private String title;
+	protected Dialog dialog;
 
 	public AbstractDialogComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId );
@@ -102,8 +101,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 				owner = documentFrame.getFrame().getContentPane();
 			}
 		}
-		final Dialog dialog = new Dialog( owner, this.isModal );
-		step.putEphemeralDataFor( DIALOG_KEY, dialog );
+		dialog = new Dialog( owner, this.isModal );
 		class DialogWindowListener implements WindowListener {
 			@Override
 			public void windowOpened( WindowEvent e ) {
@@ -158,7 +156,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 				}
 			}
 			dialog.setTitle( this.getDialogTitle( step ) );
-			this.handlePreShowDialog( step );
+			handlePreShowDialog( dialog, step );
 			//application.pushWindow( dialog );
 			dialog.setVisible( true );
 
@@ -227,7 +225,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		return true;
 	}
 
-	protected abstract void handlePreShowDialog( CompletionStep<?> step );
+	protected abstract void handlePreShowDialog( Dialog dialog, CompletionStep<?> step );
 
 	protected abstract void handlePostHideDialog( CompletionStep<?> step );
 

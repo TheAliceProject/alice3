@@ -52,14 +52,7 @@ import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.imp.dialog.WizardDialogContentComposite;
 import org.lgna.croquet.triggers.Trigger;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.CardPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
@@ -404,14 +397,14 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
 			if( subComposite instanceof WizardPageComposite<?, ?> ) {
 				WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>)subComposite;
 				wizardPage.handlePreShowDialog( step );
 			}
 		}
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog, step );
 	}
 
 	@Override

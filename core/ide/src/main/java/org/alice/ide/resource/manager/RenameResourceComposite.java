@@ -51,6 +51,7 @@ import org.lgna.common.Resource;
 import org.lgna.croquet.ItemState;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
 
@@ -89,11 +90,11 @@ public class RenameResourceComposite extends RenameComposite<ResourceRenamePanel
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		Resource resource = this.resourceState.getValue();
 		( (ResourceNameValidator)this.getNameValidator() ).setResource( resource );
 		this.getView().setResource( resource );
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog, step );
 	}
 
 	@Override

@@ -47,6 +47,7 @@ import org.alice.ide.preview.components.PanelWithPreview;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
 
@@ -69,8 +70,8 @@ public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V ex
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog, step );
 	}
 }

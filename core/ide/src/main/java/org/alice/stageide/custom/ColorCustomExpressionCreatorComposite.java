@@ -53,6 +53,7 @@ import org.alice.ide.custom.components.CustomExpressionCreatorView;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.TransactionManager;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.SwingAdapter;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Expression;
@@ -138,8 +139,8 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+		super.handlePreShowDialog( dialog, step );
 		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
 	}
 

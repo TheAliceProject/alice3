@@ -54,6 +54,7 @@ import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.meta.MetaState;
 import org.lgna.croquet.meta.TransactionHistoryTrackingMetaState;
 import org.lgna.croquet.views.ComponentManager;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.Panel;
 
 import java.util.UUID;
@@ -186,13 +187,13 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
 		this.refresh();
 		if( this.sideSubComposite != null ) {
 			this.metaState.pushActivation( completionStep );
 			this.metaState.addValueListener( this.metaUriListener );
 		}
-		super.handlePreShowDialog( completionStep );
+		super.handlePreShowDialog( dialog, completionStep );
 	}
 
 	@Override

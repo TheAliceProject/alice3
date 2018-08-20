@@ -105,13 +105,13 @@ public final class ColorChooserDialogCoreComposite extends SimpleOperationInputD
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
 		this.preColor = this.colorState.getValue();
 		this.getView().setSelectedColor( preColor );
 
 		JColorChooser jColorChooser = this.getView().getAwtComponent();
 		jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
-		super.handlePreShowDialog( completionStep );
+		super.handlePreShowDialog( dialog, completionStep );
 	}
 
 	@Override

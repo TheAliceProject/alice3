@@ -285,12 +285,12 @@ public final class PersonResourceComposite extends ValueCreatorInputDialogCoreCo
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getDocumentFrame().disableRendering( ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		}
-		super.handlePreShowDialog( completionStep );
+		super.handlePreShowDialog( dialog, completionStep );
 	}
 
 	@Override

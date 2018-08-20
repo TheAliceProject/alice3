@@ -44,6 +44,7 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
 
@@ -74,7 +75,7 @@ public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		this.handlePreActivation();
 	}
 

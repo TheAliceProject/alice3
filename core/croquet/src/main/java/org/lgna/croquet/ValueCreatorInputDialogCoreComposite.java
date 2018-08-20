@@ -70,16 +70,11 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeVi
 	@Override
 	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				try {
-					this.value = createValue();
-					completionStep.finish();
-				} catch( CancelException ce ) {
-					completionStep.cancel();
-				}
-			} else {
+		if( isCommitted ) { // close button condition
+			try {
+				this.value = createValue();
+				completionStep.finish();
+			} catch( CancelException ce ) {
 				completionStep.cancel();
 			}
 		} else {

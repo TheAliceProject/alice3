@@ -48,6 +48,7 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
 
@@ -91,9 +92,9 @@ public abstract class RenameComposite<V extends RenamePanel> extends SimpleOpera
 	protected abstract String getInitialValue();
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog, step );
 	}
 }

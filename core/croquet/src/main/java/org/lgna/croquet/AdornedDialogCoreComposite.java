@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.imp.dialog.DialogContentComposite;
 import org.lgna.croquet.triggers.Trigger;
@@ -62,7 +61,10 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends DialogContentComposite<?>> extends AbstractDialogComposite<V> {
-	protected static final Step.Key<Boolean> IS_COMMITED_KEY = Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
+
+	public boolean wasCommitted() {
+		return isCommitted;
+	}
 
 	protected static abstract class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
@@ -82,7 +84,7 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 	}
 
-	private static abstract class InternalFinishOperation extends InternalDialogOperation {
+	private abstract class InternalFinishOperation extends InternalDialogOperation {
 		private final boolean isCommit;
 
 		public InternalFinishOperation( UUID id, AdornedDialogCoreComposite coreComposite, boolean isCommit ) {
@@ -92,15 +94,9 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 
 		@Override
 		protected final void perform( Transaction transaction, Trigger trigger ) {
-			if( ( this.isCommit == false ) || this.getDialogCoreComposite().isClearedForCommit() ) {
+			if( !isCommit || getDialogCoreComposite().isClearedForCommit() ) {
 				CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-				AdornedDialogCoreComposite coreComposite = this.getDialogCoreComposite();
-				assert coreComposite != null : this;
-				CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
-				assert dialogStep != null : transaction;
-				Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
-				assert dialog != null : dialogStep;
-				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
+				isCommitted = this.isCommit;
 				dialog.setVisible( false );
 				step.finish();
 			} else {
@@ -110,7 +106,7 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 
 	}
 
-	private static final class InternalCommitOperation extends InternalFinishOperation {
+	private final class InternalCommitOperation extends InternalFinishOperation {
 		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
 		}
@@ -141,7 +137,7 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 	}
 
-	private static final class InternalCancelOperation extends InternalFinishOperation {
+	private final class InternalCancelOperation extends InternalFinishOperation {
 		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
 		}
@@ -244,12 +240,11 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePreActivation();
 		if( this.isDefaultButtonDesired() ) {
 			Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 			if( commitButton != null ) {
-				Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 				dialog.setDefaultButton( commitButton );
 			}
 		}
@@ -259,4 +254,6 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	protected void handlePostHideDialog( CompletionStep<?> step ) {
 		this.getDialogContentComposite().handlePostDeactivation();
 	}
+
+	protected boolean isCommitted = false;
 }

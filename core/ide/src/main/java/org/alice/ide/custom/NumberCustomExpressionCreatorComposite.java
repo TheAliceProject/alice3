@@ -48,6 +48,7 @@ import org.alice.ide.croquet.models.numberpad.NumberModel;
 import org.alice.ide.custom.components.NumberCustomExpressionCreatorView;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.project.ast.Expression;
 
 import java.awt.Dimension;
@@ -109,8 +110,8 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+		super.handlePreShowDialog( dialog, step );
 		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

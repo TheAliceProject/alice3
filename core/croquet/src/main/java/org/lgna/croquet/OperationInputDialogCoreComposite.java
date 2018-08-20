@@ -53,7 +53,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	public OperationInputDialogCoreComposite( UUID migrationId ) {
+	OperationInputDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -72,20 +72,15 @@ public abstract class OperationInputDialogCoreComposite<V extends CompositeView<
 	@Override
 	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				try {
-					Edit edit = createEdit( completionStep );
-					if( edit != null ) {
-						completionStep.commitAndInvokeDo( edit );
-					} else {
-						completionStep.finish();
-					}
-				} catch( CancelException ce ) {
-					cancel( completionStep );
+		if( isCommitted ) { // close button condition
+			try {
+				Edit edit = createEdit( completionStep );
+				if ( edit != null ) {
+					completionStep.commitAndInvokeDo( edit );
+				} else {
+					completionStep.finish();
 				}
-			} else {
+			} catch (CancelException ce) {
 				cancel( completionStep );
 			}
 		} else {

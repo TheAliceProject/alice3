@@ -90,13 +90,8 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	@Override
 	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				createAndCommitEdit( completionStep );
-			} else {
-				cancel( completionStep );
-			}
+		if( isCommitted ) { // close button condition
+			createAndCommitEdit( completionStep );
 		} else {
 			cancel( completionStep );
 		}

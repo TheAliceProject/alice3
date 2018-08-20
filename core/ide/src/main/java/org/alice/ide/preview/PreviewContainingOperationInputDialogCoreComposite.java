@@ -47,6 +47,7 @@ import org.lgna.croquet.Group;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
 
@@ -67,8 +68,8 @@ public abstract class PreviewContainingOperationInputDialogCoreComposite<V exten
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
 		this.getView().updatePreview();
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog, step );
 	}
 }

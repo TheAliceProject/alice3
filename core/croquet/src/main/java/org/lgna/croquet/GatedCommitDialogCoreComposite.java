@@ -49,6 +49,7 @@ import org.lgna.croquet.history.event.Event;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite;
 import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Dialog;
 
 import java.util.List;
 import java.util.UUID;
@@ -140,10 +141,10 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
 		completionStep.addListener( this.listener );
 		this.updateStatus( completionStep );
-		super.handlePreShowDialog( completionStep );
+		super.handlePreShowDialog( dialog, completionStep );
 	}
 
 	@Override
