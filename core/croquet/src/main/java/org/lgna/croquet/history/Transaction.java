@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.event.AddStepEvent;
-import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.history.event.TransactionEvent;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.List;
@@ -155,8 +155,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 
 	private void addStep( Step<?> step ) {
 		assert step != null;
-		Event<?> e = new AddStepEvent( this, step );
-		step.fireChanging( e );
+		TransactionEvent e = new AddStepEvent( step );
 		if( step instanceof PrepStep<?> ) {
 			this.prepSteps.add( (PrepStep<?>)step );
 		} else if( step instanceof CompletionStep<?> ) {

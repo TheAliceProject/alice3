@@ -44,16 +44,14 @@
 package org.lgna.croquet.history.event;
 
 import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddStepEvent extends Event<Transaction> {
+public class AddStepEvent implements TransactionEvent {
 	private final Step<?> step;
 
-	public AddStepEvent( Transaction transaction, Step<?> step ) {
-		super( transaction );
+	public AddStepEvent( Step<?> step ) {
 		this.step = step;
 	}
 

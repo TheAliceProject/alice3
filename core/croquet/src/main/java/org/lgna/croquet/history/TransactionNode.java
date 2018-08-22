@@ -43,13 +43,8 @@
 package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.pattern.Criterion;
-import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.history.event.TransactionEvent;
 import org.lgna.croquet.history.event.Listener;
-import org.lgna.croquet.triggers.DropTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.List;
 
@@ -85,16 +80,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		return this.listeners.contains( listener );
 	}
 
-	void fireChanging( Event<?> e ) {
-		if( this.owner != null ) {
-			this.owner.fireChanging( e );
-		}
-		for( Listener listener : this.listeners ) {
-			listener.changing( e );
-		}
-	}
-
-	protected void fireChanged( Event<?> e ) {
+	protected void fireChanged( TransactionEvent e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanged( e );
 		}

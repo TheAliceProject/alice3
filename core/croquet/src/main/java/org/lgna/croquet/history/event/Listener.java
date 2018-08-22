@@ -47,7 +47,5 @@ package org.lgna.croquet.history.event;
  * @author Dennis Cosgrove
  */
 public interface Listener {
-	public void changing( Event<?> e );
-
-	public void changed( Event<?> e );
+	void changed( TransactionEvent e );
 }

@@ -225,7 +225,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 
 			@Override
 			public void componentResized( ComponentEvent e ) {
-				TransactionManager.firePopupMenuResized( this.prepStep );
+				prepStep.firePopupMenuResized();
 			}
 
 			@Override

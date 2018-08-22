@@ -134,7 +134,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 					@Override
 					public void componentResized( ComponentEvent e ) {
-						TransactionManager.firePopupMenuResized( prepStep );
+						prepStep.firePopupMenuResized();
 					}
 
 					@Override

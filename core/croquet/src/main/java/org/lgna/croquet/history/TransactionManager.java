@@ -47,7 +47,6 @@ import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.PopupPrepModel;
 import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
-import org.lgna.croquet.history.event.PopupMenuResizedEvent;
 import org.lgna.croquet.triggers.DragTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -73,11 +72,6 @@ public class TransactionManager {
 	@Deprecated
 	public static void TODO_REMOVE_fireEvent( Trigger trigger ) {
 		new TODO_REMOVE_BogusStep( getActiveTransaction(), trigger );
-	}
-
-	@Deprecated
-	public static void firePopupMenuResized( PopupPrepStep step ) {
-		step.fireChanged( new PopupMenuResizedEvent( step ) );
 	}
 
 	@Deprecated

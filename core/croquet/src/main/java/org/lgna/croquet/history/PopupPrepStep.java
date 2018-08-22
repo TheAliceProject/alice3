@@ -44,6 +44,7 @@
 package org.lgna.croquet.history;
 
 import org.lgna.croquet.PopupPrepModel;
+import org.lgna.croquet.history.event.PopupMenuResizedEvent;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.PopupMenu;
 
@@ -71,6 +72,10 @@ public final class PopupPrepStep extends PrepStep<PopupPrepModel> {
 	}
 
 	public void handleResized( ComponentEvent componentEvent ) {
+	}
+
+	public void firePopupMenuResized() {
+		fireChanged( new PopupMenuResizedEvent() );
 	}
 
 	public PopupMenu getPopupMenu() {

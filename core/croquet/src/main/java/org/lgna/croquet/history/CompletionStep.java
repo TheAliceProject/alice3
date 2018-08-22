@@ -112,8 +112,7 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 	}
 
 	public void commitAndInvokeDo( Edit edit ) {
-		EditCommittedEvent e = new EditCommittedEvent( this, edit );
-		this.fireChanging( e );
+		EditCommittedEvent e = new EditCommittedEvent( edit );
 		this.setEdit( edit );
 		edit.doOrRedo( true );
 		this.fireChanged( e );
@@ -121,8 +120,7 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 
 	public void finish() {
 		this.isSuccessfullyCompleted = true;
-		FinishedEvent e = new FinishedEvent( this );
-		this.fireChanging( e );
+		FinishedEvent e = new FinishedEvent();
 		this.edit = null;
 		this.isPending = false;
 		this.fireChanged( e );
@@ -130,8 +128,7 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 
 	public void cancel() {
 		this.isSuccessfullyCompleted = false;
-		CancelEvent e = new CancelEvent( this );
-		this.fireChanging( e );
+		CancelEvent e = new CancelEvent();
 		this.edit = null;
 		this.isPending = false;
 		this.fireChanged( e );

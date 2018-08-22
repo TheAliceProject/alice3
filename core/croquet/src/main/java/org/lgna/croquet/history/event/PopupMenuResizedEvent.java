@@ -43,13 +43,10 @@
 
 package org.lgna.croquet.history.event;
 
-import org.lgna.croquet.history.PopupPrepStep;
-
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuResizedEvent extends Event<PopupPrepStep> {
-	public PopupMenuResizedEvent( PopupPrepStep step ) {
-		super( step );
+public class PopupMenuResizedEvent implements TransactionEvent {
+	public PopupMenuResizedEvent() {
 	}
 }

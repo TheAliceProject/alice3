@@ -42,13 +42,10 @@
  *******************************************************************************/
 package org.lgna.croquet.history.event;
 
-import org.lgna.croquet.history.CompletionStep;
-
 /**
  * @author Kyle J. Harms
  */
-public class CancelEvent extends Event<CompletionStep<?>> {
-	public CancelEvent( CompletionStep<?> step ) {
-		super( step );
+public class CancelEvent implements TransactionEvent {
+	public CancelEvent() {
 	}
 }

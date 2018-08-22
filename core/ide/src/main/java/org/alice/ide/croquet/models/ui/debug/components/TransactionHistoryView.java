@@ -47,7 +47,7 @@ import org.alice.ide.croquet.models.ui.debug.TransactionHistoryComposite;
 import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.history.event.AddStepEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
-import org.lgna.croquet.history.event.Event;
+import org.lgna.croquet.history.event.TransactionEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.views.BorderPanel;
@@ -75,11 +75,7 @@ public class TransactionHistoryView extends BorderPanel {
 		}
 
 		@Override
-		public void changing( Event<?> e ) {
-		}
-
-		@Override
-		public void changed( Event<?> e ) {
+		public void changed( TransactionEvent e ) {
 			if( e instanceof AddStepEvent  ) {
 				this.reload();
 			} else if( ( e instanceof FinishedEvent ) || ( e instanceof EditCommittedEvent ) ) {
