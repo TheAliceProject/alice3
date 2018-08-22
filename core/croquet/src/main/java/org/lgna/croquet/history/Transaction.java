@@ -43,6 +43,7 @@
 package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.event.AddStepEvent;
@@ -72,6 +73,17 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		} else {
 			return false;
 		}
+	}
+
+	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
+		final int N = getPrepStepCount();
+		for( int i = 0; i < N; i++ ) {
+			PrepStep<?> prepStep = getPrepStepAt( N - 1 - i );
+			if( criterion.accept( prepStep ) ) {
+				return prepStep;
+			}
+		}
+		return getOwner().findAcceptableStep(criterion);
 	}
 
 	public void addMenuSelection( MenuSelection menuSelection ) {

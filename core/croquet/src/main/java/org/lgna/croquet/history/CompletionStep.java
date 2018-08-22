@@ -43,11 +43,13 @@
 package org.lgna.croquet.history;
 
 import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.DropSite;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.event.CancelEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
+import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
 /**
@@ -71,6 +73,11 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 		if( this.transactionHistory != null ) {
 			this.transactionHistory.setOwner( this );
 		}
+	}
+
+	public DropSite findDropSite() {
+		Step<?> step = findAcceptableStep( step1 -> step1.getTrigger() instanceof DropTrigger );
+		return step != null ? ((DropTrigger) step.getTrigger()).getDropSite() : null;
 	}
 
 	public boolean isValid() {

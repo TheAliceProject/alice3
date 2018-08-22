@@ -73,6 +73,11 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 		this.id = UUID.randomUUID();
 	}
 
+	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
+		if( criterion.accept( this ) ) {
+			return this;
+		} else {
+			return getOwner().findAcceptableStep(criterion);
 		}
 	}
 

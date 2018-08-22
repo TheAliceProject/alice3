@@ -43,7 +43,6 @@
 package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Model;
@@ -69,133 +68,10 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		return this.owner;
 	}
 
-	/* package-private */void setOwner( P owner ) {
+	void setOwner( P owner ) {
 		this.owner = owner;
 	}
 
-	private <N extends TransactionNode<?>> N findNodeAssignableTo( Class<N> cls, boolean isThisIncludedInSearch ) {
-		TransactionNode<?> rv;
-		if( isThisIncludedInSearch ) {
-			rv = this;
-		} else {
-			rv = this.getOwner();
-		}
-		while( rv != null ) {
-			if( cls.isAssignableFrom( rv.getClass() ) ) {
-				break;
-			}
-			rv = rv.getOwner();
-		}
-		return (N)rv;
-	}
-
-	private Step<?> findAcceptableStep( Criterion<Step<?>> criterion, boolean isThisIncludedInSearch ) {
-		TransactionNode<?> rv;
-		if( isThisIncludedInSearch ) {
-			rv = this;
-		} else {
-			rv = this.getOwner();
-		}
-		while( rv != null ) {
-			if( rv instanceof Step ) {
-				Step<?> step = (Step<?>)rv;
-				if( criterion.accept( step ) ) {
-					return step;
-				}
-			} else if( rv instanceof Transaction ) {
-				Transaction transaction = (Transaction)rv;
-				final int N = transaction.getPrepStepCount();
-				for( int i = 0; i < N; i++ ) {
-					PrepStep<?> prepStep = transaction.getPrepStepAt( N - 1 - i );
-					if( criterion.accept( prepStep ) ) {
-						return prepStep;
-					}
-				}
-			}
-			rv = rv.getOwner();
-		}
-		return null;
-	}
-
-	public final <N extends TransactionNode<?>> N getFirstAssignableTo( Class<N> cls ) {
-		return this.findNodeAssignableTo( cls, true );
-	}
-
-	public final <N extends TransactionNode<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
-		return this.findNodeAssignableTo( cls, false );
-	}
-
-	public DropSite findDropSite() {
-		Step<?> step = this.findAcceptableStep( new Criterion<Step<?>>() {
-			@Override
-			public boolean accept( Step<?> step ) {
-				Trigger trigger = step.getTrigger();
-				if( trigger instanceof DropTrigger ) {
-					DropTrigger dropTrigger = (DropTrigger)trigger;
-					return true;
-				}
-				return false;
-			}
-		}, true );
-		if( step != null ) {
-			Trigger trigger = step.getTrigger();
-			if( trigger instanceof DropTrigger ) {
-				DropTrigger dropTrigger = (DropTrigger)trigger;
-				return dropTrigger.getDropSite();
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	protected <S extends Step<? super M>, M extends Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {
-		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
-		if( step != null ) {
-			if( Objects.equals( step.getModel(), model ) ) {
-				return step;
-			} else {
-				return step.findStepOfEquivalentModel( model, stepCls, false );
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public final <S extends Step<? super M>, M extends Model> S getFirstAncestorStepOfEquivalentModel( M model, Class<S> stepCls ) {
-		return this.findStepOfEquivalentModel( model, stepCls, false );
-	}
-
-	public final <S extends Step<? super M>, M extends Model> S getFirstStepOfEquivalentModel( M model, Class<S> stepCls ) {
-		return this.findStepOfEquivalentModel( model, stepCls, true );
-	}
-
-	protected final <S extends Step<? super M>, M extends Model> S findStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls, boolean isThisIncludedInSearch ) {
-		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
-		if( step != null ) {
-			Model m = step.getModel();
-			if( m != null ) {
-				if( modelCls.isAssignableFrom( m.getClass() ) ) {
-					return step;
-				} else {
-					return step.findStepOfModelAssignableTo( modelCls, stepCls, false );
-				}
-			} else {
-				return step.findStepOfModelAssignableTo( modelCls, stepCls, false );
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public final <S extends Step<? super M>, M extends Model> S getFirstAncestorStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
-		return this.findStepOfModelAssignableTo( modelCls, stepCls, false );
-	}
-
-	public final <S extends Step<? super M>, M extends Model> S getFirstStepOfModelAssignableTo( Class<M> modelCls, Class<S> stepCls ) {
-		return this.findStepOfModelAssignableTo( modelCls, stepCls, true );
-	}
 
 	public void addListener( Listener listener ) {
 		this.listeners.add( listener );
@@ -209,7 +85,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> {
 		return this.listeners.contains( listener );
 	}
 
-	protected void fireChanging( Event<?> e ) {
+	void fireChanging( Event<?> e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanging( e );
 		}

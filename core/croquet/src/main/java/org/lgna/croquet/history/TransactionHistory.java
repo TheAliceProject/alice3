@@ -43,6 +43,7 @@
 package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 
 import java.util.List;
 
@@ -55,6 +56,10 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>>  {
 	public TransactionHistory() {
 		super( null );
 		this.transactions = Lists.newCopyOnWriteArrayList();
+	}
+
+	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
+		return getOwner() == null ? null : getOwner().findAcceptableStep( criterion );
 	}
 
 	public TransactionHistory getActiveTransactionHistory() {
