@@ -46,7 +46,6 @@ package org.alice.ide.croquet.models.declaration;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.common.TypeIcon;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
@@ -86,7 +85,7 @@ public class GalleryPersonResourceFillIn extends ExpressionFillInWithoutBlanks<E
 	}
 
 	@Override
-	public Expression createValue( ItemNode<? super Expression, Void> node, TransactionHistory transactionHistory ) {
+	public Expression createValue( ItemNode<? super Expression, Void> node ) {
 		return new TypeExpression( this.type );
 		//		org.lgna.croquet.history.InputDialogOperationStep< org.lgna.story.resources.sims2.PersonResource > subStep = org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
 		//		if( subStep.isValueCommitted() ) {

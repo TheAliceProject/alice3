@@ -224,9 +224,9 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, BlankNode<B>> {
 		}
 	}
 
-	public B createValue( TransactionHistory transactionHistory ) {
+	public B createValue() {
 		if( this.rtSelectedFillIn != null ) {
-			return this.rtSelectedFillIn.createValue( transactionHistory );
+			return this.rtSelectedFillIn.createValue();
 		} else {
 			throw new RuntimeException();
 		}

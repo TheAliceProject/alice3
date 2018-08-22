@@ -104,9 +104,8 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 			try {
 				//todo: investigate
 				Transaction transaction = transactionHistory.acquireActiveTransaction();
-				CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
-				TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
-				T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
+				createCompletionStep( transaction, trigger );
+				T[] values = rtRoot.createValues( getComponentType() );
 				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
 			} finally {
 				this.getPopupPrepModel().handleFinally();

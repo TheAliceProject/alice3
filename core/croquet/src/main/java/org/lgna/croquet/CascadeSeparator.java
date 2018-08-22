@@ -43,7 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
 import java.util.Collections;
@@ -58,7 +57,7 @@ public abstract class CascadeSeparator extends CascadeItem<Void, Void> {
 	}
 
 	@Override
-	public final Void createValue( ItemNode<? super Void, Void> node, TransactionHistory transactionHistory ) {
+	public final Void createValue( ItemNode<? super Void, Void> node ) {
 		throw new AssertionError();
 	}
 

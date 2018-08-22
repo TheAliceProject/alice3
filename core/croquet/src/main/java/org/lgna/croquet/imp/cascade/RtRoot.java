@@ -83,11 +83,11 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 	public void select() {
 	}
 
-	public final T[] createValues( TransactionHistory transactionHistory, Class<T> componentType ) {
+	public final T[] createValues( Class<T> componentType ) {
 		RtBlank<T>[] rtBlanks = this.getBlankChildren();
 		T[] rv = ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
-			T value = rtBlanks[ i ].createValue( transactionHistory );
+			T value = rtBlanks[ i ].createValue();
 			try {
 				rv[ i ] = value;
 			} catch( ArrayStoreException ase ) {

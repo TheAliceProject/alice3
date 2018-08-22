@@ -153,8 +153,8 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
 		return rv;
 	}
 
-	public F createValue( TransactionHistory transactionHistory ) {
-		return this.getElement().createValue( this.getNode(), transactionHistory );
+	public F createValue() {
+		return this.getElement().createValue( this.getNode() );
 	}
 
 	protected boolean isLast() {

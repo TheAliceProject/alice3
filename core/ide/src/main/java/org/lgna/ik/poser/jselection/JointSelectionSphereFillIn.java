@@ -50,7 +50,6 @@ import javax.swing.JLabel;
 
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -74,7 +73,7 @@ public class JointSelectionSphereFillIn extends ImmutableCascadeFillIn<JointSele
 	}
 
 	@Override
-	public JointSelectionSphere createValue( ItemNode<? super JointSelectionSphere, Void> node, TransactionHistory transactionHistory ) {
+	public JointSelectionSphere createValue( ItemNode<? super JointSelectionSphere, Void> node ) {
 		return sphere;
 	}
 

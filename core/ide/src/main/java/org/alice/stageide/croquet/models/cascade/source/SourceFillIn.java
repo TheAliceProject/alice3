@@ -44,7 +44,6 @@ package org.alice.stageide.croquet.models.cascade.source;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
 import org.lgna.common.Resource;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractParameter;
 import org.lgna.project.ast.InstanceCreation;
@@ -77,7 +76,7 @@ public abstract class SourceFillIn<T extends Resource> extends ExpressionFillInW
 	}
 
 	@Override
-	public final InstanceCreation createValue( ItemNode<? super InstanceCreation, Void> node, TransactionHistory transactionHistory ) {
+	public final InstanceCreation createValue( ItemNode<? super InstanceCreation, Void> node ) {
 		return this.createValue();
 	}
 

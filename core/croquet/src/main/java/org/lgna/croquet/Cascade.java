@@ -115,7 +115,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 			Transaction transaction = transactionHistory.acquireActiveTransaction();
 			CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
 			try {
-				T[] values = rtRoot.createValues( completionStep.getTransactionHistory(), this.getComponentType() );
+				T[] values = rtRoot.createValues( this.getComponentType() );
 				Edit edit = this.cascade.createEdit( completionStep, values );
 				if( edit != null ) {
 					completionStep.commitAndInvokeDo( edit );

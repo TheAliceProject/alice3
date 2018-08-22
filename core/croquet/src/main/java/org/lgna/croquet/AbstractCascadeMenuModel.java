@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.AbstractItemNode;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.imp.cascade.ItemNode;
@@ -104,8 +103,8 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 	}
 
 	@Override
-	public F createValue( ItemNode<? super F, B> itemNode, TransactionHistory transactionHistory ) {
-		return this.convertValue( this.getSelectedFillInContext( itemNode ).createValue( transactionHistory ) );
+	public F createValue( ItemNode<? super F, B> itemNode ) {
+		return this.convertValue( this.getSelectedFillInContext( itemNode ).createValue() );
 	}
 
 	protected boolean isBackedByIconProxy() {

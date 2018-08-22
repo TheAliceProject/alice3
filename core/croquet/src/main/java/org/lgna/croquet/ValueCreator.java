@@ -47,7 +47,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
@@ -100,7 +99,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		public final F createValue( ItemNode<? super F, Void> node, TransactionHistory transactionHistory ) {
+		public final F createValue( ItemNode<? super F, Void> node ) {
 			Trigger trigger = NullTrigger.createUserInstance();
 			Step<?> step = this.valueCreator.fire( trigger );
 			if( step != null ) {

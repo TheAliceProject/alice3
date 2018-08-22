@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.cascade.array;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.ArrayLength;
 import org.lgna.project.ast.Expression;
@@ -68,7 +67,7 @@ public abstract class ArrayLengthFillIn extends ExpressionFillInWithoutBlanks<Ar
 	}
 
 	@Override
-	public ArrayLength createValue( ItemNode<? super ArrayLength, Void> node, TransactionHistory transactionHistory ) {
+	public ArrayLength createValue( ItemNode<? super ArrayLength, Void> node ) {
 		return this.createValue();
 	}
 

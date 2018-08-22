@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.cascade.number;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
 import org.lgna.common.RandomUtilities;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;
@@ -71,11 +70,11 @@ public class NextDouble01FillIn extends ExpressionFillInWithoutBlanks<MethodInvo
 
 	private NextDouble01FillIn() {
 		super( UUID.fromString( "4d6ae280-3a3b-413b-b73e-437d513e9cc0" ) );
-		this.transientValue = this.createValue( null, null );
+		this.transientValue = this.createValue( null );
 	}
 
 	@Override
-	public MethodInvocation createValue( ItemNode<? super MethodInvocation, Void> node, TransactionHistory transactionHistory ) {
+	public MethodInvocation createValue( ItemNode<? super MethodInvocation, Void> node ) {
 		final String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
 		JavaType RANDOM_UTILITIES_TYPE = JavaType.getInstance( RandomUtilities.class );
 		TypeExpression typeExpression = new TypeExpression( RANDOM_UTILITIES_TYPE );

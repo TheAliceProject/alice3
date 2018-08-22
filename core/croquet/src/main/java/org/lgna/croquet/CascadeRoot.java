@@ -213,7 +213,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final T[] createValue( ItemNode<? super T[], T> node, TransactionHistory transactionHistory ) {
+	public final T[] createValue( ItemNode<? super T[], T> node ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now

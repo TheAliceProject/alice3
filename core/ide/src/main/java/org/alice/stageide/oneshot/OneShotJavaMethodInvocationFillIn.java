@@ -48,7 +48,6 @@ import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
@@ -84,8 +83,8 @@ public abstract class OneShotJavaMethodInvocationFillIn extends ImmutableCascade
 	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( InstanceFactory instanceFactory, JavaMethod method, Expression[] argumentExpressions );
 
 	@Override
-	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode, TransactionHistory transactionHistory ) {
-		Expression[] argumentExpressions = this.createFromBlanks( itemNode, transactionHistory, Expression.class );
+	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
+		Expression[] argumentExpressions = this.createFromBlanks( itemNode, Expression.class );
 		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
 	}
 

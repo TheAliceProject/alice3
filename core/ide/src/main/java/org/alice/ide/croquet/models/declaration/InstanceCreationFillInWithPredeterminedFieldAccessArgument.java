@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.declaration;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractConstructor;
 import org.lgna.project.ast.AbstractField;
@@ -87,7 +86,7 @@ public final class InstanceCreationFillInWithPredeterminedFieldAccessArgument ex
 	}
 
 	@Override
-	public InstanceCreation createValue( ItemNode<? super InstanceCreation, Void> node, TransactionHistory transactionHistory ) {
+	public InstanceCreation createValue( ItemNode<? super InstanceCreation, Void> node ) {
 		return createInstanceCreation( this.transientValue.constructor.getValue(), this.field );
 	}
 

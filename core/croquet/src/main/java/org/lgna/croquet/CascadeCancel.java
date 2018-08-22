@@ -43,7 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
 import java.util.Collections;
@@ -58,7 +57,7 @@ public abstract class CascadeCancel<F> extends CascadeItem<F, Void> {
 	}
 
 	@Override
-	public final F createValue( ItemNode<? super F, Void> node, TransactionHistory transactionHistory ) {
+	public final F createValue( ItemNode<? super F, Void> node ) {
 		throw new CancelException( this.getMenuItemText( node ) );
 	}
 

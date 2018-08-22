@@ -47,7 +47,6 @@ import org.alice.ide.IDE;
 import org.alice.ide.common.TypeComponent;
 import org.alice.ide.common.TypeIcon;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
@@ -84,7 +83,7 @@ public class TypeFillIn extends ImmutableCascadeFillIn<AbstractType<?, ?, ?>, Vo
 	}
 
 	@Override
-	public AbstractType createValue( ItemNode<? super AbstractType<?, ?, ?>, Void> node, TransactionHistory transactionHistory ) {
+	public AbstractType createValue( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
 		return this.type;
 	}
 

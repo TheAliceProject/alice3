@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.cascade;
 
 import org.alice.stageide.icons.IconFactoryManager;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.imp.cascade.ItemNode;
@@ -74,7 +73,7 @@ public class SimpleExpressionFillIn<E extends Expression> extends ExpressionFill
 	}
 
 	@Override
-	public E createValue( ItemNode<? super E, Void> node, TransactionHistory transactionHistory ) {
+	public E createValue( ItemNode<? super E, Void> node ) {
 		return this.transientValue;
 	}
 

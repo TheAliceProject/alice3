@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.cascade.literals;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.StringLiteral;
 
@@ -84,7 +83,7 @@ public class StringLiteralFillIn extends ExpressionFillInWithoutBlanks<StringLit
 	}
 
 	@Override
-	public StringLiteral createValue( ItemNode<? super StringLiteral, Void> node, TransactionHistory transactionHistory ) {
+	public StringLiteral createValue( ItemNode<? super StringLiteral, Void> node ) {
 		return new StringLiteral( this.transientValue.value.getValue() );
 	}
 }

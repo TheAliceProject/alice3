@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.cascade.literals;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.DoubleLiteral;
 
@@ -67,7 +66,7 @@ public abstract class AbstractDoubleLiteralFillIn extends ExpressionFillInWithou
 	}
 
 	@Override
-	public DoubleLiteral createValue( ItemNode<? super DoubleLiteral, Void> node, TransactionHistory transactionHistory ) {
+	public DoubleLiteral createValue( ItemNode<? super DoubleLiteral, Void> node ) {
 		return new DoubleLiteral( this.transientValue.value.getValue() );
 	}
 }

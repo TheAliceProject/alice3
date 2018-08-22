@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.triggers.NullTrigger;
@@ -109,7 +108,7 @@ class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 	}
 
 	@Override
-	public T createValue( ItemNode<? super T, Void> node, TransactionHistory transactionHistory ) {
+	public T createValue( ItemNode<? super T, Void> node ) {
 		return this.node;
 	}
 
