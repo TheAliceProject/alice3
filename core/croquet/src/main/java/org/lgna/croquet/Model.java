@@ -49,11 +49,10 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Dennis Cosgrove
  */
 public interface Model extends Element {
-	public Iterable<ContextFactory<?>> getContextFactories();
 
-	public Step<?> fire( Trigger trigger );
+	Step<?> fire( Trigger trigger );
 
-	public boolean isEnabled();
+	boolean isEnabled();
 
-	public void setEnabled( boolean isEnabled );
+	void setEnabled( boolean isEnabled );
 }

@@ -42,21 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.Context;
-import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.event.AddStepEvent;
 import org.lgna.croquet.history.event.Event;
 import org.lgna.croquet.triggers.Trigger;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.NoSuchElementException;
 
 /**
  * @author Dennis Cosgrove
@@ -70,30 +64,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		super( parent );
 		this.prepSteps = Lists.newLinkedList();
 		this.completionStep = null;
-	}
-
-	public <C extends Context> C findFirstContext( Step<?> step, Class<C> cls ) {
-		while( step != null ) {
-			for( Context context : step.getContexts() ) {
-				if( cls.isAssignableFrom( context.getClass() ) ) {
-					return cls.cast( context );
-				}
-			}
-			C context = step.findFirstContext( cls );
-			if( context != null ) {
-				return context;
-			} else {
-				step = step.getPreviousStep();
-			}
-		}
-		CompletionStep<?> grandparent = this.getFirstAncestorAssignableTo( CompletionStep.class );
-		if( grandparent != null ) {
-			Logger.info( "note: searching outside transaction", cls );
-			return grandparent.findFirstContext( cls );
-		} else {
-			Logger.severe( cls );
-			return null;
-		}
 	}
 
 	public boolean isValid() {

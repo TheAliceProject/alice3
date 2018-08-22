@@ -44,8 +44,6 @@
 package org.alice.ide.ast.draganddrop.statement;
 
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState;
-import org.alice.ide.members.MembersComposite;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.history.DragStep;
@@ -64,12 +62,6 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		super( id );
 		this.statementCls = statementCls;
 		this.possiblyIncompleteStatement = possiblyIncompleteStatement;
-
-		if( IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			// pass
-		} else {
-			this.addContextFactory( MembersComposite.getInstance().getTabState() );
-		}
 	}
 
 	public Statement getPossiblyIncompleteStatement() {

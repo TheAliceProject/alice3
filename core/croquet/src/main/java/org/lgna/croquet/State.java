@@ -59,7 +59,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class State<T> extends AbstractCompletionModel implements ContextFactory<StateContext<T>> {
+public abstract class State<T> extends AbstractCompletionModel {
 	public static interface ValueListener<T> {
 		public void changing( State<T> state, T prevValue, T nextValue, boolean isAdjusting );
 
@@ -152,11 +152,6 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 				valueListener.valueChanged( e );
 			}
 		}
-	}
-
-	@Override
-	public StateContext<T> createContext() {
-		return new StateContext<T>( this, this.getValue() );
 	}
 
 	@Override

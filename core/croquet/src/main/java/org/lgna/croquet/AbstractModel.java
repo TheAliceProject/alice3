@@ -96,26 +96,8 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	private final List<ContextFactory<?>> contextFactories = Lists.newCopyOnWriteArrayList();
-
-	//TODO: contemplate passing context factories on construction
-	public AbstractModel( UUID id/* , ContextFactory<?>... contextFactories */) {
+	AbstractModel( UUID id ) {
 		super( id );
-	}
-
-	@Override
-	public Iterable<ContextFactory<?>> getContextFactories() {
-		return this.contextFactories;
-	}
-
-	public void addContextFactory( ContextFactory<?> contextFactory ) {
-		assert contextFactory != null : this;
-		this.contextFactories.add( contextFactory );
-	}
-
-	public void removeContextFactory( ContextFactory<?> contextFactory ) {
-		assert contextFactory != null : this;
-		this.contextFactories.remove( contextFactory );
 	}
 
 	@Override

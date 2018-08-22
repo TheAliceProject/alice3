@@ -43,11 +43,7 @@
 package org.alice.ide.ast.declaration;
 
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
-import org.alice.ide.IDE;
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
-import org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState;
-import org.alice.ide.members.MembersComposite;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.OwnedByCompositeOperationSubKey;
 import org.lgna.croquet.edits.Edit;
@@ -66,15 +62,8 @@ import java.util.UUID;
 public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposite<UserMethod> {
 	private final UserType<?> declaringType;
 
-	public AddMethodComposite( UUID migrationId, Details details, UserType<?> declaringType ) {
+	AddMethodComposite( UUID migrationId, Details details, UserType<?> declaringType ) {
 		super( migrationId, details );
-		ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
-		if( IsEmphasizingClassesState.getInstance().getValue() ) {
-			this.getLaunchOperation().addContextFactory( projectDocumentFrame.getDeclarationsEditorComposite().getTabState() );
-		} else {
-			this.getLaunchOperation().addContextFactory( projectDocumentFrame.getInstanceFactoryState() );
-			this.getLaunchOperation().addContextFactory( MembersComposite.getInstance().getTabState() );
-		}
 		this.declaringType = declaringType;
 	}
 

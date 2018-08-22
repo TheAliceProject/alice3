@@ -43,25 +43,25 @@
 
 package org.lgna.croquet.imp.cascade;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.Context;
 import org.lgna.croquet.Element;
-import org.lgna.croquet.history.TransactionNode;
-
-import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends Element> extends TransactionNode<P> {
-	public CascadeNode( P parent, E element ) {
-		super( parent );
+public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends Element> {
+	CascadeNode( P owner, E element ) {
+		this.owner = owner;
 		this.elememt = element;
+	}
+
+	public P getOwner() {
+		return this.owner;
 	}
 
 	public E getElement() {
 		return this.elememt;
 	}
 
+	private final P owner;
 	private final E elememt;
 }

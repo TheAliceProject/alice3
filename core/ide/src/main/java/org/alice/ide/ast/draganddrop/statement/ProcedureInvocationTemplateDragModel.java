@@ -82,9 +82,6 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		super( UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
 		this.method = method;
 		assert this.method.isProcedure();
-
-		this.addContextFactory( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
-		this.addContextFactory( MembersComposite.getInstance().getTabState() );
 	}
 
 	@Override

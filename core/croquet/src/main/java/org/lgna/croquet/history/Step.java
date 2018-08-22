@@ -42,18 +42,13 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.Context;
-import org.lgna.croquet.ContextFactory;
+import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ViewController;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -62,7 +57,6 @@ import java.util.UUID;
  */
 public abstract class Step<M extends Model> extends TransactionNode<Transaction> {
 
-	private final List<Context> contexts;
 	private final M model;
 	private final Trigger trigger;
 	private final UUID id;
@@ -77,15 +71,9 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 			this.trigger = NullTrigger.createUserInstance();
 		}
 		this.id = UUID.randomUUID();
+	}
 
-		List<Context> contexts = Lists.newLinkedList();
-		if( model != null ) {
-			for( ContextFactory<?> contextFactory : model.getContextFactories() ) {
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( model );
-				contexts.add( contextFactory.createContext() );
-			}
 		}
-		this.contexts = Collections.unmodifiableList( contexts );
 	}
 
 	public static class Key<T> {
@@ -117,19 +105,6 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 
 	public <T> void putEphemeralDataFor( Key<T> key, T value ) {
 		this.dataMap.put( key, value );
-	}
-
-	/* package-private */Iterable<Context> getContexts() {
-		return this.contexts;
-	}
-
-	public <C extends Context> C findFirstContext( Class<C> cls ) {
-		if( this.getOwnerTransaction() != null ) {
-			return this.getOwnerTransaction().findFirstContext( this, cls );
-		} else {
-			Logger.severe( cls );
-			return null;
-		}
 	}
 
 	public Trigger getTrigger() {

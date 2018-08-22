@@ -55,10 +55,6 @@ public abstract class MutableDataSingleSelectListState<T> extends SingleSelectLi
 		super( group, migrationId, selectionIndex, data );
 	}
 
-	public MutableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, Collection<T> values ) {
-		this( group, migrationId, selectionIndex, new MutableListData<T>( itemCodec, values ) );
-	}
-
 	public MutableDataSingleSelectListState( Group group, UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
 		this( group, migrationId, selectionIndex, new MutableListData<T>( itemCodec, values ) );
 	}

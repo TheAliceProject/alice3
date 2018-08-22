@@ -44,13 +44,12 @@ package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistory extends TransactionNode<CompletionStep<?>> implements Iterable<Transaction> {
+public class TransactionHistory extends TransactionNode<CompletionStep<?>>  {
 	private final List<Transaction> transactions;
 
 	public TransactionHistory() {
@@ -72,11 +71,6 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		return this;
 	}
 
-	@Override
-	public Iterator<Transaction> iterator() {
-		return this.transactions.iterator();
-	}
-
 	public int getIndexOfTransaction( Transaction transaction ) {
 		return this.transactions.indexOf( transaction );
 	}
@@ -89,13 +83,9 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		return this.transactions.size();
 	}
 
-	/* package-private */Transaction getLastTransaction() {
+	private Transaction getLastTransaction() {
 		final int n = this.transactions.size();
-		if( n > 0 ) {
-			return this.transactions.get( n - 1 );
-		} else {
-			return null;
-		}
+		return n > 0 ? this.transactions.get( n - 1 ) : null;
 	}
 
 	public Transaction acquireActiveTransaction() {

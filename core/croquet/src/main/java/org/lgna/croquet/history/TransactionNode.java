@@ -45,7 +45,6 @@ package org.lgna.croquet.history;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.pattern.Criterion;
-import org.lgna.croquet.Context;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.history.event.Event;
@@ -60,10 +59,9 @@ import java.util.List;
  */
 public abstract class TransactionNode<P extends TransactionNode<?>> {
 	private final List<Listener> listeners = Lists.newCopyOnWriteArrayList();
-
 	private P owner;
 
-	public TransactionNode( P owner ) {
+	TransactionNode( P owner ) {
 		this.setOwner( owner );
 	}
 
