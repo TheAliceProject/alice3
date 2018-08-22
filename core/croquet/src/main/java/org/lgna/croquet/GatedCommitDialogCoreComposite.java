@@ -42,56 +42,26 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.TransactionNode;
 import org.lgna.croquet.history.event.Event;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Dialog;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
-	private final List<CommitRejector> commitRejectors = Lists.newCopyOnWriteArrayList();
+	private CompletionStep<?> rootCompletionStep;
 
 	public GatedCommitDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	public void addCommitRejector( CommitRejector commitRejector ) {
-		this.commitRejectors.add( commitRejector );
-	}
-
-	public void removeCommitRejector( CommitRejector commitRejector ) {
-		this.commitRejectors.remove( commitRejector );
-	}
-
-	public void clearCommitRejectors() {
-		this.commitRejectors.clear();
-	}
-
 	protected abstract Status getStatusPreRejectorCheck( CompletionStep<?> step );
-
-	public final Status getStatus( CompletionStep<?> step ) {
-		Status status = this.getStatusPreRejectorCheck( step );
-		if( status == IS_GOOD_TO_GO_STATUS ) {
-			for( CommitRejector rejector : this.commitRejectors ) {
-				status = rejector.getRejectionStatus( step );
-				if( status == IS_GOOD_TO_GO_STATUS ) {
-					//pass
-				} else {
-					return status;
-				}
-			}
-		}
-		return status;
-	}
 
 	private final Listener listener = new Listener() {
 		@Override
@@ -110,40 +80,23 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 
-	private void updateStatus( CompletionStep<?> step ) {
-		boolean isGoodToGo;
-		AbstractSeverityStatusComposite.Status status = this.getStatus( step );
-		if( status != null ) {
-			isGoodToGo = status.isGoodToGo();
-		} else {
-			isGoodToGo = true;
-		}
-		this.getDialogContentComposite().getView().getStatusLabel().setStatus( status );
-		this.updateIsGoodToGo( isGoodToGo );
-	}
-
 	protected void refreshStatus() {
-		//todo
-		CompletionStep<?> step = null;
-		this.updateStatus( step );
+		AbstractSeverityStatusComposite.Status status = getStatusPreRejectorCheck( rootCompletionStep );
+		boolean isGoodToGo = status == null || status.isGoodToGo();
+
+		getDialogContentComposite().getView().getStatusLabel().setStatus( status );
+		updateIsGoodToGo( isGoodToGo );
 	}
 
 	protected void handleFiredEvent( Event<?> event ) {
-		CompletionStep<? super OwnedByCompositeOperation> s = null;
-		if( event != null ) {
-			TransactionNode<?> node = event.getNode();
-			if( node != null ) {
-				//todo:
-				s = node.getFirstStepOfModelAssignableTo( OwnedByCompositeOperation.class, CompletionStep.class );
-			}
-		}
-		this.updateStatus( s );
+		this.refreshStatus();
 	}
 
 	@Override
 	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
+		rootCompletionStep = completionStep;
 		completionStep.addListener( this.listener );
-		this.updateStatus( completionStep );
+		this.refreshStatus();
 		super.handlePreShowDialog( dialog, completionStep );
 	}
 
