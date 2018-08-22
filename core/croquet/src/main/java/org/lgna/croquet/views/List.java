@@ -104,8 +104,8 @@ public class List<T> extends ItemSelectable<JList, T, SingleSelectListState<T, ?
 
 	public List( SingleSelectListState<T, ?> model ) {
 		super( model );
-		this.getAwtComponent().setModel( model.getImp().getSwingModel().getComboBoxModel() );
-		this.getAwtComponent().setSelectionModel( model.getImp().getSwingModel().getListSelectionModel() );
+		this.getAwtComponent().setModel( model.getSwingModel().getComboBoxModel() );
+		this.getAwtComponent().setSelectionModel( model.getSwingModel().getListSelectionModel() );
 	}
 
 	private final LenientMouseClickAdapter mouseAdapter = new LenientMouseClickAdapter() {

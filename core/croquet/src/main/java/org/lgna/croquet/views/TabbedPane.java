@@ -63,7 +63,7 @@ public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectab
 				//pass
 			} else {
 				SingleSelectListState<E, ?> model = getModel();
-				int indexFromSwingModel = model.getImp().getSwingModel().getSelectionIndex();
+				int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
 				int indexFromCroquet = model.getSelectedIndex();
 				final boolean USE_CROQUET_OVER_SWING;
 				if( indexFromSwingModel != indexFromCroquet ) {
@@ -80,7 +80,7 @@ public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectab
 					Logger.severe( indexFromSwingModel, indexFromCroquet, this );
 					card = model.getItemAt( indexFromCroquet );
 				} else {
-					card = (E)model.getImp().getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
+					card = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
 				}
 				TabbedPane.this.handleValueChanged( card );
 			}
@@ -110,7 +110,7 @@ public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectab
 
 	@Override
 	protected void handleDisplayable() {
-		this.getModel().getImp().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 		this.handleValueChanged( this.getModel().getValue() );
 		super.handleDisplayable();
 	}
@@ -118,7 +118,7 @@ public abstract class TabbedPane<E extends TabComposite<?>> extends ItemSelectab
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.getModel().getImp().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 	}
 
 	protected abstract void handleValueChanged( E card );

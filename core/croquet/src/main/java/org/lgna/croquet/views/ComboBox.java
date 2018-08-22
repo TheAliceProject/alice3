@@ -76,7 +76,7 @@ import java.awt.event.ItemListener;
 public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListStateComboBoxPrepModel<E, ?>> {
 	public ComboBox( SingleSelectListStateComboBoxPrepModel<E, ?> model ) {
 		super( model );
-		this.setSwingComboBoxModel( model.getListSelectionState().getImp().getSwingModel().getComboBoxModel() );
+		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
 	}
 
 	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
@@ -151,12 +151,12 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
-		this.getModel().getListSelectionState().getImp().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().getListSelectionState().getImp().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
 		super.handleUndisplayable();
 	}
