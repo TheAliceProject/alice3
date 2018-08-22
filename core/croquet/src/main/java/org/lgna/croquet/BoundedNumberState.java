@@ -59,7 +59,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberState<N extends Number> extends SimpleValueState<N> {
+public abstract class BoundedNumberState<N extends Number> extends State<N> {
 	public static class AtomicChange<N extends Number> {
 		private N minimum = null;
 		private N maximum = null;
@@ -164,27 +164,10 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 
 	public abstract void setMaximum( N maximum );
 
-	public N getStepSize() {
-		return (N)this.getSwingModel().getSpinnerModel().getStepSize();
-	}
-
-	public void setStepSize( N stepSize ) {
-		this.getSwingModel().getSpinnerModel().setStepSize( stepSize );
-	}
-
 	public void setAll( AtomicChange<N> atomicChange ) {
 		atomicChange.updateSwingModel( this.swingModel );
 		if( atomicChange.value != null ) {
 			this.setCurrentTruthAndBeautyValue( atomicChange.value );
-		}
-	}
-
-	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
-		this.pushIsInTheMidstOfAtomicChange();
-		try {
-			this.setAll( atomicChange );
-		} finally {
-			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 

@@ -64,7 +64,7 @@ import java.util.concurrent.Callable;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend State
+public abstract class ItemState<T> extends State<T> {
 	private final ItemCodec<T> itemCodec;
 
 	public ItemState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
@@ -76,11 +76,6 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			Logger.severe( "itemCodec is null for", this );
 		}
 		this.itemCodec = itemCodec;
-	}
-
-	@Override
-	public Class<T> getItemClass() {
-		return this.itemCodec.getValueClass();
 	}
 
 	@Override
@@ -299,7 +294,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		return this.getItemSelectionOperation( new ValueCallable<T>( item ) );
 	}
 
-	public Operation getAlternateLocalizationItemSelectionOperation( Callable<T> itemCallable ) {
+	private Operation getAlternateLocalizationItemSelectionOperation( Callable<T> itemCallable ) {
 		return this.getItemSelectionOperation( itemCallable, true );
 	}
 

@@ -67,7 +67,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringState extends SimpleValueState<String> {
+public abstract class StringState extends State<String> {
 	private final class DocumentListener implements javax.swing.event.DocumentListener {
 		private void handleUpdate( DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {
@@ -160,11 +160,6 @@ public abstract class StringState extends SimpleValueState<String> {
 	@Override
 	public void appendRepresentation( StringBuilder sb, String value ) {
 		sb.append( value );
-	}
-
-	@Override
-	public Class<String> getItemClass() {
-		return String.class;
 	}
 
 	@Override

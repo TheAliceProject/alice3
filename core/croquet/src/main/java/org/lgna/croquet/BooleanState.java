@@ -53,7 +53,6 @@ import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.PushButton;
 import org.lgna.croquet.views.RadioButton;
 import org.lgna.croquet.views.ToggleButton;
-import org.lgna.croquet.views.ToggleButtonLabelCombo;
 
 import javax.swing.Action;
 import javax.swing.BoxLayout;
@@ -73,7 +72,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanState extends SimpleValueState<Boolean> {
+public abstract class BooleanState extends State<Boolean> {
 	protected BooleanState( Group group, UUID id, boolean initialValue, ButtonModel buttonModel ) {
 		super( group, id, initialValue );
 		this.imp = new BooleanStateImp( this, initialValue, buttonModel );
@@ -91,11 +90,6 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	@Override
 	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
 		return this.imp.getPotentialPrepModelPaths( edit );
-	}
-
-	@Override
-	public Class<Boolean> getItemClass() {
-		return Boolean.class;
 	}
 
 	@Override
@@ -253,10 +247,6 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new ToggleButton( this );
 	}
 
-	public ToggleButtonLabelCombo createToggleButtonLabelCombo() {
-		return new ToggleButtonLabelCombo( this );
-	}
-
 	@Deprecated
 	public PushButton createPushButton() {
 		return new PushButton( this );
@@ -362,28 +352,8 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new RadioButtonsPanel( true, isTrueFirst );
 	}
 
-	public Panel createHorizontalRadioButtons( boolean isTrueFirst ) {
-		return new RadioButtonsPanel( false, isTrueFirst );
-	}
-
-	public Panel createVerticalRadioButtons() {
-		return this.createVerticalRadioButtons( true );
-	}
-
-	public Panel createHorizontalRadioButtons() {
-		return this.createHorizontalRadioButtons( true );
-	}
-
-	public Panel createVerticalToggleButtons( boolean isTrueFirst ) {
-		return new ToggleButtonsPanel( true, isTrueFirst );
-	}
-
 	public Panel createHorizontalToggleButtons( boolean isTrueFirst ) {
 		return new ToggleButtonsPanel( false, isTrueFirst );
-	}
-
-	public Panel createVerticalToggleButtons() {
-		return this.createVerticalToggleButtons( true );
 	}
 
 	public Panel createHorizontalToggleButtons() {

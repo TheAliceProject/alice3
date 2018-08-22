@@ -69,11 +69,13 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 	private final List<org.lgna.croquet.event.ValueListener<T>> newSchoolValueListeners = Lists.newCopyOnWriteArrayList();
 	private final List<ValueListener<T>> oldSchoolValueListeners = Lists.newCopyOnWriteArrayList();
 
+	private T currentValue;
 	private T previousValue;
 
 	public State( Group group, UUID migrationId, T initialValue ) {
 		super( group, migrationId );
-		this.previousValue = initialValue;
+		currentValue = initialValue;
+		previousValue = initialValue;
 	}
 
 	@Override
@@ -81,8 +83,6 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 		super.initialize();
 		this.setSwingValue( this.getCurrentTruthAndBeautyValue() );
 	}
-
-	public abstract Class<T> getItemClass();
 
 	public abstract T decodeValue( BinaryDecoder binaryDecoder );
 
@@ -191,12 +191,12 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 		return new StateEdit<T>( completionStep, prevValue, nextValue );
 	}
 
-	protected abstract T getCurrentTruthAndBeautyValue();
+	protected T getCurrentTruthAndBeautyValue() {
+		return this.currentValue;
+	}
 
-	protected abstract void setCurrentTruthAndBeautyValue( T value );
-
-	protected final T getPreviousTruthAndBeautyValue() {
-		return this.previousValue;
+	protected void setCurrentTruthAndBeautyValue( T value ) {
+		this.currentValue = value;
 	}
 
 	protected abstract T getSwingValue();
@@ -208,30 +208,14 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 	}
 
 	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
-		if( origin.isUpdatingSwingAppropriate() ) {
-			boolean isUpdatingSwingValueAppropriate;
-			if( this.isSwingValueValid() ) {
-				T prevSwingValue = this.getSwingValue();
-				if( Objects.equals( prevSwingValue, nextValue ) ) {
-					isUpdatingSwingValueAppropriate = false;
-				} else {
-					isUpdatingSwingValueAppropriate = true;
-				}
-			} else {
-				isUpdatingSwingValueAppropriate = true;
-			}
-			if( isUpdatingSwingValueAppropriate ) {
-				this.setSwingValue( nextValue );
-			}
+		if ( origin.isUpdatingSwingAppropriate() &&
+				!(isSwingValueValid() && Objects.equals( getSwingValue(), nextValue )) ) {
+			setSwingValue( nextValue );
 		}
 	}
 
 	public final T getValue() {
 		return this.getCurrentTruthAndBeautyValue();
-	}
-
-	protected boolean isAppropriateToChange() {
-		return true;
 	}
 
 	private boolean isInTheMidstOfChange = false;
@@ -274,46 +258,43 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 		}
 
 		public boolean isUpdatingSwingAppropriate() {
-			return this.isFromSwing == false;
+			return !isFromSwing;
 		}
 
 		public boolean isCommitingEditAppropriate() {
-			return ( this.isFromEdit == false ) && ( this.isFromSetValueTransactionlessly == false );
+			return !isFromEdit && !isFromSetValueTransactionlessly;
 		}
 
 	}
 
+	// TODO move this down to SingleSelectListState or eliminate completely
 	private int atomicCount;
 	private T prevValueAtStartOfAtomicChange;
 
-	protected void pushIsInTheMidstOfAtomicChange() {
-		if( this.atomicCount == 0 ) {
+	void pushIsInTheMidstOfAtomicChange() {
+		if( isNotInTheMidstOfAtomicChange() ) {
 			this.prevValueAtStartOfAtomicChange = this.previousValue;
 		}
 		this.atomicCount++;
 	}
 
-	protected void popIsInTheMidstOfAtomicChange() {
+	void popIsInTheMidstOfAtomicChange() {
 		this.atomicCount--;
-		if( this.atomicCount == 0 ) {
+		if( isNotInTheMidstOfAtomicChange() ) {
 			T nextValue = this.getCurrentTruthAndBeautyValue();
 			this.changeValue( this.prevValueAtStartOfAtomicChange, nextValue, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_SET_VALUE_TRANSACTIONLESSLY );
 		}
 	}
 
-	protected boolean isAdjustingIgnored() {
-		return true;
+	private boolean isNotInTheMidstOfAtomicChange() {
+		return this.atomicCount <= 0;
 	}
 
 	private StateEdit<T> changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
 		StateEdit<T> rv = null;
 		this.updateSwingModelIfAppropriate( nextValue, origin );
-		if( Objects.equals( this.previousValue, nextValue ) ) {
-			//pass
-		} else {
-			if( this.isInTheMidstOfChange ) {
-				//pass
-			} else {
+		if ( !Objects.equals( this.previousValue, nextValue ) ) {
+			if ( !this.isInTheMidstOfChange ) {
 				this.isInTheMidstOfChange = true;
 				try {
 					this.fireChanging( prevValue, nextValue, isAdjusting );
@@ -331,18 +312,16 @@ public abstract class State<T> extends AbstractCompletionModel implements Contex
 		return rv;
 	}
 
+	protected boolean isAdjustingIgnored() {
+		return true;
+	}
+
 	private StateEdit<T> changeValue( T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
-		StateEdit<T> rv = null;
-		if( this.atomicCount > 0 ) {
-			//pass
-		} else {
-			if( isAdjusting.value && this.isAdjustingIgnored() ) {
-				//pass
-			} else {
-				rv = this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
-			}
+		if ( isNotInTheMidstOfAtomicChange() &&
+				!(isAdjusting.value && isAdjustingIgnored()) ) {
+			return this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
 		}
-		return rv;
+		return null;
 	}
 
 	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {

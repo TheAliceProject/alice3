@@ -235,11 +235,6 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 	}
 
 	@Override
-	public Class<Double> getItemClass() {
-		return Double.class;
-	}
-
-	@Override
 	public Double decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeDouble();
 	}
