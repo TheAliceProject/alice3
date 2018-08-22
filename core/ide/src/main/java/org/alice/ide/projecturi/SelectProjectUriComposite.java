@@ -43,16 +43,12 @@
 
 package org.alice.ide.projecturi;
 
-import org.alice.ide.projecturi.views.SelectProjectUriView;
+import org.alice.ide.projecturi.views.TabContentPanel;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.Composite;
 import org.lgna.croquet.ImmutableDataTabState;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
-import org.lgna.croquet.event.ValueEvent;
-import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.meta.MetaState;
-import org.lgna.croquet.meta.TransactionHistoryTrackingMetaState;
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.Panel;
@@ -79,21 +75,10 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
 			this.recentProjectsTab,
 			this.fileSystemTab );
 
-	private final class SelectedUriMetaState extends TransactionHistoryTrackingMetaState<UriProjectLoader> {
-		@Override
-		public UriProjectLoader getValue() {
-			SelectUriTab tab = tabState.getValue();
-			if( tab != null ) {
-				return tab.getSelectedUri();
-			} else {
-				return null;
-			}
-		}
+	private UriProjectLoader getSelectedProject() {
+		SelectUriTab tab = tabState.getValue();
+		return tab != null ? tab.getSelectedUri() : null;
 	}
-
-	private final SelectedUriMetaState metaState = new SelectedUriMetaState();
-
-	private final ProjectSideComposite sideSubComposite;
 
 	private static class SingletonHolder {
 		private static SelectProjectUriComposite instance = new SelectProjectUriComposite();
@@ -105,54 +90,33 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
 
 	private SelectProjectUriComposite() {
 		super( UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
-		final boolean IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME = false;
-		if( IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME ) {
-			this.sideSubComposite = new ProjectSideComposite();
-			this.registerSubComposite( this.sideSubComposite );
-		} else {
-			this.sideSubComposite = null;
-		}
 	}
 
 	public ImmutableDataTabState<SelectUriTab> getTabState() {
 		return this.tabState;
 	}
 
-	public Composite<?> getSideSubComposite() {
-		return this.sideSubComposite;
-	}
-
-	public MetaState<UriProjectLoader> getMetaState() {
-		return this.metaState;
-	}
-
 	@Override
 	protected UriProjectLoader createValue() {
-		return this.metaState.getValue();
+		return getSelectedProject();
 	}
 
 	@Override
 	protected Panel createView() {
-		return new SelectProjectUriView( this );
+		BorderPanel view = new BorderPanel( this );
+		view.addCenterComponent( getTabState().createFolderTabbedPane() );
+		view.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
+		return view;
 	}
 
 	@Override
 	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-		UriProjectLoader uri = this.metaState.getValue();
-		if( uri != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noSelectionError;
-		}
+		return getSelectedProject() != null ? IS_GOOD_TO_GO_STATUS : this.noSelectionError;
 	}
 
 	@Override
 	protected Integer getWiderGoldenRatioSizeFromWidth() {
-		if( this.sideSubComposite != null ) {
-			return 960;
-		} else {
-			return 800;
-		}
+		return 800;
 	}
 
 	public void selectAppropriateTab( boolean isNew ) {
@@ -173,35 +137,9 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
 		}
 	}
 
-	private final ValueListener<UriProjectLoader> metaUriListener = new ValueListener<UriProjectLoader>() {
-		@Override
-		public void valueChanged( ValueEvent<UriProjectLoader> e ) {
-			handleMetaStateValueChanged( e.getNextValue() );
-		}
-	};
-
-	private void handleMetaStateValueChanged( UriProjectLoader uri ) {
-		if( this.sideSubComposite != null ) {
-			this.sideSubComposite.handleMetaStateValueChanged( uri );
-		}
-	}
-
 	@Override
 	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
 		this.refresh();
-		if( this.sideSubComposite != null ) {
-			this.metaState.pushActivation( completionStep );
-			this.metaState.addValueListener( this.metaUriListener );
-		}
 		super.handlePreShowDialog( dialog, completionStep );
-	}
-
-	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		if( this.sideSubComposite != null ) {
-			this.metaState.removeValueListener( this.metaUriListener );
-			this.metaState.popActivation();
-		}
-		super.handlePostHideDialog( completionStep );
 	}
 }
