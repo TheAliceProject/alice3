@@ -44,7 +44,6 @@ package org.lgna.croquet.imp.operation;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Lazy;
-import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
@@ -65,10 +64,6 @@ public class OperationImp {
 		this.swingModel = new OperationSwingModel( operation );
 	}
 
-	public Operation getOperation() {
-		return this.operation;
-	}
-
 	public OperationSwingModel getSwingModel() {
 		return this.swingModel;
 	}
@@ -81,26 +76,12 @@ public class OperationImp {
 		this.swingModel.action.putValue( Action.NAME, name );
 	}
 
-
 	public void setShortDescription( String shortDescription ) {
 		this.swingModel.action.putValue( Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
-
-	public Icon getSmallIcon() {
-		return Icon.class.cast( this.swingModel.action.getValue( Action.SMALL_ICON ) );
-	}
-
 	public void setSmallIcon( Icon icon ) {
 		this.swingModel.action.putValue( Action.SMALL_ICON, icon );
-	}
-
-	public void setMnemonicKey( int mnemonicKey ) {
-		this.swingModel.action.putValue( Action.MNEMONIC_KEY, mnemonicKey );
-	}
-
-	public KeyStroke getAcceleratorKey() {
-		return KeyStroke.class.cast( this.swingModel.action.getValue( Action.ACCELERATOR_KEY ) );
 	}
 
 	public void setAcceleratorKey( KeyStroke acceleratorKey ) {
@@ -109,10 +90,6 @@ public class OperationImp {
 
 	public StandardMenuItemPrepModel getMenuItemPrepModel() {
 		return this.menuItemPrepModel.get();
-	}
-
-	public <F, B> CascadeItem<F, B> getFauxCascadeItem() {
-		return this.fauxCascadeItem.get();
 	}
 
 	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit ) {
@@ -129,13 +106,6 @@ public class OperationImp {
 		@Override
 		protected StandardMenuItemPrepModel create() {
 			return new OperationMenuItemPrepModel( operation );
-		}
-	};
-
-	private final Lazy<CascadeItem> fauxCascadeItem = new Lazy<CascadeItem>() {
-		@Override
-		protected CascadeItem<?, ?> create() {
-			return new OperationFauxCascadeItem( operation );
 		}
 	};
 }

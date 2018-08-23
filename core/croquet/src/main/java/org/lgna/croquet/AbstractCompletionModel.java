@@ -99,25 +99,13 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return transaction.getCompletionStep();
 	}
 
-	@Deprecated
-	protected Model getSurrogateModel() {
-		return null;
-	}
-
 	@Override
-	public final CompletionStep<?> fire( Trigger trigger ) {
-		Model surrogateModel = this.getSurrogateModel();
-		if( surrogateModel != null ) {
-			Logger.errln( "todo: end use of surrogate", this );
-			Step<?> step = surrogateModel.fire( trigger );
-			return step.getOwnerTransaction().getCompletionStep();
+	public CompletionStep<?> fire( Trigger trigger ) {
+		if( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			return this.createTransactionAndInvokePerform( trigger );
 		} else {
-			if( this.isEnabled() ) {
-				this.initializeIfNecessary();
-				return this.createTransactionAndInvokePerform( trigger );
-			} else {
-				return null;
-			}
+			return null;
 		}
 	}
 

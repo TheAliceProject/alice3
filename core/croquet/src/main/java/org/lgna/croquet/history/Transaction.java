@@ -67,18 +67,10 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		this.completionStep = null;
 	}
 
-	public boolean isValid() {
-		if( this.completionStep != null ) {
-			return this.completionStep.isValid();
-		} else {
-			return false;
-		}
-	}
-
 	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
 		final int N = getPrepStepCount();
 		for( int i = 0; i < N; i++ ) {
-			PrepStep<?> prepStep = getPrepStepAt( N - 1 - i );
+			PrepStep<?> prepStep = this.prepSteps.get( N - 1 - i );
 			if( criterion.accept( prepStep ) ) {
 				return prepStep;
 			}
@@ -112,10 +104,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	public TransactionHistory getOwnerTransactionHistory() {
-		return this.getOwner();
-	}
-
 	public int getChildStepCount() {
 		return this.getPrepStepCount() + ( this.completionStep != null ? 1 : 0 );
 	}
@@ -124,11 +112,11 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		if( index == this.getPrepStepCount() ) {
 			return this.getCompletionStep();
 		} else {
-			return this.getPrepStepAt( index );
+			return this.prepSteps.get( index );
 		}
 	}
 
-	public int getIndexOfChildStep( Step<?> step ) {
+	int getIndexOfChildStep( Step<?> step ) {
 		if( step instanceof PrepStep<?> ) {
 			PrepStep<?> prepStep = (PrepStep<?>)step;
 			return this.getIndexOfPrepStep( prepStep );
@@ -145,11 +133,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		return this.prepSteps.indexOf( prepStep );
 	}
 
-	public PrepStep<?> getPrepStepAt( int i ) {
-		return this.prepSteps.get( i );
-	}
-
-	public int getPrepStepCount() {
+	private int getPrepStepCount() {
 		return this.prepSteps.size();
 	}
 
@@ -166,7 +150,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		step.fireChanged( e );
 	}
 
-	/* package-private */void addPrepStep( PrepStep<?> step ) {
+	void addPrepStep( PrepStep<?> step ) {
 		this.addStep( step );
 	}
 
@@ -182,7 +166,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		return this.createAndSetCompletionStep( model, trigger, null );
 	}
 
-	/* package-private */void setCompletionStep( CompletionStep<?> step ) {
+	void setCompletionStep( CompletionStep<?> step ) {
 		//assert this.completionStep == null : this.completionStep + " " + step;
 		this.addStep( step );
 	}

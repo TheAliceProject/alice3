@@ -117,14 +117,11 @@ public abstract class Application<D extends DocumentFrame> {
 		DocumentFrame documentFrame = this.getDocumentFrame();
 		if( documentFrame != null ) {
 			Document document = documentFrame.getDocument();
-			if( document == null ) {
-				return this.getTransactionHistory();
-			} else {
+			if( document != null ) {
 				return document.getRootTransactionHistory();
 			}
-		} else {
-			return this.getTransactionHistory();
 		}
+		return this.getTransactionHistory();
 	}
 
 	public void initialize( String[] args ) {

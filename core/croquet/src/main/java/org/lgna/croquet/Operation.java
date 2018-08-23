@@ -125,10 +125,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		return this.imp.getMenuItemPrepModel();
 	}
 
-	public <F, B> CascadeItem<F, B> getFauxCascadeItem() {
-		return this.imp.getFauxCascadeItem();
-	}
-
 	public Button createButton( float fontScalar, TextAttribute<?>... textAttributes ) {
 		return new Button( this, fontScalar, textAttributes );
 	}

@@ -99,17 +99,17 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 
 	@Override
 	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> step ) {
-		final List<Frame> framesToDiable = Lists.newLinkedList();
+		final List<Frame> framesToDisable = Lists.newLinkedList();
 
 		Application application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
-		framesToDiable.add( documentFrame.getFrame() );
+		framesToDisable.add( documentFrame.getFrame() );
 
 		final Frame frame = new Frame();
 		class ModalFrameWindowListener implements WindowListener {
 			@Override
 			public void windowOpened( WindowEvent e ) {
-				for( Frame frame : framesToDiable ) {
+				for( Frame frame : framesToDisable ) {
 					frame.getAwtComponent().setEnabled( false );
 				}
 			}
@@ -117,7 +117,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 			@Override
 			public void windowClosing( WindowEvent e ) {
 				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( e ) ) ) {
-					for( Frame frame : framesToDiable ) {
+					for( Frame frame : framesToDisable ) {
 						frame.getAwtComponent().setEnabled( true );
 					}
 					//e.getComponent().setVisible( false );
@@ -129,6 +129,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 			public void windowClosed( WindowEvent e ) {
 				frame.removeWindowListener( this );
 				try {
+					step.finish();
 					handlePostHideWindow( frame );
 				} finally {
 					handleFinally();

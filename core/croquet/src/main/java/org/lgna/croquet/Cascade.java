@@ -45,9 +45,11 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.history.Step;
 import org.lgna.croquet.history.Transaction;
 import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.history.TransactionManager;
@@ -154,9 +156,15 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 	}
 
 	@Override
-	@Deprecated
-	protected Model getSurrogateModel() {
-		return this.root.getPopupPrepModel();
+	public final CompletionStep<?> fire( Trigger trigger ) {
+		Model surrogateModel = this.root.getPopupPrepModel();
+		if( surrogateModel != null ) {
+			Logger.errln( "todo: end use of surrogate", this );
+			Step<?> step = surrogateModel.fire( trigger );
+			return step.getOwnerTransaction().getCompletionStep();
+		} else {
+			return super.fire( trigger );
+		}
 	}
 
 	@Override

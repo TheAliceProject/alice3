@@ -80,10 +80,6 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 		return step != null ? ((DropTrigger) step.getTrigger()).getDropSite() : null;
 	}
 
-	public boolean isValid() {
-		return ( this.getModel() != null ) && ( ( this.edit == null ) || this.edit.isValid() );
-	}
-
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}

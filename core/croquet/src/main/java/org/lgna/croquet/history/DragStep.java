@@ -272,11 +272,11 @@ public class DragStep extends PrepStep<DragModel> {
 
 			this.setLatestMouseEvent( e );
 			if( this.currentDropReceptor != null ) {
-				Model model = this.currentDropReceptor.dragDropped( this );
+				Model dropTarget = this.currentDropReceptor.dragDropped( this );
 
 				//				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
 				//				
-				if( model != null ) {
+				if( dropTarget != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					SwingComponentView<?> component = this.currentDropReceptor.getViewController();
 					ViewController<?, ?> viewController;
@@ -286,13 +286,13 @@ public class DragStep extends PrepStep<DragModel> {
 						viewController = null;
 					}
 					try {
-						if( model instanceof JDropProxy.Hider ) {
-							dropProxyHider = (JDropProxy.Hider)model;
+						if( dropTarget instanceof JDropProxy.Hider ) {
+							dropProxyHider = (JDropProxy.Hider)dropTarget;
 							dropProxyHider.setDragSource( this.getDragSource() );
 						} else {
-							Logger.outln( "drop proxy hider:", model.getClass() );
+							Logger.outln( "drop proxy hider:", dropTarget.getClass() );
 						}
-						Step<?> step = model.fire( DropTrigger.createUserInstance( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
+						Step<?> step = dropTarget.fire( DropTrigger.createUserInstance( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
 					} catch( CancelException ce ) {
 						this.cancel( e );
 					}

@@ -94,10 +94,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 	protected void postCopy( AbstractEdit<?> result ) {
 	}
 
-	public boolean isValid() {
-		return true;
-	}
-
 	public M getModel() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getModel();
@@ -141,14 +137,8 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 
 	@Override
 	public final void doOrRedo( boolean isDo ) {
-		if( isDo ) {
-			//pass
-		} else {
-			if( canRedo() ) {
-				//pass
-			} else {
-				throw new CannotRedoException();
-			}
+		if ( !isDo && !canRedo() ) {
+			throw new CannotRedoException();
 		}
 		Manager.pushUndoOrRedo();
 		try {
@@ -160,9 +150,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 
 	@Override
 	public final void undo() {
-		if( canUndo() ) {
-			//pass
-		} else {
+		if ( !canUndo() ) {
 			throw new CannotRedoException();
 		}
 		Manager.pushUndoOrRedo();

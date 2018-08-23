@@ -63,10 +63,6 @@ public abstract class IteratingOperation extends Operation {
 		super( group, id );
 	}
 
-	protected TransactionHistory createTransactionHistoryIfNecessary() {
-		return new TransactionHistory();
-	}
-
 	protected Iterator<Model> createIteratingData() {
 		return null;
 	}
@@ -78,7 +74,7 @@ public abstract class IteratingOperation extends Operation {
 	protected abstract void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps );
 
 	protected void iterateOverSubModels( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
+		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new TransactionHistory() );
 		try {
 			List<Step<?>> subSteps = Lists.newLinkedList();
 			Iterator<Model> iteratingData = this.createIteratingData();
@@ -89,14 +85,12 @@ public abstract class IteratingOperation extends Operation {
 					if( ( subStep != null ) && subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
 						subSteps.add( subStep );
 					} else {
-						if( subStep != null ) {
+						if ( subStep == null ) {
+							Logger.severe( "subStep is null", this );
+						} else {
 							if( subStep.getOwnerTransaction().isPending() ) {
 								Logger.severe( "subStep is pending", this );
-							} else {
-								//pass
 							}
-						} else {
-							Logger.severe( "subStep is null", this );
 						}
 						step.cancel();
 						return;
