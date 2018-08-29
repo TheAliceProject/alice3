@@ -49,7 +49,7 @@ import org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Cascade;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 import org.lgna.project.ast.Expression;
@@ -65,8 +65,8 @@ public class FillInExpressionListPropertyEdit extends AbstractEdit<Cascade<Expre
 	private Expression nextExpression;
 	private Expression prevExpression;
 
-	public FillInExpressionListPropertyEdit( CompletionStep completionStep, Expression prevExpression, Expression nextExpression ) {
-		super( completionStep );
+	public FillInExpressionListPropertyEdit( UserActivity userActivity, Expression prevExpression, Expression nextExpression ) {
+		super( userActivity );
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}

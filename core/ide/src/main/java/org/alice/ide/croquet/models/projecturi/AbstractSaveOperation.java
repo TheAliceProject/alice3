@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.ProjectApplication;
 import org.alice.stageide.StageIDE;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		StageIDE application = StageIDE.getActiveInstance();
 		URI uri = application.getUri();
 		File filePrevious = UriUtilities.getFile( uri );
@@ -97,10 +97,10 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 							.buildAndShow();
 				}
 				if ( !isExceptionRaised ) {
-					step.finish();
+					activity.finish();
 				}
 			} else {
-				step.cancel();
+				activity.cancel();
 			}
 		} while( isExceptionRaised );
 	}

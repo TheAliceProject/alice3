@@ -44,8 +44,7 @@ package org.alice.stageide.gallerybrowser.uri;
 
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.lgna.croquet.Model;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -73,7 +72,7 @@ public class EnumConstantResourceKeyUriIteratingOperation extends ResourceKeyUri
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:

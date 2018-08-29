@@ -44,7 +44,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Panel;
 
 import java.util.Iterator;
@@ -59,11 +59,6 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
@@ -72,40 +67,40 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return false;
 	}
 
-	protected abstract Edit createEdit( CompletionStep<?> completionStep );
+	protected abstract Edit createEdit();
 
-	private void createAndCommitEdit( CompletionStep<?> completionStep ) {
+	private void createAndCommitEdit() {
 		try {
-			Edit edit = this.createEdit( completionStep );
+			Edit edit = this.createEdit();
 			if( edit != null ) {
-				completionStep.commitAndInvokeDo( edit );
+				openingActivity.commitAndInvokeDo( edit );
 			} else {
-				completionStep.finish();
+				openingActivity.finish();
 			}
 		} catch( CancelException ce ) {
-			cancel( completionStep );
+			cancel();
 		}
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		if( isCommitted ) { // close button condition
-			createAndCommitEdit( completionStep );
+			createAndCommitEdit();
 		} else {
-			cancel( completionStep );
+			cancel();
 		}
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
 			Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
 			isAutoCommitDesired = true;
 			while( iterator.hasNext() ) {
 				WizardPageComposite<?, ?> page = iterator.next();
-				if( page.isAutoAdvanceDesired( completionStep ) ) {
+				if( page.isAutoAdvanceDesired() ) {
 					//pass
 				} else {
 					isAutoCommitDesired = false;
@@ -115,9 +110,9 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 			isAutoCommitDesired = false;
 		}
 		if( isAutoCommitDesired ) {
-			this.createAndCommitEdit( completionStep );
+			this.createAndCommitEdit();
 		} else {
-			this.showDialog( completionStep );
+			this.showDialog( userActivity );
 		}
 	}
 }

@@ -45,13 +45,12 @@ package org.alice.stageide.gallerybrowser;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.gallerybrowser.views.ImportTabView;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.io.IoUtilities;
 
 import javax.swing.JFileChooser;
@@ -68,7 +67,7 @@ public final class ImportTab extends GalleryTab {
 	private final StringState directoryState = this.createStringState( "directoryState" );
 	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			JFileChooser fileChooser = new JFileChooser();
 
 			File directory = new File( directoryState.getValue() );
@@ -94,7 +93,7 @@ public final class ImportTab extends GalleryTab {
 	} );
 	private final Operation restoreToDefaultOperation = this.createActionOperation( "restoreToDefaultOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			restoreToDefault();
 			return null;
 		}

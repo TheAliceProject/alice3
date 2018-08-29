@@ -481,7 +481,12 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 				} else {
 					nextValue = null;
 				}
-				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), NullTrigger.createUserInstance() );
+				// TODO Carry through a user activity on a UI element
+				final NullTrigger trigger = NullTrigger.createUserInstance();
+				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
+				if (trigger.getUserActivity().isPending()) {
+					trigger.getUserActivity().finish();
+				}
 			}
 		}
 	};

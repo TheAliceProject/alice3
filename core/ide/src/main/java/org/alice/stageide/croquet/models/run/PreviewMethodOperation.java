@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.run;
 import org.alice.ide.IDE;
 import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -61,7 +61,7 @@ public class PreviewMethodOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
 		//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {

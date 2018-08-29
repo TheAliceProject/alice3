@@ -47,8 +47,8 @@ import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -76,7 +76,7 @@ public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIterati
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:
@@ -84,9 +84,9 @@ public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIterati
 			composite.setClassResourceKey( classResourceKey );
 			return composite.getValueCreator();
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)prevSubStep.getProducedValue();
 				return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );
 			} else {
 				return null;

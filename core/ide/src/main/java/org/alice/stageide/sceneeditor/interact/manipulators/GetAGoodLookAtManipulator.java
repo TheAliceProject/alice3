@@ -56,7 +56,7 @@ import org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOpera
 import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SThing;
@@ -105,10 +105,11 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 				if( GetAGoodLookAtActionOperation.IsValidOperation( storytellingCamera, toLookAtEntity ) ) {
 
 					//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
-					int transactionCount = IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
-					if( transactionCount > 0 ) {
-						Transaction lastTransaction = IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt( transactionCount - 1 );
-						Edit lastEdit = lastTransaction.getEdit();
+					final UserActivity projectUserActivity = IDE.getActiveInstance().getProjectUserActivity();
+					int activityCount = projectUserActivity.getChildActivities().size();
+					if( activityCount > 0 ) {
+						UserActivity lastActivity = projectUserActivity.getChildActivities().get( activityCount - 1 );
+						Edit lastEdit = lastActivity.getEdit();
 						if( lastEdit instanceof GetAGoodLookAtEdit ) {
 							GetAGoodLookAtEdit edit = (GetAGoodLookAtEdit)lastEdit;
 							if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {

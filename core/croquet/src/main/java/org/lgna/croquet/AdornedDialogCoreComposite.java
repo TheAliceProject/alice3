@@ -44,8 +44,7 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.DialogContentComposite;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Button;
@@ -93,12 +92,12 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 
 		@Override
-		protected final void perform( Transaction transaction, Trigger trigger ) {
+		protected final void perform( UserActivity userActivity, Trigger trigger ) {
 			if( !isCommit || getDialogCoreComposite().isClearedForCommit() ) {
-				CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+				userActivity.setCompletionModel( this, trigger );
 				isCommitted = this.isCommit;
 				dialog.setVisible( false );
-				step.finish();
+				userActivity.finish();
 			} else {
 				Logger.outln( this );
 			}
@@ -225,13 +224,13 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	}
 
 	@Override
-	protected CompositeView<?, ?> allocateView( CompletionStep<?> step ) {
+	protected CompositeView<?, ?> allocateView() {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
 
 	@Override
-	protected void releaseView( CompletionStep<?> step, CompositeView<?, ?> view ) {
+	protected void releaseView( CompositeView<?, ?> view ) {
 		//todo
 	}
 
@@ -240,7 +239,7 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.getDialogContentComposite().handlePreActivation();
 		if( this.isDefaultButtonDesired() ) {
 			Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
@@ -251,7 +250,7 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> step ) {
+	protected void handlePostHideDialog() {
 		this.getDialogContentComposite().handlePostDeactivation();
 	}
 

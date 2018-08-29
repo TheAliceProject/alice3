@@ -49,7 +49,7 @@ import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.croquet.models.ast.ConvertStatementWithBodyOperation;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractStatementWithBody;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.NodeUtilities;
@@ -60,14 +60,14 @@ import org.lgna.project.ast.StatementListProperty;
  */
 public class ConvertStatementWithBodyEdit extends BlockStatementEdit<ConvertStatementWithBodyOperation> {
 	//todo:
-	private static ConvertStatementWithBodyOperation getModel( CompletionStep<ConvertStatementWithBodyOperation> completionStep ) {
-		return completionStep.getModel();
+	private static ConvertStatementWithBodyOperation getModel( UserActivity activity ) {
+		return (ConvertStatementWithBodyOperation) activity.getCompletionStep().getModel();
 	}
 
 	private final AbstractStatementWithBody replacement;
 
-	public ConvertStatementWithBodyEdit( CompletionStep completionStep, AbstractStatementWithBody replacement ) {
-		super( completionStep, (BlockStatement)( getModel( completionStep ).getOriginal().getParent() ) );
+	public ConvertStatementWithBodyEdit( UserActivity userActivity, AbstractStatementWithBody replacement ) {
+		super( userActivity, (BlockStatement)( getModel( userActivity ).getOriginal().getParent() ) );
 		this.replacement = replacement;
 	}
 

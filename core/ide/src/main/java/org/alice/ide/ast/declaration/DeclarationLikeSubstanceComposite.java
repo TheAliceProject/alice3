@@ -68,7 +68,6 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Dialog;
@@ -461,7 +460,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 	}
 
 	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		final String valueTypeText;
 		if( this.valueComponentTypeState != null ) {
 			valueTypeText = this.getValueTypeExplanation( this.getValueType() );
@@ -591,7 +590,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		if( this.isFinalState != null ) {
 			boolean isFinal = this.getIsFinalInitialValue();
 			this.isFinalState.setValueTransactionlessly( isFinal );
@@ -630,12 +629,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 			this.initializerState.addNewSchoolValueListener( this.initializerListener );
 		}
 		this.getView().handleInitializerChanged( this.getInitializer() );
-		super.handlePreShowDialog( dialog, step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		if( this.isInitializerEditable() ) {
 			this.initializerState.removeNewSchoolValueListener( this.initializerListener );
 		}

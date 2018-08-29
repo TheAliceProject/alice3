@@ -50,7 +50,6 @@ import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.history.DragStep;
-import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.DropDown;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.TrackableShape;
@@ -100,11 +99,8 @@ public class ExpressionPropertyDropDownPane extends DropDown<CascadeRoot.Interna
 			} else {
 				rv = null;
 			}
-			if( rv != null ) {
-				//pass
-			} else {
-				//				source.hideDropProxyIfNecessary();
-				dragStep.cancelTransaction( NullTrigger.createUserInstance() );
+			if ( rv == null ) {
+				dragStep.cancelActivity();
 			}
 			return rv;
 		}

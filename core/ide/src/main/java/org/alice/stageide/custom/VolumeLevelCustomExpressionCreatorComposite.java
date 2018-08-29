@@ -47,7 +47,6 @@ import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 
@@ -102,7 +101,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends CustomExpressio
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

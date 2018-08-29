@@ -45,7 +45,6 @@ package org.lgna.croquet.simple;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.awt.event.WindowEvent;
@@ -70,9 +69,8 @@ public class SimpleApplication extends Application<DocumentFrame> {
 	}
 
 	@Override
-	public CompletionStep<?> handleQuit( Trigger trigger ) {
+	public void handleQuit( Trigger trigger ) {
 		System.exit( 0 );
-		return null;
 	}
 
 	@Override

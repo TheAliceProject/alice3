@@ -48,8 +48,8 @@ import edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.TransactionNode;
+import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.tree.TreePath;
 import java.util.List;
@@ -59,62 +59,38 @@ import java.util.List;
  */
 public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object> {
 
-	private TransactionHistory root;
+	private UserActivity root;
 
-	public TransactionHistoryTreeModel( TransactionHistory root ) {
+	TransactionHistoryTreeModel( UserActivity root ) {
 		this.root = root;
 	}
 
 	@Override
-	public TransactionHistory getRoot() {
+	public UserActivity getRoot() {
 		return this.root;
 	}
 
 	@Override
 	public boolean isLeaf( Object node ) {
-		return node instanceof PrepStep<?>;
+		return node instanceof Step;
 	}
 
 	@Override
 	public int getChildCount( Object parent ) {
-		if( parent instanceof TransactionHistory ) {
-			TransactionHistory transactionHistory = (TransactionHistory)parent;
-			return transactionHistory.getTransactionCount();
-		} else if( parent instanceof Transaction ) {
-			Transaction transaction = (Transaction)parent;
-			return transaction.getChildStepCount();
-		} else if( parent instanceof CompletionStep<?> ) {
-			CompletionStep<?> completionStep = (CompletionStep<?>)parent;
-			//return completionStep.getTransactionHistory() != null ? 1 : 0;
-			TransactionHistory transactionHistory = completionStep.getTransactionHistory();
-			if( transactionHistory != null ) {
-				return transactionHistory.getTransactionCount();
-			} else {
-				return 0;
-			}
-		} else {
-			return 0;
+		if( parent instanceof UserActivity ) {
+			UserActivity activity = (UserActivity) parent;
+			return activity.getChildStepCount();
 		}
+		return 0;
 	}
 
 	@Override
 	public Object getChild( Object parent, int index ) {
-		if( parent instanceof TransactionHistory ) {
-			TransactionHistory transactionHistory = (TransactionHistory)parent;
-			return transactionHistory.getTransactionAt( index );
-		} else if( parent instanceof Transaction ) {
-			Transaction transaction = (Transaction)parent;
-			return transaction.getChildStepAt( index );
+		if( parent instanceof UserActivity ) {
+			UserActivity activity = (UserActivity)parent;
+			return activity.getChildAt( index );
 		} else if( parent instanceof CompletionStep<?> ) {
-			CompletionStep<?> completionStep = (CompletionStep<?>)parent;
-			TransactionHistory transactionHistory = completionStep.getTransactionHistory();
-			if( transactionHistory != null ) {
-				return transactionHistory.getTransactionAt( index );
-			} else {
-				return null;
-			}
-			//			assert index == 0;
-			//			return completionStep.getTransactionHistory();
+			return null;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -122,57 +98,29 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 
 	@Override
 	public int getIndexOfChild( Object parent, Object child ) {
-		if( parent instanceof TransactionHistory ) {
-			TransactionHistory transactionHistory = (TransactionHistory)parent;
-			if( child instanceof Transaction ) {
-				return transactionHistory.getIndexOfTransaction( (Transaction)child );
-			} else {
-				return -1;
-			}
-		} else if( parent instanceof Transaction ) {
-			Transaction transaction = (Transaction)parent;
+		if( parent instanceof UserActivity ) {
+			UserActivity transaction = (UserActivity)parent;
 			if( child instanceof PrepStep<?> ) {
 				return transaction.getIndexOfPrepStep( (PrepStep<?>)child );
 			} else {
 				return -1;
 			}
-		} else if( parent instanceof CompletionStep<?> ) {
-			CompletionStep<?> completionStep = (CompletionStep<?>)parent;
-			TransactionHistory transactionHistory = completionStep.getTransactionHistory();
-			return transactionHistory.getIndexOfTransaction( (Transaction)child );
-			//			assert child == completionStep.getTransactionHistory();
-			//			return 0;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
 	}
 
-	private List<Object> updatePath( List<Object> rv, Object node ) {
-		Object parent;
-		if( node instanceof Transaction ) {
-			parent = ( (Transaction)node ).getOwner();
-			if( parent instanceof TransactionHistory ) {
-				TransactionHistory transactionHistory = (TransactionHistory)parent;
-				if( transactionHistory.getOwner() != null ) {
-					parent = transactionHistory;
-				}
-			}
-		} else if( node instanceof Step ) {
-			parent = ( (Step)node ).getOwner();
-		} else {
-			parent = null;
+	private void updatePath( List<Object> path, TransactionNode node ) {
+		if( node != null ) {
+			updatePath( path, node.getOwner() );
+			path.add( node );
 		}
-		if( parent != null ) {
-			updatePath( rv, parent );
-		}
-		rv.add( node );
-		return rv;
 	}
 
 	@Override
 	public TreePath getTreePath( Object node ) {
 		List<Object> list = Lists.newLinkedList();
-		updatePath( list, node );
+		updatePath( list, (TransactionNode) node );
 		return new TreePath( list.toArray() );
 	}
 }

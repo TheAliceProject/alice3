@@ -56,7 +56,6 @@ import org.alice.stageide.personresource.edits.SetPersonResourceEdit;
 import org.alice.stageide.personresource.views.IngredientsView;
 import org.alice.stageide.personresource.views.OutfitTabView;
 import org.alice.stageide.personresource.views.PersonViewer;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
@@ -69,7 +68,7 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.Color;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -120,8 +119,8 @@ import java.util.UUID;
 public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 	private final Operation randomize = this.createActionOperation( "randomize", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
-			return createRandomEdit( step );
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
+			return createRandomEdit( userActivity );
 		}
 	} );
 
@@ -408,7 +407,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 		return this.faceTab;
 	}
 
-	private Edit createRandomEdit( CompletionStep<?> step ) {
+	private Edit createRandomEdit( UserActivity userActivity ) {
 		LifeStage lifeStage;
 		if( this.lifeStageState.isEnabled() ) {
 			lifeStage = null;
@@ -416,7 +415,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 			lifeStage = this.lifeStageState.getValue();
 		}
 		PersonResource nextPersonResource = RandomPersonUtilities.createRandomResource( lifeStage );
-		return new SetPersonResourceEdit( step, nextPersonResource );
+		return new SetPersonResourceEdit( userActivity, nextPersonResource );
 	}
 
 	private void addListeners() {

@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.code.SwapParametersOperation;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 import org.lgna.project.ast.MethodInvocation;
@@ -68,8 +68,8 @@ public class SwapParametersEdit extends AbstractEdit<SwapParametersOperation> {
 	private final UserMethod method;
 	private final int aIndex;
 
-	public SwapParametersEdit( CompletionStep<SwapParametersOperation> completionStep, UserCode code, int aIndex ) {
-		super( completionStep );
+	public SwapParametersEdit( UserActivity userActivity, UserCode code, int aIndex ) {
+		super( userActivity );
 		//todo: handle constructors
 		this.method = (UserMethod)code;
 		this.aIndex = aIndex;

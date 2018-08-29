@@ -64,13 +64,4 @@ public class ActionEventTrigger extends EventObjectTrigger<ActionEvent> {
 	private ActionEventTrigger( ViewController<?, ?> viewController, ActionEvent actionEvent ) {
 		super( viewController, actionEvent );
 	}
-
-	public ActionEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
-	}
 }

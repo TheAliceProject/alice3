@@ -45,7 +45,7 @@ package org.alice.ide.testing.framesize.croquet;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.KeyStroke;
 import java.awt.Dimension;
@@ -79,7 +79,7 @@ public class CycleFrameSizeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension maximumWindowSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
 		int heightDelta = screenSize.height - maximumWindowSize.height;
@@ -92,6 +92,6 @@ public class CycleFrameSizeOperation extends ActionOperation {
 		index++;
 
 		Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );
-		step.finish();
+		activity.finish();
 	}
 }

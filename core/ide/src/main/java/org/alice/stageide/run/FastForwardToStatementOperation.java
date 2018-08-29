@@ -45,7 +45,7 @@ package org.alice.stageide.run;
 import org.alice.ide.IDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.virtualmachine.events.CountLoopIterationEvent;
@@ -69,7 +69,7 @@ public class FastForwardToStatementOperation extends Operation {
 	}
 
 	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
+	protected void perform( UserActivity transaction, Trigger trigger ) {
 		RunComposite.getInstance().setFastForwardToStatementOperation( this );
 		RunComposite.getInstance().getLaunchOperation().fire();
 	}

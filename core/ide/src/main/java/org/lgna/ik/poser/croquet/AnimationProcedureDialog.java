@@ -46,7 +46,6 @@ import org.alice.ide.IDE;
 import org.alice.ide.name.validators.MethodNameValidator;
 import org.lgna.croquet.AbstractSeverityStatusComposite;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Panel;
 
@@ -64,7 +63,7 @@ public abstract class AnimationProcedureDialog extends SimpleOperationInputDialo
 	}
 
 	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		if( animatorComposite.getControlComposite().isEmpty() ) {
 			return empty;
 		}

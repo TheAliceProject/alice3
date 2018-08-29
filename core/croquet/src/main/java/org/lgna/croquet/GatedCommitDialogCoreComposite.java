@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.event.TransactionEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite;
@@ -55,13 +54,11 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends GatedCommitDialogContentComposite<?>> extends AdornedDialogCoreComposite<V, DCC> {
-	private CompletionStep<?> rootCompletionStep;
-
 	public GatedCommitDialogCoreComposite( UUID migrationId ) {
 		super( migrationId );
 	}
 
-	protected abstract Status getStatusPreRejectorCheck( CompletionStep<?> step );
+	protected abstract Status getStatusPreRejectorCheck();
 
 	private final Listener listener = new Listener() {
 		@Override
@@ -77,7 +74,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 
 	protected void refreshStatus() {
-		AbstractSeverityStatusComposite.Status status = getStatusPreRejectorCheck( rootCompletionStep );
+		AbstractSeverityStatusComposite.Status status = getStatusPreRejectorCheck();
 		boolean isGoodToGo = status == null || status.isGoodToGo();
 
 		getDialogContentComposite().getView().getStatusLabel().setStatus( status );
@@ -89,20 +86,19 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
-		rootCompletionStep = completionStep;
-		completionStep.addListener( this.listener );
+	protected void handlePreShowDialog( Dialog dialog ) {
+		openingActivity.addListener( this.listener );
 		this.refreshStatus();
-		super.handlePreShowDialog( dialog, completionStep );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		completionStep.removeListener( this.listener );
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		openingActivity.removeListener( this.listener );
+		super.handlePostHideDialog();
 	}
 
-	protected void cancel( CompletionStep<?> completionStep ) {
-		completionStep.cancel();
+	protected void cancel() {
+		openingActivity.cancel();
 	}
 }

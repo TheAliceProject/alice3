@@ -58,7 +58,6 @@ import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.ValueCreator;
 import org.lgna.croquet.ValueCreatorInputDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Dialog;
@@ -105,42 +104,42 @@ public final class PersonResourceComposite extends ValueCreatorInputDialogCoreCo
 	private final ValueCreator<PersonResource> randomElderValueCreator =
 			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializeRandom( LifeStage.ELDER );
 				}
 			}, "randomElder" );
 	private final ValueCreator<PersonResource> randomAdultValueCreator =
 			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializeRandom( LifeStage.ADULT );
 				}
 			}, "randomAdult" );
 	private final ValueCreator<PersonResource> randomTeenValueCreator =
 			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializeRandom( LifeStage.TEEN );
 				}
 			}, "randomTeen" );
 	private final ValueCreator<PersonResource> randomChildValueCreator =
 			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializeRandom( LifeStage.CHILD );
 				}
 			}, "randomChild" );
 	private final ValueCreator<PersonResource> randomToddlerValueCreator =
 			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializeRandom( LifeStage.TODDLER );
 				}
 			}, "randomToddler" );
 	private final ValueCreator<PersonResource> previousResourceExpressionValueCreator =
 			new OwnedByCompositeValueCreator<PersonResource>( this, new OwnedByCompositeValueCreator.Initializer() {
 				@Override
-				public void initialize( CompletionStep<?> completionStep ) {
+				public void initialize() {
 					PersonResourceComposite.this.initializePreviousExpression();
 				}
 			}, "edit" );
@@ -285,17 +284,17 @@ public final class PersonResourceComposite extends ValueCreatorInputDialogCoreCo
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getDocumentFrame().disableRendering( ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		}
-		super.handlePreShowDialog( dialog, completionStep );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handleFinally( CompletionStep<?> step, Dialog dialog ) {
-		super.handleFinally( step, dialog );
+	protected void handleFinally( Dialog dialog ) {
+		super.handleFinally( dialog );
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getDocumentFrame().enableRendering();
@@ -303,7 +302,7 @@ public final class PersonResourceComposite extends ValueCreatorInputDialogCoreCo
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

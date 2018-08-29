@@ -42,10 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.lgna.croquet.views.ViewController;
 
-import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 
 /**
@@ -58,14 +56,5 @@ public class PropertyChangeEventTrigger extends EventObjectTrigger<PropertyChang
 
 	private PropertyChangeEventTrigger( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
 		super( viewController, propertyChangeEvent );
-	}
-
-	public PropertyChangeEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
 	}
 }

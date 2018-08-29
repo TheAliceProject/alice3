@@ -46,7 +46,6 @@ import org.alice.ide.issue.croquet.views.LgnaExceptionView;
 import org.lgna.common.LgnaRuntimeException;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -77,7 +76,7 @@ public class LgnaExceptionComposite extends SimpleOperationUnadornedDialogCoreCo
 	}
 
 	@Override
-	protected String getDialogTitle( CompletionStep<?> step ) {
+	protected String getDialogTitle() {
 		return this.lgnaRuntimeException.getClass().getSimpleName();
 	}
 }

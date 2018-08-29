@@ -43,11 +43,7 @@
 
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -90,28 +86,19 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.group;
 	}
 
-	protected abstract void perform( Transaction transaction, Trigger trigger );
-
-	protected CompletionStep<?> createTransactionAndInvokePerform( Trigger trigger ) {
-		TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-		Transaction transaction = history.acquireActiveTransaction();
-		this.perform( transaction, trigger );
-		return transaction.getCompletionStep();
-	}
+	protected abstract void perform( UserActivity transaction, Trigger trigger );
 
 	@Override
-	public CompletionStep<?> fire( Trigger trigger ) {
+	public void fire( Trigger trigger ) {
 		if( this.isEnabled() ) {
 			this.initializeIfNecessary();
-			return this.createTransactionAndInvokePerform( trigger );
-		} else {
-			return null;
+			this.perform( trigger.getUserActivity(), trigger );
 		}
 	}
 
 	@Deprecated
-	public final CompletionStep<?> fire() {
-		return fire( NullTrigger.createUserInstance() );
+	public final void fire() {
+		fire( NullTrigger.createUserInstance() );
 	}
 
 	public synchronized PlainStringValue getSidekickLabel() {

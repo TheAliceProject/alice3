@@ -52,8 +52,8 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
@@ -81,19 +81,19 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return ImportTypeFileDialogValueCreator.getInstance();
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				File file = (File)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				File file = (File)prevSubStep.getProducedValue();
 				try {
 					TypeResourcesPair typeResourcesPair = IoUtilities.readType( file );
 					NamedUserType importedType = typeResourcesPair.getType();
@@ -132,10 +132,5 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
 	}
 }

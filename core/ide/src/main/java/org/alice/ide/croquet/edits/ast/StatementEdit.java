@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 /**
@@ -56,8 +56,8 @@ import org.lgna.project.ast.Statement;
 public abstract class StatementEdit<M extends CompletionModel> extends AbstractEdit<M> {
 	private Statement statement;
 
-	public StatementEdit( CompletionStep<M> completionStep, Statement statement ) {
-		super( completionStep );
+	public StatementEdit( UserActivity userActivity, Statement statement ) {
+		super( userActivity );
 		this.statement = statement;
 	}
 

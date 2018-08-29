@@ -50,7 +50,7 @@ import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.croquet.edits.ast.StatementEdit;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.Statement;
@@ -62,8 +62,8 @@ public class DeleteStatementEdit extends StatementEdit<DeleteStatementOperation>
 	private final BlockStatement blockStatement;
 	private final int index;
 
-	public DeleteStatementEdit( CompletionStep completionStep, Statement statement ) {
-		super( completionStep, statement );
+	public DeleteStatementEdit( UserActivity userActivity, Statement statement ) {
+		super( userActivity, statement );
 		this.blockStatement = (BlockStatement)statement.getParent();
 		assert this.blockStatement != null : statement;
 		this.index = this.blockStatement.statements.indexOf( statement );

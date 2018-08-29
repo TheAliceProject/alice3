@@ -55,10 +55,10 @@ import org.lgna.croquet.Model;
 import org.lgna.croquet.OperationOwningComposite;
 import org.lgna.croquet.OwnedByCompositeOperation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
 import edu.wustl.lookingglass.media.FFmpegProcess;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Matt May
@@ -110,29 +110,28 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		int size = subSteps.size();
 		if( size == 0 ) {
 			return true;
-		} else if( size == 1 ) {
-			Step<?> prevStep = subSteps.get( 0 );
-			Model prevModel = prevStep.getModel();
-			if( prevModel instanceof OwnedByCompositeOperation ) {
-				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation)prevModel;
+		}
+		if( size == 1 ) {
+			UserActivity prevStep = subSteps.get( 0 );
+			Model prevModel = prevStep.getCompletionModel();
+			if ( prevModel instanceof OwnedByCompositeOperation ) {
+				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation) prevModel;
 				OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
-				if( composite instanceof ExecutionPermissionFailedDialogComposite ) {
-					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite)composite;
+				if ( composite instanceof ExecutionPermissionFailedDialogComposite ) {
+					ExecutionPermissionFailedDialogComposite executionComposite = (ExecutionPermissionFailedDialogComposite) composite;
 					return executionComposite.getIsFixed();
 				}
 			}
-			return false;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
 		if( subSteps.size() == 0 ) {
 			if( fileKnownToBeNotExecuable != null ) {
@@ -147,7 +146,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
 	}
 
 	private final ProjectDocumentFrame projectDocumentFrame;

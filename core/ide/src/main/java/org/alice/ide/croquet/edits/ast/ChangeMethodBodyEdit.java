@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.edits.ast;
 
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.UserMethod;
 
@@ -56,8 +56,8 @@ public class ChangeMethodBodyEdit extends AbstractEdit {
 	private final BlockStatement prevBody;
 	private final BlockStatement newBody;
 
-	public ChangeMethodBodyEdit( CompletionStep completionStep, UserMethod method, BlockStatement body ) {
-		super( completionStep );
+	public ChangeMethodBodyEdit( UserActivity userActivity, UserMethod method, BlockStatement body ) {
+		super( userActivity );
 		this.method = method;
 		this.prevBody = method.body.getValue();
 		this.newBody = body;

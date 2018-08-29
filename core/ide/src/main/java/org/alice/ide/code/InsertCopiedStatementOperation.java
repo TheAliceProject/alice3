@@ -45,7 +45,7 @@ package org.alice.ide.code;
 import org.alice.ide.code.edits.InsertCopiedStatementEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Statement;
 
@@ -63,9 +63,9 @@ public class InsertCopiedStatementOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep step ) {
-		InsertCopiedStatementEdit edit = new InsertCopiedStatementEdit( step, this.blockStatement, this.index, this.statement );
-		step.commitAndInvokeDo( edit );
+	protected void perform( UserActivity activity ) {
+		InsertCopiedStatementEdit edit = new InsertCopiedStatementEdit( activity, this.blockStatement, this.index, this.statement );
+		activity.commitAndInvokeDo( edit );
 	}
 
 	private final BlockStatement blockStatement;

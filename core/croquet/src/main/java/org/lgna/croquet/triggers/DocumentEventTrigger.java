@@ -63,11 +63,6 @@ public class DocumentEventTrigger extends Trigger {
 		this.documentEvent = documentEvent;
 	}
 
-	public DocumentEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.documentEvent = null;
-	}
-
 	@Override
 	public ViewController<?, ?> getViewController() {
 		return null;

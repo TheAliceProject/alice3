@@ -51,14 +51,14 @@ import org.lgna.croquet.triggers.ChangeEventTrigger;
  * @author Dennis Cosgrove
  */
 public class MenuItemSelectStep extends PrepStep<MenuItemPrepModel> {
-	public static MenuItemSelectStep createAndAddToTransaction( Transaction parent, MenuBarComposite menuBarComposite, MenuItemPrepModel[] menuItemPrepModels, ChangeEventTrigger trigger ) {
+	public static MenuItemSelectStep createAndAddToTransaction( UserActivity parent, MenuBarComposite menuBarComposite, MenuItemPrepModel[] menuItemPrepModels, ChangeEventTrigger trigger ) {
 		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
 	}
 
 	private final MenuBarComposite menuBarComposite;
 	private final MenuItemPrepModel[] menuItemPrepModels;
 
-	private MenuItemSelectStep( Transaction parent, MenuBarComposite menuBarComposite, MenuItemPrepModel[] menuItemPrepModels, ChangeEventTrigger trigger ) {
+	private MenuItemSelectStep( UserActivity parent, MenuBarComposite menuBarComposite, MenuItemPrepModel[] menuItemPrepModels, ChangeEventTrigger trigger ) {
 		super( parent, menuItemPrepModels[ menuItemPrepModels.length - 1 ], trigger );
 		this.menuBarComposite = menuBarComposite;
 		this.menuItemPrepModels = menuItemPrepModels;

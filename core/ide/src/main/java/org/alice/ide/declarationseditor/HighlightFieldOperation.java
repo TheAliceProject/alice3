@@ -47,8 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.UserField;
 
@@ -84,11 +83,11 @@ public class HighlightFieldOperation extends Operation {
 	}
 
 	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
+	protected void perform( UserActivity userActivity, Trigger trigger ) {
+		userActivity.setCompletionModel( this, trigger );
 		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
 		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField( this.field, null );
-		completionStep.finish();
+		userActivity.finish();
 	}
 }

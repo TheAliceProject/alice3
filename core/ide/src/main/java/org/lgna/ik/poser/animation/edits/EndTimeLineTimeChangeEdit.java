@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser.animation.edits;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.TimeLine;
 
 /**
@@ -53,8 +53,8 @@ public class EndTimeLineTimeChangeEdit extends TimeLineEdit {
 	private final double newTime;
 	private final double prevTime;
 
-	public EndTimeLineTimeChangeEdit( CompletionStep<?> completionStep, TimeLine timeLine, double newTime, double previousTime ) {
-		super( completionStep, timeLine );
+	public EndTimeLineTimeChangeEdit( UserActivity userActivity, TimeLine timeLine, double newTime, double previousTime ) {
+		super( userActivity, timeLine );
 		this.newTime = newTime;
 		this.prevTime = previousTime;
 	}

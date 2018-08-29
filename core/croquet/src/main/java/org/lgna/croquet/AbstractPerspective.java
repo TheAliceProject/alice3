@@ -43,7 +43,7 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -57,9 +57,9 @@ public abstract class AbstractPerspective extends AbstractElement implements Per
 		}
 
 		@Override
-		protected void perform( CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			PerspectiveApplication.getActiveInstance().setPerspective( AbstractPerspective.this );
-			step.finish();
+			activity.finish();
 		}
 	}
 

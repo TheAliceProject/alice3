@@ -42,16 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.CompositeView;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface OperationOwningComposite<V extends CompositeView<?, ?>> extends Composite<V> {
-	public boolean isSubTransactionHistoryRequired();
 
-	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep );
+	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity );
 
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text );
 }

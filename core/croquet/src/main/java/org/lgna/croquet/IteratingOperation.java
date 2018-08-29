@@ -44,11 +44,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.triggers.IterationTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Iterator;
@@ -67,42 +63,39 @@ public abstract class IteratingOperation extends Operation {
 		return null;
 	}
 
-	protected abstract boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
+	protected abstract boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData );
 
-	protected abstract Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
+	protected abstract Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData );
 
-	protected abstract void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps );
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ){
+		activity.finish();
+	}
 
-	protected void iterateOverSubModels( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new TransactionHistory() );
+	protected void iterateOverSubModels( UserActivity activity, Trigger trigger ) {
+		activity.setCompletionModel( this, trigger );
 		try {
-			List<Step<?>> subSteps = Lists.newLinkedList();
+			List<UserActivity> subSteps = Lists.newLinkedList();
 			Iterator<Model> iteratingData = this.createIteratingData();
-			while( this.hasNext( step, subSteps, iteratingData ) ) {
-				Model model = this.getNext( step, subSteps, iteratingData );
+			while( this.hasNext( subSteps, iteratingData ) ) {
+				Model model = this.getNext( subSteps, iteratingData );
 				if( model != null ) {
-					Step<?> subStep = model.fire( IterationTrigger.createUserInstance() );
-					if( ( subStep != null ) && subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
-						subSteps.add( subStep );
+					Trigger childTrigger = trigger.createChildTrigger();
+					model.fire( childTrigger );
+					if(childTrigger.getUserActivity().isSuccessfullyCompleted()) {
+						subSteps.add( childTrigger.getUserActivity() );
 					} else {
-						if ( subStep == null ) {
-							Logger.severe( "subStep is null", this );
-						} else {
-							if( subStep.getOwnerTransaction().isPending() ) {
-								Logger.severe( "subStep is pending", this );
-							}
-						}
-						step.cancel();
+						Logger.severe( "subStep is pending", this );
+						activity.cancel();
 						return;
 					}
 				} else {
-					step.cancel();
+					activity.cancel();
 					return;
 				}
 			}
-			this.handleSuccessfulCompletionOfSubModels( step, subSteps );
+			this.handleSuccessfulCompletionOfSubModels( activity, subSteps );
 		} catch( CancelException ce ) {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

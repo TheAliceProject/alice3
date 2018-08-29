@@ -49,7 +49,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.capture.views.ImageCaptureRectangleStencilView;
 import org.alice.ide.capture.views.ImageCaptureView;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
@@ -59,7 +58,7 @@ import org.lgna.croquet.Group;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.views.AbstractWindow;
 
@@ -96,7 +95,7 @@ public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingSt
 
 	private final Operation captureEntireWindowOperation = this.createActionOperation( "captureEntireWindow", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			Application app = Application.getActiveInstance();
 			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
 			Image image = ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
@@ -111,7 +110,7 @@ public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingSt
 
 	private final Operation captureEntireContentPaneOperation = this.createActionOperation( "captureEntireContentPane", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			Application app = Application.getActiveInstance();
 			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
 			Image image = ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
@@ -125,7 +124,7 @@ public class ImageCaptureComposite extends FrameCompositeWithInternalIsShowingSt
 
 	private final Operation captureRectangleOperation = this.createActionOperation( "captureRectangle", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			Application app = Application.getActiveInstance();
 			AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
 			ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );

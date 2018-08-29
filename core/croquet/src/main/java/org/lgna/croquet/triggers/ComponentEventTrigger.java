@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import java.awt.Component;
@@ -53,12 +53,12 @@ import java.awt.event.ComponentEvent;
  * @author Dennis Cosgrove
  */
 public abstract class ComponentEventTrigger<E extends ComponentEvent> extends EventObjectTrigger<E> {
-	public ComponentEventTrigger( ViewController<?, ?> viewController, E event ) {
-		super( viewController, event );
+	ComponentEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, E event ) {
+		super( userActivity, viewController, event );
 	}
 
-	public ComponentEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	ComponentEventTrigger( ViewController<?, ?> viewController, E event ) {
+		super( viewController, event );
 	}
 
 	@Override

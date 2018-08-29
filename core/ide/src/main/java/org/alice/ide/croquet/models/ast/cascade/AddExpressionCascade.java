@@ -45,10 +45,9 @@ package org.alice.ide.croquet.models.ast.cascade;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.edits.ast.AddExpressionEdit;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.DeclarationProperty;
@@ -85,8 +84,8 @@ public class AddExpressionCascade extends ExpressionsCascade {
 	}
 
 	@Override
-	protected AddExpressionEdit createEdit( CompletionStep<Cascade<Expression>> step, Expression[] values ) {
-		return new AddExpressionEdit( step, this.expressionListProperty, values[ 0 ] );
+	protected AddExpressionEdit createEdit( UserActivity userActivity, Expression[] values ) {
+		return new AddExpressionEdit( userActivity, this.expressionListProperty, values[ 0 ] );
 	}
 
 	//	public org.lgna.project.ast.ExpressionListProperty getExpressionListProperty() {

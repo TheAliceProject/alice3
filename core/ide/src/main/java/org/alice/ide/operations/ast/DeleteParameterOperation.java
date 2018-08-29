@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.edits.ast.DeleteParameterEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NodeListProperty;
@@ -71,7 +71,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		final UserMethod method = ClassUtilities.getInstance( this.getCode(), UserMethod.class );
 		final int index = method.requiredParameters.indexOf( this.getParameter() );
 		if( ( method != null ) && ( index >= 0 ) ) {
@@ -106,7 +106,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
 				new OkDialog.Builder( sb.toString() )
 						.buildAndShow();
-				step.cancel();
+				activity.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {
 					String codeText;
@@ -139,18 +139,18 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					if( result == YesNoCancelResult.YES ) {
 						//pass
 					} else {
-						step.cancel();
+						activity.cancel();
 					}
 				}
 			}
-			if( step.isCanceled() ) {
+			if( activity.isCanceled() ) {
 				//pass
 			} else {
-				step.commitAndInvokeDo( new DeleteParameterEdit( step, this.getCode(), this.getParameter() ) );
+				activity.commitAndInvokeDo( new DeleteParameterEdit( activity, this.getCode(), this.getParameter() ) );
 			}
 		} else {
 			Logger.todo( "cancel" );
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

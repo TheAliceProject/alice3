@@ -45,9 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.io.File;
@@ -68,20 +66,19 @@ public abstract class UriCreator<T> extends ValueCreator<T> {
 	protected abstract T internalGetValueFrom( File file );
 
 	@Override
-	protected T createValue( Transaction transaction, Trigger trigger ) {
+	protected T createValue( UserActivity userActivity, Trigger trigger ) {
 		Application application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
 		File directory = this.getInitialDirectory();
 		String extension = this.getExtension();
-		TransactionHistory subtTransactionHistory = new TransactionHistory();
-		CompletionStep<?> step = CompletionStep.createAndAddToTransaction( transaction, this, trigger, subtTransactionHistory );
+		userActivity.setCompletionModel( this, trigger );
 		File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
 			T rv = this.internalGetValueFrom( file );
-			step.finish();
+			userActivity.finish();
 			return rv;
 		} else {
-			step.cancel();
+			userActivity.cancel();
 			//throw new org.lgna.croquet.CancelException();
 			return null;
 		}

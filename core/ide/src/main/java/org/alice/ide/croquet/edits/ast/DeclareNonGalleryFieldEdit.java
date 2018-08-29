@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.croquet.codecs.NodeCodec;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 
@@ -60,8 +60,8 @@ public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
 
 	private final UserField field;
 
-	public DeclareNonGalleryFieldEdit( CompletionStep step, UserType<?> declaringType, UserField field ) {
-		super( step, declaringType, field );
+	public DeclareNonGalleryFieldEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
+		super( userActivity, declaringType, field );
 		this.field = field;
 	}
 

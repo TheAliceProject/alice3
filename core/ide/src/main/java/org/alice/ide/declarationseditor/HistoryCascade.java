@@ -43,11 +43,10 @@
 package org.alice.ide.declarationseditor;
 
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeWithInternalBlank;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public abstract class HistoryCascade extends CascadeWithInternalBlank<Declaratio
 	}
 
 	@Override
-	protected final Edit createEdit( CompletionStep<Cascade<DeclarationComposite>> completionStep, DeclarationComposite[] values ) {
+	protected final Edit createEdit( UserActivity userActivity, DeclarationComposite[] values ) {
 		DeclarationCompositeHistory.getInstance().setDeclarationComposite( values[ 0 ] );
 		return null;
 	}

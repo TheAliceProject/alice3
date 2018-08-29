@@ -43,7 +43,7 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp;
 import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.CompositeView;
@@ -93,12 +93,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 	}
 
 	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return false;
-	}
-
-	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> step ) {
+	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
 		final List<Frame> framesToDisable = Lists.newLinkedList();
 
 		Application application = Application.getActiveInstance();
@@ -129,7 +124,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 			public void windowClosed( WindowEvent e ) {
 				frame.removeWindowListener( this );
 				try {
-					step.finish();
+					userActivity.finish();
 					handlePostHideWindow( frame );
 				} finally {
 					handleFinally();
@@ -167,14 +162,14 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 		this.handlePreShowWindow( frame );
 		frame.setVisible( true );
 
-		//			dialogOwner.handlePreShowDialog( step );
+		//			dialogOwner.handlePreShowDialog( userActivity );
 		//			//application.pushWindow( dialog );
 		//			dialog.setVisible( true );
 		//
 		//			if( isModal ) {
-		//				dialogOwner.handlePostHideDialog( step );
+		//				dialogOwner.handlePostHideDialog( userActivity );
 		//				dialog.removeWindowListener( dialogWindowListener );
-		//				dialogOwner.releaseView( step, view );
+		//				dialogOwner.releaseView( userActivity, view );
 		//				dialog.getAwtComponent().dispose();
 		//			} else {
 		//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
@@ -182,7 +177,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 		//		} finally {
 		//			if( isModal ) {
 		//				//application.popWindow();
-		//				dialogOwner.handleFinally( step, dialog );
+		//				dialogOwner.handleFinally( userActivity, dialog );
 		//			} else {
 		//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
 		//			}

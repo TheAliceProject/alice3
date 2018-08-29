@@ -47,9 +47,7 @@ import org.alice.ide.ProjectApplication;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Model;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.List;
 import java.util.UUID;
@@ -58,29 +56,25 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UriPotentialClearanceIteratingOperation extends PotentialClearanceIteratingOperation {
-	public UriPotentialClearanceIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
+	UriPotentialClearanceIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
 		super( ProjectApplication.URI_GROUP, migrationId, projectDocumentFrame, postClearanceModel );
 	}
 
-	protected abstract UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps );
+	protected abstract UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps );
 
 	@Override
-	protected final void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		UriProjectLoader uriProjectPair = this.getUriProjectLoader( step, subSteps );
+	protected final void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
+		UriProjectLoader uriProjectPair = this.getUriProjectLoader( subSteps );
 		if( uriProjectPair != null ) {
 			ProjectApplication.getActiveInstance().loadProjectFrom( uriProjectPair );
-			step.finish();
-		} else {
-			step.cancel();
 		}
 		if( subSteps.size() > 0 ) {
-			UriProjectLoader value = (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( ValueCreator.VALUE_KEY ) );
-
+			UriProjectLoader value = (UriProjectLoader) subSteps.get( subSteps.size() - 1 ).getProducedValue();
 			Logger.outln( value );
+		}
 
-			step.finish();
-		} else {
-			step.cancel();
+		if ( uriProjectPair == null ) {
+			activity.cancel();
 		}
 	}
 

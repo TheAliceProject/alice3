@@ -52,7 +52,7 @@ import org.lgna.croquet.CardOwnerComposite;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.TabComposite;
 import org.lgna.croquet.TabState;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.Action;
@@ -457,8 +457,8 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 		}
 
 		@Override
-		protected void perform( CompletionStep<?> step ) {
-			Trigger trigger = step.getTrigger();
+		protected void perform( UserActivity activity ) {
+			Trigger trigger = activity.getCompletionStep().getTrigger();
 			JPopupMenu popupMenu = new JPopupMenu();
 			ButtonGroup buttonGroup = new ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {

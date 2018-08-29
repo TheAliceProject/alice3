@@ -42,8 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
@@ -56,11 +55,11 @@ public abstract class ActionOperation extends Operation {
 		super( group, id );
 	}
 
-	protected abstract void perform( CompletionStep<?> step );
+	protected abstract void perform( UserActivity activity );
 
 	@Override
-	protected final void perform( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		this.perform( step );
+	protected final void perform( UserActivity activity, Trigger trigger ) {
+		activity.setCompletionModel( this, trigger ); // Is this needed here?
+		this.perform( activity );
 	}
 }

@@ -45,13 +45,9 @@ package org.lgna.croquet.imp.cascade;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.CascadeRoot;
 import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.triggers.PopupMenuEventTrigger;
 import org.lgna.croquet.triggers.Trigger;
@@ -98,33 +94,17 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		return rv;
 	}
 
-	public CompletionStep<CM> cancel( TransactionHistory transactionHistory, Trigger trigger, CancelException ce ) {
-		Transaction transaction = transactionHistory.acquireActiveTransaction();
-		CompletionStep<CM> completionStep = this.getElement().createCompletionStep( transaction, trigger );
-		this.getElement().handleCancel( completionStep, trigger, ce );
-		return completionStep;
+	public void cancel( Trigger trigger ) {
+		getElement().createCompletionStep( trigger );
+		this.getElement().handleCancel( trigger );
 	}
 
-	public CompletionStep<CM> complete( Trigger trigger ) {
-		CascadeRoot<T, CM> root = this.getElement();
-		TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-		CompletionStep<CM> completionStep;
+	public void complete( Trigger trigger ) {
 		try {
-			//T[] values = this.createValues( transactionHistory, root.getComponentType() );
-			completionStep = root.handleCompletion( transactionHistory, trigger, this );
+			getElement().handleCompletion( trigger, this );
 		} catch( CancelException ce ) {
-			completionStep = this.cancel( transactionHistory, trigger, ce );
+			cancel( trigger );
 		}
-		//
-		//		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-		//		org.lgna.croquet.history.CompletionStep<CM> completionStep = root.createCompletionStep( transaction, trigger );
-		//		try {
-		//			T[] values = this.createValues( completionStep.getTransactionHistory(), root.getComponentType() );
-		//			root.handleCompletion( completionStep, values );
-		//		} catch( CancelException ce ) {
-		//			this.cancel( completionStep, trigger, ce );
-		//		}
-		return completionStep;
 	}
 
 	protected void handleActionPerformed( ActionEvent e ) {
@@ -145,9 +125,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
 			@Override
 			public void popupMenuCanceled( PopupMenuEvent e ) {
-				//todo
-				TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				RtRoot.this.cancel( transactionHistory, PopupMenuEventTrigger.createUserInstance( e ), null );
+				RtRoot.this.cancel( PopupMenuEventTrigger.createUserInstance( e ) );
 			}
 		};
 	}

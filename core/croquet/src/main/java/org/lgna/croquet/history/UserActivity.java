@@ -45,26 +45,63 @@ package org.lgna.croquet.history;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.DropSite;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.event.AddStepEvent;
-import org.lgna.croquet.history.event.TransactionEvent;
+import org.lgna.croquet.history.event.AddEvent;
+import org.lgna.croquet.history.event.CancelEvent;
+import org.lgna.croquet.history.event.EditCommittedEvent;
+import org.lgna.croquet.history.event.FinishedEvent;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.List;
 import java.util.ListIterator;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Transaction extends TransactionNode<TransactionHistory> {
+public class UserActivity extends TransactionNode<UserActivity> {
+
+	enum ActivityStatus {
+		PENDING,
+		CANCELED,
+		FINISHED
+	}
 
 	private final List<PrepStep<?>> prepSteps;
+	private final List<UserActivity> childActivities;
 	private CompletionStep<?> completionStep;
 
-	public Transaction( TransactionHistory parent ) {
+	private Object producedValue;
+	private ActivityStatus status = ActivityStatus.PENDING;
+
+	public UserActivity() {
+		this(null);
+	}
+
+	private UserActivity( UserActivity parent) {
 		super( parent );
 		this.prepSteps = Lists.newLinkedList();
+		this.childActivities = Lists.newCopyOnWriteArrayList();
 		this.completionStep = null;
+	}
+
+	public UserActivity newChildActivity() {
+		UserActivity child = new UserActivity( this );
+		childActivities.add( child );
+		child.fireChanged( new AddEvent<>( child ) );
+		return child;
+	}
+
+	public List<UserActivity> getChildActivities() {
+		return childActivities;
+	}
+
+	public int getIndexOfTransaction( UserActivity childActivity ) {
+		return getPrepStepCount() + childActivities.indexOf( childActivity );
+	}
+
+	public UserActivity getLatestActivity() {
+			final int n = childActivities.size();
+			return n > 0 && childActivities.get( n - 1 ).isPending()
+					? childActivities.get( n - 1 ).getLatestActivity()
+					: this;
 	}
 
 	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
@@ -75,7 +112,10 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 				return prepStep;
 			}
 		}
-		return getOwner().findAcceptableStep(criterion);
+		return getOwner() == null ? null: getOwner().findAcceptableStep(criterion);
+	}
+	public DropSite findDropSite() {
+		return completionStep == null ? null : completionStep.findDropSite();
 	}
 
 	public void addMenuSelection( MenuSelection menuSelection ) {
@@ -97,32 +137,40 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	}
 
 	public Edit getEdit() {
-		if( this.completionStep != null ) {
-			return this.completionStep.getEdit();
-		} else {
-			return null;
-		}
+		return completionStep != null ? completionStep.getEdit() : null;
 	}
 
 	public int getChildStepCount() {
-		return this.getPrepStepCount() + ( this.completionStep != null ? 1 : 0 );
+		return getPrepStepCount() + childActivities.size() + ( completionStep != null ? 1 : 0 );
 	}
 
-	public Step<?> getChildStepAt( int index ) {
-		if( index == this.getPrepStepCount() ) {
-			return this.getCompletionStep();
+	Step<?> getChildStepAt( int index ) {
+		if( index >= getPrepStepCount() ) {
+			return getCompletionStep();
 		} else {
-			return this.prepSteps.get( index );
+			return prepSteps.get( index );
+		}
+	}
+
+	public TransactionNode<?> getChildAt( int index ) {
+		if( index >= getPrepStepCount() ) {
+			int childIndex = index - getPrepStepCount();
+			if (childIndex >= childActivities.size()) {
+				return completionStep;
+			} else {
+				return childActivities.get( childIndex );
+			}
+		} else {
+			return prepSteps.get( index );
 		}
 	}
 
 	int getIndexOfChildStep( Step<?> step ) {
 		if( step instanceof PrepStep<?> ) {
-			PrepStep<?> prepStep = (PrepStep<?>)step;
-			return this.getIndexOfPrepStep( prepStep );
+			return getIndexOfPrepStep( (PrepStep<?>)step );
 		} else {
-			if( step == this.completionStep ) {
-				return this.prepSteps.size();
+			if( step == completionStep ) {
+				return prepSteps.size();
 			} else {
 				return -1;
 			}
@@ -130,65 +178,99 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 	}
 
 	public int getIndexOfPrepStep( PrepStep<?> prepStep ) {
-		return this.prepSteps.indexOf( prepStep );
+		return prepSteps.indexOf( prepStep );
 	}
 
 	private int getPrepStepCount() {
-		return this.prepSteps.size();
-	}
-
-	private void addStep( Step<?> step ) {
-		assert step != null;
-		TransactionEvent e = new AddStepEvent( step );
-		if( step instanceof PrepStep<?> ) {
-			this.prepSteps.add( (PrepStep<?>)step );
-		} else if( step instanceof CompletionStep<?> ) {
-			this.completionStep = (CompletionStep<?>)step;
-		} else {
-			assert false : step;
-		}
-		step.fireChanged( e );
+		return prepSteps.size();
 	}
 
 	void addPrepStep( PrepStep<?> step ) {
-		this.addStep( step );
+		AddEvent<Step> e = new AddEvent<>( step );
+		prepSteps.add( step );
+		step.fireChanged( e );
 	}
 
 	public CompletionStep<?> getCompletionStep() {
-		return this.completionStep;
+		return completionStep;
 	}
 
-	public <M extends CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, Trigger trigger, TransactionHistory subTransactionHistory ) {
-		return CompletionStep.createAndAddToTransaction( this, model, trigger, subTransactionHistory );
+	private void setCompletionStep( CompletionStep<?> step ) {
+		AddEvent<Step> e = new AddEvent<>( step );
+		completionStep = step;
+		step.fireChanged( e );
 	}
 
-	public <M extends CompletionModel> CompletionStep<M> createAndSetCompletionStep( M model, Trigger trigger ) {
-		return this.createAndSetCompletionStep( model, trigger, null );
+	public void setCompletionModel( CompletionModel model, Trigger trigger ) {
+		setCompletionStep( new CompletionStep<>( this, model, trigger ) );
 	}
 
-	void setCompletionStep( CompletionStep<?> step ) {
-		//assert this.completionStep == null : this.completionStep + " " + step;
-		this.addStep( step );
+	public CompletionModel getCompletionModel() {
+		return completionStep != null ? completionStep.getModel() : null;
 	}
 
 	public boolean isPending() {
-		return completionStep == null || completionStep.isPending();
+		return ActivityStatus.PENDING == status;
 	}
 
 	public boolean isSuccessfullyCompleted() {
-		return completionStep != null && completionStep.isSuccessfullyCompleted();
+		return ActivityStatus.FINISHED == status;
+	}
+
+	public boolean isCanceled() {
+		return ActivityStatus.CANCELED == status;
+	}
+
+	public void commitAndInvokeDo( Edit edit ) {
+		status = ActivityStatus.FINISHED;
+		if( completionStep == null ) {
+			setCompletionStep( new CompletionStep<>( this, null, null ) );
+		}
+		completionStep.setEdit(edit);
+		edit.doOrRedo( true );
+		fireChanged( new EditCommittedEvent( edit ) );
+	}
+
+	public void finish() {
+		status = ActivityStatus.FINISHED;
+		if (getChildStepCount() == 0) {
+			getOwner().childActivities.remove( this );
+		}
+		fireChanged( new FinishedEvent() );
+	}
+
+	public void cancel() {
+		status = ActivityStatus.CANCELED;
+		fireChanged( new CancelEvent() );
+	}
+
+	public Object getProducedValue() {
+		return producedValue;
+	}
+
+	public void setProducedValue( Object value ) {
+		producedValue = value;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		for( PrepStep prepStep : this.prepSteps ) {
+		sb.append( getClass().getSimpleName() )
+			.append( ' ' )
+			.append( status )
+			.append( "[" );
+		for( PrepStep prepStep : prepSteps ) {
 			sb.append( prepStep );
 			sb.append( "," );
 		}
-		sb.append( this.completionStep );
+		if (childActivities.size() == 1) {
+			sb.append( "1 child," );
+		}
+		if (childActivities.size() > 1) {
+			sb.append( childActivities.size())
+				.append( " children," );
+		}
+		sb.append( completionStep );
 		sb.append( "]" );
 		return sb.toString();
 	}

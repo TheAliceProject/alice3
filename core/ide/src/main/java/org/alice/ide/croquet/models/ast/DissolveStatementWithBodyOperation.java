@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.edits.ast.DissolveStatementWithBodyEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractStatementWithBody;
 
 import java.util.Map;
@@ -90,7 +90,7 @@ public class DissolveStatementWithBodyOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new DissolveStatementWithBodyEdit( step ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new DissolveStatementWithBodyEdit( activity ) );
 	}
 }

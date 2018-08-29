@@ -131,12 +131,12 @@ public class DropDown<M extends PopupPrepModel> extends AbstractPopupButton<M> {
 	}
 
 	//	@Override
-	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.UserActivity transaction ) {
 	//		super.appendPrepStepsIfNecessary( transaction );
 	//		if( transaction.containsPrepStep( transaction, this.getModel(), org.lgna.croquet.history.PopupPrepStep.class ) ) {
 	//			//pass
 	//		} else {
-	//			org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
+	//			org.lgna.croquet.history.PopupPrepStep.createAndAddToActivity( transaction, this.getModel(), new org.lgna.croquet.triggers.SimulatedTrigger() );
 	//		}
 	//	}
 

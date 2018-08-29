@@ -44,8 +44,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.SwingUtilities;
@@ -92,9 +91,9 @@ public abstract class StencilModel extends AbstractCompletionModel {
 	protected abstract void hideStencil();
 
 	@Override
-	protected final void perform( Transaction transaction, Trigger trigger ) {
+	protected final void perform( UserActivity userActivity, Trigger trigger ) {
 		Logger.outln( this );
-		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		userActivity.setCompletionModel( this, trigger );
 		this.barrier.reset();
 		SwingUtilities.invokeLater( new Runnable() {
 			@Override
@@ -104,6 +103,6 @@ public abstract class StencilModel extends AbstractCompletionModel {
 		} );
 		this.barrierAwait();
 		this.hideStencil();
-		step.finish();
+		userActivity.finish();
 	}
 }

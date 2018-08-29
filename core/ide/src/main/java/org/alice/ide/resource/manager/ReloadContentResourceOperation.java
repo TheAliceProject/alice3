@@ -51,7 +51,7 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.ItemState;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Frame;
 
 import java.util.UUID;
@@ -121,7 +121,7 @@ import java.util.UUID;
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> step, final Resource resource ) {
+	protected Edit createEdit( UserActivity userActivity, final Resource resource ) {
 		if( resource != null ) {
 			final Capsule prevCapsule;
 			final Capsule nextCapsule;
@@ -151,7 +151,7 @@ import java.util.UUID;
 				nextCapsule = null;
 			}
 			if( ( prevCapsule != null ) && ( nextCapsule != null ) ) {
-				return new AbstractEdit( step ) {
+				return new AbstractEdit( userActivity ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						nextCapsule.update( resource );

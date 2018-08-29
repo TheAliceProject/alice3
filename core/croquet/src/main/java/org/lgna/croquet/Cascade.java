@@ -47,13 +47,10 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.PopupPrepStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
+import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.MenuItemContainer;
@@ -108,26 +105,28 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		}
 
 		@Override
-		public final CompletionStep<Cascade<T>> createCompletionStep( Transaction transaction, Trigger trigger ) {
-			return transaction.createAndSetCompletionStep( this.cascade, trigger, new TransactionHistory() );
+		public final void createCompletionStep( Trigger trigger ) {
+			if (trigger.getUserActivity().getCompletionStep() == null) {
+				trigger.getUserActivity().setCompletionModel( cascade, trigger );
+			}
 		}
 
 		@Override
-		public CompletionStep<Cascade<T>> handleCompletion( TransactionHistory transactionHistory, Trigger trigger, RtRoot<T, Cascade<T>> rtRoot ) {
-			Transaction transaction = transactionHistory.acquireActiveTransaction();
-			CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
+		public void handleCompletion( Trigger trigger, RtRoot<T, Cascade<T>> rtRoot ) {
+			UserActivity activity = trigger.getUserActivity();
 			try {
+
 				T[] values = rtRoot.createValues( this.getComponentType() );
-				Edit edit = this.cascade.createEdit( completionStep, values );
+				Edit edit = cascade.createEdit( activity, values );
 				if( edit != null ) {
-					completionStep.commitAndInvokeDo( edit );
+					createCompletionStep( trigger );
+					activity.commitAndInvokeDo( edit );
 				} else {
-					completionStep.cancel();
+					activity.cancel();
 				}
 			} finally {
 				this.getPopupPrepModel().handleFinally();
 			}
-			return completionStep;
 		}
 	}
 
@@ -156,19 +155,18 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 	}
 
 	@Override
-	public final CompletionStep<?> fire( Trigger trigger ) {
+	public final void fire( Trigger trigger ) {
 		Model surrogateModel = this.root.getPopupPrepModel();
 		if( surrogateModel != null ) {
 			Logger.errln( "todo: end use of surrogate", this );
-			Step<?> step = surrogateModel.fire( trigger );
-			return step.getOwnerTransaction().getCompletionStep();
+			surrogateModel.fire( trigger );
 		} else {
-			return super.fire( trigger );
+			super.fire( trigger );
 		}
 	}
 
 	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
+	protected void perform( UserActivity transaction, Trigger trigger ) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -183,7 +181,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		this.hideDropProxyIfNecessary();
 	}
 
-	protected abstract Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values );
+	protected abstract Edit createEdit( UserActivity userActivity, T[] values );
 
 	//todo: reduce visibility
 	public static final class InternalMenuModel<T> extends AbstractMenuModel {
@@ -278,8 +276,8 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
-				final PopupPrepStep prepStep = TransactionManager.addPopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
-
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(),
+																																						 NullTrigger.createUserInstance() );
 				Listeners listeners = map.get( menuItemContainer );
 				if( listeners != null ) {
 					listeners.componentListener.setPrepStep( prepStep );

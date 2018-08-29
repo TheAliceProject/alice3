@@ -44,9 +44,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
@@ -100,13 +98,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 
 		@Override
 		public final F createValue( ItemNode<? super F, Void> node ) {
-			Trigger trigger = NullTrigger.createUserInstance();
-			Step<?> step = this.valueCreator.fire( trigger );
-			if( step != null ) {
-				return (F)step.getEphemeralDataFor( VALUE_KEY );
-			} else {
-				throw new CancelException();
-			}
+			return this.valueCreator.fireAndGetValue( NullTrigger.createUserInstance() );
 		}
 
 		@Override
@@ -116,7 +108,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	}
 
 	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
-	public static final Step.Key<Object> VALUE_KEY = Step.Key.createInstance( "ValueCreator.VALUE_KEY" );
 
 	public ValueCreator( UUID migrationId ) {
 		super( VALUE_CREATOR_GROUP, migrationId );
@@ -135,21 +126,18 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		return this.fillIn;
 	}
 
-	protected abstract T createValue( Transaction transaction, Trigger trigger );
+	protected abstract T createValue( UserActivity transaction, Trigger trigger );
 
 	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		T value = this.createValue( transaction, trigger );
-		CompletionStep<?> completionStep = transaction.getCompletionStep();
-		if( completionStep != null ) {
-			completionStep.putEphemeralDataFor( VALUE_KEY, value );
-		}
+	protected void perform( UserActivity activity, Trigger trigger ) {
+		T value = this.createValue( activity, trigger );
+		activity.setProducedValue(value);
 	}
 
 	public T fireAndGetValue( Trigger trigger ) throws CancelException {
-		CompletionStep<?> step = this.fire( trigger );
-		if( step.isSuccessfullyCompleted() ) {
-			return (T)step.getEphemeralDataFor( VALUE_KEY );
+		fire( trigger );
+		if( trigger.getUserActivity().isSuccessfullyCompleted() ) {
+			return (T)trigger.getUserActivity().getProducedValue();
 		} else {
 			throw new CancelException();
 		}

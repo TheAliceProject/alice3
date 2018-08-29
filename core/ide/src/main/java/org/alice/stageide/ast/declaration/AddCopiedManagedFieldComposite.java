@@ -57,7 +57,7 @@ import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractWindow;
@@ -120,9 +120,9 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 	}
 
 	@Override
-	protected EditCustomization customize( CompletionStep<?> step, UserType<?> declaringType, UserField field, EditCustomization rv ) {
+	protected EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv ) {
 		AffineMatrix4x4 initialTransform = null;
-		DropSite dropSite = step.findDropSite();
+		DropSite dropSite = userActivity.findDropSite();
 		if( dropSite instanceof SceneDropSite ) {
 			SceneDropSite sceneDropSite = (SceneDropSite)dropSite;
 			initialTransform = sceneDropSite.getTransform();
@@ -247,8 +247,8 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		this.initialInstanceCreation = null;
 	}
 }

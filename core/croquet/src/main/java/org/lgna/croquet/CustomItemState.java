@@ -45,9 +45,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -73,8 +71,9 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public CompletionStep<CustomItemState<T>> createCompletionStep( Transaction transaction, Trigger trigger ) {
-			return CompletionStep.createAndAddToTransaction( transaction, this.state, trigger, null );
+		public void createCompletionStep( Trigger trigger ) {
+			// TODO ensure activity is a leaf
+			trigger.getUserActivity().setCompletionModel( state, trigger );
 		}
 
 		@Override
@@ -100,13 +99,11 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public CompletionStep handleCompletion( TransactionHistory transactionHistory, Trigger trigger, RtRoot<T, CustomItemState<T>> rtRoot ) {
+		public void handleCompletion( Trigger trigger, RtRoot<T, CustomItemState<T>> rtRoot ) {
 			try {
-				//todo: investigate
-				Transaction transaction = transactionHistory.acquireActiveTransaction();
-				createCompletionStep( transaction, trigger );
+				createCompletionStep( trigger );
 				T[] values = rtRoot.createValues( getComponentType() );
-				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+				state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
 			} finally {
 				this.getPopupPrepModel().handleFinally();
 			}

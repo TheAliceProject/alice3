@@ -52,7 +52,7 @@ import org.lgna.croquet.Group;
 
 import edu.cmu.cs.dennisc.scenegraph.scale.Scalable;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.ModelImp;
 
@@ -115,8 +115,8 @@ public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipul
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new AbstractEdit( step ) {
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired() == false ) ) {

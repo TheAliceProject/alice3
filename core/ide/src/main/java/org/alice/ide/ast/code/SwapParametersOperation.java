@@ -45,7 +45,7 @@ package org.alice.ide.ast.code;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.ast.code.edits.SwapParametersEdit;
 import org.alice.ide.operations.ast.AbstractCodeParameterOperation;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.UserParameter;
 
@@ -68,9 +68,9 @@ public abstract class SwapParametersOperation extends AbstractCodeParameterOpera
 	}
 
 	@Override
-	protected void perform( CompletionStep step ) {
+	protected void perform( UserActivity activity ) {
 		final int aIndex = this.getIndexA();
 		Logger.errln( this, aIndex );
-		step.commitAndInvokeDo( new SwapParametersEdit( step, this.getCode(), aIndex ) );
+		activity.commitAndInvokeDo( new SwapParametersEdit( activity, this.getCode(), aIndex ) );
 	}
 }

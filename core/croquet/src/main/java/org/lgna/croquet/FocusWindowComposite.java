@@ -43,7 +43,7 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.EventObjectTrigger;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Frame;
@@ -105,7 +105,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
 		}
 
 		@Override
-		protected void perform( Transaction transaction, Trigger trigger ) {
+		protected void perform( UserActivity transaction, Trigger trigger ) {
 			SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
 			if( view.getParent() == null ) {
 				window.getContentPane().addCenterComponent( view );

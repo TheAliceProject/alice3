@@ -47,8 +47,8 @@ import org.alice.stageide.modelresource.PersonResourceKey;
 import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.ChildPersonResource;
@@ -83,7 +83,7 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:
@@ -109,9 +109,9 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 			}
 			return personResourceComposite.getRandomPersonExpressionValueConverter( lifeStage );
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				Object value = prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				Object value = prevSubStep.getProducedValue();
 				if( value instanceof InstanceCreation ) {
 					InstanceCreation instanceCreation = (InstanceCreation)value;
 					AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();

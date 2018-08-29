@@ -47,7 +47,6 @@ import org.alice.ide.projecturi.views.TabContentPanel;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.ImmutableDataTabState;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.Dialog;
@@ -110,7 +109,7 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return getSelectedProject() != null ? IS_GOOD_TO_GO_STATUS : this.noSelectionError;
 	}
 
@@ -138,8 +137,8 @@ public final class SelectProjectUriComposite extends SingleValueCreatorInputDial
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.refresh();
-		super.handlePreShowDialog( dialog, completionStep );
+		super.handlePreShowDialog( dialog );
 	}
 }

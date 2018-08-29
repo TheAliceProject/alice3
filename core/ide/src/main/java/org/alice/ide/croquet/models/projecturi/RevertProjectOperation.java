@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.net.URI;
 import java.util.UUID;
@@ -70,7 +70,7 @@ public class RevertProjectOperation extends UriActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		ProjectApplication application = ProjectApplication.getActiveInstance();
 		YesNoCancelResult result = new YesNoCancelDialog.Builder( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?" )
 				.title( "Revert?" )
@@ -82,19 +82,19 @@ public class RevertProjectOperation extends UriActionOperation {
 				UriProjectLoader loader = UriProjectLoader.createInstance( uri );
 				if( loader != null ) {
 					application.loadProjectFrom( loader );
-					step.finish();
+					activity.finish();
 				} else {
 					new OkDialog.Builder( "todo: revert loader == null " + uri )
 							.buildAndShow();
-					step.cancel();
+					activity.cancel();
 				}
 			} else {
 				new OkDialog.Builder( "todo: revert uri == null" )
 						.buildAndShow();
-				step.cancel();
+				activity.cancel();
 			}
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

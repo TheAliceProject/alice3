@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.delete.references.croquet.ReferencesToFieldPreventingDeletionDialog;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NodeListProperty;
@@ -104,8 +103,8 @@ public class DeleteFieldOperation extends DeleteMemberOperation<UserField> {
 		final int N = references.size();
 		if( N > 0 ) {
 			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
-			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
-			if( step.isSuccessfullyCompleted() ) {
+			referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
+			if( true ) {//step.isSuccessfullyCompleted() ) {
 				ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
 				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( field ).fire();
 			}

@@ -48,9 +48,8 @@ import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;
 import org.alice.ide.croquet.models.ast.cascade.ExpressionsCascade;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlank;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
@@ -100,8 +99,8 @@ public abstract class StatementInsertCascade extends ExpressionsCascade implemen
 	}
 
 	@Override
-	protected InsertStatementEdit createEdit( CompletionStep<Cascade<Expression>> step, Expression[] values ) {
+	protected InsertStatementEdit createEdit( UserActivity userActivity, Expression[] values ) {
 		Statement statement = this.createStatement( values );
-		return new InsertStatementEdit( step, this.blockStatementIndexPair, statement, values, this.isEnveloping );
+		return new InsertStatementEdit( userActivity, this.blockStatementIndexPair, statement, values, this.isEnveloping );
 	}
 }

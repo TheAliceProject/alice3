@@ -14,7 +14,7 @@ import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.croquet.*;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.annotations.FieldTemplate;
@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 
 public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreComposite<Panel, DynamicResource> {
 
-	private Edit browseForCollada( CompletionStep<?> step, InternalActionOperation source ) {
+	private Edit browseForCollada( UserActivity step, InternalActionOperation source ) {
 		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog(
 				UUID.randomUUID(),
 				"Import Collada",
@@ -60,7 +60,7 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 				&& "dae".equals( FileUtilities.getExtension( path ) );
 	}
 
-	private Edit loadColladaFile( CompletionStep<?> step, InternalActionOperation source ) {
+	private Edit loadColladaFile( UserActivity step, InternalActionOperation source ) {
 		final String fileName = selectedFileState.getValue();
 		if ( fileName != null ) {
 			importCollada( fileName );
@@ -107,7 +107,7 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return null;
 	}
 

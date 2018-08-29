@@ -42,26 +42,24 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ViewController;
 
-import java.util.Map;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step<M extends Model> extends TransactionNode<Transaction> {
+public abstract class Step<M extends Model> extends TransactionNode<UserActivity> {
 
 	private final M model;
 	private final Trigger trigger;
 	private final UUID id;
 
-	public Step( Transaction parent, M model, Trigger trigger ) {
+	public Step( UserActivity parent, M model, Trigger trigger ) {
 		super( parent );
 		this.model = model;
 		if( trigger != null ) {
@@ -81,37 +79,6 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 		}
 	}
 
-	public static class Key<T> {
-		public static <T> Key<T> createInstance( String repr ) {
-			return new Key<T>( repr );
-		}
-
-		private final String repr;
-
-		private Key( String repr ) {
-			this.repr = repr;
-		}
-
-		@Override
-		public String toString() {
-			return this.repr;
-		}
-	}
-
-	private final Map/* < Key<T>, T > */dataMap = Maps.newHashMap();
-
-	public <T> boolean containsEphemeralDataFor( Key<T> key ) {
-		return this.dataMap.containsKey( key );
-	}
-
-	public <T> T getEphemeralDataFor( Key<T> key ) {
-		return (T)this.dataMap.get( key );
-	}
-
-	public <T> void putEphemeralDataFor( Key<T> key, T value ) {
-		this.dataMap.put( key, value );
-	}
-
 	public Trigger getTrigger() {
 		return this.trigger;
 	}
@@ -121,9 +88,9 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 	}
 
 	public Step<?> getPreviousStep() {
-		int index = this.getOwnerTransaction().getIndexOfChildStep( this );
+		int index = this.getUserActivity().getIndexOfChildStep( this );
 		if( index > 0 ) {
-			return this.getOwnerTransaction().getChildStepAt( index - 1 );
+			return this.getUserActivity().getChildStepAt( index - 1 );
 		} else {
 			return null;
 		}
@@ -137,8 +104,7 @@ public abstract class Step<M extends Model> extends TransactionNode<Transaction>
 		return this.model;
 	}
 
-	/* This is here to clarify the structure of the transaction history tree */
-	public Transaction getOwnerTransaction() {
+	public UserActivity getUserActivity() {
 		return this.getOwner();
 	}
 

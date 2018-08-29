@@ -49,7 +49,7 @@ import org.alice.ide.ast.delete.edits.DeleteStatementEdit;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 import java.util.UUID;
@@ -86,7 +86,7 @@ public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOper
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return new DeleteStatementEdit( completionStep, this.getNode() );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new DeleteStatementEdit( userActivity, this.getNode() );
 	}
 }

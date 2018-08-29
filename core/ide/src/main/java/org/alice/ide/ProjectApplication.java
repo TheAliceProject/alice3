@@ -57,7 +57,7 @@ import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.undo.UndoHistory;
 import org.lgna.croquet.undo.event.HistoryClearEvent;
 import org.lgna.croquet.undo.event.HistoryInsertionIndexEvent;
@@ -87,6 +87,8 @@ import java.util.concurrent.ExecutionException;
 public abstract class ProjectApplication extends PerspectiveApplication<ProjectDocumentFrame> {
 	public static final Group HISTORY_GROUP = Group.getInstance( UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final Group URI_GROUP = Group.getInstance( UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+
+	private UserActivity projectActivity;
 
 	public static ProjectApplication getActiveInstance() {
 		return ClassUtilities.getInstance( PerspectiveApplication.getActiveInstance(), ProjectApplication.class );
@@ -393,11 +395,29 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 					.buildAndShow();
 		}
 		ProgramTypeUtilities.sanityCheckAllTypes( project );
-		this.setDocument( new ProjectDocument( project ) );
+		this.setDocument( new ProjectDocument( project, newProjectActivity() ) );
 	}
 
-	public TransactionHistory getProjectTransactionHistory() {
-		return this.getDocument().getRootTransactionHistory();
+	private UserActivity newProjectActivity() {
+		// This is the activity of opening or creating this project
+		acquireOpenActivity().finish();
+		// If there was a project the new one replaces it.
+		if (projectActivity != null) {
+			projectActivity.finish();
+		}
+		// Create a new project activity under the top level user activity
+		projectActivity = acquireOpenActivity();
+		return projectActivity;
+	}
+
+	public UserActivity getProjectUserActivity() {
+		return getDocument().getUserActivity();
+	}
+	// Find a user activity to hold new work. If the latest one is from the system or project, create a new activity in that
+	@Override
+	public UserActivity acquireOpenActivity() {
+		UserActivity latest = super.acquireOpenActivity();
+		return latest == projectActivity ? projectActivity.newChildActivity() : latest;
 	}
 
 	public final void loadProjectFrom( UriProjectLoader uriProjectLoader ) {

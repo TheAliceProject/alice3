@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.triggers.NullTrigger;
@@ -199,7 +199,7 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values ) {
+	protected Edit createEdit( UserActivity userActivity, T[] values ) {
 		assert values.length == 1;
 		this.model.changeValueFromIndirectModel( values[ 0 ], State.IsAdjusting.FALSE, NullTrigger.createUserInstance() );
 		return null;

@@ -54,7 +54,6 @@ import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeSeparator;
 import org.lgna.croquet.CascadeUnfilledInCancel;
-import org.lgna.croquet.history.TransactionHistory;
 
 import java.util.List;
 

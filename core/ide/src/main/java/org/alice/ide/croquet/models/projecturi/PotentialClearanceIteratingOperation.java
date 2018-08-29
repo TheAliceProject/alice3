@@ -51,8 +51,7 @@ import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -95,12 +94,12 @@ public abstract class PotentialClearanceIteratingOperation extends SingleThreadI
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iterator ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iterator ) {
 		return iterator.hasNext();
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iterator ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iterator ) {
 		return iterator.next();
 	}
 

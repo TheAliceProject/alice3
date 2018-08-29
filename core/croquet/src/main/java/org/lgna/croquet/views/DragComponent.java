@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.history.DragStep;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.DragTrigger;
 import org.lgna.croquet.views.imp.JDragProxy;
 import org.lgna.croquet.views.imp.JDragView;
@@ -214,7 +214,11 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
 			layeredPane.add( this.dragProxy, new Integer( 1 ) );
 			layeredPane.setLayer( this.dragProxy, JLayeredPane.DRAG_LAYER );
 
-			this.dragStep = TransactionManager.addDragStep( dragModel, DragTrigger.createUserInstance( this, this.leftButtonPressedEvent ) );
+			final UserActivity activity = application.acquireOpenUntriggeredAcivity();
+			this.dragStep = DragStep.createAndAddToTransaction(
+					activity,
+					dragModel,
+					DragTrigger.createUserInstance( activity, this, leftButtonPressedEvent ) );
 			this.dragStep.setLatestMouseEvent( e );
 			this.dragStep.fireDragStarted();
 			dragModel.handleDragStarted( this.dragStep );

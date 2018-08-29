@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractNode;
 import org.lgna.project.ast.Node;
 import org.lgna.project.ast.Statement;
@@ -81,9 +81,9 @@ public class CopyToClipboardOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		Node copyOfNode = IDE.getActiveInstance().createCopy( this.node );
 		Clipboard.SINGLETON.push( copyOfNode );
-		step.finish();
+		activity.finish();
 	}
 }

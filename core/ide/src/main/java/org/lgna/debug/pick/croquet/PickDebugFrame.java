@@ -48,12 +48,11 @@ import edu.cmu.cs.dennisc.render.PickFrontMostObserver;
 import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import org.alice.stageide.StageIDE;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.debug.pick.croquet.views.PickDebugFrameView;
 
 import java.awt.Component;
@@ -87,7 +86,7 @@ public final class PickDebugFrame extends FrameComposite<PickDebugFrameView> {
 
 	private final Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			Component awtComponent = getView().getAwtComponent();//org.alice.stageide.StageIDE.getActiveInstance().getDocumentFrame().getFrame().getContentPane().getAwtComponent();
 			CursorUtilities.pushAndSet( awtComponent, Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
 			try {

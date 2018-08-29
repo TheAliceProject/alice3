@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
@@ -112,7 +112,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		//		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
 		final AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
@@ -121,7 +121,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends Abst
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
 		assert nextLT.isNaN() == false;
-		step.commitAndInvokeDo( new AbstractEdit( step ) {
+		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired() == false ) ) {

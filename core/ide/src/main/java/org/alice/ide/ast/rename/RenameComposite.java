@@ -47,7 +47,6 @@ import org.alice.ide.name.NameValidator;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
@@ -74,7 +73,7 @@ public abstract class RenameComposite<V extends RenamePanel> extends SimpleOpera
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( nameValidator != null ) {
 			String candidate = this.nameState.getValue();
 			String explanation = this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
@@ -92,9 +91,9 @@ public abstract class RenameComposite<V extends RenamePanel> extends SimpleOpera
 	protected abstract String getInitialValue();
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );
 		this.nameState.selectAll();
-		super.handlePreShowDialog( dialog, step );
+		super.handlePreShowDialog( dialog );
 	}
 }

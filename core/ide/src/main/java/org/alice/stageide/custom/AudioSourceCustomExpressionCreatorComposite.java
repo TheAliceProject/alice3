@@ -50,7 +50,6 @@ import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.stageide.custom.components.AudioSourceCustomExpressionCreatorView;
 import org.lgna.common.Resource;
 import org.lgna.common.resources.AudioResource;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Operation;
@@ -58,7 +57,7 @@ import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.AbstractArgument;
 import org.lgna.project.ast.AstUtilities;
@@ -176,15 +175,14 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
 
 	private final Operation testOperation = this.createActionOperation( "test", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
 			double volume = VolumeLevelUtilities.toDouble( getVolumeState().getValue() );
 			double startTime = getStartMarkerTime();
 			double stopTime = getStopMarkerTime();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = MediaFactory.getSingleton();
 			Player player = mediaFactory.createPlayer( audioResource, volume, startTime, stopTime );
-			Trigger trigger = step.getTrigger();
-			player.test( trigger.getViewController().getAwtComponent() );
+			player.test( null);
 			return null;
 		}
 	} );
@@ -281,7 +279,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends CustomExp
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return null;
 	}
 

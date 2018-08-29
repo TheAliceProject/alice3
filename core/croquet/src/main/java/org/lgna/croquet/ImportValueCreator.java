@@ -43,9 +43,7 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.importer.Importer;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -65,8 +63,8 @@ public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
 	protected abstract T createValueFromImportedValue( I importedValue );
 
 	@Override
-	protected T createValue( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, new TransactionHistory() );
+	protected T createValue( UserActivity userActivity, Trigger trigger ) {
+		userActivity.setCompletionModel( this, trigger );
 		String dialogTitle = "Import";
 		T rv;
 		I importedValue = this.importer.createValue( dialogTitle );
@@ -76,9 +74,9 @@ public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
 			rv = null;
 		}
 		if( rv != null ) {
-			completionStep.finish();
+			userActivity.finish();
 		} else {
-			completionStep.cancel();
+			userActivity.cancel();
 			throw new CancelException();
 		}
 		return rv;

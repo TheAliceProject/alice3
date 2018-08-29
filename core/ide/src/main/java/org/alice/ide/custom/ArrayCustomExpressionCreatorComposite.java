@@ -54,7 +54,6 @@ import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractWindow;
@@ -101,7 +100,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		}
 
 		@Override
-		public Edit createEdit( CompletionStep completionStep, Expression[] values ) {
+		public Edit createEdit( Expression[] values ) {
 			assert values.length == 1;
 			data.internalAddItem( values[ 0 ] );
 			getView().updatePreview();
@@ -142,7 +141,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

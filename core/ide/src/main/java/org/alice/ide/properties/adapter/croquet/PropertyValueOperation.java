@@ -47,7 +47,7 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -62,7 +62,7 @@ public abstract class PropertyValueOperation<P> extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new PropertyValueEdit<P>( step, this.propertyAdapter, this.nextValue ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new PropertyValueEdit<P>( activity, this.propertyAdapter, this.nextValue ) );
 	}
 }

@@ -107,11 +107,11 @@ public class DragStep extends PrepStep<DragModel> {
 	private DropSite currentPotentialDropSite;
 	private MouseEvent latestMouseEvent;
 
-	public static DragStep createAndAddToTransaction( Transaction parent, DragModel model, DragTrigger trigger ) {
+	public static DragStep createAndAddToTransaction( UserActivity parent, DragModel model, DragTrigger trigger ) {
 		return new DragStep( parent, model, trigger );
 	}
 
-	private DragStep( Transaction parent, DragModel model, DragTrigger trigger ) {
+	private DragStep( UserActivity parent, DragModel model, DragTrigger trigger ) {
 		super( parent, model, trigger );
 	}
 
@@ -274,8 +274,6 @@ public class DragStep extends PrepStep<DragModel> {
 			if( this.currentDropReceptor != null ) {
 				Model dropTarget = this.currentDropReceptor.dragDropped( this );
 
-				//				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
-				//				
 				if( dropTarget != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					SwingComponentView<?> component = this.currentDropReceptor.getViewController();
@@ -292,7 +290,7 @@ public class DragStep extends PrepStep<DragModel> {
 						} else {
 							Logger.outln( "drop proxy hider:", dropTarget.getClass() );
 						}
-						Step<?> step = dropTarget.fire( DropTrigger.createUserInstance( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
+						dropTarget.fire( DropTrigger.createUserInstance( getOwner(), viewController, getLatestMouseEvent(), currentPotentialDropSite ) );
 					} catch( CancelException ce ) {
 						this.cancel( e );
 					}
@@ -340,6 +338,8 @@ public class DragStep extends PrepStep<DragModel> {
 	}
 
 	public void cancel( MouseEvent e ) {
-		TransactionManager.addCancelCompletionStep( null, MouseEventTrigger.createUserInstance( e ) );
+		final MouseEventTrigger trigger = MouseEventTrigger.createUserInstance( e );
+		trigger.getUserActivity().setCompletionModel( null, trigger );
+		trigger.getUserActivity().cancel();
 	}
 }

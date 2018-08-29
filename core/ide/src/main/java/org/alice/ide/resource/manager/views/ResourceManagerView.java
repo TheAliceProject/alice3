@@ -186,7 +186,8 @@ public class ResourceManagerView extends BorderPanel {
 			if( quoteClickUnquoteCount == 2 ) {
 				ResourceManagerComposite composite = (ResourceManagerComposite)getComposite();
 				if( composite.getResourcesState().getValue() != null ) {
-					composite.getRenameResourceComposite().getLaunchOperation().fire( MouseEventTrigger.createUserInstance( e ) );
+					composite.getRenameResourceComposite().getLaunchOperation()
+									 .fire( MouseEventTrigger.createUserInstance( composite.getOpeningActivity().newChildActivity(), e ) );
 				}
 			}
 		}

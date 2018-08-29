@@ -44,7 +44,6 @@ package org.alice.ide.ast.declaration;
 
 import org.alice.ide.typemanager.TypeManager;
 import org.alice.stageide.icons.IconFactoryManager;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.IconSize;
@@ -85,18 +84,18 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		if( this.isUserTypeDesired() ) {
 			this.type = TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
 		} else {
 			this.type = this.javaValueType;
 		}
-		super.handlePreShowDialog( dialog, step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		this.type = null;
 	}
 

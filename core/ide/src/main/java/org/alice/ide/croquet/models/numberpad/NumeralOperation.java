@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.numberpad;
 
 import edu.cmu.cs.dennisc.map.MapToMap;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -76,8 +76,8 @@ public class NumeralOperation extends NumberPadOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		this.numberModel.replaceSelection( this.numeral );
-		step.finish();
+		activity.finish();
 	}
 }

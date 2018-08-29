@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.alice.ide.croquet.models.help.views.LoginView;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.AbstractSeverityStatusComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -55,7 +54,7 @@ import org.lgna.croquet.Group;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.preferences.PreferenceStringState;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -83,7 +82,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Simple
 	private final ActionOperation logOutOperation = createActionOperation( "logOutOperation", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			internalLogout();
 			isLoggedIn.setValueTransactionlessly( false );
 			userNameState.setValueTransactionlessly( "" );
@@ -113,7 +112,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Simple
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		//note: work is done in isClearedForCommit
 		return null;
 	}
@@ -143,7 +142,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Simple
 	}
 
 	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		return this.status;
 	}
 

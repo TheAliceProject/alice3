@@ -57,11 +57,6 @@ public class CascadeAutomaticDeterminationTrigger extends Trigger {
 		this.previousTrigger = previousTrigger;
 	}
 
-	public CascadeAutomaticDeterminationTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.previousTrigger = null;
-	}
-
 	@Override
 	public ViewController<?, ?> getViewController() {
 		return this.previousTrigger.getViewController();

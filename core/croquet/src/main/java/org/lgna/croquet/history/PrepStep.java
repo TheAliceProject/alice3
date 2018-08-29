@@ -50,17 +50,16 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Dennis Cosgrove
  */
 public abstract class PrepStep<M extends PrepModel> extends Step<M> {
-	public PrepStep( Transaction parent, M model, Trigger trigger ) {
+	PrepStep( UserActivity parent, M model, Trigger trigger ) {
 		super( parent, model, trigger );
 		if( parent != null ) {
 			parent.addPrepStep( this );
 		} else {
-			Logger.severe( "PrepStep transaction is null" );
+			Logger.severe( "PrepStep parent activity is null" );
 		}
 	}
 
-	public void cancelTransaction( Trigger trigger ) {
-		CompletionStep step = CompletionStep.createAndAddToTransaction( this.getOwner(), null, trigger, null );
-		step.cancel();
+	public void cancelActivity() {
+		getUserActivity().cancel();
 	}
 }

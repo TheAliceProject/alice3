@@ -47,7 +47,7 @@ import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.OwnedByCompositeOperationSubKey;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.StaticAnalysisUtilities;
 import org.lgna.project.ast.UserMethod;
@@ -100,8 +100,8 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return new DeclareMethodEdit( completionStep, this.getDeclaringType(), this.getDeclarationLikeSubstanceName(), this.getValueType() );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new DeclareMethodEdit( userActivity, this.getDeclaringType(), this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 
 	@Override

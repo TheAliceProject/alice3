@@ -47,11 +47,10 @@ import org.alice.ide.IDE;
 import org.alice.ide.cascade.ExpressionCascadeContext;
 import org.alice.ide.cascade.ExpressionPropertyContext;
 import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.ImmutableCascade;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionProperty;
@@ -90,12 +89,12 @@ public abstract class ExpressionPropertyCascade extends ImmutableCascade<Express
 
 	protected abstract Expression createExpression( Expression[] expressions );
 
-	protected ExpressionPropertyEdit createExpressionPropertyEdit( CompletionStep<Cascade<Expression>> step, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
-		return new ExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression );
+	protected ExpressionPropertyEdit createExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
+		return new ExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression );
 	}
 
 	@Override
-	protected final ExpressionPropertyEdit createEdit( CompletionStep<Cascade<Expression>> step, Expression[] values ) {
-		return this.createExpressionPropertyEdit( step, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
+	protected final ExpressionPropertyEdit createEdit( UserActivity userActivity, Expression[] values ) {
+		return this.createExpressionPropertyEdit( userActivity, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
 	}
 }

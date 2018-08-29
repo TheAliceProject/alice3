@@ -44,9 +44,8 @@ package org.alice.stageide.oneshot;
 
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.stageide.oneshot.edits.AllJointLocalTransformationsEdit;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 
@@ -65,7 +64,7 @@ public class AllJointLocalTransformationsMethodInvocationEditFactory implements 
 	}
 
 	@Override
-	public Edit createEdit( CompletionStep<Cascade<MethodInvocationEditFactory>> step ) {
-		return new AllJointLocalTransformationsEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	public Edit createEdit( UserActivity userActivity ) {
+		return new AllJointLocalTransformationsEdit( userActivity, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

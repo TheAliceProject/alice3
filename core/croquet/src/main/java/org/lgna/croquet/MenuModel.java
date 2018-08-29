@@ -44,7 +44,6 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.PopupPrepStep;
-import org.lgna.croquet.history.TransactionManager;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.PopupMenu;
@@ -90,8 +89,8 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		protected PopupPrepStep perform( final Trigger trigger ) {
-			final PopupPrepStep step = TransactionManager.addPopupPrepStep( this, trigger );
+		protected void perform( final Trigger trigger ) {
+			final PopupPrepStep step = PopupPrepStep.createAndAddToActivity( this, trigger );
 
 			final PopupMenu popupMenu = new PopupMenu( this ) {
 				@Override
@@ -174,7 +173,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 			this.menuModel.handlePopupMenuPrologue( popupMenu, step );
 
 			step.showPopupMenu( popupMenu );
-			return step;
 		}
 	}
 

@@ -43,9 +43,10 @@
 
 package org.alice.ide.croquet.models.ui.debug.components;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.croquet.models.ui.debug.TransactionHistoryComposite;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.history.event.AddStepEvent;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.history.event.AddEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.TransactionEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
@@ -76,7 +77,7 @@ public class TransactionHistoryView extends BorderPanel {
 
 		@Override
 		public void changed( TransactionEvent e ) {
-			if( e instanceof AddStepEvent  ) {
+			if( e instanceof AddEvent ) {
 				this.reload();
 			} else if( ( e instanceof FinishedEvent ) || ( e instanceof EditCommittedEvent ) ) {
 				tree.repaint();
@@ -86,7 +87,7 @@ public class TransactionHistoryView extends BorderPanel {
 
 	private final ScrollPane scrollPane = new ScrollPane();
 	private final JTree tree = new JTree();
-	private TransactionHistory transactionHistory;
+	private UserActivity rootActivity;
 	private boolean isCollapsingDesired = true;
 	private TransactionHistoryTreeModel treeModel;
 
@@ -120,11 +121,14 @@ public class TransactionHistoryView extends BorderPanel {
 		}
 	}
 
-	public void setTransactionHistory( TransactionHistory transactionHistory ) {
-		assert transactionHistory != null : this;
+	public void setRootActivity( UserActivity rootActivity ) {
+		if ( rootActivity == null ) {
+			Logger.outln( "No root activity provided to view." );
+			return;
+		}
 
 		this.removeTransactionListener();
-		this.transactionHistory = transactionHistory;
+		this.rootActivity = rootActivity;
 
 		if( this.isShowing() ) {
 			this.addTransactionListener();
@@ -144,18 +148,18 @@ public class TransactionHistoryView extends BorderPanel {
 	}
 
 	private void addTransactionListener() {
-		if( this.transactionHistory != null ) {
-			this.treeModel = new TransactionHistoryTreeModel( transactionHistory );
+		if( this.rootActivity != null ) {
+			this.treeModel = new TransactionHistoryTreeModel( rootActivity );
 			this.tree.setModel( this.treeModel );
 			this.revalidateAndRepaint();
 			this.treeModel.reload();
-			this.transactionHistory.addListener( this.historyListener );
+			this.rootActivity.addListener( this.historyListener );
 		}
 	}
 
 	private void removeTransactionListener() {
-		if( ( this.transactionHistory != null ) && ( this.transactionHistory.isListening( this.historyListener ) ) ) {
-			this.transactionHistory.removeListener( this.historyListener );
+		if( ( this.rootActivity != null ) && ( this.rootActivity.isListening( this.historyListener ) ) ) {
+			this.rootActivity.removeListener( this.historyListener );
 		}
 	}
 }

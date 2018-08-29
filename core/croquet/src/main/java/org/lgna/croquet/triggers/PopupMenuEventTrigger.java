@@ -43,11 +43,9 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.PopupMenuEvent;
-import java.awt.Point;
 
 /**
  * @author Dennis Cosgrove
@@ -63,14 +61,5 @@ public class PopupMenuEventTrigger extends EventObjectTrigger<PopupMenuEvent> {
 
 	private PopupMenuEventTrigger( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
 		super( viewController, popupMenuEvent );
-	}
-
-	public PopupMenuEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
 	}
 }

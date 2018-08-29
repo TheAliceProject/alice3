@@ -44,7 +44,6 @@ package org.alice.ide.croquet.models.ui.debug;
 
 import org.alice.ide.operations.InconsequentialActionOperation;
 import org.lgna.common.LgnaIllegalArgumentException;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -71,7 +70,7 @@ public class ThrowBogusLgnaExceptionOperation extends InconsequentialActionOpera
 	}
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		new Thread() {
 			@Override
 			public void run() {

@@ -55,8 +55,7 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.io.IoUtilities;
@@ -121,7 +120,7 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < this.getStepCount();
 	}
 
@@ -155,8 +154,8 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
+		super.handleSuccessfulCompletionOfSubModels( activity, subSteps );
 		this.resourceKey = null;
 	}
 

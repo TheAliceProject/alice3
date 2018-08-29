@@ -44,7 +44,7 @@ package org.lgna.croquet.imp.booleanstate;
 
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -76,8 +76,8 @@ import java.util.UUID;
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		this.state.setValueTransactionlessly( this.value );
-		step.finish();
+		activity.finish();
 	}
 }

@@ -56,11 +56,11 @@ import java.awt.event.ComponentEvent;
 public final class PopupPrepStep extends PrepStep<PopupPrepModel> {
 	private transient PopupMenu popupMenu;
 
-	public static PopupPrepStep createAndAddToTransaction( Transaction parent, PopupPrepModel model, Trigger trigger ) {
-		return new PopupPrepStep( parent, model, trigger );
+	public static PopupPrepStep createAndAddToActivity( PopupPrepModel model, Trigger trigger ) {
+		return new PopupPrepStep( trigger.getUserActivity(), model, trigger );
 	}
 
-	private PopupPrepStep( Transaction parent, PopupPrepModel model, Trigger trigger ) {
+	private PopupPrepStep( UserActivity parent, PopupPrepModel model, Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 

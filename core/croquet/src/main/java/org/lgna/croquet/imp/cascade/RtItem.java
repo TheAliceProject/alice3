@@ -52,7 +52,6 @@ import org.lgna.croquet.CascadeCancel;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeSeparator;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.views.CascadeMenu;
 import org.lgna.croquet.views.CascadeMenuItem;
 import org.lgna.croquet.views.MenuItemContainer;

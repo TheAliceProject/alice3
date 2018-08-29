@@ -48,8 +48,7 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.Image;
 import java.io.File;
@@ -76,7 +75,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		if( subSteps.size() == 0 ) {
 			this.file = this.owner.getFile();
 			if( this.file != null ) {
@@ -90,7 +89,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
 		Model rv;
 		switch( subSteps.size() ) {
@@ -121,7 +120,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
 		if( this.file != null ) {
 			Image image = owner.getView().render();
 			try {

@@ -43,15 +43,12 @@
 
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.Action;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -101,7 +98,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	}
 
 	@Override
-	public abstract Step<?> fire( Trigger trigger );
+	public abstract void fire( Trigger trigger );
 
 	private boolean isEnabled = true;
 

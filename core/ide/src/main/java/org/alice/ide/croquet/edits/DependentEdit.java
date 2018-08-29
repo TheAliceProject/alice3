@@ -47,14 +47,14 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.alice.ide.croquet.models.ResponsibleModel;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class DependentEdit<M extends CompletionModel> extends AbstractEdit<M> {
-	public DependentEdit( CompletionStep completionStep ) {
-		super( completionStep );
+	public DependentEdit( UserActivity userActivity ) {
+		super( userActivity );
 	}
 
 	public DependentEdit( BinaryDecoder binaryDecoder, Object step ) {
@@ -62,16 +62,11 @@ public final class DependentEdit<M extends CompletionModel> extends AbstractEdit
 	}
 
 	private ResponsibleModel getResponsibleModel() {
-		CompletionStep<?> step = this.getCompletionStep();
-		if( step != null ) {
-			CompletionModel model = step.getModel();
-			if( model instanceof ResponsibleModel ) {
-				return (ResponsibleModel)model;
-			} else {
-				throw new RuntimeException();
-			}
+		CompletionModel model = getModel();
+		if( model instanceof ResponsibleModel ) {
+			return (ResponsibleModel)model;
 		} else {
-			throw new NullPointerException();
+			throw new RuntimeException();
 		}
 	}
 

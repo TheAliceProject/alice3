@@ -54,7 +54,6 @@ import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractWindow;
@@ -196,8 +195,8 @@ public class AddPersonResourceManagedFieldComposite extends AddManagedFieldCompo
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		this.initialInstanceCreation = null;
 	}
 }

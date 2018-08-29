@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.ArgumentOwner;
 import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.KeyedArgumentListProperty;
@@ -61,8 +61,8 @@ public class AddKeyedArgumentEdit extends AbstractEdit {
 	private ArgumentOwner argumentOwner;
 	private JavaKeyedArgument keyedArgument;
 
-	public AddKeyedArgumentEdit( CompletionStep completionStep, ArgumentOwner argumentOwner, JavaKeyedArgument keyedArgument ) {
-		super( completionStep );
+	public AddKeyedArgumentEdit( UserActivity userActivity, ArgumentOwner argumentOwner, JavaKeyedArgument keyedArgument ) {
+		super( userActivity );
 		this.argumentOwner = argumentOwner;
 		this.keyedArgument = keyedArgument;
 	}

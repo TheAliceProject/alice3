@@ -51,7 +51,6 @@ import org.alice.media.youtube.croquet.views.ImageRecordView;
 import org.alice.media.youtube.croquet.views.icons.IsRecordingIcon;
 import org.alice.stageide.program.VideoEncodingProgramContext;
 import org.lgna.common.RandomUtilities;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
@@ -61,7 +60,7 @@ import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
@@ -110,7 +109,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			programContext.getProgramImp().stopAnimator();
@@ -242,7 +241,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		if( isRecordingState.getValue() ) {
 			return errorIsRecording;
 		} else if( imageCount == 0 ) {
@@ -303,8 +302,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	@Override
-	public void handlePostHideDialog( CompletionStep<?> step ) {
-		super.handlePostHideDialog( step );
+	public void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		programContext.cleanUpProgram();
 	}
 }

@@ -58,11 +58,11 @@ import org.lgna.croquet.MessageDialogComposite;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.wustl.lookingglass.media.FFmpegProcess;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.views.ScrollPane;
 
@@ -84,7 +84,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	private final ActionOperation troubleShootAction = createActionOperation( "troubleShoot", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			if( SystemUtilities.isMac() ) {
 				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
 				isFixed = ( ffmpegFile != null ) && ffmpegFile.canExecute();

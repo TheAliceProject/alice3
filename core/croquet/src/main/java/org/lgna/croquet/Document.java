@@ -43,14 +43,14 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.undo.UndoHistory;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface Document {
-	public TransactionHistory getRootTransactionHistory();
+	public UserActivity getUserActivity();
 
 	public UndoHistory getUndoHistory( Group group );
 }

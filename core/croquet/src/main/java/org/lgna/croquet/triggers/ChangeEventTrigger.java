@@ -43,30 +43,20 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.ChangeEvent;
-import java.awt.Point;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ChangeEventTrigger extends EventObjectTrigger<ChangeEvent> {
-	public static ChangeEventTrigger createUserInstance( ChangeEvent changeEvent ) {
-		return new ChangeEventTrigger( null, changeEvent );
+	public static ChangeEventTrigger createUserInstance( UserActivity userActivity, ChangeEvent changeEvent ) {
+		return new ChangeEventTrigger( userActivity, changeEvent );
 	}
 
-	private ChangeEventTrigger( ViewController<?, ?> viewController, ChangeEvent changeEvent ) {
-		super( viewController, changeEvent );
-	}
-
-	public ChangeEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
+	private ChangeEventTrigger( UserActivity userActivity, ChangeEvent changeEvent ) {
+		super( userActivity, null, changeEvent );
 	}
 }

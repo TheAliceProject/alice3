@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.DragStep;
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Collections;
@@ -86,7 +85,7 @@ public abstract class DragModel extends AbstractPrepModel {
 	public abstract Model getDropModel( DragStep step, DropSite dropSite );
 
 	@Override
-	public Step<?> fire( Trigger trigger ) {
+	public void fire( Trigger trigger ) {
 		throw new UnsupportedOperationException();
 	}
 }

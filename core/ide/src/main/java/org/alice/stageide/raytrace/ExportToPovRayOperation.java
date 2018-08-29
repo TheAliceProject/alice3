@@ -49,7 +49,7 @@ import org.alice.ide.IDE;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.EmployeesOnly;
@@ -76,7 +76,7 @@ public class ExportToPovRayOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		StorytellingSceneEditor sceneEditor = StageIDE.getActiveInstance().getSceneEditor();
 		UserField sceneField = sceneEditor.getActiveSceneField();
 		AbstractField cameraField = sceneField.getValueType().getDeclaredField( "camera" );
@@ -84,6 +84,6 @@ public class ExportToPovRayOperation extends ActionOperation {
 		SymmetricPerspectiveCameraImp cameraImp = EmployeesOnly.getImplementation( camera );
 		SymmetricPerspectiveCamera sgCamera = cameraImp.getSgCamera();
 		POVRayUtilities.export( new PrintWriter( System.out ), sgCamera );
-		step.finish();
+		activity.finish();
 	}
 }

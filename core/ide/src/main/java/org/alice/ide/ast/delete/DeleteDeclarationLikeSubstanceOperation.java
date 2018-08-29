@@ -48,7 +48,9 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Node;
 
 import java.util.UUID;
@@ -72,24 +74,25 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends Node> ex
 
 	protected abstract BooleanState getFindModel();
 
-	protected abstract Edit createEdit( CompletionStep<?> completionStep );
+	protected abstract Edit createEdit( UserActivity userActivity );
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
 		if( failedToClearOperation != null ) {
-			step.cancel();
-			CompletionStep<?> subCompletionStep = failedToClearOperation.fire();
-			if( subCompletionStep.isSuccessfullyCompleted() ) {
+			activity.cancel();
+			Trigger newTrigger = NullTrigger.createUserInstance();
+			failedToClearOperation.fire(newTrigger);
+			if( newTrigger.getUserActivity().isSuccessfullyCompleted() ) {
 				BooleanState findFrameState = this.getFindModel();
 				if( findFrameState != null ) {
 					findFrameState.setValueTransactionlessly( true );
 				}
 			}
 		} else {
-			Edit edit = this.createEdit( step );
+			Edit edit = this.createEdit( activity );
 			assert edit != null : this;
-			step.commitAndInvokeDo( edit );
+			activity.commitAndInvokeDo( edit );
 		}
 	}
 }

@@ -84,7 +84,7 @@ public class ProjectHistoryManager {
 				}
 			}
 		};
-		projectDocument.getRootTransactionHistory().addListener( this.listener );
+		projectDocument.getUserActivity().addListener( this.listener );
 		this.map = Maps.newHashMap();
 	}
 

@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.clipboard.edits.PasteFromClipboardEdit;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 import java.util.Map;
@@ -76,7 +76,7 @@ public class PasteFromClipboardOperation extends FromClipboardOperation {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep step, Statement statement ) {
-		return new PasteFromClipboardEdit( step, statement, this.getBlockStatementIndexPair() );
+	protected Edit createEdit( UserActivity userActivity, Statement statement ) {
+		return new PasteFromClipboardEdit( userActivity, statement, this.getBlockStatementIndexPair() );
 	}
 }

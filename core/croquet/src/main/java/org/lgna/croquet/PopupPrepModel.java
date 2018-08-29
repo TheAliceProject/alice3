@@ -43,7 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.triggers.EventObjectTrigger;
 import org.lgna.croquet.triggers.Trigger;
@@ -157,10 +156,10 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		}
 	}
 
-	protected abstract Step<?> perform( Trigger trigger );
+	protected abstract void perform( Trigger trigger );
 
 	@Override
-	public Step<?> fire( Trigger trigger ) {
-		return this.perform( trigger );
+	public void fire( Trigger trigger ) {
+		perform( trigger );
 	}
 }

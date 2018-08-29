@@ -54,8 +54,4 @@ public abstract class OperationUnadornedDialogCoreComposite<V extends CompositeV
 		super( migrationId, isModal );
 	}
 
-	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
 }

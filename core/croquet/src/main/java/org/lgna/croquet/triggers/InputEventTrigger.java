@@ -43,7 +43,6 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.lgna.croquet.views.ViewController;
 
 import java.awt.Point;
@@ -60,10 +59,6 @@ public class InputEventTrigger extends ComponentEventTrigger<InputEvent> {
 
 	private InputEventTrigger( ViewController<?, ?> viewController, InputEvent inputEvent ) {
 		super( viewController, inputEvent );
-	}
-
-	public InputEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
 	}
 
 	@Override

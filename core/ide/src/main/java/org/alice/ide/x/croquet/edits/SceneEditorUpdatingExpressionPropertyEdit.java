@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionProperty;
 import org.lgna.project.ast.UserField;
@@ -63,8 +63,8 @@ import org.lgna.story.resources.JointedModelResource;
 public class SceneEditorUpdatingExpressionPropertyEdit extends ExpressionPropertyEdit {
 	private final UserField field;
 
-	public SceneEditorUpdatingExpressionPropertyEdit( CompletionStep completionStep, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression, UserField field ) {
-		super( completionStep, expressionProperty, prevExpression, nextExpression );
+	public SceneEditorUpdatingExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression, UserField field ) {
+		super( userActivity, expressionProperty, prevExpression, nextExpression );
 		this.field = field;
 	}
 

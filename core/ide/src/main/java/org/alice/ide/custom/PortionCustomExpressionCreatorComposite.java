@@ -45,7 +45,6 @@ package org.alice.ide.custom;
 
 import org.alice.ide.custom.components.PortionCustomExpressionCreatorView;
 import org.lgna.croquet.BoundedIntegerState;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 
@@ -88,7 +87,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

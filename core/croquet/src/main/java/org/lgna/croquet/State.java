@@ -49,8 +49,7 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.StateEdit;
 import org.lgna.croquet.event.ValueEvent;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.List;
@@ -155,35 +154,29 @@ public abstract class State<T> extends AbstractCompletionModel {
 	}
 
 	@Override
-	protected final void perform( Transaction transaction, Trigger trigger ) {
+	protected final void perform( UserActivity transaction, Trigger trigger ) {
 		throw new UnsupportedOperationException();
 	}
 
-	private StateEdit<T> createStateEdit( CompletionStep<State<T>> step, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+	private StateEdit<T> createStateEdit( UserActivity userActivity, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "createStateEdit", prevValue, nextValue, isAdjusting.value ? "isAdjusting=true" : "" );
-		return new StateEdit<T>( step, prevValue, nextValue );
+		return new StateEdit<T>( userActivity, prevValue, nextValue );
 	}
 
 	protected void handleTruthAndBeautyValueChange( T nextValue ) {
 	}
 
-	protected StateEdit<T> commitStateEdit( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
-		Transaction owner = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-		CompletionStep<State<T>> completionStep = CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
-		StateEdit<T> edit = this.createStateEdit( completionStep, prevValue, nextValue, isAdjusting );
-		if( edit != null ) {
-			completionStep.commitAndInvokeDo( edit );
-			this.handleTruthAndBeautyValueChange( nextValue );
+	private void commitStateEdit( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
+		if (trigger != null) {
+			// NB This activity is not expected to have any child activities
+			UserActivity activity = trigger.getUserActivity();
+			if (activity != null) {
+				activity.setCompletionModel( this, trigger );
+				StateEdit<T> edit = this.createStateEdit( activity, prevValue, nextValue, isAdjusting );
+				activity.commitAndInvokeDo( edit );
+			}
 		}
-		return edit;
-	}
-
-	protected StateEdit<T> createEdit( CompletionStep<State<T>> completionStep, T nextValue ) {
-		T prevValue = this.getValue();
-		if( Objects.equals( prevValue, nextValue ) ) {
-			//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
-		}
-		return new StateEdit<T>( completionStep, prevValue, nextValue );
+		this.handleTruthAndBeautyValueChange( nextValue );
 	}
 
 	protected T getCurrentTruthAndBeautyValue() {
@@ -285,47 +278,41 @@ public abstract class State<T> extends AbstractCompletionModel {
 		return this.atomicCount <= 0;
 	}
 
-	private StateEdit<T> changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
-		StateEdit<T> rv = null;
+	private void changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
 		this.updateSwingModelIfAppropriate( nextValue, origin );
-		if ( !Objects.equals( this.previousValue, nextValue ) ) {
-			if ( !this.isInTheMidstOfChange ) {
-				this.isInTheMidstOfChange = true;
-				try {
-					this.fireChanging( prevValue, nextValue, isAdjusting );
-					this.setCurrentTruthAndBeautyValue( nextValue );
-					if( origin.isCommitingEditAppropriate() ) {
-						rv = this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
-					}
-					this.fireChanged( prevValue, nextValue, isAdjusting );
-					this.previousValue = nextValue;
-				} finally {
-					this.isInTheMidstOfChange = false;
+		if ( !Objects.equals( this.previousValue, nextValue ) && !this.isInTheMidstOfChange ) {
+			this.isInTheMidstOfChange = true;
+			try {
+				this.fireChanging( prevValue, nextValue, isAdjusting );
+				this.setCurrentTruthAndBeautyValue( nextValue );
+				if ( origin.isCommitingEditAppropriate() ) {
+					this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 				}
+				this.fireChanged( prevValue, nextValue, isAdjusting );
+				this.previousValue = nextValue;
+			} finally {
+				this.isInTheMidstOfChange = false;
 			}
 		}
-		return rv;
 	}
 
 	protected boolean isAdjustingIgnored() {
 		return true;
 	}
 
-	private StateEdit<T> changeValue( T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
+	private void changeValue( T nextValue, IsAdjusting isAdjusting, Trigger trigger, Origin origin ) {
 		if ( isNotInTheMidstOfAtomicChange() &&
 				!(isAdjusting.value && isAdjustingIgnored()) ) {
-			return this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
+			this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
 		}
-		return null;
 	}
 
 	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
 		this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_SWING );
 	}
 
-	protected CompletionStep<?> changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
-		StateEdit<T> edit = this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_INDIRECT_MODEL );
-		return edit != null ? edit.getCompletionStep() : null;
+	void changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, Trigger trigger ) {
+		this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_INDIRECT_MODEL );
 	}
 
 	private void changeValueTransactionlessly( T value, IsAdjusting isAdjusting ) {

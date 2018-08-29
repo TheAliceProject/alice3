@@ -49,7 +49,7 @@ import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Cascade;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionListProperty;
 import org.lgna.project.ast.NodeUtilities;
@@ -62,8 +62,8 @@ public class AddExpressionEdit extends AbstractEdit<Cascade<Expression>> {
 	private final Expression expression;
 	private transient int index;
 
-	public AddExpressionEdit( CompletionStep completionStep, ExpressionListProperty expressionListProperty, Expression expression ) {
-		super( completionStep );
+	public AddExpressionEdit( UserActivity userActivity, ExpressionListProperty expressionListProperty, Expression expression ) {
+		super( userActivity );
 		this.expressionListProperty = expressionListProperty;
 		this.expression = expression;
 	}

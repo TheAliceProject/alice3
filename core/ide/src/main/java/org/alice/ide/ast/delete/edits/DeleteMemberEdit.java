@@ -52,7 +52,7 @@ import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.UserMember;
@@ -66,8 +66,8 @@ public abstract class DeleteMemberEdit<M extends UserMember> extends AbstractEdi
 	private final int index;
 	private final M member;
 
-	public DeleteMemberEdit( CompletionStep completionStep, M member ) {
-		super( completionStep );
+	public DeleteMemberEdit( UserActivity userActivity, M member ) {
+		super( userActivity );
 		this.declaringType = member.getDeclaringType();
 		assert this.declaringType != null : member;
 		this.index = this.getNodeListProperty( this.declaringType ).indexOf( member );

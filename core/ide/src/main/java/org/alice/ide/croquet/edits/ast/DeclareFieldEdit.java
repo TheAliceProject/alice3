@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
@@ -60,8 +60,8 @@ public abstract class DeclareFieldEdit extends AbstractEdit {
 	private final UserType<?> declaringType;
 	private final UserField field;
 
-	public DeclareFieldEdit( CompletionStep step, UserType<?> declaringType, UserField field ) {
-		super( step );
+	public DeclareFieldEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
+		super( userActivity );
 		this.declaringType = declaringType;
 		this.field = field;
 	}

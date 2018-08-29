@@ -63,7 +63,7 @@ import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.annotations.ValueDetails;
@@ -219,9 +219,9 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		return initialTransform;
 	}
 
-	protected EditCustomization customize( CompletionStep<?> step, UserType<?> declaringType, UserField field, EditCustomization rv ) {
+	protected EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, EditCustomization rv ) {
 		AffineMatrix4x4 initialTransform = null;
-		DropSite dropSite = step.findDropSite();
+		DropSite dropSite = userActivity.findDropSite();
 		if( dropSite instanceof SceneDropSite ) {
 			SceneDropSite sceneDropSite = (SceneDropSite)dropSite;
 			initialTransform = sceneDropSite.getTransform();
@@ -254,11 +254,11 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	}
 
 	@Override
-	protected DeclareFieldEdit createEdit( CompletionStep<?> completionStep, UserType<?> declaringType, UserField field ) {
+	protected DeclareFieldEdit createEdit( UserActivity userActivity, UserType<?> declaringType, UserField field ) {
 		EditCustomization customization = new EditCustomization();
-		this.customize( completionStep, declaringType, field, customization );
+		this.customize( userActivity, declaringType, field, customization );
 		AbstractSceneEditor sceneEditor = IDE.getActiveInstance().getSceneEditor();
-		return new DeclareGalleryFieldEdit( completionStep, sceneEditor, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
+		return new DeclareGalleryFieldEdit( userActivity, sceneEditor, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
 	}
 
 	protected <T> CustomItemState<Expression> createInitialPropertyValueExpressionState( String keyText, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {

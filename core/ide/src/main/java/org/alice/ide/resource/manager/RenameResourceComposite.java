@@ -50,7 +50,7 @@ import org.alice.ide.resource.manager.views.ResourceRenamePanel;
 import org.lgna.common.Resource;
 import org.lgna.croquet.ItemState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
@@ -80,26 +80,26 @@ public class RenameResourceComposite extends RenameComposite<ResourceRenamePanel
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		Resource resource = this.getResource();
 		if( resource != null ) {
-			return new RenameResourceEdit( completionStep, resource, resource.getName(), this.getNameState().getValue() );
+			return new RenameResourceEdit( userActivity, resource, resource.getName(), this.getNameState().getValue() );
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		Resource resource = this.resourceState.getValue();
 		( (ResourceNameValidator)this.getNameValidator() ).setResource( resource );
 		this.getView().setResource( resource );
-		super.handlePreShowDialog( dialog, step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		this.getView().onHide();
 	}
 

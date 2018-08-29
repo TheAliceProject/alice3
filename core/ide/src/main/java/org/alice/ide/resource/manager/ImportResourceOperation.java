@@ -46,7 +46,7 @@ package org.alice.ide.resource.manager;
 import org.alice.ide.resource.manager.edits.AddResourceEdit;
 import org.lgna.common.Resource;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.importer.Importer;
 
 import java.util.UUID;
@@ -68,7 +68,7 @@ public abstract class ImportResourceOperation<R extends Resource> extends Resour
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> step, Resource resource ) {
-		return new AddResourceEdit( step, resource );
+	protected Edit createEdit( UserActivity userActivity, Resource resource ) {
+		return new AddResourceEdit( userActivity, resource );
 	}
 }

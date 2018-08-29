@@ -44,7 +44,6 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.data.ListData;
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComboBox;
 import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
@@ -71,7 +70,7 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<
 	}
 
 	@Override
-	public Step<?> fire( Trigger trigger ) {
+	public void fire( Trigger trigger ) {
 		throw new RuntimeException();
 	}
 

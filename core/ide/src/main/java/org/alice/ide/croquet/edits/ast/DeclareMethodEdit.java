@@ -51,7 +51,7 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.UserMethod;
@@ -72,16 +72,16 @@ public final class DeclareMethodEdit extends AbstractEdit<CompletionModel> {
 	private transient UserMethod method;
 	private transient DeclarationComposite prevDeclarationComposite;
 
-	public DeclareMethodEdit( CompletionStep completionStep, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType, BlockStatement body ) {
-		super( completionStep );
+	public DeclareMethodEdit( UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType, BlockStatement body ) {
+		super( userActivity );
 		this.declaringType = declaringType;
 		this.methodName = methodName;
 		this.returnType = returnType;
 		this.body = body;
 	}
 
-	public DeclareMethodEdit( CompletionStep completionStep, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType ) {
-		this( completionStep, declaringType, methodName, returnType, new BlockStatement() );
+	public DeclareMethodEdit( UserActivity userActivity, UserType<?> declaringType, String methodName, AbstractType<?, ?, ?> returnType ) {
+		this( userActivity, declaringType, methodName, returnType, new BlockStatement() );
 	}
 
 	public DeclareMethodEdit( BinaryDecoder binaryDecoder, Object step ) {

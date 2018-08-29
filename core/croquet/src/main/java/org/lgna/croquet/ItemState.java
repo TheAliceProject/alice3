@@ -49,9 +49,7 @@ import edu.cmu.cs.dennisc.java.lang.callable.ValueCallable;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.edits.StateEdit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ItemEventTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -144,12 +142,6 @@ public abstract class ItemState<T> extends State<T> {
 		public ItemState<T> getState() {
 			return this.state;
 		}
-
-		@Override
-		protected StateEdit<Boolean> createEdit( CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
-			Logger.severe( this, nextValue );
-			return null;
-		}
 	}
 
 	private static class InternalItemSelectedState<T> extends AbstractInternalItemSelectedState<T> {
@@ -166,12 +158,6 @@ public abstract class ItemState<T> extends State<T> {
 			StringBuilder sb = new StringBuilder();
 			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
-		}
-
-		@Override
-		protected StateEdit<Boolean> createEdit( CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
-			Logger.severe( this, nextValue );
-			return null;
 		}
 
 		@Override
@@ -216,15 +202,15 @@ public abstract class ItemState<T> extends State<T> {
 			this.setName( sb.toString() );
 		}
 
-		@Override
-		protected CompletionStep<?> createTransactionAndInvokePerform( Trigger trigger ) {
-			T item = getItem( this.itemCallable );
-			return this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, trigger );
-		}
+/*		@Override
+		protected void createTransactionAndInvokePerform( Trigger trigger ) {
+			state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
+		}*/
 
 		@Override
-		protected final void perform( Transaction transaction, Trigger trigger ) {
-			Logger.severe( this, transaction, trigger );
+		protected final void perform( UserActivity transaction, Trigger trigger ) {
+			state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
+//			Logger.severe( this, transaction, trigger );
 		}
 	}
 

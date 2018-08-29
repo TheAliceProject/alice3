@@ -52,7 +52,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.StatementEdit;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.StatementListProperty;
@@ -68,8 +68,8 @@ public class MoveStatementEdit extends StatementEdit<MoveStatementOperation> {
 	private final boolean isMultiple;
 	private transient int count;
 
-	public MoveStatementEdit( CompletionStep<MoveStatementOperation> completionStep, BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
-		super( completionStep, statement );
+	public MoveStatementEdit( UserActivity userActivity, BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
+		super( userActivity, statement );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 		this.isMultiple = isMultiple;

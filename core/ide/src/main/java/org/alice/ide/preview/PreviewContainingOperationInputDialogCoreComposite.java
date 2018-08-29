@@ -45,7 +45,6 @@ package org.alice.ide.preview;
 import org.alice.ide.preview.components.PanelWithPreview;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.event.TransactionEvent;
 import org.lgna.croquet.views.Dialog;
 
@@ -68,8 +67,8 @@ public abstract class PreviewContainingOperationInputDialogCoreComposite<V exten
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.getView().updatePreview();
-		super.handlePreShowDialog( dialog, step );
+		super.handlePreShowDialog( dialog );
 	}
 }

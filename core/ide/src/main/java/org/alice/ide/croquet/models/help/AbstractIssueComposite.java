@@ -60,14 +60,13 @@ import org.alice.ide.issue.SubmitReportUtilities;
 import org.alice.ide.issue.swing.views.IssueReportPane;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
 import org.alice.ide.issue.swing.views.ProgressPane;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.LaunchOperationUnadornedDialogCoreComposite;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ProjectVersion;
 import redstone.xmlrpc.XmlRpcClient;
@@ -214,7 +213,7 @@ public abstract class AbstractIssueComposite<V extends AbstractIssueView> extend
 	private final Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			submitBugOperation.setEnabled( false );
 			try {
 				if( isClearedToSubmitBug() ) {

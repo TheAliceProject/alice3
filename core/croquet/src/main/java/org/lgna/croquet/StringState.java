@@ -225,10 +225,6 @@ public abstract class StringState extends State<String> {
 		}
 	}
 
-	//	@Override
-	//	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-	//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
-	//	}
 	@Override
 	protected String getSwingValue() {
 		try {

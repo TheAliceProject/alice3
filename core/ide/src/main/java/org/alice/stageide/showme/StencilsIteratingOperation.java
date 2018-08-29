@@ -46,9 +46,7 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.IteratingOperation;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.StencilModel;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Iterator;
@@ -67,12 +65,12 @@ public abstract class StencilsIteratingOperation extends IteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < stencilModels.length;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		int i = subSteps.size();
 		if( i < this.stencilModels.length ) {
 			return this.stencilModels[ i ];
@@ -82,12 +80,7 @@ public abstract class StencilsIteratingOperation extends IteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
-	}
-
-	@Override
-	protected final void perform( final Transaction transaction, final Trigger trigger ) {
+	protected final void perform( final UserActivity transaction, final Trigger trigger ) {
 		new Thread() {
 			@Override
 			public void run() {

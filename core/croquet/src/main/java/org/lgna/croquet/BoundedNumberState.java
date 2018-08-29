@@ -149,7 +149,7 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 
 	private void handleStateChanged( ChangeEvent e ) {
 		N nextValue = this.getSwingValue();
-		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), ChangeEventTrigger.createUserInstance( e ) );
+		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), ChangeEventTrigger.createUserInstance(null, e ) );
 	}
 
 	@Override

@@ -46,9 +46,6 @@ import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.event.CancelEvent;
-import org.lgna.croquet.history.event.EditCommittedEvent;
-import org.lgna.croquet.history.event.FinishedEvent;
 import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -57,77 +54,23 @@ import org.lgna.croquet.triggers.Trigger;
  */
 public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 
-	private final TransactionHistory transactionHistory;
 	private AbstractEdit<M> edit;
-	private boolean isSuccessfullyCompleted = false;
-	private boolean isPending = true;
 
-	public static <M extends CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, Trigger trigger, TransactionHistory transactionHistory ) {
-		return new CompletionStep<M>( parent, model, trigger, transactionHistory );
-	}
-
-	public CompletionStep( Transaction parent, M model, Trigger trigger, TransactionHistory transactionHistory ) {
+	public CompletionStep( UserActivity parent, M model, Trigger trigger ) {
 		super( parent, model, trigger );
-		parent.setCompletionStep( this );
-		this.transactionHistory = transactionHistory;
-		if( this.transactionHistory != null ) {
-			this.transactionHistory.setOwner( this );
-		}
 	}
-
-	public DropSite findDropSite() {
-		Step<?> step = findAcceptableStep( step1 -> step1.getTrigger() instanceof DropTrigger );
-		return step != null ? ((DropTrigger) step.getTrigger()).getDropSite() : null;
-	}
-
-	public TransactionHistory getTransactionHistory() {
-		return this.transactionHistory;
-	}
-
-	public boolean isPending() {
-		return this.isPending;
-	}
-
-	public boolean isSuccessfullyCompleted() {
-		return this.isSuccessfullyCompleted;
-	}
-
-	public boolean isCanceled() {
-		return !isPending() && !isSuccessfullyCompleted();
-	}
-
 
 	public AbstractEdit<?> getEdit() {
 		return this.edit;
 	}
 
-	private void setEdit( Edit edit ) {
-		this.isSuccessfullyCompleted = true;
+	void setEdit( Edit edit ) {
 		this.edit = (AbstractEdit<M>)edit;
-		this.isPending = false;
 	}
 
-	public void commitAndInvokeDo( Edit edit ) {
-		EditCommittedEvent e = new EditCommittedEvent( edit );
-		this.setEdit( edit );
-		edit.doOrRedo( true );
-		this.fireChanged( e );
-	}
-
-	public void finish() {
-		this.isSuccessfullyCompleted = true;
-		FinishedEvent e = new FinishedEvent();
-		this.edit = null;
-		this.isPending = false;
-		this.fireChanged( e );
-	}
-
-	public void cancel() {
-		this.isSuccessfullyCompleted = false;
-		CancelEvent e = new CancelEvent();
-		this.edit = null;
-		this.isPending = false;
-		this.fireChanged( e );
+	public DropSite findDropSite() {
+		Step<?> step = findAcceptableStep( step1 -> step1.getTrigger() instanceof DropTrigger );
+		return step != null ? ((DropTrigger) step.getTrigger()).getDropSite() : null;
 	}
 
 	@Override

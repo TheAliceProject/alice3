@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.SwingUtilities;
@@ -54,12 +54,8 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<MouseEvent> {
-	public AbstractMouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		super( viewController, mouseEvent );
-	}
-
-	public AbstractMouseEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	AbstractMouseEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( userActivity, viewController, mouseEvent );
 	}
 
 	@Override

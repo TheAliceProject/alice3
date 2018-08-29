@@ -43,9 +43,10 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 
@@ -53,10 +54,15 @@ import org.lgna.croquet.views.ViewController;
  * @author Dennis Cosgrove
  */
 public abstract class Trigger implements BinaryEncodableAndDecodable {
+	private UserActivity userActivity;
+
 	public Trigger() {
+		// TODO Remove access to activity this way
+		userActivity = Application.getActiveInstance().acquireOpenUntriggeredAcivity();
 	}
 
-	public Trigger( BinaryDecoder binaryDecoder ) {
+	public Trigger( UserActivity userActivity ) {
+		this.userActivity = userActivity;
 	}
 
 	@Override
@@ -75,5 +81,13 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 		repr.append( "[" );
 		this.appendReprInternal( repr );
 		repr.append( "]" );
+	}
+
+	public UserActivity getUserActivity() {
+		return userActivity;
+	}
+
+	public Trigger createChildTrigger() {
+		return IterationTrigger.createUserInstance(userActivity.newChildActivity());
 	}
 }

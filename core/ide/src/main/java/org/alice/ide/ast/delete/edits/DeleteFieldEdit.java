@@ -44,7 +44,7 @@
 package org.alice.ide.ast.delete.edits;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
@@ -53,8 +53,8 @@ import org.lgna.project.ast.UserType;
  * @author Dennis Cosgrove
  */
 public class DeleteFieldEdit extends DeleteMemberEdit<UserField> {
-	public DeleteFieldEdit( CompletionStep completionStep, UserField field ) {
-		super( completionStep, field );
+	public DeleteFieldEdit( UserActivity userActivity, UserField field ) {
+		super( userActivity, field );
 	}
 
 	public DeleteFieldEdit( BinaryDecoder binaryDecoder, Object step ) {

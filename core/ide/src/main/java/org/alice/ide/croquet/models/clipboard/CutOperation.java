@@ -44,7 +44,6 @@ package org.alice.ide.croquet.models.clipboard;
 
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -65,7 +64,7 @@ public class CutOperation extends InconsequentialActionOperation {
 	}
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		new OkDialog.Builder( findLocalizedText( "content" ) )
 				.title( findLocalizedText( "title" ) )
 				.buildAndShow();

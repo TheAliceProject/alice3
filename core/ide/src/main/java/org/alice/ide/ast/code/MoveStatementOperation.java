@@ -48,7 +48,7 @@ import org.alice.ide.ast.code.edits.MoveStatementEdit;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 import java.util.UUID;
@@ -102,7 +102,8 @@ public final class MoveStatementOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep step ) {
-		step.commitAndInvokeDo( new MoveStatementEdit( step, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
+	protected void perform( UserActivity activity ) {
+		activity
+				.commitAndInvokeDo( new MoveStatementEdit( activity, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
 	}
 }

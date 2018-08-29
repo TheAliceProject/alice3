@@ -46,7 +46,7 @@ package org.alice.ide.operations;
 
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -60,11 +60,11 @@ public abstract class InconsequentialActionOperation extends ActionOperation {
 		super( INCONSEQUENTIAL_GROUP, id );
 	}
 
-	protected abstract void performInternal( CompletionStep<?> step );
+	protected abstract void performInternal();
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		this.performInternal( step );
-		step.finish();
+	protected void perform( UserActivity activity ) {
+		this.performInternal();
+		activity.finish();
 	}
 }

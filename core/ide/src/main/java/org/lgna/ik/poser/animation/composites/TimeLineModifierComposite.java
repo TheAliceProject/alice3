@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser.animation.composites;
 
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
@@ -52,10 +51,7 @@ import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.TimeLineListener;
@@ -149,11 +145,9 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 			//			if( isAdjusting ) {
 			//			System.out.println( "time changed" );
 			if( ( selectedKeyFrame != null ) ) {
-				TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				Transaction transaction = history.acquireActiveTransaction();
-				CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
-
-				step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
+				// TODO not use Application.getActiveInstance().acquireOpenActivity()
+				UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+				userActivity.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( userActivity, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
 			}
 		}
 	};
@@ -178,9 +172,9 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private ActionOperation deletePoseOperation = createActionOperation( "deletePose", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			//			composite.getTimeLine().removeKeyFrameData( selectedKeyFrame );
-			new DeleteKeyFrameFromTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
+			new DeleteKeyFrameFromTimeLineEdit( userActivity, composite.getTimeLine(), selectedKeyFrame ).doOrRedo( true );
 			return null;
 		}
 	} );

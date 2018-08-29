@@ -47,15 +47,15 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RemoveKeyedArgumentEdit extends AbstractEdit<RemoveKeyedArgumentOperation> {
-	public RemoveKeyedArgumentEdit( CompletionStep completionStep ) {
-		super( completionStep );
+	public RemoveKeyedArgumentEdit( UserActivity userActivity) {
+		super( userActivity );
 	}
 
 	public RemoveKeyedArgumentEdit( BinaryDecoder binaryDecoder, Object step ) {

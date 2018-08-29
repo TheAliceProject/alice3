@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Dialog;
 
@@ -57,13 +57,13 @@ public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>
 	}
 
 	@Override
-	protected CompositeView<?, ?> allocateView( CompletionStep<?> step ) {
+	protected CompositeView<?, ?> allocateView() {
 		//todo
 		return this.getView();
 	}
 
 	@Override
-	protected void releaseView( CompletionStep<?> step, CompositeView<?, ?> view ) {
+	protected void releaseView( CompositeView<?, ?> view ) {
 		super.releaseView();
 		//todo
 	}
@@ -75,18 +75,20 @@ public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>
 	}
 
 	@Override
-	protected void handlePreShowDialog( Dialog dialog, CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.handlePreActivation();
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> step ) {
+	protected void handlePostHideDialog() {
 		this.handlePostDeactivation();
-		step.finish();
+		if (openingActivity.isPending()) {
+			openingActivity.cancel();
+		}
 	}
 
-	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
-		this.showDialog( completionStep );
+	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
+		this.showDialog( userActivity );
 	}
 
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {

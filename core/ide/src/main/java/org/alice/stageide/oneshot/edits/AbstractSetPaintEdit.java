@@ -44,7 +44,7 @@ package org.alice.stageide.oneshot.edits;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.EmployeesOnly;
@@ -60,8 +60,9 @@ public abstract class AbstractSetPaintEdit<I extends ModelImp> extends MethodInv
 	private transient I modelImp;
 	private transient Paint value;
 
-	public AbstractSetPaintEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	AbstractSetPaintEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method,
+												Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	protected abstract PaintProperty getPaintProperty( I modelImp );

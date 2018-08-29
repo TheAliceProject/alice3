@@ -43,9 +43,7 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
@@ -55,7 +53,7 @@ import java.util.UUID;
  */
 public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	public static interface Initializer {
-		public void initialize( CompletionStep<?> completionStep );
+		public void initialize();
 	}
 
 	private final ValueCreatorOwningComposite<?, T> composite;
@@ -99,13 +97,13 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	}
 
 	@Override
-	protected T createValue( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, new TransactionHistory() );
+	protected T createValue( UserActivity userActivity, Trigger trigger ) {
+		userActivity.setCompletionModel( this, trigger );
 		if( this.initializer != null ) {
-			this.initializer.initialize( completionStep );
+			this.initializer.initialize();
 		}
-		T value = this.composite.createValue( completionStep );
-		if( completionStep.isCanceled() ) {
+		T value = this.composite.createValue( userActivity );
+		if( userActivity.isCanceled() ) {
 			throw new CancelException();
 		} else {
 			return value;

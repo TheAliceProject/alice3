@@ -45,8 +45,7 @@ package org.alice.stageide.gallerybrowser.uri;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
 import org.lgna.croquet.Model;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +73,7 @@ public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperat
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		if( this.thingCls != null ) {
 			switch( subSteps.size() ) {
 			case 0:

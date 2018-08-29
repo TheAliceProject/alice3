@@ -46,9 +46,8 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.edits.ast.FillInMoreEdit;
 import org.alice.ide.croquet.models.cascade.ParameterBlank;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.ImmutableCascade;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractParameter;
 import org.lgna.project.ast.Expression;
@@ -152,7 +151,7 @@ public class MoreCascade extends ImmutableCascade<Expression> {
 	//		return lastParameter.getDesiredValueType();
 	//	}
 	@Override
-	protected FillInMoreEdit createEdit( CompletionStep<Cascade<Expression>> step, Expression[] values ) {
-		return new FillInMoreEdit( step, values[ 0 ] );
+	protected FillInMoreEdit createEdit( UserActivity userActivity, Expression[] values ) {
+		return new FillInMoreEdit( userActivity, values[ 0 ] );
 	}
 }

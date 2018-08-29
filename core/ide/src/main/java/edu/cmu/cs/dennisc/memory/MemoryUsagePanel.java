@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.memory;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.SwingComponentView;
 
@@ -138,9 +138,9 @@ class GarbageCollectAction extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		System.gc();
-		step.finish();
+		activity.finish();
 	}
 }
 

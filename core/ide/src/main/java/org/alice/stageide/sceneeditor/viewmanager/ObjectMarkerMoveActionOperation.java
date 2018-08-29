@@ -54,7 +54,7 @@ import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Element;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
@@ -174,14 +174,14 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		if( ( this.toMoveField != null ) && ( this.toMoveToField != null ) ) {
 			Expression toMoveToExpression = new FieldAccess( new ThisExpression(), this.toMoveToField );
 			AbstractMethod method = AstUtilities.lookupMethod( SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { SThing.class, MoveAndOrientTo.Detail[].class } );
-			LocalTransformationEdit edit = new LocalTransformationEdit( step, ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new Expression[] { toMoveToExpression } );
-			step.commitAndInvokeDo( edit );
+			LocalTransformationEdit edit = new LocalTransformationEdit( activity, ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new Expression[] { toMoveToExpression } );
+			activity.commitAndInvokeDo( edit );
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 

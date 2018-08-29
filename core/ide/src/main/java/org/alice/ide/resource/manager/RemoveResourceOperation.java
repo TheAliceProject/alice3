@@ -46,7 +46,7 @@ import org.alice.ide.resource.manager.edits.RemoveResourceEdit;
 import org.lgna.common.Resource;
 import org.lgna.croquet.ItemState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -59,7 +59,7 @@ import java.util.UUID;
 	}
 
 	@Override
-	public Edit createEdit( CompletionStep<?> step, Resource resource ) {
-		return new RemoveResourceEdit( step, resource );
+	public Edit createEdit( UserActivity userActivity, Resource resource ) {
+		return new RemoveResourceEdit( userActivity, resource );
 	}
 }

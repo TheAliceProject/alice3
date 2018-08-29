@@ -62,9 +62,7 @@ import org.lgna.croquet.ValueCreatorInputDialogCoreComposite;
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Panel;
@@ -109,13 +107,13 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 		}
 
 		@Override
-		protected AbstractType<?, ?, ?> createValue( Transaction transaction, Trigger trigger ) {
-			CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, new TransactionHistory() );
+		protected AbstractType<?, ?, ?> createValue( UserActivity userActivity, Trigger trigger ) {
+			userActivity.setCompletionModel( this, trigger );
 
 			OtherTypeDialog.this.initializeRootFilterType( this.rootFilterType );
 
-			AbstractType<?, ?, ?> value = OtherTypeDialog.this.createValue( completionStep );
-			if( completionStep.isCanceled() ) {
+			AbstractType<?, ?, ?> value = OtherTypeDialog.this.createValue( userActivity );
+			if( userActivity.isCanceled() ) {
 				throw new CancelException();
 			} else {
 				return value;
@@ -245,7 +243,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		TypeNode typeNode = this.typeTreeState.getValue();
 		if( typeNode != null ) {
 			AbstractType<?, ?, ?> type = typeNode.getType();

@@ -44,8 +44,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.croquet.views.CompositeView;
@@ -77,13 +76,19 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 	private final boolean isModal;
 	private String title;
 	protected Dialog dialog;
+	protected UserActivity openingActivity;
 
 	public AbstractDialogComposite( UUID migrationId, IsModal isModal ) {
 		super( migrationId );
 		this.isModal = isModal.value;
 	}
 
-	protected void showDialog( CompletionStep<?> step ) {
+	public UserActivity getOpeningActivity() {
+		return openingActivity;
+	}
+
+	protected void showDialog( UserActivity userActivity ) {
+		openingActivity = userActivity;
 		Application<?> application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
 
@@ -93,8 +98,8 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		if( window != null ) {
 			owner = window;
 		} else {
-			Trigger trigger = step.getTrigger();
-			ViewController<?, ?> viewController = trigger.getViewController();
+//			Trigger trigger = completionStep.getTrigger();
+			ViewController<?, ?> viewController = null; //trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
@@ -105,12 +110,12 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		class DialogWindowListener implements WindowListener {
 			@Override
 			public void windowOpened( WindowEvent e ) {
-				handleDialogOpened( WindowEventTrigger.createUserInstance( e ) );
+				handleDialogOpened( WindowEventTrigger.createUserInstance( openingActivity, e ) );
 			}
 
 			@Override
 			public void windowClosing( WindowEvent e ) {
-				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( e ) ) ) {
+				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( openingActivity, e ) ) ) {
 					dialog.setVisible( false );
 				}
 			}
@@ -138,7 +143,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		}
 		DialogWindowListener dialogWindowListener = new DialogWindowListener();
 		dialog.addWindowListener( dialogWindowListener );
-		CompositeView<?, ?> view = this.allocateView( step );
+		CompositeView<?, ?> view = this.allocateView();
 		try {
 			dialog.getAwtComponent().setContentPane( view.getAwtComponent() );
 			this.updateWindowSize( dialog );
@@ -155,15 +160,15 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 					WindowUtilities.setLocationOnScreenToCenteredWithin( dialog.getAwtComponent(), owner.getAwtComponent() );
 				}
 			}
-			dialog.setTitle( this.getDialogTitle( step ) );
-			handlePreShowDialog( dialog, step );
+			dialog.setTitle( this.getDialogTitle() );
+			handlePreShowDialog( dialog );
 			//application.pushWindow( dialog );
 			dialog.setVisible( true );
 
 			if( isModal ) {
-				this.handlePostHideDialog( step );
+				this.handlePostHideDialog();
 				dialog.removeWindowListener( dialogWindowListener );
-				this.releaseView( step, view );
+				this.releaseView( view );
 				dialog.getAwtComponent().dispose();
 			} else {
 				Logger.outln( "todo: handle non-modal dialogs" );
@@ -171,7 +176,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		} finally {
 			if( isModal ) {
 				//application.popWindow();
-				this.handleFinally( step, dialog );
+				this.handleFinally( dialog );
 			} else {
 				Logger.outln( "todo: handle non-modal dialogs" );
 			}
@@ -185,9 +190,9 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 	}
 
 	//todo
-	protected abstract CompositeView<?, ?> allocateView( CompletionStep<?> step );
+	protected abstract CompositeView<?, ?> allocateView();
 
-	protected abstract void releaseView( CompletionStep<?> step, CompositeView<?, ?> view );
+	protected abstract void releaseView( CompositeView<?, ?> view );
 
 	//todo: remove?
 	protected final boolean isWindowClosingEnabled( WindowEventTrigger trigger ) {
@@ -196,7 +201,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 
 	protected abstract String getDefaultTitleText();
 
-	protected String getDialogTitle( CompletionStep<?> step ) {
+	protected String getDialogTitle() {
 		this.initializeIfNecessary();
 		String rv = this.title;
 		if( rv != null ) {
@@ -215,7 +220,6 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 	}
 
 	private void handleDialogOpened( WindowEventTrigger trigger ) {
-		//org.lgna.croquet.history.TransactionManager.fireDialogOpened( dialog );
 	}
 
 	private void handleDialogClosed( WindowEventTrigger trigger ) {
@@ -225,10 +229,10 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		return true;
 	}
 
-	protected abstract void handlePreShowDialog( Dialog dialog, CompletionStep<?> step );
+	protected abstract void handlePreShowDialog( Dialog dialog );
 
-	protected abstract void handlePostHideDialog( CompletionStep<?> step );
+	protected abstract void handlePostHideDialog();
 
-	protected void handleFinally( CompletionStep<?> step, Dialog dialog ) {
+	protected void handleFinally( Dialog dialog ) {
 	}
 }

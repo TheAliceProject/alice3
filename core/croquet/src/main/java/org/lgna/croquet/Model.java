@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.triggers.Trigger;
 
 /**
@@ -50,7 +49,7 @@ import org.lgna.croquet.triggers.Trigger;
  */
 public interface Model extends Element {
 
-	Step<?> fire( Trigger trigger );
+	void fire( Trigger trigger );
 
 	boolean isEnabled();
 

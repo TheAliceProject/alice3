@@ -51,7 +51,6 @@ import org.alice.stageide.StageIDE;
 import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.common.RandomUtilities;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -60,7 +59,7 @@ import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractMethod;
@@ -136,7 +135,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private final ActionOperation restartRecording = this.createActionOperation( "restart", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			resetData();
 			return null;
@@ -200,7 +199,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		return isRecordingState.getValue() ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
 	}
 
@@ -215,7 +214,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	@Override
-	protected boolean isClearedForAutoAdvance( CompletionStep<?> step ) {
+	protected boolean isClearedForAutoAdvance() {
 		return ( !this.containsInputEvents() && !this.containsRandom() );
 	}
 
@@ -289,8 +288,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	}
 
 	@Override
-	public void handlePostHideDialog( CompletionStep<?> step ) {
+	public void handlePostHideDialog() {
 		programContext.cleanUpProgram();
-		super.handlePostHideDialog( step );
+		super.handlePostHideDialog();
 	}
 }

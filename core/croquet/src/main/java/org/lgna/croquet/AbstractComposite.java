@@ -54,7 +54,7 @@ import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.preferences.PreferenceBooleanState;
 import org.lgna.croquet.preferences.PreferenceStringState;
@@ -519,7 +519,8 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	}
 
 	protected static interface Action {
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException;
+		// TODO remove userActivity if possible. It is used by only two implementors
+		Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException;
 	}
 
 	protected static final class InternalActionOperation extends ActionOperation {
@@ -547,16 +548,16 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 
 		@Override
-		protected void perform( CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			try {
-				Edit edit = this.action.perform( step, this );
+				Edit edit = this.action.perform( activity, this );
 				if( edit != null ) {
-					step.commitAndInvokeDo( edit );
+					activity.commitAndInvokeDo( edit );
 				} else {
-					step.finish();
+					activity.finish();
 				}
 			} catch( CancelException ce ) {
-				step.cancel();
+				activity.cancel();
 			}
 		}
 
@@ -569,9 +570,9 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	}
 
 	protected static interface CascadeCustomizer<T> {
-		public void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
+		void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
 
-		public Edit createEdit( CompletionStep completionStep, T[] values );
+		Edit createEdit( T[] values );
 	}
 
 	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
@@ -599,8 +600,8 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 
 		@Override
-		protected Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values ) {
-			return this.customizer.createEdit( completionStep, values );
+		protected Edit createEdit( UserActivity userActivity, T[] values ) {
+			return this.customizer.createEdit( values );
 		}
 
 		@Override

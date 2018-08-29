@@ -52,9 +52,8 @@ import com.apple.eawt.QuitResponse;
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.MenuSelection;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.preferences.PreferencesManager;
 import org.lgna.croquet.triggers.AppleApplicationEventTrigger;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
@@ -65,7 +64,6 @@ import javax.swing.MenuSelectionManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.ComponentOrientation;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -85,7 +83,7 @@ public abstract class Application<D extends DocumentFrame> {
 	public static final Group PROJECT_GROUP = Group.getInstance( UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" ), "PROJECT_GROUP" );
 
 	private final PreferencesManager preferencesManager;
-	private final TransactionHistory transactionHistory;
+	private final UserActivity systemActivity;
 
 	private static Application<?> singleton;
 
@@ -97,31 +95,29 @@ public abstract class Application<D extends DocumentFrame> {
 		assert Application.singleton == null;
 		Application.singleton = this;
 		preferencesManager = new PreferencesManager( this );
-		this.transactionHistory = new TransactionHistory();
+		this.systemActivity = new UserActivity();
 		MenuSelectionManager.defaultManager().addChangeListener( this::handleMenuSelectionStateChanged );
 	}
 
 	public abstract D getDocumentFrame();
 
-	public TransactionHistory getTransactionHistory() {
-		return this.transactionHistory;
+	public UserActivity getOverallUserActivity() {
+		return systemActivity;
 	}
 
 	public PreferencesManager getPreferencesManager() {
 		return preferencesManager;
 	}
 
-	// TODO: Fix this the right way... if we *ever* support multiple documents... this is a hack for now...
-	@Deprecated
-	public TransactionHistory getApplicationOrDocumentTransactionHistory() {
-		DocumentFrame documentFrame = this.getDocumentFrame();
-		if( documentFrame != null ) {
-			Document document = documentFrame.getDocument();
-			if( document != null ) {
-				return document.getRootTransactionHistory();
-			}
-		}
-		return this.getTransactionHistory();
+	// Find a user activity to add to. If the latest one is the top level application activity, create a new child in that
+	public UserActivity acquireOpenActivity() {
+		UserActivity latest = systemActivity.getLatestActivity();
+		return latest == systemActivity ? systemActivity.newChildActivity() : latest;
+	}
+
+	public UserActivity acquireOpenUntriggeredAcivity() {
+		UserActivity latest = acquireOpenActivity();
+		return latest.getCompletionStep() != null ? latest.newChildActivity() : latest;
 	}
 
 	public void initialize( String[] args ) {
@@ -148,8 +144,9 @@ public abstract class Application<D extends DocumentFrame> {
 			application.setQuitHandler( new QuitHandler() {
 				@Override
 				public void handleQuitRequestWith( AppEvent.QuitEvent e, QuitResponse quitResponse ) {
-					CompletionStep<?> completion = Application.this.handleQuit( AppleApplicationEventTrigger.createUserInstance( e ) );
-					if (completion.isCanceled()) {
+					final AppleApplicationEventTrigger trigger = AppleApplicationEventTrigger.createUserInstance( e );
+					Application.this.handleQuit( trigger );
+					if ( trigger.getUserActivity().isCanceled() ) {
 						quitResponse.cancelQuit();
 					}
 				}
@@ -211,7 +208,7 @@ public abstract class Application<D extends DocumentFrame> {
 
 	protected abstract void handleWindowOpened( WindowEvent e );
 
-	public abstract CompletionStep<?> handleQuit( Trigger trigger );
+	public abstract void handleQuit( Trigger trigger );
 
 	private boolean isDragInProgress = false;
 
@@ -226,12 +223,13 @@ public abstract class Application<D extends DocumentFrame> {
 	}
 
 	private void handleMenuSelectionStateChanged( ChangeEvent e ) {
-		ChangeEventTrigger trigger = ChangeEventTrigger.createUserInstance( e );
+		final UserActivity menuActivity = acquireOpenActivity();
+		ChangeEventTrigger trigger = ChangeEventTrigger.createUserInstance( menuActivity, e );
 		MenuSelection menuSelection = new MenuSelection( trigger );
 		if( menuSelection.isValid() ) {
-			// TODO: This is probably not the best way to handle this... we should really have a document application and an non-document application.
-			// and then override this method.
-			this.getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction().addMenuSelection( menuSelection );
+			menuActivity.addMenuSelection( menuSelection );
+		} else {
+			menuActivity.cancel();
 		}
 	}
 

@@ -45,8 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 import org.alice.ide.IDE;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.io.File;
 import java.util.List;
@@ -66,7 +65,7 @@ public class OpenProjectFromOsOperation extends UriPotentialClearanceIteratingOp
 	}
 
 	@Override
-	protected UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
 		return new FileProjectLoader( file );
 	}
 

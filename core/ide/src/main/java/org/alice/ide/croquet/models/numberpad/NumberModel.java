@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.numberpad;
 
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.TODO_REMOVE_BogusStep;
 import org.lgna.croquet.triggers.DocumentEventTrigger;
 import org.lgna.project.ast.Expression;
 
@@ -77,7 +77,7 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
 
 		private void update( DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {
-				TransactionManager.TODO_REMOVE_fireEvent( DocumentEventTrigger.createUserInstance( e ) );
+				new TODO_REMOVE_BogusStep( DocumentEventTrigger.createUserInstance( e ) );
 			}
 		}
 

@@ -43,10 +43,8 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.lgna.croquet.views.ViewController;
 
-import java.awt.Point;
 import java.util.EventObject;
 
 /**
@@ -59,14 +57,5 @@ public class AppleApplicationEventTrigger extends EventObjectTrigger<EventObject
 
 	private AppleApplicationEventTrigger( ViewController<?, ?> viewController, EventObject event ) {
 		super( viewController, event );
-	}
-
-	public AppleApplicationEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
 	}
 }

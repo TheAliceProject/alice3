@@ -44,7 +44,7 @@ package org.alice.ide.croquet.edits.ast;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserParameter;
@@ -55,8 +55,8 @@ import org.lgna.project.ast.UserParameter;
 public class AddParameterEdit extends ParameterEdit {
 	private transient int index;
 
-	public AddParameterEdit( CompletionStep completionStep, UserCode code, UserParameter parameter ) {
-		super( completionStep, code, parameter );
+	public AddParameterEdit( UserActivity userActivity, UserCode code, UserParameter parameter ) {
+		super( userActivity, code, parameter );
 	}
 
 	public AddParameterEdit( BinaryDecoder binaryDecoder, Object step ) {

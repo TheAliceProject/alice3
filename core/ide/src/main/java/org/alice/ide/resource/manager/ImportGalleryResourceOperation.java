@@ -7,8 +7,7 @@ import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -25,12 +24,12 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
 		switch (subSteps.size()) {
 		case 0:
 			return importGalleryResourceComposite.getBrowseOperation();
@@ -39,10 +38,5 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
 	}
 }

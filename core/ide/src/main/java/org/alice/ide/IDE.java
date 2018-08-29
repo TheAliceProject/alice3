@@ -67,7 +67,7 @@ import org.lgna.croquet.Operation;
 import org.lgna.croquet.Perspective;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.preferences.PreferenceManager;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.triggers.WindowEventTrigger;
@@ -465,7 +465,9 @@ public abstract class IDE extends ProjectApplication {
 			//pass
 		} else {
 			this.setPerspective( this.getDocumentFrame().getNoProjectPerspective() );
-			this.getDocumentFrame().getNewProjectOperation().fire( WindowEventTrigger.createUserInstance( e ) );
+
+			UserActivity userActivity = getOverallUserActivity().getLatestActivity().newChildActivity(); // or acquireOpenActivity()?
+			this.getDocumentFrame().getNewProjectOperation().fire( WindowEventTrigger.createUserInstance( userActivity, e ) );
 		}
 	}
 
@@ -490,12 +492,12 @@ public abstract class IDE extends ProjectApplication {
 	private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
-	public final CompletionStep<?> handleQuit( Trigger trigger ) {
+	public final void handleQuit( Trigger trigger ) {
 		this.preservePreferences();
 		if( this.crashDetector != null ) {
 			this.crashDetector.close();
 		}
-		return clearanceCheckingExitOperation.fire( trigger );
+		clearanceCheckingExitOperation.fire( trigger );
 	}
 
 	protected VirtualMachine createVirtualMachineForSceneEditor() {

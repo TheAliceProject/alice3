@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.croquet.edits.ast.keyed.RemoveKeyedArgumentEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.KeyedArgumentListProperty;
 
@@ -92,7 +92,7 @@ public class RemoveKeyedArgumentOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new RemoveKeyedArgumentEdit( step ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new RemoveKeyedArgumentEdit( activity ) );
 	}
 }

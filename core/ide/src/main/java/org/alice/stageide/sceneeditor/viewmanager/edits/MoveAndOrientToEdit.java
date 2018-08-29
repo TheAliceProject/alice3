@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
@@ -64,8 +64,8 @@ public class MoveAndOrientToEdit extends AbstractEdit {
 	private transient AbstractTransformableImp transformable;
 	private transient AffineMatrix4x4 m;
 
-	public MoveAndOrientToEdit( CompletionStep completionStep, SMovableTurnable toMove, SThing target ) {
-		super( completionStep );
+	public MoveAndOrientToEdit( UserActivity userActivity, SMovableTurnable toMove, SThing target ) {
+		super( userActivity );
 		this.toMove = toMove;
 		this.target = target;
 	}

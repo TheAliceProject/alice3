@@ -43,8 +43,11 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.DragModel;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.ViewController;
+import org.lgna.croquet.views.imp.JDragView;
 
 import java.awt.event.MouseEvent;
 
@@ -52,19 +55,12 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class DragTrigger extends AbstractMouseEventTrigger {
-	public static DragTrigger createUserInstance( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		return new DragTrigger( viewController, mouseEvent );
+	public static <M extends DragModel> DragTrigger createUserInstance( UserActivity userActivity, ViewController<JDragView, M> viewController,
+																																			MouseEvent mouseEvent ) {
+		return new DragTrigger( userActivity, viewController, mouseEvent );
 	}
 
-	public static DragTrigger createUserInstance( MouseEvent mouseEvent ) {
-		return createUserInstance( null, mouseEvent );
-	}
-
-	private DragTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		super( viewController, mouseEvent );
-	}
-
-	public DragTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private DragTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( userActivity, viewController, mouseEvent );
 	}
 }

@@ -40,67 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.croquet.history;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.pattern.Criterion;
+package org.lgna.croquet.history.event;
 
-import java.util.List;
+import org.lgna.croquet.history.TransactionNode;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistory extends TransactionNode<CompletionStep<?>>  {
-	private final List<Transaction> transactions;
+public class AddEvent<T extends TransactionNode> implements TransactionEvent {
+	private final T node;
 
-	public TransactionHistory() {
-		super( null );
-		this.transactions = Lists.newCopyOnWriteArrayList();
+	public AddEvent( T node ) {
+		this.node = node;
 	}
 
-	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
-		return getOwner() == null ? null : getOwner().findAcceptableStep( criterion );
-	}
-
-	public TransactionHistory getActiveTransactionHistory() {
-		Transaction transaction = getLastTransaction();
-		if( ( transaction != null ) && transaction.isPending() ) {
-			CompletionStep<?> completionStep = transaction.getCompletionStep();
-			if( completionStep != null ) {
-				TransactionHistory history = completionStep.getTransactionHistory();
-				if ( history != null ) {
-					return history.getActiveTransactionHistory();
-				}
-			}
-		}
-		return this;
-	}
-
-	public int getIndexOfTransaction( Transaction transaction ) {
-		return this.transactions.indexOf( transaction );
-	}
-
-	public Transaction getTransactionAt( int i ) {
-		return this.transactions.get( i );
-	}
-
-	public int getTransactionCount() {
-		return this.transactions.size();
-	}
-
-	private Transaction getLastTransaction() {
-		final int n = this.transactions.size();
-		return n > 0 ? this.transactions.get( n - 1 ) : null;
-	}
-
-	public Transaction acquireActiveTransaction() {
-		Transaction lastTransaction = this.getLastTransaction();
-		if ( lastTransaction != null && lastTransaction.isPending() ) {
-			return lastTransaction;
-		}
-
-		Transaction transaction = new Transaction( this );
-		this.transactions.add( transaction );
-		return transaction;
+	public T getNode() {
+		return this.node;
 	}
 }

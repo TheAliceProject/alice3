@@ -46,7 +46,7 @@ package org.alice.ide;
 import org.alice.ide.type.TypeCache;
 import org.lgna.croquet.Document;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.undo.UndoHistory;
 import org.lgna.project.Project;
 
@@ -56,18 +56,18 @@ import org.lgna.project.Project;
 public class ProjectDocument implements Document {
 
 	private final Project project;
-	private final TransactionHistory transactionHistory;
+	private final UserActivity userActivity;
 	private final ProjectHistoryManager projectHistoryManager;
 
 	private final TypeCache typeCache;
 
-	public ProjectDocument( Project project ) {
+	public ProjectDocument( Project project, UserActivity rootActivity ) {
 		this.project = project;
-		this.transactionHistory = new TransactionHistory();
+		userActivity = rootActivity;
 		this.projectHistoryManager = new ProjectHistoryManager( this );
 
-		// TODO: We need to store this transaction history as part of the profile file
-		//this.putValueFor( org.lgna.croquet.history.TransactionHistory.INTERACTION_HISTORY_PROPERTY_KEY, this.transactionHistory );
+		// TODO: Store user activity as part of the profile file
+		//this.putValueFor( UserActivity.INTERACTION_HISTORY_PROPERTY_KEY, this.userActivity );
 
 		this.typeCache = new TypeCache( this.project );
 	}
@@ -81,8 +81,8 @@ public class ProjectDocument implements Document {
 	}
 
 	@Override
-	public TransactionHistory getRootTransactionHistory() {
-		return this.transactionHistory;
+	public UserActivity getUserActivity() {
+		return userActivity;
 	}
 
 	@Override

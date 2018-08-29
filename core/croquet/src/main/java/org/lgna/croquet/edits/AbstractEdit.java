@@ -52,8 +52,8 @@ import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Manager;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -63,25 +63,25 @@ import javax.swing.undo.CannotRedoException;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEdit<M extends CompletionModel> implements Edit, BinaryEncodableAndDecodable {
-	public static <E extends AbstractEdit<?>> E createCopy( E original, CompletionStep<?> step ) {
-		assert step != null : original;
+	public static <E extends AbstractEdit<?>> E createCopy( E original, UserActivity activity ) {
+		assert activity != null : original;
 		original.preCopy();
 		ByteArrayBinaryEncoder encoder = new ByteArrayBinaryEncoder();
 		encoder.encode( original );
 		BinaryDecoder decoder = encoder.createDecoder();
-		E rv = decoder.decodeBinaryEncodableAndDecodable( step );
+		E rv = decoder.decodeBinaryEncodableAndDecodable( activity );
 		original.postCopy( rv );
 		return rv;
 	}
 
-	private transient CompletionStep<M> completionStep;
+	private transient UserActivity userActivity;
 
-	public AbstractEdit( CompletionStep<M> completionStep ) {
-		this.completionStep = completionStep;
+	public AbstractEdit( UserActivity userActivity ) {
+		this.userActivity = userActivity;
 	}
 
 	public AbstractEdit( BinaryDecoder binaryDecoder, Object step ) {
-		this.completionStep = (CompletionStep<M>)step;
+		this.userActivity = (UserActivity) step;
 	}
 
 	@Override
@@ -95,11 +95,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 	}
 
 	public M getModel() {
-		if( this.completionStep != null ) {
-			return this.completionStep.getModel();
-		} else {
-			return null;
-		}
+		return userActivity != null ? (M) userActivity.getCompletionModel() : null;
 	}
 
 	@Override
@@ -110,15 +106,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 		} else {
 			return null;
 		}
-	}
-
-	public CompletionStep<M> getCompletionStep() {
-		return this.completionStep;
-	}
-
-	public void setCompletionStep( CompletionStep<M> completionStep ) {
-		assert this.completionStep == null : this.completionStep;
-		this.completionStep = completionStep;
 	}
 
 	@Override
@@ -162,7 +149,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 	}
 
 	protected <D extends DropSite> D findFirstDropSite( Class<D> cls ) {
-		Step<?> step = this.getCompletionStep();
+		Step<?> step = userActivity.getCompletionStep();
 		while( step != null ) {
 			Trigger trigger = step.getTrigger();
 			if( trigger instanceof DropTrigger ) {

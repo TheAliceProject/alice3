@@ -43,8 +43,8 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 
@@ -60,10 +60,7 @@ public class NullTrigger extends Trigger {
 	}
 
 	private NullTrigger() {
-	}
-
-	public NullTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+		super(Application.getActiveInstance().acquireOpenUntriggeredAcivity());
 	}
 
 	@Override

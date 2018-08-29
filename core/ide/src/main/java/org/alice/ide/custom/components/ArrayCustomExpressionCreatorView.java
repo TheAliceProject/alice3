@@ -55,7 +55,6 @@ import org.alice.ide.x.AstI18nFactory;
 import org.alice.ide.x.DialogAstI18nFactory;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeWithInternalBlank;
 import org.lgna.croquet.Group;
@@ -63,7 +62,7 @@ import org.lgna.croquet.PopupPrepModel;
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractLabel;
@@ -112,7 +111,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values ) {
+		protected Edit createEdit( UserActivity userActivity, T[] values ) {
 			T[] items = this.data.toArray();
 			items[ this.index ] = values[ 0 ];
 			this.data.internalSetAllItems( items );
@@ -188,9 +187,9 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected void perform( CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			this.data.internalRemoveItem( this.data.getItemAt( this.index ) );
-			step.finish();
+			activity.finish();
 		}
 	}
 
