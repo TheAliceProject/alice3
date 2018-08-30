@@ -127,8 +127,18 @@ public class UserActivity extends TransactionNode<UserActivity> {
 		}
 		return getOwner() == null ? null: getOwner().findAcceptableStep(criterion);
 	}
+
 	public DropSite findDropSite() {
 		return completionStep == null ? null : completionStep.findDropSite();
+	}
+
+	public MenuItemSelectStep findFirstMenuSelectStep() {
+		for ( PrepStep step : prepSteps) {
+			if (step instanceof MenuItemSelectStep) {
+				return (MenuItemSelectStep) step;
+			}
+		}
+		return null;
 	}
 
 	public void addMenuSelection( MenuSelection menuSelection ) {
@@ -215,6 +225,9 @@ public class UserActivity extends TransactionNode<UserActivity> {
 	}
 
 	public void setCompletionModel( CompletionModel model) {
+		if (completionStep != null && model == completionStep.getModel()) {
+			return;
+		}
 		setCompletionStep( new CompletionStep<>( this, model, getTrigger() ) );
 	}
 

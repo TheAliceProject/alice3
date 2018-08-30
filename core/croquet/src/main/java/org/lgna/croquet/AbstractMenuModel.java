@@ -43,7 +43,9 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.MenuItemSelectStep;
 import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.PopupMenu;
@@ -135,6 +137,11 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	}
 
 	protected void handleCanceled( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
+		UserActivity activity = Application.getActiveInstance().acquireOpenActivity();
+		MenuItemSelectStep step = activity.findFirstMenuSelectStep();
+		if (step != null && step.getModel() == this) {
+			activity.cancel();
+		}
 	}
 
 	private class PopupMenuListener implements javax.swing.event.PopupMenuListener {

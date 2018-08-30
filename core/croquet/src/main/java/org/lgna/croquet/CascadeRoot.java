@@ -241,16 +241,16 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract Class<T> getComponentType();
 
-	public final void recordCompletionModel( UserActivity userActivity ) {
+	final void recordCompletionModel( UserActivity userActivity ) {
 		userActivity.setCompletionModel( getCompletionModel() );
 	}
 
-	public abstract void handleCompletion( Trigger trigger, RtRoot<T, CM> rtRoot );
+	public abstract void handleCompletion( UserActivity userActivity, RtRoot<T, CM> rtRoot );
 
-	public final void handleCancel( Trigger trigger ) {
+	public final void handleCancel( UserActivity userActivity ) {
 		try {
-			if ( trigger.getUserActivity().getCompletionStep() == null ) {
-				trigger.getUserActivity().setCompletionModel( getCompletionModel() );
+			if ( userActivity.getCompletionStep() == null ) {
+				userActivity.setCompletionModel( getCompletionModel() );
 			}
 		} finally {
 			this.getPopupPrepModel().handleFinally();

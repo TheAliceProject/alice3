@@ -45,8 +45,8 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,11 +92,11 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public void handleCompletion( Trigger trigger, RtRoot<T, CustomItemState<T>> rtRoot ) {
+		public void handleCompletion( UserActivity userActivity, RtRoot<T, CustomItemState<T>> rtRoot ) {
 			try {
-				recordCompletionModel( trigger.getUserActivity() );
+				recordCompletionModel( userActivity );
 				T[] values = rtRoot.createValues( getComponentType() );
-				state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+				state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, userActivity.getTrigger() );
 			} finally {
 				this.getPopupPrepModel().handleFinally();
 			}

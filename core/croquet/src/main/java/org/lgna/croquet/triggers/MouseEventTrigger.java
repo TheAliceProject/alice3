@@ -56,11 +56,15 @@ public class MouseEventTrigger extends AbstractMouseEventTrigger {
 		return new MouseEventTrigger( userActivity, null, mouseEvent );
 	}
 	public static MouseEventTrigger createUserInstance( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		return new MouseEventTrigger( null, viewController, mouseEvent );
+		return new MouseEventTrigger(viewController, mouseEvent );
 	}
 
 	public static MouseEventTrigger createUserInstance( MouseEvent mouseEvent ) {
-		return new MouseEventTrigger( null, null, mouseEvent );
+		return new MouseEventTrigger(null, mouseEvent );
+	}
+
+	private MouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( viewController, mouseEvent );
 	}
 
 	private MouseEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {

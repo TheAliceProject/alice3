@@ -105,19 +105,17 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		}
 
 		@Override
-		public void handleCompletion( Trigger trigger, RtRoot<T, Cascade<T>> rtRoot ) {
-			UserActivity activity = trigger.getUserActivity();
+		public void handleCompletion( UserActivity userActivity, RtRoot<T, Cascade<T>> rtRoot ) {
 			try {
-
 				T[] values = rtRoot.createValues( this.getComponentType() );
-				Edit edit = cascade.createEdit( activity, values );
+				Edit edit = cascade.createEdit( userActivity, values );
 				if( edit != null ) {
-					if (activity.getCompletionStep() == null) {
-						recordCompletionModel( activity );
+					if (userActivity.getCompletionStep() == null) {
+						recordCompletionModel( userActivity );
 					}
-					activity.commitAndInvokeDo( edit );
+					userActivity.commitAndInvokeDo( edit );
 				} else {
-					activity.cancel();
+					userActivity.cancel();
 				}
 			} finally {
 				this.getPopupPrepModel().handleFinally();

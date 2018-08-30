@@ -95,13 +95,13 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 	}
 
 	public void cancel( Trigger trigger ) {
-		getElement().recordCompletionModel( trigger.getUserActivity() );
-		this.getElement().handleCancel( trigger );
+		getElement().handleCancel( trigger.getUserActivity() );
+		trigger.getUserActivity().cancel();
 	}
 
 	public void complete( Trigger trigger ) {
 		try {
-			getElement().handleCompletion( trigger, this );
+			getElement().handleCompletion( trigger.getUserActivity(), this );
 		} catch( CancelException ce ) {
 			cancel( trigger );
 		}

@@ -54,6 +54,9 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<MouseEvent> {
+	AbstractMouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( viewController, mouseEvent );
+	}
 	AbstractMouseEventTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
 		super( userActivity, viewController, mouseEvent );
 	}

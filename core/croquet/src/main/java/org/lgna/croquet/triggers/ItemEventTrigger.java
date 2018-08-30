@@ -43,6 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
 import org.lgna.croquet.views.ViewController;
 
 import java.awt.event.ItemEvent;
@@ -52,10 +53,11 @@ import java.awt.event.ItemEvent;
  */
 public class ItemEventTrigger extends EventObjectTrigger<ItemEvent> {
 	public static ItemEventTrigger createUserInstance( ItemEvent itemEvent ) {
-		return new ItemEventTrigger( null, itemEvent );
+		return new ItemEventTrigger( itemEvent );
 	}
 
-	private ItemEventTrigger( ViewController<?, ?> viewController, ItemEvent itemEvent ) {
-		super( viewController, itemEvent );
+	private ItemEventTrigger(  ItemEvent itemEvent ) {
+		// Use open activity, regardless if it has a model set on it
+		super( Application.getActiveInstance().acquireOpenActivity(), null, itemEvent );
 	}
 }

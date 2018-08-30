@@ -228,8 +228,6 @@ public abstract class Application<D extends DocumentFrame> {
 		MenuSelection menuSelection = new MenuSelection( trigger );
 		if( menuSelection.isValid() ) {
 			menuActivity.addMenuSelection( menuSelection );
-		} else {
-			menuActivity.cancel();
 		}
 	}
 
