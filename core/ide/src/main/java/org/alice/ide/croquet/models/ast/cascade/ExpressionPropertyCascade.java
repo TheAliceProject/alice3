@@ -51,7 +51,6 @@ import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.ImmutableCascade;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionProperty;
 
@@ -74,10 +73,10 @@ public abstract class ExpressionPropertyCascade extends ImmutableCascade<Express
 	}
 
 	@Override
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 		this.pushedContext = new ExpressionPropertyContext( this.expressionProperty );
 		IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		super.prologue( trigger );
+		super.prologue();
 	}
 
 	@Override

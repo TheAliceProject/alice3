@@ -126,11 +126,11 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		return this.fillIn;
 	}
 
-	protected abstract T createValue( UserActivity transaction, Trigger trigger );
+	protected abstract T createValue( UserActivity transaction );
 
 	@Override
-	protected void perform( UserActivity activity, Trigger trigger ) {
-		T value = this.createValue( activity, trigger );
+	protected void performInActivity( UserActivity activity ) {
+		T value = this.createValue( activity );
 		activity.setProducedValue(value);
 	}
 

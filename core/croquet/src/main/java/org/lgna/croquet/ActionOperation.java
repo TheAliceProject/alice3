@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -58,8 +57,8 @@ public abstract class ActionOperation extends Operation {
 	protected abstract void perform( UserActivity activity );
 
 	@Override
-	protected final void perform( UserActivity activity, Trigger trigger ) {
-		activity.setCompletionModel( this, trigger ); // Is this needed here?
+	protected  void performInActivity( UserActivity activity ) {
+		activity.setCompletionModel( this ); // Is this needed here?
 		this.perform( activity );
 	}
 }

@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.awt.Component;
 import java.io.File;
@@ -62,8 +61,8 @@ public abstract class FileDialogValueCreator<T> extends ValueCreator<T> {
 	protected abstract T createValueFromFile( File file );
 
 	@Override
-	protected T createValue( UserActivity userActivity, Trigger trigger ) {
-		userActivity.setCompletionModel( this, trigger );
+	protected T createValue( UserActivity userActivity ) {
+		userActivity.setCompletionModel( this );
 		Component awtComponent = null; //todo
 		File file = this.showFileDialog( awtComponent );
 		if( file != null ) {

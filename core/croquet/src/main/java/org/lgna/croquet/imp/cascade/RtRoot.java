@@ -95,7 +95,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 	}
 
 	public void cancel( Trigger trigger ) {
-		getElement().createCompletionStep( trigger );
+		getElement().recordCompletionModel( trigger.getUserActivity() );
 		this.getElement().handleCancel( trigger );
 	}
 

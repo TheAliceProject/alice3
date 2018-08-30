@@ -50,7 +50,6 @@ import org.alice.ide.croquet.models.ast.cascade.ExpressionsCascade;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
 
@@ -87,9 +86,9 @@ public abstract class StatementInsertCascade extends ExpressionsCascade implemen
 	protected abstract Statement createStatement( Expression... expressions );
 
 	@Override
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 		EPIC_HACK_isActive = true;
-		super.prologue( trigger );
+		super.prologue();
 	}
 
 	@Override

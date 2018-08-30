@@ -46,7 +46,6 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.ValueCreator;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.io.File;
 import java.util.UUID;
@@ -66,12 +65,12 @@ public abstract class UriCreator<T> extends ValueCreator<T> {
 	protected abstract T internalGetValueFrom( File file );
 
 	@Override
-	protected T createValue( UserActivity userActivity, Trigger trigger ) {
+	protected T createValue( UserActivity userActivity ) {
 		Application application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
 		File directory = this.getInitialDirectory();
 		String extension = this.getExtension();
-		userActivity.setCompletionModel( this, trigger );
+		userActivity.setCompletionModel( this );
 		File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
 			T rv = this.internalGetValueFrom( file );

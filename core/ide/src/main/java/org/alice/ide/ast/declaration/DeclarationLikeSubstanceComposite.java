@@ -69,7 +69,6 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Dialog;
 import org.lgna.project.Project;
 import org.lgna.project.annotations.ValueDetails;
@@ -180,7 +179,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 		}
 
 		@Override
@@ -289,7 +288,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 		}
 
 		@Override

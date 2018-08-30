@@ -57,7 +57,6 @@ import org.lgna.croquet.CascadeLineSeparator;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ast.AbstractConstructor;
 import org.lgna.project.ast.AbstractType;
@@ -172,7 +171,7 @@ public class AddResourceKeyManagedFieldComposite extends AddManagedFieldComposit
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 			this.pushedContext = new InitializerContext();
 			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		}

@@ -59,10 +59,14 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 	public Trigger() {
 		// TODO Remove access to activity this way
 		userActivity = Application.getActiveInstance().acquireOpenUnboundedActivity();
+		userActivity.setTrigger( this );
 	}
 
 	public Trigger( UserActivity userActivity ) {
 		this.userActivity = userActivity;
+		if (userActivity != null) {
+			userActivity.setTrigger( this );
+		}
 	}
 
 	@Override
@@ -85,9 +89,5 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 
 	public UserActivity getUserActivity() {
 		return userActivity;
-	}
-
-	public Trigger createChildTrigger() {
-		return IterationTrigger.createUserInstance(userActivity.newChildActivity());
 	}
 }

@@ -45,7 +45,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Iterator;
 import java.util.List;
@@ -71,18 +70,18 @@ public abstract class IteratingOperation extends Operation {
 		activity.finish();
 	}
 
-	protected void iterateOverSubModels( UserActivity activity, Trigger trigger ) {
-		activity.setCompletionModel( this, trigger );
+	protected void iterateOverSubModels( UserActivity activity ) {
+		activity.setCompletionModel( this );
 		try {
 			List<UserActivity> subSteps = Lists.newLinkedList();
 			Iterator<Model> iteratingData = this.createIteratingData();
 			while( this.hasNext( subSteps, iteratingData ) ) {
 				Model model = this.getNext( subSteps, iteratingData );
 				if( model != null ) {
-					Trigger childTrigger = trigger.createChildTrigger();
-					model.fire( childTrigger );
-					if(childTrigger.getUserActivity().isSuccessfullyCompleted()) {
-						subSteps.add( childTrigger.getUserActivity() );
+					UserActivity child = activity.newChildActivity();
+					model.fire( child.getTrigger() );
+					if ( child.isSuccessfullyCompleted() ) {
+						subSteps.add( child );
 					} else {
 						Logger.severe( "subStep is pending", this );
 						activity.cancel();

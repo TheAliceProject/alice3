@@ -51,6 +51,7 @@ import org.lgna.croquet.history.event.AddEvent;
 import org.lgna.croquet.history.event.CancelEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
+import org.lgna.croquet.triggers.IterationTrigger;
 import org.lgna.croquet.triggers.Trigger;
 
 import java.util.List;
@@ -64,6 +65,7 @@ public class UserActivity extends TransactionNode<UserActivity> {
 		FINISHED
 	}
 
+	private Trigger trigger;
 	private final List<PrepStep<?>> prepSteps;
 	private final List<UserActivity> childActivities;
 	private CompletionStep<?> completionStep;
@@ -87,6 +89,17 @@ public class UserActivity extends TransactionNode<UserActivity> {
 		childActivities.add( child );
 		child.fireChanged( new AddEvent<>( child ) );
 		return child;
+	}
+
+	public Trigger getTrigger() {
+		if (trigger == null) {
+			trigger = IterationTrigger.createUserInstance( this );
+		}
+		return trigger;
+	}
+
+	public void setTrigger(Trigger trigger) {
+		this.trigger = trigger;
 	}
 
 	public List<UserActivity> getChildActivities() {
@@ -201,8 +214,8 @@ public class UserActivity extends TransactionNode<UserActivity> {
 		step.fireChanged( e );
 	}
 
-	public void setCompletionModel( CompletionModel model, Trigger trigger ) {
-		setCompletionStep( new CompletionStep<>( this, model, trigger ) );
+	public void setCompletionModel( CompletionModel model) {
+		setCompletionStep( new CompletionStep<>( this, model, getTrigger() ) );
 	}
 
 	public CompletionModel getCompletionModel() {

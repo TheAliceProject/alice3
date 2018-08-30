@@ -58,7 +58,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.preferences.PreferenceBooleanState;
 import org.lgna.croquet.preferences.PreferenceStringState;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.SplitPane;
@@ -623,7 +622,7 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 
 		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode );
 
-		public void prologue( Trigger trigger );
+		public void prologue();
 
 		public void epilogue();
 	}
@@ -647,9 +646,9 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 
 		@Override
-		protected void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.customizer.prologue( trigger );
+		protected void prologue() {
+			super.prologue();
+			this.customizer.prologue();
 		}
 
 		@Override

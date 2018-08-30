@@ -339,7 +339,7 @@ public class DragStep extends PrepStep<DragModel> {
 
 	public void cancel( MouseEvent e ) {
 		final MouseEventTrigger trigger = MouseEventTrigger.createUserInstance( e );
-		trigger.getUserActivity().setCompletionModel( null, trigger );
+		trigger.getUserActivity().setCompletionModel( null );
 		trigger.getUserActivity().cancel();
 	}
 }

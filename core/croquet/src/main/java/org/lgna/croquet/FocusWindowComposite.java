@@ -105,12 +105,13 @@ public abstract class FocusWindowComposite extends AbstractComposite<Panel> {
 		}
 
 		@Override
-		protected void perform( UserActivity transaction, Trigger trigger ) {
+		protected void performInActivity( UserActivity userActivity ) {
 			SwingComponentView<?> view = FocusWindowComposite.this.getRootComponent();
 			if( view.getParent() == null ) {
 				window.getContentPane().addCenterComponent( view );
 			}
 			window.pack();
+			final Trigger trigger = userActivity.getTrigger();
 			if( trigger instanceof EventObjectTrigger ) {
 				EventObjectTrigger<EventObject> eventObjectTrigger = (EventObjectTrigger<EventObject>)trigger;
 				EventObject eventObject = eventObjectTrigger.getEvent();

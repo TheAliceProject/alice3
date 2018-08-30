@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ItemEventTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.JToggleButton;
 import java.awt.event.ItemEvent;
@@ -208,8 +207,8 @@ public abstract class ItemState<T> extends State<T> {
 		}*/
 
 		@Override
-		protected final void perform( UserActivity transaction, Trigger trigger ) {
-			state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, userActivity.getTrigger() );
 //			Logger.severe( this, transaction, trigger );
 		}
 	}

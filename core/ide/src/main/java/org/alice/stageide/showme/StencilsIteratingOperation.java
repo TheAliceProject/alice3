@@ -47,7 +47,6 @@ import org.lgna.croquet.IteratingOperation;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.StencilModel;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.Iterator;
 import java.util.List;
@@ -80,11 +79,11 @@ public abstract class StencilsIteratingOperation extends IteratingOperation {
 	}
 
 	@Override
-	protected final void perform( final UserActivity transaction, final Trigger trigger ) {
+	protected final void performInActivity( final UserActivity userActivity ) {
 		new Thread() {
 			@Override
 			public void run() {
-				iterateOverSubModels( transaction, trigger );
+				iterateOverSubModels( userActivity );
 			}
 		}.start();
 	}

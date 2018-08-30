@@ -86,13 +86,13 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.group;
 	}
 
-	protected abstract void perform( UserActivity transaction, Trigger trigger );
+	protected abstract void performInActivity( UserActivity userActivity );
 
 	@Override
 	public void fire( Trigger trigger ) {
 		if( this.isEnabled() ) {
 			this.initializeIfNecessary();
-			this.perform( trigger.getUserActivity(), trigger );
+			this.performInActivity( trigger.getUserActivity() );
 		}
 	}
 

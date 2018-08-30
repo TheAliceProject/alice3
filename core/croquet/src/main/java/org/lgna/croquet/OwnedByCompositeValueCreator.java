@@ -44,7 +44,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -97,8 +96,8 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	}
 
 	@Override
-	protected T createValue( UserActivity userActivity, Trigger trigger ) {
-		userActivity.setCompletionModel( this, trigger );
+	protected T createValue( UserActivity userActivity ) {
+		userActivity.setCompletionModel( this );
 		if( this.initializer != null ) {
 			this.initializer.initialize();
 		}

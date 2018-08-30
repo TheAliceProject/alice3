@@ -64,7 +64,6 @@ import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.DropDown;
@@ -147,10 +146,10 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected void prologue( Trigger trigger ) {
+		protected void prologue() {
 			this.pushedContext = new ExpressionAtIndexContext( this.getData().getItemAt( this.getIndex() ) );
 			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-			super.prologue( trigger );
+			super.prologue();
 		}
 
 		@Override

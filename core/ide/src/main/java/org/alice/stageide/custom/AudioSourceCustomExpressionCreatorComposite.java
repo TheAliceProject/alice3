@@ -58,7 +58,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.AbstractArgument;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.DoubleLiteral;

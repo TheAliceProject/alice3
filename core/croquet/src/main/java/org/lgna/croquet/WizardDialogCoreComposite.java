@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.javax.swing.models.ListModel;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.WizardDialogContentComposite;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
@@ -88,8 +87,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 
 		@Override
-		protected final void perform( UserActivity userActivity, Trigger trigger ) {
-			userActivity.setCompletionModel( this, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			userActivity.setCompletionModel( this );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
 			if( mainComposite.isPrevPageAvailable() ) {
 				mainComposite.prev();
@@ -109,8 +108,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 
 		@Override
-		protected final void perform( UserActivity userActivity, Trigger trigger ) {
-			userActivity.setCompletionModel( this, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			userActivity.setCompletionModel( this );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
 			if( mainComposite.isNextPageAvailable() ) {
 				mainComposite.next( false );

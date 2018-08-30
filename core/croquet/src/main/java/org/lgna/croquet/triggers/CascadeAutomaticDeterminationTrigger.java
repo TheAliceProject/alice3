@@ -43,7 +43,6 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 

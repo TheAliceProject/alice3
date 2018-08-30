@@ -154,7 +154,7 @@ public abstract class State<T> extends AbstractCompletionModel {
 	}
 
 	@Override
-	protected final void perform( UserActivity transaction, Trigger trigger ) {
+	protected final void performInActivity( UserActivity userActivity ) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -171,7 +171,7 @@ public abstract class State<T> extends AbstractCompletionModel {
 			// NB This activity is not expected to have any child activities
 			UserActivity activity = trigger.getUserActivity();
 			if (activity != null) {
-				activity.setCompletionModel( this, trigger );
+				activity.setCompletionModel( this );
 				StateEdit<T> edit = this.createStateEdit( activity, prevValue, nextValue, isAdjusting );
 				activity.commitAndInvokeDo( edit );
 			}

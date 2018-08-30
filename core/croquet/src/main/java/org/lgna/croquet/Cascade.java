@@ -93,22 +93,15 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.cascade.prologue( trigger );
+		public void prologue() {
+			super.prologue();
+			this.cascade.prologue();
 		}
 
 		@Override
 		public void epilogue() {
 			this.cascade.epilogue();
 			super.epilogue();
-		}
-
-		@Override
-		public final void createCompletionStep( Trigger trigger ) {
-			if (trigger.getUserActivity().getCompletionStep() == null) {
-				trigger.getUserActivity().setCompletionModel( cascade, trigger );
-			}
 		}
 
 		@Override
@@ -119,7 +112,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 				T[] values = rtRoot.createValues( this.getComponentType() );
 				Edit edit = cascade.createEdit( activity, values );
 				if( edit != null ) {
-					createCompletionStep( trigger );
+					if (activity.getCompletionStep() == null) {
+						recordCompletionModel( activity );
+					}
 					activity.commitAndInvokeDo( edit );
 				} else {
 					activity.cancel();
@@ -166,7 +161,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 	}
 
 	@Override
-	protected void perform( UserActivity transaction, Trigger trigger ) {
+	protected void performInActivity( UserActivity userActivity ) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -174,7 +169,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		return this.componentType;
 	}
 
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {

@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -71,8 +70,8 @@ public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 	protected abstract TPRIME convert( T value );
 
 	@Override
-	protected final TPRIME createValue( UserActivity transaction, Trigger trigger ) {
-		T value = this.source.createValue( transaction, trigger );
+	protected final TPRIME createValue( UserActivity transaction ) {
+		T value = this.source.createValue( transaction );
 		return this.convert( value );
 	}
 

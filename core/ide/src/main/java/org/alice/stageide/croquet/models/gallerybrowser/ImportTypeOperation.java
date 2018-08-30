@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.NamedUserType;
 
 import java.util.UUID;
@@ -68,11 +67,11 @@ public class ImportTypeOperation extends Operation { //todo: ValueOperation?
 	}
 
 	@Override
-	protected void perform( UserActivity activity, Trigger trigger ) {
-		final Trigger childTrigger = trigger.createChildTrigger();
-		TypeFromUriProducer.getInstance().fire( childTrigger );
-		NamedUserType userType = (NamedUserType) childTrigger.getUserActivity().getProducedValue();
+	protected void performInActivity( UserActivity activity ) {
+		final UserActivity child = activity.newChildActivity();
+		TypeFromUriProducer.getInstance().fire( child.getTrigger() );
+		NamedUserType userType = (NamedUserType) child.getProducedValue();
 		Logger.outln( userType );
-		childTrigger.getUserActivity().finish();
+		child.finish();
 	}
 }

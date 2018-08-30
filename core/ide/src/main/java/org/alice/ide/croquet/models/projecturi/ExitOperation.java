@@ -46,7 +46,6 @@ import org.alice.ide.IDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -67,8 +66,8 @@ public final class ExitOperation extends Operation {
 	}
 
 	@Override
-	protected void perform( UserActivity transaction, Trigger trigger ) {
+	protected void performInActivity( UserActivity userActivity ) {
 		//todo: create substep?
-		IDE.getActiveInstance().handleQuit( trigger );
+		IDE.getActiveInstance().handleQuit( userActivity.getTrigger() );
 	}
 }

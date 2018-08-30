@@ -46,7 +46,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.DialogContentComposite;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Dialog;
@@ -88,9 +87,9 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 
 		@Override
-		protected final void perform( UserActivity userActivity, Trigger trigger ) {
+		protected final void performInActivity( UserActivity userActivity ) {
 			if( !isCommit || getDialogCoreComposite().isClearedForCommit() ) {
-				userActivity.setCompletionModel( this, trigger );
+				userActivity.setCompletionModel( this );
 				isCommitted = this.isCommit;
 				dialog.setVisible( false );
 				userActivity.finish();

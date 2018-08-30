@@ -45,6 +45,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.PopupPrepStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.imp.cascade.RtRoot;
 import org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger;
@@ -94,7 +95,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		@Override
 		protected void prologue( Trigger trigger ) {
 			super.prologue( trigger );
-			this.root.prologue( trigger );
+			this.root.prologue();
 		}
 
 		@Override
@@ -230,7 +231,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		return null;
 	}
 
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {
@@ -240,14 +241,16 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract Class<T> getComponentType();
 
-	public abstract void createCompletionStep( Trigger trigger );
+	public final void recordCompletionModel( UserActivity userActivity ) {
+		userActivity.setCompletionModel( getCompletionModel() );
+	}
 
 	public abstract void handleCompletion( Trigger trigger, RtRoot<T, CM> rtRoot );
 
 	public final void handleCancel( Trigger trigger ) {
 		try {
 			if ( trigger.getUserActivity().getCompletionStep() == null ) {
-				trigger.getUserActivity().setCompletionModel( getCompletionModel(), trigger );
+				trigger.getUserActivity().setCompletionModel( getCompletionModel() );
 			}
 		} finally {
 			this.getPopupPrepModel().handleFinally();

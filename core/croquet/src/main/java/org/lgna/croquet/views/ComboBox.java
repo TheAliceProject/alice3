@@ -145,7 +145,7 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 		@Override
 		public void popupMenuCanceled( PopupMenuEvent e ) {
 			final PopupMenuEventTrigger trigger = PopupMenuEventTrigger.createUserInstance( ComboBox.this, e );
-			trigger.getUserActivity().setCompletionModel( ComboBox.this.getModel().getListSelectionState(), trigger );
+			trigger.getUserActivity().setCompletionModel( ComboBox.this.getModel().getListSelectionState() );
 			trigger.getUserActivity().cancel();
 		}
 	};

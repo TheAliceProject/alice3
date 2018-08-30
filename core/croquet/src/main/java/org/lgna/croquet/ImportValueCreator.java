@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.importer.Importer;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -63,8 +62,8 @@ public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
 	protected abstract T createValueFromImportedValue( I importedValue );
 
 	@Override
-	protected T createValue( UserActivity userActivity, Trigger trigger ) {
-		userActivity.setCompletionModel( this, trigger );
+	protected T createValue( UserActivity userActivity ) {
+		userActivity.setCompletionModel( this );
 		String dialogTitle = "Import";
 		T rv;
 		I importedValue = this.importer.createValue( dialogTitle );

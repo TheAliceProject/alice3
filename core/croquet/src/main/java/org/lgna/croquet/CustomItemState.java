@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -71,12 +70,6 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public void createCompletionStep( Trigger trigger ) {
-			// TODO ensure activity is a leaf
-			trigger.getUserActivity().setCompletionModel( state, trigger );
-		}
-
-		@Override
 		public Class<T> getComponentType() {
 			return this.state.getItemCodec().getValueClass();
 		}
@@ -87,9 +80,9 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		protected void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.state.prologue( trigger );
+		protected void prologue() {
+			super.prologue();
+			this.state.prologue();
 		}
 
 		@Override
@@ -101,7 +94,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		@Override
 		public void handleCompletion( Trigger trigger, RtRoot<T, CustomItemState<T>> rtRoot ) {
 			try {
-				createCompletionStep( trigger );
+				recordCompletionModel( trigger.getUserActivity() );
 				T[] values = rtRoot.createValues( getComponentType() );
 				state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
 			} finally {
@@ -140,7 +133,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	protected void localize() {
 	}
 
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {

@@ -65,7 +65,6 @@ import org.lgna.croquet.CustomItemState;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.AbstractParameter;
 import org.lgna.project.ast.AbstractType;
@@ -176,7 +175,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 		}
 
 		@Override

@@ -43,7 +43,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -67,11 +66,11 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 	protected abstract String getSubKeyForLocalization();
 
 	@Override
-	protected final void perform( UserActivity userActivity, Trigger trigger ) {
+	protected final void performInActivity( UserActivity userActivity ) {
 		C composite = this.getComposite();
 		// TODO set indicator on how to handle additional steps, the former isSubTransactionHistoryRequired()
 		// which was true for all except ModalFrameComposite
-		userActivity.setCompletionModel( this, trigger );
+		userActivity.setCompletionModel( this );
 		if( this.initializer != null ) {
 			this.initializer.initialize( composite );
 		}

@@ -48,7 +48,6 @@ import org.alice.ide.IDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.UserField;
 
 import java.util.UUID;
@@ -83,8 +82,8 @@ public class HighlightFieldOperation extends Operation {
 	}
 
 	@Override
-	protected void perform( UserActivity userActivity, Trigger trigger ) {
-		userActivity.setCompletionModel( this, trigger );
+	protected void performInActivity( UserActivity userActivity ) {
+		userActivity.setCompletionModel( this );
 		DeclarationTabState tabState = IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
 		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField( this.field, null );

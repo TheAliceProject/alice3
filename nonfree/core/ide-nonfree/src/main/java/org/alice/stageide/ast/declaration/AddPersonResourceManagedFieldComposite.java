@@ -55,7 +55,6 @@ import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.ValueCreator;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
@@ -167,7 +166,7 @@ public class AddPersonResourceManagedFieldComposite extends AddManagedFieldCompo
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 			this.pushedContext = new InitializerContext();
 			IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		}

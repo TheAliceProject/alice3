@@ -49,7 +49,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.MultipleSelectionListView;
 
 import javax.swing.AbstractListModel;
@@ -215,7 +214,7 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 	}
 
 	@Override
-	protected void perform( UserActivity transaction, Trigger trigger ) {
+	protected void performInActivity( UserActivity userActivity ) {
 	}
 
 	@Override
