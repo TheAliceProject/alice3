@@ -58,7 +58,7 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 
 	public Trigger() {
 		// TODO Remove access to activity this way
-		userActivity = Application.getActiveInstance().acquireOpenUntriggeredAcivity();
+		userActivity = Application.getActiveInstance().acquireOpenUnboundedActivity();
 	}
 
 	public Trigger( UserActivity userActivity ) {

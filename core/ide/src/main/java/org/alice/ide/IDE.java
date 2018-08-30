@@ -220,8 +220,6 @@ public abstract class IDE extends ProjectApplication {
 		return null;
 	}
 
-	public abstract Operation createPreviewOperation( ProcedureInvocationTemplate procedureInvocationTemplate );
-
 	public enum AccessorAndMutatorDisplayStyle {
 		GETTER_AND_SETTER,
 		ACCESS_AND_ASSIGNMENT

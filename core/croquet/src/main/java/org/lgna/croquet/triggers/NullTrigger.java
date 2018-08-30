@@ -60,7 +60,7 @@ public class NullTrigger extends Trigger {
 	}
 
 	private NullTrigger() {
-		super(Application.getActiveInstance().acquireOpenUntriggeredAcivity());
+		super(Application.getActiveInstance().acquireOpenUnboundedActivity());
 	}
 
 	@Override

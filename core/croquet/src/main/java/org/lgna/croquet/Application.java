@@ -115,7 +115,7 @@ public abstract class Application<D extends DocumentFrame> {
 		return latest == systemActivity ? systemActivity.newChildActivity() : latest;
 	}
 
-	public UserActivity acquireOpenUntriggeredAcivity() {
+	public UserActivity acquireOpenUnboundedActivity() {
 		UserActivity latest = acquireOpenActivity();
 		return latest.getCompletionStep() != null ? latest.newChildActivity() : latest;
 	}

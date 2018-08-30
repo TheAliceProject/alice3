@@ -214,7 +214,7 @@ public abstract class DragComponent<M extends DragModel> extends ViewController<
 			layeredPane.add( this.dragProxy, new Integer( 1 ) );
 			layeredPane.setLayer( this.dragProxy, JLayeredPane.DRAG_LAYER );
 
-			final UserActivity activity = application.acquireOpenUntriggeredAcivity();
+			final UserActivity activity = application.acquireOpenUnboundedActivity();
 			this.dragStep = DragStep.createAndAddToTransaction(
 					activity,
 					dragModel,

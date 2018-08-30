@@ -68,11 +68,9 @@ import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.ThisInstanceFactory;
-import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
 import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.SceneAdapter;
 import org.alice.stageide.ast.StoryApiSpecificAstUtilities;
-import org.alice.stageide.croquet.models.run.PreviewMethodOperation;
 import org.alice.stageide.icons.ColorIconFactory;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.icons.SceneIconFactory;
@@ -350,11 +348,6 @@ public abstract class StageIDE extends IDE {
 		} else {
 			return false;
 		}
-	}
-
-	@Override
-	public Operation createPreviewOperation( ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		return new PreviewMethodOperation( procedureInvocationTemplate );
 	}
 
 	//	@Override

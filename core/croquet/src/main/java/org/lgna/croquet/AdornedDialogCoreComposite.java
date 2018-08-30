@@ -61,10 +61,6 @@ import java.util.UUID;
  */
 public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 
-	public boolean wasCommitted() {
-		return isCommitted;
-	}
-
 	protected static abstract class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
 

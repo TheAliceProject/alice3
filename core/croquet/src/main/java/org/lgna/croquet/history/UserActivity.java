@@ -240,6 +240,9 @@ public class UserActivity extends TransactionNode<UserActivity> {
 	}
 
 	public void cancel() {
+		if (getChildStepCount() == 0) {
+			getOwner().childActivities.remove( this );
+		}
 		status = ActivityStatus.CANCELED;
 		fireChanged( new CancelEvent() );
 	}
