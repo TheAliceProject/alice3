@@ -83,7 +83,9 @@ public abstract class IteratingOperation extends Operation {
 					if ( child.isSuccessfullyCompleted() ) {
 						subSteps.add( child );
 					} else {
-						Logger.severe( "subStep is pending", this );
+						if (child.isPending()) {
+							Logger.severe( "subStep is pending", this );
+						}
 						activity.cancel();
 						return;
 					}
