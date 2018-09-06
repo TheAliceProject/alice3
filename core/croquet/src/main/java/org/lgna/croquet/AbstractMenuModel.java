@@ -137,10 +137,12 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	}
 
 	protected void handleCanceled( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {
-		UserActivity activity = Application.getActiveInstance().acquireOpenActivity();
-		MenuItemSelectStep step = activity.findFirstMenuSelectStep();
-		if (step != null && step.getModel() == this) {
-			activity.cancel();
+		UserActivity activity = menuItemContainer.getActivity();
+		if (activity != null) {
+			MenuItemSelectStep step = activity.findFirstMenuSelectStep();
+			if ( step != null && step.getModel() == this ) {
+				activity.cancel();
+			}
 		}
 	}
 

@@ -223,10 +223,10 @@ public abstract class Application<D extends DocumentFrame> {
 	}
 
 	private void handleMenuSelectionStateChanged( ChangeEvent e ) {
-		final UserActivity menuActivity = acquireOpenActivity();
-		ChangeEventTrigger trigger = ChangeEventTrigger.createUserInstance( menuActivity, e );
-		MenuSelection menuSelection = new MenuSelection( trigger );
+		MenuSelection menuSelection = new MenuSelection();
 		if( menuSelection.isValid() ) {
+			final UserActivity menuActivity = acquireOpenActivity();
+			ChangeEventTrigger.createUserInstance( menuActivity, e );
 			menuActivity.addMenuSelection( menuSelection );
 		}
 	}

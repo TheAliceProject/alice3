@@ -117,7 +117,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 				this.handleFinally();
 			} else {
 				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, trigger );
-				final PopupMenu popupMenu = new PopupMenu( this );
+				final PopupMenu popupMenu = new PopupMenu( this, trigger.getUserActivity() );
 				popupMenu.addComponentListener( new ComponentListener() {
 					@Override
 					public void componentShown( ComponentEvent e ) {

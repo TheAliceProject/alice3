@@ -92,7 +92,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 		protected void perform( final Trigger trigger ) {
 			final PopupPrepStep step = PopupPrepStep.createAndAddToActivity( this, trigger );
 
-			final PopupMenu popupMenu = new PopupMenu( this ) {
+			final PopupMenu popupMenu = new PopupMenu( this, trigger.getUserActivity() ) {
 				@Override
 				protected void handleDisplayable() {
 					prologue( trigger );

@@ -147,7 +147,7 @@ public class UserActivity extends TransactionNode<UserActivity> {
 			PrepStep<?> prepStep = iterator.previous();
 			if( prepStep instanceof MenuItemSelectStep ) {
 				MenuItemSelectStep prevMenuItemSelectStep = (MenuItemSelectStep)prepStep;
-				if( menuSelection.isPrevious( prevMenuItemSelectStep.getMenuBarComposite(), prevMenuItemSelectStep.getMenuItemPrepModels() ) ) {
+				if( menuSelection.isPrevious( prevMenuItemSelectStep.getMenuSelection() ) ) {
 					break;
 				} else {
 					iterator.remove();
@@ -156,7 +156,7 @@ public class UserActivity extends TransactionNode<UserActivity> {
 				break;
 			}
 		}
-		MenuItemSelectStep.createAndAddToTransaction( this, menuSelection.getMenuBarComposite(), menuSelection.getMenuItemPrepModels(), menuSelection.getTrigger() );
+		MenuItemSelectStep.createAndAddToActivity( this, menuSelection, trigger );
 	}
 
 	public Edit getEdit() {

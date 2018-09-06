@@ -45,6 +45,7 @@ package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.PopupPrepModel;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.imp.ScrollingPopupMenuUtilities;
 
 import javax.swing.JPopupMenu;
@@ -56,8 +57,11 @@ import java.awt.Component;
  * @author Dennis Cosgrove
  */
 public class PopupMenu extends ViewController<JPopupMenu, PopupPrepModel> implements MenuItemContainer {
-	public PopupMenu( PopupPrepModel model ) {
+	private final UserActivity userActivity;
+
+	public PopupMenu( PopupPrepModel model, UserActivity userActivity ) {
 		super( model );
+		this.userActivity = userActivity;
 	}
 
 	@Override
@@ -80,6 +84,11 @@ public class PopupMenu extends ViewController<JPopupMenu, PopupPrepModel> implem
 	@Override
 	public void removePopupMenuListener( PopupMenuListener listener ) {
 		this.getAwtComponent().removePopupMenuListener( listener );
+	}
+
+	@Override
+	public UserActivity getActivity() {
+		return userActivity;
 	}
 
 	@Override

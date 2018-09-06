@@ -45,6 +45,8 @@ package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import org.lgna.croquet.AbstractMenuModel;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
@@ -81,5 +83,11 @@ public class Menu extends AbstractMenu<AbstractMenuModel> {
 	protected void handleRemovedFrom( AwtComponentView<?> parent ) {
 		super.handleRemovedFrom( parent );
 		this.getAwtComponent().setAction( null );
+	}
+
+	@Override
+	public UserActivity getActivity() {
+		// TODO build menus under an activity and hold onto it
+		return Application.getActiveInstance().acquireOpenActivity();
 	}
 }

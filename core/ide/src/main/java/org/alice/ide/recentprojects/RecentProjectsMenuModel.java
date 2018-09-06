@@ -49,6 +49,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.AwtContainerView;
 import org.lgna.croquet.views.CascadeMenu;
@@ -134,6 +135,11 @@ public class RecentProjectsMenuModel extends MenuModel {
 
 				@Override
 				public void removePopupMenuListener( PopupMenuListener listener ) {
+				}
+
+				@Override
+				public UserActivity getActivity() {
+					return menuItemContainer.getActivity();
 				}
 
 				@Override

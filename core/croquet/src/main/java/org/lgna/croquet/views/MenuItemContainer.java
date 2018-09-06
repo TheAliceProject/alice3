@@ -43,48 +43,47 @@
 
 package org.lgna.croquet.views;
 
+import org.lgna.croquet.history.UserActivity;
+
 import javax.swing.event.PopupMenuListener;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface MenuItemContainer {
-	public ViewController<?, ?> getViewController();
+	ViewController<?, ?> getViewController();
 
-	//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
-	//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
-	//	public void addItemListener( java.awt.event.ItemListener listener );
-	//	public void removeItemListener( java.awt.event.ItemListener listener );
+	void addPopupMenuListener( PopupMenuListener listener );
 
-	public void addPopupMenuListener( PopupMenuListener listener );
+	void removePopupMenuListener( PopupMenuListener listener );
 
-	public void removePopupMenuListener( PopupMenuListener listener );
+	UserActivity getActivity();
 
-	public AwtContainerView<?> getParent();
+	AwtContainerView<?> getParent();
 
-	public AwtComponentView<?>[] getMenuComponents();
+	AwtComponentView<?>[] getMenuComponents();
 
-	public AwtComponentView<?> getMenuComponent( int i );
+	AwtComponentView<?> getMenuComponent( int i );
 
-	public int getMenuComponentCount();
+	int getMenuComponentCount();
 
-	public void addMenu( Menu menu );
+	void addMenu( Menu menu );
 
-	public void addMenuItem( MenuItem menuItem );
+	void addMenuItem( MenuItem menuItem );
 
-	public void addCascadeMenu( CascadeMenu cascadeMenu );
+	void addCascadeMenu( CascadeMenu cascadeMenu );
 
-	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
+	void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
 
-	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
+	void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 
-	public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu );
+	void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu );
 
-	public void addSeparator();
+	void addSeparator();
 
-	public void addSeparator( MenuTextSeparator menuTextSeparator );
+	void addSeparator( MenuTextSeparator menuTextSeparator );
 
-	public void forgetAndRemoveAllMenuItems();
+	void forgetAndRemoveAllMenuItems();
 
-	public void removeAllMenuItems();
+	void removeAllMenuItems();
 }

@@ -50,7 +50,6 @@ import org.lgna.croquet.MenuBarComposite;
 import org.lgna.croquet.MenuItemPrepModel;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.triggers.ChangeEventTrigger;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuBar;
@@ -61,7 +60,6 @@ import org.lgna.croquet.views.ViewController;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 import java.util.List;
@@ -108,12 +106,10 @@ public class MenuSelection {
 		}
 	}
 
-	private final ChangeEventTrigger trigger;
 	private final MenuBarComposite menuBarComposite;
 	private final MenuItemPrepModel[] menuItemPrepModels;
 
-	public MenuSelection( ChangeEventTrigger trigger ) {
-		this.trigger = trigger;
+	public MenuSelection() {
 		MenuElement[] selectedPath = MenuSelectionManager.defaultManager().getSelectedPath();
 		if( isCroquetMenuSelection( selectedPath ) ) {
 			menuBarComposite = getMenuBarComposite( selectedPath );
@@ -127,23 +123,20 @@ public class MenuSelection {
 			final int N = selectedPath.length;
 			for( int i = i0; i < N; i++ ) {
 				MenuElement menuElementI = selectedPath[ i ];
-				if( menuElementI instanceof JPopupMenu ) {
-					JPopupMenu jPopupMenu = (JPopupMenu)menuElementI;
-					//pass
-				} else if( menuElementI instanceof JMenuItem ) {
-					JMenuItem jMenuItem = (JMenuItem)menuElementI;
+				if ( menuElementI instanceof JMenuItem ) {
+					JMenuItem jMenuItem = (JMenuItem) menuElementI;
 					AwtComponentView<?> component = AwtComponentView.lookup( jMenuItem );
-					if( component instanceof ViewController<?, ?> ) {
-						ViewController<?, ?> viewController = (ViewController<?, ?>)component;
+					if ( component instanceof ViewController<?, ?> ) {
+						ViewController<?, ?> viewController = (ViewController<?, ?>) component;
 						Model model = viewController.getModel();
-						if( model != null ) {
+						if ( model != null ) {
 							MenuItemPrepModel menuItemPrepModel;
-							if( model instanceof MenuItemPrepModel ) {
-								menuItemPrepModel = (MenuItemPrepModel)model;
-							} else if( model instanceof Operation ) {
-								menuItemPrepModel = ( (Operation)model ).getMenuItemPrepModel();
-							} else if( model instanceof BooleanState ) {
-								menuItemPrepModel = ( (BooleanState)model ).getMenuItemPrepModel();
+							if ( model instanceof MenuItemPrepModel ) {
+								menuItemPrepModel = (MenuItemPrepModel) model;
+							} else if ( model instanceof Operation ) {
+								menuItemPrepModel = ( (Operation) model ).getMenuItemPrepModel();
+							} else if ( model instanceof BooleanState ) {
+								menuItemPrepModel = ( (BooleanState) model ).getMenuItemPrepModel();
 							} else {
 								throw new RuntimeException( model.toString() );
 							}
@@ -161,23 +154,11 @@ public class MenuSelection {
 		}
 	}
 
-	public ChangeEventTrigger getTrigger() {
-		return this.trigger;
-	}
-
-	public MenuBarComposite getMenuBarComposite() {
-		return this.menuBarComposite;
-	}
-
-	public MenuItemPrepModel[] getMenuItemPrepModels() {
-		return this.menuItemPrepModels;
-	}
-
 	public boolean isValid() {
 		return ( this.menuBarComposite != null ) || ( this.menuItemPrepModels.length > 0 );
 	}
 
-	public MenuItemPrepModel getLastMenuItemPrepModel() {
+	MenuItemPrepModel getLastMenuItemPrepModel() {
 		if( this.menuItemPrepModels.length > 0 ) {
 			return this.menuItemPrepModels[ this.menuItemPrepModels.length - 1 ];
 		} else {
@@ -185,14 +166,12 @@ public class MenuSelection {
 		}
 	}
 
-	public boolean isPrevious( MenuBarComposite otherMenuBarComposite, MenuItemPrepModel[] otherMenuItemPrepModels ) {
-		if( this.menuBarComposite == otherMenuBarComposite ) {
-			if( this.menuItemPrepModels.length == ( otherMenuItemPrepModels.length + 1 ) ) {
-				final int N = otherMenuItemPrepModels.length;
+	boolean isPrevious( MenuSelection selection ) {
+		if( this.menuBarComposite == selection.menuBarComposite ) {
+			if( this.menuItemPrepModels.length == ( selection.menuItemPrepModels.length + 1 ) ) {
+				final int N = selection.menuItemPrepModels.length;
 				for( int i = 0; i < N; i++ ) {
-					if( this.menuItemPrepModels[ i ] == otherMenuItemPrepModels[ i ] ) {
-						//pass
-					} else {
+					if ( this.menuItemPrepModels[i] != selection.menuItemPrepModels[i] ) {
 						return false;
 					}
 				}
