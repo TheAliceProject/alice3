@@ -78,11 +78,6 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		public Iterable<? extends Model> getChildren() {
-			return Lists.newLinkedList( this.root );
-		}
-
-		@Override
 		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.root.getClassUsedForLocalization();
 		}
@@ -222,7 +217,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final String getMenuItemText( ItemNode<? super T[], T> step ) {
+	public final String getMenuItemText() {
 		return this.text;
 	}
 

@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.operation;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.views.MenuItem;
@@ -59,11 +57,6 @@ import java.util.UUID;
 		super( UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
 		assert operation != null;
 		this.operation = operation;
-	}
-
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Lists.newArrayList( this.operation );
 	}
 
 	@Override

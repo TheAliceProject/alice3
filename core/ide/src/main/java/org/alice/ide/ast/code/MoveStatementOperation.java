@@ -43,7 +43,6 @@
 
 package org.alice.ide.ast.code;
 
-import edu.cmu.cs.dennisc.map.MapToMapToMap;
 import org.alice.ide.ast.code.edits.MoveStatementEdit;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.lgna.croquet.ActionOperation;
@@ -57,48 +56,18 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MoveStatementOperation extends ActionOperation {
-	private static MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> mapSingle = MapToMapToMap.newInstance();
-	private static MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> mapMultiple = MapToMapToMap.newInstance();
-
-	public static synchronized MoveStatementOperation getInstance( BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
-		MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> map = isToTheEnd ? mapMultiple : mapSingle;
-		MoveStatementOperation rv = map.get( fromLocation, statement, toLocation );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MoveStatementOperation( fromLocation, statement, toLocation, isToTheEnd );
-			map.put( fromLocation, statement, toLocation, rv );
-		}
-		return rv;
-	}
-
 	private final BlockStatementIndexPair fromLocation;
 	private final Statement statement;
 	private final BlockStatementIndexPair toLocation;
 	private final boolean isMultiple;
 
-	private MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
+	public MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement,
+																 BlockStatementIndexPair toLocation, boolean isMultiple ) {
 		super( Application.PROJECT_GROUP, UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
 		this.toLocation = toLocation;
 		this.isMultiple = isMultiple;
-	}
-
-	public BlockStatementIndexPair getFromLocation() {
-		return this.fromLocation;
-	}
-
-	public Statement getStatement() {
-		return this.statement;
-	}
-
-	public BlockStatementIndexPair getToLocation() {
-		return this.toLocation;
-	}
-
-	public boolean isMultiple() {
-		return this.isMultiple;
 	}
 
 	@Override

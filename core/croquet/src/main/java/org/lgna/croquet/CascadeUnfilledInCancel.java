@@ -70,7 +70,7 @@ public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super F, Void> step ) {
+	public String getMenuItemText() {
 		return "No suitable fillins were found.  Canceling.";
 	}
 }

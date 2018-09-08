@@ -71,7 +71,7 @@ public abstract class CancelFillIn<F> extends CascadeCancel<F> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super F, Void> step ) {
+	public String getMenuItemText() {
 		return this.menuItemText;
 	}
 }

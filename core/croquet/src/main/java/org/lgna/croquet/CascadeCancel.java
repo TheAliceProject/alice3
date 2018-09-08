@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.imp.cascade.ItemNode;
 
-import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -58,7 +57,7 @@ public abstract class CascadeCancel<F> extends CascadeItem<F, Void> {
 
 	@Override
 	public final F createValue( ItemNode<? super F, Void> node ) {
-		throw new CancelException( this.getMenuItemText( node ) );
+		throw new CancelException( this.getMenuItemText() );
 	}
 
 	@Override
@@ -66,8 +65,4 @@ public abstract class CascadeCancel<F> extends CascadeItem<F, Void> {
 		return null;
 	}
 
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Collections.emptyList();
-	}
 }

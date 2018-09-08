@@ -78,7 +78,7 @@ public class ResourceFillIn extends ImmutableCascadeFillIn<ResourceNode, Void> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super ResourceNode, Void> node ) {
+	public String getMenuItemText() {
 		return this.resourceNode.getText();
 	}
 

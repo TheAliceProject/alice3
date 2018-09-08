@@ -113,7 +113,7 @@ class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super T, Void> node ) {
+	public String getMenuItemText() {
 		return this.model.getTextForNode( this.node );
 	}
 

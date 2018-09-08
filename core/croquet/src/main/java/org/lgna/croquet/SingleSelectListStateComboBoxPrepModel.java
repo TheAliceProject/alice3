@@ -61,11 +61,6 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<
 	}
 
 	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Lists.newArrayList( this.listSelectionState );
-	}
-
-	@Override
 	protected void localize() {
 	}
 

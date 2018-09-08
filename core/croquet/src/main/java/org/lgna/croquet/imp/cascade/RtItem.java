@@ -261,7 +261,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
 			jMenuItem = menu.getAwtComponent();
 			rv = menu;
 		}
-		jMenuItem.setText( item.getMenuItemText( this.getNode() ) );
+		jMenuItem.setText( item.getMenuItemText() );
 		jMenuItem.setIcon( item.getMenuItemIcon( this.getNode() ) );
 		return rv;
 	}
@@ -340,7 +340,7 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, SeparatorNode> {
 	@Override
 	protected ViewController<?, ?> createMenuItem( CascadeItem<Void, Void> item, boolean isLast ) {
 		//todo
-		if( ( item.getMenuItemText( null ) != null ) || ( item.getMenuItemIcon( null ) != null ) ) {
+		if( ( item.getMenuItemText() != null ) || ( item.getMenuItemIcon( null ) != null ) ) {
 			ViewController<?, ?> rv = super.createMenuItem( item, isLast );
 			rv.getAwtComponent().setEnabled( false );
 			return rv;

@@ -117,9 +117,9 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super F, B> node ) {
+	public String getMenuItemText() {
 		if( this.isBackedByIconProxy() ) {
-			return super.getMenuItemText( node );
+			return super.getMenuItemText();
 		} else {
 			return this.menuItemText;
 		}

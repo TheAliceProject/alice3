@@ -123,7 +123,7 @@ public class TypeFillIn extends ImmutableCascadeFillIn<AbstractType<?, ?, ?>, Vo
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super AbstractType<?, ?, ?>, Void> node ) {
+	public String getMenuItemText() {
 		return IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( type );
 	}
 }

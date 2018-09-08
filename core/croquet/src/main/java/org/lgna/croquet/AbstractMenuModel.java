@@ -89,11 +89,6 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.putValue( Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
 
-	@Override
-	public Iterable<? extends MenuItemPrepModel> getChildren() {
-		return null;
-	}
-
 	public Action getAction() {
 		return this.action;
 	}

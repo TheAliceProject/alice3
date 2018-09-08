@@ -88,7 +88,7 @@ public class JavaKeyedArgumentFillIn extends ImmutableCascadeFillIn<JavaKeyedArg
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super JavaKeyedArgument, Expression> node ) {
+	public String getMenuItemText() {
 		Formatter formatter = FormatterState.getInstance().getValue();
 		JavaMethod method = this.transientValue.getKeyMethod();
 		return formatter.getNameForDeclaration( method );

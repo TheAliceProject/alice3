@@ -96,7 +96,7 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super Void, Void> step ) {
+	public String getMenuItemText() {
 		return null;
 		//		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 	}

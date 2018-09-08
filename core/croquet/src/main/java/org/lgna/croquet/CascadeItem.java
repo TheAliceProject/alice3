@@ -177,7 +177,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		return this.icon;
 	}
 
-	public String getMenuItemText( ItemNode<? super F, B> node ) {
+	public String getMenuItemText() {
 		return null;
 	}
 }

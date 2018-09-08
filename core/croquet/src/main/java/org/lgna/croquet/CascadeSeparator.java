@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.imp.cascade.ItemNode;
 
-import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -66,8 +65,4 @@ public abstract class CascadeSeparator extends CascadeItem<Void, Void> {
 		throw new AssertionError();
 	}
 
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Collections.emptyList();
-	}
 }

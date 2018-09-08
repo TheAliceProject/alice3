@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComponentManager;
@@ -72,11 +71,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 		private InternalPopupPrepModel( MenuModel menuModel ) {
 			super( UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 			this.menuModel = menuModel;
-		}
-
-		@Override
-		public Iterable<? extends Model> getChildren() {
-			return Lists.newLinkedList( this.menuModel );
 		}
 
 		@Override

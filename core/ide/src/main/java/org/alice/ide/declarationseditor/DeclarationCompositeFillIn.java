@@ -95,7 +95,7 @@ public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<Declarati
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super DeclarationComposite, Void> node ) {
+	public String getMenuItemText() {
 		AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
 		if( declaration instanceof AbstractType<?, ?, ?> ) {
 			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;
