@@ -46,10 +46,8 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite;
 import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.resources.sims2.LifeStage;
@@ -96,12 +94,12 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThre
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );

@@ -45,10 +45,8 @@ package org.lgna.ik.poser.croquet;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NamedUserType;
@@ -82,12 +80,12 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();

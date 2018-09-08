@@ -45,7 +45,7 @@ package org.alice.ide.ast.draganddrop.statement;
 
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.CommentInsertOperation;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Comment;
@@ -69,7 +69,7 @@ public class CommentTemplateDragModel extends StatementTemplateDragModel {
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		return CommentInsertOperation.getInstance( blockStatementIndexPair );
 	}
 }

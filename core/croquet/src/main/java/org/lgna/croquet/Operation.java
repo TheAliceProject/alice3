@@ -44,27 +44,66 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.awt.font.TextAttribute;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.operation.OperationImp;
+import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.ButtonWithRightClickCascade;
 import org.lgna.croquet.views.Hyperlink;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation extends AbstractCompletionModel {
+public abstract class Operation implements Triggerable, Element, CompletionModel {
+	private final UUID migrationId;
+	private final Group group;
 	private Icon buttonIcon;
+	private AbstractCompletionModel.SidekickLabel sidekickLabel;
+
+	private final OperationImp imp = new OperationImp( this );
+
+	private boolean isInTheMidstOfInitialization = false;
+	private boolean isInitialized = false;
 
 	public Operation( Group group, UUID id ) {
-		super( group, id );
+		this.group = group;
+		migrationId = id;
 	}
 
 	public OperationImp getImp() {
 		return this.imp;
+	}
+
+	@Override
+	public UUID getMigrationId() {
+		return this.migrationId;
+	}
+
+	@Override
+	public Group getGroup() {
+		return this.group;
+	}
+
+	protected void initialize() {
+		this.localize();
+	}
+
+	@Override
+	public final void initializeIfNecessary() {
+		if ( !this.isInitialized && !this.isInTheMidstOfInitialization ) {
+			isInTheMidstOfInitialization = true;
+			try {
+				initialize();
+				isInitialized = true;
+			} finally {
+				isInTheMidstOfInitialization = false;
+			}
+		}
 	}
 
 	@Override
@@ -76,13 +115,12 @@ public abstract class Operation extends AbstractCompletionModel {
 		return text;
 	}
 
-	@Override
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			name = modifyNameIfNecessary( name );
 			int mnemonicKey = this.getLocalizedMnemonicKey();
-			safeSetNameAndMnemonic( this.imp.getSwingModel().getAction(), name, mnemonicKey );
+			AbstractModel.safeSetNameAndMnemonic( this.imp.getSwingModel().getAction(), name, mnemonicKey );
 			this.imp.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
@@ -145,5 +183,86 @@ public abstract class Operation extends AbstractCompletionModel {
 		return new ButtonWithRightClickCascade( this, cascade );
 	}
 
-	private final OperationImp imp = new OperationImp( this );
+	@Override
+	public synchronized PlainStringValue getSidekickLabel() {
+		if ( this.sidekickLabel == null ) {
+			this.sidekickLabel = new AbstractCompletionModel.SidekickLabel( getClassUsedForLocalization() );
+		}
+		return this.sidekickLabel;
+	}
+
+	@Override
+	public boolean hasSidekickLabel() {
+		return sidekickLabel != null;
+	}
+
+	protected abstract void performInActivity( UserActivity userActivity );
+
+	@Override
+	public void fire( Trigger trigger ) {
+		if ( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			this.performInActivity( trigger.getUserActivity() );
+		}
+	}
+
+	@Deprecated
+	public final void fire() {
+		fire( NullTrigger.createUserInstance() );
+	}
+
+	@Override
+	public final void relocalize() {
+		this.localize();
+	}
+
+	private KeyStroke getLocalizedAcceleratorKeyStroke() {
+		return AbstractModel.getKeyStroke( this.findLocalizedText( AbstractModel.ACCELERATOR_SUB_KEY ) );
+	}
+
+	protected final String findLocalizedText( String subKey ) {
+		String inherantSubKey = getSubKeyForLocalization();
+		String actualSubKey;
+		if( inherantSubKey != null ) {
+			if( subKey != null ) {
+				actualSubKey = inherantSubKey + "." + subKey;
+			} else {
+				actualSubKey = inherantSubKey;
+			}
+		} else {
+			actualSubKey = subKey;
+		}
+		Class<? extends Element> clsUsedForLocalization = this.getClassUsedForLocalization();
+		return AbstractModel.findLocalizedText( clsUsedForLocalization, actualSubKey );
+	}
+
+	protected String findDefaultLocalizedText() {
+		return this.findLocalizedText( null );
+	}
+
+	protected String getSubKeyForLocalization() {
+		return null;
+	}
+
+	protected Class<? extends Element> getClassUsedForLocalization() {
+		return this.getClass();
+	}
+
+	private int getLocalizedMnemonicKey() {
+		return AbstractModel.getKeyCode( this.findLocalizedText( AbstractModel.MNEMONIC_SUB_KEY ) );
+	}
+
+	protected void appendRepr( StringBuilder sb ) {
+		sb.append( "group=" );
+		sb.append( this.getGroup() );
+	}
+
+	@Override
+	public void appendUserRepr( StringBuilder sb ) {
+		sb.append( "todo: override appendUserString\n" );
+		sb.append( this );
+		sb.append( "\n" );
+		sb.append( this.getClass().getName() );
+		sb.append( "\n" );
+	}
 }

@@ -46,8 +46,8 @@ import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.awt.Image;
@@ -75,7 +75,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		if( subSteps.size() == 0 ) {
 			this.file = this.owner.getFile();
 			if( this.file != null ) {
@@ -89,9 +89,9 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
-		Model rv;
+		Triggerable rv;
 		switch( subSteps.size() ) {
 		case 0:
 			if( owner.isGoodToGoCroppingIfNecessary() ) {

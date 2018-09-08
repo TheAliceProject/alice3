@@ -45,7 +45,7 @@ package org.alice.ide.ast.draganddrop.statement;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.TemplateAssignmentInsertCascade;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.AssignmentExpression;
 import org.lgna.project.ast.ExpressionStatement;
@@ -69,7 +69,7 @@ public final class AssignmentTemplateDragModel extends ExpressionStatementTempla
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		//return org.alice.ide.croquet.models.ast.cascade.statement.AssignmentInsertMenuModel.createInstance( blockStatementIndexPair ).getPopupPrepModel();
 		return TemplateAssignmentInsertCascade.createInstance( blockStatementIndexPair );
 	}

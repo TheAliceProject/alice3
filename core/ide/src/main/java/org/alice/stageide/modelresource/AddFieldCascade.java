@@ -64,7 +64,7 @@ public class AddFieldCascade extends ImmutableCascade<ResourceNode> {
 
 	@Override
 	protected Edit createEdit( UserActivity userActivity, ResourceNode[] values ) {
-		values[ 0 ].getDropModel( null, this.dropSite ).fire( NullTrigger.createUserInstance() );
+		values[ 0 ].getDropOperation( null, this.dropSite ).fire( NullTrigger.createUserInstance() );
 		return null;
 	}
 }

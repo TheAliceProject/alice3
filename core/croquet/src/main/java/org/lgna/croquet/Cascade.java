@@ -68,7 +68,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel implements JDropProxy.Hider {
+public abstract class Cascade<T> extends AbstractCompletionModel implements Triggerable, JDropProxy.Hider {
 	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
 		private final Cascade<T> cascade;
 
@@ -149,12 +149,15 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 
 	@Override
 	public final void fire( Trigger trigger ) {
-		Model surrogateModel = this.root.getPopupPrepModel();
+		Triggerable surrogateModel = this.root.getPopupPrepModel();
 		if( surrogateModel != null ) {
 			Logger.errln( "todo: end use of surrogate", this );
 			surrogateModel.fire( trigger );
 		} else {
-			super.fire( trigger );
+			//Copied from former parent implementation
+			if( this.isEnabled() ) {
+				this.performInActivity( trigger.getUserActivity() );
+			}
 		}
 	}
 

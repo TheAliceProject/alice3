@@ -48,7 +48,8 @@ import org.lgna.croquet.AbstractDropReceptor;
 import org.lgna.croquet.CascadeRoot;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DropDown;
 import org.lgna.croquet.views.SwingComponentView;
@@ -90,12 +91,12 @@ public class ExpressionPropertyDropDownPane extends DropDown<CascadeRoot.Interna
 		}
 
 		@Override
-		protected Model dragDroppedPostRejectorCheck( DragStep dragStep ) {
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep dragStep ) {
 			DragModel dragModel = dragStep.getModel();
-			Model rv;
+			Triggerable rv;
 			if( dragModel instanceof AbstractExpressionDragModel ) {
 				AbstractExpressionDragModel expressionDragModel = (AbstractExpressionDragModel)dragModel;
-				rv = expressionDragModel.getDropModel( dragStep, new ExpressionPropertyDropSite( ExpressionPropertyDropDownPane.this.expressionProperty ) );
+				rv = expressionDragModel.getDropOperation( dragStep, new ExpressionPropertyDropSite( ExpressionPropertyDropDownPane.this.expressionProperty ) );
 			} else {
 				rv = null;
 			}

@@ -44,8 +44,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.UUID;
 
@@ -55,17 +53,18 @@ import java.util.UUID;
 public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
 	private final Group group;
 
-	private static final class SidekickLabel extends PlainStringValue {
-		private final AbstractCompletionModel completionModel;
+	static final class SidekickLabel extends PlainStringValue {
+		private final Class<? extends Element> localizationClass;
 
-		public SidekickLabel( AbstractCompletionModel completionModel ) {
+		SidekickLabel( Class<? extends Element> localizationClass ) {
 			super( UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
-			this.completionModel = completionModel;
+			this.localizationClass = localizationClass;
+			initializeIfNecessary();
 		}
 
 		@Override
 		protected Class<? extends Element> getClassUsedForLocalization() {
-			return this.completionModel.getClassUsedForLocalization();
+			return localizationClass;
 		}
 
 		@Override
@@ -76,7 +75,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	private SidekickLabel sidekickLabel;
 
-	public AbstractCompletionModel( Group group, UUID id ) {
+	AbstractCompletionModel( Group group, UUID id ) {
 		super( id );
 		this.group = group;
 	}
@@ -89,30 +88,16 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected abstract void performInActivity( UserActivity userActivity );
 
 	@Override
-	public void fire( Trigger trigger ) {
-		if( this.isEnabled() ) {
-			this.initializeIfNecessary();
-			this.performInActivity( trigger.getUserActivity() );
-		}
-	}
-
-	@Deprecated
-	public final void fire() {
-		fire( NullTrigger.createUserInstance() );
-	}
-
 	public synchronized PlainStringValue getSidekickLabel() {
-		if( this.sidekickLabel != null ) {
-			//pass
-		} else {
-			this.sidekickLabel = new SidekickLabel( this );
-			this.sidekickLabel.initializeIfNecessary();
+		if ( this.sidekickLabel == null ) {
+			this.sidekickLabel = new SidekickLabel( getClassUsedForLocalization() );
 		}
 		return this.sidekickLabel;
 	}
 
-	public StringValue peekSidekickLabel() {
-		return this.sidekickLabel;
+	@Override
+	public boolean hasSidekickLabel() {
+		return sidekickLabel != null;
 	}
 
 	@Override

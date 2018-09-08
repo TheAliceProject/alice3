@@ -45,9 +45,7 @@ package org.alice.stageide.gallerybrowser.uri;
 import org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
@@ -76,7 +74,7 @@ public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIterati
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:

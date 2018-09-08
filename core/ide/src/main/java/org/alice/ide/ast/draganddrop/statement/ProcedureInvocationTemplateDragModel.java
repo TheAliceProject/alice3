@@ -44,12 +44,10 @@
 package org.alice.ide.ast.draganddrop.statement;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.IDE;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
-import org.alice.ide.members.MembersComposite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.annotations.AddEventListenerTemplate;
 import org.lgna.project.ast.AbstractMethod;
@@ -99,7 +97,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		return ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
 	}
 }

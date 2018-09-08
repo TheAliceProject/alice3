@@ -58,6 +58,7 @@ import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.alice.stageide.modelresource.*;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.IconSize;
 import org.lgna.croquet.triggers.MouseEventTrigger;
@@ -291,7 +292,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 		super.handleLeftMouseButtonQuoteClickedUnquote( e );
 		switch( e.getClickCount() ) {
 		case 1:
-			Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
+			Triggerable leftButtonClickModel = this.getModel().getLeftButtonClickOperation();
 			if( leftButtonClickModel != null ) {
 				leftButtonClickModel.fire( MouseEventTrigger.createUserInstance( this, e ) );
 			}

@@ -42,17 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import java.util.UUID;
-
 /**
  * @author Dennis Cosgrove
  */
 public interface Element {
-	public UUID getMigrationId();
+	void initializeIfNecessary();
 
-	public void initializeIfNecessary();
-
-	public void relocalize();
-
-	public void appendUserRepr( StringBuilder sb );
+	void appendUserRepr( StringBuilder sb );
 }

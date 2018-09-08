@@ -54,7 +54,7 @@ import org.alice.ide.clipboard.components.ClipboardDragComponent;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.project.ast.AstUtilities;
@@ -115,7 +115,7 @@ public enum Clipboard {
 		}
 
 		@Override
-		public Model getDropModel( DragStep step, DropSite dropSite ) {
+		public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
 			DragModel dragModel = step.getModel();
 			if( dragModel instanceof StatementDragModel ) {
 				StatementDragModel statementDragModel = (StatementDragModel)dragModel;

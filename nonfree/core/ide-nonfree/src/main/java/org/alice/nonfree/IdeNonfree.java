@@ -80,8 +80,8 @@ import org.alice.stageide.properties.RoomFloorPaintPropertyAdapter;
 import org.alice.stageide.properties.RoomWallPaintPropertyAdapter;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory;
 import org.lgna.project.ast.AbstractType;
@@ -184,7 +184,7 @@ public class IdeNonfree extends NebulousIde {
 	}
 
 	@Override
-	public Model getPersonResourceDropModel( ResourceKey resourceKey ) {
+	public Triggerable getPersonResourceDropOperation( ResourceKey resourceKey ) {
 		if( resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)resourceKey;
 			return DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );

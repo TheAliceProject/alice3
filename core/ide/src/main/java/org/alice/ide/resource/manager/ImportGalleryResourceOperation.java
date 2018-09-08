@@ -5,8 +5,8 @@ import org.alice.ide.icons.Icons;
 import org.alice.stageide.gallerybrowser.ImportGalleryResourceComposite;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.awt.*;
@@ -24,12 +24,12 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		switch (subSteps.size()) {
 		case 0:
 			return importGalleryResourceComposite.getBrowseOperation();

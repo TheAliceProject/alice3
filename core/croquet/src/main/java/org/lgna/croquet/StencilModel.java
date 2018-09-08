@@ -45,6 +45,7 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.SwingUtilities;
 import java.util.Collections;
@@ -55,7 +56,7 @@ import java.util.concurrent.CyclicBarrier;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StencilModel extends AbstractCompletionModel {
+public abstract class StencilModel extends AbstractCompletionModel implements Triggerable {
 	private final CyclicBarrier barrier = new CyclicBarrier( 2 );
 	private String text;
 
@@ -103,5 +104,13 @@ public abstract class StencilModel extends AbstractCompletionModel {
 		this.barrierAwait();
 		this.hideStencil();
 		userActivity.finish();
+	}
+
+	@Override
+	public void fire( Trigger trigger ) {
+		if( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			this.performInActivity( trigger.getUserActivity() );
+		}
 	}
 }

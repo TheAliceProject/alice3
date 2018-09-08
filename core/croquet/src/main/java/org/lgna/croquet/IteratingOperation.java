@@ -58,13 +58,13 @@ public abstract class IteratingOperation extends Operation {
 		super( group, id );
 	}
 
-	protected Iterator<Model> createIteratingData() {
+	protected Iterator<Triggerable> createIteratingData() {
 		return null;
 	}
 
-	protected abstract boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData );
+	protected abstract boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData );
 
-	protected abstract Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData );
+	protected abstract Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData );
 
 	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ){
 		activity.finish();
@@ -74,9 +74,9 @@ public abstract class IteratingOperation extends Operation {
 		activity.setCompletionModel( this );
 		try {
 			List<UserActivity> subSteps = Lists.newLinkedList();
-			Iterator<Model> iteratingData = this.createIteratingData();
+			Iterator<Triggerable> iteratingData = this.createIteratingData();
 			while( this.hasNext( subSteps, iteratingData ) ) {
-				Model model = this.getNext( subSteps, iteratingData );
+				Triggerable model = this.getNext( subSteps, iteratingData );
 				if( model != null ) {
 					UserActivity child = activity.newChildActivity();
 					model.fire( child.getTrigger() );

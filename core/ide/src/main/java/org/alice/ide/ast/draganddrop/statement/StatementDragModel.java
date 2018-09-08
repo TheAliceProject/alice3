@@ -45,7 +45,7 @@ package org.alice.ide.ast.draganddrop.statement;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.ConstructorInvocationStatement;
@@ -92,7 +92,7 @@ public class StatementDragModel extends AbstractStatementDragModel {
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, DropSite dropSite ) {
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
 		throw new RuntimeException( "todo" );
 	}
 }

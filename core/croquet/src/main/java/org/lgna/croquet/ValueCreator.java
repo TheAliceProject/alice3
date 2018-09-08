@@ -58,7 +58,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreator<T> extends AbstractCompletionModel {
+public abstract class ValueCreator<T> extends AbstractCompletionModel implements Triggerable {
 	//todo: edits are never created by value creators.  allow group specification anyways?
 	public static final Group VALUE_CREATOR_GROUP = Group.getInstance( UUID.fromString( "4bef663b-1474-40ec-9731-4e2a2cb49333" ), "VALUE_CREATOR_GROUP" );
 
@@ -140,6 +140,14 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 			return (T)trigger.getUserActivity().getProducedValue();
 		} else {
 			throw new CancelException();
+		}
+	}
+
+	@Override
+	public void fire( Trigger trigger ) {
+		if( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			this.performInActivity( trigger.getUserActivity() );
 		}
 	}
 }

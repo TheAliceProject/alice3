@@ -44,7 +44,6 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.SwingComponentView;
 
@@ -93,12 +92,22 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	AbstractModel( UUID id ) {
+	protected AbstractModel( UUID id ) {
 		super( id );
+		this.migrationId = id;
+	}
+
+	private final UUID migrationId;
+
+	@Override
+	public UUID getMigrationId() {
+		return this.migrationId;
 	}
 
 	@Override
-	public abstract void fire( Trigger trigger );
+	public final void relocalize() {
+		this.localize();
+	}
 
 	private boolean isEnabled = true;
 

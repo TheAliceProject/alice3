@@ -42,14 +42,15 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.triggers.Trigger;
+import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface Model extends Element {
+	UUID getMigrationId();
 
-	void fire( Trigger trigger );
+	void relocalize();
 
 	boolean isEnabled();
 

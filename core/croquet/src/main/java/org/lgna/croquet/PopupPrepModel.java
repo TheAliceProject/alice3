@@ -59,12 +59,12 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PopupPrepModel extends AbstractPrepModel {
+public abstract class PopupPrepModel extends AbstractModel  implements PrepModel, Triggerable {
 	public class SwingModel {
 		private final Action action = new AbstractAction() {
 			@Override
 			public void actionPerformed( final ActionEvent e ) {
-				PopupPrepModel.this.fire( ActionEventTrigger.createUserInstance( e ) );
+				PopupPrepModel.this.perform( ActionEventTrigger.createUserInstance( e ) );
 			}
 		};
 
@@ -84,8 +84,6 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			this.setName( name );
-			//			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-			//			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
 
@@ -100,22 +98,6 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 	public void setName( String name ) {
 		this.swingModel.action.putValue( Action.NAME, name );
 	}
-
-	//	public void setShortDescription( String shortDescription ) {
-	//		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
-	//	}
-	//	public void setLongDescription( String longDescription ) {
-	//		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
-	//	}
-	//	public void setSmallIcon( javax.swing.Icon icon ) {
-	//		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
-	//	}
-	//	public void setMnemonicKey( int mnemonicKey ) {
-	//		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
-	//	}
-	//	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-	//		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-	//	}
 
 	@Override
 	public boolean isEnabled() {

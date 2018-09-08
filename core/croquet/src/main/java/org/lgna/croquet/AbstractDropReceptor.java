@@ -74,10 +74,10 @@ public abstract class AbstractDropReceptor implements DropReceptor {
 		return Collections.unmodifiableList( this.dropRejectors );
 	}
 
-	protected abstract Model dragDroppedPostRejectorCheck( DragStep step );
+	protected abstract Triggerable dragDroppedPostRejectorCheck( DragStep step );
 
 	@Override
-	public final Model dragDropped( DragStep step ) {
+	public final Triggerable dragDropped( DragStep step ) {
 		for( DropRejector rejector : this.dropRejectors ) {
 			if( rejector.isRejected( step ) ) {
 				return null;

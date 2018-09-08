@@ -49,8 +49,8 @@ import org.alice.ide.ProjectApplication;
 import org.alice.ide.ProjectDocumentFrame;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
@@ -61,19 +61,19 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialClearanceIteratingOperation extends SingleThreadIteratingOperation {
-	public PotentialClearanceIteratingOperation( Group group, UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
+	public PotentialClearanceIteratingOperation( Group group, UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Triggerable postClearanceModel ) {
 		super( group, migrationId );
 		this.projectDocumentFrame = projectDocumentFrame;
 		this.postClearanceModel = postClearanceModel;
 	}
 
-	protected Model getPostClearanceModel() {
+	protected Triggerable getPostClearanceModel() {
 		return this.postClearanceModel;
 	}
 
 	@Override
-	protected Iterator<Model> createIteratingData() {
-		List<Model> models = Lists.newLinkedList();
+	protected Iterator<Triggerable> createIteratingData() {
+		List<Triggerable> models = Lists.newLinkedList();
 		ProjectApplication application = ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
 		if (!application.isProjectUpToDateWithFile()) {
@@ -94,15 +94,15 @@ public abstract class PotentialClearanceIteratingOperation extends SingleThreadI
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iterator ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iterator ) {
 		return iterator.hasNext();
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iterator ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iterator ) {
 		return iterator.next();
 	}
 
 	private final ProjectDocumentFrame projectDocumentFrame;
-	private final Model postClearanceModel;
+	private final Triggerable postClearanceModel;
 }

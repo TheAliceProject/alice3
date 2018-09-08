@@ -51,11 +51,12 @@ import org.alice.ide.IDE;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ProjectStack;
 import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
+import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.OperationOwningComposite;
 import org.lgna.croquet.OwnedByCompositeOperation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
 
 import edu.wustl.lookingglass.media.FFmpegProcess;
 import org.lgna.croquet.history.UserActivity;
@@ -94,12 +95,12 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 		return fileKnownToBeNotExecuable;
 	}
 
-	private Model getExecutionPermissionModel( File file ) {
+	private Triggerable getExecutionPermissionModel( File file ) {
 		ExecutionPermissionFailedDialogComposite composite = new ExecutionPermissionFailedDialogComposite( file );
 		return composite.getLaunchOperation();
 	}
 
-	private Model getWizardModel() {
+	private Triggerable getWizardModel() {
 		ExportToYouTubeWizardDialogComposite wizard = this.getWizard();
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
@@ -110,14 +111,14 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		int size = subSteps.size();
 		if( size == 0 ) {
 			return true;
 		}
 		if( size == 1 ) {
 			UserActivity prevStep = subSteps.get( 0 );
-			Model prevModel = prevStep.getCompletionModel();
+			CompletionModel prevModel = prevStep.getCompletionModel();
 			if ( prevModel instanceof OwnedByCompositeOperation ) {
 				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation) prevModel;
 				OperationOwningComposite<?> composite = ownedByCompositeOperation.getComposite();
@@ -131,7 +132,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
 		if( subSteps.size() == 0 ) {
 			if( fileKnownToBeNotExecuable != null ) {

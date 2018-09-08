@@ -50,13 +50,8 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuItemPrepModel extends AbstractPrepModel {
-	public MenuItemPrepModel( UUID id ) {
+public abstract class MenuItemPrepModel extends AbstractModel implements PrepModel {
+	MenuItemPrepModel( UUID id ) {
 		super( id );
-	}
-
-	@Override
-	public final void fire( Trigger trigger ) {
-		throw new RuntimeException();
 	}
 }

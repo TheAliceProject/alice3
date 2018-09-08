@@ -52,9 +52,9 @@ import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
@@ -120,7 +120,7 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		return subSteps.size() < this.getStepCount();
 	}
 

@@ -53,7 +53,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<T>> extends AbstractPrepModel {
+public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<T>> extends AbstractModel implements PrepModel {
 	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T, D> listSelectionState ) {
 		super( UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
 		assert listSelectionState != null;
@@ -62,11 +62,6 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<
 
 	@Override
 	protected void localize() {
-	}
-
-	@Override
-	public void fire( Trigger trigger ) {
-		throw new RuntimeException();
 	}
 
 	public SingleSelectListState<T, D> getListSelectionState() {

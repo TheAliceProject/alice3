@@ -51,7 +51,11 @@ import java.util.List;
  * @author Dennis Cosgrove
  */
 public interface CompletionModel extends Model {
-	public Group getGroup();
+	Group getGroup();
 
-	public List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit );
+	List<List<PrepModel>> getPotentialPrepModelPaths( Edit edit );
+
+	PlainStringValue getSidekickLabel();
+
+	boolean hasSidekickLabel();
 }

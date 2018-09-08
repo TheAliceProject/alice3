@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.shapes;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite;
 import org.alice.stageide.icons.TextModelIconFactory;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.STextModel;
@@ -81,7 +81,7 @@ public class TextModelDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public Model getLeftButtonClickModel() {
+	public Triggerable getLeftButtonClickOperation() {
 		return AddTextModelManagedFieldOperationComposite.getInstance().getLaunchOperation();
 	}
 

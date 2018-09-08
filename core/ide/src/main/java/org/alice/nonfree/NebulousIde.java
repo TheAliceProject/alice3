@@ -57,8 +57,8 @@ import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.openprojectpane.models.TemplateUriState;
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaMethod;
@@ -136,7 +136,7 @@ public class NebulousIde {
 		return false;
 	}
 
-	public Model getPersonResourceDropModel( ResourceKey resourceKey ) {
+	public Triggerable getPersonResourceDropOperation( ResourceKey resourceKey ) {
 		return null;
 	}
 

@@ -46,6 +46,7 @@ import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.projecturi.SelectProjectUriComposite;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
@@ -65,8 +66,8 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
 	}
 
 	@Override
-	protected Iterator<Model> createIteratingData() {
-		Iterator<Model> rv = super.createIteratingData();
+	protected Iterator<Triggerable> createIteratingData() {
+		Iterator<Triggerable> rv = super.createIteratingData();
 		SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;
 	}

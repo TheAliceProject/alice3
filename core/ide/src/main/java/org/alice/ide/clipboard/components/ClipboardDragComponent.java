@@ -56,7 +56,7 @@ import org.lgna.croquet.AbstractDropReceptor;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.FlowPanel;
@@ -105,7 +105,7 @@ public class ClipboardDragComponent extends DragComponent<DragModel> {
 		}
 
 		@Override
-		protected Model dragDroppedPostRejectorCheck( DragStep step ) {
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
 			DragModel dragModel = step.getModel();
 			if( dragModel instanceof StatementDragModel ) {
 				StatementDragModel statementDragModel = (StatementDragModel)dragModel;

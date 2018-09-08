@@ -47,6 +47,7 @@ import org.alice.ide.ProjectApplication;
 import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.util.List;
@@ -56,7 +57,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UriPotentialClearanceIteratingOperation extends PotentialClearanceIteratingOperation {
-	UriPotentialClearanceIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
+	UriPotentialClearanceIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Triggerable postClearanceModel ) {
 		super( ProjectApplication.URI_GROUP, migrationId, projectDocumentFrame, postClearanceModel );
 	}
 

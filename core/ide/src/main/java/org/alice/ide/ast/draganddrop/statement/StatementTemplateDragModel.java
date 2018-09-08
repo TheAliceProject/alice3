@@ -45,7 +45,7 @@ package org.alice.ide.ast.draganddrop.statement;
 
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.Statement;
 
@@ -73,13 +73,13 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		return false;
 	}
 
-	protected abstract Model getDropModel( DragStep step, BlockStatementIndexPair dropSite );
+	protected abstract Triggerable getDropOperation( DragStep step, BlockStatementIndexPair dropSite );
 
 	@Override
-	public final Model getDropModel( DragStep step, DropSite dropSite ) {
+	public final Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
 		assert dropSite instanceof BlockStatementIndexPair;
 		BlockStatementIndexPair blockStatementIndexPair = (BlockStatementIndexPair)dropSite;
-		return this.getDropModel( step, blockStatementIndexPair );
+		return this.getDropOperation( step, blockStatementIndexPair );
 	}
 
 	public Class<? extends Statement> getStatementCls() {

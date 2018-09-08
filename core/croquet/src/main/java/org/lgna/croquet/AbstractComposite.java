@@ -833,19 +833,18 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 
 	private static final String SIDEKICK_LABEL_EPILOGUE = ".sidekickLabel";
 
-	private void localizeSidekicks( Map<Key, ? extends AbstractCompletionModel>... maps ) {
-		for( Map<Key, ? extends AbstractCompletionModel> map : maps ) {
+	private void localizeSidekicks( Map<Key, ? extends CompletionModel>... maps ) {
+		for( Map<Key, ? extends CompletionModel> map : maps ) {
 			for( Key key : map.keySet() ) {
-				AbstractCompletionModel model = map.get( key );
+				CompletionModel model = map.get( key );
 				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
 					text = this.modifyLocalizedText( sidekickLabel, text );
 					sidekickLabel.setText( text );
 				} else {
-					StringValue sidekickLabel = model.peekSidekickLabel();
 					//todo: it is probably to early for this check as we don't know if it will be accessed by the composite's view later.  hmm...
-					if( sidekickLabel != null ) {
+					if( model.hasSidekickLabel() ) {
 						Class<?> cls = this.getClassUsedForLocalization();
 						String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
 						Logger.errln();

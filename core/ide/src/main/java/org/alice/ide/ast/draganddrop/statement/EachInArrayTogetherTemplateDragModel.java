@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.declaration.InsertEachInArrayTogetherComposite;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.EachInArrayTogether;
 
@@ -69,7 +69,7 @@ public class EachInArrayTogetherTemplateDragModel extends PotentiallyEnvelopingS
 	}
 
 	@Override
-	protected Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		return InsertEachInArrayTogetherComposite.getInstance( blockStatementIndexPair, isEnveloping ).getLaunchOperation();
 	}
 }

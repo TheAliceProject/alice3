@@ -45,6 +45,7 @@ package org.alice.ide.croquet.models;
 import org.alice.ide.IDE;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.stencil.PotentialDropReceptorsFeedbackView;
+import org.lgna.croquet.AbstractModel;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.Perspective;
@@ -57,7 +58,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeDragModel extends DragModel {
+public abstract class IdeDragModel extends AbstractModel implements  DragModel {
 	public IdeDragModel( UUID id ) {
 		super( id );
 	}
@@ -73,6 +74,10 @@ public abstract class IdeDragModel extends DragModel {
 		}
 	}
 
+	@Override
+	protected void localize() {
+	}
+
 	private PotentialDropReceptorsFeedbackView getPotentialDropReceptorsStencil() {
 		return IDE.getActiveInstance().getPotentialDropReceptorsFeedbackView();
 	}
@@ -80,13 +85,6 @@ public abstract class IdeDragModel extends DragModel {
 	@Override
 	public void handleDragStarted( DragStep step ) {
 		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
-		//		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
-		//		if( (step.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK) != 0 ) {
-		//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
-		//		} else {
-		//			reasonToDisableSomeAmountOfRendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
-		//		}
-		//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 
 	@Override

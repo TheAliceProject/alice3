@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.declaration.InsertLocalDeclarationStatementComposite;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.LocalDeclarationStatement;
 
@@ -69,7 +69,7 @@ public class DeclareLocalDragModel extends StatementTemplateDragModel {
 	}
 
 	@Override
-	public Operation getDropModel( DragStep context, BlockStatementIndexPair blockStatementIndexPair ) {
+	public Triggerable getDropOperation( DragStep context, BlockStatementIndexPair blockStatementIndexPair ) {
 		return InsertLocalDeclarationStatementComposite.getInstance( blockStatementIndexPair ).getLaunchOperation();
 	}
 }

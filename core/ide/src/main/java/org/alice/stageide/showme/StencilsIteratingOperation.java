@@ -44,8 +44,8 @@ package org.alice.stageide.showme;
 
 import org.lgna.croquet.Application;
 import org.lgna.croquet.IteratingOperation;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.StencilModel;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.util.Iterator;
@@ -64,12 +64,12 @@ public abstract class StencilsIteratingOperation extends IteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		return subSteps.size() < stencilModels.length;
 	}
 
 	@Override
-	protected Model getNext( List<UserActivity> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
 		int i = subSteps.size();
 		if( i < this.stencilModels.length ) {
 			return this.stencilModels[ i ];

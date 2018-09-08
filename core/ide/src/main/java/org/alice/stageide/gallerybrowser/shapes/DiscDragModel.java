@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser.shapes;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite;
 import org.alice.stageide.icons.DiscIconFactory;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SDisc;
@@ -81,7 +81,7 @@ public class DiscDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public Model getLeftButtonClickModel() {
+	public Triggerable getLeftButtonClickOperation() {
 		return AddDiscManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 
