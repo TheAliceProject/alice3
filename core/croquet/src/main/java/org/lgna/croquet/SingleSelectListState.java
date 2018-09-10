@@ -423,15 +423,6 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 		return new DefaultRadioButtons<T>( this, false );
 	}
 
-	public TrackableShape getTrackableShapeFor( T item ) {
-		ItemSelectable<?, T, ?> itemSelectable = ComponentManager.getFirstComponent( this, ItemSelectable.class );
-		if( itemSelectable != null ) {
-			return itemSelectable.getTrackableShapeFor( item );
-		} else {
-			return null;
-		}
-	}
-
 	public MenuModel getMenuModel() {
 		return menuModelLazy.get();
 	}

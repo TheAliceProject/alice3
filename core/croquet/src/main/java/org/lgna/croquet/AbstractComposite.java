@@ -708,7 +708,6 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	public AbstractComposite( UUID id ) {
 		super( id );
 		this.scrollPane = this.createScrollPaneIfDesired();
-		Manager.registerComposite( this );
 	}
 
 	@Override

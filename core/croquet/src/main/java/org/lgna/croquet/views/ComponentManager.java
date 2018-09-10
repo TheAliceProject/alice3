@@ -92,8 +92,6 @@ public class ComponentManager {
 			components.remove( component );
 			if( components.size() == 0 ) {
 				Manager.unregisterModel( model );
-			} else {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "removeComponent", this.components.size(), this );
 			}
 		}
 	}
@@ -125,8 +123,6 @@ public class ComponentManager {
 				if( component.getAwtComponent().isShowing() ) {
 					//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 					return cls.cast( component );
-				} else {
-					//pass
 				}
 			}
 		}
@@ -136,28 +132,11 @@ public class ComponentManager {
 					if( component.getAwtComponent().isVisible() ) {
 						//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "isShowing:", component.getAwtComponent().getClass() );
 						return cls.cast( component );
-					} else {
-						//pass
 					}
 				}
 			}
 		}
 		return null;
-	}
-
-	//	public JComponent getFirstNotNecessarilyShowingComponent() {
-	//		for( JComponent< ? > component : this.components ) {
-	//			if( component.getAwtComponent().isVisible() ) {
-	//				return component;
-	//			} else {
-	//				//pass
-	//			}
-	//		}
-	//		return null;
-	//	}
-	@Deprecated
-	public static <J extends SwingComponentView<?>> J getFirstComponent( Model model, Class<J> cls ) {
-		return getFirstComponent( model, cls, false );
 	}
 
 	@Deprecated

@@ -70,33 +70,6 @@ public abstract class TabState<T extends TabComposite<?>, D extends ListData<T>>
 		return new ToolPaletteTabbedPane<T>( this );
 	}
 
-	public SwingComponentView<?> getMainComponentFor( T item ) {
-		TabbedPane<T> tabbedPane = ComponentManager.getFirstComponent( this, TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getMainComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public ScrollPane getScrollPaneFor( T item ) {
-		TabbedPane<T> tabbedPane = ComponentManager.getFirstComponent( this, TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getScrollPaneFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public SwingComponentView<?> getRootComponentFor( T item ) {
-		TabbedPane<T> tabbedPane = ComponentManager.getFirstComponent( this, TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getRootComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-
 	public void setItemIconForBothTrueAndFalse( T item, Icon icon ) {
 		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}

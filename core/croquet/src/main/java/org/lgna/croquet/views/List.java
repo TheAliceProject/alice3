@@ -164,12 +164,6 @@ public class List<T> extends ItemSelectable<JList, T, SingleSelectListState<T, ?
 		this.emptyConditionPainter = emptyConditionPainter;
 	}
 
-	@Override
-	public TrackableShape getTrackableShapeFor( T item ) {
-		//todo
-		return this;
-	}
-
 	public ListCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}

@@ -164,13 +164,7 @@ public abstract class Application<D extends DocumentFrame> {
 
 	public void setLocale( Locale locale ) {
 		if( locale != null ) {
-			if( locale.equals( Locale.getDefault() ) && locale.equals( JComponent.getDefaultLocale() ) ) {
-				//pass
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping locale", locale );
-			} else {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "setLocale", locale );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "java.util.Locale.getDefault()", java.util.Locale.getDefault() );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "javax.swing.JComponent.getDefaultLocale()", javax.swing.JComponent.getDefaultLocale() );
+			if ( !locale.equals( Locale.getDefault() ) || !locale.equals( JComponent.getDefaultLocale() ) ) {
 				Locale.setDefault( locale );
 				JComponent.setDefaultLocale( locale );
 

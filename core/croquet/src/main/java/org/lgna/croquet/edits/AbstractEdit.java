@@ -127,12 +127,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 		if ( !isDo && !canRedo() ) {
 			throw new CannotRedoException();
 		}
-		Manager.pushUndoOrRedo();
-		try {
-			this.doOrRedoInternal( isDo );
-		} finally {
-			Manager.popUndoOrRedo();
-		}
+		this.doOrRedoInternal( isDo );
 	}
 
 	@Override
@@ -140,12 +135,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 		if ( !canUndo() ) {
 			throw new CannotRedoException();
 		}
-		Manager.pushUndoOrRedo();
-		try {
-			this.undoInternal();
-		} finally {
-			Manager.popUndoOrRedo();
-		}
+		this.undoInternal();
 	}
 
 	protected <D extends DropSite> D findFirstDropSite( Class<D> cls ) {
