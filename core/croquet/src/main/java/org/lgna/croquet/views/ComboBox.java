@@ -48,6 +48,7 @@ import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
 import org.lgna.croquet.history.ListSelectionStatePrepStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.PopupMenuEventTrigger;
 
 import javax.accessibility.Accessible;
@@ -134,8 +135,8 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	private PopupMenuListener popupMenuListener = new PopupMenuListener() {
 		@Override
 		public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-			ListSelectionStatePrepStep.createAndAddToTransaction(
-					ComboBox.this.getModel(), PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
+			ListSelectionStatePrepStep.createAndAddToActivity(
+					ComboBox.this.getModel(), PopupMenuEventTrigger.createUserActivity( ComboBox.this, e ) );
 		}
 
 		@Override
@@ -144,9 +145,9 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 
 		@Override
 		public void popupMenuCanceled( PopupMenuEvent e ) {
-			final PopupMenuEventTrigger trigger = PopupMenuEventTrigger.createUserInstance( ComboBox.this, e );
-			trigger.getUserActivity().setCompletionModel( ComboBox.this.getModel().getListSelectionState() );
-			trigger.getUserActivity().cancel();
+			final UserActivity activity = PopupMenuEventTrigger.createUserActivity( ComboBox.this, e );
+			activity.setCompletionModel( ComboBox.this.getModel().getListSelectionState() );
+			activity.cancel();
 		}
 	};
 

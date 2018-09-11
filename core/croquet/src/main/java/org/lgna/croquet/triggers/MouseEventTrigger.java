@@ -52,15 +52,15 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class MouseEventTrigger extends AbstractMouseEventTrigger {
-	public static MouseEventTrigger createUserInstance( UserActivity userActivity, MouseEvent mouseEvent ) {
-		return new MouseEventTrigger( userActivity, null, mouseEvent );
+	public static UserActivity setOnUserActivity( UserActivity userActivity, MouseEvent mouseEvent ) {
+		return new MouseEventTrigger( userActivity, null, mouseEvent ).getUserActivity();
 	}
-	public static MouseEventTrigger createUserInstance( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		return new MouseEventTrigger(viewController, mouseEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		return new MouseEventTrigger(viewController, mouseEvent ).getUserActivity();
 	}
 
-	public static MouseEventTrigger createUserInstance( MouseEvent mouseEvent ) {
-		return new MouseEventTrigger(null, mouseEvent );
+	public static UserActivity createUserActivity( MouseEvent mouseEvent ) {
+		return new MouseEventTrigger(null, mouseEvent ).getUserActivity();
 	}
 
 	private MouseEventTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {

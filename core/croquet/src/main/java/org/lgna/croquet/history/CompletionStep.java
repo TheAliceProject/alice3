@@ -56,7 +56,7 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 
 	private AbstractEdit<M> edit;
 
-	public CompletionStep( UserActivity parent, M model, Trigger trigger ) {
+	CompletionStep( UserActivity parent, M model, Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 
@@ -68,7 +68,7 @@ public final class CompletionStep<M extends CompletionModel> extends Step<M> {
 		this.edit = (AbstractEdit<M>)edit;
 	}
 
-	public DropSite findDropSite() {
+	DropSite findDropSite() {
 		Step<?> step = findAcceptableStep( step1 -> step1.getTrigger() instanceof DropTrigger );
 		return step != null ? ((DropTrigger) step.getTrigger()).getDropSite() : null;
 	}

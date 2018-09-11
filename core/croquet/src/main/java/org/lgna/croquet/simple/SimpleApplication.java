@@ -45,7 +45,7 @@ package org.lgna.croquet.simple;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -69,7 +69,7 @@ public class SimpleApplication extends Application<DocumentFrame> {
 	}
 
 	@Override
-	public void handleQuit( Trigger trigger ) {
+	public void handleQuit( UserActivity activity ) {
 		System.exit( 0 );
 	}
 

@@ -276,7 +276,7 @@ public class DragStep extends PrepStep<DragModel> {
 					} else {
 						Logger.outln( "drop proxy hider:", dropOperation.getClass() );
 					}
-					dropOperation.fire( DropTrigger.createUserInstance( getOwner(), viewController, getLatestMouseEvent(), currentPotentialDropSite ) );
+					dropOperation.fire( DropTrigger.setOnUserActivity( getOwner(), viewController, getLatestMouseEvent(), currentPotentialDropSite ) );
 				} catch( CancelException ce ) {
 					this.cancel();
 				}

@@ -104,15 +104,15 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected void perform( Trigger trigger ) {
-			this.prologue( trigger );
+		protected void perform( UserActivity activity ) {
+			this.prologue( activity.getTrigger() );
 			final RtRoot<T, ?> rtRoot = new RtRoot( this.root );
 			if( rtRoot.isAutomaticallyDetermined() ) {
-				rtRoot.complete( new CascadeAutomaticDeterminationTrigger( trigger ) );
+				rtRoot.complete( CascadeAutomaticDeterminationTrigger.createChildActivity(activity) );
 				this.handleFinally();
 			} else {
-				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, trigger );
-				final PopupMenu popupMenu = new PopupMenu( this, trigger.getUserActivity() );
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, activity );
+				final PopupMenu popupMenu = new PopupMenu( this, activity );
 				popupMenu.addComponentListener( new ComponentListener() {
 					@Override
 					public void componentShown( ComponentEvent e ) {
@@ -132,7 +132,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 					}
 				} );
 				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-				trigger.showPopupMenu( popupMenu );
+				activity.getTrigger().showPopupMenu( popupMenu );
 			}
 		}
 

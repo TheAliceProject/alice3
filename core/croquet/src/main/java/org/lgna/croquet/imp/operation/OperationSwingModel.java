@@ -66,7 +66,7 @@ public class OperationSwingModel {
 	/*package-private*/final Action action = new AbstractAction() {
 		@Override
 		public void actionPerformed( ActionEvent e ) {
-			operation.fire( ActionEventTrigger.createUserInstance( e ) );
+			operation.fire( ActionEventTrigger.createUserActivity( e ) );
 		}
 	};
 

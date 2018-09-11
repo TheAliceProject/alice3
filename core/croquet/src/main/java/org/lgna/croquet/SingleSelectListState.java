@@ -48,14 +48,12 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Lazy;
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.liststate.SingleSelectListStateMenuModel;
 import org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.DefaultRadioButtons;
-import org.lgna.croquet.views.ItemSelectable;
 import org.lgna.croquet.views.List;
-import org.lgna.croquet.views.TrackableShape;
 import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
 
 import javax.swing.ComboBoxModel;
@@ -473,10 +471,10 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 					nextValue = null;
 				}
 				// TODO Carry through a user activity on a UI element
-				final NullTrigger trigger = NullTrigger.createUserInstance();
-				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
-				if (trigger.getUserActivity().isPending()) {
-					trigger.getUserActivity().finish();
+				final UserActivity activity = NullTrigger.createUserActivity();
+				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), activity.getTrigger());
+				if (activity.isPending()) {
+					activity.finish();
 				}
 			}
 		}

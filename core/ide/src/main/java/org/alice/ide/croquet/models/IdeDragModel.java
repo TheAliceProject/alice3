@@ -84,21 +84,21 @@ public abstract class IdeDragModel extends AbstractModel implements  DragModel {
 
 	@Override
 	public void handleDragStarted( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStarted( step );
+		this.getPotentialDropReceptorsStencil().handleDragStarted();
 	}
 
 	@Override
 	public void handleDragEnteredDropReceptor( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor( step );
+		this.getPotentialDropReceptorsStencil().handleDragEnteredDropReceptor();
 	}
 
 	@Override
 	public void handleDragExitedDropReceptor( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor( step );
+		this.getPotentialDropReceptorsStencil().handleDragExitedDropReceptor();
 	}
 
 	@Override
 	public void handleDragStopped( DragStep step ) {
-		this.getPotentialDropReceptorsStencil().handleDragStopped( step );
+		this.getPotentialDropReceptorsStencil().handleDragStopped();
 	}
 }

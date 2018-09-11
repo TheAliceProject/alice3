@@ -109,7 +109,7 @@ public abstract class ViewController<J extends JComponent, M extends Model> exte
 			if( quoteClickCountUnquote == 1 ) {
 				if( ViewController.this.popupPrepModel != null ) {
 					if( ( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton == false ) || MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						ViewController.this.popupPrepModel.fire( MouseEventTrigger.createUserInstance( ViewController.this, e ) );
+						ViewController.this.popupPrepModel.fire( MouseEventTrigger.createUserActivity( ViewController.this, e ) );
 					}
 				}
 			}

@@ -43,7 +43,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.PopupPrepStep;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.PopupMenu;
 
@@ -83,13 +83,13 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		protected void perform( final Trigger trigger ) {
-			final PopupPrepStep step = PopupPrepStep.createAndAddToActivity( this, trigger );
+		protected void perform( final UserActivity activity ) {
+			final PopupPrepStep step = PopupPrepStep.createAndAddToActivity( this, activity );
 
-			final PopupMenu popupMenu = new PopupMenu( this, trigger.getUserActivity() ) {
+			final PopupMenu popupMenu = new PopupMenu( this, activity ) {
 				@Override
 				protected void handleDisplayable() {
-					prologue( trigger );
+					prologue( activity.getTrigger() );
 					//todo: investigate
 					super.handleDisplayable();
 					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );

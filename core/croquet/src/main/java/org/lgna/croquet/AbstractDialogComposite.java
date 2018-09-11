@@ -45,7 +45,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.awt.WindowUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Dialog;
@@ -110,19 +109,17 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		class DialogWindowListener implements WindowListener {
 			@Override
 			public void windowOpened( WindowEvent e ) {
-				handleDialogOpened( WindowEventTrigger.createUserInstance( openingActivity, e ) );
+				handleDialogOpened();
 			}
 
 			@Override
 			public void windowClosing( WindowEvent e ) {
-				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( openingActivity, e ) ) ) {
-					dialog.setVisible( false );
-				}
+				dialog.setVisible( false );
 			}
 
 			@Override
 			public void windowClosed( WindowEvent e ) {
-				handleDialogClosed( WindowEventTrigger.createUserInstance( e ) );
+				handleDialogClosed();
 			}
 
 			@Override
@@ -194,11 +191,6 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 
 	protected abstract void releaseView( CompositeView<?, ?> view );
 
-	//todo: remove?
-	protected final boolean isWindowClosingEnabled( WindowEventTrigger trigger ) {
-		return true;
-	}
-
 	protected abstract String getDefaultTitleText();
 
 	protected String getDialogTitle() {
@@ -219,10 +211,10 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
 		return rv;
 	}
 
-	private void handleDialogOpened( WindowEventTrigger trigger ) {
+	private void handleDialogOpened() {
 	}
 
-	private void handleDialogClosed( WindowEventTrigger trigger ) {
+	private void handleDialogClosed() {
 	}
 
 	protected boolean isDefaultButtonDesired() {

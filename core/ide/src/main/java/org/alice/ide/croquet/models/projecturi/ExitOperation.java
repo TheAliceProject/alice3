@@ -68,6 +68,6 @@ public final class ExitOperation extends Operation {
 	@Override
 	protected void performInActivity( UserActivity userActivity ) {
 		//todo: create substep?
-		IDE.getActiveInstance().handleQuit( userActivity.getTrigger() );
+		IDE.getActiveInstance().handleQuit( userActivity );
 	}
 }

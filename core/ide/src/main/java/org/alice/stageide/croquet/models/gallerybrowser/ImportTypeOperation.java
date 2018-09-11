@@ -69,7 +69,7 @@ public class ImportTypeOperation extends Operation { //todo: ValueOperation?
 	@Override
 	protected void performInActivity( UserActivity activity ) {
 		final UserActivity child = activity.newChildActivity();
-		TypeFromUriProducer.getInstance().fire( child.getTrigger() );
+		TypeFromUriProducer.getInstance().fire( child );
 		NamedUserType userType = (NamedUserType) child.getProducedValue();
 		Logger.outln( userType );
 		child.finish();

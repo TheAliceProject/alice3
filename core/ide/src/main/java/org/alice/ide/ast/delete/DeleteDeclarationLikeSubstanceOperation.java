@@ -49,8 +49,6 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.project.ast.Node;
 
 import java.util.UUID;
@@ -81,9 +79,9 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends Node> ex
 		Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
 		if( failedToClearOperation != null ) {
 			activity.cancel();
-			Trigger newTrigger = NullTrigger.createUserInstance();
-			failedToClearOperation.fire(newTrigger);
-			if( newTrigger.getUserActivity().isSuccessfullyCompleted() ) {
+			UserActivity newActivity = activity.getOwner().newChildActivity();
+			failedToClearOperation.fire(newActivity);
+			if( newActivity.isSuccessfullyCompleted() ) {
 				BooleanState findFrameState = this.getFindModel();
 				if( findFrameState != null ) {
 					findFrameState.setValueTransactionlessly( true );

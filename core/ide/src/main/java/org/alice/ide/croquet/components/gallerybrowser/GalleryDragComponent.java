@@ -294,7 +294,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 		case 1:
 			Triggerable leftButtonClickModel = this.getModel().getLeftButtonClickOperation();
 			if( leftButtonClickModel != null ) {
-				leftButtonClickModel.fire( MouseEventTrigger.createUserInstance( this, e ) );
+				leftButtonClickModel.fire( MouseEventTrigger.createUserActivity( this, e ) );
 			}
 			break;
 		}

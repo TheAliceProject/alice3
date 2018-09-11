@@ -57,7 +57,6 @@ import org.alice.ide.croquet.models.projecturi.OpenProjectFromOsOperation;
 import org.alice.ide.croquet.models.ui.locale.LocaleState;
 import org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState;
 import org.alice.ide.issue.DefaultExceptionHandler;
-import org.alice.ide.members.components.templates.ProcedureInvocationTemplate;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.ide.stencil.PotentialDropReceptorsFeedbackView;
@@ -69,7 +68,6 @@ import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.preferences.PreferenceManager;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.DragComponent;
@@ -402,13 +400,6 @@ public abstract class IDE extends ProjectApplication {
 		this.getPotentialDropReceptorsFeedbackView().hideStencil();
 	}
 
-	@Deprecated
-	@Override
-	public void setDragInProgress( boolean isDragInProgress ) {
-		super.setDragInProgress( isDragInProgress );
-		this.getPotentialDropReceptorsFeedbackView().setDragInProgress( isDragInProgress );
-	}
-
 	protected boolean isAccessibleDesired( Accessible accessible ) {
 		return accessible.getValueType().isArray() == false;
 	}
@@ -459,13 +450,12 @@ public abstract class IDE extends ProjectApplication {
 			this.projectFileToLoadOnWindowOpened = null;
 		}
 
-		if( this.getUri() != null ) {
-			//pass
-		} else {
+		if ( this.getUri() == null ) {
 			this.setPerspective( this.getDocumentFrame().getNoProjectPerspective() );
 
 			UserActivity userActivity = getOverallUserActivity().getLatestActivity().newChildActivity(); // or acquireOpenActivity()?
-			this.getDocumentFrame().getNewProjectOperation().fire( WindowEventTrigger.createUserInstance( userActivity, e ) );
+			WindowEventTrigger.setOnUserActivity( userActivity, e );
+			this.getDocumentFrame().getNewProjectOperation().fire( userActivity );
 		}
 	}
 
@@ -490,12 +480,12 @@ public abstract class IDE extends ProjectApplication {
 	private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
-	public final void handleQuit( Trigger trigger ) {
+	public final void handleQuit( UserActivity activity ) {
 		this.preservePreferences();
 		if( this.crashDetector != null ) {
 			this.crashDetector.close();
 		}
-		clearanceCheckingExitOperation.fire( trigger );
+		clearanceCheckingExitOperation.fire( activity );
 	}
 
 	protected VirtualMachine createVirtualMachineForSceneEditor() {

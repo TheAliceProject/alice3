@@ -43,6 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.PopupMenuEvent;
@@ -51,12 +52,8 @@ import javax.swing.event.PopupMenuEvent;
  * @author Dennis Cosgrove
  */
 public class PopupMenuEventTrigger extends EventObjectTrigger<PopupMenuEvent> {
-	public static PopupMenuEventTrigger createUserInstance( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
-		return new PopupMenuEventTrigger( viewController, popupMenuEvent );
-	}
-
-	public static PopupMenuEventTrigger createUserInstance( PopupMenuEvent popupMenuEvent ) {
-		return createUserInstance( null, popupMenuEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
+		return new PopupMenuEventTrigger( viewController, popupMenuEvent ).getUserActivity();
 	}
 
 	private PopupMenuEventTrigger( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {

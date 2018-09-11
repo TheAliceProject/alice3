@@ -56,10 +56,6 @@ public class KeyEventTrigger extends ComponentEventTrigger<KeyEvent> {
 		return new KeyEventTrigger( viewController, keyEvent );
 	}
 
-	public static KeyEventTrigger createUserInstance( KeyEvent keyEvent ) {
-		return createUserInstance( null, keyEvent );
-	}
-
 	private KeyEventTrigger( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
 		super( viewController, keyEvent );
 	}

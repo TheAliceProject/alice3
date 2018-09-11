@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer;
 import org.alice.ide.resource.manager.ResourceManagerComposite;
 import org.alice.ide.resource.manager.ResourceSingleSelectTableRowState;
 import org.lgna.common.Resource;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.MouseEventTrigger;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.GridPanel;
@@ -186,8 +187,9 @@ public class ResourceManagerView extends BorderPanel {
 			if( quoteClickUnquoteCount == 2 ) {
 				ResourceManagerComposite composite = (ResourceManagerComposite)getComposite();
 				if( composite.getResourcesState().getValue() != null ) {
-					composite.getRenameResourceComposite().getLaunchOperation()
-									 .fire( MouseEventTrigger.createUserInstance( composite.getOpeningActivity().newChildActivity(), e ) );
+					final UserActivity activity = composite.getOpeningActivity().newChildActivity();
+					MouseEventTrigger.setOnUserActivity( activity, e );
+					composite.getRenameResourceComposite().getLaunchOperation().fire( activity );
 				}
 			}
 		}

@@ -52,11 +52,11 @@ import java.awt.event.WindowEvent;
  * @author Dennis Cosgrove
  */
 public class WindowEventTrigger extends ComponentEventTrigger<WindowEvent> {
-	public static WindowEventTrigger createUserInstance( WindowEvent windowEvent ) {
-		return new WindowEventTrigger( null, null, windowEvent );
+	public static UserActivity createUserActivity( WindowEvent windowEvent ) {
+		return new WindowEventTrigger( null, null, windowEvent ).getUserActivity();
 	}
-	public static WindowEventTrigger createUserInstance( UserActivity userActivity, WindowEvent windowEvent ) {
-		return new WindowEventTrigger( userActivity, null, windowEvent );
+	public static void setOnUserActivity( UserActivity userActivity, WindowEvent windowEvent ) {
+		new WindowEventTrigger( userActivity, null, windowEvent );
 	}
 
 	private WindowEventTrigger( UserActivity userActivity , ViewController<?, ?> viewController, WindowEvent windowEvent ) {

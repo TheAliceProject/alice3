@@ -45,7 +45,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp;
-import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Frame;
 
@@ -111,7 +110,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 
 			@Override
 			public void windowClosing( WindowEvent e ) {
-				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( e ) ) ) {
+				if( isWindowClosingEnabled() ) {
 					for( Frame frame : framesToDisable ) {
 						frame.getAwtComponent().setEnabled( true );
 					}
@@ -204,7 +203,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 		return rv;
 	}
 
-	protected boolean isWindowClosingEnabled( WindowEventTrigger trigger ) {
+	protected boolean isWindowClosingEnabled() {
 		return true;
 	}
 

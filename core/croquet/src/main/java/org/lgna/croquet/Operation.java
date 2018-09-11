@@ -47,7 +47,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.operation.OperationImp;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.ButtonWithRightClickCascade;
 import org.lgna.croquet.views.Hyperlink;
@@ -199,16 +198,16 @@ public abstract class Operation implements Triggerable, Element, CompletionModel
 	protected abstract void performInActivity( UserActivity userActivity );
 
 	@Override
-	public void fire( Trigger trigger ) {
+	public void fire( UserActivity activity ) {
 		if ( this.isEnabled() ) {
 			this.initializeIfNecessary();
-			this.performInActivity( trigger.getUserActivity() );
+			this.performInActivity( activity );
 		}
 	}
 
 	@Deprecated
 	public final void fire() {
-		fire( NullTrigger.createUserInstance() );
+		fire( NullTrigger.createUserActivity() );
 	}
 
 	@Override

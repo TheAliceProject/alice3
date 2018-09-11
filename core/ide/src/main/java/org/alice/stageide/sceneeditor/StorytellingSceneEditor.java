@@ -745,7 +745,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 			}
 			if( field != null ) {
 				InstanceFactory instanceFactory = ThisFieldAccessFactory.getInstance( field );
-				OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+				OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel()
+												.fire( InputEventTrigger.createUserActivity( clickInput.getInputEvent() ) );
 			} else {
 				Logger.severe( entityImp );
 			}

@@ -201,7 +201,7 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 	@Override
 	protected Edit createEdit( UserActivity userActivity, T[] values ) {
 		assert values.length == 1;
-		this.model.changeValueFromIndirectModel( values[ 0 ], State.IsAdjusting.FALSE, NullTrigger.createUserInstance() );
+		this.model.changeValueFromIndirectModel( values[ 0 ], State.IsAdjusting.FALSE, NullTrigger.createUserActivity().getTrigger() );
 		return null;
 		//return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
 	}

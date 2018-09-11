@@ -43,25 +43,19 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import org.lgna.croquet.views.ViewController;
+import org.lgna.croquet.history.UserActivity;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ActionEventTrigger extends EventObjectTrigger<ActionEvent> {
-	public static ActionEventTrigger createUserInstance( ViewController<?, ?> viewController, ActionEvent actionEvent ) {
-		return new ActionEventTrigger( viewController, actionEvent );
+	public static UserActivity createUserActivity( ActionEvent actionEvent ) {
+		return new ActionEventTrigger( actionEvent ).getUserActivity();
 	}
 
-	public static ActionEventTrigger createUserInstance( ActionEvent actionEvent ) {
-		return createUserInstance( null, actionEvent );
-	}
-
-	private ActionEventTrigger( ViewController<?, ?> viewController, ActionEvent actionEvent ) {
-		super( viewController, actionEvent );
+	private ActionEventTrigger( ActionEvent actionEvent ) {
+		super( null, actionEvent );
 	}
 }

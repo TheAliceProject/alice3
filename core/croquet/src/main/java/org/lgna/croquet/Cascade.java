@@ -51,7 +51,6 @@ import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.imp.JDropProxy;
@@ -148,15 +147,15 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 	}
 
 	@Override
-	public final void fire( Trigger trigger ) {
+	public final void fire( UserActivity activity ) {
 		Triggerable surrogateModel = this.root.getPopupPrepModel();
 		if( surrogateModel != null ) {
 			Logger.errln( "todo: end use of surrogate", this );
-			surrogateModel.fire( trigger );
+			surrogateModel.fire( activity );
 		} else {
 			//Copied from former parent implementation
 			if( this.isEnabled() ) {
-				this.performInActivity( trigger.getUserActivity() );
+				this.performInActivity( activity );
 			}
 		}
 	}
@@ -272,8 +271,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
-				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(),
-																																						 NullTrigger.createUserInstance() );
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(), NullTrigger.createUserActivity() );
 				Listeners listeners = map.get( menuItemContainer );
 				if( listeners != null ) {
 					listeners.componentListener.setPrepStep( prepStep );

@@ -57,7 +57,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.preferences.PreferencesManager;
 import org.lgna.croquet.triggers.AppleApplicationEventTrigger;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.JComponent;
 import javax.swing.MenuSelectionManager;
@@ -128,7 +127,7 @@ public abstract class Application<D extends DocumentFrame> {
 				public void handleAbout( AppEvent.AboutEvent e ) {
 					Operation aboutOperation = Application.this.getAboutOperation();
 					if( aboutOperation != null ) {
-						aboutOperation.fire( AppleApplicationEventTrigger.createUserInstance( e ) );
+						aboutOperation.fire( newAppleTriggerActivity( e ) );
 					}
 				}
 			} );
@@ -137,16 +136,16 @@ public abstract class Application<D extends DocumentFrame> {
 				public void handlePreferences( AppEvent.PreferencesEvent e ) {
 					Operation preferencesOperation = Application.this.getPreferencesOperation();
 					if( preferencesOperation != null ) {
-						preferencesOperation.fire( AppleApplicationEventTrigger.createUserInstance( e ) );
+						preferencesOperation.fire( newAppleTriggerActivity( e ) );
 					}
 				}
 			} );
 			application.setQuitHandler( new QuitHandler() {
 				@Override
 				public void handleQuitRequestWith( AppEvent.QuitEvent e, QuitResponse quitResponse ) {
-					final AppleApplicationEventTrigger trigger = AppleApplicationEventTrigger.createUserInstance( e );
-					Application.this.handleQuit( trigger );
-					if ( trigger.getUserActivity().isCanceled() ) {
+					UserActivity activity = newAppleTriggerActivity( e );
+					Application.this.handleQuit( activity );
+					if ( activity.isCanceled() ) {
 						quitResponse.cancelQuit();
 					}
 				}
@@ -160,6 +159,10 @@ public abstract class Application<D extends DocumentFrame> {
 			} );
 		}
 		//this.frame.pack();
+	}
+
+	private UserActivity newAppleTriggerActivity( AppEvent e ) {
+		return AppleApplicationEventTrigger.setOnUserActivity( acquireOpenUnboundedActivity(), e );
 	}
 
 	public void setLocale( Locale locale ) {
@@ -202,7 +205,7 @@ public abstract class Application<D extends DocumentFrame> {
 
 	protected abstract void handleWindowOpened( WindowEvent e );
 
-	public abstract void handleQuit( Trigger trigger );
+	public abstract void handleQuit( UserActivity activity );
 
 	private boolean isDragInProgress = false;
 

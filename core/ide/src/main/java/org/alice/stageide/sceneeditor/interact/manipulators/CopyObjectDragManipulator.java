@@ -185,7 +185,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 						DropSite dropSite = new SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
 						try {
 							MouseEvent mouseEvent = endInput.getInputEvent() instanceof MouseEvent ? (MouseEvent)endInput.getInputEvent() : null;
-							triggerable.fire( DropTrigger.createUserInstance( null, viewController, mouseEvent, dropSite ) );
+							triggerable.fire( null );
 						} catch( CancelException ce ) {
 							//Do nothing on cancel
 						}

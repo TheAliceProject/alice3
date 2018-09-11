@@ -48,9 +48,9 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.CascadeRoot;
 import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.triggers.PopupMenuEventTrigger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.MenuItemContainer;
 
 import javax.swing.event.PopupMenuEvent;
@@ -94,21 +94,21 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		return rv;
 	}
 
-	public void cancel( Trigger trigger ) {
-		getElement().handleCancel( trigger.getUserActivity() );
-		trigger.getUserActivity().cancel();
+	public void cancel( UserActivity activity ) {
+		getElement().handleCancel( activity );
+		activity.cancel();
 	}
 
-	public void complete( Trigger trigger ) {
+	public void complete( UserActivity activity ) {
 		try {
-			getElement().handleCompletion( trigger.getUserActivity(), this );
+			getElement().handleCompletion( activity, this );
 		} catch( CancelException ce ) {
-			cancel( trigger );
+			cancel( activity );
 		}
 	}
 
 	protected void handleActionPerformed( ActionEvent e ) {
-		this.complete( ActionEventTrigger.createUserInstance( e ) );
+		this.complete( ActionEventTrigger.createUserActivity( e ) );
 	}
 
 	public PopupMenuListener createPopupMenuListener( final MenuItemContainer menuItemContainer ) {
@@ -125,7 +125,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
 			@Override
 			public void popupMenuCanceled( PopupMenuEvent e ) {
-				RtRoot.this.cancel( PopupMenuEventTrigger.createUserInstance( e ) );
+				RtRoot.this.cancel( PopupMenuEventTrigger.createUserActivity( null, e ) );
 			}
 		};
 	}

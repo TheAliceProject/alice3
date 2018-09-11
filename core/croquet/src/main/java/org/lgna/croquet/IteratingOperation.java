@@ -79,7 +79,7 @@ public abstract class IteratingOperation extends Operation {
 				Triggerable model = this.getNext( subSteps, iteratingData );
 				if( model != null ) {
 					UserActivity child = activity.newChildActivity();
-					model.fire( child.getTrigger() );
+					model.fire( child );
 					if ( child.isSuccessfullyCompleted() ) {
 						subSteps.add( child );
 					} else {

@@ -206,9 +206,8 @@ public class JImageEditorView extends JComponent {
 		Tool tool = this.imageEditorFrame.getToolState().getValue();
 		if( tool == Tool.ADD_RECTANGLE ) {
 			if( shape != null ) {
-				MouseEventTrigger trigger = MouseEventTrigger.createUserInstance( e );
 				// NB This activity is not expected to have any child activities
-				UserActivity activity = trigger.getUserActivity();
+				UserActivity activity = MouseEventTrigger.createUserActivity( e );
 				AddShapeEdit edit = new AddShapeEdit( activity, shape, imageEditorFrame );
 				activity.commitAndInvokeDo( edit );
 			}

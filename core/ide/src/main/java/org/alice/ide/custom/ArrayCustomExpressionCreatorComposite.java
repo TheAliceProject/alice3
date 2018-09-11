@@ -168,8 +168,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		//new org.alice.stageide.StageIDE();
 		try {
-			Trigger trigger = null;
-			ArrayCustomExpressionCreatorComposite.getInstance( JavaType.getInstance( String[].class ) ).getValueCreator().fire( trigger );
+			ArrayCustomExpressionCreatorComposite.getInstance( JavaType.getInstance( String[].class ) ).getValueCreator().fire( null );
 		} catch( CancelException ce ) {
 			//pass
 		}

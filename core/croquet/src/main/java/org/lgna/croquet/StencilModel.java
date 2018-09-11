@@ -45,7 +45,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.SwingUtilities;
 import java.util.Collections;
@@ -107,10 +106,10 @@ public abstract class StencilModel extends AbstractCompletionModel implements Tr
 	}
 
 	@Override
-	public void fire( Trigger trigger ) {
+	public void fire( UserActivity activity ) {
 		if( this.isEnabled() ) {
 			this.initializeIfNecessary();
-			this.performInActivity( trigger.getUserActivity() );
+			this.performInActivity( activity );
 		}
 	}
 }

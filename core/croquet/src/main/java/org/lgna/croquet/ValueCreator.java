@@ -47,7 +47,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -98,7 +97,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel implements
 
 		@Override
 		public final F createValue( ItemNode<? super F, Void> node ) {
-			return this.valueCreator.fireAndGetValue( NullTrigger.createUserInstance() );
+			return this.valueCreator.fireAndGetValue();
 		}
 
 		@Override
@@ -134,20 +133,21 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel implements
 		activity.setProducedValue(value);
 	}
 
-	public T fireAndGetValue( Trigger trigger ) throws CancelException {
-		fire( trigger );
-		if( trigger.getUserActivity().isSuccessfullyCompleted() ) {
-			return (T)trigger.getUserActivity().getProducedValue();
+	public T fireAndGetValue() throws CancelException {
+		UserActivity activity = NullTrigger.createUserActivity();
+		fire( activity );
+		if( activity.isSuccessfullyCompleted() ) {
+			return (T)activity.getProducedValue();
 		} else {
 			throw new CancelException();
 		}
 	}
 
 	@Override
-	public void fire( Trigger trigger ) {
+	public void fire( UserActivity activity ) {
 		if( this.isEnabled() ) {
 			this.initializeIfNecessary();
-			this.performInActivity( trigger.getUserActivity() );
+			this.performInActivity( activity );
 		}
 	}
 }

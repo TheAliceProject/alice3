@@ -66,7 +66,7 @@ public abstract class Step<M extends Model> extends TransactionNode<UserActivity
 			this.trigger = trigger;
 		} else {
 			//todo?
-			this.trigger = NullTrigger.createUserInstance();
+			this.trigger = NullTrigger.createUserActivity().getTrigger();
 		}
 		this.id = UUID.randomUUID();
 	}

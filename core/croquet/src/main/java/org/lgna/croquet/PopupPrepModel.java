@@ -43,6 +43,7 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ActionEventTrigger;
 import org.lgna.croquet.triggers.EventObjectTrigger;
 import org.lgna.croquet.triggers.Trigger;
@@ -64,7 +65,7 @@ public abstract class PopupPrepModel extends AbstractModel  implements PrepModel
 		private final Action action = new AbstractAction() {
 			@Override
 			public void actionPerformed( final ActionEvent e ) {
-				PopupPrepModel.this.perform( ActionEventTrigger.createUserInstance( e ) );
+				PopupPrepModel.this.perform( ActionEventTrigger.createUserActivity( e ) );
 			}
 		};
 
@@ -138,10 +139,10 @@ public abstract class PopupPrepModel extends AbstractModel  implements PrepModel
 		}
 	}
 
-	protected abstract void perform( Trigger trigger );
+	protected abstract void perform( UserActivity activity );
 
 	@Override
-	public void fire( Trigger trigger ) {
-		perform( trigger );
+	public void fire( UserActivity activity ) {
+		perform( activity );
 	}
 }

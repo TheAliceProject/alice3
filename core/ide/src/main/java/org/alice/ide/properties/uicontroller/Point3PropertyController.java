@@ -286,7 +286,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newPoint ) )
 					{
 						Operation operation = new ModelPositionPropertyValueOperation( this.propertyAdapter, newPoint );
-						operation.fire( ActionEventTrigger.createUserInstance( e ) );
+						operation.fire( ActionEventTrigger.createUserActivity( e ) );
 					}
 				}
 			}

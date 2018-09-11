@@ -475,8 +475,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 
 		Project project = IoUtilities.readProject( args[ 0 ] );
 		ProjectStack.pushProject( project );
-		Trigger trigger = null;
-		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( trigger );
+		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( null );
 		System.exit( 0 );
 	}
 }

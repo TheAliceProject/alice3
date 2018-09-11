@@ -78,7 +78,7 @@ public class RaiseAnomalousSituationOperation extends InconsequentialActionOpera
 			@Override
 			public void run() {
 				Statement statement = new Comment( "delete me" );
-				StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( NullTrigger.createUserInstance() );
+				StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( NullTrigger.createUserActivity() );
 			}
 		}.start();
 	}

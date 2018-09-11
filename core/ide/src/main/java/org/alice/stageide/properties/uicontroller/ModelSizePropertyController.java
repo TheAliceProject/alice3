@@ -559,7 +559,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				if( !newScale.equals( this.propertyAdapter.getValue() ) ) {
 					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newScale ) ) {
 						Operation operation = new ModelSizePropertyValueOperation( this.propertyAdapter, newScale );
-						operation.fire( ActionEventTrigger.createUserInstance( e ) );
+						operation.fire( ActionEventTrigger.createUserActivity( e ) );
 					}
 				}
 			}
