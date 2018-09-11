@@ -43,19 +43,19 @@
 
 package org.lgna.croquet.triggers;
 
+import com.apple.eawt.AppEvent;
 import org.lgna.croquet.views.ViewController;
 
-import java.util.EventObject;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AppleApplicationEventTrigger extends EventObjectTrigger<EventObject> {
-	public static AppleApplicationEventTrigger createUserInstance( EventObject event ) {
+public class AppleApplicationEventTrigger extends EventObjectTrigger<AppEvent> {
+	public static AppleApplicationEventTrigger createUserInstance( AppEvent event ) {
 		return new AppleApplicationEventTrigger( null, event );
 	}
 
-	private AppleApplicationEventTrigger( ViewController<?, ?> viewController, EventObject event ) {
+	private AppleApplicationEventTrigger( ViewController<?, ?> viewController, AppEvent event ) {
 		super( viewController, event );
 	}
 }
