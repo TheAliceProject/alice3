@@ -68,8 +68,13 @@ public class VolumeLevelUtilities {
 	}
 
 	public static int toInt( double value ) {
-		BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
-		decimal = decimal.movePointRight( 2 );
-		return decimal.intValue();
+		if( Double.isFinite( value ) ) {
+			BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
+			decimal = decimal.movePointRight( 2 );
+			return decimal.intValue();
+		} else {
+			// NaN ==> 0, POSITIVE_INFINITY ==> Integer.MAX_VALUE, NEGATIVE_INFINITY ==> Integer.MIN_VALUE
+			return (int) value;
+		}
 	}
 }
