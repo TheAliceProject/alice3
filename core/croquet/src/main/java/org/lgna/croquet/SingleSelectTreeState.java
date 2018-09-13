@@ -233,9 +233,10 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
 		@Override
 		public void valueChanged( TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
-			SingleSelectTreeState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, TreeSelectionEventTrigger.createUserInstance( e ) );
-			//			T prevValue = getValue();
-			//			fireChanged( prevValue, nextValue, IsAdjusting.FALSE );
+			final TreeSelectionEventTrigger trigger = TreeSelectionEventTrigger.createUserInstance( e );
+			SingleSelectTreeState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, trigger );
+			trigger.getUserActivity().setCompletionModel( SingleSelectTreeState.this );
+			trigger.getUserActivity().finish();
 		}
 	};
 

@@ -58,7 +58,7 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 
 	public Trigger() {
 		// TODO Remove access to activity this way
-		userActivity = Application.getActiveInstance().acquireOpenUnboundedActivity();
+		userActivity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
 		userActivity.setTrigger( this );
 	}
 
@@ -75,6 +75,7 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 
 	public abstract ViewController<?, ?> getViewController();
 
+	// Only invoked from PopupPrepStep
 	public abstract void showPopupMenu( PopupMenu popupMenu );
 
 	protected void appendReprInternal( StringBuilder repr ) {

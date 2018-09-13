@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,13 +43,27 @@
 
 package org.lgna.croquet.history;
 
+import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.triggers.Trigger;
 
-/**
- * @author Dennis Cosgrove
- */
-public class TODO_REMOVE_BogusStep extends PrepStep {
-	public TODO_REMOVE_BogusStep( Trigger trigger ) {
+public class EmptyPrepStep extends PrepStep<PrepModel> {
+	private final String label;
+
+	public EmptyPrepStep( Trigger trigger, String label) {
 		super( trigger.getUserActivity(), null, trigger );
+		this.label = label;
+	}
+
+	@Override
+	protected StringBuilder updateRepr( StringBuilder builder ) {
+		builder.append( "trigger = " );
+		Trigger trigger = this.getTrigger();
+		if( trigger != null ) {
+			trigger.appendRepr( builder );
+		}
+		builder.append( " ; text = " );
+		builder.append( label );
+		builder.append( " " );
+		return builder;
 	}
 }

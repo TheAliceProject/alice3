@@ -61,7 +61,7 @@ public class NullTrigger extends Trigger {
 	}
 
 	private NullTrigger() {
-		super(Application.getActiveInstance().acquireOpenUnboundedActivity());
+		super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel());
 	}
 
 	@Override

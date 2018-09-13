@@ -55,12 +55,12 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class DragTrigger extends AbstractMouseEventTrigger {
-	public static <M extends DragModel> DragTrigger createUserInstance( UserActivity userActivity, ViewController<JDragView, M> viewController,
+	public static <M extends DragModel> DragTrigger createUserInstance( ViewController<JDragView, M> viewController,
 																																			MouseEvent mouseEvent ) {
-		return new DragTrigger( userActivity, viewController, mouseEvent );
+		return new DragTrigger( viewController, mouseEvent );
 	}
 
-	private DragTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
-		super( userActivity, viewController, mouseEvent );
+	private DragTrigger( ViewController<?, ?> viewController, MouseEvent mouseEvent ) {
+		super( null, viewController, mouseEvent );
 	}
 }

@@ -43,6 +43,8 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
+
 import java.awt.event.ItemEvent;
 
 /**
@@ -53,7 +55,7 @@ public class ItemEventTrigger extends EventObjectTrigger<ItemEvent> {
 		return new ItemEventTrigger( itemEvent );
 	}
 
-	private ItemEventTrigger(  ItemEvent itemEvent ) {
-		super(null, itemEvent );
+	private ItemEventTrigger( ItemEvent itemEvent ) {
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, itemEvent );
 	}
 }

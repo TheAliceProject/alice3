@@ -106,12 +106,8 @@ public class DragStep extends PrepStep<DragModel> {
 	private DropSite currentPotentialDropSite;
 	private MouseEvent latestMouseEvent;
 
-	public static DragStep createAndAddToTransaction( UserActivity parent, DragModel model, DragTrigger trigger ) {
-		return new DragStep( parent, model, trigger );
-	}
-
-	private DragStep( UserActivity parent, DragModel model, DragTrigger trigger ) {
-		super( parent, model, trigger );
+	DragStep( UserActivity activity, DragModel model, DragTrigger trigger) {
+		super( activity, model, trigger );
 	}
 
 	private DropReceptorInfo[] getPotentialDropReceptorInfos() {

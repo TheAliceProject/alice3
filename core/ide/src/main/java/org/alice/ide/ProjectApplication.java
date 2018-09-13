@@ -400,24 +400,25 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
 	private UserActivity newProjectActivity() {
 		// This is the activity of opening or creating this project
-		acquireOpenActivity().finish();
+		getOverallUserActivity().getLatestActivity().finish();
 		// If there was a project the new one replaces it.
 		if (projectActivity != null) {
 			projectActivity.finish();
 		}
 		// Create a new project activity under the top level user activity
-		projectActivity = acquireOpenActivity();
+		projectActivity = getOverallUserActivity().newChildActivity();
 		return projectActivity;
 	}
 
 	public UserActivity getProjectUserActivity() {
 		return getDocument().getUserActivity();
 	}
-	// Find a user activity to hold new work. If the latest one is from the system or project, create a new activity in that
+
+	//Look for an open child, if any. Otherwise return null.
 	@Override
-	public UserActivity acquireOpenActivity() {
-		UserActivity latest = super.acquireOpenActivity();
-		return latest == projectActivity ? projectActivity.newChildActivity() : latest;
+	public UserActivity getOpenActivity() {
+		UserActivity latest = super.getOpenActivity();
+		return latest == projectActivity ? null : latest;
 	}
 
 	public final void loadProjectFrom( UriProjectLoader uriProjectLoader ) {

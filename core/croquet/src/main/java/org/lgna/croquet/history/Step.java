@@ -44,7 +44,6 @@ package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.Model;
-import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ViewController;
 
@@ -59,15 +58,10 @@ public abstract class Step<M extends Model> extends TransactionNode<UserActivity
 	private final Trigger trigger;
 	private final UUID id;
 
-	public Step( UserActivity parent, M model, Trigger trigger ) {
+	Step( UserActivity parent, M model, Trigger trigger ) {
 		super( parent );
 		this.model = model;
-		if( trigger != null ) {
-			this.trigger = trigger;
-		} else {
-			//todo?
-			this.trigger = NullTrigger.createUserActivity().getTrigger();
-		}
+		this.trigger = trigger;
 		this.id = UUID.randomUUID();
 	}
 

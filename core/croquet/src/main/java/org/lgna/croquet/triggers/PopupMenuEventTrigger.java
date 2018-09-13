@@ -43,6 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
@@ -57,6 +58,6 @@ public class PopupMenuEventTrigger extends EventObjectTrigger<PopupMenuEvent> {
 	}
 
 	private PopupMenuEventTrigger( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
-		super( viewController, popupMenuEvent );
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, popupMenuEvent );
 	}
 }

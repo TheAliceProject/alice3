@@ -87,7 +87,7 @@ public class Menu extends AbstractMenu<AbstractMenuModel> {
 
 	@Override
 	public UserActivity getActivity() {
-		// TODO Build menus with the root application or project activity and hold onto it
-		return Application.getActiveInstance().acquireOpenActivity();
+		// TODO Build menus with the root application or project activity and hold onto it?
+		return Application.getActiveInstance().getOpenActivity();
 	}
 }

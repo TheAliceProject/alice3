@@ -48,6 +48,7 @@ import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.*;
 
@@ -72,6 +73,14 @@ public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
 			sb.append( "activity[" )
 				.append( activity.getOwner().getIndexOfTransaction( activity ) )
 				.append( "] " );
+		}
+		Trigger trigger = activity.getTrigger();
+		if (trigger == null){
+			sb.append( " - no trigger -" );
+ 		} else {
+			sb.append( " - " )
+				.append( trigger )
+				.append( " - " );
 		}
 		Edit edit = activity.getEdit();
 		if( edit != null ) {

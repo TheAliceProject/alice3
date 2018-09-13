@@ -43,6 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
 import org.lgna.croquet.history.UserActivity;
 
 import java.awt.event.ActionEvent;
@@ -56,6 +57,6 @@ public class ActionEventTrigger extends EventObjectTrigger<ActionEvent> {
 	}
 
 	private ActionEventTrigger( ActionEvent actionEvent ) {
-		super( null, actionEvent );
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, actionEvent );
 	}
 }

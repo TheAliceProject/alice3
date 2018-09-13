@@ -100,23 +100,24 @@ public abstract class Application<D extends DocumentFrame> {
 
 	public abstract D getDocumentFrame();
 
+	protected PreferencesManager getPreferencesManager() {
+		return preferencesManager;
+	}
+
 	public UserActivity getOverallUserActivity() {
 		return systemActivity;
 	}
 
-	public PreferencesManager getPreferencesManager() {
-		return preferencesManager;
-	}
-
-	// Find a user activity to add to. If the latest one is the top level application activity, create a new child in that
-	public UserActivity acquireOpenActivity() {
+	//Look for an open child, if any. Otherwise return null.
+	public UserActivity getOpenActivity() {
 		UserActivity latest = systemActivity.getLatestActivity();
-		return latest == systemActivity ? systemActivity.newChildActivity() : latest;
+		return latest == systemActivity ? null : latest;
 	}
 
-	public UserActivity acquireOpenUnboundedActivity() {
-		UserActivity latest = acquireOpenActivity();
-		return latest.getCompletionStep() != null ? latest.newChildActivity() : latest;
+	// Find a user activity to add to. If the latest one is a top level activity, create a new child.
+	public UserActivity acquireOpenActivity() {
+		UserActivity openActivity = getOpenActivity();
+		return openActivity == null ? systemActivity.getLatestActivity().newChildActivity() : openActivity;
 	}
 
 	public void initialize( String[] args ) {
@@ -162,7 +163,7 @@ public abstract class Application<D extends DocumentFrame> {
 	}
 
 	private UserActivity newAppleTriggerActivity( AppEvent e ) {
-		return AppleApplicationEventTrigger.setOnUserActivity( acquireOpenUnboundedActivity(), e );
+		return AppleApplicationEventTrigger.setOnUserActivity( acquireOpenActivity().getActivityWithoutTrigger(), e );
 	}
 
 	public void setLocale( Locale locale ) {

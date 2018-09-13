@@ -106,7 +106,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		@Override
 		protected void perform( UserActivity activity ) {
 			this.prologue( activity.getTrigger() );
-			final RtRoot<T, ?> rtRoot = new RtRoot( this.root );
+			final RtRoot<T, ?> rtRoot = new RtRoot<>( this.root );
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				rtRoot.complete( CascadeAutomaticDeterminationTrigger.createChildActivity(activity) );
 				this.handleFinally();
@@ -132,7 +132,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 					}
 				} );
 				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-				activity.getTrigger().showPopupMenu( popupMenu );
+				prepStep.showPopupMenu( popupMenu );
 			}
 		}
 

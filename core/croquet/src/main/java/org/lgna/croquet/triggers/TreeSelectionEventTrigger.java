@@ -43,6 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.Application;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -56,6 +57,6 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<TreeSelectionE
 	}
 
 	private TreeSelectionEventTrigger( ViewController<?, ?> viewController, TreeSelectionEvent treeSelectionEvent ) {
-		super( viewController, treeSelectionEvent );
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, treeSelectionEvent );
 	}
 }

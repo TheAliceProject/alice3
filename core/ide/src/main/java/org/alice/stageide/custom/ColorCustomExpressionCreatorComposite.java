@@ -50,7 +50,8 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.ide.custom.components.CustomExpressionCreatorView;
-import org.lgna.croquet.history.TODO_REMOVE_BogusStep;
+import org.lgna.croquet.history.EmptyPrepStep;
+import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
 import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.SwingAdapter;
@@ -80,7 +81,8 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
 	private final ChangeListener changeListener = new ChangeListener() {
 		@Override
 		public void stateChanged( ChangeEvent e ) {
-			new TODO_REMOVE_BogusStep( ChangeEventTrigger.createUserInstance(null, e ) );
+			PrepStep step = new EmptyPrepStep( ChangeEventTrigger.createUserInstance( openingActivity.getActivityWithoutTrigger(), e ), "Color chosen");
+			step.getUserActivity().finish();
 		}
 	};
 

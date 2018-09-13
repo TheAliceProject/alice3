@@ -46,7 +46,7 @@ package org.lgna.croquet;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.triggers.IterationTrigger;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -134,7 +134,8 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel implements
 	}
 
 	public T fireAndGetValue() throws CancelException {
-		UserActivity activity = NullTrigger.createUserActivity();
+		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+		IterationTrigger.createUserInstance( activity );
 		fire( activity );
 		if( activity.isSuccessfullyCompleted() ) {
 			return (T)activity.getProducedValue();

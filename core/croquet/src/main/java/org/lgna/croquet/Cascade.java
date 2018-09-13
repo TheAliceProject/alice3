@@ -50,7 +50,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
-import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.imp.JDropProxy;
@@ -114,7 +113,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 					}
 					userActivity.commitAndInvokeDo( edit );
 				} else {
-					userActivity.cancel();
+					if (userActivity.isPending()) {
+						userActivity.cancel();
+					}
 				}
 			} finally {
 				this.getPopupPrepModel().handleFinally();
@@ -271,7 +272,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
-				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(), NullTrigger.createUserActivity() );
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(), menuItemContainer.getActivity() );
 				Listeners listeners = map.get( menuItemContainer );
 				if( listeners != null ) {
 					listeners.componentListener.setPrepStep( prepStep );

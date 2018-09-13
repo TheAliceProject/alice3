@@ -45,15 +45,19 @@ package org.lgna.croquet.history;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.lgna.croquet.CompletionModel;
+import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.event.AddEvent;
 import org.lgna.croquet.history.event.CancelEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
+import org.lgna.croquet.triggers.DragTrigger;
 import org.lgna.croquet.triggers.IterationTrigger;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.DragComponent;
 
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -91,10 +95,15 @@ public class UserActivity extends TransactionNode<UserActivity> {
 		return child;
 	}
 
+	public UserActivity getActivityWithoutTrigger() {
+		return getTrigger() != null ? newChildActivity() : this;
+	}
+
+	public UserActivity getActivityWithoutModel() {
+		return getCompletionStep() != null ? newChildActivity() : this;
+	}
+
 	public Trigger getTrigger() {
-		if (trigger == null) {
-			trigger = IterationTrigger.createUserInstance( this );
-		}
 		return trigger;
 	}
 
@@ -157,6 +166,10 @@ public class UserActivity extends TransactionNode<UserActivity> {
 			}
 		}
 		MenuItemSelectStep.createAndAddToActivity( this, menuSelection, trigger );
+	}
+
+	public <M extends DragModel> DragStep addDragStep( DragModel model, DragTrigger trigger ) {
+		return new DragStep( this, model, trigger );
 	}
 
 	public Edit getEdit() {

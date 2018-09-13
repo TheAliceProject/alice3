@@ -164,7 +164,10 @@ public abstract class ItemState<T> extends State<T> {
 			//note: do not invoke super
 			if( e.getStateChange() == ItemEvent.SELECTED ) {
 				T item = getItem( this.itemCallable );
-				this.getState().changeValueFromIndirectModel( item, IsAdjusting.FALSE, ItemEventTrigger.createUserInstance( e ) );
+				final ItemEventTrigger trigger = ItemEventTrigger.createUserInstance( e );
+				this.getState().changeValueFromIndirectModel( item, IsAdjusting.FALSE, trigger );
+				trigger.getUserActivity().setCompletionModel( this );
+				trigger.getUserActivity().finish();
 			}
 		}
 
