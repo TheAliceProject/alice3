@@ -45,7 +45,6 @@ package org.alice.stageide.oneshot;
 import org.alice.ide.IDE;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.MenuModel;
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.PopupMenu;
 
@@ -68,8 +67,8 @@ public class DynamicOneShotMenuModel extends MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 		InstanceFactory instanceFactory = IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		MenuItemContainerUtilities.setMenuElements( popupMenu, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
 	}

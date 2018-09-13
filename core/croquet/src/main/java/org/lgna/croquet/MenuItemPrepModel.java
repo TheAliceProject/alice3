@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.triggers.Trigger;
-
 import java.util.UUID;
 
 /**

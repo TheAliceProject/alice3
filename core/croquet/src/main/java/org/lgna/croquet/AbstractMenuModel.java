@@ -44,7 +44,6 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.MenuItemSelectStep;
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuItemContainer;
@@ -119,10 +118,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 		this.action.setEnabled( isEnabled );
 	}
 
-	public void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep step ) {
-	}
-
-	public void handlePopupMenuEpilogue( PopupMenu popupMenu, PopupPrepStep step ) {
+	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
 	}
 
 	protected void handleShowing( MenuItemContainer menuItemContainer, PopupMenuEvent e ) {

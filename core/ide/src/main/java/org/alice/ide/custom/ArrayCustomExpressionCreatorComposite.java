@@ -55,7 +55,6 @@ import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.ArrayInstanceCreation;

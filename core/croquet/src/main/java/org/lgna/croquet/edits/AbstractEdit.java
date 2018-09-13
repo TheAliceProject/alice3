@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.Manager;
 import org.lgna.croquet.history.Step;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.DropTrigger;

@@ -71,9 +71,6 @@ public final class PopupPrepStep extends PrepStep<PopupPrepModel> {
 		this.popupMenu = null;
 	}
 
-	public void handleResized( ComponentEvent componentEvent ) {
-	}
-
 	public void firePopupMenuResized() {
 		fireChanged( new PopupMenuResizedEvent() );
 	}

@@ -51,7 +51,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.MouseEventTrigger;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;

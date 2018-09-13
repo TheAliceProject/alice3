@@ -50,7 +50,7 @@ import org.lgna.croquet.CascadeItem;
  */
 public abstract class AbstractItemNode<F, B, M extends CascadeItem<F, B>> extends CascadeNode<BlankNode<?>, M> implements ItemNode<F, B> {
 	public AbstractItemNode( M model ) {
-		super( null, model );
+		super( model );
 	}
 
 	@Override

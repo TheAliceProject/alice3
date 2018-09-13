@@ -53,7 +53,6 @@ import org.alice.ide.croquet.models.ast.ParameterAccessMenuModel;
 import org.alice.ide.operations.ast.DeleteParameterOperation;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.project.ast.NodeListProperty;
@@ -80,8 +79,8 @@ public class ParameterPane extends TransientPane {
 			final BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new BackwardShiftParameterOperation( this.parametersProperty, parameter );
 			this.setPopupPrepModel( new MenuModel( UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				public void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
-					super.handlePopupMenuPrologue( popupMenu, context );
+				public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+					super.handlePopupMenuPrologue( popupMenu );
 					List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 					models.add( RenameParameterComposite.getInstance( parameter ).getLaunchOperation().getMenuItemPrepModel() );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {

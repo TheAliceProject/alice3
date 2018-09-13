@@ -64,7 +64,6 @@ import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.Project;
 import org.lgna.project.annotations.Visibility;

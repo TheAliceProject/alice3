@@ -107,7 +107,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		}
 	}
 
-	protected void handleActionPerformed( ActionEvent e ) {
+	void handleActionPerformed( ActionEvent e ) {
 		this.complete( ActionEventTrigger.createUserActivity( e ) );
 	}
 

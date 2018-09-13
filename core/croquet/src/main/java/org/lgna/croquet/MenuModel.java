@@ -125,7 +125,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 						System.err.println( "todo: finish" );
 						//step.getParent().finish();
 					}
-					InternalPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
 
 					System.err.println( "TODO: handleFinally?" );
 					//					performObserver.handleFinally();
@@ -154,7 +153,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 				public void componentResized( ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-					step.handleResized( e );
 				}
 
 				@Override
@@ -164,7 +162,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 				}
 			} );
 
-			this.menuModel.handlePopupMenuPrologue( popupMenu, step );
+			this.menuModel.handlePopupMenuPrologue( popupMenu );
 
 			step.showPopupMenu( popupMenu );
 		}

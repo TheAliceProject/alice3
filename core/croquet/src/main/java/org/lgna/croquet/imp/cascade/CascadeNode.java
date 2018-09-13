@@ -49,19 +49,13 @@ import org.lgna.croquet.Element;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends Element> {
-	CascadeNode( P owner, E element ) {
-		this.owner = owner;
-		this.elememt = element;
-	}
-
-	public P getOwner() {
-		return this.owner;
+	CascadeNode( E element ) {
+		this.element = element;
 	}
 
 	public E getElement() {
-		return this.elememt;
+		return this.element;
 	}
 
-	private final P owner;
-	private final E elememt;
+	private final E element;
 }
