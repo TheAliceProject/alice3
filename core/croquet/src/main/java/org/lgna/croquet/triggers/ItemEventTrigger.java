@@ -44,6 +44,7 @@
 package org.lgna.croquet.triggers;
 
 import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.event.ItemEvent;
 
@@ -51,8 +52,8 @@ import java.awt.event.ItemEvent;
  * @author Dennis Cosgrove
  */
 public class ItemEventTrigger extends EventObjectTrigger<ItemEvent> {
-	public static ItemEventTrigger createUserInstance( ItemEvent itemEvent ) {
-		return new ItemEventTrigger( itemEvent );
+	public static UserActivity createUserActivity( ItemEvent itemEvent ) {
+		return new ItemEventTrigger( itemEvent ).getUserActivity();
 	}
 
 	private ItemEventTrigger( ItemEvent itemEvent ) {

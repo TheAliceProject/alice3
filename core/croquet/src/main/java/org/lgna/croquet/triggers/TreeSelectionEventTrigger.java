@@ -44,6 +44,7 @@
 package org.lgna.croquet.triggers;
 
 import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.TreeSelectionEvent;
@@ -52,8 +53,8 @@ import javax.swing.event.TreeSelectionEvent;
  * @author Dennis Cosgrove
  */
 public class TreeSelectionEventTrigger extends EventObjectTrigger<TreeSelectionEvent> {
-	public static TreeSelectionEventTrigger createUserInstance( TreeSelectionEvent treeSelectionEvent ) {
-		return new TreeSelectionEventTrigger( null, treeSelectionEvent );
+	public static UserActivity createUserActivity( TreeSelectionEvent treeSelectionEvent ) {
+		return new TreeSelectionEventTrigger( null, treeSelectionEvent ).getUserActivity();
 	}
 
 	private TreeSelectionEventTrigger( ViewController<?, ?> viewController, TreeSelectionEvent treeSelectionEvent ) {

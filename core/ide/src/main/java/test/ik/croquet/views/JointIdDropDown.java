@@ -61,7 +61,7 @@ public class JointIdDropDown extends ItemDropDown<JointId, JointIdState> {
 	}
 
 	@Override
-	protected void handleChanged( State<JointId> state, JointId prevValue, JointId nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<JointId> state, JointId prevValue, JointId nextValue ) {
 		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
 		this.revalidateAndRepaint();
 	}

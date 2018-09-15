@@ -119,11 +119,11 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
 
 		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			poserAnimatorDragAdapter.setHandleVisibility( nextValue );
 		}
 	};

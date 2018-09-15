@@ -50,7 +50,6 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.TreeSelectionEventTrigger;
 import org.lgna.croquet.views.Tree;
 
@@ -201,7 +200,7 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 	@Override
 	protected Edit createEdit( UserActivity userActivity, T[] values ) {
 		assert values.length == 1;
-		this.model.changeValueFromIndirectModel( values[ 0 ], State.IsAdjusting.FALSE, NullTrigger.createUserActivity().getTrigger() );
+		this.model.changeValueFromIndirectModel( values[ 0 ], userActivity);
 		return null;
 		//return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
 	}
@@ -233,10 +232,10 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
 		@Override
 		public void valueChanged( TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
-			final TreeSelectionEventTrigger trigger = TreeSelectionEventTrigger.createUserInstance( e );
-			SingleSelectTreeState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, trigger );
-			trigger.getUserActivity().setCompletionModel( SingleSelectTreeState.this );
-			trigger.getUserActivity().finish();
+			final UserActivity activity = TreeSelectionEventTrigger.createUserActivity( e );
+			SingleSelectTreeState.this.changeValueFromSwing( nextValue, activity );
+			activity.setCompletionModel( SingleSelectTreeState.this );
+			activity.finish();
 		}
 	};
 

@@ -79,12 +79,12 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 
 	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
 		@Override
-		public void changing( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changing( State<T> state, T prevValue, T nextValue ) {
 		}
 
 		@Override
-		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-			TreeDirectoryViewController.this.handleSelectionChange( state, prevValue, nextValue, isAdjusting );
+		public void changed( State<T> state, T prevValue, T nextValue ) {
+			TreeDirectoryViewController.this.handleSelectionChange( state, prevValue, nextValue );
 		}
 	};
 
@@ -120,7 +120,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 		}
 	}
 
-	protected void handleSelectionChange( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+	private void handleSelectionChange( State<T> state, T prevValue, T nextValue ) {
 		this.getInternalPanel().refreshLater();
 	}
 }

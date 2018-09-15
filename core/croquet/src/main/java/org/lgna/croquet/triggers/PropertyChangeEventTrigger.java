@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import java.beans.PropertyChangeEvent;
@@ -50,8 +51,8 @@ import java.beans.PropertyChangeEvent;
  * @author Dennis Cosgrove
  */
 public class PropertyChangeEventTrigger extends EventObjectTrigger<PropertyChangeEvent> {
-	public static PropertyChangeEventTrigger createUserInstance( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
-		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
+		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent ).getUserActivity();
 	}
 
 	private PropertyChangeEventTrigger( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {

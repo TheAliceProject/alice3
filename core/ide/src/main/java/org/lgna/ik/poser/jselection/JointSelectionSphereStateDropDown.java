@@ -58,7 +58,7 @@ public class JointSelectionSphereStateDropDown extends ItemDropDown<JointSelecti
 	}
 
 	@Override
-	protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
 		this.revalidateAndRepaint();
 	}

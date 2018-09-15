@@ -79,19 +79,8 @@ public abstract class ColorState extends ItemState<Color> {
 		}
 
 		public void setValue( Color nextValue, MouseEvent e ) {
-			if( this.value.equals( nextValue ) ) {
-				//pass
-			} else {
+			if ( !this.value.equals( nextValue ) ) {
 				this.value = nextValue;
-				IsAdjusting isAdjusting;
-				if( e != null ) {
-					isAdjusting = e.getID() != MouseEvent.MOUSE_RELEASED ? IsAdjusting.TRUE : IsAdjusting.FALSE;
-				} else {
-					isAdjusting = IsAdjusting.FALSE;
-				}
-
-				//todo
-				isAdjusting = IsAdjusting.FALSE;
 
 				UserActivity activity;
 				if( e != null ) {
@@ -99,7 +88,7 @@ public abstract class ColorState extends ItemState<Color> {
 				} else {
 					activity = NullTrigger.createUserActivity();
 				}
-				changeValueFromSwing( this.value, isAdjusting, activity.getTrigger() );
+				changeValueFromSwing( value, activity );
 				if( this.changeListeners.size() > 0 ) {
 					Object source = e != null ? e.getSource() : this;
 					ChangeEvent changeEvent = new ChangeEvent( source );

@@ -164,10 +164,10 @@ public abstract class ItemState<T> extends State<T> {
 			//note: do not invoke super
 			if( e.getStateChange() == ItemEvent.SELECTED ) {
 				T item = getItem( this.itemCallable );
-				final ItemEventTrigger trigger = ItemEventTrigger.createUserInstance( e );
-				this.getState().changeValueFromIndirectModel( item, IsAdjusting.FALSE, trigger );
-				trigger.getUserActivity().setCompletionModel( this );
-				trigger.getUserActivity().finish();
+				final UserActivity activity = ItemEventTrigger.createUserActivity( e );
+				this.getState().changeValueFromIndirectModel( item, activity );
+				activity.setCompletionModel( this );
+				activity.finish();
 			}
 		}
 
@@ -211,8 +211,7 @@ public abstract class ItemState<T> extends State<T> {
 
 		@Override
 		protected final void performInActivity( UserActivity userActivity ) {
-			state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, userActivity.getTrigger() );
-//			Logger.severe( this, transaction, trigger );
+			state.changeValueFromIndirectModel( getItem( this.itemCallable ), userActivity );
 		}
 	}
 
@@ -291,7 +290,7 @@ public abstract class ItemState<T> extends State<T> {
 	}
 
 	@Override
-	protected void fireChanged( T prevValue, T nextValue, State.IsAdjusting isAdjusting ) {
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		//todo
 		if( this.mapItemCallableToItemSelectedState != null ) {

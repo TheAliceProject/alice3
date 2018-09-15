@@ -74,7 +74,7 @@ public abstract class StringState extends State<String> {
 				try {
 					javax.swing.text.Document document = e.getDocument();
 					String nextValue = document.getText( 0, document.getLength() );
-					StringState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, DocumentEventTrigger.createUserInstance( e ) );
+					StringState.this.changeValueFromSwing( nextValue, DocumentEventTrigger.createUserInstance( e ).getUserActivity() );
 				} catch( BadLocationException ble ) {
 					throw new RuntimeException( ble );
 				}

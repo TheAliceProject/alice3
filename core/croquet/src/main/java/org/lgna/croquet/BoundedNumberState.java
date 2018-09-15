@@ -44,7 +44,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.triggers.ChangeEventTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Slider;
 import org.lgna.croquet.views.Spinner;
 
@@ -142,14 +142,21 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 		return this.swingModel;
 	}
 
+
+	private void commitAdjustingValue( N prevValue, N nextValue, UserActivity activity ) {
+		commitStateEdit( prevValue, nextValue, activity );
+		fireChanged( prevValue, nextValue, true );
+	}
+
 	@Override
-	protected boolean isAdjustingIgnored() {
-		return false;
+	protected void adjustModelValueFromSwing( N nextValue, UserActivity activity ) {
+		changeModelValue( previousValue, nextValue, () -> commitAdjustingValue( previousValue, nextValue, activity ) );
 	}
 
 	private void handleStateChanged( ChangeEvent e ) {
-		N nextValue = this.getSwingValue();
-		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), ChangeEventTrigger.createUserInstance(null, e ) );
+		changingValueFromSwing( getSwingValue(),
+														swingModel.getBoundedRangeModel().getValueIsAdjusting(),
+														null );
 	}
 
 	@Override

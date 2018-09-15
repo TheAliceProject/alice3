@@ -73,7 +73,7 @@ import java.util.UUID;
  */
 public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T> implements Iterable<T> {
 	private class DataIndexPair implements ComboBoxModel {
-		public DataIndexPair( D data, int index ) {
+		DataIndexPair( D data, int index ) {
 			this.data = data;
 			this.index = index;
 		}
@@ -185,10 +185,14 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 		return Collections.emptyList();
 	}
 
-	@Override
-	protected boolean isSwingValueValid() {
+	private boolean isSwingValueValid() {
 		int index = this.swingModel.getSelectionIndex();
 		return ( -1 <= index ) && ( index < this.getItemCount() );
+	}
+
+	@Override
+	protected boolean shouldUpdateSwingModel( T nextValue ) {
+		return ( !isSwingValueValid() || super.shouldUpdateSwingModel( nextValue ) );
 	}
 
 	@Override
@@ -221,6 +225,35 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 			}
 			this.swingModel.fireListSelectionChanged( index, index, false );
 		}
+	}
+
+	private int atomicCount;
+	private T prevValueAtStartOfAtomicChange;
+
+	private void pushIsInTheMidstOfAtomicChange() {
+		if( isNotInTheMidstOfAtomicChange() ) {
+			this.prevValueAtStartOfAtomicChange = this.previousValue;
+		}
+		this.atomicCount++;
+	}
+
+	private void popIsInTheMidstOfAtomicChange() {
+		this.atomicCount--;
+		if( isNotInTheMidstOfAtomicChange() ) {
+			T nextValue = this.getCurrentTruthAndBeautyValue();
+			changeValue( prevValueAtStartOfAtomicChange, nextValue );
+		}
+	}
+
+	@Override
+	protected void changeValue( T prevValue, T nextValue, Runnable bookkeeping) {
+		if ( isNotInTheMidstOfAtomicChange() ) {
+			super.changeValue( prevValue, nextValue, bookkeeping );
+		}
+	}
+
+	private boolean isNotInTheMidstOfAtomicChange() {
+		return this.atomicCount <= 0;
 	}
 
 	public int getSelectedIndex() {
@@ -472,7 +505,7 @@ public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T
 				}
 				// TODO Carry through a user activity on a UI element
 				final UserActivity activity = NullTrigger.createUserActivity();
-				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), activity.getTrigger());
+				SingleSelectListState.this.changingValueFromSwing( nextValue, e.getValueIsAdjusting(), activity );
 				if (activity.isPending()) {
 					activity.finish();
 				}

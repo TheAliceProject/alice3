@@ -124,11 +124,11 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final ValueListener<KeyFrameStyles> styleListener = new ValueListener<KeyFrameStyles>() {
 
 		@Override
-		public void changing( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue, boolean isAdjusting ) {
+		public void changing( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue ) {
 		}
 
 		@Override
-		public void changed( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue, boolean isAdjusting ) {
+		public void changed( State<KeyFrameStyles> state, KeyFrameStyles prevValue, KeyFrameStyles nextValue ) {
 			selectedKeyFrame.setStyle( nextValue );
 		}
 	};
@@ -136,11 +136,11 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private final ValueListener<Double> timeListener = new ValueListener<Double>() {
 
 		@Override
-		public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		public void changing( State<Double> state, Double prevValue, Double nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		public void changed( State<Double> state, Double prevValue, Double nextValue ) {
 			//			assert isAdjusting == ( prevValue == nextValue );
 			//			if( isAdjusting ) {
 			//			System.out.println( "time changed" );

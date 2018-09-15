@@ -46,7 +46,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Table;
 
 import javax.swing.DefaultListSelectionModel;
@@ -112,8 +111,7 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> implemen
 	}
 
 	private void handleListSelectionChanged( ListSelectionEvent e ) {
-		Trigger trigger = null;
-		this.changeValueFromSwing( this.getSwingValue(), IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
+		changingValueFromSwing( getSwingValue(), e.getValueIsAdjusting(), null );
 	}
 
 	@Override

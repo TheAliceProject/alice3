@@ -522,23 +522,23 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 	private final Map<AbstractType<?, ?, ?>, Expression> mapTypeToInitializer = Maps.newHashMap();
 	private final State.ValueListener<Boolean> isArrayValueTypeListener = new State.ValueListener<Boolean>() {
 		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
 		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
 	private final State.ValueListener<AbstractType> valueComponentTypeListener = new State.ValueListener<AbstractType>() {
 		@Override
-		public void changing( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue, boolean isAdjusting ) {
+		public void changing( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
 		@Override
-		public void changed( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue, boolean isAdjusting ) {
+		public void changed( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};

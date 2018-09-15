@@ -74,7 +74,7 @@ public class TypeDropDown<M extends CustomItemState<AbstractType>> extends ItemD
 	}
 
 	@Override
-	protected void handleChanged( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue ) {
 		this.update( nextValue );
 	}
 };

@@ -90,7 +90,7 @@ public abstract class AbstractIsFrameShowingState extends BooleanState {
 	}
 
 	@Override
-	protected void fireChanged( Boolean prevValue, Boolean nextValue, IsAdjusting isAdjusting ) {
+	protected void fireChanged( Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( nextValue ) {
 			Frame frameView = this.getOwnerFrameView_createIfNecessary();

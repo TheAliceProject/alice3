@@ -43,6 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import java.awt.event.KeyEvent;
@@ -52,8 +53,8 @@ import java.awt.event.KeyEvent;
  */
 public class KeyEventTrigger extends ComponentEventTrigger<KeyEvent> {
 
-	public static KeyEventTrigger createUserInstance( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
-		return new KeyEventTrigger( viewController, keyEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
+		return new KeyEventTrigger( viewController, keyEvent ).getUserActivity();
 	}
 
 	private KeyEventTrigger( ViewController<?, ?> viewController, KeyEvent keyEvent ) {

@@ -81,11 +81,11 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
 	private State.ValueListener<Boolean> linkStateValueObserver = new State.ValueListener<Boolean>() {
 		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			ModelSizePropertyController.this.updateUIFromLinkState( state, prevValue, nextValue );
 		}
 	};

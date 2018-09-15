@@ -131,11 +131,11 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
 	private State.ValueListener<Boolean> showJointsStateObserver = new State.ValueListener<Boolean>() {
 		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			assert ( state instanceof ShowJointedModelJointAxesState );
 			SceneObjectPropertyManagerPanel.this.setShowJointsOfField( ( (ShowJointedModelJointAxesState)state ).getField(), nextValue );
 		}

@@ -122,7 +122,7 @@ public abstract class BooleanState extends State<Boolean> {
 			//pass
 		} else {
 			boolean nextValue = e.getStateChange() == ItemEvent.SELECTED;
-			this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, ItemEventTrigger.createUserInstance( e ) );
+			this.changeValueFromSwing( nextValue, ItemEventTrigger.createUserActivity( e ) );
 		}
 	}
 

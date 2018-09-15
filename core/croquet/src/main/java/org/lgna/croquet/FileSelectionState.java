@@ -79,7 +79,7 @@ public abstract class FileSelectionState extends ItemState<File> {
 		public void propertyChange( PropertyChangeEvent e ) {
 			//java.io.File prevValue = (java.io.File)e.getOldValue();
 			File nextValue = (File)e.getNewValue();
-			FileSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, PropertyChangeEventTrigger.createUserInstance( oneAndOnlyOneFileChooser, e ) );
+			FileSelectionState.this.changeValueFromSwing( nextValue, PropertyChangeEventTrigger.createUserActivity( oneAndOnlyOneFileChooser, e ) );
 		}
 	};
 

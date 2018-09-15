@@ -109,11 +109,11 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		currentTime.addValueListener( new ValueListener<Double>() {
 
 			@Override
-			public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			public void changing( State<Double> state, Double prevValue, Double nextValue ) {
 			}
 
 			@Override
-			public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			public void changed( State<Double> state, Double prevValue, Double nextValue ) {
 				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
 		} );
