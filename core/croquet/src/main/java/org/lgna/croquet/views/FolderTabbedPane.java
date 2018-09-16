@@ -458,7 +458,7 @@ public class FolderTabbedPane<E extends TabComposite<?>> extends CardBasedTabbed
 
 		@Override
 		protected void perform( UserActivity activity ) {
-			Trigger trigger = activity.getCompletionStep().getTrigger();
+			Trigger trigger = activity.getTrigger();
 			JPopupMenu popupMenu = new JPopupMenu();
 			ButtonGroup buttonGroup = new ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {

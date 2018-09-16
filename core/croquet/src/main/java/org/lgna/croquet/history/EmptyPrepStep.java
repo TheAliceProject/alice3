@@ -55,7 +55,7 @@ public class EmptyPrepStep extends PrepStep<PrepModel> {
 	}
 
 	@Override
-	protected StringBuilder updateRepr( StringBuilder builder ) {
+	protected void updateRepr( StringBuilder builder ) {
 		builder.append( "trigger = " );
 		Trigger trigger = this.getTrigger();
 		if( trigger != null ) {
@@ -64,6 +64,5 @@ public class EmptyPrepStep extends PrepStep<PrepModel> {
 		builder.append( " ; text = " );
 		builder.append( label );
 		builder.append( " " );
-		return builder;
 	}
 }

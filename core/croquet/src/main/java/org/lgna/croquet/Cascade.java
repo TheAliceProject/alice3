@@ -108,7 +108,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 				T[] values = rtRoot.createValues( this.getComponentType() );
 				Edit edit = cascade.createEdit( userActivity, values );
 				if( edit != null ) {
-					if (userActivity.getCompletionStep() == null) {
+					if (userActivity.getCompletionModel() == null) {
 						recordCompletionModel( userActivity );
 					}
 					userActivity.commitAndInvokeDo( edit );

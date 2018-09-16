@@ -61,7 +61,7 @@ import org.lgna.project.ast.StatementListProperty;
 public class ConvertStatementWithBodyEdit extends BlockStatementEdit<ConvertStatementWithBodyOperation> {
 	//todo:
 	private static ConvertStatementWithBodyOperation getModel( UserActivity activity ) {
-		return (ConvertStatementWithBodyOperation) activity.getCompletionStep().getModel();
+		return (ConvertStatementWithBodyOperation) activity.getCompletionModel();
 	}
 
 	private final AbstractStatementWithBody replacement;

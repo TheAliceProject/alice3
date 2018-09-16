@@ -43,12 +43,12 @@
 
 package org.lgna.croquet.history.event;
 
-import org.lgna.croquet.history.TransactionNode;
+import org.lgna.croquet.history.ActivityNode;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddEvent<T extends TransactionNode> implements TransactionEvent {
+public class AddEvent<T extends ActivityNode> implements TransactionEvent {
 	private final T node;
 
 	public AddEvent( T node ) {

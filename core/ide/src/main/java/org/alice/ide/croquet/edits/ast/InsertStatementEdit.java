@@ -75,12 +75,6 @@ public class InsertStatementEdit<M extends InsertStatementCompletionModel> exten
 
 	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions, boolean isEnveloping ) {
 		super( userActivity, statement );
-		BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( BlockStatementIndexPair.class );
-		if( Objects.equals( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
-			//pass
-		} else {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
-		}
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.initialExpressions = initialExpressions;

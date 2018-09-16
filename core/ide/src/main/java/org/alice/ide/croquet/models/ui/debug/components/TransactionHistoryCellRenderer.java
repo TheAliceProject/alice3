@@ -45,8 +45,8 @@ package org.alice.ide.croquet.models.ui.debug.components;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
+import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -79,16 +79,16 @@ public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
 			sb.append( " - no trigger -" );
  		} else {
 			sb.append( " - " )
-				.append( trigger )
+				.append( trigger.getClass().getSimpleName() )
 				.append( " - " );
 		}
 		Edit edit = activity.getEdit();
 		if( edit != null ) {
 			sb.append( edit.getTerseDescription() );
 		} else {
-			CompletionStep<?> completion = activity.getCompletionStep();
-			if (completion != null && completion.getModel() != null) {
-				sb.append( completion.getModel().getClass().getSimpleName() );
+			CompletionModel model = activity.getCompletionModel();
+			if (model != null) {
+				sb.append( model.getClass().getSimpleName() );
 			}
 		}
 		sb.append( "</html>" );

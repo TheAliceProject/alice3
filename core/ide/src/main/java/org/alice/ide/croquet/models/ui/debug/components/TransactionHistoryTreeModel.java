@@ -45,10 +45,8 @@ package org.alice.ide.croquet.models.ui.debug.components;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.javax.swing.models.AbstractMutableTreeModel;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.PrepStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.TransactionNode;
+import org.lgna.croquet.history.ActivityNode;
 import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.tree.TreePath;
@@ -72,7 +70,7 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 
 	@Override
 	public boolean isLeaf( Object node ) {
-		return node instanceof Step;
+		return node instanceof PrepStep;
 	}
 
 	@Override
@@ -89,8 +87,6 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 		if( parent instanceof UserActivity ) {
 			UserActivity activity = (UserActivity)parent;
 			return activity.getChildAt( index );
-		} else if( parent instanceof CompletionStep<?> ) {
-			return null;
 		} else {
 			throw new IndexOutOfBoundsException();
 		}
@@ -110,7 +106,7 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 		}
 	}
 
-	private void updatePath( List<Object> path, TransactionNode node ) {
+	private void updatePath( List<Object> path, ActivityNode node ) {
 		if( node != null ) {
 			updatePath( path, node.getOwner() );
 			path.add( node );
@@ -120,7 +116,7 @@ public class TransactionHistoryTreeModel extends AbstractMutableTreeModel<Object
 	@Override
 	public TreePath getTreePath( Object node ) {
 		List<Object> list = Lists.newLinkedList();
-		updatePath( list, (TransactionNode) node );
+		updatePath( list, (ActivityNode) node );
 		return new TreePath( list.toArray() );
 	}
 }

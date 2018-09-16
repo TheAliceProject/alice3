@@ -63,7 +63,7 @@ import org.lgna.project.ast.Statement;
 public class DissolveStatementWithBodyEdit extends BlockStatementEdit<DissolveStatementWithBodyOperation> {
 	//todo:
 	private static DissolveStatementWithBodyOperation getModel( UserActivity userActivity ) {
-		return (DissolveStatementWithBodyOperation) userActivity.getCompletionStep().getModel();
+		return (DissolveStatementWithBodyOperation) userActivity.getCompletionModel();
 	}
 
 	private final int index;

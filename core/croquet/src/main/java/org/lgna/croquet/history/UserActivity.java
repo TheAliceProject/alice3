@@ -53,26 +53,22 @@ import org.lgna.croquet.history.event.CancelEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
 import org.lgna.croquet.triggers.DragTrigger;
-import org.lgna.croquet.triggers.IterationTrigger;
+import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.triggers.Trigger;
-import org.lgna.croquet.views.DragComponent;
 
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.ListIterator;
 
-public class UserActivity extends TransactionNode<UserActivity> {
+public class UserActivity extends ActivityNode<CompletionModel> {
 
 	enum ActivityStatus {
 		PENDING,
 		CANCELED,
 		FINISHED
 	}
-
-	private Trigger trigger;
 	private final List<PrepStep<?>> prepSteps;
 	private final List<UserActivity> childActivities;
-	private CompletionStep<?> completionStep;
+	private Edit edit;
 
 	private Object producedValue;
 	private ActivityStatus status = ActivityStatus.PENDING;
@@ -85,7 +81,6 @@ public class UserActivity extends TransactionNode<UserActivity> {
 		super( parent );
 		this.prepSteps = Lists.newLinkedList();
 		this.childActivities = Lists.newCopyOnWriteArrayList();
-		this.completionStep = null;
 	}
 
 	public UserActivity newChildActivity() {
@@ -100,11 +95,7 @@ public class UserActivity extends TransactionNode<UserActivity> {
 	}
 
 	public UserActivity getActivityWithoutModel() {
-		return getCompletionStep() != null ? newChildActivity() : this;
-	}
-
-	public Trigger getTrigger() {
-		return trigger;
+		return getModel() != null ? newChildActivity() : this;
 	}
 
 	public void setTrigger(Trigger trigger) {
@@ -126,19 +117,23 @@ public class UserActivity extends TransactionNode<UserActivity> {
 					: this;
 	}
 
-	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
+	private Trigger findAcceptableTrigger( Criterion<Trigger> criterion ) {
+		if( criterion.accept( trigger ) ) {
+			return trigger;
+		}
 		final int N = getPrepStepCount();
 		for( int i = 0; i < N; i++ ) {
 			PrepStep<?> prepStep = this.prepSteps.get( N - 1 - i );
-			if( criterion.accept( prepStep ) ) {
-				return prepStep;
+			if( criterion.accept( prepStep.trigger ) ) {
+				return prepStep.trigger;
 			}
 		}
-		return getOwner() == null ? null: getOwner().findAcceptableStep(criterion);
+		return getOwner() == null ? null: getOwner().findAcceptableTrigger(criterion);
 	}
 
 	public DropSite findDropSite() {
-		return completionStep == null ? null : completionStep.findDropSite();
+		DropTrigger dropTrigger = (DropTrigger) findAcceptableTrigger( trig -> trig instanceof DropTrigger );
+		return dropTrigger != null ? dropTrigger.getDropSite() : null;
 	}
 
 	public MenuItemSelectStep findFirstMenuSelectStep() {
@@ -173,43 +168,18 @@ public class UserActivity extends TransactionNode<UserActivity> {
 	}
 
 	public Edit getEdit() {
-		return completionStep != null ? completionStep.getEdit() : null;
+		return edit;
 	}
 
 	public int getChildStepCount() {
-		return getPrepStepCount() + childActivities.size() + ( completionStep != null ? 1 : 0 );
+		return getPrepStepCount() + childActivities.size();
 	}
 
-	Step<?> getChildStepAt( int index ) {
+	public ActivityNode getChildAt( int index ) {
 		if( index >= getPrepStepCount() ) {
-			return getCompletionStep();
+			return childActivities.get( index - getPrepStepCount() );
 		} else {
 			return prepSteps.get( index );
-		}
-	}
-
-	public TransactionNode<?> getChildAt( int index ) {
-		if( index >= getPrepStepCount() ) {
-			int childIndex = index - getPrepStepCount();
-			if (childIndex >= childActivities.size()) {
-				return completionStep;
-			} else {
-				return childActivities.get( childIndex );
-			}
-		} else {
-			return prepSteps.get( index );
-		}
-	}
-
-	int getIndexOfChildStep( Step<?> step ) {
-		if( step instanceof PrepStep<?> ) {
-			return getIndexOfPrepStep( (PrepStep<?>)step );
-		} else {
-			if( step == completionStep ) {
-				return prepSteps.size();
-			} else {
-				return -1;
-			}
 		}
 	}
 
@@ -222,30 +192,19 @@ public class UserActivity extends TransactionNode<UserActivity> {
 	}
 
 	void addPrepStep( PrepStep<?> step ) {
-		AddEvent<Step> e = new AddEvent<>( step );
+		AddEvent<PrepStep> e = new AddEvent<>( step );
 		prepSteps.add( step );
 		step.fireChanged( e );
 	}
 
-	public CompletionStep<?> getCompletionStep() {
-		return completionStep;
-	}
-
-	private void setCompletionStep( CompletionStep<?> step ) {
-		AddEvent<Step> e = new AddEvent<>( step );
-		completionStep = step;
-		step.fireChanged( e );
-	}
-
 	public void setCompletionModel( CompletionModel model) {
-		if (completionStep != null && model == completionStep.getModel()) {
+		this.model = model;
 			return;
-		}
-		setCompletionStep( new CompletionStep<>( this, model, getTrigger() ) );
+		fireChanged( new AddEvent<PrepStep>( null ) );
 	}
 
 	public CompletionModel getCompletionModel() {
-		return completionStep != null ? completionStep.getModel() : null;
+		return getModel();
 	}
 
 	public boolean isPending() {
@@ -262,28 +221,27 @@ public class UserActivity extends TransactionNode<UserActivity> {
 
 	public void commitAndInvokeDo( Edit edit ) {
 		status = ActivityStatus.FINISHED;
-		if( completionStep == null ) {
-			setCompletionStep( new CompletionStep<>( this, null, null ) );
-		}
-		completionStep.setEdit(edit);
+		this.edit = edit;
 		edit.doOrRedo( true );
 		fireChanged( new EditCommittedEvent( edit ) );
 	}
 
 	public void finish() {
 		status = ActivityStatus.FINISHED;
-		if (getChildStepCount() == 0) {
-			getOwner().childActivities.remove( this );
-		}
+		removeIfEmpty();
 		fireChanged( new FinishedEvent() );
 	}
 
 	public void cancel() {
-		if (getChildStepCount() == 0) {
-			getOwner().childActivities.remove( this );
-		}
+		removeIfEmpty();
 		status = ActivityStatus.CANCELED;
 		fireChanged( new CancelEvent() );
+	}
+
+	private void removeIfEmpty() {
+		if ( childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null) {
+			getOwner().childActivities.remove( this );
+		}
 	}
 
 	public Object getProducedValue() {
@@ -306,14 +264,107 @@ public class UserActivity extends TransactionNode<UserActivity> {
 			sb.append( "," );
 		}
 		if (childActivities.size() == 1) {
-			sb.append( "1 child," );
+			sb.append( "1 child" );
 		}
 		if (childActivities.size() > 1) {
 			sb.append( childActivities.size())
-				.append( " children," );
+				.append( " children" );
 		}
-		sb.append( completionStep );
 		sb.append( "]" );
 		return sb.toString();
 	}
 }
+
+/*
+Method
+cancel()
+Found usages
+Unclassified usage
+AbstractComposite.java
+				activity.cancel();
+AbstractMenuModel.java
+				activity.cancel();
+AbstractSaveOperation.java
+				activity.cancel();
+CameraMoveActionOperation.java
+			activity.cancel();
+ComboBox.java
+			activity.cancel();
+DeleteDeclarationLikeSubstanceOperation.java
+			activity.cancel();
+DeleteMemberOperation.java
+			activity.cancel();
+DeleteParameterOperation.java
+				activity.cancel();
+						activity.cancel();
+			activity.cancel();
+DragStep.java
+		getOwner().cancel();
+FileDialogOperation.java
+				userActivity.cancel();
+				userActivity.cancel();
+			userActivity.cancel();
+FileDialogValueCreator.java
+				userActivity.cancel();
+			userActivity.cancel();
+GatedCommitDialogCoreComposite.java
+		openingActivity.cancel();
+ImportValueCreator.java
+			userActivity.cancel();
+IteratingOperation.java
+						activity.cancel();
+					activity.cancel();
+			activity.cancel();
+ObjectMarkerMoveActionOperation.java
+			activity.cancel();
+PrepStep.java
+		getUserActivity().cancel();
+ResourceOperation.java
+				activity.cancel();
+			activity.cancel();
+RevertProjectOperation.java
+					activity.cancel();
+				activity.cancel();
+			activity.cancel();
+RtRoot.java
+		activity.cancel();
+UnadornedDialogCoreComposite.java
+			openingActivity.cancel();
+UriCreator.java
+			userActivity.cancel();
+UriPotentialClearanceIteratingOperation.java
+			activity.cancel();
+ValueCreatorInputDialogCoreComposite.java
+				openingActivity.cancel();
+			openingActivity.cancel();
+
+
+
+Cascade.java
+						throw new CancelException();
+CascadeCancel.java
+		throw new CancelException( this.getMenuItemText() );
+FromClipboardOperation.java
+			throw new CancelException();
+ImageEditorFrame.java
+				throw new CancelException();
+				throw new CancelException();
+ImportGalleryResourceComposite.java
+		throw new CancelException();
+ImportTab.java
+				throw new CancelException();
+ImportValueCreator.java
+			throw new CancelException();
+OtherTypeDialog.java
+				throw new CancelException();
+OwnedByCompositeValueCreator.java
+			throw new CancelException();
+PotentialClearanceIteratingOperation.java
+				throw new CancelException();
+SaveOperation.java
+					throw new CancelException();
+				throw new CancelException();
+ValueCreator.java
+			throw new CancelException();
+
+* */

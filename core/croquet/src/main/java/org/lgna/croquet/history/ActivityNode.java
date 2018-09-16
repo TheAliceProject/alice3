@@ -42,90 +42,68 @@
  *******************************************************************************/
 package org.lgna.croquet.history;
 
-import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.Model;
+import org.lgna.croquet.history.event.TransactionEvent;
+import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.triggers.Trigger;
-import org.lgna.croquet.views.ViewController;
 
-import java.util.UUID;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step<M extends Model> extends TransactionNode<UserActivity> {
+public abstract class ActivityNode<M extends Model> {
+	private final List<Listener> listeners = Lists.newCopyOnWriteArrayList();
+	private UserActivity owner;
+	Trigger trigger;
+	M model;
 
-	private final M model;
-	private final Trigger trigger;
-	private final UUID id;
 
-	Step( UserActivity parent, M model, Trigger trigger ) {
-		super( parent );
+	ActivityNode( UserActivity owner, M model, Trigger trigger) {
+		this.setOwner( owner );
 		this.model = model;
 		this.trigger = trigger;
-		this.id = UUID.randomUUID();
 	}
 
-	Step<?> findAcceptableStep( Criterion<Step<?>> criterion ) {
-		if( criterion.accept( this ) ) {
-			return this;
-		} else {
-			return getOwner().findAcceptableStep(criterion);
-		}
-	}
-
-	public Trigger getTrigger() {
-		return this.trigger;
-	}
-
-	public UUID getId() {
-		return this.id;
-	}
-
-	public Step<?> getPreviousStep() {
-		int index = this.getUserActivity().getIndexOfChildStep( this );
-		if( index > 0 ) {
-			return this.getUserActivity().getChildStepAt( index - 1 );
-		} else {
-			return null;
-		}
-	}
-
-	protected ViewController<?, ?> getViewController() {
-		return this.trigger != null ? this.trigger.getViewController() : null;
+	ActivityNode( UserActivity owner ) {
+		this.setOwner( owner );
 	}
 
 	public M getModel() {
 		return this.model;
 	}
 
-	public UserActivity getUserActivity() {
-		return this.getOwner();
+	public UserActivity getOwner() {
+		return this.owner;
 	}
 
-	protected StringBuilder updateRepr( StringBuilder rv ) {
-		Model model = this.getModel();
-		if( model != null ) {
-			rv.append( "model=" );
-			rv.append( model );
-			rv.append( ";trigger=" );
-			Trigger trigger = this.getTrigger();
-			if( trigger != null ) {
-				trigger.appendRepr( rv );
-			}
-			rv.append( ";text=" );
-			model.appendUserRepr( rv );
-			rv.append( ";" );
+	void setOwner( UserActivity owner ) {
+		this.owner = owner;
+	}
+
+	public Trigger getTrigger() {
+		return this.trigger;
+	}
+
+	public void addListener( Listener listener ) {
+		this.listeners.add( listener );
+	}
+
+	public void removeListener( Listener listener ) {
+		this.listeners.remove( listener );
+	}
+
+	public boolean isListening( Listener listener ) {
+		return this.listeners.contains( listener );
+	}
+
+	protected void fireChanged( TransactionEvent e ) {
+		if( this.owner != null ) {
+			this.owner.fireChanged( e );
 		}
-		return rv;
-	}
-
-	@Override
-	public final String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		updateRepr( sb );
-		sb.append( "]" );
-		return sb.toString();
+		for( Listener listener : this.listeners ) {
+			listener.changed( e );
+		}
 	}
 }

@@ -47,14 +47,9 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.Step;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.triggers.DropTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.undo.CannotRedoException;
 
@@ -135,24 +130,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 			throw new CannotRedoException();
 		}
 		this.undoInternal();
-	}
-
-	protected <D extends DropSite> D findFirstDropSite( Class<D> cls ) {
-		Step<?> step = userActivity.getCompletionStep();
-		while( step != null ) {
-			Trigger trigger = step.getTrigger();
-			if( trigger instanceof DropTrigger ) {
-				DropTrigger dropTrigger = (DropTrigger)trigger;
-				DropSite dropSite = dropTrigger.getDropSite();
-				if( cls.isAssignableFrom( dropSite.getClass() ) ) {
-					return cls.cast( dropSite );
-				} else {
-					Logger.warning( dropSite );
-				}
-			}
-			step = step.getPreviousStep();
-		}
-		return null;
 	}
 
 	protected static enum DescriptionStyle {

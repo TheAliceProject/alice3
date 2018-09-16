@@ -95,8 +95,7 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	//	@Override
 	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.UserActivity transaction ) {
 	//		super.appendPrepStepsIfNecessary( transaction );
-	//		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-	//		org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+	//		org.lgna.croquet.CompletionModel completionModel = transaction.getModel();
 	//		assert completionModel == this.getModel();
 	//		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
 	//		if( transaction.getPrepStepCount() == 1 ) {
