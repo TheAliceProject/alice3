@@ -178,7 +178,7 @@ public class MembersView extends BorderPanel {
 				if( dragModel instanceof StatementDragModel ) {
 					StatementDragModel statementDragModel = (StatementDragModel)dragModel;
 					Statement statement = statementDragModel.getStatement();
-					return DeleteStatementOperation.getInstance( statement );
+					return new DeleteStatementOperation( statement );
 				} else {
 					return null;
 				}

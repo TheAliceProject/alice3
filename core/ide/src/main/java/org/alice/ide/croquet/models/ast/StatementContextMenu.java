@@ -130,7 +130,7 @@ public class StatementContextMenu extends MenuModel {
 
 		BlockStatement blockStatement = (BlockStatement)statement.getParent();
 		if( blockStatement != null ) {
-			rv.add( DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+			rv.add( new DeleteStatementOperation( statement ).getMenuItemPrepModel() );
 		} else {
 			SwingUtilities.invokeLater( new Runnable() {
 				@Override

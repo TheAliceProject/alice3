@@ -43,11 +43,9 @@
 
 package org.alice.ide.ast.delete;
 
-import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
-import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.delete.edits.DeleteStatementEdit;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.Operation;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
@@ -57,36 +55,17 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOperation<Statement> {
-	private static InitializingIfAbsentMap<Statement, DeleteStatementOperation> map = Maps.newInitializingIfAbsentHashMap();
+public class DeleteStatementOperation extends ActionOperation {
+	private final Statement statement;
 
-	public static DeleteStatementOperation getInstance( Statement statement ) {
-		return map.getInitializingIfAbsent( statement, new InitializingIfAbsentMap.Initializer<Statement, DeleteStatementOperation>() {
-			@Override
-			public DeleteStatementOperation initialize( Statement statement ) {
-				return new DeleteStatementOperation( statement );
-			}
-		} );
-	}
-
-	private DeleteStatementOperation( Statement statement ) {
-		super( UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ), statement );
+	public DeleteStatementOperation( Statement statement ) {
+		super( Application.PROJECT_GROUP, UUID.fromString( "72f66253-976f-48dc-ad52-c5d02aeed5ba" ));
+		this.statement = statement;
 	}
 
 	@Override
-	protected Operation getAlertModelIfNotAllowedToDelete() {
-		//todo
-		return null;
-	}
-
-	@Override
-	protected BooleanState getFindModel() {
-		//todo
-		return null;
-	}
-
-	@Override
-	protected Edit createEdit( UserActivity userActivity ) {
-		return new DeleteStatementEdit( userActivity, this.getNode() );
+	protected void perform( UserActivity activity ) {
+		Edit edit = new DeleteStatementEdit( activity, statement );
+		activity.commitAndInvokeDo( edit );
 	}
 }
