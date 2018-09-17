@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.IDE;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.history.UserActivity;
@@ -54,7 +53,7 @@ import java.util.UUID;
 public class OpenProjectFromOsOperation extends UriPotentialClearanceIteratingOperation {
 
 	public OpenProjectFromOsOperation( File file) {
-		super( UUID.fromString( "f51873eb-06da-4974-9890-7345adff3ac4" ), IDE.getActiveInstance().getDocumentFrame(), null );
+		super( UUID.fromString( "f51873eb-06da-4974-9890-7345adff3ac4" ), null );
 		this.file = file;
 	}
 

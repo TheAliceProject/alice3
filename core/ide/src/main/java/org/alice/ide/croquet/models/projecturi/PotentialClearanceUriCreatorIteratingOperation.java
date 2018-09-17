@@ -42,14 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.projecturi.SelectProjectUriComposite;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,15 +56,14 @@ import java.util.UUID;
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
 	private final boolean isNew;
 
-	PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame,
-																									boolean isNew ) {
-		super( migrationId, projectDocumentFrame, SelectProjectUriComposite.getInstance().getValueCreator() );
+	PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, boolean isNew ) {
+		super( migrationId, SelectProjectUriComposite.getInstance().getValueCreator() );
 		this.isNew = isNew;
 	}
 
 	@Override
-	protected Iterator<Triggerable> createIteratingData() {
-		Iterator<Triggerable> rv = super.createIteratingData();
+	protected List<Triggerable> createIteratingData() {
+		List<Triggerable> rv = super.createIteratingData();
 		SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;
 	}
@@ -79,5 +75,10 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
 	}
 }

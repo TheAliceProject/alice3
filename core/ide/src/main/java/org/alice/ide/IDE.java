@@ -477,7 +477,7 @@ public abstract class IDE extends ProjectApplication {
 		}
 	}
 
-	private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation( this.getDocumentFrame() );
+	private final ClearanceCheckingExitOperation clearanceCheckingExitOperation = new ClearanceCheckingExitOperation();
 
 	@Override
 	public final void handleQuit( UserActivity activity ) {
