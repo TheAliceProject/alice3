@@ -52,10 +52,12 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.ViewController;
@@ -185,7 +187,9 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 						DropSite dropSite = new SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
 						try {
 							MouseEvent mouseEvent = endInput.getInputEvent() instanceof MouseEvent ? (MouseEvent)endInput.getInputEvent() : null;
-							triggerable.fire( null );
+							UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+							DropTrigger.setOnUserActivity( activity, viewController, mouseEvent, dropSite );
+							triggerable.fire( activity );
 						} catch( CancelException ce ) {
 							//Do nothing on cancel
 						}
