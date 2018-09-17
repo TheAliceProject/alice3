@@ -62,11 +62,6 @@ public class IterationTrigger extends Trigger {
 	}
 
 	@Override
-	public ViewController<?, ?> getViewController() {
-		return null;
-	}
-
-	@Override
 	public void showPopupMenu( PopupMenu popupMenu ) {
 		PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), null, new Point() );
 	}

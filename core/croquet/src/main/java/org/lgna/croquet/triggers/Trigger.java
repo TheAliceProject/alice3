@@ -73,7 +73,9 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 	public void encode( BinaryEncoder binaryEncoder ) {
 	}
 
-	public abstract ViewController<?, ?> getViewController();
+	public ViewController<?, ?> getViewController() {
+		return null;
+	}
 
 	// Only invoked from PopupPrepStep
 	public abstract void showPopupMenu( PopupMenu popupMenu );
