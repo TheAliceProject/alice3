@@ -57,7 +57,7 @@ import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.edits.StateEdit;
 import org.lgna.croquet.history.event.EditCommittedEvent;
-import org.lgna.croquet.history.event.TransactionEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.undo.UndoHistory;
 import org.lgna.croquet.views.ComponentManager;
@@ -77,7 +77,7 @@ public class ProjectHistoryManager {
 	public ProjectHistoryManager( ProjectDocument projectDocument ) {
 		this.listener = new Listener() {
 			@Override
-			public void changed( TransactionEvent e ) {
+			public void changed( ActivityEvent e ) {
 				if( e instanceof EditCommittedEvent ) {
 					EditCommittedEvent editCommittedEvent = (EditCommittedEvent)e;
 					ProjectHistoryManager.this.handleEditCommitted( editCommittedEvent.getEdit() );

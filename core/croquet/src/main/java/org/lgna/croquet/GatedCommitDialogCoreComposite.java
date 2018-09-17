@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.event.TransactionEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.imp.dialog.GatedCommitDialogContentComposite;
 import org.lgna.croquet.views.CompositeView;
@@ -62,7 +62,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 
 	private final Listener listener = new Listener() {
 		@Override
-		public void changed( TransactionEvent e ) {
+		public void changed( ActivityEvent e ) {
 			GatedCommitDialogCoreComposite.this.handleFiredEvent( e );
 		}
 	};
@@ -81,7 +81,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 		updateIsGoodToGo( isGoodToGo );
 	}
 
-	protected void handleFiredEvent( TransactionEvent event ) {
+	protected void handleFiredEvent( ActivityEvent event ) {
 		this.refreshStatus();
 	}
 

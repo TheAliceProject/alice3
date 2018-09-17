@@ -45,7 +45,7 @@ package org.alice.ide.preview;
 import org.alice.ide.preview.components.PanelWithPreview;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
-import org.lgna.croquet.history.event.TransactionEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
 import org.lgna.croquet.views.Dialog;
 
 import java.util.UUID;
@@ -61,7 +61,7 @@ public abstract class PreviewContainingOperationInputDialogCoreComposite<V exten
 	public abstract T getPreviewValue();
 
 	@Override
-	protected void handleFiredEvent( TransactionEvent event ) {
+	protected void handleFiredEvent( ActivityEvent event ) {
 		super.handleFiredEvent( event );
 		this.getView().updatePreview();
 	}

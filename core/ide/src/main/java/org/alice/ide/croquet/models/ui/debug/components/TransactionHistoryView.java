@@ -46,10 +46,8 @@ package org.alice.ide.croquet.models.ui.debug.components;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.croquet.models.ui.debug.TransactionHistoryComposite;
 import org.lgna.croquet.history.UserActivity;
-import org.lgna.croquet.history.event.AddEvent;
-import org.lgna.croquet.history.event.EditCommittedEvent;
-import org.lgna.croquet.history.event.TransactionEvent;
-import org.lgna.croquet.history.event.FinishedEvent;
+import org.lgna.croquet.history.event.ChangeEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.ScrollPane;
@@ -76,12 +74,11 @@ public class TransactionHistoryView extends BorderPanel {
 		}
 
 		@Override
-		public void changed( TransactionEvent e ) {
-			if( e instanceof AddEvent ) {
+		public void changed( ActivityEvent e ) {
+			if( e instanceof ChangeEvent ) {
 				this.reload();
-			} else if( ( e instanceof FinishedEvent ) || ( e instanceof EditCommittedEvent ) ) {
-				tree.repaint();
 			}
+			tree.repaint();
 		}
 	};
 

@@ -44,7 +44,7 @@ package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.Model;
-import org.lgna.croquet.history.event.TransactionEvent;
+import org.lgna.croquet.history.event.ActivityEvent;
 import org.lgna.croquet.history.event.Listener;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -98,7 +98,7 @@ public abstract class ActivityNode<M extends Model> {
 		return this.listeners.contains( listener );
 	}
 
-	protected void fireChanged( TransactionEvent e ) {
+	protected void fireChanged( ActivityEvent e ) {
 		if( this.owner != null ) {
 			this.owner.fireChanged( e );
 		}

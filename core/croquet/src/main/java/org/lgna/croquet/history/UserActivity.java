@@ -48,7 +48,7 @@ import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.event.AddEvent;
+import org.lgna.croquet.history.event.ChangeEvent;
 import org.lgna.croquet.history.event.CancelEvent;
 import org.lgna.croquet.history.event.EditCommittedEvent;
 import org.lgna.croquet.history.event.FinishedEvent;
@@ -86,7 +86,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 	public UserActivity newChildActivity() {
 		UserActivity child = new UserActivity( this );
 		childActivities.add( child );
-		child.fireChanged( new AddEvent<>( child ) );
+		child.fireChanged( new ChangeEvent<>( child ) );
 		return child;
 	}
 
@@ -192,15 +192,13 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 	}
 
 	void addPrepStep( PrepStep<?> step ) {
-		AddEvent<PrepStep> e = new AddEvent<>( step );
 		prepSteps.add( step );
-		step.fireChanged( e );
+		step.fireChanged( new ChangeEvent<PrepStep>( step ) );
 	}
 
 	public void setCompletionModel( CompletionModel model) {
 		this.model = model;
-			return;
-		fireChanged( new AddEvent<PrepStep>( null ) );
+		fireChanged( new ChangeEvent<UserActivity>( this ) );
 	}
 
 	public CompletionModel getCompletionModel() {
@@ -241,6 +239,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 	private void removeIfEmpty() {
 		if ( childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null) {
 			getOwner().childActivities.remove( this );
+			getOwner().fireChanged( new ChangeEvent<UserActivity>( getOwner() ) );
 		}
 	}
 
@@ -274,97 +273,3 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 		return sb.toString();
 	}
 }
-
-/*
-Method
-cancel()
-Found usages
-Unclassified usage
-AbstractComposite.java
-				activity.cancel();
-AbstractMenuModel.java
-				activity.cancel();
-AbstractSaveOperation.java
-				activity.cancel();
-CameraMoveActionOperation.java
-			activity.cancel();
-ComboBox.java
-			activity.cancel();
-DeleteDeclarationLikeSubstanceOperation.java
-			activity.cancel();
-DeleteMemberOperation.java
-			activity.cancel();
-DeleteParameterOperation.java
-				activity.cancel();
-						activity.cancel();
-			activity.cancel();
-DragStep.java
-		getOwner().cancel();
-FileDialogOperation.java
-				userActivity.cancel();
-				userActivity.cancel();
-			userActivity.cancel();
-FileDialogValueCreator.java
-				userActivity.cancel();
-			userActivity.cancel();
-GatedCommitDialogCoreComposite.java
-		openingActivity.cancel();
-ImportValueCreator.java
-			userActivity.cancel();
-IteratingOperation.java
-						activity.cancel();
-					activity.cancel();
-			activity.cancel();
-ObjectMarkerMoveActionOperation.java
-			activity.cancel();
-PrepStep.java
-		getUserActivity().cancel();
-ResourceOperation.java
-				activity.cancel();
-			activity.cancel();
-RevertProjectOperation.java
-					activity.cancel();
-				activity.cancel();
-			activity.cancel();
-RtRoot.java
-		activity.cancel();
-UnadornedDialogCoreComposite.java
-			openingActivity.cancel();
-UriCreator.java
-			userActivity.cancel();
-UriPotentialClearanceIteratingOperation.java
-			activity.cancel();
-ValueCreatorInputDialogCoreComposite.java
-				openingActivity.cancel();
-			openingActivity.cancel();
-
-
-
-Cascade.java
-						throw new CancelException();
-CascadeCancel.java
-		throw new CancelException( this.getMenuItemText() );
-FromClipboardOperation.java
-			throw new CancelException();
-ImageEditorFrame.java
-				throw new CancelException();
-				throw new CancelException();
-ImportGalleryResourceComposite.java
-		throw new CancelException();
-ImportTab.java
-				throw new CancelException();
-ImportValueCreator.java
-			throw new CancelException();
-OtherTypeDialog.java
-				throw new CancelException();
-OwnedByCompositeValueCreator.java
-			throw new CancelException();
-PotentialClearanceIteratingOperation.java
-				throw new CancelException();
-SaveOperation.java
-					throw new CancelException();
-				throw new CancelException();
-ValueCreator.java
-			throw new CancelException();
-
-* */
