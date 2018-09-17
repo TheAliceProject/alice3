@@ -48,7 +48,6 @@ import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,15 +73,15 @@ public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIterati
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
-		switch( subSteps.size() ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			EnumConstantResourceKeySelectionComposite composite = EnumConstantResourceKeySelectionComposite.getInstance();
 			composite.setClassResourceKey( classResourceKey );
 			return composite.getValueCreator();
 		case 1:
-			UserActivity prevSubStep = subSteps.get( 0 );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
 			if( prevSubStep.getProducedValue() != null ) {
 				EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)prevSubStep.getProducedValue();
 				return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );

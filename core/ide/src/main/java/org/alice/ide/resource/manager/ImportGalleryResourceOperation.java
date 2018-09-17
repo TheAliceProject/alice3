@@ -10,7 +10,6 @@ import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,17 +23,19 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 3;
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		switch (subSteps.size()) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch (finishedSteps.size()) {
 		case 0:
 			return importGalleryResourceComposite.getBrowseOperation();
 		case 1:
 			return importGalleryResourceComposite.getLoadOperation();
+		case 2:
+			return importGalleryResourceComposite.getSaveOperation();
 		default:
 			return null;
 		}

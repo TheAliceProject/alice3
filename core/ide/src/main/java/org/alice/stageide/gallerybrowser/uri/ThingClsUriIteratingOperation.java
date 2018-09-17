@@ -47,7 +47,6 @@ import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,9 +72,9 @@ public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperat
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		if( this.thingCls != null ) {
-			switch( subSteps.size() ) {
+			switch( finishedSteps.size() ) {
 			case 0:
 				SetupScenePerspectiveComposite composite = SetupScenePerspectiveComposite.getInstance();
 				GalleryDragModel dragModel = composite.getDragModelForCls( this.thingCls );

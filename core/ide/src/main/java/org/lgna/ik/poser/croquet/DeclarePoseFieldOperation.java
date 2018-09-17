@@ -51,7 +51,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NamedUserType;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -80,17 +79,17 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();
 		case 1:
-			UserActivity prevSubStep = subSteps.get( 0 );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
 			if( prevSubStep.getProducedValue() != null ) {
 				Expression expression = (Expression)prevSubStep.getProducedValue();
 				AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = AddUnmanagedPoseFieldComposite.getInstance( this.declaringType );
@@ -106,7 +105,7 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 		//		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
 		//		NamedUserType declaringType = this.getDeclaringType();
 		//		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );

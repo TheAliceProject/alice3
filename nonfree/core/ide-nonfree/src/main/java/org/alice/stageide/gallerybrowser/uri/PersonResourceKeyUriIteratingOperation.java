@@ -55,7 +55,6 @@ import org.lgna.story.resources.sims2.LifeStage;
 import org.lgna.story.resources.sims2.TeenPersonResource;
 import org.lgna.story.resources.sims2.ToddlerPersonResource;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,9 +80,9 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-		switch( subSteps.size() ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			Class<?> resourceCls = personResourceKey.getModelResourceCls();
 			LifeStage lifeStage;
@@ -107,7 +106,7 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 			}
 			return personResourceComposite.getRandomPersonExpressionValueConverter( lifeStage );
 		case 1:
-			UserActivity prevSubStep = subSteps.get( 0 );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
 			if( prevSubStep.getProducedValue() != null ) {
 				Object value = prevSubStep.getProducedValue();
 				if( value instanceof InstanceCreation ) {

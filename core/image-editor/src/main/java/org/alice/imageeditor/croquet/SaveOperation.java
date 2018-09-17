@@ -53,7 +53,6 @@ import org.lgna.croquet.history.UserActivity;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,24 +74,20 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		if( subSteps.size() == 0 ) {
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		if( finishedSteps.size() == 0 ) {
 			this.file = this.owner.getFile();
-			if( this.file != null ) {
-				return this.file.exists();
-			} else {
-				return true;
-			}
+			return this.file == null || this.file.exists();
 		} else {
 			return false;
 		}
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
 		Triggerable rv;
-		switch( subSteps.size() ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			if( owner.isGoodToGoCroppingIfNecessary() ) {
 				if( this.file != null ) {
@@ -120,7 +115,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 		if( this.file != null ) {
 			Image image = owner.getView().render();
 			try {

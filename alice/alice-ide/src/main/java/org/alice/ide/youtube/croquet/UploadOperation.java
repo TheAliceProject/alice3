@@ -43,7 +43,6 @@
 package org.alice.ide.youtube.croquet;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,7 +51,6 @@ import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ProjectStack;
 import org.alice.media.youtube.croquet.ExportToYouTubeWizardDialogComposite;
 import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.OperationOwningComposite;
 import org.lgna.croquet.OwnedByCompositeOperation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
@@ -71,9 +69,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	private synchronized ExportToYouTubeWizardDialogComposite getWizard() {
-		if( this.exportToYouTubeWizardDialogComposite != null ) {
-			//pass
-		} else {
+		if ( this.exportToYouTubeWizardDialogComposite == null ) {
 			this.exportToYouTubeWizardDialogComposite = new ExportToYouTubeWizardDialogComposite();
 		}
 		return this.exportToYouTubeWizardDialogComposite;
@@ -111,13 +107,13 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		int size = subSteps.size();
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		int size = finishedSteps.size();
 		if( size == 0 ) {
 			return true;
 		}
 		if( size == 1 ) {
-			UserActivity prevStep = subSteps.get( 0 );
+			UserActivity prevStep = finishedSteps.get( 0 );
 			CompletionModel prevModel = prevStep.getCompletionModel();
 			if ( prevModel instanceof OwnedByCompositeOperation ) {
 				OwnedByCompositeOperation ownedByCompositeOperation = (OwnedByCompositeOperation) prevModel;
@@ -132,9 +128,9 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
-		if( subSteps.size() == 0 ) {
+		if( finishedSteps.size() == 0 ) {
 			if( fileKnownToBeNotExecuable != null ) {
 				return getExecutionPermissionModel( fileKnownToBeNotExecuable );
 			} else {
@@ -147,7 +143,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 	}
 
 	private final ProjectDocumentFrame projectDocumentFrame;

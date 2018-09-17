@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,43 +57,36 @@ public abstract class IteratingOperation extends Operation {
 		super( group, id );
 	}
 
-	protected Iterator<Triggerable> createIteratingData() {
-		return null;
-	}
+	protected abstract boolean hasNext( List<UserActivity> finishedSteps );
 
-	protected abstract boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData );
+	protected abstract Triggerable getNext( List<UserActivity> finishedSteps );
 
-	protected abstract Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData );
-
-	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ){
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ){
 		activity.finish();
 	}
 
 	protected void iterateOverSubModels( UserActivity activity ) {
 		activity.setCompletionModel( this );
 		try {
-			List<UserActivity> subSteps = Lists.newLinkedList();
-			Iterator<Triggerable> iteratingData = this.createIteratingData();
-			while( this.hasNext( subSteps, iteratingData ) ) {
-				Triggerable model = this.getNext( subSteps, iteratingData );
-				if( model != null ) {
+			List<UserActivity> finishedActivities = Lists.newLinkedList();
+			while( hasNext( finishedActivities ) ) {
+				Triggerable next = getNext( finishedActivities );
+				if( next != null ) {
 					UserActivity child = activity.newChildActivity();
-					model.fire( child );
+					next.fire( child );
 					if ( child.isSuccessfullyCompleted() ) {
-						subSteps.add( child );
+						finishedActivities.add( child );
 					} else {
 						if (child.isPending()) {
-							Logger.severe( "subStep is pending", this );
+							Logger.severe( "Canceling while a subStep is pending. The substep should either finish or throw CancelException.", this );
 						}
-						activity.cancel();
-						return;
+						throw new CancelException();
 					}
 				} else {
-					activity.cancel();
-					return;
+					throw new CancelException();
 				}
 			}
-			this.handleSuccessfulCompletionOfSubModels( activity, subSteps );
+			this.handleSuccessfulCompletionOfSubModels( activity );
 		} catch( CancelException ce ) {
 			activity.cancel();
 		}

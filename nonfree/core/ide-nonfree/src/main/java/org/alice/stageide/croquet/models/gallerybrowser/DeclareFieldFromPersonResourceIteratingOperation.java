@@ -52,7 +52,6 @@ import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.resources.sims2.LifeStage;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,17 +93,17 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThre
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
 		case 1:
-			UserActivity prevSubStep = subSteps.get( 0 );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
 			if( prevSubStep.getProducedValue() != null ) {
 				InstanceCreation instanceCreation = (InstanceCreation)prevSubStep.getProducedValue();
 				AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();

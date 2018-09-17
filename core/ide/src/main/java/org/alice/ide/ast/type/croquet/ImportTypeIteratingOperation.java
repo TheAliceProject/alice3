@@ -61,7 +61,6 @@ import org.lgna.project.io.TypeResourcesPair;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -79,17 +78,17 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 	}
 
 	@Override
-	protected boolean hasNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Triggerable getNext( List<UserActivity> subSteps, Iterator<Triggerable> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			return ImportTypeFileDialogValueCreator.getInstance();
 		case 1:
-			UserActivity prevSubStep = subSteps.get( 0 );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
 			if( prevSubStep.getProducedValue() != null ) {
 				File file = (File)prevSubStep.getProducedValue();
 				try {
