@@ -109,7 +109,6 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			final RtRoot<T, ?> rtRoot = new RtRoot<>( this.root );
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				rtRoot.complete( CascadeAutomaticDeterminationTrigger.createChildActivity(activity) );
-				this.handleFinally();
 			} else {
 				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, activity );
 				final PopupMenu popupMenu = new PopupMenu( this, activity );

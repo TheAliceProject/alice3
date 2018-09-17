@@ -104,7 +104,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 
 		@Override
 		public void handleCompletion( UserActivity userActivity, RtRoot<T, Cascade<T>> rtRoot ) {
-			try {
 				T[] values = rtRoot.createValues( this.getComponentType() );
 				Edit edit = cascade.createEdit( userActivity, values );
 				if( edit != null ) {
@@ -114,12 +113,10 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 					userActivity.commitAndInvokeDo( edit );
 				} else {
 					if (userActivity.isPending()) {
-						userActivity.cancel();
+						throw new CancelException();
 					}
 				}
-			} finally {
 				this.getPopupPrepModel().handleFinally();
-			}
 		}
 	}
 

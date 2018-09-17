@@ -93,13 +93,10 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 		@Override
 		public void handleCompletion( UserActivity userActivity, RtRoot<T, CustomItemState<T>> rtRoot ) {
-			try {
-				recordCompletionModel( userActivity );
-				T[] values = rtRoot.createValues( getComponentType() );
-				state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, userActivity.getTrigger() );
-			} finally {
-				this.getPopupPrepModel().handleFinally();
-			}
+			recordCompletionModel( userActivity );
+			T[] values = rtRoot.createValues( getComponentType() );
+			state.changeValueFromIndirectModel( values[ 0 ], userActivity );
+			getPopupPrepModel().handleFinally();
 		}
 	}
 
