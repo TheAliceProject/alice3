@@ -78,31 +78,21 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 	}
 
-	private abstract class InternalFinishOperation extends InternalDialogOperation {
-		private final boolean isCommit;
-
-		public InternalFinishOperation( UUID id, AdornedDialogCoreComposite coreComposite, boolean isCommit ) {
-			super( id, coreComposite );
-			this.isCommit = isCommit;
+	private final class InternalCommitOperation extends InternalDialogOperation {
+		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
+			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite );
 		}
 
 		@Override
 		protected final void performInActivity( UserActivity userActivity ) {
-			if( !isCommit || getDialogCoreComposite().isClearedForCommit() ) {
+			if( getDialogCoreComposite().isClearedForCommit() ) {
 				userActivity.setCompletionModel( this );
-				isCommitted = this.isCommit;
+				isCommitted = true;
 				dialog.setVisible( false );
 				userActivity.finish();
 			} else {
 				Logger.outln( this );
 			}
-		}
-
-	}
-
-	private final class InternalCommitOperation extends InternalFinishOperation {
-		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
 		}
 
 		@Override
@@ -113,17 +103,13 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		@Override
 		protected String findDefaultLocalizedText() {
 			String rv = super.findDefaultLocalizedText();
-			if( rv != null ) {
-				//pass
-			} else {
+			if ( rv == null ) {
 				Locale locale = JComboBox.getDefaultLocale();
 				String commitUiKey = this.getDialogCoreComposite().getCommitUiKey();
 				if( commitUiKey != null ) {
 					rv = UIManager.getString( commitUiKey, locale );
 				}
-				if( rv != null ) {
-					//pass
-				} else {
+				if ( rv == null ) {
 					rv = this.getDialogCoreComposite().getDefaultCommitText();
 				}
 			}
@@ -131,9 +117,17 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 	}
 
-	private final class InternalCancelOperation extends InternalFinishOperation {
+	private final class InternalCancelOperation extends InternalDialogOperation {
 		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
+			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite );
+		}
+
+		@Override
+		protected final void performInActivity( UserActivity userActivity ) {
+			userActivity.setCompletionModel( this );
+			isCommitted = false;
+			dialog.setVisible( false );
+			userActivity.finish();
 		}
 
 		@Override
@@ -144,14 +138,10 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		@Override
 		protected String findDefaultLocalizedText() {
 			String rv = super.findDefaultLocalizedText();
-			if( rv != null ) {
-				//pass
-			} else {
+			if ( rv == null ) {
 				Locale locale = JComboBox.getDefaultLocale();
 				rv = UIManager.getString( "OptionPane.cancelButtonText", locale );
-				if( rv != null ) {
-					//pass
-				} else {
+				if ( rv == null ) {
 					rv = "Cancel";
 				}
 			}

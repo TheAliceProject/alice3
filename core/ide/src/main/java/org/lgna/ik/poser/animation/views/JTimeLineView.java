@@ -283,9 +283,9 @@ public class JTimeLineView extends JPanel {
 		public void mouseReleased( MouseEvent e ) {
 			setMousePressed( false );
 			if( isTimeSliding ) {
-				// TODO not use Application.getActiveInstance().acquireOpenActivity()
-				UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
 				if( isTimeSliding ) {
+					// TODO not use Application.getActiveInstance().acquireOpenActivity()
+					UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
 					userActivity.commitAndInvokeDo( new CurrentTimeLineTimeChangeEdit( userActivity, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime ) );
 					isTimeSliding = false;
 				}
