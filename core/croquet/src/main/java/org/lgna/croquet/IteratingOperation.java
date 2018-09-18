@@ -61,6 +61,10 @@ public abstract class IteratingOperation extends Operation {
 
 	protected abstract Triggerable getNext( List<UserActivity> finishedSteps );
 
+	protected Object getLastValueProduced( List<UserActivity> finishedSteps ) {
+		return finishedSteps.get( finishedSteps.size() - 1 ).getProducedValue();
+	}
+
 	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ){
 		activity.finish();
 	}

@@ -46,9 +46,11 @@ import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.FileDialogValueCreator;
 import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
@@ -86,7 +88,7 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		switch( finishedSteps.size() ) {
 		case 0:
-			return ImportTypeFileDialogValueCreator.getInstance();
+			return new FileDialogValueCreator( null, StageIDE.getActiveInstance().getTypesDirectory(), IoUtilities.TYPE_EXTENSION );
 		case 1:
 			UserActivity prevSubStep = finishedSteps.get( 0 );
 			if( prevSubStep.getProducedValue() != null ) {
@@ -112,15 +114,13 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 					if( srcType != null ) {
 						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
 					} else {
-						new OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file )
-								.buildAndShow();
+						new OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file ).buildAndShow();
 						return null;
 					}
 				} catch( IOException ioe ) {
-					throw new RuntimeException( ioe );
+					new OkDialog.Builder( "Unable to read " + file.getName() ).buildAndShow();
 				} catch( VersionNotSupportedException vnse ) {
-					new OkDialog.Builder( "version not supported " + vnse.getVersion() )
-							.buildAndShow();
+					new OkDialog.Builder( "version not supported " + vnse.getVersion() ).buildAndShow();
 				}
 				return null;
 			} else {

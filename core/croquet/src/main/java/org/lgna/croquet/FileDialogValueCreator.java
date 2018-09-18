@@ -44,37 +44,26 @@ package org.lgna.croquet;
 
 import org.lgna.croquet.history.UserActivity;
 
-import java.awt.Component;
 import java.io.File;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FileDialogValueCreator<T> extends ValueCreator<T> {
-	public FileDialogValueCreator( UUID migrationId ) {
-		super( migrationId );
+public class FileDialogValueCreator extends ValueCreator<File> {
+	private final String title;
+	private final File directory;
+	private final String extension;
+
+	public FileDialogValueCreator( String title, File directory, String extension ) {
+		super( UUID.randomUUID() );
+		this.title = title;
+		this.directory = directory;
+		this.extension = extension;
 	}
 
-	protected abstract File showFileDialog( Component awtComponent );
-
-	protected abstract T createValueFromFile( File file );
-
 	@Override
-	protected T createValue( UserActivity userActivity ) {
-		userActivity.setCompletionModel( this );
-		Component awtComponent = null; //todo
-		File file = this.showFileDialog( awtComponent );
-		if( file != null ) {
-			try {
-				userActivity.finish();
-				return this.createValueFromFile( file );
-			} catch( CancelException ce ) {
-				userActivity.cancel();
-			}
-		} else {
-			userActivity.cancel();
-		}
-		return null;
+	protected File createValue( UserActivity userActivity ) {
+		return Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( title, directory, extension );
 	}
 }

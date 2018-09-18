@@ -1,15 +1,18 @@
 package org.alice.ide.resource.manager;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.gallerybrowser.ImportGalleryResourceComposite;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.FileDialogValueCreator;
 import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
 
 import java.awt.*;
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,8 +34,9 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		switch (finishedSteps.size()) {
 		case 0:
-			return importGalleryResourceComposite.getBrowseOperation();
+			return new FileDialogValueCreator( null, FileUtilities.getDefaultDirectory(), "dae" );
 		case 1:
+			File file = (File) getLastValueProduced( finishedSteps );
 			return importGalleryResourceComposite.getLoadOperation();
 		case 2:
 			return importGalleryResourceComposite.getSaveOperation();

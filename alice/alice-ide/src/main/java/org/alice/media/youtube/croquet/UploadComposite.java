@@ -134,8 +134,8 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 				filename = "*.webm";
 			}
 
-			File exportFile = FileDialogUtilities.showSaveFileDialog( UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
-					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
+			File exportFile = FileDialogUtilities.showSaveFileDialog(
+					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( "webm" ), "webm" );
 			if( exportFile != null ) {
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );

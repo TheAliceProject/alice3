@@ -78,7 +78,7 @@ public abstract class Importer<T> {
 	protected abstract T createFromFile( File file ) throws IOException;
 
 	public T createValue( String dialogTitle ) {
-		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( this.sharingId, dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
+		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
 		if( file != null ) {
 			String extension = FileUtilities.getExtension( file );
 			if( ( extension != null ) && this.lowerCaseExtensions.contains( extension.toLowerCase( Locale.ENGLISH ) ) ) {

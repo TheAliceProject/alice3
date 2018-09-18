@@ -68,7 +68,7 @@ public class FileSystemTab extends SelectUriTab {
 		@Override
 		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			final StageIDE ide = StageIDE.getActiveInstance();
-			File file = ide.getDocumentFrame().showOpenFileDialog( ide.getProjectsDirectory(), null, IoUtilities.PROJECT_EXTENSION, true );
+			File file = ide.getDocumentFrame().showOpenFileDialog( null, ide.getProjectsDirectory(), IoUtilities.PROJECT_EXTENSION);
 			if( file != null ) {
 				FileSystemTab.this.pathState.setValueTransactionlessly( FileUtilities.getCanonicalPathIfPossible( file ) );
 			}
