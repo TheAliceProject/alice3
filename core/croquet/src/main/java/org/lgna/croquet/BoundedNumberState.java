@@ -155,7 +155,7 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 	}
 
 	private void handleStateChanged( ChangeEvent e ) {
-		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().newChildActivity();
 		ChangeEventTrigger.createUserInstance( activity, e );
 		changingValueFromSwing( getSwingValue(),
 														swingModel.getBoundedRangeModel().getValueIsAdjusting(),

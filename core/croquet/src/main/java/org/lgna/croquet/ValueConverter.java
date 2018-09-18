@@ -70,9 +70,9 @@ public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 	protected abstract TPRIME convert( T value );
 
 	@Override
-	protected final TPRIME createValue( UserActivity transaction ) {
-		T value = this.source.createValue( transaction );
-		return this.convert( value );
+	protected final TPRIME createValue( UserActivity activity ) {
+		T value = this.source.createValue( activity );
+		return value == null ? null : this.convert( value );
 	}
 
 }

@@ -63,21 +63,11 @@ public abstract class ImportValueCreator<T, I> extends ValueCreator<T> {
 
 	@Override
 	protected T createValue( UserActivity userActivity ) {
-		userActivity.setCompletionModel( this );
-		String dialogTitle = "Import";
-		T rv;
-		I importedValue = this.importer.createValue( dialogTitle );
+		I importedValue = this.importer.createValue( "Import" );
 		if( importedValue != null ) {
-			rv = this.createValueFromImportedValue( importedValue );
+			return this.createValueFromImportedValue( importedValue );
 		} else {
-			rv = null;
+			return null;
 		}
-		if( rv != null ) {
-			userActivity.finish();
-		} else {
-			userActivity.cancel();
-			throw new CancelException();
-		}
-		return rv;
 	}
 }

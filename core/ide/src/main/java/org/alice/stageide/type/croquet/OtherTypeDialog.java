@@ -107,16 +107,8 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 
 		@Override
 		protected AbstractType<?, ?, ?> createValue( UserActivity userActivity ) {
-			userActivity.setCompletionModel( this );
-
 			OtherTypeDialog.this.initializeRootFilterType( this.rootFilterType );
-
-			AbstractType<?, ?, ?> value = OtherTypeDialog.this.createValue( userActivity );
-			if( userActivity.isCanceled() ) {
-				throw new CancelException();
-			} else {
-				return value;
-			}
+			return OtherTypeDialog.this.createValue( userActivity );
 		}
 
 		private final JavaType rootFilterType;

@@ -129,8 +129,17 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel implements
 
 	@Override
 	protected void performInActivity( UserActivity activity ) {
+		activity.setCompletionModel( this );
+
 		T value = this.createValue( activity );
+
+		if ( activity.isCanceled() || value == null ) {
+			activity.cancel();
+			throw new CancelException();
+		}
+
 		activity.setProducedValue(value);
+		activity.finish();
 	}
 
 	public T fireAndGetValue() throws CancelException {

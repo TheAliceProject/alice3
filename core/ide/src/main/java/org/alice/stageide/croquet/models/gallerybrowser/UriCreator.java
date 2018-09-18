@@ -54,7 +54,7 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class UriCreator<T> extends ValueCreator<T> {
-	public UriCreator( UUID migrationId ) {
+	UriCreator( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -73,12 +73,8 @@ public abstract class UriCreator<T> extends ValueCreator<T> {
 		userActivity.setCompletionModel( this );
 		File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
-			T rv = this.internalGetValueFrom( file );
-			userActivity.finish();
-			return rv;
+			return internalGetValueFrom( file );
 		} else {
-			userActivity.cancel();
-			//throw new org.lgna.croquet.CancelException();
 			return null;
 		}
 	}

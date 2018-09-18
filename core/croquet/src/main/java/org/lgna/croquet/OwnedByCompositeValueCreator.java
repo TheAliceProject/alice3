@@ -97,15 +97,9 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 
 	@Override
 	protected T createValue( UserActivity userActivity ) {
-		userActivity.setCompletionModel( this );
 		if( this.initializer != null ) {
 			this.initializer.initialize();
 		}
-		T value = this.composite.createValue( userActivity );
-		if( userActivity.isCanceled() ) {
-			throw new CancelException();
-		} else {
-			return value;
-		}
+		return composite.createValue( userActivity );
 	}
 }
