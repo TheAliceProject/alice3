@@ -151,16 +151,8 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements Trig
 			Logger.errln( "todo: end use of surrogate", this );
 			surrogateModel.fire( activity );
 		} else {
-			//Copied from former parent implementation
-			if( this.isEnabled() ) {
-				this.performInActivity( activity );
-			}
+			throw new UnsupportedOperationException();
 		}
-	}
-
-	@Override
-	protected void performInActivity( UserActivity userActivity ) {
-		throw new UnsupportedOperationException();
 	}
 
 	public Class<T> getComponentType() {

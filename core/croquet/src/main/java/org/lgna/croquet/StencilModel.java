@@ -89,7 +89,6 @@ public abstract class StencilModel extends AbstractCompletionModel implements Tr
 
 	protected abstract void hideStencil();
 
-	@Override
 	protected final void performInActivity( UserActivity userActivity ) {
 		Logger.outln( this );
 		userActivity.setCompletionModel( this );

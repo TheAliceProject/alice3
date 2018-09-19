@@ -148,11 +148,6 @@ public abstract class State<T> extends AbstractCompletionModel {
 		}
 	}
 
-	@Override
-	protected final void performInActivity( UserActivity userActivity ) {
-		throw new UnsupportedOperationException();
-	}
-
 	protected void handleTruthAndBeautyValueChange( T nextValue ) {
 	}
 

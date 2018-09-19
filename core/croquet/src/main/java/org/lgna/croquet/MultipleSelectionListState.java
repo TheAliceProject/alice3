@@ -214,10 +214,6 @@ public abstract class MultipleSelectionListState<T> extends /*todo*/AbstractComp
 	}
 
 	@Override
-	protected void performInActivity( UserActivity userActivity ) {
-	}
-
-	@Override
 	protected void localize() {
 	}
 

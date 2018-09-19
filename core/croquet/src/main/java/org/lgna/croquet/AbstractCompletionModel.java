@@ -85,8 +85,6 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.group;
 	}
 
-	protected abstract void performInActivity( UserActivity userActivity );
-
 	@Override
 	public synchronized PlainStringValue getSidekickLabel() {
 		if ( this.sidekickLabel == null ) {

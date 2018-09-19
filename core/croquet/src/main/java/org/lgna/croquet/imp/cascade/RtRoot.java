@@ -50,7 +50,6 @@ import org.lgna.croquet.CascadeRoot;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ActionEventTrigger;
-import org.lgna.croquet.triggers.PopupMenuEventTrigger;
 import org.lgna.croquet.views.MenuItemContainer;
 
 import javax.swing.event.PopupMenuEvent;
@@ -125,7 +124,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
 			@Override
 			public void popupMenuCanceled( PopupMenuEvent e ) {
-				RtRoot.this.cancel( PopupMenuEventTrigger.createUserActivity( null, e ) );
+				RtRoot.this.cancel( menuItemContainer.getActivity() );
 			}
 		};
 	}

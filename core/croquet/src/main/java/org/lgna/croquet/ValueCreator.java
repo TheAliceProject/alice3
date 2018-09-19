@@ -127,7 +127,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel implements
 
 	protected abstract T createValue( UserActivity transaction );
 
-	@Override
 	protected void performInActivity( UserActivity activity ) {
 		activity.setCompletionModel( this );
 

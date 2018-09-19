@@ -118,16 +118,9 @@ public abstract class MenuModel extends AbstractMenuModel {
 				@Override
 				public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
 					if( this.cancelEvent != null ) {
-						System.err.println( "todo: cancel" );
-						//step.getParent().cancel();
+						step.getUserActivity().cancel();
 						this.cancelEvent = null;
-					} else {
-						System.err.println( "todo: finish" );
-						//step.getParent().finish();
 					}
-
-					System.err.println( "TODO: handleFinally?" );
-					//					performObserver.handleFinally();
 				}
 
 				@Override
