@@ -78,7 +78,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 
@@ -92,7 +92,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
+	public void perform( UserActivity userActivity ) {
 		final List<Frame> framesToDisable = Lists.newLinkedList();
 
 		Application application = Application.getActiveInstance();

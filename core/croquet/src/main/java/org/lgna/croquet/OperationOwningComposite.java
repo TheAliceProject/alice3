@@ -50,7 +50,7 @@ import org.lgna.croquet.views.CompositeView;
  */
 public interface OperationOwningComposite<V extends CompositeView<?, ?>> extends Composite<V> {
 
-	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity );
+	void perform( UserActivity userActivity );
 
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text );
+	String modifyNameIfNecessary( String text );
 }

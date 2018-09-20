@@ -55,8 +55,6 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 		this.initializer = initializer;
 	}
 
-	protected abstract OwnedByCompositeOperationSubKey getSubKey();
-
 	protected abstract C getComposite();
 
 	@Override
@@ -74,8 +72,7 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 		if( this.initializer != null ) {
 			this.initializer.initialize( composite );
 		}
-		OwnedByCompositeOperationSubKey subKey = this.getSubKey();
-		composite.perform( subKey, userActivity);
+		composite.perform( userActivity);
 	}
 
 	private final Initializer<C> initializer;

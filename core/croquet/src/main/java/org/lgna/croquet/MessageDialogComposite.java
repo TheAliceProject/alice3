@@ -87,7 +87,7 @@ public abstract class MessageDialogComposite<V extends Panel> extends AbstractCo
 	}
 
 	@Override
-	public final void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
+	public final void perform( UserActivity userActivity ) {
 		Component awtComponent = null; //todo
 		//todo: Icon
 		JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
@@ -95,7 +95,7 @@ public abstract class MessageDialogComposite<V extends Panel> extends AbstractCo
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 

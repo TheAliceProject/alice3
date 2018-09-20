@@ -45,7 +45,6 @@ package org.alice.ide.ast.declaration;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.stageide.icons.PlusIconFactory;
-import org.lgna.croquet.OwnedByCompositeOperationSubKey;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AstUtilities;
@@ -75,8 +74,8 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey key, String text ) {
-		text = super.modifyNameIfNecessary( key, text );
+	public String modifyNameIfNecessary( String text ) {
+		text = super.modifyNameIfNecessary( text );
 		if( text != null ) {
 			String declaringTypeName;
 			if( this.declaringType != null ) {

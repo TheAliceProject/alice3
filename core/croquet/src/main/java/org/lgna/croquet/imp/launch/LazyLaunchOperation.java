@@ -47,7 +47,6 @@ import org.lgna.croquet.Element;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Initializer;
 import org.lgna.croquet.OperationOwningComposite;
-import org.lgna.croquet.OwnedByCompositeOperationSubKey;
 
 import java.util.UUID;
 
@@ -69,11 +68,6 @@ import java.util.UUID;
 	@Override
 	protected String getSubKeyForLocalization() {
 		return this.subKeyText;
-	}
-
-	@Override
-	protected OwnedByCompositeOperationSubKey getSubKey() {
-		return null;
 	}
 
 	@Override

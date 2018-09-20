@@ -59,7 +59,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 
@@ -93,7 +93,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
+	public void perform( UserActivity userActivity ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
 			Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();

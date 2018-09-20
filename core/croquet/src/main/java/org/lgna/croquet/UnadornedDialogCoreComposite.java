@@ -87,15 +87,11 @@ public abstract class UnadornedDialogCoreComposite<V extends CompositeView<?, ?>
 		}
 	}
 
-	public void perform( OwnedByCompositeOperationSubKey subKey, UserActivity userActivity ) {
+	public void perform( UserActivity userActivity ) {
 		this.showDialog( userActivity );
 	}
 
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 }
