@@ -119,7 +119,7 @@ public abstract class DocumentFrame {
 
 		@Override
 		public void windowClosing( WindowEvent e ) {
-			Application.getActiveInstance().handleQuit( WindowEventTrigger.createUserActivity( e ) );
+			Application.getActiveInstance().handleQuit( Application.getActiveInstance().getOverallUserActivity() );
 		}
 
 		@Override
