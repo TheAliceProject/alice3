@@ -83,7 +83,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 
 		int prevMnemonicKey = getMnemonicKey( action );
-		if( prevMnemonicKey != 0 ) {
+		if( prevMnemonicKey != 0 ) { // True if locale was just changed
 			action.putValue( Action.MNEMONIC_KEY, 0 );
 		}
 		action.putValue( Action.NAME, nextName );

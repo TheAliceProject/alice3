@@ -125,10 +125,6 @@ public abstract class StringState extends State<String> {
 			textComponent.getAwtComponent().setDocument( this.document );
 		}
 
-		public void deinstall( TextComponent<?> textComponent ) {
-			this.textComponents.remove( textComponent );
-		}
-
 		public Iterable<TextComponent<?>> getTextComponents() {
 			return this.textComponents;
 		}
