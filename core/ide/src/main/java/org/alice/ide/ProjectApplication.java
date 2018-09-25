@@ -466,4 +466,12 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
 	private final ProjectDocumentFrame projectDocumentFrame;
 	private final ProjectFileUtilities projectFileUtilities;
+
+	public String getAuthorName() {
+		return getPreferencesManager().getValue("authorName", System.getProperty( "user.name" ));
+	}
+
+	public void setAuthorName(String newName) {
+		getPreferencesManager().setValue("authorName", newName);
+	}
 }

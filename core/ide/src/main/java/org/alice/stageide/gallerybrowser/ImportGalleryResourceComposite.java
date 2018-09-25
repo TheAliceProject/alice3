@@ -1,190 +1,110 @@
 package org.alice.stageide.gallerybrowser;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
-import org.alice.ide.icons.Icons;
+import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
+import org.alice.ide.name.NameValidator;
+import org.alice.ide.name.validators.TypeNameValidator;
 import org.alice.stageide.StageIDE;
-import org.alice.stageide.gallerybrowser.views.ImportGalleryResourceView;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
-import org.lgna.croquet.*;
-import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
+import org.lgna.croquet.SplitComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.views.BorderPanel;
+import org.lgna.croquet.views.Dialog;
+import org.lgna.croquet.views.FormPanel;
+import org.lgna.croquet.views.LabeledFormRow;
 import org.lgna.croquet.views.Panel;
+import org.lgna.ik.poser.croquet.PoserComposite;
+import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ProjectVersion;
-import org.lgna.project.annotations.FieldTemplate;
-import org.lgna.project.annotations.Visibility;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.StaticAnalysisUtilities;
+import org.lgna.project.ast.UserPackage;
 import org.lgna.project.io.GalleryModelIo;
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
-import org.lgna.story.resources.DynamicResource;
-import org.lgna.story.resources.JointId;
-import org.lgna.story.resources.ModelResource;
+import org.lgna.story.SJointedModel;
 import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
-import org.lgna.story.resourceutilities.JointedModelColladaImporter;
-import org.lgna.story.resourceutilities.ModelLoadingException;
-import org.lgna.story.resourceutilities.PipelineException;
 
+import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreComposite<Panel, DynamicResource> {
+public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialogCoreComposite<Panel, Boolean> {
+	private final StageIDE ide = StageIDE.getActiveInstance();
 
-	private Edit browseForCollada( UserActivity step, InternalActionOperation source ) {
-		File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog(
-				UUID.randomUUID(),
-				"Import Collada",
-				FileUtilities.getDefaultDirectory(),
-				SystemUtilities.isWindows() ? "*.dae" : null,
-				filenameFilter() );
-		if (file != null) {
-			selectedFileState.setValueTransactionlessly( file.getAbsolutePath() );
-			return null;
-		}
-		throw new CancelException();
-	}
+	private final SkeletonPreviewComposite previewComposite;
+	private final ModelDetailsComposite detailsComposite;
+	private final SplitComposite splitComposite;
+	private final ErrorStatus errorStatus;
 
-	private FilenameFilter filenameFilter() {
-		return ( dir, path ) -> !new File( dir, path ).isDirectory()
-				&& "dae".equals( FileUtilities.getExtension( path ) );
-	}
+	private final SkeletonVisual skeletonVisual;
 
-	private Edit loadColladaFile( UserActivity step, InternalActionOperation source ) {
-		final String fileName = selectedFileState.getValue();
-		if ( fileName != null ) {
-			importCollada( fileName );
-		}
-		return null;
-	}
+	private final NameValidator typeValidator = new TypeNameValidator();
 
-	private static class SingletonHolder {
-		private static ImportGalleryResourceComposite instance = new ImportGalleryResourceComposite();
-	}
-
-	public static ImportGalleryResourceComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final StringState selectedFileState = this.createStringState( "selectedFileState" );
-
-	private final Operation browseForColladaOperation = this
-			.createActionOperation( "browseForColladaOperation", this::browseForCollada );
-
-	private final Operation loadColladaOperation = this
-			.createActionOperation( "loadColladaOperation", this::loadColladaFile );
-
-	public ImportGalleryResourceComposite() {
-		super( UUID.fromString( "50604ac0-6f77-473b-8cca-0a18948501ae" ) );
-		this.browseForColladaOperation.setButtonIcon( Icons.FOLDER_ICON_SMALL );
-	}
-
-	public StringState getSelectedFileState() {
-		return this.selectedFileState;
-	}
-
-	public Operation getBrowseOperation() {
-		return this.browseForColladaOperation;
-	}
-
-	public Operation getLoadOperation() {
-		return loadColladaOperation;
-	}
-
-	@Override
-	protected DynamicResource createValue() {
-		return null;
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck() {
-		return null;
+	public ImportGalleryResourceComposite( SkeletonVisual sv ) {
+		super( UUID.fromString( "39f498c3-ce50-48af-91de-0ef10e174cf5" ) );
+		skeletonVisual = sv;
+		previewComposite = new SkeletonPreviewComposite();
+		previewComposite.getView().setSkeletonVisual( sv );
+		detailsComposite = new ModelDetailsComposite( UUID.randomUUID());
+		splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.detailsComposite, 0.35f );
+		errorStatus = createErrorStatus( "errorStatus" );
 	}
 
 	@Override
 	protected Panel createView() {
-		return new ImportGalleryResourceView( this );
+		return new BorderPanel.Builder().center( this.splitComposite.getView() ).build();
 	}
 
-	public void importCollada( String colladaFileName ) {
-		Logger modelLogger = Logger.getLogger( getClass().getCanonicalName() );
-		File colladaFile = new File( colladaFileName );
+	@Override
+	protected Integer getWiderGoldenRatioSizeFromWidth() {
+		return 1000;
+	}
 
-		JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaFile, modelLogger );
-		colladaImporter.setFlipModel( false );
+	@Override
+	protected void handlePreShowDialog( Dialog dialog) {
+		previewComposite.getView().positionAndOrientCamera();
+		ide.getDocumentFrame().disableRendering( ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		super.handlePreShowDialog( dialog );
+	}
 
-		SkeletonVisual sv = null;
-		try {
-			sv = colladaImporter.loadSkeletonVisual();
-		} catch (ModelLoadingException e) {
-			final OkDialog.Builder builder = new OkDialog.Builder( e.getLocalizedMessage() + "\nTry to correct it and reimport." );
-			builder.title( "Problem during import" );
-			builder.buildAndShow();
-			return;
+	@Override
+	protected Status getStatusPreRejectorCheck() {
+		String candidate = detailsComposite.modelName.getValue();
+		String explanation = typeValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+		if( explanation != null ) {
+			errorStatus.setText( explanation );
+			return errorStatus;
 		}
+		return IS_GOOD_TO_GO_STATUS;
+	}
 
-		// TODO get a user name
-		String creatorName = "Dave";
-		// TODO get a parent class
-		String parentClassName = "Prop";
-		Class<? extends ModelResource> parentClass = AliceResourceClassUtilities.getResourceClassForAliceName(parentClassName);
+	@Override
+	protected void handleFinally( Dialog dialog ) {
+		super.handleFinally( dialog );
+		ide.getDocumentFrame().enableRendering();
+	}
 
-		List<ModelManifest.Joint> baseJoints = getBaseJoints(parentClass);
+	@Override
+	protected Boolean createValue() {
+		saveToMyGallery( skeletonVisual );
+		return true;
+	}
 
-		if (sv.skeleton.getValue() == null && !baseJoints.isEmpty()) {
-			PipelineException p = new PipelineException("Required skeleton missing on " + sv.getName() + ". Base class is " + parentClass);
-			final OkDialog.Builder builder = new OkDialog.Builder( p.getLocalizedMessage() + "\nTry to correct it and reimport." );
-			builder.title( "Problem during import" );
-			builder.buildAndShow();
-			return;
-		}
-
-		List<ModelManifest.Joint> modelJoints = getModelJoints(sv);
-		List<ModelManifest.Joint> missingJoints = getMissingJoints(modelJoints, baseJoints);
-		if (!missingJoints.isEmpty()) {
-			StringBuilder missingJointsMessage = new StringBuilder("Base class "+parentClass+"requires the following joints:");
-			for (ModelManifest.Joint joint : baseJoints) {
-				missingJointsMessage.append('\t');
-				missingJointsMessage.append(joint.name+":");
-				if (missingJoints.contains(joint)) {
-					missingJointsMessage.append("\tMISSING");
-				}
-				else {
-					missingJointsMessage.append("\tFOUND");
-				}
-				missingJointsMessage.append('\n');
-			}
-			missingJointsMessage.append("Correct for these missing joints and reimport.");
-			final OkDialog.Builder builder = new OkDialog.Builder( missingJointsMessage.toString() );
-			builder.title( "Problem during import" );
-			builder.buildAndShow();
-			return;
-		}
-		List<ModelManifest.Joint> extraJoints = getExtraJoints(modelJoints, baseJoints, true);
-
-		ModelManifest modelManifest = createSimpleManifest( sv, creatorName, parentClassName );
-		modelManifest.additionalJoints = extraJoints;
-		for (ModelManifest.Joint rootJoint : getRootJoints(modelJoints) ) {
-			rootJoint.visibility = Visibility.COMPLETELY_HIDDEN;
-			modelManifest.rootJoints.add(rootJoint.name);
-		}
-
-		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( sv );
-		GalleryModelIo modelIo = new GalleryModelIo( sv, thumbnail, modelManifest );
+	private void saveToMyGallery( SkeletonVisual skeleton ) {
+		ide.setAuthorName( detailsComposite.author.getValue() );
+		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( skeleton );
+		ModelManifest modelManifest = createSimpleManifest( detailsComposite.modelName.getValue(), detailsComposite.author.getValue() );
+		GalleryModelIo modelIo = new GalleryModelIo( skeleton, thumbnail, modelManifest );
 		try {
 			modelIo.writeModel( StageIDE.getActiveInstance().getGalleryDirectory() );
+			modelIo.writeModel( ide.getGalleryDirectory() );
 		} catch (IOException e) {
-			throw new RuntimeException( "Unable to store model in gallery.", e );
+			throw new CancelException( "Unable to store model in gallery.", e );
 		}
 	}
 
@@ -321,5 +241,32 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 
 		return modelManifest;
 	}
-}
 
+	private class ModelDetailsComposite extends SimpleComposite<BorderPanel> {
+		StringState author = createStringState( "author" );
+		StringState modelName = createStringState( "modelName" );
+
+
+		ModelDetailsComposite( UUID id ) {
+			super( id );
+			author.setValueTransactionlessly( ide.getAuthorName() );
+			modelName.setValueTransactionlessly( StaticAnalysisUtilities.getConventionalClassName( skeletonVisual.getName() ) );
+		}
+
+		@Override
+		protected BorderPanel createView() {
+			final BorderPanel view = new BorderPanel( this );
+			FormPanel centerComponent = new FormPanel() {
+				@Override
+				protected void appendRows( List<LabeledFormRow> rows ) {
+					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
+					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
+				}
+
+			};
+			centerComponent.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+			view.addCenterComponent( centerComponent );
+			return view;
+		}
+	}
+}

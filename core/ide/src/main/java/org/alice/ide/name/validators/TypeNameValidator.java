@@ -43,16 +43,41 @@
 
 package org.alice.ide.name.validators;
 
-import org.lgna.project.ast.NamedUserType;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
+import org.lgna.story.SThing;
 
 public class TypeNameValidator extends NodeNameValidator {
-	public TypeNameValidator( NamedUserType type ) {
-		super( type );
+	public TypeNameValidator() {
+		super( null );
 	}
 
 	@Override
 	public boolean isNameAvailable( String name ) {
-		//todo
-		return true;
+		return !isGalleryClassName( name ) && !isSystemClassName( name ) && !isShapeName(name);
+	}
+
+	private boolean isShapeName( String name ) {
+		return isSystemClassName( "S" + name );
+	}
+
+	private boolean isSystemClassName( String name ) {
+		try {
+			Class c = Class.forName("org.lgna.story." + name);
+			return SThing.class.isAssignableFrom( c );
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
+
+	private boolean isGalleryClassName( String name ) {
+		return hasNodeNamed( TreeUtilities.getTreeBasedOnClassHierarchy(), name );
+	}
+
+	private boolean hasNodeNamed( ResourceNode node, String name ) {
+		if( name.equals( node.getResourceKey().getSearchText() ) ) {
+			return true;
+		}
+		return node.getNodeChildren().stream().anyMatch( child -> hasNodeNamed( child, name ) );
 	}
 }

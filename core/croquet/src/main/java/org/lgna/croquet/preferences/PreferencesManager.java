@@ -49,7 +49,6 @@ import org.lgna.croquet.Application;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.UUID;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -117,4 +116,12 @@ public class PreferencesManager {
 	}
 
 	private Application application;
+
+	public String getValue( String propertyName, String defaultValue ) {
+		return getUserPreferences().get( propertyName, defaultValue );
+	}
+
+	public void setValue( String propertyName, String newValue ) {
+		getUserPreferences().put( propertyName, newValue );
+	}
 }
