@@ -42,9 +42,8 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import org.alice.interact.AbstractDragAdapter;
-
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.interact.DragAdapter;
 
 /**
  * @author David Culyba
@@ -55,8 +54,8 @@ public interface CameraInformedManipulator {
 
 	public void setCamera( AbstractCamera camera );
 
-	public AbstractDragAdapter.CameraView getDesiredCameraView();
+	public DragAdapter.CameraView getDesiredCameraView();
 
-	public void setDesiredCameraView( AbstractDragAdapter.CameraView cameraView );
+	public void setDesiredCameraView( DragAdapter.CameraView cameraView );
 
 }

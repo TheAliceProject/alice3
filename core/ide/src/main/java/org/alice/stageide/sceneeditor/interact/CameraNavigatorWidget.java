@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact;
 
-import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.PickHint;
@@ -76,7 +76,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 		PERSPECTIVE,
 	}
 
-	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter, CameraView attachedView ) {
+	public CameraNavigatorWidget( DragAdapter dragAdapter, CameraView attachedView ) {
 		super();
 
 		//this.setLayout( new FlowLayout() );
@@ -253,7 +253,7 @@ public class CameraNavigatorWidget extends LineAxisPanel {
 
 	private CameraMode cameraMode = CameraMode.PERSPECTIVE;
 	private boolean isExpanded = false;
-	private AbstractDragAdapter dragAdapter;
+	private DragAdapter dragAdapter;
 	private ManipulationHandle2DCameraDriver cameraDriver;
 	private ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
 	private ManipulationHandle2DCameraStrafe cameraControlStrafe;

@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.interact;
 
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.InteractionGroup.InteractionInfo;
 import org.alice.interact.PickHint;
@@ -52,11 +52,11 @@ import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
-import javax.swing.SwingUtilities;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public abstract class CroquetSupportingDragAdapter extends AbstractDragAdapter {
+public abstract class CroquetSupportingDragAdapter extends DragAdapter {
 	private Point getDragAndDropPoint( DragStep dragAndDropContext ) {
 		MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		Point pointInLookingGlass = SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );

@@ -45,7 +45,7 @@ package org.alice.interact.manipulator;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -108,7 +108,7 @@ public abstract class AbstractManipulator {
 		this.hasDoneUpdate = hasUpdated;
 	}
 
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapter( DragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
@@ -260,7 +260,7 @@ public abstract class AbstractManipulator {
 		return this.getClass().toString() + ":" + this.hashCode();
 	}
 
-	protected AbstractDragAdapter dragAdapter;
+	protected DragAdapter dragAdapter;
 	protected AbstractTransformable manipulatedTransformable = null;
 	private AffineMatrix4x4 originalTransformation = null;
 	private boolean hasStarted = false;

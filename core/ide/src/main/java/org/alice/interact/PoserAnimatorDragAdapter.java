@@ -42,8 +42,6 @@
  */
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import org.alice.interact.PickHint.PickType;
 import org.alice.interact.condition.DragAndDropCondition;
@@ -76,7 +74,7 @@ import java.awt.event.MouseEvent;
 /**
  * @author Matt May
  */
-public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
+public class PoserAnimatorDragAdapter extends DragAdapter {
 
 	private PoserPicturePlaneInteraction dragAdapter = null;
 	private final AbstractPoserScene poserScene;
@@ -143,31 +141,6 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
 	@Override
 	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-	}
-
-	@Override
-	public boolean shouldSnapToRotation() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGround() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGrid() {
-		return false;
-	}
-
-	@Override
-	public double getGridSpacing() {
-		return 1.0;
-	}
-
-	@Override
-	public Angle getRotationSnapAngle() {
-		return new AngleInRadians( Math.PI / 16.0 );
 	}
 
 	@Override

@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.interact.handle;
 
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.event.EventCriteriaManager;
@@ -92,12 +92,12 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 	}
 
 	@Override
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapter( DragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
 	@Override
-	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapterAndAddHandle( DragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
 		if( this.dragAdapter != null ) {
 			this.dragAdapter.addHandle( this );
@@ -257,5 +257,5 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 	private HandleManager handleManager = null;
 	private final HandleSet handleSet = new HandleSet();
 	private AbstractManipulator manipulation = null;
-	private AbstractDragAdapter dragAdapter = null;
+	private DragAdapter dragAdapter = null;
 }

@@ -82,7 +82,7 @@ import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.ClickedObjectCondition;

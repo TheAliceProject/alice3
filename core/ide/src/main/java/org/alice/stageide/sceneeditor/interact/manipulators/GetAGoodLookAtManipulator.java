@@ -45,9 +45,11 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.IDE;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.AbstractManipulator;
@@ -61,9 +63,6 @@ import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.lgna.story.implementation.StandInImp;
 import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 

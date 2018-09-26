@@ -45,7 +45,7 @@ package org.alice.interact.handle;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.event.EventCriteriaManager;
@@ -258,12 +258,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 
 	@Override
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapter( DragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
 	@Override
-	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
+	public void setDragAdapterAndAddHandle( DragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
 		if( this.dragAdapter != null ) {
 			this.dragAdapter.addHandle( this );
@@ -683,7 +683,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	private Color4fInterruptibleAnimation colorAnimation;
 
 	private AbstractManipulator manipulation = null;
-	private AbstractDragAdapter dragAdapter = null;
+	private DragAdapter dragAdapter = null;
 	private boolean isPickable = false; //This is false until a manipulation is set on the handle
 
 	protected float cameraRelativeOpacity = 1.0f;

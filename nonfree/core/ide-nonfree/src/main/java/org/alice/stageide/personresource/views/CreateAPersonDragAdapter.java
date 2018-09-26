@@ -42,12 +42,12 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
-import org.alice.interact.AbstractDragAdapter;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementKey;
 import org.alice.interact.MovementType;
@@ -63,16 +63,13 @@ import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
 import org.lgna.story.implementation.AbstractTransformableImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * @author David Culyba
  */
-public class CreateAPersonDragAdapter extends AbstractDragAdapter {
+public class CreateAPersonDragAdapter extends DragAdapter {
 	public CreateAPersonDragAdapter() {
 		this.setUpControls();
 	}
@@ -158,31 +155,6 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 				( (CameraTranslateKeyManipulator)manipulator ).setBounds( cameraBounds );
 			}
 		}
-	}
-
-	@Override
-	public boolean shouldSnapToRotation() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGround() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGrid() {
-		return false;
-	}
-
-	@Override
-	public double getGridSpacing() {
-		return 1.0;
-	}
-
-	@Override
-	public Angle getRotationSnapAngle() {
-		return new AngleInRadians( Math.PI / 16.0 );
 	}
 
 	@Override

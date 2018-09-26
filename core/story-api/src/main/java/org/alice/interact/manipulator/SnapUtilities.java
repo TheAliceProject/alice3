@@ -46,7 +46,7 @@ package org.alice.interact.manipulator;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.ScaleUtilities;
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.manipulator.scenegraph.SnapLine;
@@ -199,7 +199,7 @@ public class SnapUtilities {
 	public static AxisAlignedBox getBoundingBox( AbstractTransformable t ) {
 		AxisAlignedBox boundingBox = null;
 		if( t != null ) {
-			Object bbox = t.getBonusDataFor( AbstractDragAdapter.BOUNDING_BOX_KEY );
+			Object bbox = t.getBonusDataFor( DragAdapter.BOUNDING_BOX_KEY );
 			if( bbox instanceof AxisAlignedBox ) {
 				boundingBox = new AxisAlignedBox( (AxisAlignedBox)bbox );
 				if( boundingBox.isNaN() ) {
@@ -388,7 +388,7 @@ public class SnapUtilities {
 
 	}
 
-	public static Point3 doMovementSnapping( AbstractTransformable t, Point3 currentPosition, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera ) {
+	public static Point3 doMovementSnapping( AbstractTransformable t, Point3 currentPosition, DragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera ) {
 		Point3 snapPosition = new Point3( currentPosition );
 		if( dragAdapter != null ) {
 			//Try snapping to various snaps
@@ -460,7 +460,7 @@ public class SnapUtilities {
 	//		return new OrthogonalMatrix3x3(snapRightAxis, snapUpAxis, snapBackwardAxis);
 	//	}
 
-	//	public static OrthogonalMatrix3x3 doRotationSnapping(AffineMatrix4x4 preRotateTransform, OrthogonalMatrix3x3 currentOrientation, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
+	//	public static OrthogonalMatrix3x3 doRotationSnapping(AffineMatrix4x4 preRotateTransform, OrthogonalMatrix3x3 currentOrientation, DragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
 	//	{
 	//		OrthogonalMatrix3x3 snapOrientation = new OrthogonalMatrix3x3(currentOrientation);
 	//		
@@ -502,7 +502,7 @@ public class SnapUtilities {
 		showSnapSphere( snapSphereLocation, handleTransform.translation, rotationHandle.getRoot() );
 	}
 
-	public static Angle doRotationSnapping( Angle currentAngle, AbstractDragAdapter dragAdapter ) {
+	public static Angle doRotationSnapping( Angle currentAngle, DragAdapter dragAdapter ) {
 		Angle snapAngle = new AngleInRadians( currentAngle );
 		//Try snapping to various snaps
 		if( dragAdapter != null ) {

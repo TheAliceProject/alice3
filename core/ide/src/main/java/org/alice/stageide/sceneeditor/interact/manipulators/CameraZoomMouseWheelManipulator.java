@@ -44,7 +44,7 @@
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;

@@ -44,8 +44,6 @@ package org.alice.interact;
 
 import java.awt.event.MouseEvent;
 
-import edu.cmu.cs.dennisc.math.Angle;
-import edu.cmu.cs.dennisc.math.AngleInRadians;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
@@ -65,7 +63,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author David Culyba
  */
-public class RuntimeDragAdapter extends AbstractDragAdapter {
+public class RuntimeDragAdapter extends DragAdapter {
 	public RuntimeDragAdapter() {
 		this.setUpControls();
 	}
@@ -130,31 +128,6 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		//Overridden to prevent picking every frame since there is no need for rollover events
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.fireStateChange();
-	}
-
-	@Override
-	public boolean shouldSnapToRotation() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGround() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldSnapToGrid() {
-		return false;
-	}
-
-	@Override
-	public double getGridSpacing() {
-		return 1.0;
-	}
-
-	@Override
-	public Angle getRotationSnapAngle() {
-		return new AngleInRadians( Math.PI / 16.0 );
 	}
 
 	@Override

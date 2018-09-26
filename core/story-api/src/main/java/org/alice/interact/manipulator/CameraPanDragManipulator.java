@@ -45,7 +45,7 @@ package org.alice.interact.manipulator;
 
 import java.awt.Point;
 
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
