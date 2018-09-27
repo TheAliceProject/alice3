@@ -44,7 +44,6 @@ package org.lgna.croquet.preferences;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
 
 import java.io.File;
@@ -110,7 +109,7 @@ public class PreferencesManager {
 			URI uri = new URI( path );
 			return new File( uri );
 		} catch (Exception urise) {
-			Logger.throwable( urise, "URI failure:", path );
+			// It did not read as a URI. Treat it as a system path.
 			return new File( path );
 		}
 	}

@@ -54,10 +54,13 @@ public class TypeNameValidator extends NodeNameValidator {
 
 	@Override
 	public boolean isNameAvailable( String name ) {
-		return !isGalleryClassName( name ) && !isSystemClassName( name ) && !isShapeName(name);
+		return !isGalleryClassName( name ) && !isSystemClassName( name ) && !isAliceClassName( name);
 	}
 
-	private boolean isShapeName( String name ) {
+	// This catches Cube, Biped, and other types that exist in Alice. It also rejects Thing
+	// and Turnable, which are not problems. This takes the more cautious approach, rejecting
+	// some valid, but perhaps confusing, names.
+	private boolean isAliceClassName( String name ) {
 		return isSystemClassName( "S" + name );
 	}
 
