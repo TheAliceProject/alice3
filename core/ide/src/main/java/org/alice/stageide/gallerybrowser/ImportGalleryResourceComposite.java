@@ -17,6 +17,7 @@ import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.FormPanel;
 import org.lgna.croquet.views.LabeledFormRow;
 import org.lgna.croquet.views.Panel;
+import org.lgna.croquet.views.SplitPane;
 import org.lgna.ik.poser.croquet.PoserComposite;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ProjectVersion;
@@ -57,7 +58,9 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
 	@Override
 	protected Panel createView() {
-		return new BorderPanel.Builder().center( this.splitComposite.getView() ).build();
+		final SplitPane splitPane = splitComposite.getView();
+		splitPane.setDividerLocation( 450 );
+		return new BorderPanel.Builder().center( splitPane ).build();
 	}
 
 	@Override
