@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,49 +40,80 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.interact;
+package org.alice.interact.manipulator;
 
-import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
-import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.InputState;
+import org.alice.interact.MovementKey;
+import org.alice.interact.handle.HandleSet;
 
-/**
- * @author David Culyba
- */
-public class MovementKey {
-	public MovementKey( int keyValue, MovementDescription description ) {
-		this( keyValue, description, 1.0d );
+public abstract class KeyManipulator extends AbstractManipulator {
+
+	private static final double RATE = 5.0d;
+	private static final double CLICK_TIME = .1d;
+
+	KeyManipulator( MovementKey[] keys ) {
+		this.keys = keys;
 	}
 
-	public MovementKey( int keyValue, MovementDescription description, double directionMultiplier ) {
-		this.keyValue = keyValue;
-		this.movementDescription = description;
-		this.directionMultiplier = directionMultiplier;
+	@Override
+	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
+		//Key only. Do nothing.
 	}
 
-	private final MovementDescription movementDescription;
-	private final double directionMultiplier;
-	public final int keyValue;
-
-	public void applyRotation( AbstractTransformable transformable, double degreesToRotate ) {
-		movementDescription.type.applyRotation( transformable,
-																						movementDescription.direction.getVector(),
-																						new AngleInDegrees( directionMultiplier * degreesToRotate ) );
+	@Override
+	protected HandleSet getHandleSetToEnable() {
+		return null;
 	}
 
-	public void applyTranslation( AbstractTransformable transformable, double distanceToMove ) {
-		Point3 direction = Point3.createMultiplication(
-				movementDescription.direction.getVector(), distanceToMove * directionMultiplier );
-		movementDescription.type.applyTranslation( transformable, direction );
+	@Override
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+		//Key only. Do nothing.
 	}
 
-	public void applyOrbit( AbstractTransformable transformable, double degreesToRotate ) {
-		Vector3 rotationDirection = new Vector3( movementDescription.direction.getVector() );
-		transformable.getLocalTransformation().orientation.transform( rotationDirection );
-		movementDescription.type.applyRotation( transformable,
-																						rotationDirection,
-																						new AngleInDegrees( directionMultiplier * degreesToRotate ) );
+	@Override
+	public boolean doStartManipulator( InputState startInput ) {
+		if( manipulatedTransformable != null ) {
+			startTime = System.currentTimeMillis() * .001d;
+			initialPoint.set( manipulatedTransformable.getAbsoluteTransformation().translation );
+			return true;
+		} else {
+			return false;
+		}
 	}
+
+	@Override
+	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
+		if( manipulatedTransformable != null ) {
+			applyInput( currentInput, RATE * dTime );
+		}
+	}
+
+	@Override
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
+		double currentTime = System.currentTimeMillis() * .001d;
+		double amountToMove = CLICK_TIME * RATE;
+		if( shouldApplyEnding( currentTime, amountToMove ) ) {
+			manipulatedTransformable.setTranslationOnly( initialPoint, manipulatedTransformable.getRoot() );
+			applyInput( previousInput, amountToMove );
+		}
+	}
+
+	protected boolean shouldApplyEnding( double currentTime, double amountToMove ) {
+		return ( currentTime - startTime ) < CLICK_TIME;
+	}
+
+	private void applyInput( InputState input, double amountToMove ) {
+		for( MovementKey key : keys ) {
+			if( input.isKeyDown( key.keyValue ) ) {
+				manipulate( amountToMove, key );
+			}
+		}
+	}
+
+	protected abstract void manipulate( double amountToMove, MovementKey key );
+
+	Point3 initialPoint = new Point3();
+	private double startTime = 0.0d;
+	private MovementKey[] keys;
 }

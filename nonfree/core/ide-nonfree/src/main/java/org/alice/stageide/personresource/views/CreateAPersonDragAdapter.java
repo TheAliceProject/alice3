@@ -70,7 +70,7 @@ import java.awt.event.MouseEvent;
  * @author David Culyba
  */
 public class CreateAPersonDragAdapter extends DragAdapter {
-	public CreateAPersonDragAdapter() {
+	CreateAPersonDragAdapter() {
 		this.setUpControls();
 	}
 
@@ -82,9 +82,6 @@ public class CreateAPersonDragAdapter extends DragAdapter {
 				//Down
 				new MovementKey( KeyEvent.VK_PAGE_DOWN, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), .1d ),
 				new MovementKey( KeyEvent.VK_DOWN, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), .1d ),
-		};
-
-		MovementKey[] zoomKeys = {
 				//Zoom out
 				new MovementKey( KeyEvent.VK_MINUS, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
 				new MovementKey( KeyEvent.VK_SUBTRACT, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
@@ -103,13 +100,9 @@ public class CreateAPersonDragAdapter extends DragAdapter {
 		};
 
 		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );
-		cameraTranslateManip.addKeys( zoomKeys );
 		ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
 		for( MovementKey movementKey : movementKeys ) {
 			cameraTranslate.addCondition( new KeyPressCondition( movementKey.keyValue ) );
-		}
-		for( MovementKey zoomKey : zoomKeys ) {
-			cameraTranslate.addCondition( new KeyPressCondition( zoomKey.keyValue ) );
 		}
 		this.addManipulatorConditionSet( cameraTranslate );
 
