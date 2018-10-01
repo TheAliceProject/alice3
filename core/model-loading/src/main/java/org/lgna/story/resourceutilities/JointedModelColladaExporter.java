@@ -831,7 +831,7 @@ public class JointedModelColladaExporter {
 
 	private String getModelName() {
 		if (modelVariant != null) {
-			return modelVariant.structure;
+			return modelName + "_" + modelVariant.structure;
 		}
 		else {
 			return modelName;
@@ -840,7 +840,7 @@ public class JointedModelColladaExporter {
 
 	private String getFullResourceName() {
 		if (modelVariant != null) {
-			return modelVariant.textureSet;
+			return modelName + "_" + modelVariant.textureSet;
 		}
 		else {
 			return modelName;

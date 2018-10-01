@@ -212,10 +212,12 @@ public class ImportGalleryResourceComposite extends ValueCreatorInputDialogCoreC
 	}
 
 	private static void addJointsToList( Joint sgJoint, List<ModelManifest.Joint> jointList ) {
-		jointList.add(createJoint(sgJoint));
-		for (Component c : sgJoint.getComponents()) {
-			if (c instanceof Joint) {
-				addJointsToList((Joint)c, jointList);
+		if (sgJoint != null) {
+			jointList.add(createJoint(sgJoint));
+			for (Component c : sgJoint.getComponents()) {
+				if (c instanceof Joint) {
+					addJointsToList((Joint) c, jointList);
+				}
 			}
 		}
 	}
