@@ -155,7 +155,6 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
 		GalleryModelIo modelIo = new GalleryModelIo( skeleton, thumbnail, modelManifest );
 		try {
-			modelIo.writeModel( StageIDE.getActiveInstance().getGalleryDirectory() );
 			modelIo.writeModel( ide.getGalleryDirectory() );
 		} catch (IOException e) {
 			throw new CancelException( "Unable to store model in gallery.", e );
