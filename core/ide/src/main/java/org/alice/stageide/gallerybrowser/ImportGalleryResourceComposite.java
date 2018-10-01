@@ -1,5 +1,9 @@
 package org.alice.stageide.gallerybrowser;
 
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.scenegraph.Component;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.name.NameValidator;
@@ -18,19 +22,20 @@ import org.lgna.croquet.views.FormPanel;
 import org.lgna.croquet.views.LabeledFormRow;
 import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.SplitPane;
-import org.lgna.ik.poser.croquet.PoserComposite;
-import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ProjectVersion;
-import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.StaticAnalysisUtilities;
-import org.lgna.project.ast.UserPackage;
 import org.lgna.project.io.GalleryModelIo;
-import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.resources.JointId;
+import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
+import org.lgna.story.resourceutilities.PipelineException;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,8 +105,54 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
 	private void saveToMyGallery( SkeletonVisual skeleton ) {
 		ide.setAuthorName( detailsComposite.author.getValue() );
+
+		// TODO get a parent class
+		String parentClassName = "Prop";
+		Class<? extends ModelResource> parentClass = AliceResourceClassUtilities
+				.getResourceClassForAliceName( parentClassName );
+
+		List<ModelManifest.Joint> baseJoints = getBaseJoints( parentClass );
+
+		if ( skeleton.skeleton.getValue() == null && !baseJoints.isEmpty() ) {
+			PipelineException p = new PipelineException(
+					"Required skeleton missing on " + skeleton.getName() + ". Base class is " + parentClass );
+			final OkDialog.Builder builder = new OkDialog.Builder( p.getLocalizedMessage() + "\nTry to correct it and reimport." );
+			builder.title( "Problem during import" );
+			builder.buildAndShow();
+			return;
+		}
+
+		List<ModelManifest.Joint> modelJoints = getModelJoints( skeleton );
+		List<ModelManifest.Joint> missingJoints = getMissingJoints( modelJoints, baseJoints );
+		if ( !missingJoints.isEmpty() ) {
+			StringBuilder missingJointsMessage = new StringBuilder(
+					"Base class " + parentClass + "requires the following joints:" );
+			for ( ModelManifest.Joint joint : baseJoints ) {
+				missingJointsMessage.append( '\t' )
+														.append( joint.name ).append( ":" )
+														.append( missingJoints.contains( joint ) ? "\tMISSING" : "\tFOUND" )
+														.append( '\n' );
+			}
+			missingJointsMessage.append( "Correct for these missing joints and reimport." );
+			final OkDialog.Builder builder = new OkDialog.Builder( missingJointsMessage.toString() );
+			builder.title( "Problem during import" );
+			builder.buildAndShow();
+			return;
+		}
+		List<ModelManifest.Joint> extraJoints = getExtraJoints( modelJoints, baseJoints, true );
+
+		ModelManifest modelManifest = createSimpleManifest( detailsComposite.modelName.getValue(),
+																												detailsComposite.author.getValue(),
+																												parentClassName,
+																												skeleton.getAxisAlignedMinimumBoundingBox() );
+		modelManifest.additionalJoints = extraJoints;
+		for ( ModelManifest.Joint rootJoint : getRootJoints( modelJoints ) ) {
+			rootJoint.visibility = Visibility.COMPLETELY_HIDDEN;
+			modelManifest.rootJoints.add( rootJoint.name );
+		}
+
 		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( skeleton );
-		ModelManifest modelManifest = createSimpleManifest( detailsComposite.modelName.getValue(), detailsComposite.author.getValue() );
+
 		GalleryModelIo modelIo = new GalleryModelIo( skeleton, thumbnail, modelManifest );
 		try {
 			modelIo.writeModel( StageIDE.getActiveInstance().getGalleryDirectory() );
@@ -214,10 +265,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		return missingJoints;
 	}
 
-	private static ModelManifest createSimpleManifest( SkeletonVisual sv, String creatorName, String parentClassName) {
-		String modelName = sv.getName();
-		AxisAlignedBox boundingBox = sv.getAxisAlignedMinimumBoundingBox();
-
+	private static ModelManifest createSimpleManifest( String modelName, String creatorName, String parentClassName, AxisAlignedBox boundingBox ) {
 		ModelManifest modelManifest = new ModelManifest();
 		modelManifest.parentClass = parentClassName;
 		modelManifest.description.name = modelName;

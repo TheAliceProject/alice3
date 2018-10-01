@@ -143,7 +143,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
 		}
 		else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
-			return NebulousIde.nonfree.getPersonResourceDropModel( this.resourceKey );
+			return NebulousIde.nonfree.getPersonResourceDropOperation( this.resourceKey );
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 			if( classResourceKey.isLeaf() ) {
