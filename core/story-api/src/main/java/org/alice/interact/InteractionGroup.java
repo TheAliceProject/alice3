@@ -47,7 +47,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.alice.interact.HandleSupportingDragAdapter.ObjectType;
+import org.alice.interact.DragAdapter.ObjectType;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.handle.HandleSet;
 

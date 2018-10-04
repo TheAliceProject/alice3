@@ -44,14 +44,10 @@ package org.alice.stageide.showme;
 
 import org.lgna.croquet.Application;
 import org.lgna.croquet.IteratingOperation;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.StencilModel;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,19 +57,19 @@ import java.util.UUID;
 public abstract class StencilsIteratingOperation extends IteratingOperation {
 	private final StencilModel[] stencilModels;
 
-	public StencilsIteratingOperation( UUID id, StencilModel... stencilModels ) {
+	StencilsIteratingOperation( UUID id, StencilModel... stencilModels ) {
 		super( Application.INFORMATION_GROUP, id );
 		this.stencilModels = stencilModels;
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < stencilModels.length;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < stencilModels.length;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		int i = subSteps.size();
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		int i = finishedSteps.size();
 		if( i < this.stencilModels.length ) {
 			return this.stencilModels[ i ];
 		} else {
@@ -82,17 +78,7 @@ public abstract class StencilsIteratingOperation extends IteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
-	}
-
-	@Override
-	protected final void perform( final Transaction transaction, final Trigger trigger ) {
-		new Thread() {
-			@Override
-			public void run() {
-				iterateOverSubModels( transaction, trigger );
-			}
-		}.start();
+	protected final void performInActivity( final UserActivity userActivity ) {
+		new Thread( () -> iterateOverSubModels( userActivity ) ).start();
 	}
 }

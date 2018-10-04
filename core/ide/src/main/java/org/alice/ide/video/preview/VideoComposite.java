@@ -53,13 +53,12 @@ import edu.cmu.cs.dennisc.video.VideoPlayer;
 import edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities;
 import edu.cmu.cs.dennisc.video.vlcj.VlcjVideoPlayer;
 import org.alice.ide.video.preview.views.VideoView;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.views.Frame;
 import uk.co.caprica.vlcj.binding.LibVlc;
@@ -83,7 +82,7 @@ import java.util.UUID;
 public final class VideoComposite extends SimpleComposite<VideoView> {
 	private final Operation togglePlayPauseOperation = this.createActionOperation( "togglePlayPauseOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			if( getView().isErrorFreeSinceLastPrepareMedia() ) {
 				VideoPlayer videoPlayer = getView().getVideoPlayer();
 				if( videoPlayer.isPlaying() ) {

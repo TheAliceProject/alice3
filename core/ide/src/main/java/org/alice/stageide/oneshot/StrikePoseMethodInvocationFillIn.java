@@ -51,7 +51,6 @@ import org.alice.ide.croquet.models.cascade.ParameterBlank;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
@@ -105,7 +104,7 @@ public class StrikePoseMethodInvocationFillIn extends ImmutableCascadeFillIn<Met
 	}
 
 	@Override
-	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode, TransactionHistory transactionHistory ) {
+	public MethodInvocationEditFactory createValue( ItemNode<? super MethodInvocationEditFactory, Expression> itemNode ) {
 		Expression[] argumentExpressions = new Expression[ this.transientValue.requiredArguments.size() ];
 		for( int i = 0; i < this.transientValue.requiredArguments.size(); i++ ) {
 			argumentExpressions[ i ] = this.transientValue.requiredArguments.get( i ).expression.getValue();

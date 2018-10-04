@@ -47,9 +47,10 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
+import org.lgna.croquet.AbstractModel;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 
@@ -61,7 +62,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryDragModel extends DragModel {
+public abstract class GalleryDragModel extends AbstractModel implements DragModel {
 	private static final Dimension DEFAULT_LARGE_ICON_SIZE = new Dimension( 160, 120 );
 
 	protected static Dimension getDefaultLargeIconSize() {
@@ -85,7 +86,7 @@ public abstract class GalleryDragModel extends DragModel {
 		return DEFAULT_LARGE_ICON_SIZE;
 	}
 
-	public abstract Model getLeftButtonClickModel();
+	public abstract Triggerable getLeftButtonClickOperation();
 
 	@Override
 	public List<? extends DropReceptor> createListOfPotentialDropReceptors() {

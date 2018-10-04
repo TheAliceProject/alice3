@@ -54,4 +54,8 @@ public class CancelException extends RuntimeException {
 	public CancelException( String message ) {
 		super( message );
 	}
+
+	public CancelException( String message, Throwable e ) {
+		super( message, e);
+	}
 }

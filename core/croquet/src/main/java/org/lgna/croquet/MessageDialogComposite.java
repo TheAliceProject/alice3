@@ -43,7 +43,7 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Panel;
 
 import javax.swing.JOptionPane;
@@ -87,20 +87,16 @@ public abstract class MessageDialogComposite<V extends Panel> extends AbstractCo
 	}
 
 	@Override
-	public final void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> completionStep ) {
+	public final void perform( UserActivity userActivity ) {
 		Component awtComponent = null; //todo
 		//todo: Icon
 		JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
+		userActivity.finish();
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 
-	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
 }

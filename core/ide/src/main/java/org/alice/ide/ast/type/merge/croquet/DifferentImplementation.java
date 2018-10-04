@@ -45,7 +45,6 @@ package org.alice.ide.ast.type.merge.croquet;
 import org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffimp.croquet.FieldDifferentImplementationHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffimp.croquet.MethodDifferentImplementationHelpComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.Member;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
@@ -171,7 +170,7 @@ public final class DifferentImplementation<M extends Member> extends PotentialNa
 		return false;
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, CompletionStep<?> step ) {
+	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
 		boolean isAddDesired = this.importHub.getIsDesiredState().getValue();
 		boolean isKeepDesired = this.projectHub.getIsDesiredState().getValue();
 		if( isAddDesired ) {

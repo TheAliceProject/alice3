@@ -44,7 +44,7 @@ package org.alice.ide.properties.adapter.croquet.edits;
 
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
@@ -54,8 +54,8 @@ public class PropertyValueEdit<P> extends AbstractEdit {
 	private final P nextValue;
 	private P originalValue;
 
-	public PropertyValueEdit( CompletionStep step, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
-		super( step );
+	public PropertyValueEdit( UserActivity userActivity, AbstractPropertyAdapter<P, ?> propertyAdapter, P nextValue ) {
+		super( userActivity );
 		this.propertyAdapter = propertyAdapter;
 		this.nextValue = nextValue;
 	}

@@ -43,7 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.CompositeView;
 
 import java.util.UUID;
@@ -84,7 +83,7 @@ public abstract class WizardPageComposite<V extends CompositeView<?, ?>, O exten
 		}
 	}
 
-	public abstract Status getPageStatus( CompletionStep<?> step );
+	public abstract Status getPageStatus();
 
 	public boolean isAccountedForInPreferredSizeCalculation() {
 		return true;
@@ -94,32 +93,26 @@ public abstract class WizardPageComposite<V extends CompositeView<?, ?>, O exten
 		return false;
 	}
 
-	public void handlePreShowDialog( CompletionStep<?> step ) {
+	public void handlePreShowDialog() {
 	}
 
-	public void handlePostHideDialog( CompletionStep<?> step ) {
+	public void handlePostHideDialog() {
 	}
 
 	protected boolean isAutoAdvanceWorthAttempting() {
 		return this.isOptional();
 	}
 
-	protected boolean isClearedForAutoAdvance( CompletionStep<?> step ) {
-		Status status = this.getPageStatus( step );
-		return status == IS_GOOD_TO_GO_STATUS;
+	protected boolean isClearedForAutoAdvance() {
+		return getPageStatus() == IS_GOOD_TO_GO_STATUS;
 	}
 
-	public final boolean isAutoAdvanceDesired( CompletionStep<?> step ) {
-		if( this.isAutoAdvanceWorthAttempting() ) {
-			return this.isClearedForAutoAdvance( step );
-		} else {
-			return false;
-		}
+	final boolean isAutoAdvanceDesired() {
+		return isAutoAdvanceWorthAttempting() && isClearedForAutoAdvance();
 	}
 
 	public boolean isClearToCommit() {
-		CompletionStep<?> step = null;
-		return this.isOptional() || this.isAutoAdvanceDesired( step );
+		return this.isOptional() || this.isAutoAdvanceDesired();
 	}
 
 	public abstract void resetData();

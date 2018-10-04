@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.IDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractNode;
@@ -66,8 +66,8 @@ public class ExpressionPropertyEdit extends AbstractEdit {
 	private final Expression nextExpression;
 	private final Expression prevExpression;
 
-	public ExpressionPropertyEdit( CompletionStep completionStep, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
-		super( completionStep );
+	public ExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
+		super( userActivity );
 		this.expressionProperty = expressionProperty;
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;

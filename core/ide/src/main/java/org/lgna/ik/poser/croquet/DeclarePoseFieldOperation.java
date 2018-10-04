@@ -45,15 +45,12 @@ package org.lgna.ik.poser.croquet;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.IDE;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NamedUserType;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,19 +79,19 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				Expression expression = (Expression)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				Expression expression = (Expression)prevSubStep.getProducedValue();
 				AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = AddUnmanagedPoseFieldComposite.getInstance( this.declaringType );
 				addUnmanagedPoseFieldComposite.setInitializerInitialValue( expression );
 				return addUnmanagedPoseFieldComposite.getLaunchOperation();
@@ -108,7 +105,7 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 		//		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
 		//		NamedUserType declaringType = this.getDeclaringType();
 		//		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );

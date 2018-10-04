@@ -48,7 +48,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.ide.name.validators.LocalNameValidator;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserType;
@@ -87,8 +87,8 @@ public abstract class InsertStatementComposite<S extends Statement> extends Decl
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return new InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement(), new Expression[ 0 ], this.isEnveloping );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new InsertStatementEdit( userActivity, this.blockStatementIndexPair, this.createStatement(), new Expression[ 0 ], this.isEnveloping );
 	}
 
 	@Override

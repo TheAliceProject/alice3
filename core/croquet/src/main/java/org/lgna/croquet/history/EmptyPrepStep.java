@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class CompositeAnimation implements Animation {
-	private Animation[] m_animations;
+package org.lgna.croquet.history;
 
-	public CompositeAnimation( Animation... animations ) {
-		setAnimations( animations );
-	}
+import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.triggers.Trigger;
 
-	protected void setAnimations( Animation[] animations ) {
-		m_animations = animations;
-		this.reset();
-	}
+public class EmptyPrepStep extends PrepStep<PrepModel> {
+	private final String label;
 
-	public Animation[] getAnimations() {
-		return m_animations;
+	public EmptyPrepStep( Trigger trigger, String label) {
+		super( trigger.getUserActivity(), null, trigger );
+		this.label = label;
 	}
 
 	@Override
-	public void reset() {
-		for( Animation animation : m_animations ) {
-			animation.reset();
+	protected void updateRepr( StringBuilder builder ) {
+		builder.append( "trigger = " );
+		Trigger trigger = this.getTrigger();
+		if( trigger != null ) {
+			trigger.appendRepr( builder );
 		}
-	}
-
-	@Override
-	public void complete( AnimationObserver animationObserver ) {
-		for( Animation animation : m_animations ) {
-			animation.complete( animationObserver );
-		}
+		builder.append( " ; text = " );
+		builder.append( label );
+		builder.append( " " );
 	}
 }

@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.projecturi;
 
 import org.alice.ide.ProjectApplication;
+import org.alice.stageide.StageIDE;
 import org.lgna.project.io.IoUtilities;
 
 import java.io.File;
@@ -58,8 +59,8 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 	}
 
 	@Override
-	protected File getDefaultDirectory( ProjectApplication application ) {
-		return application.getMyProjectsDirectory();
+	protected File getDefaultDirectory( StageIDE application ) {
+		return application.getProjectsDirectory();
 	}
 
 	@Override

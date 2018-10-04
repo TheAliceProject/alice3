@@ -46,7 +46,7 @@ package org.alice.ide.croquet.edits.ast;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
@@ -59,8 +59,8 @@ public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 	private final Statement[] doStatements;
 	private final Statement[] undoStatements;
 
-	public DeclareGalleryFieldEdit( CompletionStep step, AbstractSceneEditor sceneEditor, UserType<?> declaringType, UserField field, Statement[] doStatements, Statement[] undoStatements ) {
-		super( step, declaringType, field );
+	public DeclareGalleryFieldEdit( UserActivity userActivity, AbstractSceneEditor sceneEditor, UserType<?> declaringType, UserField field, Statement[] doStatements, Statement[] undoStatements ) {
+		super( userActivity, declaringType, field );
 		this.sceneEditor = sceneEditor;
 		this.doStatements = doStatements;
 		this.undoStatements = undoStatements;

@@ -54,11 +54,10 @@ import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriContentLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.alice.stageide.StageIDE;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.undo.UndoHistory;
 import org.lgna.croquet.undo.event.HistoryClearEvent;
 import org.lgna.croquet.undo.event.HistoryInsertionIndexEvent;
@@ -88,6 +87,8 @@ import java.util.concurrent.ExecutionException;
 public abstract class ProjectApplication extends PerspectiveApplication<ProjectDocumentFrame> {
 	public static final Group HISTORY_GROUP = Group.getInstance( UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final Group URI_GROUP = Group.getInstance( UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
+
+	private UserActivity projectActivity;
 
 	public static ProjectApplication getActiveInstance() {
 		return ClassUtilities.getInstance( PerspectiveApplication.getActiveInstance(), ProjectApplication.class );
@@ -394,11 +395,30 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 					.buildAndShow();
 		}
 		ProgramTypeUtilities.sanityCheckAllTypes( project );
-		this.setDocument( new ProjectDocument( project ) );
+		this.setDocument( new ProjectDocument( project, newProjectActivity() ) );
 	}
 
-	public TransactionHistory getProjectTransactionHistory() {
-		return this.getDocument().getRootTransactionHistory();
+	private UserActivity newProjectActivity() {
+		// This is the activity of opening or creating this project
+		getOverallUserActivity().getLatestActivity().finish();
+		// If there was a project the new one replaces it.
+		if (projectActivity != null) {
+			projectActivity.finish();
+		}
+		// Create a new project activity under the top level user activity
+		projectActivity = getOverallUserActivity().newChildActivity();
+		return projectActivity;
+	}
+
+	public UserActivity getProjectUserActivity() {
+		return getDocument().getUserActivity();
+	}
+
+	//Look for an open child, if any. Otherwise return null.
+	@Override
+	public UserActivity getOpenActivity() {
+		UserActivity latest = super.getOpenActivity();
+		return latest == projectActivity ? null : latest;
 	}
 
 	public final void loadProjectFrom( UriProjectLoader uriProjectLoader ) {
@@ -437,10 +457,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		projectFileUtilities.exportCopyOfProjectTo( file );
 	}
 
-	public File getMyProjectsDirectory() {
-		return StageIDE.getActiveInstance().getProjectsDirectory();
-	}
-
 	public final Project getUpToDateProject() {
 		this.ensureProjectCodeUpToDate();
 		return this.getProject();
@@ -450,4 +466,12 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
 	private final ProjectDocumentFrame projectDocumentFrame;
 	private final ProjectFileUtilities projectFileUtilities;
+
+	public String getAuthorName() {
+		return getPreferencesManager().getValue("authorName", System.getProperty( "user.name" ));
+	}
+
+	public void setAuthorName(String newName) {
+		getPreferencesManager().setValue("authorName", newName);
+	}
 }

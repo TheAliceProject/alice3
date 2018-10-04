@@ -44,11 +44,8 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.DialogContentComposite;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Button;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Dialog;
@@ -62,7 +59,6 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, DCC extends DialogContentComposite<?>> extends AbstractDialogComposite<V> {
-	protected static final Step.Key<Boolean> IS_COMMITED_KEY = Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
 	protected static abstract class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
@@ -82,37 +78,21 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 	}
 
-	private static abstract class InternalFinishOperation extends InternalDialogOperation {
-		private final boolean isCommit;
-
-		public InternalFinishOperation( UUID id, AdornedDialogCoreComposite coreComposite, boolean isCommit ) {
-			super( id, coreComposite );
-			this.isCommit = isCommit;
+	private final class InternalCommitOperation extends InternalDialogOperation {
+		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
+			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite );
 		}
 
 		@Override
-		protected final void perform( Transaction transaction, Trigger trigger ) {
-			if( ( this.isCommit == false ) || this.getDialogCoreComposite().isClearedForCommit() ) {
-				CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-				AdornedDialogCoreComposite coreComposite = this.getDialogCoreComposite();
-				assert coreComposite != null : this;
-				CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
-				assert dialogStep != null : transaction;
-				Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
-				assert dialog != null : dialogStep;
-				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
+		protected final void performInActivity( UserActivity userActivity ) {
+			if( getDialogCoreComposite().isClearedForCommit() ) {
+				userActivity.setCompletionModel( this );
+				isCommitted = true;
 				dialog.setVisible( false );
-				step.finish();
+				userActivity.finish();
 			} else {
 				Logger.outln( this );
 			}
-		}
-
-	}
-
-	private static final class InternalCommitOperation extends InternalFinishOperation {
-		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
 		}
 
 		@Override
@@ -123,17 +103,13 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		@Override
 		protected String findDefaultLocalizedText() {
 			String rv = super.findDefaultLocalizedText();
-			if( rv != null ) {
-				//pass
-			} else {
+			if ( rv == null ) {
 				Locale locale = JComboBox.getDefaultLocale();
 				String commitUiKey = this.getDialogCoreComposite().getCommitUiKey();
 				if( commitUiKey != null ) {
 					rv = UIManager.getString( commitUiKey, locale );
 				}
-				if( rv != null ) {
-					//pass
-				} else {
+				if ( rv == null ) {
 					rv = this.getDialogCoreComposite().getDefaultCommitText();
 				}
 			}
@@ -141,9 +117,17 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		}
 	}
 
-	private static final class InternalCancelOperation extends InternalFinishOperation {
+	private final class InternalCancelOperation extends InternalDialogOperation {
 		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
-			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
+			super( UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite );
+		}
+
+		@Override
+		protected final void performInActivity( UserActivity userActivity ) {
+			userActivity.setCompletionModel( this );
+			isCommitted = false;
+			dialog.setVisible( false );
+			userActivity.finish();
 		}
 
 		@Override
@@ -154,14 +138,10 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 		@Override
 		protected String findDefaultLocalizedText() {
 			String rv = super.findDefaultLocalizedText();
-			if( rv != null ) {
-				//pass
-			} else {
+			if ( rv == null ) {
 				Locale locale = JComboBox.getDefaultLocale();
 				rv = UIManager.getString( "OptionPane.cancelButtonText", locale );
-				if( rv != null ) {
-					//pass
-				} else {
+				if ( rv == null ) {
 					rv = "Cancel";
 				}
 			}
@@ -229,13 +209,13 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	}
 
 	@Override
-	protected CompositeView<?, ?> allocateView( CompletionStep<?> step ) {
+	protected CompositeView<?, ?> allocateView() {
 		//todo
 		return this.getDialogContentComposite().getView();
 	}
 
 	@Override
-	protected void releaseView( CompletionStep<?> step, CompositeView<?, ?> view ) {
+	protected void releaseView( CompositeView<?, ?> view ) {
 		//todo
 	}
 
@@ -244,19 +224,20 @@ public abstract class AdornedDialogCoreComposite<V extends CompositeView<?, ?>, 
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.getDialogContentComposite().handlePreActivation();
 		if( this.isDefaultButtonDesired() ) {
 			Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 			if( commitButton != null ) {
-				Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 				dialog.setDefaultButton( commitButton );
 			}
 		}
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> step ) {
+	protected void handlePostHideDialog() {
 		this.getDialogContentComposite().handlePostDeactivation();
 	}
+
+	protected boolean isCommitted = false;
 }

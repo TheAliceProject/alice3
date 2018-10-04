@@ -58,11 +58,6 @@ public class SeparatorNode extends AbstractItemNode<Void, Void, CascadeSeparator
 	}
 
 	@Override
-	public int getBlankStepCount() {
-		return 0;
-	}
-
-	@Override
 	public BlankNode<Void> getBlankStepAt( int index ) {
 		throw new AssertionError();
 	}

@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 
@@ -76,7 +76,7 @@ public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
 	}
 
 	@Override
-	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
-		return new DeclareMethodEdit( completionStep, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody() );
+	protected AbstractEdit createEdit( UserActivity userActivity ) {
+		return new DeclareMethodEdit( userActivity, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody() );
 	}
 }

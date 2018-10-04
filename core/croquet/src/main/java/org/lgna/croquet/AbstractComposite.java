@@ -54,11 +54,10 @@ import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.preferences.PreferenceBooleanState;
 import org.lgna.croquet.preferences.PreferenceStringState;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.SplitPane;
@@ -519,7 +518,8 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	}
 
 	protected static interface Action {
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException;
+		// TODO remove userActivity if possible. It is used by only two implementors
+		Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException;
 	}
 
 	protected static final class InternalActionOperation extends ActionOperation {
@@ -547,16 +547,16 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 
 		@Override
-		protected void perform( CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			try {
-				Edit edit = this.action.perform( step, this );
+				Edit edit = this.action.perform( activity, this );
 				if( edit != null ) {
-					step.commitAndInvokeDo( edit );
+					activity.commitAndInvokeDo( edit );
 				} else {
-					step.finish();
+					activity.finish();
 				}
 			} catch( CancelException ce ) {
-				step.cancel();
+				activity.cancel();
 			}
 		}
 
@@ -569,9 +569,9 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	}
 
 	protected static interface CascadeCustomizer<T> {
-		public void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
+		void appendBlankChildren( List<CascadeBlankChild> rv, BlankNode<T> blankNode );
 
-		public Edit createEdit( CompletionStep completionStep, T[] values );
+		Edit createEdit( T[] values );
 	}
 
 	protected static final class InternalCascadeWithInternalBlank<T> extends CascadeWithInternalBlank<T> {
@@ -599,8 +599,8 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 
 		@Override
-		protected Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values ) {
-			return this.customizer.createEdit( completionStep, values );
+		protected Edit createEdit( UserActivity userActivity, T[] values ) {
+			return this.customizer.createEdit( values );
 		}
 
 		@Override
@@ -622,7 +622,7 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 
 		public void appendBlankChildren( List<CascadeBlankChild> blankChildren, BlankNode<T> blankNode );
 
-		public void prologue( Trigger trigger );
+		public void prologue();
 
 		public void epilogue();
 	}
@@ -646,9 +646,9 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 		}
 
 		@Override
-		protected void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.customizer.prologue( trigger );
+		protected void prologue() {
+			super.prologue();
+			this.customizer.prologue();
 		}
 
 		@Override
@@ -708,7 +708,6 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 	public AbstractComposite( UUID id ) {
 		super( id );
 		this.scrollPane = this.createScrollPaneIfDesired();
-		Manager.registerComposite( this );
 	}
 
 	@Override
@@ -833,19 +832,18 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 
 	private static final String SIDEKICK_LABEL_EPILOGUE = ".sidekickLabel";
 
-	private void localizeSidekicks( Map<Key, ? extends AbstractCompletionModel>... maps ) {
-		for( Map<Key, ? extends AbstractCompletionModel> map : maps ) {
+	private void localizeSidekicks( Map<Key, ? extends CompletionModel>... maps ) {
+		for( Map<Key, ? extends CompletionModel> map : maps ) {
 			for( Key key : map.keySet() ) {
-				AbstractCompletionModel model = map.get( key );
+				CompletionModel model = map.get( key );
 				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
 					text = this.modifyLocalizedText( sidekickLabel, text );
 					sidekickLabel.setText( text );
 				} else {
-					StringValue sidekickLabel = model.peekSidekickLabel();
 					//todo: it is probably to early for this check as we don't know if it will be accessed by the composite's view later.  hmm...
-					if( sidekickLabel != null ) {
+					if( model.hasSidekickLabel() ) {
 						Class<?> cls = this.getClassUsedForLocalization();
 						String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
 						Logger.errln();

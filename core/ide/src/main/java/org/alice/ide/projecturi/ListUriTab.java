@@ -58,8 +58,6 @@ public abstract class ListUriTab extends SelectUriTab {
 
 	public abstract SingleSelectListState<URI, ?> getListSelectionState();
 
-	public abstract String getTextForZeroProjects();
-
 	@Override
 	public UriProjectLoader getSelectedUri() {
 		return UriProjectLoader.createInstance( this.getListSelectionState().getValue() );

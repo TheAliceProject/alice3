@@ -49,7 +49,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.clipboard.Clipboard;
 import org.alice.ide.issue.croquet.AnomalousSituationComposite;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 import org.lgna.project.ast.Node;
@@ -66,8 +66,8 @@ public abstract class ClipboardEdit extends AbstractEdit {
 	private final Statement statement;
 	private final BlockStatementIndexPair blockStatementIndexPair;
 
-	public ClipboardEdit( CompletionStep completionStep, Statement statement, BlockStatementIndexPair blockStatementIndexPair ) {
-		super( completionStep );
+	public ClipboardEdit( UserActivity userActivity, Statement statement, BlockStatementIndexPair blockStatementIndexPair ) {
+		super( userActivity );
 		this.statement = statement;
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}

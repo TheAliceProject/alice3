@@ -106,7 +106,8 @@ public class MenuItemContainerUtilities {
 		}
 	}
 
-	public static void setMenuElements( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models, MenuElementObserver observer ) {
+	private static void setMenuElements( MenuItemContainer menuItemContainer, StandardMenuItemPrepModel[] models,
+																			 MenuElementObserver observer ) {
 		setMenuElements( menuItemContainer, Arrays.asList( models ), observer );
 	}
 

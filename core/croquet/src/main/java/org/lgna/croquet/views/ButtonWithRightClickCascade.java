@@ -59,7 +59,7 @@ public class ButtonWithRightClickCascade extends Button {
 		@Override
 		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
 			if( e.getButton() == MouseEvent.BUTTON3 ) {
-				cascade.fire( MouseEventTrigger.createUserInstance( ButtonWithRightClickCascade.this, e ) );
+				cascade.fire( MouseEventTrigger.createUserActivity( ButtonWithRightClickCascade.this, e ) );
 			}
 		}
 	};

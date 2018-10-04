@@ -46,8 +46,8 @@ package org.alice.ide.custom;
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 import org.alice.ide.croquet.models.numberpad.NumberModel;
 import org.alice.ide.custom.components.NumberCustomExpressionCreatorView;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.AbstractWindow;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.project.ast.Expression;
 
 import java.awt.Dimension;
@@ -88,7 +88,7 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 		if( text != null ) {
 			String errorFormat = findLocalizedText( text );
@@ -109,8 +109,8 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowDialog( Dialog dialog ) {
+		super.handlePreShowDialog( dialog );
 		this.numberModel.getTextField().requestFocusInWindow();
 	}
 }

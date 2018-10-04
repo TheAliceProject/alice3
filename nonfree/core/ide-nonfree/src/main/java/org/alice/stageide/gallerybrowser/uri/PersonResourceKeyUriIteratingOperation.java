@@ -45,10 +45,8 @@ package org.alice.stageide.gallerybrowser.uri;
 import org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite;
 import org.alice.stageide.modelresource.PersonResourceKey;
 import org.alice.stageide.personresource.PersonResourceComposite;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.ChildPersonResource;
@@ -57,7 +55,6 @@ import org.lgna.story.resources.sims2.LifeStage;
 import org.lgna.story.resources.sims2.TeenPersonResource;
 import org.lgna.story.resources.sims2.ToddlerPersonResource;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,9 +80,9 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-		switch( subSteps.size() ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			Class<?> resourceCls = personResourceKey.getModelResourceCls();
 			LifeStage lifeStage;
@@ -109,9 +106,9 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 			}
 			return personResourceComposite.getRandomPersonExpressionValueConverter( lifeStage );
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				Object value = prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				Object value = prevSubStep.getProducedValue();
 				if( value instanceof InstanceCreation ) {
 					InstanceCreation instanceCreation = (InstanceCreation)value;
 					AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();

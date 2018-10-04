@@ -82,11 +82,6 @@ public class StartersTab extends ListUriTab {
 	}
 
 	@Override
-	public final String getTextForZeroProjects() {
-		return "there are no starter projects.";
-	}
-
-	@Override
 	protected ListContentPanel createView() {
 		return new ListContentPanel( this );
 	}

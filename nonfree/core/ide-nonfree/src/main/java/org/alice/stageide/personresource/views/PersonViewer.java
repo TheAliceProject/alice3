@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.stageide.modelviewer.ModelViewer;
 import org.alice.stageide.personresource.PersonImp;
 import org.lgna.story.resources.sims2.LifeStage;
@@ -148,7 +148,7 @@ public class PersonViewer extends ModelViewer {
 	protected void initialize() {
 		super.initialize();
 		this.dragAdapter.setOnscreenRenderTarget( this.getOnscreenRenderTarget() );
-		this.dragAdapter.addCameraView( AbstractDragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
+		this.dragAdapter.addCameraView( DragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
 		this.dragAdapter.makeCameraActive( this.getCamera().getSgCamera() );
 	}
 }

@@ -58,7 +58,6 @@ import org.lgna.croquet.StringValue;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.project.Project;
 import org.lgna.project.io.IoUtilities;
@@ -143,7 +142,7 @@ public class ExportToYouTubeWizardDialogComposite extends SimpleOperationWizardD
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit() {
 		return null;
 	}
 

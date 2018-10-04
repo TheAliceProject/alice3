@@ -43,7 +43,7 @@
 package org.alice.interact.manipulator;
 
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;

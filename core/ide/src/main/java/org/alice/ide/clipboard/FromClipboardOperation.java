@@ -47,7 +47,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Node;
 import org.lgna.project.ast.Statement;
 
@@ -61,15 +61,15 @@ public abstract class FromClipboardOperation extends StatementInsertOperation {
 		super( id, blockStatementIndexPair );
 	}
 
-	protected abstract Edit createEdit( CompletionStep step, Statement statement );
+	protected abstract Edit createEdit( UserActivity userActivity, Statement statement );
 
 	@Override
-	protected final Edit createEdit( CompletionStep step ) {
+	protected final Edit createEdit( UserActivity userActivity ) {
 		Node node = Clipboard.SINGLETON.peek();
 		//todo: recast if necessary
 		if( node instanceof Statement ) {
 			Statement statement = (Statement)node;
-			return this.createEdit( step, statement );
+			return this.createEdit( userActivity, statement );
 		} else {
 			throw new CancelException();
 		}

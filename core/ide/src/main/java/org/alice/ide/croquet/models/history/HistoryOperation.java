@@ -46,7 +46,7 @@ import org.alice.ide.ProjectApplication;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DocumentFrame;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.undo.UndoHistory;
 
 import java.util.UUID;
@@ -63,10 +63,10 @@ public abstract class HistoryOperation extends ActionOperation {
 	protected abstract void performInternal( UndoHistory historyManager );
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		UndoHistory historyManager = this.documentFrame.getDocument().getUndoHistory( Application.PROJECT_GROUP );
 		this.performInternal( historyManager );
-		step.finish();
+		activity.finish();
 	}
 
 	private final DocumentFrame documentFrame;

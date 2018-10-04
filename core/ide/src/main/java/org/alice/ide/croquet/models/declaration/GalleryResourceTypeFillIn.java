@@ -88,7 +88,7 @@ public class GalleryResourceTypeFillIn extends ExpressionFillInWithExpressionBla
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super InstanceCreation, Expression> step ) {
+	public String getMenuItemText() {
 		return ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ).getName();
 	}
 

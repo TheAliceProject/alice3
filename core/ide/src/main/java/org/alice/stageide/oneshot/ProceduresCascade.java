@@ -46,10 +46,9 @@ package org.alice.stageide.oneshot;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.ImmutableCascade;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.Map;
 import java.util.UUID;
@@ -78,8 +77,8 @@ public class ProceduresCascade extends ImmutableCascade<MethodInvocationEditFact
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<MethodInvocationEditFactory>> step, MethodInvocationEditFactory[] values ) {
+	protected Edit createEdit( UserActivity userActivity, MethodInvocationEditFactory[] values ) {
 		assert values.length == 1;
-		return values[ 0 ].createEdit( step );
+		return values[ 0 ].createEdit( userActivity );
 	}
 }

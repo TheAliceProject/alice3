@@ -45,7 +45,6 @@ package org.alice.ide.ast.type.merge.croquet;
 import org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffsig.croquet.FieldDifferentSignatureHelpComposite;
 import org.alice.ide.ast.type.merge.help.diffsig.croquet.MethodDifferentSignatureHelpComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.Member;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
@@ -139,7 +138,7 @@ public final class DifferentSignature<M extends Member> extends PotentialNameCha
 		return false;
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, CompletionStep<?> step ) {
+	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
 		if( this.isRenameRequired() ) {
 			sb.append( "must not have same name: \"" );
 			sb.append( this.importHub.getMember().getName() );

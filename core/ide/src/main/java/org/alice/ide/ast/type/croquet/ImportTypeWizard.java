@@ -51,7 +51,6 @@ import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationWizardDialogCoreComposite;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.project.Project;
 import org.lgna.project.ast.NamedUserType;
@@ -97,8 +96,9 @@ public class ImportTypeWizard extends SimpleOperationWizardDialogCoreComposite {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return this.addMembersPage.createEdit( completionStep );
+	protected Edit createEdit() {
+		// TODO consider using a child activity
+		return this.addMembersPage.createEdit( openingActivity );
 	}
 
 	public static void main( String[] args ) throws Exception {

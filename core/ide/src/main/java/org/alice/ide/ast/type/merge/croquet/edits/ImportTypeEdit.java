@@ -51,7 +51,7 @@ import org.alice.ide.ast.type.merge.core.MergeUtilities;
 import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Member;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.NodeListProperty;
@@ -73,8 +73,8 @@ public class ImportTypeEdit extends AbstractEdit {
 	private final List<UserField> fieldsToRemove;
 	private final List<RenameMemberData> renames;
 
-	public ImportTypeEdit( CompletionStep completionStep, URI uriForDescriptionPurposesOnly, NamedUserType existingType, List<UserMethod> methodsToAdd, List<UserMethod> methodsToRemove, List<UserField> fieldsToAdd, List<UserField> fieldsToRemove, List<RenameMemberData> renames ) {
-		super( completionStep );
+	public ImportTypeEdit( UserActivity userActivity, URI uriForDescriptionPurposesOnly, NamedUserType existingType, List<UserMethod> methodsToAdd, List<UserMethod> methodsToRemove, List<UserField> fieldsToAdd, List<UserField> fieldsToRemove, List<RenameMemberData> renames ) {
+		super( userActivity );
 		this.uriForDescriptionPurposesOnly = uriForDescriptionPurposesOnly;
 		this.existingType = existingType;
 		this.methodsToAdd = methodsToAdd;

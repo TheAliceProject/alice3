@@ -43,10 +43,10 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.DropSite;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import java.awt.event.MouseEvent;
@@ -55,29 +55,19 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class DropTrigger extends AbstractMouseEventTrigger {
-	public static DropTrigger createUserInstance( ViewController<?, ?> viewController, MouseEvent mouseEvent, DropSite dropSite ) {
-		return new DropTrigger( viewController, mouseEvent, dropSite );
-	}
-
-	public static DropTrigger createUserInstance( MouseEvent mouseEvent, DropSite dropSite ) {
-		return createUserInstance( null, mouseEvent, dropSite );
+	public static UserActivity setOnUserActivity( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent mouseEvent, DropSite dropSite ) {
+		new DropTrigger( userActivity, viewController, mouseEvent, dropSite );
+		return userActivity;
 	}
 
 	private DropSite dropSite;
 
-	private DropTrigger( ViewController<?, ?> viewController, MouseEvent e, DropSite dropSite ) {
-		super( viewController, e );
-		if( dropSite != null ) {
-			//pass
-		} else {
+	private DropTrigger( UserActivity userActivity, ViewController<?, ?> viewController, MouseEvent e, DropSite dropSite ) {
+		super( userActivity, viewController, e );
+		if ( dropSite == null ) {
 			Logger.severe( "drop site is null for", this );
 		}
 		this.dropSite = dropSite;
-	}
-
-	public DropTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.dropSite = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
 	@Override

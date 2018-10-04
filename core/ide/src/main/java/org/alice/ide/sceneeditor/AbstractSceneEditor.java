@@ -99,11 +99,11 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 
 	private final State.ValueListener<ProjectDocument> projectListener = new State.ValueListener<ProjectDocument>() {
 		@Override
-		public void changing( State<ProjectDocument> state, ProjectDocument prevValue, ProjectDocument nextValue, boolean isAdjusting ) {
+		public void changing( State<ProjectDocument> state, ProjectDocument prevValue, ProjectDocument nextValue ) {
 		}
 
 		@Override
-		public void changed( State<ProjectDocument> state, ProjectDocument prevValue, ProjectDocument nextValue, boolean isAdjusting ) {
+		public void changed( State<ProjectDocument> state, ProjectDocument prevValue, ProjectDocument nextValue ) {
 			AbstractSceneEditor.this.handleProjectOpened( nextValue != null ? nextValue.getProject() : null );
 		}
 	};
@@ -432,7 +432,7 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 		if( EPIC_HACK_isFirstAddedTo ) {
 			ProjectDocument projectDocument = ProjectApplication.getActiveInstance().getDocumentFrame().getDocument();
 			if( projectDocument != null ) {
-				this.projectListener.changed( null, null, projectDocument, false );
+				this.projectListener.changed( null, null, projectDocument );
 				Logger.todo( "remove firing changed", projectDocument );
 			}
 			EPIC_HACK_isFirstAddedTo = false;

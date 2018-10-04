@@ -43,10 +43,9 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 /**
@@ -54,24 +53,11 @@ import java.awt.event.KeyEvent;
  */
 public class KeyEventTrigger extends ComponentEventTrigger<KeyEvent> {
 
-	public static KeyEventTrigger createUserInstance( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
-		return new KeyEventTrigger( viewController, keyEvent );
-	}
-
-	public static KeyEventTrigger createUserInstance( KeyEvent keyEvent ) {
-		return createUserInstance( null, keyEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
+		return new KeyEventTrigger( viewController, keyEvent ).getUserActivity();
 	}
 
 	private KeyEventTrigger( ViewController<?, ?> viewController, KeyEvent keyEvent ) {
 		super( viewController, keyEvent );
-	}
-
-	public KeyEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
 	}
 }

@@ -45,11 +45,8 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
-import org.lgna.croquet.triggers.Trigger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,11 +70,6 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public CompletionStep<CustomItemState<T>> createCompletionStep( Transaction transaction, Trigger trigger ) {
-			return CompletionStep.createAndAddToTransaction( transaction, this.state, trigger, null );
-		}
-
-		@Override
 		public Class<T> getComponentType() {
 			return this.state.getItemCodec().getValueClass();
 		}
@@ -88,9 +80,9 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		protected void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.state.prologue( trigger );
+		protected void prologue() {
+			super.prologue();
+			this.state.prologue();
 		}
 
 		@Override
@@ -100,17 +92,11 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public CompletionStep handleCompletion( TransactionHistory transactionHistory, Trigger trigger, RtRoot<T, CustomItemState<T>> rtRoot ) {
-			try {
-				//todo: investigate
-				Transaction transaction = transactionHistory.acquireActiveTransaction();
-				CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
-				TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
-				T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
-				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
-			} finally {
-				this.getPopupPrepModel().handleFinally();
-			}
+		public void handleCompletion( UserActivity userActivity, RtRoot<T, CustomItemState<T>> rtRoot ) {
+			recordCompletionModel( userActivity );
+			T[] values = rtRoot.createValues( getComponentType() );
+			state.changeValueFromIndirectModel( values[ 0 ], userActivity );
+			getPopupPrepModel().handleFinally();
 		}
 	}
 
@@ -144,7 +130,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	protected void localize() {
 	}
 
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {

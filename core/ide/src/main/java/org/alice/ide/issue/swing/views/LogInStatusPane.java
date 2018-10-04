@@ -61,8 +61,6 @@ import edu.cmu.cs.dennisc.login.AccountManager;
 import org.alice.ide.croquet.models.help.SignUpOperation;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -150,7 +148,7 @@ class LogInPane extends JPageAxisPane {
 		}
 
 		@Override
-		protected void performInternal( CompletionStep<?> step ) {
+		protected void performInternal() {
 			try {
 				JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
 				JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
@@ -234,10 +232,10 @@ public class LogInStatusPane extends JCardPane {
 		}
 
 		@Override
-		protected void performInternal( CompletionStep<?> step ) {
+		protected void performInternal() {
 			LogInPane pane = new LogInPane();
-			Trigger trigger = step.getTrigger();
-			Component owner = trigger.getViewController().getAwtComponent();
+			// TODO work out a way to get an owner or get rid of this code
+			Component owner = null;
 			JDialog dialog = JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, WindowConstants.DISPOSE_ON_CLOSE );
 			WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
@@ -257,7 +255,7 @@ public class LogInStatusPane extends JCardPane {
 		}
 
 		@Override
-		protected void performInternal( CompletionStep<?> step ) {
+		protected void performInternal() {
 			AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}

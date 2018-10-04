@@ -44,17 +44,15 @@
 package org.alice.ide.projecturi;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import org.alice.ide.ProjectApplication;
 import org.alice.ide.projecturi.views.FileSystemPane;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.AbstractComposite;
-import org.lgna.croquet.Application;
+import org.alice.stageide.StageIDE;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.io.IoUtilities;
 
@@ -68,8 +66,9 @@ public class FileSystemTab extends SelectUriTab {
 	private final StringState pathState = this.createStringState( "pathState" );
 	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
-			File file = Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, IoUtilities.PROJECT_EXTENSION, true );
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
+			final StageIDE ide = StageIDE.getActiveInstance();
+			File file = ide.getDocumentFrame().showOpenFileDialog( null, ide.getProjectsDirectory(), IoUtilities.PROJECT_EXTENSION);
 			if( file != null ) {
 				FileSystemTab.this.pathState.setValueTransactionlessly( FileUtilities.getCanonicalPathIfPossible( file ) );
 			}

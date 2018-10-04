@@ -45,12 +45,12 @@ package org.alice.ide.croquet.models.ui.debug.components;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer;
+import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.triggers.Trigger;
 
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 
 /**
  * @author Dennis Cosgrove
@@ -58,41 +58,56 @@ import javax.swing.JTree;
 public class TransactionHistoryCellRenderer extends TreeCellRenderer<Object> {
 	@Override
 	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value instanceof Transaction ) {
-			Transaction transaction = (Transaction)value;
-			int i = transaction.getOwner().getIndexOfTransaction( transaction );
-			StringBuilder sb = new StringBuilder();
-			sb.append( "<html>" );
-			sb.append( "transaction[" );
-			sb.append( i );
-			sb.append( "] " );
-			Edit edit = transaction.getEdit();
-			if( edit != null ) {
-				sb.append( edit.getTerseDescription() );
-			}
-			//			String title = transaction.getTitle();
-			//			if( title != null ) {
-			//				sb.append( "<strong>" );
-			//				sb.append( title );
-			//				sb.append( "</strong>" );
-			//			}
-			sb.append( "</html>" );
-			rv.setText( sb.toString() );
-			rv.setIcon( null );
-		} else if( value instanceof CompletionStep<?> ) {
-			CompletionStep<?> completionStep = (CompletionStep<?>)value;
-			String name;
-			if( completionStep.isPending() ) {
-				name = "pending";
-			} else {
-				if( completionStep.isSuccessfullyCompleted() ) {
-					name = "completed";
-				} else {
-					name = "canceled";
-				}
-			}
-			rv.setIcon( IconUtilities.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) ) );
+		if( value instanceof UserActivity ) {
+			updateFromActivity( rv, (UserActivity) value );
 		}
 		return rv;
+	}
+
+	private void updateFromActivity( JLabel label, UserActivity activity ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		if (activity.getOwner() == null){
+			sb.append( "User activities" );
+		} else {
+			sb.append( "activity[" )
+				.append( activity.getOwner().getIndexOfTransaction( activity ) )
+				.append( "] " );
+		}
+		Trigger trigger = activity.getTrigger();
+		if (trigger == null){
+			sb.append( " - no trigger -" );
+ 		} else {
+			sb.append( " - " )
+				.append( trigger.getClass().getSimpleName() )
+				.append( " - " );
+		}
+		Edit edit = activity.getEdit();
+		if( edit != null ) {
+			sb.append( edit.getTerseDescription() );
+		} else {
+			CompletionModel model = activity.getCompletionModel();
+			if (model != null) {
+				sb.append( model.getClass().getSimpleName() );
+			}
+		}
+		sb.append( "</html>" );
+		label.setText( sb.toString() );
+		label.setIcon( getImageIcon( activity ) );
+	}
+
+	private ImageIcon getImageIcon( UserActivity activity ) {
+		String name;
+		if( activity.isPending() ) {
+			name = "pending";
+		} else {
+			if( activity.isSuccessfullyCompleted() ) {
+				name = "completed";
+			} else {
+				name = "canceled";
+			}
+		}
+		return IconUtilities
+				.createImageIcon( TransactionHistoryCellRenderer.class.getResource( "images/" + name + ".png" ) );
 	}
 }

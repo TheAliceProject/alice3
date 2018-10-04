@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor;
 import org.alice.ide.icons.Icons;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -67,8 +67,8 @@ public class BackwardOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		DeclarationCompositeHistory.getInstance().goBackward();
-		step.finish();
+		activity.finish();
 	}
 }

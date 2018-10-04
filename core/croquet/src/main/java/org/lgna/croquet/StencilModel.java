@@ -44,9 +44,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.SwingUtilities;
 import java.util.Collections;
@@ -57,7 +55,7 @@ import java.util.concurrent.CyclicBarrier;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StencilModel extends AbstractCompletionModel {
+public abstract class StencilModel extends AbstractCompletionModel implements Triggerable {
 	private final CyclicBarrier barrier = new CyclicBarrier( 2 );
 	private String text;
 
@@ -91,10 +89,9 @@ public abstract class StencilModel extends AbstractCompletionModel {
 
 	protected abstract void hideStencil();
 
-	@Override
-	protected final void perform( Transaction transaction, Trigger trigger ) {
+	protected final void performInActivity( UserActivity userActivity ) {
 		Logger.outln( this );
-		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		userActivity.setCompletionModel( this );
 		this.barrier.reset();
 		SwingUtilities.invokeLater( new Runnable() {
 			@Override
@@ -104,6 +101,14 @@ public abstract class StencilModel extends AbstractCompletionModel {
 		} );
 		this.barrierAwait();
 		this.hideStencil();
-		step.finish();
+		userActivity.finish();
+	}
+
+	@Override
+	public void fire( UserActivity activity ) {
+		if( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			this.performInActivity( activity );
+		}
 	}
 }

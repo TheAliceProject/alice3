@@ -43,34 +43,21 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.PopupMenuEvent;
-import java.awt.Point;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PopupMenuEventTrigger extends EventObjectTrigger<PopupMenuEvent> {
-	public static PopupMenuEventTrigger createUserInstance( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
-		return new PopupMenuEventTrigger( viewController, popupMenuEvent );
-	}
-
-	public static PopupMenuEventTrigger createUserInstance( PopupMenuEvent popupMenuEvent ) {
-		return createUserInstance( null, popupMenuEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
+		return new PopupMenuEventTrigger( viewController, popupMenuEvent ).getUserActivity();
 	}
 
 	private PopupMenuEventTrigger( ViewController<?, ?> viewController, PopupMenuEvent popupMenuEvent ) {
-		super( viewController, popupMenuEvent );
-	}
-
-	public PopupMenuEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), viewController, popupMenuEvent );
 	}
 }

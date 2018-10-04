@@ -50,9 +50,10 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.ide.custom.components.CustomExpressionCreatorView;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.EmptyPrepStep;
+import org.lgna.croquet.history.PrepStep;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.croquet.views.SwingAdapter;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.project.ast.Expression;
@@ -80,7 +81,8 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
 	private final ChangeListener changeListener = new ChangeListener() {
 		@Override
 		public void stateChanged( ChangeEvent e ) {
-			TransactionManager.TODO_REMOVE_fireEvent( ChangeEventTrigger.createUserInstance( e ) );
+			PrepStep step = new EmptyPrepStep( ChangeEventTrigger.createUserInstance( openingActivity.getActivityWithoutTrigger(), e ), "Color chosen");
+			step.getUserActivity().finish();
 		}
 	};
 
@@ -118,7 +120,7 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
@@ -138,14 +140,14 @@ public class ColorCustomExpressionCreatorComposite extends CustomExpressionCreat
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
-		super.handlePreShowDialog( step );
+	protected void handlePreShowDialog( Dialog dialog ) {
+		super.handlePreShowDialog( dialog );
 		this.jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
+	protected void handlePostHideDialog() {
 		this.jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
-		super.handlePostHideDialog( completionStep );
+		super.handlePostHideDialog();
 	}
 }

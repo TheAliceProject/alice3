@@ -45,9 +45,11 @@ package org.alice.stageide.sceneeditor.interact.manipulators;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.ide.IDE;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.AbstractManipulator;
@@ -56,14 +58,11 @@ import org.alice.stageide.sceneeditor.interact.croquet.GetAGoodLookAtActionOpera
 import org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SCamera;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.EntityImp;
-
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.lgna.story.implementation.StandInImp;
 import org.lgna.story.implementation.SymmetricPerspectiveCameraImp;
 
@@ -105,10 +104,11 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 				if( GetAGoodLookAtActionOperation.IsValidOperation( storytellingCamera, toLookAtEntity ) ) {
 
 					//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
-					int transactionCount = IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
-					if( transactionCount > 0 ) {
-						Transaction lastTransaction = IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt( transactionCount - 1 );
-						Edit lastEdit = lastTransaction.getEdit();
+					final UserActivity projectUserActivity = IDE.getActiveInstance().getProjectUserActivity();
+					int activityCount = projectUserActivity.getChildActivities().size();
+					if( activityCount > 0 ) {
+						UserActivity lastActivity = projectUserActivity.getChildActivities().get( activityCount - 1 );
+						Edit lastEdit = lastActivity.getEdit();
 						if( lastEdit instanceof GetAGoodLookAtEdit ) {
 							GetAGoodLookAtEdit edit = (GetAGoodLookAtEdit)lastEdit;
 							if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {

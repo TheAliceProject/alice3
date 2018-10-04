@@ -49,11 +49,8 @@ import edu.cmu.cs.dennisc.java.lang.callable.ValueCallable;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.edits.StateEdit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ItemEventTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.JToggleButton;
 import java.awt.event.ItemEvent;
@@ -64,23 +61,15 @@ import java.util.concurrent.Callable;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend State
+public abstract class ItemState<T> extends State<T> {
 	private final ItemCodec<T> itemCodec;
 
 	public ItemState( Group group, UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue );
-		//assert itemCodec != null;
-		if( itemCodec != null ) {
-			//pass
-		} else {
-			Logger.severe( "itemCodec is null for", this );
+		if ( itemCodec == null ) {
+			Logger.severe( "itemCodec is null for ", this );
 		}
 		this.itemCodec = itemCodec;
-	}
-
-	@Override
-	public Class<T> getItemClass() {
-		return this.itemCodec.getValueClass();
 	}
 
 	@Override
@@ -115,53 +104,34 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		}
 	}
 
-	private static abstract class AbstractInternalItemSelectedState<T> extends BooleanState {
-		private final ItemState<T> state;
+	private static class RadioButtonesqueModel extends JToggleButton.ToggleButtonModel {
+		private boolean isIgnoringSetSelectedFalse;
 
-		private static class RadioButtonesqueModel extends JToggleButton.ToggleButtonModel {
-			private boolean isIgnoringSetSelectedFalse;
-
-			@Override
-			public void setSelected( boolean b ) {
-				if( ( b == false ) && this.isIgnoringSetSelectedFalse ) {
-					//pass
-				} else {
-					super.setSelected( b );
-				}
+		@Override
+		public void setSelected( boolean b ) {
+			if ( b || !this.isIgnoringSetSelectedFalse ) {
+				super.setSelected( b );
 			}
-
-			@Override
-			public void setPressed( boolean b ) {
-				if( this.isSelected() ) {
-					this.isIgnoringSetSelectedFalse = true;
-				}
-				super.setPressed( b );
-				this.isIgnoringSetSelectedFalse = false;
-			}
-		}
-
-		private AbstractInternalItemSelectedState( ItemState<T> state, UUID migrationId, boolean initialValue ) {
-			super( state.getGroup(), UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), initialValue, new RadioButtonesqueModel() );
-			assert state != null;
-			this.state = state;
-		}
-
-		public ItemState<T> getState() {
-			return this.state;
 		}
 
 		@Override
-		protected StateEdit<Boolean> createEdit( CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
-			Logger.severe( this, nextValue );
-			return null;
+		public void setPressed( boolean b ) {
+			if( this.isSelected() ) {
+				this.isIgnoringSetSelectedFalse = true;
+			}
+			super.setPressed( b );
+			this.isIgnoringSetSelectedFalse = false;
 		}
 	}
 
-	private static class InternalItemSelectedState<T> extends AbstractInternalItemSelectedState<T> {
+	private class InternalItemSelectedState extends BooleanState {
 		private final Callable<T> itemCallable;
 
 		private InternalItemSelectedState( ItemState<T> state, Callable<T> itemCallable ) {
-			super( state, UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
+			super( state.getGroup(),
+						 UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ),
+						 state.getValue() == getItem( itemCallable ),
+						 new RadioButtonesqueModel() );
 			this.itemCallable = itemCallable;
 		}
 
@@ -169,14 +139,8 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void localize() {
 			super.localize();
 			StringBuilder sb = new StringBuilder();
-			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
-		}
-
-		@Override
-		protected StateEdit<Boolean> createEdit( CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
-			Logger.severe( this, nextValue );
-			return null;
 		}
 
 		@Override
@@ -184,7 +148,8 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			//note: do not invoke super
 			if( e.getStateChange() == ItemEvent.SELECTED ) {
 				T item = getItem( this.itemCallable );
-				this.getState().changeValueFromIndirectModel( item, IsAdjusting.FALSE, ItemEventTrigger.createUserInstance( e ) );
+				final UserActivity activity = ItemEventTrigger.createUserActivity( e );
+				ItemState.this.changeValueFromIndirectModel( item, activity );
 			}
 		}
 
@@ -192,19 +157,16 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( ";item=" );
-			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 		}
 	}
 
-	private static class InternalSelectItemOperation<T> extends Operation {
-		private final ItemState<T> state;
+	private class InternalSelectItemOperation extends Operation {
 		private final Callable<T> itemCallable;
 		private final boolean isAlternateLocalization;
 
 		private InternalSelectItemOperation( ItemState<T> state, Callable<T> itemCallable, boolean isAlternateLocalization ) {
 			super( state.getGroup(), UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
-			assert state != null;
-			this.state = state;
 			this.itemCallable = itemCallable;
 			this.isAlternateLocalization = isAlternateLocalization;
 		}
@@ -216,63 +178,47 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			if( this.isAlternateLocalization ) {
 				sb.append( "Edit" );
 			} else {
-				this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+				getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			}
 			this.setName( sb.toString() );
 		}
 
 		@Override
-		protected CompletionStep<?> createTransactionAndInvokePerform( Trigger trigger ) {
-			T item = getItem( this.itemCallable );
-			return this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, trigger );
-		}
-
-		@Override
-		protected final void perform( Transaction transaction, Trigger trigger ) {
-			Logger.severe( this, transaction, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			ItemState.this.changeValueFromIndirectModel( getItem( this.itemCallable ), userActivity );
 		}
 	}
 
-	private Map<Callable<T>, InternalItemSelectedState<T>> mapItemCallableToItemSelectedState;
+	private Map<Callable<T>, InternalItemSelectedState> mapItemCallableToItemSelectedState;
 
 	//note: itemCallable must be valid key
 	public BooleanState getItemSelectedState( Callable<T> itemCallable ) {
-		if( mapItemCallableToItemSelectedState != null ) {
-			//pass
-		} else {
+		if ( mapItemCallableToItemSelectedState == null ) {
 			this.mapItemCallableToItemSelectedState = Maps.newHashMap();
 		}
-		InternalItemSelectedState<T> rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InternalItemSelectedState<T>( this, itemCallable );
+		InternalItemSelectedState rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
+		if ( rv == null ) {
+			rv = new InternalItemSelectedState( this, itemCallable );
 			this.mapItemCallableToItemSelectedState.put( itemCallable, rv );
 		}
 		return rv;
 	}
 
 	public BooleanState getItemSelectedState( T item ) {
-		return getItemSelectedState( new ValueCallable<T>( item ) );
+		return getItemSelectedState( new ValueCallable<>( item ) );
 	}
 
-	private Map<Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperation;
-	private Map<Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperationAlternate;
+	private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperation;
+	private Map<Callable<T>, InternalSelectItemOperation> mapItemCallableToSelectionOperationAlternate;
 
-	//note: itemCallable must be valid key
-
-	private Map<Callable<T>, InternalSelectItemOperation<T>> getMapItemCallableToSelectionOperation( boolean isAlternateLocalization ) {
+	private Map<Callable<T>, InternalSelectItemOperation> getMapItemCallableToSelectionOperation( boolean isAlternateLocalization ) {
 		if( isAlternateLocalization ) {
-			if( mapItemCallableToSelectionOperationAlternate != null ) {
-				//pass
-			} else {
+			if ( mapItemCallableToSelectionOperationAlternate == null ) {
 				this.mapItemCallableToSelectionOperationAlternate = Maps.newHashMap();
 			}
 			return this.mapItemCallableToSelectionOperationAlternate;
 		} else {
-			if( mapItemCallableToSelectionOperation != null ) {
-				//pass
-			} else {
+			if ( mapItemCallableToSelectionOperation == null ) {
 				this.mapItemCallableToSelectionOperation = Maps.newHashMap();
 			}
 			return this.mapItemCallableToSelectionOperation;
@@ -280,12 +226,10 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	}
 
 	private Operation getItemSelectionOperation( Callable<T> itemCallable, boolean isAlternateLocalization ) {
-		Map<Callable<T>, InternalSelectItemOperation<T>> map = getMapItemCallableToSelectionOperation( isAlternateLocalization );
-		InternalSelectItemOperation<T> rv = map.get( itemCallable );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InternalSelectItemOperation<T>( this, itemCallable, isAlternateLocalization );
+		Map<Callable<T>, InternalSelectItemOperation> map = getMapItemCallableToSelectionOperation( isAlternateLocalization );
+		InternalSelectItemOperation rv = map.get( itemCallable );
+		if ( rv == null ) {
+			rv = new InternalSelectItemOperation( this, itemCallable, isAlternateLocalization );
 			map.put( itemCallable, rv );
 		}
 		return rv;
@@ -296,49 +240,27 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	}
 
 	public final Operation getItemSelectionOperation( final T item ) {
-		return this.getItemSelectionOperation( new ValueCallable<T>( item ) );
+		return this.getItemSelectionOperation( new ValueCallable<>( item ) );
 	}
 
-	public Operation getAlternateLocalizationItemSelectionOperation( Callable<T> itemCallable ) {
+	private Operation getAlternateLocalizationItemSelectionOperation( Callable<T> itemCallable ) {
 		return this.getItemSelectionOperation( itemCallable, true );
 	}
 
 	public final Operation getAlternateLocalizationItemSelectionOperation( final T item ) {
-		return this.getAlternateLocalizationItemSelectionOperation( new ValueCallable<T>( item ) );
+		return this.getAlternateLocalizationItemSelectionOperation( new ValueCallable<>( item ) );
 	}
 
 	@Override
-	protected void fireChanged( T prevValue, T nextValue, State.IsAdjusting isAdjusting ) {
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		//todo
 		if( this.mapItemCallableToItemSelectedState != null ) {
-			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
+			for( InternalItemSelectedState itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
 				T item = getItem( itemSelectedState.itemCallable );
 				boolean isSelected = Objects.equals( item, nextValue );
 				itemSelectedState.getImp().getSwingModel().getButtonModel().setSelected( isSelected );
 			}
 		}
 	}
-	//	@Override
-	//	protected void setCurrentTruthAndBeautyValue( T value ) {
-	//		super.setCurrentTruthAndBeautyValue( value );
-	//		if( this.mapItemCallableToItemSelectedState != null ) {
-	//			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
-	//				T item = getItem( itemSelectedState.itemCallable );
-	//				boolean isSelected = item == value;
-	//				itemSelectedState.setCurrentTruthAndBeautyValue( isSelected );
-	//			}
-	//		}
-	//	}
-	//
-	//	@Override
-	//	protected void setSwingValue( T value ) {
-	//		if( this.mapItemCallableToItemSelectedState != null ) {
-	//			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
-	//				T item = getItem( itemSelectedState.itemCallable );
-	//				boolean isSelected = item == value;
-	//				itemSelectedState.setSwingValue( isSelected );
-	//			}
-	//		}
-	//	}
 }

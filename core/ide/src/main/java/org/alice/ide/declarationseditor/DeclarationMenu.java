@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.tree.Node;
 import org.alice.ide.IDE;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.project.ast.NamedUserType;
@@ -74,8 +73,8 @@ public class DeclarationMenu extends MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 
 		IDE ide = IDE.getActiveInstance();
 		Node<NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();

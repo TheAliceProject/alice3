@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.croquet.codecs.ResourceCodec;
 import org.lgna.common.Resource;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
@@ -57,8 +57,8 @@ public final class RenameResourceEdit extends AbstractEdit {
 	private final String prevValue;
 	private final String nextValue;
 
-	public RenameResourceEdit( CompletionStep completionStep, Resource resource, String prevValue, String nextValue ) {
-		super( completionStep );
+	public RenameResourceEdit( UserActivity userActivity, Resource resource, String prevValue, String nextValue ) {
+		super( userActivity );
 		this.resource = resource;
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

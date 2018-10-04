@@ -43,50 +43,22 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.history.DragStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.triggers.Trigger;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DragModel extends AbstractPrepModel {
-	public DragModel( UUID id ) {
-		super( id );
-	}
+public interface DragModel extends PrepModel {
+	List<? extends DropReceptor> createListOfPotentialDropReceptors();
 
-	@Override
-	protected void localize() {
-	}
+	void handleDragStarted( DragStep step );
 
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Collections.emptyList();
-	}
+	void handleDragEnteredDropReceptor( DragStep step );
 
-	@Override
-	public boolean isChild( Model model ) {
-		//todo
-		return true;
-	}
+	void handleDragExitedDropReceptor( DragStep step );
 
-	public abstract List<? extends DropReceptor> createListOfPotentialDropReceptors();
+	void handleDragStopped( DragStep step );
 
-	public abstract void handleDragStarted( DragStep step );
-
-	public abstract void handleDragEnteredDropReceptor( DragStep step );
-
-	public abstract void handleDragExitedDropReceptor( DragStep step );
-
-	public abstract void handleDragStopped( DragStep step );
-
-	public abstract Model getDropModel( DragStep step, DropSite dropSite );
-
-	@Override
-	public Step<?> fire( Trigger trigger ) {
-		throw new UnsupportedOperationException();
-	}
+	Triggerable getDropOperation( DragStep step, DropSite dropSite );
 }

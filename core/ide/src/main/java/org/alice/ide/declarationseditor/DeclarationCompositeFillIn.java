@@ -45,7 +45,6 @@ package org.alice.ide.declarationseditor;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.common.TypeIcon;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractDeclaration;
@@ -81,7 +80,7 @@ public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<Declarati
 	}
 
 	@Override
-	public DeclarationComposite createValue( ItemNode<? super DeclarationComposite, Void> node, TransactionHistory transactionHistory ) {
+	public DeclarationComposite createValue( ItemNode<? super DeclarationComposite, Void> node ) {
 		return this.declarationComposite;
 	}
 
@@ -96,7 +95,7 @@ public class DeclarationCompositeFillIn extends ImmutableCascadeFillIn<Declarati
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super DeclarationComposite, Void> node ) {
+	public String getMenuItemText() {
 		AbstractDeclaration declaration = this.declarationComposite.getDeclaration();
 		if( declaration instanceof AbstractType<?, ?, ?> ) {
 			AbstractType<?, ?, ?> type = (AbstractType<?, ?, ?>)declaration;

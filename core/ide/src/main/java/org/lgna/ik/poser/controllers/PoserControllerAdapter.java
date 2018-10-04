@@ -79,11 +79,11 @@ public class PoserControllerAdapter {
 	private final ValueListener<JointSelectionSphere> rightArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 		}
 
 		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
 			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.rightArmAnchorJointID = nextValue.getJoint().getJointId();
@@ -92,11 +92,11 @@ public class PoserControllerAdapter {
 	private final ValueListener<JointSelectionSphere> rightLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 		}
 
 		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
 			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.rightLegAnchorJointID = nextValue.getJoint().getJointId();
@@ -105,11 +105,11 @@ public class PoserControllerAdapter {
 	private final ValueListener<JointSelectionSphere> leftArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 		}
 
 		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
 			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.leftArmAnchorJointID = nextValue.getJoint().getJointId();
@@ -118,11 +118,11 @@ public class PoserControllerAdapter {
 	private final ValueListener<JointSelectionSphere> leftLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
-		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 		}
 
 		@Override
-		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue ) {
 			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
 			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.leftLegAnchorJointID = nextValue.getJoint().getJointId();

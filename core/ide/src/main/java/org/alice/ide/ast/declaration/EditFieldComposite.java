@@ -45,7 +45,7 @@ package org.alice.ide.ast.declaration;
 import org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView;
 import org.alice.ide.ast.declaration.views.EditFieldView;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
@@ -78,7 +78,7 @@ public abstract class EditFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		return null;
 	}
 

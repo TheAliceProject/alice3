@@ -340,7 +340,7 @@ public class InstanceFactorySelectionPanel extends PanelViewController<InstanceF
 		}
 
 		protected void handleAltTriggered( MouseEvent e ) {
-			OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( MouseEventTrigger.createUserInstance( e ) );
+			OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( MouseEventTrigger.createUserActivity( e ) );
 		}
 
 		@Override

@@ -51,7 +51,7 @@ import org.alice.ide.croquet.codecs.NodeCodec;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.SimpleArgument;
@@ -69,8 +69,8 @@ public abstract class ParameterEdit extends AbstractEdit<CompletionModel> {
 	private final UserParameter parameter;
 	private transient Map<SimpleArgumentListProperty, SimpleArgument> map = Maps.newHashMap();
 
-	public ParameterEdit( CompletionStep completionStep, UserCode code, UserParameter parameter ) {
-		super( completionStep );
+	public ParameterEdit( UserActivity userActivity, UserCode code, UserParameter parameter ) {
+		super( userActivity );
 		this.code = code;
 		this.parameter = parameter;
 	}

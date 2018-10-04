@@ -40,23 +40,70 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.lgna.croquet.history;
 
-package org.lgna.croquet.history.event;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.event.ActivityEvent;
+import org.lgna.croquet.history.event.Listener;
+import org.lgna.croquet.triggers.Trigger;
 
-import org.lgna.croquet.history.CompletionStep;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ValueCommittedEvent<T> extends Event<CompletionStep<?>> {
-	private final T value;
+public abstract class ActivityNode<M extends Model> {
+	private final List<Listener> listeners = Lists.newCopyOnWriteArrayList();
+	private UserActivity owner;
+	Trigger trigger;
+	M model;
 
-	public ValueCommittedEvent( CompletionStep<?> step, T value ) {
-		super( step );
-		this.value = value;
+
+	ActivityNode( UserActivity owner, M model, Trigger trigger) {
+		this.setOwner( owner );
+		this.model = model;
+		this.trigger = trigger;
 	}
 
-	public T getValue() {
-		return this.value;
+	ActivityNode( UserActivity owner ) {
+		this.setOwner( owner );
+	}
+
+	public M getModel() {
+		return this.model;
+	}
+
+	public UserActivity getOwner() {
+		return this.owner;
+	}
+
+	void setOwner( UserActivity owner ) {
+		this.owner = owner;
+	}
+
+	public Trigger getTrigger() {
+		return this.trigger;
+	}
+
+	public void addListener( Listener listener ) {
+		this.listeners.add( listener );
+	}
+
+	public void removeListener( Listener listener ) {
+		this.listeners.remove( listener );
+	}
+
+	public boolean isListening( Listener listener ) {
+		return this.listeners.contains( listener );
+	}
+
+	protected void fireChanged( ActivityEvent e ) {
+		if( this.owner != null ) {
+			this.owner.fireChanged( e );
+		}
+		for( Listener listener : this.listeners ) {
+			listener.changed( e );
+		}
 	}
 }

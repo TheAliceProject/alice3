@@ -48,9 +48,9 @@ import org.lgna.croquet.ItemState;
 import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.codecs.ColorCodec;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.MouseEventTrigger;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -79,27 +79,16 @@ public abstract class ColorState extends ItemState<Color> {
 		}
 
 		public void setValue( Color nextValue, MouseEvent e ) {
-			if( this.value.equals( nextValue ) ) {
-				//pass
-			} else {
+			if ( !this.value.equals( nextValue ) ) {
 				this.value = nextValue;
-				IsAdjusting isAdjusting;
-				if( e != null ) {
-					isAdjusting = e.getID() != MouseEvent.MOUSE_RELEASED ? IsAdjusting.TRUE : IsAdjusting.FALSE;
-				} else {
-					isAdjusting = IsAdjusting.FALSE;
-				}
 
-				//todo
-				isAdjusting = IsAdjusting.FALSE;
-
-				Trigger trigger;
+				UserActivity activity;
 				if( e != null ) {
-					trigger = MouseEventTrigger.createUserInstance( e );
+					activity = MouseEventTrigger.createUserActivity( e );
 				} else {
-					trigger = NullTrigger.createUserInstance();
+					activity = NullTrigger.createUserActivity();
 				}
-				changeValueFromSwing( this.value, isAdjusting, trigger );
+				changeValueFromSwing( value, activity );
 				if( this.changeListeners.size() > 0 ) {
 					Object source = e != null ? e.getSource() : this;
 					ChangeEvent changeEvent = new ChangeEvent( source );

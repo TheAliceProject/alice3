@@ -43,12 +43,10 @@
 package org.alice.stageide.modelresource;
 
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.DropSite;
 import org.lgna.croquet.ImmutableCascade;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -64,8 +62,8 @@ public class AddFieldCascade extends ImmutableCascade<ResourceNode> {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<ResourceNode>> completionStep, ResourceNode[] values ) {
-		values[ 0 ].getDropModel( null, this.dropSite ).fire( NullTrigger.createUserInstance() );
+	protected Edit createEdit( UserActivity userActivity, ResourceNode[] values ) {
+		values[ 0 ].getDropOperation( null, this.dropSite ).fire( userActivity );
 		return null;
 	}
 }

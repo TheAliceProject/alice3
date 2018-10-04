@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.declaration;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.Expression;
@@ -86,7 +85,7 @@ public class GalleryResourceFieldFillIn extends ExpressionFillInWithoutBlanks<Ex
 	}
 
 	@Override
-	public Expression createValue( ItemNode<? super Expression, Void> node, TransactionHistory transactionHistory ) {
+	public Expression createValue( ItemNode<? super Expression, Void> node ) {
 		return createValue( this.transientValue.field.getValue() );
 	}
 

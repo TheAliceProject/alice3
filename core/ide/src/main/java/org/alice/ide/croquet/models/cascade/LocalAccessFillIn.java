@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.cascade;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.LocalAccess;
 import org.lgna.project.ast.UserLocal;
@@ -82,7 +81,7 @@ public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<LocalAccess
 	}
 
 	@Override
-	public LocalAccess createValue( ItemNode<? super LocalAccess, Void> node, TransactionHistory transactionHistory ) {
+	public LocalAccess createValue( ItemNode<? super LocalAccess, Void> node ) {
 		return this.createValue( this.transientValue.local.getValue() );
 	}
 

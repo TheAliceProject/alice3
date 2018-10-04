@@ -50,7 +50,7 @@ import org.alice.ide.croquet.edits.ast.AddParameterEdit;
 import org.alice.ide.name.validators.ParameterNameValidator;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.SimpleArgumentListProperty;
 import org.lgna.project.ast.UserCode;
@@ -134,8 +134,8 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-		Status rv = super.getStatusPreRejectorCheck( step );
+	protected Status getStatusPreRejectorCheck() {
+		Status rv = super.getStatusPreRejectorCheck();
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
 			if( this.isRequirementToUpdateInvocationsUnderstoodState.getValue() ) {
 				//pass
@@ -152,8 +152,8 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return new AddParameterEdit( completionStep, this.code, this.createParameter() );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new AddParameterEdit( userActivity, this.code, this.createParameter() );
 	}
 
 	@Override

@@ -42,17 +42,11 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.views.ComponentManager;
-import org.lgna.croquet.views.SwingComponentView;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
@@ -60,70 +54,22 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class Manager {
-	private static Map<UUID, Set<Model>> mapIdToModels = Maps.newHashMap();
-
-	private static Set<Model> lookupModels( UUID id ) {
-		synchronized( mapIdToModels ) {
-			return mapIdToModels.get( id );
-		}
-	}
-
-	@Deprecated
-	public static Model findFirstAppropriateModel( UUID id ) {
-		Set<Model> models = lookupModels( id );
-		for( Model model : models ) {
-			Queue<SwingComponentView<?>> components = ComponentManager.getComponents( model );
-			for( SwingComponentView<?> component : components ) {
-				if( component.getAwtComponent().isShowing() ) {
-					return model;
-				}
-			}
-			for( SwingComponentView<?> component : components ) {
-				if( component.getAwtComponent().isVisible() ) {
-					return model;
-				}
-			}
-		}
-		return null;
-	}
-
-	private static List<Composite> composites = Lists.newCopyOnWriteArrayList();
-
-	/* package-private */static void registerComposite( Composite composite ) {
-		composites.add( composite );
-	}
-
-	/* package-private */static void unregisterComposite( Composite composite ) {
-		composites.remove( composite );
-	}
-
-	public Iterable<Composite> getComposites() {
-		return composites;
-	}
+	private static final Map<UUID, Set<Model>> mapIdToModels = Maps.newHashMap();
 
 	public static void registerModel( Model model ) {
 		UUID id = model.getMigrationId();
 		synchronized( mapIdToModels ) {
-			Set<Model> set = mapIdToModels.get( id );
-			if( set != null ) {
-				//pass
-			} else {
-				set = Sets.newHashSet();
-				mapIdToModels.put( id, set );
-			}
+			Set<Model> set = mapIdToModels.computeIfAbsent( id, k -> Sets.newHashSet() );
 			set.add( model );
 		}
 	}
 
 	public static void unregisterModel( Model model ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
 		UUID id = model.getMigrationId();
 		synchronized( mapIdToModels ) {
 			Set<Model> set = mapIdToModels.get( id );
 			if( set != null ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "pre set size:", set.size() );
 				set.remove( model );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "post set size:", set.size() );
 				if( set.size() == 0 ) {
 					mapIdToModels.remove( id );
 				}
@@ -133,42 +79,13 @@ public class Manager {
 		}
 	}
 
-	public static <M extends Model> Iterable<M> getRegisteredModels( Class<M> cls ) {
-		List<M> rv = Lists.newLinkedList();
-		for( Set<Model> set : mapIdToModels.values() ) {
-			for( Model model : set ) {
-				if( cls.isAssignableFrom( model.getClass() ) ) {
-					rv.add( cls.cast( model ) );
-				}
-			}
-		}
-		return rv;
-	}
-
-	/* package-private */static void relocalizeAllElements() {
+	static void relocalizeAllElements() {
 		synchronized( mapIdToModels ) {
-			Collection<Set<Model>> sets = mapIdToModels.values();
-			for( Set<Model> set : sets ) {
+			for( Set<Model> set : mapIdToModels.values() ) {
 				for( Model model : set ) {
 					model.relocalize();
-					//					for( JComponent<?> component : model.getComponents() ) {
-					//					}
 				}
 			}
 		}
-	}
-
-	private static int isUndoOrRedoCount = 0;
-
-	public static boolean isInTheMidstOfUndoOrRedo() {
-		return isUndoOrRedoCount > 0;
-	}
-
-	public static void pushUndoOrRedo() {
-		isUndoOrRedoCount++;
-	}
-
-	public static void popUndoOrRedo() {
-		isUndoOrRedoCount--;
 	}
 }

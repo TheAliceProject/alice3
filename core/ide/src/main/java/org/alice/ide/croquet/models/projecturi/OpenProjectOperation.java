@@ -51,18 +51,13 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
-	public OpenProjectOperation( ProjectDocumentFrame projectDocumentFrame ) {
-		super( UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), projectDocumentFrame, false );
+	public OpenProjectOperation() {
+		super( UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), false );
 	}
 
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setButtonIcon( Icons.OPEN_DOCUMENT_SMALL );
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
 	}
 }

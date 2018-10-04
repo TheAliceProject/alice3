@@ -98,7 +98,7 @@ public class InstanceFactoryPopupButton extends CustomItemStatePopupButton<Insta
 	private InstanceFactory nextValue;
 
 	@Override
-	protected void handleChanged( State<InstanceFactory> state, InstanceFactory prevValue, InstanceFactory nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<InstanceFactory> state, InstanceFactory prevValue, InstanceFactory nextValue ) {
 		this.nextValue = nextValue;
 		this.refreshLater();
 	}

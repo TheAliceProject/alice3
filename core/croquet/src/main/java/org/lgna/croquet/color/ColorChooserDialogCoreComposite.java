@@ -48,7 +48,7 @@ import org.lgna.croquet.Element;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.color.views.ColorChooserDialogCoreView;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Dialog;
 
 import javax.swing.JColorChooser;
@@ -84,7 +84,7 @@ public final class ColorChooserDialogCoreComposite extends SimpleOperationInputD
 	}
 
 	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
@@ -105,27 +105,27 @@ public final class ColorChooserDialogCoreComposite extends SimpleOperationInputD
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> completionStep ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		this.preColor = this.colorState.getValue();
 		this.getView().setSelectedColor( preColor );
 
 		JColorChooser jColorChooser = this.getView().getAwtComponent();
 		jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
-		super.handlePreShowDialog( completionStep );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handleFinally( CompletionStep<?> step, Dialog dialog ) {
+	protected void handleFinally( Dialog dialog ) {
 		JColorChooser jColorChooser = this.getView().getAwtComponent();
 		jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
-		if( step.isCanceled() ) {
+		if( openingActivity.isCanceled() ) {
 			this.colorState.setValueTransactionlessly( this.preColor );
 		}
-		super.handleFinally( step, dialog );
+		super.handleFinally( dialog );
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		Color color = this.getView().getSelectedColor();
 		if( color != null ) {
 			this.colorState.setValueTransactionlessly( color );

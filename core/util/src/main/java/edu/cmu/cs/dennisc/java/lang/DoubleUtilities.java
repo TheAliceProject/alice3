@@ -98,8 +98,13 @@ public class DoubleUtilities {
 	//		}
 	//	}
 	public static double round( double value, int decimalPlaces ) {
-		BigDecimal bigDecimal = new BigDecimal( value );
-		bigDecimal = bigDecimal.round( new MathContext( decimalPlaces, RoundingMode.HALF_DOWN ) );
-		return bigDecimal.doubleValue();
+		if (Double.isFinite( value )) {
+			BigDecimal bigDecimal = new BigDecimal( value );
+			bigDecimal = bigDecimal.round( new MathContext( decimalPlaces, RoundingMode.HALF_DOWN ) );
+			return bigDecimal.doubleValue();
+		}
+		else {
+			return value;
+		}
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast;
 import org.alice.ide.croquet.edits.ast.ConvertStatementWithBodyEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractStatementWithBody;
 
 import java.util.UUID;
@@ -69,7 +69,7 @@ public abstract class ConvertStatementWithBodyOperation extends ActionOperation 
 	protected abstract AbstractStatementWithBody createReplacement();
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new ConvertStatementWithBodyEdit( step, this.createReplacement() ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new ConvertStatementWithBodyEdit( activity, this.createReplacement() ) );
 	}
 }

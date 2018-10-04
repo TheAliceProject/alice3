@@ -47,11 +47,9 @@ import edu.cmu.cs.dennisc.java.util.Objects;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeModel;
 import edu.cmu.cs.dennisc.map.MapToMap;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.triggers.TreeSelectionEventTrigger;
 import org.lgna.croquet.views.Tree;
 
@@ -109,12 +107,12 @@ class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 	}
 
 	@Override
-	public T createValue( ItemNode<? super T, Void> node, TransactionHistory transactionHistory ) {
+	public T createValue( ItemNode<? super T, Void> node ) {
 		return this.node;
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super T, Void> node ) {
+	public String getMenuItemText() {
 		return this.model.getTextForNode( this.node );
 	}
 
@@ -200,9 +198,9 @@ class TreeNodeCascade<T> extends ImmutableCascade<T> {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values ) {
+	protected Edit createEdit( UserActivity userActivity, T[] values ) {
 		assert values.length == 1;
-		this.model.changeValueFromIndirectModel( values[ 0 ], State.IsAdjusting.FALSE, NullTrigger.createUserInstance() );
+		this.model.changeValueFromIndirectModel( values[ 0 ], userActivity);
 		return null;
 		//return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
 	}
@@ -234,9 +232,10 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
 		@Override
 		public void valueChanged( TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
-			SingleSelectTreeState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, TreeSelectionEventTrigger.createUserInstance( e ) );
-			//			T prevValue = getValue();
-			//			fireChanged( prevValue, nextValue, IsAdjusting.FALSE );
+			final UserActivity activity = TreeSelectionEventTrigger.createUserActivity( e );
+			SingleSelectTreeState.this.changeValueFromSwing( nextValue, activity );
+			activity.setCompletionModel( SingleSelectTreeState.this );
+			activity.finish();
 		}
 	};
 

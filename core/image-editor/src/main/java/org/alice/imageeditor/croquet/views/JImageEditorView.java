@@ -48,10 +48,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.imageeditor.croquet.ImageEditorFrame;
 import org.alice.imageeditor.croquet.Tool;
 import org.alice.imageeditor.croquet.edits.AddShapeEdit;
-import org.lgna.croquet.Application;
-import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.MouseEventTrigger;
 
 import javax.swing.JComponent;
@@ -209,11 +206,10 @@ public class JImageEditorView extends JComponent {
 		Tool tool = this.imageEditorFrame.getToolState().getValue();
 		if( tool == Tool.ADD_RECTANGLE ) {
 			if( shape != null ) {
-				Transaction transaction = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().acquireActiveTransaction();
-				CompletionModel model = null;
-				CompletionStep completionStep = CompletionStep.createAndAddToTransaction( transaction, model, MouseEventTrigger.createUserInstance( e ), null );
-				AddShapeEdit edit = new AddShapeEdit( completionStep, shape, imageEditorFrame );
-				completionStep.commitAndInvokeDo( edit );
+				// NB This activity is not expected to have any child activities
+				UserActivity activity = MouseEventTrigger.createUserActivity( e );
+				AddShapeEdit edit = new AddShapeEdit( activity, shape, imageEditorFrame );
+				activity.commitAndInvokeDo( edit );
 			}
 		} else if( tool == Tool.CROP_SELECT ) {
 			this.imageEditorFrame.getCropSelectHolder().setValue( shape != null ? shape.getBounds() : null );

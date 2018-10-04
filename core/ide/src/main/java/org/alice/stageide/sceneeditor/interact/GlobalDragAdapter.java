@@ -135,7 +135,7 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 	//Used to lock down the scene editor so only selection is available as an interaction (moving objects, moving the camera and whatnot are all disabled)
 	private static final boolean ENABLE_SELECTION_ONLY_MODE = false;
 
-	TargetManipulator dropTargetManipulator;
+	private TargetManipulator dropTargetManipulator;
 
 	private final StorytellingSceneEditor sceneEditor;
 
@@ -228,8 +228,11 @@ public class GlobalDragAdapter extends CroquetSupportingDragAdapter {
 
 			ModifierMask noModifiers = new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN );
 
-			CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );
-			cameraTranslateManip.addKeys( zoomKeys );
+			MovementKey[] combinedKeys = new MovementKey[ movementKeys.length + zoomKeys.length ];
+			System.arraycopy( movementKeys, 0, combinedKeys, 0, movementKeys.length );
+			System.arraycopy( zoomKeys, 0, combinedKeys, movementKeys.length, zoomKeys.length );
+
+			CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( combinedKeys );
 			ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
 			for( MovementKey movementKey : movementKeys ) {
 				AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( movementKey.keyValue ), new SelectedObjectCondition( PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );

@@ -46,7 +46,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
@@ -60,8 +60,8 @@ public abstract class MethodInvocationEdit extends AbstractEdit {
 	private final AbstractMethod method;
 	private final Expression[] argumentExpressions;
 
-	public MethodInvocationEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep );
+	public MethodInvocationEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity );
 		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;

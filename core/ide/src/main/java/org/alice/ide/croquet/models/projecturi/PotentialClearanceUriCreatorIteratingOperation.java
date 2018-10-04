@@ -42,15 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.projecturi.SelectProjectUriComposite;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,24 +56,29 @@ import java.util.UUID;
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
 	private final boolean isNew;
 
-	public PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, ProjectDocumentFrame projectDocumentFrame, boolean isNew ) {
-		super( migrationId, projectDocumentFrame, SelectProjectUriComposite.getInstance().getValueCreator() );
+	PotentialClearanceUriCreatorIteratingOperation( UUID migrationId, boolean isNew ) {
+		super( migrationId, SelectProjectUriComposite.getInstance().getValueCreator() );
 		this.isNew = isNew;
 	}
 
 	@Override
-	protected Iterator<Model> createIteratingData() {
-		Iterator<Model> rv = super.createIteratingData();
+	protected List<Triggerable> createIteratingData() {
+		List<Triggerable> rv = super.createIteratingData();
 		SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;
 	}
 
 	@Override
-	protected UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
 		if( subSteps.size() > 0 ) {
-			return (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( ValueCreator.VALUE_KEY ) );
+			return (UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getProducedValue();
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
 	}
 }

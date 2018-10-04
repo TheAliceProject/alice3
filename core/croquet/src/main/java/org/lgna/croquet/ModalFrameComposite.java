@@ -43,9 +43,8 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp;
-import org.lgna.croquet.triggers.WindowEventTrigger;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Frame;
 
@@ -79,7 +78,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
+	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
 
@@ -93,31 +92,26 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 	}
 
 	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return false;
-	}
-
-	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, CompletionStep<?> step ) {
-		final List<Frame> framesToDiable = Lists.newLinkedList();
+	public void perform( UserActivity userActivity ) {
+		final List<Frame> framesToDisable = Lists.newLinkedList();
 
 		Application application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
-		framesToDiable.add( documentFrame.getFrame() );
+		framesToDisable.add( documentFrame.getFrame() );
 
 		final Frame frame = new Frame();
 		class ModalFrameWindowListener implements WindowListener {
 			@Override
 			public void windowOpened( WindowEvent e ) {
-				for( Frame frame : framesToDiable ) {
+				for( Frame frame : framesToDisable ) {
 					frame.getAwtComponent().setEnabled( false );
 				}
 			}
 
 			@Override
 			public void windowClosing( WindowEvent e ) {
-				if( isWindowClosingEnabled( WindowEventTrigger.createUserInstance( e ) ) ) {
-					for( Frame frame : framesToDiable ) {
+				if( isWindowClosingEnabled() ) {
+					for( Frame frame : framesToDisable ) {
 						frame.getAwtComponent().setEnabled( true );
 					}
 					//e.getComponent().setVisible( false );
@@ -129,6 +123,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 			public void windowClosed( WindowEvent e ) {
 				frame.removeWindowListener( this );
 				try {
+					userActivity.finish();
 					handlePostHideWindow( frame );
 				} finally {
 					handleFinally();
@@ -166,14 +161,14 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 		this.handlePreShowWindow( frame );
 		frame.setVisible( true );
 
-		//			dialogOwner.handlePreShowDialog( step );
+		//			dialogOwner.handlePreShowDialog( userActivity );
 		//			//application.pushWindow( dialog );
 		//			dialog.setVisible( true );
 		//
 		//			if( isModal ) {
-		//				dialogOwner.handlePostHideDialog( step );
+		//				dialogOwner.handlePostHideDialog( userActivity );
 		//				dialog.removeWindowListener( dialogWindowListener );
-		//				dialogOwner.releaseView( step, view );
+		//				dialogOwner.releaseView( userActivity, view );
 		//				dialog.getAwtComponent().dispose();
 		//			} else {
 		//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
@@ -181,7 +176,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 		//		} finally {
 		//			if( isModal ) {
 		//				//application.popWindow();
-		//				dialogOwner.handleFinally( step, dialog );
+		//				dialogOwner.handleFinally( userActivity, dialog );
 		//			} else {
 		//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
 		//			}
@@ -208,7 +203,7 @@ public abstract class ModalFrameComposite<V extends CompositeView<?, ?>> extends
 		return rv;
 	}
 
-	protected boolean isWindowClosingEnabled( WindowEventTrigger trigger ) {
+	protected boolean isWindowClosingEnabled() {
 		return true;
 	}
 

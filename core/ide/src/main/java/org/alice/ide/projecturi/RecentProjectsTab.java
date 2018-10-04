@@ -71,9 +71,4 @@ public class RecentProjectsTab extends ListUriTab {
 	protected TabContentPanel createView() {
 		return new ListContentPanel( this );
 	}
-
-	@Override
-	public String getTextForZeroProjects() {
-		return "there are no recent projects";
-	}
 }

@@ -46,7 +46,7 @@ package org.alice.stageide.oneshot.edits;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.EmployeesOnly;
@@ -61,8 +61,8 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 	private transient AbstractTransformableImp transformable;
 	private transient AffineMatrix4x4 m;
 
-	public LocalTransformationEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public LocalTransformationEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override

@@ -48,7 +48,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities;
 import edu.cmu.cs.dennisc.worker.process.ProcessWorker;
 import org.alice.ide.system.croquet.views.WindowsSystemAssessmentToolPane;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Operation;
@@ -56,7 +55,7 @@ import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
 
 import javax.swing.text.AttributeSet;
@@ -81,7 +80,7 @@ public class WindowsSystemAssessmentToolComposite extends SimpleOperationUnadorn
 	private final StringState stardardOutAndStandardErrorState = this.createStringState( "stardardOutAndStandardErrorState" );
 	private final Operation executeWinsatOperation = this.createActionOperation( "executeWinsatOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			boolean isAbleToRunWinsatDirectly;
 			try {
 				StringBuilder sb = new StringBuilder();

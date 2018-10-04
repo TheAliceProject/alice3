@@ -49,13 +49,12 @@ import org.alice.ide.ast.type.merge.croquet.edits.ImportTypeEdit;
 import org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData;
 import org.alice.ide.ast.type.merge.croquet.views.AddMembersPane;
 import org.lgna.common.Resource;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.AbstractNode;
@@ -100,14 +99,14 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 
 	private final Operation acceptAllDifferentImplementationsOperation = this.createActionOperation( "acceptAllDifferentImplementationsOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			acceptAllDifferentImplementations();
 			return null;
 		}
 	} );
 	private final Operation rejectAllDifferentImplementationsOperation = this.createActionOperation( "rejectAllDifferentImplementationsOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			rejectAllDifferentImplementations();
 			return null;
 		}
@@ -285,7 +284,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 		}
 	}
 
-	public Edit createEdit( CompletionStep<?> completionStep ) {
+	public Edit createEdit( UserActivity userActivity ) {
 		if( this.dstType != null ) {
 			List<RenameMemberData> renames = Lists.newLinkedList();
 
@@ -298,7 +297,7 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 			List<UserField> fieldsToAdd = Lists.newLinkedList();
 			List<UserField> fieldsToRemove = Lists.newLinkedList();
 			addMembersAndRenames( fieldsToAdd, fieldsToRemove, renames, this.addFieldsComposite );
-			return new ImportTypeEdit( completionStep, this.uriForDescriptionPurposesOnly, this.dstType, methodsToAdd, methodsToRemove, fieldsToAdd, fieldsToRemove, renames );
+			return new ImportTypeEdit( userActivity, this.uriForDescriptionPurposesOnly, this.dstType, methodsToAdd, methodsToRemove, fieldsToAdd, fieldsToRemove, renames );
 		} else {
 			return null;
 		}
@@ -357,14 +356,14 @@ public class AddMembersPage extends WizardPageComposite<Panel, ImportTypeWizard>
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		//todo: remove; icons and components rely on repaint being called
 		this.getView().repaint();
 		//
 
 		StringBuffer sb = new StringBuffer();
 		for( MembersToolPalette<?, ?> addMembersComposite : new MembersToolPalette[] { this.addProceduresComposite, this.addFunctionsComposite, this.addFieldsComposite } ) {
-			addMembersComposite.appendStatusPreRejectorCheck( sb, step );
+			addMembersComposite.appendStatusPreRejectorCheck( sb );
 		}
 		if( sb.length() > 0 ) {
 			this.actionItemsRemainingError.setText( sb.toString() );

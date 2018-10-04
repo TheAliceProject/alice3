@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -104,8 +104,8 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends Act
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new AbstractEdit( step ) {
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new AbstractEdit( activity ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {
 				if( isDo && ( isDoRequired == false ) ) {

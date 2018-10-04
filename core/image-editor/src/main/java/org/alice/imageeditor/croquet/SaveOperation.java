@@ -46,15 +46,13 @@ import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,24 +74,20 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		if( subSteps.size() == 0 ) {
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		if( finishedSteps.size() == 0 ) {
 			this.file = this.owner.getFile();
-			if( this.file != null ) {
-				return this.file.exists();
-			} else {
-				return true;
-			}
+			return this.file == null || this.file.exists();
 		} else {
 			return false;
 		}
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
-		Model rv;
-		switch( subSteps.size() ) {
+		Triggerable rv;
+		switch( finishedSteps.size() ) {
 		case 0:
 			if( owner.isGoodToGoCroppingIfNecessary() ) {
 				if( this.file != null ) {
@@ -121,7 +115,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
 		if( this.file != null ) {
 			Image image = owner.getView().render();
 			try {

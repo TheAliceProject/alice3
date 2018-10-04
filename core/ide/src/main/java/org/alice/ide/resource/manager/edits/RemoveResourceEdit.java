@@ -45,14 +45,14 @@ package org.alice.ide.resource.manager.edits;
 
 import edu.cmu.cs.dennisc.pattern.NameableUtilities;
 import org.lgna.common.Resource;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class RemoveResourceEdit extends AddOrRemoveResourceEdit {
-	public RemoveResourceEdit( CompletionStep<?> completionStep, Resource resource ) {
-		super( completionStep, resource );
+	public RemoveResourceEdit( UserActivity userActivity, Resource resource ) {
+		super( userActivity, resource );
 	}
 
 	@Override

@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.interact.manipulator;
 
-import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author David Culyba
  */
 public class SelectObjectDragManipulator extends AbstractManipulator {
-	public SelectObjectDragManipulator( AbstractDragAdapter dragAdapter ) {
+	public SelectObjectDragManipulator( DragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
@@ -110,5 +110,5 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		return null;
 	}
 
-	private final AbstractDragAdapter dragAdapter;
+	private final DragAdapter dragAdapter;
 }

@@ -48,7 +48,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.Statement;
@@ -62,8 +62,8 @@ public class RevertFieldEdit extends AbstractEdit {
 	private final UserField field;
 	private final Statement redoStateCode;
 
-	public RevertFieldEdit( CompletionStep step, UserField field ) {
-		super( step );
+	public RevertFieldEdit( UserActivity userActivity, UserField field ) {
+		super( userActivity );
 		this.field = field;
 		this.redoStateCode = IDE.getActiveInstance().getSceneEditor().getCurrentStateCodeForField( this.field );
 	}

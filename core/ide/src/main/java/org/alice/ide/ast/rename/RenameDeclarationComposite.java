@@ -47,7 +47,7 @@ import org.alice.ide.ast.rename.components.RenamePanel;
 import org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit;
 import org.alice.ide.name.NameValidator;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractDeclaration;
 
 import java.awt.Color;
@@ -70,8 +70,8 @@ public abstract class RenameDeclarationComposite<N extends AbstractDeclaration> 
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		return new RenameDeclarationEdit( completionStep, declaration, this.declaration.getName(), this.getNameState().getValue() );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new RenameDeclarationEdit( userActivity, declaration, this.declaration.getName(), this.getNameState().getValue() );
 	}
 
 	private Color getViewBackgroundColor() {

@@ -43,8 +43,9 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 
@@ -55,20 +56,12 @@ import java.awt.Point;
  */
 @Deprecated
 public class NullTrigger extends Trigger {
-	public static NullTrigger createUserInstance() {
-		return new NullTrigger();
+	public static UserActivity createUserActivity() {
+		return new NullTrigger().getUserActivity();
 	}
 
 	private NullTrigger() {
-	}
-
-	public NullTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	public ViewController<?, ?> getViewController() {
-		return null;
+		super(Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel());
 	}
 
 	@Override

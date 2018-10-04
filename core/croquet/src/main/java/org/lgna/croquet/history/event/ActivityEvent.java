@@ -40,23 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.animation;
 
-/**
- * @author Dennis Cosgrove
- */
-public class TogetherAnimation extends CompositeAnimation {
-	public TogetherAnimation( Animation... animations ) {
-		super( animations );
-	}
+package org.lgna.croquet.history.event;
 
-	@Override
-	public double update( double tCurrent, AnimationObserver animationObserver ) {
-		double tRemainingMax = Double.NEGATIVE_INFINITY;
-		for( Animation animation : getAnimations() ) {
-			double tRemaining = animation.update( tCurrent, animationObserver );
-			tRemainingMax = Math.max( tRemainingMax, tRemaining );
-		}
-		return tRemainingMax;
-	}
+public interface ActivityEvent {
 }

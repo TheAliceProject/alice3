@@ -212,11 +212,6 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 	}
 
 	@Override
-	public Class<Integer> getItemClass() {
-		return Integer.class;
-	}
-
-	@Override
 	public Integer decodeValue( BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeInt();
 	}

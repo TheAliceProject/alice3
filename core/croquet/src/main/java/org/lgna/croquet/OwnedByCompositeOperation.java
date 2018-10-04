@@ -72,11 +72,6 @@ public final class OwnedByCompositeOperation<C extends OperationOwningComposite<
 	}
 
 	@Override
-	protected OwnedByCompositeOperationSubKey getSubKey() {
-		return this.subKey;
-	}
-
-	@Override
 	protected Class<? extends Element> getClassUsedForLocalization() {
 		//todo
 		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
@@ -86,7 +81,7 @@ public final class OwnedByCompositeOperation<C extends OperationOwningComposite<
 
 	@Override
 	protected String modifyNameIfNecessary( String text ) {
-		return this.composite.modifyNameIfNecessary( this.getSubKey(), super.modifyNameIfNecessary( text ) );
+		return this.composite.modifyNameIfNecessary( super.modifyNameIfNecessary( text ) );
 	}
 
 	private final C composite;

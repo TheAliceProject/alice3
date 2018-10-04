@@ -45,7 +45,6 @@ package test.ik.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.story.resources.JointId;
 
@@ -98,7 +97,7 @@ public class JointIdFillIn extends ImmutableCascadeFillIn<JointId, Void> {
 	}
 
 	@Override
-	public JointId createValue( ItemNode<? super JointId, Void> node, TransactionHistory transactionHistory ) {
+	public JointId createValue( ItemNode<? super JointId, Void> node ) {
 		return this.jointId;
 	}
 

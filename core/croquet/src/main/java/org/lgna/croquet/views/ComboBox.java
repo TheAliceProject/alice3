@@ -47,7 +47,8 @@ import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.java.awt.RectangleUtilities;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.ListSelectionStatePrepStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.PopupMenuEventTrigger;
 
 import javax.accessibility.Accessible;
@@ -76,7 +77,7 @@ import java.awt.event.ItemListener;
 public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListStateComboBoxPrepModel<E, ?>> {
 	public ComboBox( SingleSelectListStateComboBoxPrepModel<E, ?> model ) {
 		super( model );
-		this.setSwingComboBoxModel( model.getListSelectionState().getImp().getSwingModel().getComboBoxModel() );
+		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
 	}
 
 	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
@@ -92,10 +93,9 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	};
 
 	//	@Override
-	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.UserActivity transaction ) {
 	//		super.appendPrepStepsIfNecessary( transaction );
-	//		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-	//		org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+	//		org.lgna.croquet.CompletionModel completionModel = transaction.getModel();
 	//		assert completionModel == this.getModel();
 	//		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
 	//		if( transaction.getPrepStepCount() == 1 ) {
@@ -105,7 +105,7 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	//			}
 	//		}
 	//		transaction.removeAllPrepSteps();
-	//		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );		
+	//		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToActivity( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );
 	//	}
 
 	@Override
@@ -134,7 +134,8 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	private PopupMenuListener popupMenuListener = new PopupMenuListener() {
 		@Override
 		public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
-			TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel(), PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
+			ListSelectionStatePrepStep.createAndAddToActivity(
+					ComboBox.this.getModel(), PopupMenuEventTrigger.createUserActivity( ComboBox.this, e ) );
 		}
 
 		@Override
@@ -143,7 +144,9 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 
 		@Override
 		public void popupMenuCanceled( PopupMenuEvent e ) {
-			TransactionManager.addCancelCompletionStep( ComboBox.this.getModel().getListSelectionState(), PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
+			final UserActivity activity = PopupMenuEventTrigger.createUserActivity( ComboBox.this, e );
+			activity.setCompletionModel( ComboBox.this.getModel().getListSelectionState() );
+			activity.cancel();
 		}
 	};
 
@@ -151,12 +154,12 @@ public class ComboBox<E> extends ViewController<JComboBox, SingleSelectListState
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
-		this.getModel().getListSelectionState().getImp().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		this.getModel().getListSelectionState().getImp().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
 		super.handleUndisplayable();
 	}

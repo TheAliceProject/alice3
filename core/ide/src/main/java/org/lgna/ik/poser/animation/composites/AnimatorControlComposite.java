@@ -50,7 +50,6 @@ import org.alice.ide.ApiConfigurationManager;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.common.ComponentExecutor;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
@@ -60,10 +59,7 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.ik.poser.PoseAstUtilities;
@@ -113,11 +109,11 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		currentTime.addValueListener( new ValueListener<Double>() {
 
 			@Override
-			public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			public void changing( State<Double> state, Double prevValue, Double nextValue ) {
 			}
 
 			@Override
-			public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+			public void changed( State<Double> state, Double prevValue, Double nextValue ) {
 				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
 		} );
@@ -171,13 +167,12 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		public void fireFinish( PoserEvent poserEvent ) {
 			TimeLine timeLine = tlComposite.getTimeLine();
 			KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
-			TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-			Transaction transaction = history.acquireActiveTransaction();
-			CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+			// TODO not use Application.getActiveInstance().acquireOpenActivity()
+			UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
 			if( currentFrame != null ) {
-				step.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( step, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
+				userActivity.commitAndInvokeDo( new ModifyPoseOnExistingKeyFrameInTimeLineEdit( userActivity, timeLine, currentFrame, parent.getPose(), currentFrame.getPose() ) );
 			} else {
-				step.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( step, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
+				userActivity.commitAndInvokeDo( new AddKeyFrameToTimeLineEdit( userActivity, timeLine, new KeyFrameData( timeLine.getCurrentTime(), parent.getPose() ) ) );
 			}
 		}
 
@@ -190,7 +185,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		boolean stillRunning = true;
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			final M model = (M)parent.getModel();
 			final TimeLine timeLine = tlComposite.getTimeLine();
 			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();

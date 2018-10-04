@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.clipboard.edits.CutToClipboardEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 import java.util.Map;
@@ -79,7 +79,7 @@ public class CutToClipboardOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( new CutToClipboardEdit( step, statement ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new CutToClipboardEdit( activity, statement ) );
 	}
 }

@@ -43,6 +43,8 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.DStack;
 import edu.cmu.cs.dennisc.java.util.Stacks;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -92,17 +94,19 @@ public abstract class DocumentFrame {
 	}
 
 	@Deprecated
-	public File showOpenFileDialog( File directory, String filename, String extension, boolean isSharingDesired ) {
-		return FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
-	}
-
-	@Deprecated
 	public File showSaveFileDialog( File directory, String filename, String extension, boolean isSharingDesired ) {
 		return FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
 	}
 
-	public File showOpenFileDialog( UUID sharingId, String dialogTitle, File initialDirectory, String initialFilename, FilenameFilter filenameFilter ) {
-		return FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
+	public File showOpenFileDialog( String dialogTitle, File initialDirectory, String extension ) {
+		return showOpenFileDialog( dialogTitle,
+															 initialDirectory,
+															 SystemUtilities.isWindows() ? "*." + extension : null,
+															 FileUtilities.createFilenameFilter( extension) );
+	}
+
+	public File showOpenFileDialog( String dialogTitle, File initialDirectory, String initialFilename, FilenameFilter filenameFilter ) {
+		return FileDialogUtilities.showOpenFileDialog( this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
 	}
 
 	private final Frame frame = Frame.getApplicationRootFrame();
@@ -115,7 +119,7 @@ public abstract class DocumentFrame {
 
 		@Override
 		public void windowClosing( WindowEvent e ) {
-			Application.getActiveInstance().handleQuit( WindowEventTrigger.createUserInstance( e ) );
+			Application.getActiveInstance().handleQuit( Application.getActiveInstance().getOverallUserActivity() );
 		}
 
 		@Override

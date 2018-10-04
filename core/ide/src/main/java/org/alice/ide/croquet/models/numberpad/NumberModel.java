@@ -43,7 +43,8 @@
 package org.alice.ide.croquet.models.numberpad;
 
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.PrepStep;
+import org.lgna.croquet.history.EmptyPrepStep;
 import org.lgna.croquet.triggers.DocumentEventTrigger;
 import org.lgna.project.ast.Expression;
 
@@ -67,17 +68,18 @@ public abstract class NumberModel<N extends Expression> /* extends edu.cmu.cs.de
 	private static final class NumberDocumentListener implements DocumentListener {
 		private int ignoreCount;
 
-		public void pushIgnore() {
+		void pushIgnore() {
 			this.ignoreCount++;
 		}
 
-		public void popIgnore() {
+		void popIgnore() {
 			this.ignoreCount--;
 		}
 
 		private void update( DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {
-				TransactionManager.TODO_REMOVE_fireEvent( DocumentEventTrigger.createUserInstance( e ) );
+				PrepStep step = new EmptyPrepStep( DocumentEventTrigger.createUserInstance( e ), "Key pressed");
+				step.getUserActivity().finish();
 			}
 		}
 

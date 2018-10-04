@@ -48,7 +48,6 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.Element;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.ToolPaletteCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.project.ast.Member;
 
@@ -169,12 +168,12 @@ public abstract class MembersToolPalette<V extends MembersView<?>, M extends Mem
 		return this.importOnlys.size() + this.differentSignatures.size() + this.differentImplementations.size() + this.identicals.size() + this.projectOnlys.size();
 	}
 
-	public void appendStatusPreRejectorCheck( StringBuffer sb, CompletionStep<?> step ) {
+	public void appendStatusPreRejectorCheck( StringBuffer sb ) {
 		for( DifferentSignature<M> differentSignatureMember : this.differentSignatures ) {
-			differentSignatureMember.appendStatusPreRejectorCheck( sb, step );
+			differentSignatureMember.appendStatusPreRejectorCheck( sb );
 		}
 		for( DifferentImplementation<M> differentImplementationMember : this.differentImplementations ) {
-			differentImplementationMember.appendStatusPreRejectorCheck( sb, step );
+			differentImplementationMember.appendStatusPreRejectorCheck( sb );
 		}
 	}
 }

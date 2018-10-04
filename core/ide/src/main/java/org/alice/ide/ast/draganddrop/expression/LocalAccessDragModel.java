@@ -46,9 +46,12 @@ package org.alice.ide.ast.draganddrop.expression;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
+import org.alice.ide.ast.draganddrop.ExpressionPropertyDropSite;
 import org.alice.ide.croquet.models.ast.cascade.expression.LocalAccessOperation;
 import org.alice.ide.statementfactory.LocalStatementCascade;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.ExpressionProperty;
 import org.lgna.project.ast.UserLocal;
@@ -88,12 +91,15 @@ public class LocalAccessDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected Model getDropModel( BlockStatementIndexPair blockStatementIndexPair ) {
-		return LocalStatementCascade.getInstance( this.local, blockStatementIndexPair );
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
+		return LocalAccessOperation.getInstance( this.local, expressionProperty );
 	}
 
 	@Override
-	protected Model getDropModel( ExpressionProperty expressionProperty ) {
-		return LocalAccessOperation.getInstance( this.local, expressionProperty );
+	public final Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
+		if( dropSite instanceof BlockStatementIndexPair ) {
+			return LocalStatementCascade.getInstance( this.local, (BlockStatementIndexPair)dropSite );
+		}
+		return super.getDropOperation( step, dropSite );
 	}
 }

@@ -46,8 +46,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
 import org.alice.ide.croquet.models.ast.cascade.AbstractArgumentCascade;
 import org.alice.ide.x.croquet.edits.SceneEditorUpdatingExpressionPropertyEdit;
-import org.lgna.croquet.Cascade;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionProperty;
 import org.lgna.project.ast.InstanceCreation;
@@ -80,17 +79,17 @@ public class SceneEditorUpdatingArgumentCascade extends AbstractArgumentCascade 
 	}
 
 	@Override
-	protected ExpressionPropertyEdit createExpressionPropertyEdit( CompletionStep<Cascade<Expression>> step, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
+	protected ExpressionPropertyEdit createExpressionPropertyEdit( UserActivity userActivity, ExpressionProperty expressionProperty, Expression prevExpression, Expression nextExpression ) {
 		SimpleArgument simpleArgument = this.getArgument();
 		InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( InstanceCreation.class );
 		if( instanceCreation != null ) {
 			UserField field = instanceCreation.getFirstAncestorAssignableTo( UserField.class );
 			if( field != null ) {
 				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( ModelResource.class ) ) {
-					return new SceneEditorUpdatingExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression, field );
+					return new SceneEditorUpdatingExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression, field );
 				}
 			}
 		}
-		return super.createExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression );
+		return super.createExpressionPropertyEdit( userActivity, expressionProperty, prevExpression, nextExpression );
 	}
 }

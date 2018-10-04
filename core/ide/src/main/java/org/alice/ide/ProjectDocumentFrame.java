@@ -407,8 +407,8 @@ public class ProjectDocumentFrame extends PerspectiveDocumentFrame {
 
 	private IdeHighlightStencil highlightStencil;
 
-	private final Operation newProjectOperation = new NewProjectOperation( this );
-	private final Operation openProjectOperation = new OpenProjectOperation( this );
+	private final Operation newProjectOperation = new NewProjectOperation();
+	private final Operation openProjectOperation = new OpenProjectOperation();
 
 	private final Operation undoOperation = new UndoOperation( this );
 	private final Operation redoOperation = new RedoOperation( this );

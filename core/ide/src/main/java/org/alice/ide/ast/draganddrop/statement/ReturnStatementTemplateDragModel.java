@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.ReturnStatementInsertCascade;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.ReturnStatement;
@@ -87,7 +87,7 @@ public class ReturnStatementTemplateDragModel extends StatementTemplateDragModel
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		return ReturnStatementInsertCascade.getInstance( blockStatementIndexPair );
 	}
 }

@@ -48,7 +48,7 @@ import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -67,10 +67,10 @@ public abstract class StatementInsertOperation extends ActionOperation implement
 		return this.blockStatementIndexPair;
 	}
 
-	protected abstract Edit createEdit( CompletionStep step );
+	protected abstract Edit createEdit( UserActivity userActivity );
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		step.commitAndInvokeDo( this.createEdit( step ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( this.createEdit( activity ) );
 	}
 }

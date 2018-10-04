@@ -91,21 +91,6 @@ public class SingleSelectListStateSwingModel {
 		}
 	}
 
-	@Deprecated
-	public void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
-		Logger.errln( "todo: fireContentsChanged", source, index0, index1 );
-	}
-
-	@Deprecated
-	public void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
-		Logger.errln( "todo: fireIntervalAdded", source, index0, index1 );
-	}
-
-	@Deprecated
-	public void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
-		Logger.errln( "todo: fireIntervalRemoved", source, index0, index1 );
-	}
-
 	private final ComboBoxModel comboBoxModel;
 	private final DefaultListSelectionModel listSelectionModel;
 }

@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.cascade;
 
 import org.lgna.croquet.CascadeBlank;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 
@@ -64,8 +63,8 @@ public abstract class ExpressionFillInWithBlanks<F extends Expression, B> extend
 	protected abstract F createValue( B[] expressions );
 
 	@Override
-	public final F createValue( ItemNode<? super F, B> node, TransactionHistory transactionHistory ) {
-		return this.createValue( this.createFromBlanks( node, transactionHistory, this.cls ) );
+	public final F createValue( ItemNode<? super F, B> node ) {
+		return this.createValue( this.createFromBlanks( node, this.cls ) );
 	}
 	//	protected abstract F getTransientValue( B[] expressions );
 	//	@Override

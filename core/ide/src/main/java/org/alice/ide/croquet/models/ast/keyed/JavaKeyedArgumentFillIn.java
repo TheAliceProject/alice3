@@ -50,7 +50,6 @@ import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaKeyedArgument;
@@ -89,7 +88,7 @@ public class JavaKeyedArgumentFillIn extends ImmutableCascadeFillIn<JavaKeyedArg
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super JavaKeyedArgument, Expression> node ) {
+	public String getMenuItemText() {
 		Formatter formatter = FormatterState.getInstance().getValue();
 		JavaMethod method = this.transientValue.getKeyMethod();
 		return formatter.getNameForDeclaration( method );
@@ -106,8 +105,8 @@ public class JavaKeyedArgumentFillIn extends ImmutableCascadeFillIn<JavaKeyedArg
 	}
 
 	@Override
-	public JavaKeyedArgument createValue( ItemNode<? super JavaKeyedArgument, Expression> node, TransactionHistory transactionHistory ) {
-		Expression[] argumentExpressions = this.createFromBlanks( node, transactionHistory, Expression.class );
+	public JavaKeyedArgument createValue( ItemNode<? super JavaKeyedArgument, Expression> node ) {
+		Expression[] argumentExpressions = this.createFromBlanks( node, Expression.class );
 		JavaMethod keyMethod = this.transientValue.getKeyMethod();
 		return new JavaKeyedArgument(
 				this.transientValue.parameter.getValue(),

@@ -43,7 +43,7 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.CompositeView;
 
 import java.util.UUID;
@@ -68,22 +68,17 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeVi
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				try {
-					this.value = createValue();
-					completionStep.finish();
-				} catch( CancelException ce ) {
-					completionStep.cancel();
-				}
-			} else {
-				completionStep.cancel();
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
+		if( isCommitted ) { // close button condition
+			try {
+				this.value = createValue();
+				openingActivity.finish();
+			} catch( CancelException ce ) {
+				openingActivity.cancel();
 			}
 		} else {
-			completionStep.cancel();
+			openingActivity.cancel();
 		}
 	}
 
@@ -92,9 +87,9 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeVi
 	private T value;
 
 	@Override
-	public T createValue( CompletionStep<?> completionStep ) {
+	public T createValue( UserActivity userActivity ) {
 		this.value = null;
-		this.showDialog( completionStep );
+		this.showDialog( userActivity );
 		return this.value;
 	}
 

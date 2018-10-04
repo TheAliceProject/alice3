@@ -46,7 +46,8 @@ import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.ProjectApplication;
-import org.lgna.croquet.history.CompletionStep;
+import org.alice.stageide.StageIDE;
+import org.lgna.croquet.history.UserActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,13 +58,13 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveOperation extends UriActionOperation {
-	public AbstractSaveOperation( UUID id ) {
+	AbstractSaveOperation( UUID id ) {
 		super( id );
 	}
 
 	protected abstract boolean isPromptNecessary( File file );
 
-	protected abstract File getDefaultDirectory( ProjectApplication application );
+	protected abstract File getDefaultDirectory( StageIDE application );
 
 	protected abstract String getExtension();
 
@@ -72,8 +73,8 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
-		ProjectApplication application = this.getProjectApplication();
+	protected void perform( UserActivity activity ) {
+		StageIDE application = StageIDE.getActiveInstance();
 		URI uri = application.getUri();
 		File filePrevious = UriUtilities.getFile( uri );
 		boolean isExceptionRaised = false;
@@ -95,13 +96,11 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 							.messageType( MessageType.ERROR )
 							.buildAndShow();
 				}
-				if( isExceptionRaised ) {
-					//pass
-				} else {
-					step.finish();
+				if ( !isExceptionRaised ) {
+					activity.finish();
 				}
 			} else {
-				step.cancel();
+				activity.cancel();
 			}
 		} while( isExceptionRaised );
 	}

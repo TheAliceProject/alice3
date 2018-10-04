@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.debug;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserMethod;
 
 import java.util.UUID;
@@ -73,9 +73,9 @@ public class BreakProjectAddNullMethodOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		UserMethod method = null;
 		StageIDE.getActiveInstance().getSceneType().methods.add( method );
-		step.finish();
+		activity.finish();
 	}
 }

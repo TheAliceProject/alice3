@@ -45,7 +45,7 @@ package org.lgna.croquet.edits;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.lgna.croquet.State;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
@@ -54,8 +54,8 @@ public final class StateEdit<T> extends AbstractEdit<State<T>> {
 	private T prevValue;
 	private T nextValue;
 
-	public StateEdit( CompletionStep<State<T>> completionStep, T prevValue, T nextValue ) {
-		super( completionStep );
+	public StateEdit( UserActivity userActivity, T prevValue, T nextValue ) {
+		super( userActivity );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}

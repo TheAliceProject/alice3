@@ -68,9 +68,8 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.imp.cascade.BlankNode;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.project.Project;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.AbstractType;
@@ -180,7 +179,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 		}
 
 		@Override
@@ -289,7 +288,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
+		public void prologue() {
 		}
 
 		@Override
@@ -460,7 +459,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 	}
 
 	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		final String valueTypeText;
 		if( this.valueComponentTypeState != null ) {
 			valueTypeText = this.getValueTypeExplanation( this.getValueType() );
@@ -523,23 +522,23 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 	private final Map<AbstractType<?, ?, ?>, Expression> mapTypeToInitializer = Maps.newHashMap();
 	private final State.ValueListener<Boolean> isArrayValueTypeListener = new State.ValueListener<Boolean>() {
 		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
 		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
 	private final State.ValueListener<AbstractType> valueComponentTypeListener = new State.ValueListener<AbstractType>() {
 		@Override
-		public void changing( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue, boolean isAdjusting ) {
+		public void changing( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
 		@Override
-		public void changed( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue, boolean isAdjusting ) {
+		public void changed( State<AbstractType> state, AbstractType prevValue, AbstractType nextValue ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
@@ -590,7 +589,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		if( this.isFinalState != null ) {
 			boolean isFinal = this.getIsFinalInitialValue();
 			this.isFinalState.setValueTransactionlessly( isFinal );
@@ -629,12 +628,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 			this.initializerState.addNewSchoolValueListener( this.initializerListener );
 		}
 		this.getView().handleInitializerChanged( this.getInitializer() );
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		if( this.isInitializerEditable() ) {
 			this.initializerState.removeNewSchoolValueListener( this.initializerListener );
 		}

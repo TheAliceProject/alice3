@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.common.ThreadUtilities;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.EmployeesOnly;
@@ -83,8 +83,8 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 
 	private transient JointUndoRunnable[] jointUndoRunnables;
 
-	public AllJointLocalTransformationsEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public AllJointLocalTransformationsEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override

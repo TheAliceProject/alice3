@@ -55,5 +55,4 @@ public abstract class ItemSelectable<J extends JComponent, T, M extends ItemStat
 		super( model );
 	}
 
-	public abstract TrackableShape getTrackableShapeFor( T item );
 }

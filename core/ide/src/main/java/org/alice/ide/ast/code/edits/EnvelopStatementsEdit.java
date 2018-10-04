@@ -50,7 +50,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.Statement;
 
@@ -62,8 +62,8 @@ public class EnvelopStatementsEdit extends AbstractEdit<EnvelopStatementsOperati
 	private BlockStatementIndexPair toLocation;
 	private transient int count;
 
-	public EnvelopStatementsEdit( CompletionStep<EnvelopStatementsOperation> completionStep, BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
-		super( completionStep );
+	public EnvelopStatementsEdit( UserActivity userActivity, BlockStatementIndexPair fromLocation, BlockStatementIndexPair toLocation ) {
+		super( userActivity );
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
 	}

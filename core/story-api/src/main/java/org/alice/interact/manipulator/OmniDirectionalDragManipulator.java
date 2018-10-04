@@ -47,7 +47,7 @@ import java.awt.Point;
 import edu.cmu.cs.dennisc.java.awt.RobotUtilities;
 import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.render.PicturePlaneUtils;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;

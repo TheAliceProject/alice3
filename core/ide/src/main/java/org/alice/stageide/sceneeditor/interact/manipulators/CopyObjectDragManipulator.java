@@ -50,14 +50,14 @@ import org.alice.ide.IDE;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite;
-import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.DropTrigger;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.ViewController;
@@ -167,8 +167,6 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 			this.sgAxes.isShowing.setValue( false );
 
 			if( endInput.getInputEventType() == InputState.InputEventType.MOUSE_UP ) {
-				Model model = null;
-				ResourceKey resourceKey = null;
 				EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
 				if( entityImplementation != null ) {
 
@@ -177,7 +175,7 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 
 						AddCopiedManagedFieldComposite addCopiedManagedFieldComposite = AddCopiedManagedFieldComposite.getInstance();
 						addCopiedManagedFieldComposite.setFieldToBeCopied( field );
-						model = addCopiedManagedFieldComposite.getLaunchOperation();
+						Triggerable triggerable = addCopiedManagedFieldComposite.getLaunchOperation();
 						DropReceptor dropReceptor = ( (StorytellingSceneEditor)IDE.getActiveInstance().getSceneEditor() ).getDropReceptor();
 						SwingComponentView<?> component = dropReceptor.getViewController();
 						ViewController<?, ?> viewController;
@@ -189,7 +187,9 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 						DropSite dropSite = new SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
 						try {
 							MouseEvent mouseEvent = endInput.getInputEvent() instanceof MouseEvent ? (MouseEvent)endInput.getInputEvent() : null;
-							Step<?> step = model.fire( DropTrigger.createUserInstance( viewController, mouseEvent, dropSite ) );
+							UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+							DropTrigger.setOnUserActivity( activity, viewController, mouseEvent, dropSite );
+							triggerable.fire( activity );
 						} catch( CancelException ce ) {
 							//Do nothing on cancel
 						}

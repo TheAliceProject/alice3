@@ -44,9 +44,7 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.Component;
 import java.io.File;
@@ -66,25 +64,25 @@ public abstract class FileDialogOperation extends Operation {
 	protected abstract void handleFile( File file ) throws CancelException, IOException;
 
 	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void performInActivity( UserActivity userActivity ) {
+		userActivity.setCompletionModel( this );
 		Component awtComponent = null; //todo
 		File file = this.showFileDialog( awtComponent );
 		if( file != null ) {
 			try {
 				this.handleFile( file );
-				step.finish();
+				userActivity.finish();
 			} catch( IOException ioe ) {
 				new OkDialog.Builder( ioe.getMessage() )
 						.title( this.getImp().getName() )
 						.messageType( MessageType.ERROR )
 						.buildAndShow();
-				step.cancel();
+				userActivity.cancel();
 			} catch( CancelException ce ) {
-				step.cancel();
+				userActivity.cancel();
 			}
 		} else {
-			step.cancel();
+			userActivity.cancel();
 		}
 	}
 }

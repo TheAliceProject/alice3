@@ -47,15 +47,9 @@ import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.DropSite;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.Manager;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.triggers.DropTrigger;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.undo.CannotRedoException;
 
@@ -63,25 +57,25 @@ import javax.swing.undo.CannotRedoException;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEdit<M extends CompletionModel> implements Edit, BinaryEncodableAndDecodable {
-	public static <E extends AbstractEdit<?>> E createCopy( E original, CompletionStep<?> step ) {
-		assert step != null : original;
+	public static <E extends AbstractEdit<?>> E createCopy( E original, UserActivity activity ) {
+		assert activity != null : original;
 		original.preCopy();
 		ByteArrayBinaryEncoder encoder = new ByteArrayBinaryEncoder();
 		encoder.encode( original );
 		BinaryDecoder decoder = encoder.createDecoder();
-		E rv = decoder.decodeBinaryEncodableAndDecodable( step );
+		E rv = decoder.decodeBinaryEncodableAndDecodable( activity );
 		original.postCopy( rv );
 		return rv;
 	}
 
-	private transient CompletionStep<M> completionStep;
+	private transient UserActivity userActivity;
 
-	public AbstractEdit( CompletionStep<M> completionStep ) {
-		this.completionStep = completionStep;
+	public AbstractEdit( UserActivity userActivity ) {
+		this.userActivity = userActivity;
 	}
 
 	public AbstractEdit( BinaryDecoder binaryDecoder, Object step ) {
-		this.completionStep = (CompletionStep<M>)step;
+		this.userActivity = (UserActivity) step;
 	}
 
 	@Override
@@ -94,16 +88,8 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 	protected void postCopy( AbstractEdit<?> result ) {
 	}
 
-	public boolean isValid() {
-		return true;
-	}
-
 	public M getModel() {
-		if( this.completionStep != null ) {
-			return this.completionStep.getModel();
-		} else {
-			return null;
-		}
+		return userActivity != null ? (M) userActivity.getCompletionModel() : null;
 	}
 
 	@Override
@@ -114,15 +100,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 		} else {
 			return null;
 		}
-	}
-
-	public CompletionStep<M> getCompletionStep() {
-		return this.completionStep;
-	}
-
-	public void setCompletionStep( CompletionStep<M> completionStep ) {
-		assert this.completionStep == null : this.completionStep;
-		this.completionStep = completionStep;
 	}
 
 	@Override
@@ -141,54 +118,18 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, B
 
 	@Override
 	public final void doOrRedo( boolean isDo ) {
-		if( isDo ) {
-			//pass
-		} else {
-			if( canRedo() ) {
-				//pass
-			} else {
-				throw new CannotRedoException();
-			}
+		if ( !isDo && !canRedo() ) {
+			throw new CannotRedoException();
 		}
-		Manager.pushUndoOrRedo();
-		try {
-			this.doOrRedoInternal( isDo );
-		} finally {
-			Manager.popUndoOrRedo();
-		}
+		this.doOrRedoInternal( isDo );
 	}
 
 	@Override
 	public final void undo() {
-		if( canUndo() ) {
-			//pass
-		} else {
+		if ( !canUndo() ) {
 			throw new CannotRedoException();
 		}
-		Manager.pushUndoOrRedo();
-		try {
-			this.undoInternal();
-		} finally {
-			Manager.popUndoOrRedo();
-		}
-	}
-
-	protected <D extends DropSite> D findFirstDropSite( Class<D> cls ) {
-		Step<?> step = this.getCompletionStep();
-		while( step != null ) {
-			Trigger trigger = step.getTrigger();
-			if( trigger instanceof DropTrigger ) {
-				DropTrigger dropTrigger = (DropTrigger)trigger;
-				DropSite dropSite = dropTrigger.getDropSite();
-				if( cls.isAssignableFrom( dropSite.getClass() ) ) {
-					return cls.cast( dropSite );
-				} else {
-					Logger.warning( dropSite );
-				}
-			}
-			step = step.getPreviousStep();
-		}
-		return null;
+		this.undoInternal();
 	}
 
 	protected static enum DescriptionStyle {

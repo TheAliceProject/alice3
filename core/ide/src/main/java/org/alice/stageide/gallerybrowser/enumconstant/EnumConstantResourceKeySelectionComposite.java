@@ -48,7 +48,6 @@ import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.lgna.croquet.RefreshableDataSingleSelectListState;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -93,7 +92,7 @@ public class EnumConstantResourceKeySelectionComposite extends SingleValueCreato
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( this.enumConstantResourceKeyState.getValue() != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {

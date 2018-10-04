@@ -49,7 +49,7 @@ import org.alice.ide.croquet.models.ast.cascade.MoreCascade;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Cascade;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractArgument;
@@ -66,8 +66,8 @@ import java.util.UUID;
 public class FillInMoreEdit extends AbstractEdit<Cascade<Expression>> {
 	private Expression argumentExpression;
 
-	public FillInMoreEdit( CompletionStep completionStep, Expression argumentExpression ) {
-		super( completionStep );
+	public FillInMoreEdit( UserActivity userActivity, Expression argumentExpression ) {
+		super( userActivity );
 		this.argumentExpression = argumentExpression;
 	}
 

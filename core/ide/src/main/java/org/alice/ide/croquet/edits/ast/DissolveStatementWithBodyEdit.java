@@ -51,7 +51,7 @@ import org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractStatementWithBody;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.NodeUtilities;
@@ -62,15 +62,15 @@ import org.lgna.project.ast.Statement;
  */
 public class DissolveStatementWithBodyEdit extends BlockStatementEdit<DissolveStatementWithBodyOperation> {
 	//todo:
-	private static DissolveStatementWithBodyOperation getModel( CompletionStep<DissolveStatementWithBodyOperation> completionStep ) {
-		return completionStep.getModel();
+	private static DissolveStatementWithBodyOperation getModel( UserActivity userActivity ) {
+		return (DissolveStatementWithBodyOperation) userActivity.getCompletionModel();
 	}
 
 	private final int index;
 	private final Statement[] statements;
 
-	public DissolveStatementWithBodyEdit( CompletionStep completionStep ) {
-		super( completionStep, (BlockStatement)( getModel( completionStep ).getStatementWithBody().getParent() ) );
+	public DissolveStatementWithBodyEdit( UserActivity userActivity ) {
+		super( userActivity, (BlockStatement)( getModel( userActivity ).getStatementWithBody().getParent() ) );
 		BlockStatement blockStatement = this.getBlockStatement();
 		AbstractStatementWithBody statementWithBody = this.getModel().getStatementWithBody();
 		this.index = blockStatement.statements.indexOf( statementWithBody );

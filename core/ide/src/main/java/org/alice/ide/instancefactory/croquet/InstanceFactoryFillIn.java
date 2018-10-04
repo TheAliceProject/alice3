@@ -57,7 +57,6 @@ import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.croquet.ImmutableCascadeFillIn;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.NamedUserType;
@@ -167,7 +166,7 @@ public class InstanceFactoryFillIn extends ImmutableCascadeFillIn<InstanceFactor
 	}
 
 	@Override
-	public InstanceFactory createValue( ItemNode<? super InstanceFactory, Void> node, TransactionHistory transactionHistory ) {
+	public InstanceFactory createValue( ItemNode<? super InstanceFactory, Void> node ) {
 		return this.value;
 	}
 

@@ -65,10 +65,7 @@ import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
 import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 
@@ -193,14 +190,13 @@ class JTimeLinePoseMarker extends JToggleButton {
 		public void mouseReleased( MouseEvent e ) {
 			Logger.outln( e );
 			if( isSliding ) {
-				TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				Transaction transaction = history.acquireActiveTransaction();
-				CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+				// TODO not use Application.getActiveInstance().acquireOpenActivity()
+				UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
 
 				double tCurrent = keyFrameData.getEventTime();
 				final double THRESHOLD = 0.0001;
 				if( Math.abs( tCurrent - tPressed ) > THRESHOLD ) {
-					step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, parent.getComposite().getTimeLine(), keyFrameData, tCurrent, tPressed ) );
+					userActivity.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( userActivity, parent.getComposite().getTimeLine(), keyFrameData, tCurrent, tPressed ) );
 					JTimeLinePoseMarker.this.setSelected( true );
 				} else {
 					parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData, tPressed );

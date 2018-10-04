@@ -52,11 +52,9 @@ import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.io.IoUtilities;
@@ -65,7 +63,6 @@ import org.lgna.project.io.TypeResourcesPair;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -121,8 +118,8 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < this.getStepCount();
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < this.getStepCount();
 	}
 
 	protected Operation getAddResourceKeyManagedFieldCompositeOperation( EnumConstantResourceKey enumConstantResourceKey ) {
@@ -155,11 +152,8 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 	}
 
 	@Override
-	protected abstract Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity ) {
+		super.handleSuccessfulCompletionOfSubModels( activity );
 		this.resourceKey = null;
 	}
 

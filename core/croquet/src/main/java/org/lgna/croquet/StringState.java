@@ -67,14 +67,14 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringState extends SimpleValueState<String> {
+public abstract class StringState extends State<String> {
 	private final class DocumentListener implements javax.swing.event.DocumentListener {
 		private void handleUpdate( DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {
 				try {
 					javax.swing.text.Document document = e.getDocument();
 					String nextValue = document.getText( 0, document.getLength() );
-					StringState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, DocumentEventTrigger.createUserInstance( e ) );
+					StringState.this.changeValueFromSwing( nextValue, DocumentEventTrigger.createUserInstance( e ).getUserActivity() );
 				} catch( BadLocationException ble ) {
 					throw new RuntimeException( ble );
 				}
@@ -125,10 +125,6 @@ public abstract class StringState extends SimpleValueState<String> {
 			textComponent.getAwtComponent().setDocument( this.document );
 		}
 
-		public void deinstall( TextComponent<?> textComponent ) {
-			this.textComponents.remove( textComponent );
-		}
-
 		public Iterable<TextComponent<?>> getTextComponents() {
 			return this.textComponents;
 		}
@@ -160,11 +156,6 @@ public abstract class StringState extends SimpleValueState<String> {
 	@Override
 	public void appendRepresentation( StringBuilder sb, String value ) {
 		sb.append( value );
-	}
-
-	@Override
-	public Class<String> getItemClass() {
-		return String.class;
 	}
 
 	@Override
@@ -230,10 +221,6 @@ public abstract class StringState extends SimpleValueState<String> {
 		}
 	}
 
-	//	@Override
-	//	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-	//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
-	//	}
 	@Override
 	protected String getSwingValue() {
 		try {

@@ -62,11 +62,8 @@ import org.lgna.croquet.ValueCreatorInputDialogCoreComposite;
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.Project;
 import org.lgna.project.annotations.Visibility;
@@ -109,17 +106,9 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 		}
 
 		@Override
-		protected AbstractType<?, ?, ?> createValue( Transaction transaction, Trigger trigger ) {
-			CompletionStep<?> completionStep = CompletionStep.createAndAddToTransaction( transaction, this, trigger, new TransactionHistory() );
-
+		protected AbstractType<?, ?, ?> createValue( UserActivity userActivity ) {
 			OtherTypeDialog.this.initializeRootFilterType( this.rootFilterType );
-
-			AbstractType<?, ?, ?> value = OtherTypeDialog.this.createValue( completionStep );
-			if( completionStep.isCanceled() ) {
-				throw new CancelException();
-			} else {
-				return value;
-			}
+			return OtherTypeDialog.this.createValue( userActivity );
 		}
 
 		private final JavaType rootFilterType;
@@ -245,7 +234,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		TypeNode typeNode = this.typeTreeState.getValue();
 		if( typeNode != null ) {
 			AbstractType<?, ?, ?> type = typeNode.getType();
@@ -477,8 +466,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 
 		Project project = IoUtilities.readProject( args[ 0 ] );
 		ProjectStack.pushProject( project );
-		Trigger trigger = null;
-		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( trigger );
+		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( null );
 		System.exit( 0 );
 	}
 }

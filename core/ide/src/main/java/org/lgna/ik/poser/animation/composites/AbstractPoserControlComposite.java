@@ -44,7 +44,6 @@ package org.lgna.ik.poser.animation.composites;
 
 import java.util.UUID;
 
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -52,7 +51,7 @@ import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
@@ -104,7 +103,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected ActionOperation straightenJointsOperation = createActionOperation( "straightenJoints", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public AbstractEdit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			parent.getModel().straightenOutJoints();
 			return null;
 		}

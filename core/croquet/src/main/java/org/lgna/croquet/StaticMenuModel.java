@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.views.Menu;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
@@ -84,8 +83,8 @@ public abstract class StaticMenuModel extends MenuModel {
 	}
 
 	@Override
-	public final void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public final void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 		this.updateMenuItemContainer( popupMenu );
 	}
 

@@ -46,9 +46,8 @@ package org.alice.ide.croquet.models.ast.keyed;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.ImmutableCascade;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.ArgumentOwner;
 import org.lgna.project.ast.JavaKeyedArgument;
 
@@ -80,9 +79,9 @@ public class KeyedMoreCascade extends ImmutableCascade<JavaKeyedArgument> {
 	}
 
 	@Override
-	protected AddKeyedArgumentEdit createEdit( CompletionStep<Cascade<JavaKeyedArgument>> completionStep, JavaKeyedArgument[] values ) {
+	protected AddKeyedArgumentEdit createEdit( UserActivity userActivity, JavaKeyedArgument[] values ) {
 		JavaKeyedArgument javaKeyedArgument = values[ 0 ];
 		javaKeyedArgument.parameter.setValue( this.argumentOwner.getParameterOwnerProperty().getValue().getKeyedParameter() );
-		return new AddKeyedArgumentEdit( completionStep, this.argumentOwner, javaKeyedArgument );
+		return new AddKeyedArgumentEdit( userActivity, this.argumentOwner, javaKeyedArgument );
 	}
 }

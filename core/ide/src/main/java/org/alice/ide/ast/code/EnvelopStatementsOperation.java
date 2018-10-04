@@ -47,7 +47,7 @@ import org.alice.ide.ast.code.edits.EnvelopStatementsEdit;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -86,8 +86,8 @@ public final class EnvelopStatementsOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep step ) {
-		step.commitAndInvokeDo( new EnvelopStatementsEdit( step, this.fromLocation, this.toLocation ) );
+	protected void perform( UserActivity activity ) {
+		activity.commitAndInvokeDo( new EnvelopStatementsEdit( activity, this.fromLocation, this.toLocation ) );
 	}
 
 }

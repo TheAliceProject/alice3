@@ -44,7 +44,7 @@ package org.alice.stageide.oneshot.edits;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.EmployeesOnly;
@@ -58,8 +58,8 @@ public class SetOpacityEdit extends MethodInvocationEdit {
 	private transient ModelImp modelImp;
 	private transient Float value;
 
-	public SetOpacityEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public SetOpacityEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override

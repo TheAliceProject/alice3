@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.issue.croquet.AnomalousSituationComposite;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 
 import javax.swing.SwingUtilities;
 import java.net.URL;
@@ -64,7 +63,7 @@ public abstract class BrowserOperation extends InconsequentialActionOperation {
 	protected abstract URL getUrl();
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		URL url = this.getUrl();
 		if( url != null ) {
 			try {

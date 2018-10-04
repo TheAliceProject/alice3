@@ -47,10 +47,9 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.models.cascade.ExpressionBlank;
 import org.alice.stageide.sceneeditor.side.edits.MarkerColorIdEdit;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.ImmutableCascade;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
@@ -80,8 +79,8 @@ public final class MarkerColorIdCascade extends ImmutableCascade<Expression> {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<Expression>> completionStep, Expression[] values ) {
+	protected Edit createEdit( UserActivity userActivity, Expression[] values ) {
 		assert values.length == 1;
-		return new MarkerColorIdEdit( completionStep, this.field, values[ 0 ] );
+		return new MarkerColorIdEdit( userActivity, this.field, values[ 0 ] );
 	}
 }

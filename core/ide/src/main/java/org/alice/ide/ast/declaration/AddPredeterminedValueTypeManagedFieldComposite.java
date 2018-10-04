@@ -44,10 +44,10 @@ package org.alice.ide.ast.declaration;
 
 import org.alice.ide.typemanager.TypeManager;
 import org.alice.stageide.icons.IconFactoryManager;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.icon.EmptyIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.IconSize;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
@@ -62,7 +62,7 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 	private final JavaType javaValueType;
 	private AbstractType<?, ?, ?> type;
 
-	public AddPredeterminedValueTypeManagedFieldComposite( UUID migrationId, JavaType javaValueType ) {
+	private AddPredeterminedValueTypeManagedFieldComposite( UUID migrationId, JavaType javaValueType ) {
 		super( migrationId, new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
@@ -84,18 +84,18 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		if( this.isUserTypeDesired() ) {
 			this.type = TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
 		} else {
 			this.type = this.javaValueType;
 		}
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		this.type = null;
 	}
 

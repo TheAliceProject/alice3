@@ -44,7 +44,6 @@ package org.alice.ide.croquet.models.ui.debug;
 
 import org.alice.ide.croquet.models.ast.StatementContextMenu;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.project.ast.Comment;
 import org.lgna.project.ast.Statement;
@@ -74,12 +73,12 @@ public class RaiseAnomalousSituationOperation extends InconsequentialActionOpera
 	}
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		new Thread() {
 			@Override
 			public void run() {
 				Statement statement = new Comment( "delete me" );
-				StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( NullTrigger.createUserInstance() );
+				StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( NullTrigger.createUserActivity() );
 			}
 		}.start();
 	}

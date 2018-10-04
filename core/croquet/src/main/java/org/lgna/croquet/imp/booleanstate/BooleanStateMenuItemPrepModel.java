@@ -42,9 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet.imp.booleanstate;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.lgna.croquet.views.CheckBoxMenuItem;
 import org.lgna.croquet.views.MenuItemContainer;
@@ -61,11 +59,6 @@ public class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
 		super( UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 		assert booleanState != null;
 		this.booleanState = booleanState;
-	}
-
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Lists.newArrayList( this.booleanState );
 	}
 
 	@Override

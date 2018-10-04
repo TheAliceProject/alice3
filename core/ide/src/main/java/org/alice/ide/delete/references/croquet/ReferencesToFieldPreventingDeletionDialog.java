@@ -48,7 +48,7 @@ import org.lgna.croquet.Element;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.UserField;
 
@@ -104,12 +104,12 @@ public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationIn
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		return null;
 	}
 
 	@Override
-	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck() {
 		return null;
 	}
 }

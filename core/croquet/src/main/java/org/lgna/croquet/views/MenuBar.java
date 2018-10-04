@@ -46,6 +46,7 @@ package org.lgna.croquet.views;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.MenuBarComposite;
 import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.lgna.croquet.history.UserActivity;
 
 import javax.swing.JMenuBar;
 import javax.swing.event.PopupMenuListener;
@@ -54,6 +55,7 @@ import javax.swing.event.PopupMenuListener;
  * @author Dennis Cosgrove
  */
 public class MenuBar extends CompositeView<JMenuBar, MenuBarComposite> implements MenuItemContainer {
+
 	public MenuBar( MenuBarComposite composite ) {
 		super( composite );
 		for( StandardMenuItemPrepModel item : composite.getChildren() ) {
@@ -97,6 +99,11 @@ public class MenuBar extends CompositeView<JMenuBar, MenuBarComposite> implement
 	@Override
 	public void removePopupMenuListener( PopupMenuListener listener ) {
 		Logger.todo( listener );
+	}
+
+	@Override
+	public UserActivity getActivity() {
+		return null;
 	}
 
 	@Override

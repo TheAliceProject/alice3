@@ -49,11 +49,10 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeWithInternalBlank;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
@@ -75,7 +74,7 @@ public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvo
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<MethodInvocation>> completionStep, MethodInvocation[] values ) {
+	protected Edit createEdit( UserActivity userActivity, MethodInvocation[] values ) {
 		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
 		UserMethod method = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = method.body.getValue();
@@ -83,7 +82,7 @@ public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvo
 				body,
 				body.statements.size()
 				);
-		return new InsertStatementEdit( completionStep, blockStatementIndexPair, new ExpressionStatement( values[ 0 ] ) );
+		return new InsertStatementEdit( userActivity, blockStatementIndexPair, new ExpressionStatement( values[ 0 ] ) );
 	}
 
 	@Override

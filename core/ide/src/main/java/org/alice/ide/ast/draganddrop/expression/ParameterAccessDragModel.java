@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.expression.ParameterAccessOperation;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.ExpressionProperty;
 import org.lgna.project.ast.UserParameter;
@@ -82,17 +82,12 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
 	}
 
 	@Override
-	protected Model getDropModel( BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
-	}
-
-	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.parameter.getValueType();
 	}
 
 	@Override
-	protected Model getDropModel( ExpressionProperty expressionProperty ) {
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
 		return ParameterAccessOperation.getInstance( this.parameter, expressionProperty );
 	}
 }

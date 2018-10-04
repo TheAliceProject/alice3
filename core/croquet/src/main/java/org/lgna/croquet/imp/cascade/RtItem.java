@@ -52,7 +52,6 @@ import org.lgna.croquet.CascadeCancel;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.CascadeSeparator;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.views.CascadeMenu;
 import org.lgna.croquet.views.CascadeMenuItem;
 import org.lgna.croquet.views.MenuItemContainer;
@@ -153,8 +152,8 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
 		return rv;
 	}
 
-	public F createValue( TransactionHistory transactionHistory ) {
-		return this.getElement().createValue( this.getNode(), transactionHistory );
+	public F createValue() {
+		return this.getElement().createValue( this.getNode() );
 	}
 
 	protected boolean isLast() {
@@ -262,7 +261,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends AbstractItemN
 			jMenuItem = menu.getAwtComponent();
 			rv = menu;
 		}
-		jMenuItem.setText( item.getMenuItemText( this.getNode() ) );
+		jMenuItem.setText( item.getMenuItemText() );
 		jMenuItem.setIcon( item.getMenuItemIcon( this.getNode() ) );
 		return rv;
 	}
@@ -341,7 +340,7 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, SeparatorNode> {
 	@Override
 	protected ViewController<?, ?> createMenuItem( CascadeItem<Void, Void> item, boolean isLast ) {
 		//todo
-		if( ( item.getMenuItemText( null ) != null ) || ( item.getMenuItemIcon( null ) != null ) ) {
+		if( ( item.getMenuItemText() != null ) || ( item.getMenuItemIcon( null ) != null ) ) {
 			ViewController<?, ?> rv = super.createMenuItem( item, isLast );
 			rv.getAwtComponent().setEnabled( false );
 			return rv;

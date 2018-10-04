@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.croquet.codecs.NodeCodec;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractDeclaration;
 
 /**
@@ -58,8 +58,8 @@ public class RenameDeclarationEdit extends AbstractEdit {
 	private final String prevValue;
 	private final String nextValue;
 
-	public RenameDeclarationEdit( CompletionStep completionStep, AbstractDeclaration declaration, String prevValue, String nextValue ) {
-		super( completionStep );
+	public RenameDeclarationEdit( UserActivity userActivity, AbstractDeclaration declaration, String prevValue, String nextValue ) {
+		super( userActivity );
 		this.declaration = declaration;
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;

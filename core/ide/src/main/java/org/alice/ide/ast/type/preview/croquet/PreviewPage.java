@@ -48,7 +48,6 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.Panel;
 
 import java.util.UUID;
@@ -74,7 +73,7 @@ public class PreviewPage extends WizardPageComposite<Panel, ImportTypeWizard> {
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

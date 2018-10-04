@@ -40,22 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.alice.interact.manipulator;
 
-package org.lgna.croquet.history.event;
+import org.alice.interact.MovementKey;
 
-import org.lgna.croquet.history.TransactionNode;
-
-/**
- * @author Dennis Cosgrove
- */
-public abstract class Event<N extends TransactionNode<?>> {
-	private final N node;
-
-	public Event( N node ) {
-		this.node = node;
+public abstract class OrbitKeyManipulator extends KeyManipulator {
+	OrbitKeyManipulator( MovementKey[] keys ) {
+		super(keys);
 	}
 
-	public N getNode() {
-		return this.node;
+	@Override
+	public String getUndoRedoDescription() {
+		return "Object Orbit";
+	}
+
+	@Override
+	protected void manipulate( double amountToMove, MovementKey key ) {
+		key.applyOrbit(manipulatedTransformable, amountToMove );
 	}
 }

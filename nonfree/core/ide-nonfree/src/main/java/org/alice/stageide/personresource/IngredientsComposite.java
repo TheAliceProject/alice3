@@ -56,7 +56,6 @@ import org.alice.stageide.personresource.edits.SetPersonResourceEdit;
 import org.alice.stageide.personresource.views.IngredientsView;
 import org.alice.stageide.personresource.views.OutfitTabView;
 import org.alice.stageide.personresource.views.PersonViewer;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.BoundedDoubleState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
@@ -69,7 +68,7 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.Color;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -120,8 +119,8 @@ import java.util.UUID;
 public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 	private final Operation randomize = this.createActionOperation( "randomize", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
-			return createRandomEdit( step );
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
+			return createRandomEdit( userActivity );
 		}
 	} );
 
@@ -140,125 +139,125 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 	private final MapToMap<LifeStage, Gender, PersonResource> mapToMap = MapToMap.newInstance();
 	private final State.ValueListener<LifeStage> lifeStageListener = new State.ValueListener<LifeStage>() {
 		@Override
-		public void changing( State<LifeStage> state, LifeStage prevValue, LifeStage nextValue, boolean isAdjusting ) {
+		public void changing( State<LifeStage> state, LifeStage prevValue, LifeStage nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<LifeStage> state, LifeStage prevValue, LifeStage nextValue, boolean isAdjusting ) {
+		public void changed( State<LifeStage> state, LifeStage prevValue, LifeStage nextValue ) {
 			popAtomic();
 			updateCameraPointOfView();
 		}
 	};
 	private final State.ValueListener<Gender> genderListener = new State.ValueListener<Gender>() {
 		@Override
-		public void changing( State<Gender> state, Gender prevValue, Gender nextValue, boolean isAdjusting ) {
+		public void changing( State<Gender> state, Gender prevValue, Gender nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<Gender> state, Gender prevValue, Gender nextValue, boolean isAdjusting ) {
+		public void changed( State<Gender> state, Gender prevValue, Gender nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<java.awt.Color> skinColorListener = new State.ValueListener<java.awt.Color>() {
 		@Override
-		public void changing( State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
+		public void changing( State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
+		public void changed( State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue ) {
 			popAtomic();
 			handleSkinColorChange( nextValue );
 		}
 	};
 	private final State.ValueListener<BaseFace> faceListener = new State.ValueListener<BaseFace>() {
 		@Override
-		public void changing( State<BaseFace> state, BaseFace prevValue, BaseFace nextValue, boolean isAdjusting ) {
+		public void changing( State<BaseFace> state, BaseFace prevValue, BaseFace nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<BaseFace> state, BaseFace prevValue, BaseFace nextValue, boolean isAdjusting ) {
+		public void changed( State<BaseFace> state, BaseFace prevValue, BaseFace nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<BaseEyeColor> baseEyeColorListener = new State.ValueListener<BaseEyeColor>() {
 		@Override
-		public void changing( State<BaseEyeColor> state, BaseEyeColor prevValue, BaseEyeColor nextValue, boolean isAdjusting ) {
+		public void changing( State<BaseEyeColor> state, BaseEyeColor prevValue, BaseEyeColor nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<BaseEyeColor> state, BaseEyeColor prevValue, BaseEyeColor nextValue, boolean isAdjusting ) {
+		public void changed( State<BaseEyeColor> state, BaseEyeColor prevValue, BaseEyeColor nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<HairColorName> hairColorNameListener = new State.ValueListener<HairColorName>() {
 		@Override
-		public void changing( State<HairColorName> state, HairColorName prevValue, HairColorName nextValue, boolean isAdjusting ) {
+		public void changing( State<HairColorName> state, HairColorName prevValue, HairColorName nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<HairColorName> state, HairColorName prevValue, HairColorName nextValue, boolean isAdjusting ) {
+		public void changed( State<HairColorName> state, HairColorName prevValue, HairColorName nextValue ) {
 			addHairColorNameToFront( nextValue );
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<HairHatStyle> hairListener = new State.ValueListener<HairHatStyle>() {
 		@Override
-		public void changing( State<HairHatStyle> state, HairHatStyle prevValue, HairHatStyle nextValue, boolean isAdjusting ) {
+		public void changing( State<HairHatStyle> state, HairHatStyle prevValue, HairHatStyle nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<HairHatStyle> state, HairHatStyle prevValue, HairHatStyle nextValue, boolean isAdjusting ) {
+		public void changed( State<HairHatStyle> state, HairHatStyle prevValue, HairHatStyle nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<FullBodyOutfit> fullBodyOutfitListener = new State.ValueListener<FullBodyOutfit>() {
 		@Override
-		public void changing( State<FullBodyOutfit> state, FullBodyOutfit prevValue, FullBodyOutfit nextValue, boolean isAdjusting ) {
+		public void changing( State<FullBodyOutfit> state, FullBodyOutfit prevValue, FullBodyOutfit nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<FullBodyOutfit> state, FullBodyOutfit prevValue, FullBodyOutfit nextValue, boolean isAdjusting ) {
+		public void changed( State<FullBodyOutfit> state, FullBodyOutfit prevValue, FullBodyOutfit nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<TopPiece> topPieceListener = new State.ValueListener<TopPiece>() {
 		@Override
-		public void changing( State<TopPiece> state, TopPiece prevValue, TopPiece nextValue, boolean isAdjusting ) {
+		public void changing( State<TopPiece> state, TopPiece prevValue, TopPiece nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<TopPiece> state, TopPiece prevValue, TopPiece nextValue, boolean isAdjusting ) {
+		public void changed( State<TopPiece> state, TopPiece prevValue, TopPiece nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<BottomPiece> bottomPieceListener = new State.ValueListener<BottomPiece>() {
 		@Override
-		public void changing( State<BottomPiece> state, BottomPiece prevValue, BottomPiece nextValue, boolean isAdjusting ) {
+		public void changing( State<BottomPiece> state, BottomPiece prevValue, BottomPiece nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<BottomPiece> state, BottomPiece prevValue, BottomPiece nextValue, boolean isAdjusting ) {
+		public void changed( State<BottomPiece> state, BottomPiece prevValue, BottomPiece nextValue ) {
 			popAtomic();
 		}
 	};
 	private final State.ValueListener<Double> obesityLevelListener = new State.ValueListener<Double>() {
 		@Override
-		public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		public void changing( State<Double> state, Double prevValue, Double nextValue ) {
 			pushAtomic();
 		}
 
 		@Override
-		public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
+		public void changed( State<Double> state, Double prevValue, Double nextValue ) {
 			popAtomic();
 		}
 	};
@@ -408,7 +407,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 		return this.faceTab;
 	}
 
-	private Edit createRandomEdit( CompletionStep<?> step ) {
+	private Edit createRandomEdit( UserActivity userActivity ) {
 		LifeStage lifeStage;
 		if( this.lifeStageState.isEnabled() ) {
 			lifeStage = null;
@@ -416,7 +415,7 @@ public class IngredientsComposite extends SimpleComposite<IngredientsView> {
 			lifeStage = this.lifeStageState.getValue();
 		}
 		PersonResource nextPersonResource = RandomPersonUtilities.createRandomResource( lifeStage );
-		return new SetPersonResourceEdit( step, nextPersonResource );
+		return new SetPersonResourceEdit( userActivity, nextPersonResource );
 	}
 
 	private void addListeners() {

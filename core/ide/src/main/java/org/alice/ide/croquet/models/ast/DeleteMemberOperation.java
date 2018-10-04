@@ -48,7 +48,7 @@ import org.alice.ide.croquet.models.ResponsibleModel;
 import org.alice.ide.declarationseditor.DeclarationTabState;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMember;
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.NodeUtilities;
@@ -113,11 +113,11 @@ public abstract class DeleteMemberOperation<N extends AbstractMember> extends Ac
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		if( this.isClearToDelete( this.member ) ) {
-			step.commitAndInvokeDo( new DependentEdit<DeleteMemberOperation<N>>( step ) );
+			activity.commitAndInvokeDo( new DependentEdit<DeleteMemberOperation<N>>( activity ) );
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

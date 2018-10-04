@@ -44,7 +44,7 @@ package org.alice.stageide.sceneeditor.interact.croquet.edits;
 
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.SCamera;
@@ -58,8 +58,8 @@ public class GetAGoodLookAtEdit extends LocalTransformationEdit {
 	private final SCamera camera;
 	private final SThing toLookAt;
 
-	public GetAGoodLookAtEdit( CompletionStep completionStep, InstanceFactory cameraInstanceFactory, AbstractMethod method, Expression[] argumentExpressions, SCamera camera, SThing toLookAt ) {
-		super( completionStep, cameraInstanceFactory, method, argumentExpressions );
+	public GetAGoodLookAtEdit( UserActivity userActivity, InstanceFactory cameraInstanceFactory, AbstractMethod method, Expression[] argumentExpressions, SCamera camera, SThing toLookAt ) {
+		super( userActivity, cameraInstanceFactory, method, argumentExpressions );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}

@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Dimension3;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.common.ThreadUtilities;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
@@ -138,8 +138,8 @@ public class StrikePoseEdit extends MethodInvocationEdit {
 		return null;
 	}
 
-	public StrikePoseEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public StrikePoseEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 		this.pose = getPose( method, argumentExpressions );
 	}
 

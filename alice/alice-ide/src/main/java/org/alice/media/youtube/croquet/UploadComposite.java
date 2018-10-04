@@ -65,7 +65,6 @@ import org.alice.media.youtube.croquet.views.UploadToYouTubeStatusPane;
 import org.alice.media.youtube.croquet.views.UploadView;
 import org.alice.media.youtube.login.YouTubeLoginComposite;
 import org.alice.stageide.StageIDE;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -85,7 +84,7 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Matt May
@@ -123,7 +122,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 
 	private final ActionOperation exportToFileOperation = this.createActionOperation( "exportToFileOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 
 			File videosDirectory = StageIDE.getActiveInstance().getVideosDirectory();
 
@@ -135,8 +134,8 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 				filename = "*.webm";
 			}
 
-			File exportFile = FileDialogUtilities.showSaveFileDialog( UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
-					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
+			File exportFile = FileDialogUtilities.showSaveFileDialog(
+					UploadComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( "webm" ), "webm" );
 			if( exportFile != null ) {
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
@@ -215,7 +214,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		//		if( true ) {
 		//			return IS_GOOD_TO_GO_STATUS;
 		//		}

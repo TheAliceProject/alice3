@@ -47,7 +47,7 @@ import org.lgna.common.Resource;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.UUID;
 
@@ -59,22 +59,22 @@ public abstract class ResourceOperation extends ActionOperation {
 		super( Application.PROJECT_GROUP, migrationId );
 	}
 
-	protected abstract Edit createEdit( CompletionStep<?> step, Resource resource );
+	protected abstract Edit createEdit( UserActivity userActivity, Resource resource );
 
 	protected abstract Resource getResource();
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		Resource resource = this.getResource();
 		if( resource != null ) {
-			Edit edit = this.createEdit( step, resource );
+			Edit edit = this.createEdit( activity, resource );
 			if( edit != null ) {
-				step.commitAndInvokeDo( edit );
+				activity.commitAndInvokeDo( edit );
 			} else {
-				step.cancel();
+				activity.cancel();
 			}
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 }

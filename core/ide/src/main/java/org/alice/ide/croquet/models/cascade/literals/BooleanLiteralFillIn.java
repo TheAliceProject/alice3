@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.cascade.literals;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.BooleanLiteral;
 
@@ -73,7 +72,7 @@ public class BooleanLiteralFillIn extends ExpressionFillInWithoutBlanks<BooleanL
 	}
 
 	@Override
-	public BooleanLiteral createValue( ItemNode<? super BooleanLiteral, Void> node, TransactionHistory transactionHistory ) {
+	public BooleanLiteral createValue( ItemNode<? super BooleanLiteral, Void> node ) {
 		return new BooleanLiteral( this.transientValue.value.getValue() );
 	}
 

@@ -56,8 +56,4 @@ public class FillInNode<F, B> extends BlankOwnerNode<F, B, CascadeFillIn<F, B>> 
 	private FillInNode( CascadeFillIn<F, B> model ) {
 		super( model );
 	}
-
-	public CascadeFillIn<F, B> getCascadeFillIn() {
-		return this.getElement();
-	}
 }

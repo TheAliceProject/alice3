@@ -60,7 +60,7 @@ import org.lgna.croquet.AbstractDropReceptor;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.FolderTabbedPane;
@@ -171,14 +171,14 @@ public class MembersView extends BorderPanel {
 		}
 
 		@Override
-		protected Model dragDroppedPostRejectorCheck( DragStep step ) {
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
 			DropSite dropSite = step.getCurrentPotentialDropSite();
 			if( dropSite != null ) {
 				DragModel dragModel = step.getModel();
 				if( dragModel instanceof StatementDragModel ) {
 					StatementDragModel statementDragModel = (StatementDragModel)dragModel;
 					Statement statement = statementDragModel.getStatement();
-					return DeleteStatementOperation.getInstance( statement );
+					return new DeleteStatementOperation( statement );
 				} else {
 					return null;
 				}

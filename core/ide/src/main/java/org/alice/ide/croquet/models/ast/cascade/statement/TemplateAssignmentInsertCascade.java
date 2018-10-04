@@ -49,11 +49,10 @@ import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.alice.ide.statementfactory.LocalArrayAtIndexAssignmentFillIn;
 import org.alice.ide.statementfactory.LocalAssignmentFillIn;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeWithInternalBlank;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
@@ -81,9 +80,8 @@ public class TemplateAssignmentInsertCascade extends CascadeWithInternalBlank<Ex
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<Expression>> completionStep, Expression[] values ) {
-		return new InsertStatementEdit(
-				completionStep,
+	protected Edit createEdit( UserActivity userActivity, Expression[] values ) {
+		return new InsertStatementEdit( userActivity,
 				this.blockStatementIndexPair,
 				new ExpressionStatement( values[ 0 ] ) );
 	}

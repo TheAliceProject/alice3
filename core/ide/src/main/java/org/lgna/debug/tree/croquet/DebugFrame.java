@@ -43,7 +43,6 @@
 package org.lgna.debug.tree.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Sets;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
@@ -51,7 +50,7 @@ import org.lgna.croquet.Operation;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.debug.tree.core.ZTreeNode;
 import org.lgna.debug.tree.croquet.views.DebugFrameView;
 
@@ -147,7 +146,7 @@ public abstract class DebugFrame<T> extends FrameComposite<DebugFrameView<T>> {
 
 	private final Operation markOperation = this.createActionOperation( "markOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			ZTreeNode.Builder<T> builder = capture();
 			ZTreeNode<T> markRoot = builder.build();
 			markTreeModel.setRoot( markRoot );
@@ -165,7 +164,7 @@ public abstract class DebugFrame<T> extends FrameComposite<DebugFrameView<T>> {
 	} );
 	private final Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			ZTreeNode<T> markRoot = (ZTreeNode<T>)markTreeModel.getRoot();
 			Set<T> valuesToMute = createValuesToMute( markRoot );
 

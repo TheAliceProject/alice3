@@ -50,7 +50,6 @@ import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.ValueConverter;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedImageIconFactory;
-import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ModelResource;
@@ -201,7 +200,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public InstanceCreation createInstanceCreation() {
-		return this.getPersonResourceValueCreator().fireAndGetValue( NullTrigger.createUserInstance() );
+		return this.getPersonResourceValueCreator().fireAndGetValue();
 	}
 
 	@Override

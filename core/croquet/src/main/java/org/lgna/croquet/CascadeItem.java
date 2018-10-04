@@ -45,7 +45,6 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
 import javax.swing.BoxLayout;
@@ -84,7 +83,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 
 	public abstract F getTransientValue( ItemNode<? super F, B> node );
 
-	public abstract F createValue( ItemNode<? super F, B> node, TransactionHistory transactionHistory );
+	public abstract F createValue( ItemNode<? super F, B> node );
 
 	protected abstract JComponent createMenuItemIconProxy( ItemNode<? super F, B> node );
 
@@ -178,7 +177,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		return this.icon;
 	}
 
-	public String getMenuItemText( ItemNode<? super F, B> node ) {
+	public String getMenuItemText() {
 		return null;
 	}
 }

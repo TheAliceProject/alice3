@@ -44,12 +44,8 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.PopupPrepStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.imp.cascade.RtRoot;
 import org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger;
@@ -82,11 +78,6 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		public Iterable<? extends Model> getChildren() {
-			return Lists.newLinkedList( this.root );
-		}
-
-		@Override
 		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.root.getClassUsedForLocalization();
 		}
@@ -99,7 +90,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		@Override
 		protected void prologue( Trigger trigger ) {
 			super.prologue( trigger );
-			this.root.prologue( trigger );
+			this.root.prologue();
 		}
 
 		@Override
@@ -113,16 +104,14 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected Step<?> perform( Trigger trigger ) {
-			this.prologue( trigger );
-			final RtRoot<T, ?> rtRoot = new RtRoot( this.root );
-			Step<?> rv;
+		protected void perform( UserActivity activity ) {
+			this.prologue( activity.getTrigger() );
+			final RtRoot<T, ?> rtRoot = new RtRoot<>( this.root );
 			if( rtRoot.isAutomaticallyDetermined() ) {
-				rv = rtRoot.complete( new CascadeAutomaticDeterminationTrigger( trigger ) );
-				this.handleFinally();
+				rtRoot.complete( CascadeAutomaticDeterminationTrigger.createChildActivity(activity) );
 			} else {
-				final PopupPrepStep prepStep = TransactionManager.addPopupPrepStep( this, trigger );
-				final PopupMenu popupMenu = new PopupMenu( this );
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( this, activity );
+				final PopupMenu popupMenu = new PopupMenu( this, activity );
 				popupMenu.addComponentListener( new ComponentListener() {
 					@Override
 					public void componentShown( ComponentEvent e ) {
@@ -134,7 +123,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 					@Override
 					public void componentResized( ComponentEvent e ) {
-						TransactionManager.firePopupMenuResized( prepStep );
+						prepStep.firePopupMenuResized();
 					}
 
 					@Override
@@ -142,10 +131,8 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 					}
 				} );
 				popupMenu.addPopupMenuListener( rtRoot.createPopupMenuListener( popupMenu ) );
-				trigger.showPopupMenu( popupMenu );
-				rv = prepStep;
+				prepStep.showPopupMenu( popupMenu );
 			}
-			return rv;
 		}
 
 		@Override
@@ -213,7 +200,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final T[] createValue( ItemNode<? super T[], T> node, TransactionHistory transactionHistory ) {
+	public final T[] createValue( ItemNode<? super T[], T> node ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
@@ -229,7 +216,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	public final String getMenuItemText( ItemNode<? super T[], T> step ) {
+	public final String getMenuItemText() {
 		return this.text;
 	}
 
@@ -238,7 +225,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		return null;
 	}
 
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {
@@ -248,16 +235,16 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract Class<T> getComponentType();
 
-	public abstract CompletionStep<CM> createCompletionStep( Transaction transaction, Trigger trigger );
+	final void recordCompletionModel( UserActivity userActivity ) {
+		userActivity.setCompletionModel( getCompletionModel() );
+	}
 
-	public abstract CompletionStep<CM> handleCompletion( TransactionHistory transactionHistory, Trigger trigger, RtRoot<T, CM> rtRoot );
+	public abstract void handleCompletion( UserActivity userActivity, RtRoot<T, CM> rtRoot );
 
-	public final void handleCancel( CompletionStep<CM> completionStep, Trigger trigger, CancelException ce ) {
+	public final void handleCancel( UserActivity userActivity ) {
 		try {
-			if( completionStep != null ) {
-				completionStep.cancel();
-			} else {
-				TransactionManager.addCancelCompletionStep( this.getCompletionModel(), trigger );
+			if ( userActivity.getCompletionModel() == null ) {
+				userActivity.setCompletionModel( getCompletionModel() );
 			}
 		} finally {
 			this.getPopupPrepModel().handleFinally();

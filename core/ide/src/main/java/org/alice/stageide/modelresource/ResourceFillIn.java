@@ -44,7 +44,6 @@ package org.alice.stageide.modelresource;
 
 import org.alice.ide.Theme;
 import org.lgna.croquet.ImmutableCascadeFillIn;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 
@@ -69,7 +68,7 @@ public class ResourceFillIn extends ImmutableCascadeFillIn<ResourceNode, Void> {
 	}
 
 	@Override
-	public ResourceNode createValue( ItemNode<? super ResourceNode, Void> node, TransactionHistory transactionHistory ) {
+	public ResourceNode createValue( ItemNode<? super ResourceNode, Void> node ) {
 		return this.resourceNode;
 	}
 
@@ -79,7 +78,7 @@ public class ResourceFillIn extends ImmutableCascadeFillIn<ResourceNode, Void> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super ResourceNode, Void> node ) {
+	public String getMenuItemText() {
 		return this.resourceNode.getText();
 	}
 

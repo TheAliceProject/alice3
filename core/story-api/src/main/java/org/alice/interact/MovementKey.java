@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import org.alice.interact.condition.MovementDescription;
 
 /**
@@ -58,7 +62,27 @@ public class MovementKey {
 		this.directionMultiplier = directionMultiplier;
 	}
 
-	public final MovementDescription movementDescription;
-	public final double directionMultiplier;
+	private final MovementDescription movementDescription;
+	private final double directionMultiplier;
 	public final int keyValue;
+
+	public void applyRotation( AbstractTransformable transformable, double degreesToRotate ) {
+		movementDescription.type.applyRotation( transformable,
+																						movementDescription.direction.getVector(),
+																						new AngleInDegrees( directionMultiplier * degreesToRotate ) );
+	}
+
+	public void applyTranslation( AbstractTransformable transformable, double distanceToMove ) {
+		Point3 direction = Point3.createMultiplication(
+				movementDescription.direction.getVector(), distanceToMove * directionMultiplier );
+		movementDescription.type.applyTranslation( transformable, direction );
+	}
+
+	public void applyOrbit( AbstractTransformable transformable, double degreesToRotate ) {
+		Vector3 rotationDirection = new Vector3( movementDescription.direction.getVector() );
+		transformable.getLocalTransformation().orientation.transform( rotationDirection );
+		movementDescription.type.applyRotation( transformable,
+																						rotationDirection,
+																						new AngleInDegrees( directionMultiplier * degreesToRotate ) );
+	}
 }

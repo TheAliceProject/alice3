@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.numberpad;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.util.Map;
 import java.util.UUID;
@@ -71,8 +71,8 @@ public class BackspaceOperation extends NumberPadOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		this.numberModel.delete();
-		step.finish();
+		activity.finish();
 	}
 }

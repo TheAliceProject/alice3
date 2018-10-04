@@ -43,12 +43,9 @@
 package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.IDE;
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.history.UserActivity;
 
 import java.io.File;
 import java.net.URI;
@@ -64,17 +61,15 @@ public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOp
 
 	public static synchronized OpenRecentProjectOperation getInstance( URI uri ) {
 		OpenRecentProjectOperation rv = map.get( uri );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new OpenRecentProjectOperation( IDE.getActiveInstance().getDocumentFrame(), uri );
+		if ( rv == null ) {
+			rv = new OpenRecentProjectOperation( uri );
 			map.put( uri, rv );
 		}
 		return rv;
 	}
 
-	private OpenRecentProjectOperation( ProjectDocumentFrame projectDocumentFrame, URI uri ) {
-		super( UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), projectDocumentFrame, null );
+	private OpenRecentProjectOperation( URI uri ) {
+		super( UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
 		this.uri = uri;
 	}
 
@@ -86,7 +81,7 @@ public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOp
 	}
 
 	@Override
-	protected UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps ) {
+	protected UriProjectLoader getUriProjectLoader( List<UserActivity> subSteps ) {
 		return new FileProjectLoader( new File( this.uri ) );
 	}
 

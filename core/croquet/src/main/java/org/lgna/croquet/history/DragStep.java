@@ -48,10 +48,9 @@ import org.lgna.croquet.CancelException;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.triggers.DragTrigger;
 import org.lgna.croquet.triggers.DropTrigger;
-import org.lgna.croquet.triggers.MouseEventTrigger;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.SwingComponentView;
@@ -107,12 +106,8 @@ public class DragStep extends PrepStep<DragModel> {
 	private DropSite currentPotentialDropSite;
 	private MouseEvent latestMouseEvent;
 
-	public static DragStep createAndAddToTransaction( Transaction parent, DragModel model, DragTrigger trigger ) {
-		return new DragStep( parent, model, trigger );
-	}
-
-	private DragStep( Transaction parent, DragModel model, DragTrigger trigger ) {
-		super( parent, model, trigger );
+	DragStep( UserActivity activity, DragModel model, DragTrigger trigger) {
+		super( activity, model, trigger );
 	}
 
 	private DropReceptorInfo[] getPotentialDropReceptorInfos() {
@@ -153,18 +148,6 @@ public class DragStep extends PrepStep<DragModel> {
 		}
 	}
 
-	//	public java.awt.event.MouseEvent getOriginalMouseEvent() {
-	//		return (java.awt.event.MouseEvent)this.getAwtEvent();
-	//	}
-
-	public DropReceptor getCurrentDropReceptor() {
-		return this.currentDropReceptor;
-	}
-
-	//	public void setCurrentDropReceptor( org.lgna.croquet.DropReceptor currentDropReceptor ) {
-	//		this.currentDropReceptor = currentDropReceptor;
-	//	}
-
 	public DropSite getCurrentPotentialDropSite() {
 		return this.currentPotentialDropSite;
 	}
@@ -202,7 +185,7 @@ public class DragStep extends PrepStep<DragModel> {
 		return rv;
 	}
 
-	protected DropReceptor getDropReceptorUnder( MouseEvent e ) {
+	private DropReceptor getDropReceptorUnder( MouseEvent e ) {
 		DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
 		if( rv != null ) {
 			//pass
@@ -265,51 +248,47 @@ public class DragStep extends PrepStep<DragModel> {
 	}
 
 	public void handleMouseReleased( MouseEvent e ) {
-		if( this.isCanceled() ) {
-			this.cancel( e );
-		} else {
-			JDropProxy.Hider dropProxyHider = null;
-
-			this.setLatestMouseEvent( e );
-			if( this.currentDropReceptor != null ) {
-				Model model = this.currentDropReceptor.dragDropped( this );
-
-				//				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
-				//				
-				if( model != null ) {
-					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
-					SwingComponentView<?> component = this.currentDropReceptor.getViewController();
-					ViewController<?, ?> viewController;
-					if( component instanceof ViewController<?, ?> ) {
-						viewController = (ViewController<?, ?>)component;
-					} else {
-						viewController = null;
-					}
-					try {
-						if( model instanceof JDropProxy.Hider ) {
-							dropProxyHider = (JDropProxy.Hider)model;
-							dropProxyHider.setDragSource( this.getDragSource() );
-						} else {
-							Logger.outln( "drop proxy hider:", model.getClass() );
-						}
-						Step<?> step = model.fire( DropTrigger.createUserInstance( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
-					} catch( CancelException ce ) {
-						this.cancel( e );
-					}
-				} else {
-					this.cancel( e );
-				}
-				this.currentDropReceptor.dragExited( this, true );
-			} else {
-				this.cancel( e );
-			}
-			for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
-				dropReceptorInfo.getDropReceptor().dragStopped( this );
-			}
-			this.getModel().handleDragStopped( this );
-			this.potentialDropReceptorInfos = null;
-			this.hideProxies( dropProxyHider );
+		if( getOwner().isCanceled() ) {
+			return;
 		}
+		JDropProxy.Hider dropProxyHider = null;
+
+		this.setLatestMouseEvent( e );
+		if( this.currentDropReceptor != null ) {
+			Triggerable dropOperation = this.currentDropReceptor.dragDropped( this );
+
+			if( dropOperation != null ) {
+				SwingComponentView<?> component = this.currentDropReceptor.getViewController();
+				ViewController<?, ?> viewController;
+				if( component instanceof ViewController<?, ?> ) {
+					viewController = (ViewController<?, ?>)component;
+				} else {
+					viewController = null;
+				}
+				try {
+					if( dropOperation instanceof JDropProxy.Hider ) {
+						dropProxyHider = (JDropProxy.Hider)dropOperation;
+						dropProxyHider.setDragSource( this.getDragSource() );
+					} else {
+						Logger.outln( "drop proxy hider:", dropOperation.getClass() );
+					}
+					dropOperation.fire( DropTrigger.setOnUserActivity( getOwner(), viewController, getLatestMouseEvent(), currentPotentialDropSite ) );
+				} catch( CancelException ce ) {
+					this.cancel();
+				}
+			} else {
+				this.cancel();
+			}
+			this.currentDropReceptor.dragExited( this, true );
+		} else {
+			this.cancel();
+		}
+		for( DropReceptorInfo dropReceptorInfo : this.getPotentialDropReceptorInfos() ) {
+			dropReceptorInfo.getDropReceptor().dragStopped( this );
+		}
+		this.getModel().handleDragStopped( this );
+		this.potentialDropReceptorInfos = null;
+		this.hideProxies( dropProxyHider );
 	}
 
 	public void handleCancel( EventObject e ) {
@@ -321,25 +300,19 @@ public class DragStep extends PrepStep<DragModel> {
 		}
 		this.getModel().handleDragStopped( this );
 		this.potentialDropReceptorInfos = null;
-		this.cancel( null );
+		this.cancel();
 		this.hideProxies( null );
 	}
 
 	private void hideProxies( JDropProxy.Hider dropProxyHider ) {
 		this.getDragSource().hideDragProxy();
-		if( dropProxyHider != null ) {
-			//pass
-		} else {
+		if ( dropProxyHider == null ) {
 			this.getDragSource().hideDropProxyIfNecessary();
 		}
 	}
 
-	public boolean isCanceled() {
-		//todo
-		return false;
-	}
-
-	public void cancel( MouseEvent e ) {
-		TransactionManager.addCancelCompletionStep( null, MouseEventTrigger.createUserInstance( e ) );
+	public void cancel() {
+		getOwner().setCompletionModel( null );
+		getOwner().cancel();
 	}
 }

@@ -46,7 +46,7 @@ import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.ResourceNodeTreeState;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 
 import java.net.URI;
@@ -73,7 +73,7 @@ public final class UriBasedResourceNode extends ResourceNode {
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, DropSite dropSite ) {
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
 		return ResourceKeyUriIteratingOperation.getInstance( this.getResourceKey(), this.thingCls, this.uri );
 	}
 }

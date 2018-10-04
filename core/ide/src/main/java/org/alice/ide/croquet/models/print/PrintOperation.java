@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.print;
 
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
@@ -66,7 +65,7 @@ public abstract class PrintOperation extends InconsequentialActionOperation {
 	protected abstract Printable getPrintable();
 
 	@Override
-	protected final void performInternal( CompletionStep<?> step ) {
+	protected final void performInternal() {
 		PrinterJob job = PrinterJob.getPrinterJob();
 		Printable printable = this.getPrintable();
 		if( printable != null ) {

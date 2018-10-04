@@ -44,13 +44,20 @@
 package org.lgna.croquet.views;
 
 import org.lgna.croquet.CascadeItem;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CascadeMenu extends AbstractMenu<CascadeItem<?, ?>> {
+
 	public CascadeMenu( CascadeItem<?, ?> model ) {
 		super( model );
+	}
+
+	@Override
+	public UserActivity getActivity() {
+		return null;
 	}
 
 	@Override

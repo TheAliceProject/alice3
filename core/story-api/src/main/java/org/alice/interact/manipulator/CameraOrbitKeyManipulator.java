@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
+package org.alice.interact.manipulator;
 
-package org.lgna.croquet;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
+import org.alice.interact.DragAdapter.CameraView;
+import org.alice.interact.MovementKey;
 
-import java.util.UUID;
-
-/**
- * @author Dennis Cosgrove
- */
-public abstract class AbstractPrepModel extends AbstractModel implements PrepModel {
-	public AbstractPrepModel( UUID id ) {
-		super( id );
+public class CameraOrbitKeyManipulator extends OrbitKeyManipulator implements CameraInformedManipulator {
+	public CameraOrbitKeyManipulator( MovementKey[] directionKeys ) {
+		super( directionKeys );
 	}
 
-	public abstract Iterable<? extends Model> getChildren();
+	@Override
+	public AbstractCamera getCamera() {
+		return this.camera;
+	}
 
-	public boolean isChild( Model model ) {
-		for( Model child : this.getChildren() ) {
-			if( child == model ) {
-				return true;
-			}
+	@Override
+	public void setCamera( AbstractCamera camera ) {
+		this.camera = camera;
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
+			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
-		return false;
 	}
+
+	@Override
+	public String getUndoRedoDescription() {
+		return "Camera Orbit";
+	}
+
+	@Override
+	public void setDesiredCameraView( CameraView cameraView ) {
+		//this can only be ACTIVE_VIEW
+	}
+
+	@Override
+	public CameraView getDesiredCameraView() {
+		return CameraView.ACTIVE_VIEW;
+	}
+
+	private AbstractCamera camera = null;
 }

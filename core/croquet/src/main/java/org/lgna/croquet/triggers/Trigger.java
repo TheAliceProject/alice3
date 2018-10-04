@@ -43,9 +43,10 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 
@@ -53,18 +54,30 @@ import org.lgna.croquet.views.ViewController;
  * @author Dennis Cosgrove
  */
 public abstract class Trigger implements BinaryEncodableAndDecodable {
+	private UserActivity userActivity;
+
 	public Trigger() {
+		// TODO Remove access to activity this way
+		userActivity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+		userActivity.setTrigger( this );
 	}
 
-	public Trigger( BinaryDecoder binaryDecoder ) {
+	public Trigger( UserActivity userActivity ) {
+		this.userActivity = userActivity;
+		if (userActivity != null) {
+			userActivity.setTrigger( this );
+		}
 	}
 
 	@Override
 	public void encode( BinaryEncoder binaryEncoder ) {
 	}
 
-	public abstract ViewController<?, ?> getViewController();
+	public ViewController<?, ?> getViewController() {
+		return null;
+	}
 
+	// Only invoked from PopupPrepStep
 	public abstract void showPopupMenu( PopupMenu popupMenu );
 
 	protected void appendReprInternal( StringBuilder repr ) {
@@ -75,5 +88,9 @@ public abstract class Trigger implements BinaryEncodableAndDecodable {
 		repr.append( "[" );
 		this.appendReprInternal( repr );
 		repr.append( "]" );
+	}
+
+	public UserActivity getUserActivity() {
+		return userActivity;
 	}
 }

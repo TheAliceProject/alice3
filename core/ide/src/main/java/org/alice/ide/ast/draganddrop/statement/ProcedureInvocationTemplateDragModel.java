@@ -44,12 +44,10 @@
 package org.alice.ide.ast.draganddrop.statement;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.IDE;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
-import org.alice.ide.members.MembersComposite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.annotations.AddEventListenerTemplate;
 import org.lgna.project.ast.AbstractMethod;
@@ -82,9 +80,6 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		super( UUID.fromString( "3d2bb8a7-f85b-4a72-b5ad-7ff6d16e94f9" ), ExpressionStatement.class, IncompleteAstUtilities.createIncompleteMethodInvocationStatement( method ) );
 		this.method = method;
 		assert this.method.isProcedure();
-
-		this.addContextFactory( IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
-		this.addContextFactory( MembersComposite.getInstance().getTabState() );
 	}
 
 	@Override
@@ -102,7 +97,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+	public Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		return ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
 	}
 }

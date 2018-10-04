@@ -46,7 +46,7 @@ package org.alice.ide.ast.draganddrop.statement;
 import org.alice.ide.ast.IncompleteAstUtilities;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.ConditionalStatement;
 
@@ -69,7 +69,7 @@ public class ConditionalStatementTemplateDragModel extends PotentiallyEnveloping
 	}
 
 	@Override
-	protected Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
+	protected Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping ) {
 		return ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair, isEnveloping );
 	}
 }

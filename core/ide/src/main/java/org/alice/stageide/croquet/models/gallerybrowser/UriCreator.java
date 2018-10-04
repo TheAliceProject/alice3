@@ -45,10 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 
 import java.io.File;
 import java.util.UUID;
@@ -56,8 +53,9 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated // Use a FileDialogValueCreator instead of getting this by inheritance
 public abstract class UriCreator<T> extends ValueCreator<T> {
-	public UriCreator( UUID migrationId ) {
+	UriCreator( UUID migrationId ) {
 		super( migrationId );
 	}
 
@@ -68,21 +66,13 @@ public abstract class UriCreator<T> extends ValueCreator<T> {
 	protected abstract T internalGetValueFrom( File file );
 
 	@Override
-	protected T createValue( Transaction transaction, Trigger trigger ) {
+	protected T createValue( UserActivity userActivity ) {
 		Application application = Application.getActiveInstance();
 		DocumentFrame documentFrame = application.getDocumentFrame();
-		File directory = this.getInitialDirectory();
-		String extension = this.getExtension();
-		TransactionHistory subtTransactionHistory = new TransactionHistory();
-		CompletionStep<?> step = CompletionStep.createAndAddToTransaction( transaction, this, trigger, subtTransactionHistory );
-		File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
+		File file = documentFrame.showOpenFileDialog( null, getInitialDirectory(), getExtension() );
 		if( file != null ) {
-			T rv = this.internalGetValueFrom( file );
-			step.finish();
-			return rv;
+			return internalGetValueFrom( file );
 		} else {
-			step.cancel();
-			//throw new org.lgna.croquet.CancelException();
 			return null;
 		}
 	}

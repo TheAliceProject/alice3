@@ -46,7 +46,7 @@ import org.alice.ide.ProjectDocumentFrame;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Element;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Member;
 
 import java.util.UUID;
@@ -82,14 +82,14 @@ public class FindComposite extends AbstractFindComposite {
 		}
 
 		@Override
-		protected void perform( CompletionStep<?> step ) {
+		protected void perform( UserActivity activity ) {
 			getIsFrameShowingState().setValueTransactionlessly( true );
 			String name = member.getName();
 
 			//todo: ensure member is selected
 
 			getSearchState().setValueTransactionlessly( name != null ? name : "" );
-			step.finish();
+			activity.finish();
 		}
 	};
 

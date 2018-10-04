@@ -1,22 +1,28 @@
 package org.alice.ide.resource.manager;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.gallerybrowser.ImportGalleryResourceComposite;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.FileDialogValueCreator;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.story.resourceutilities.JointedModelColladaImporter;
+import org.lgna.story.resourceutilities.ModelLoadingException;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class ImportGalleryResourceOperation extends SingleThreadIteratingOperation {
-	private final ImportGalleryResourceComposite importGalleryResourceComposite = new ImportGalleryResourceComposite();
 
 	public ImportGalleryResourceOperation() {
 		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "178d0562-a78b-40a2-907e-3cef46a4811d" ) );
@@ -25,24 +31,39 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		switch (subSteps.size()) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch (finishedSteps.size()) {
 		case 0:
-			return importGalleryResourceComposite.getBrowseOperation();
+			return new FileDialogValueCreator( null, FileUtilities.getDefaultDirectory(), "dae" );
 		case 1:
-			return importGalleryResourceComposite.getLoadOperation();
+			SkeletonVisual skeleton = readFile( getLastValueProduced( finishedSteps ) );
+			return new ImportGalleryResourceComposite( skeleton ).getValueCreator();
 		default:
 			return null;
 		}
 	}
 
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
+	private SkeletonVisual readFile( Object selectedFile ) {
+		if ( !( selectedFile instanceof File ) ){
+			throw new CancelException();
+		}
+		try {
+			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( (File) selectedFile, modelLogger );
+			colladaImporter.setFlipModel( false );
+			return colladaImporter.loadSkeletonVisual();
+
+		} catch (ModelLoadingException e) {
+			new OkDialog.Builder( e.getLocalizedMessage() + "\n" + findLocalizedText( "tryAgain" ) )
+					.title( findLocalizedText( "title" ) )
+					.buildAndShow();
+			throw new CancelException( e.getLocalizedMessage() );
+		}
 	}
+
+	private final Logger modelLogger = Logger.getLogger( getClass().getCanonicalName() );
 }

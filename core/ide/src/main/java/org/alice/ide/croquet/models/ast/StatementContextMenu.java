@@ -53,7 +53,6 @@ import org.alice.ide.issue.croquet.AnomalousSituationComposite;
 import org.alice.stageide.run.FastForwardToStatementOperation;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.project.ast.AbstractMethod;
@@ -131,7 +130,7 @@ public class StatementContextMenu extends MenuModel {
 
 		BlockStatement blockStatement = (BlockStatement)statement.getParent();
 		if( blockStatement != null ) {
-			rv.add( DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+			rv.add( new DeleteStatementOperation( statement ).getMenuItemPrepModel() );
 		} else {
 			SwingUtilities.invokeLater( new Runnable() {
 				@Override
@@ -177,8 +176,8 @@ public class StatementContextMenu extends MenuModel {
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 		this.updatePopupOperations( models, this.statement );
 		MenuItemContainerUtilities.setMenuElements( popupMenu, models );

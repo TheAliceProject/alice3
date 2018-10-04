@@ -48,7 +48,6 @@ import org.alice.ide.ast.declaration.AddMethodComposite;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
-import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.views.MenuItemContainerUtilities;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.project.ast.AbstractType;
@@ -94,8 +93,8 @@ public abstract class AddMethodMenuModel extends MenuModel {
 	}
 
 	@Override
-	public final void handlePopupMenuPrologue( PopupMenu popupMenu, PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public final void handlePopupMenuPrologue( PopupMenu popupMenu ) {
+		super.handlePopupMenuPrologue( popupMenu );
 		List<StandardMenuItemPrepModel> models = Lists.newLinkedList();
 		this.appendMenuItemPrepModelsForType( models, this.getInstanceFactoryNamedUserType() );
 		MenuItemContainerUtilities.setMenuElements( popupMenu, models );

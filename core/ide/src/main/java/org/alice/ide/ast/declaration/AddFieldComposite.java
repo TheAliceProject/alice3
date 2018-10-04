@@ -50,9 +50,8 @@ import org.alice.ide.typemanager.ConstructorArgumentUtilities;
 import org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.OwnedByCompositeOperationSubKey;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AccessLevel;
 import org.lgna.project.ast.Expression;
@@ -148,8 +147,8 @@ public abstract class AddFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey key, String text ) {
-		text = super.modifyNameIfNecessary( key, text );
+	public String modifyNameIfNecessary( String text ) {
+		text = super.modifyNameIfNecessary( text );
 		if( text != null ) {
 			String declaringTypeName;
 			if( this.getDeclaringType() != null ) {
@@ -167,11 +166,11 @@ public abstract class AddFieldComposite extends FieldComposite {
 		return this.createField();
 	}
 
-	protected abstract DeclareFieldEdit createEdit( CompletionStep<?> completionStep, UserType<?> declaringType, UserField field );
+	protected abstract DeclareFieldEdit createEdit( UserActivity userActivity, UserType<?> declaringType, UserField field );
 
 	@Override
-	protected final Edit createEdit( CompletionStep<?> completionStep ) {
-		return this.createEdit( completionStep, this.getDeclaringType(), this.createField() );
+	protected final Edit createEdit( UserActivity userActivity ) {
+		return this.createEdit( userActivity, this.getDeclaringType(), this.createField() );
 	}
 
 	@Override

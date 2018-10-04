@@ -43,13 +43,12 @@
 
 package org.alice.stageide.oneshot;
 
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface MethodInvocationEditFactory {
-	public Edit createEdit( CompletionStep<Cascade<MethodInvocationEditFactory>> step );
+	Edit createEdit( UserActivity userActivity );
 }

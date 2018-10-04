@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.cascade.literals;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.NullLiteral;
 
@@ -73,7 +72,7 @@ public class NullLiteralFillIn extends ExpressionFillInWithoutBlanks<NullLiteral
 	}
 
 	@Override
-	public NullLiteral createValue( ItemNode<? super NullLiteral, Void> node, TransactionHistory transactionHistory ) {
+	public NullLiteral createValue( ItemNode<? super NullLiteral, Void> node ) {
 		return new NullLiteral();
 	}
 }

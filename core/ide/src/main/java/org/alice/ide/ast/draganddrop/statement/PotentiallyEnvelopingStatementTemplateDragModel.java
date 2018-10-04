@@ -43,7 +43,7 @@
 package org.alice.ide.ast.draganddrop.statement;
 
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.Statement;
 
@@ -58,15 +58,15 @@ public abstract class PotentiallyEnvelopingStatementTemplateDragModel extends St
 		super( id, statementCls, possiblyIncompleteStatement );
 	}
 
-	protected abstract Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
+	protected abstract Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping );
 
 	@Override
-	protected final Model getDropModel( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
+	protected final Triggerable getDropOperation( DragStep step, BlockStatementIndexPair blockStatementIndexPair ) {
 		boolean isEnveloping = false;
 		MouseEvent e = step.getLatestMouseEvent();
 		if( e != null ) {
 			isEnveloping = e.isShiftDown();
 		}
-		return this.getDropModel( step, blockStatementIndexPair, isEnveloping );
+		return this.getDropOperation( step, blockStatementIndexPair, isEnveloping );
 	}
 }

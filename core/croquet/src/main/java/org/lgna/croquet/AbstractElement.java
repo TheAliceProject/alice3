@@ -70,8 +70,8 @@ public abstract class AbstractElement implements Element {
 	private static final Map<UUID, Class<? extends Element>> mapMigrationIdToCls;
 	private static final Set<String> ignoredLocalizationSubkeys;
 
-	private static final String ACCELERATOR_SUB_KEY = "accelerator";
-	private static final String MNEMONIC_SUB_KEY = "mnemonic";
+	static final String ACCELERATOR_SUB_KEY = "accelerator";
+	static final String MNEMONIC_SUB_KEY = "mnemonic";
 
 	static {
 		if( SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
@@ -88,17 +88,12 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 
-	private final UUID migrationId;
-
 	public AbstractElement( UUID migrationId ) {
-		this.migrationId = migrationId;
 		if( mapMigrationIdToCls != null ) {
 			if( migrationId != null ) {
 				Class<? extends Element> cls = mapMigrationIdToCls.get( migrationId );
 				if( cls != null ) {
-					if( cls == this.getClass() ) {
-						//pass
-					} else {
+					if ( cls != this.getClass() ) {
 						String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
 						ClipboardUtilities.setClipboardContents( clipboardContents );
 						new OkDialog.Builder( "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates." ).buildAndShow();
@@ -112,11 +107,6 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 
-	@Override
-	public UUID getMigrationId() {
-		return this.migrationId;
-	}
-
 	private boolean isInTheMidstOfInitialization = false;
 	private boolean isInitialized = false;
 
@@ -126,26 +116,15 @@ public abstract class AbstractElement implements Element {
 
 	@Override
 	public final void initializeIfNecessary() {
-		if( this.isInitialized ) {
-			//pass
-		} else {
-			if( this.isInTheMidstOfInitialization ) {
-				//pass
-			} else {
-				this.isInTheMidstOfInitialization = true;
-				try {
-					this.initialize();
-					this.isInitialized = true;
-				} finally {
-					this.isInTheMidstOfInitialization = false;
-				}
+		if ( !this.isInitialized && !this.isInTheMidstOfInitialization ) {
+			isInTheMidstOfInitialization = true;
+			try {
+				initialize();
+				isInitialized = true;
+			} finally {
+				isInTheMidstOfInitialization = false;
 			}
 		}
-	}
-
-	@Override
-	public final void relocalize() {
-		this.localize();
 	}
 
 	protected Class<? extends Element> getClassUsedForLocalization() {
@@ -156,7 +135,7 @@ public abstract class AbstractElement implements Element {
 		return null;
 	}
 
-	private static String findLocalizedText( Class<? extends Element> cls, String subKey ) {
+	public static String findLocalizedText( Class<? extends Element> cls, String subKey ) {
 		if( cls != null ) {
 			String bundleName = cls.getPackage().getName() + ".croquet";
 			try {
@@ -168,33 +147,24 @@ public abstract class AbstractElement implements Element {
 				//}
 
 				if( subKey != null ) {
-					StringBuilder sb = new StringBuilder();
-					sb.append( key );
-					sb.append( "." );
-					sb.append( subKey );
-					key = sb.toString();
+					key = key + "." + subKey;
 				}
-				String rv = resourceBundle.getString( key );
-				return rv;
+				return resourceBundle.getString( key );
 			} catch( MissingResourceException mre ) {
-				if( cls == AbstractElement.class ) {
-					return null;
-				} else {
+				if ( cls != AbstractElement.class ) {
 					Class<?> superCls = cls.getSuperclass();
 					if( Element.class.isAssignableFrom( superCls ) ) {
 						return findLocalizedText( (Class<? extends Element>)superCls, subKey );
-					} else {
-						Logger.severe( cls, subKey );
-						return null;
 					}
 				}
+				return null;
 			}
 		} else {
 			return null;
 		}
 	}
 
-	protected void handleNullLocalizedText( Class<? extends Element> clsUsedForLocalization, String actualSubKey ) {
+	private void handleNullLocalizedText( Class<? extends Element> clsUsedForLocalization, String actualSubKey ) {
 		if( ignoredLocalizationSubkeys != null ) {
 			if( ignoredLocalizationSubkeys.contains( actualSubKey ) ) {
 				//pass
@@ -258,7 +228,7 @@ public abstract class AbstractElement implements Element {
 		return nullValue;
 	}
 
-	private static int getKeyCode( String vkFieldName ) {
+	static int getKeyCode( String vkFieldName ) {
 		return getField( KeyEvent.class, vkFieldName, NULL_MNEMONIC );
 	}
 
@@ -277,7 +247,7 @@ public abstract class AbstractElement implements Element {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
 
-	private static KeyStroke getKeyStroke( String acceleratorText ) {
+	static KeyStroke getKeyStroke( String acceleratorText ) {
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split( "," );
 			if( array.length > 0 ) {

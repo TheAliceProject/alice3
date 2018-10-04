@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 import org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionProperty;
 
@@ -74,8 +74,8 @@ public abstract class ProjectExpressionPropertyOperation extends ActionOperation
 	protected abstract Expression createExpression();
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		Expression value = this.createExpression();
-		step.commitAndInvokeDo( new ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), value ) );
+		activity.commitAndInvokeDo( new ExpressionPropertyEdit( activity, this.expressionProperty, this.getPreviousExpression(), value ) );
 	}
 }

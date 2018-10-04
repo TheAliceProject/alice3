@@ -46,15 +46,12 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite;
 import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.resources.sims2.LifeStage;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -96,19 +93,19 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThre
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			return PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				InstanceCreation instanceCreation = (InstanceCreation)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				InstanceCreation instanceCreation = (InstanceCreation)prevSubStep.getProducedValue();
 				AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = AddPersonResourceManagedFieldComposite.getInstance();
 				addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
 				return addPersonResourceManagedFieldComposite.getLaunchOperation();
@@ -118,10 +115,5 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends SingleThre
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
 	}
 }

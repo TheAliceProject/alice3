@@ -43,12 +43,11 @@
 
 package org.alice.ide.ast.code;
 
-import edu.cmu.cs.dennisc.map.MapToMapToMap;
 import org.alice.ide.ast.code.edits.MoveStatementEdit;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 import java.util.UUID;
@@ -57,27 +56,13 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public final class MoveStatementOperation extends ActionOperation {
-	private static MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> mapSingle = MapToMapToMap.newInstance();
-	private static MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> mapMultiple = MapToMapToMap.newInstance();
-
-	public static synchronized MoveStatementOperation getInstance( BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isToTheEnd ) {
-		MapToMapToMap<BlockStatementIndexPair, Statement, BlockStatementIndexPair, MoveStatementOperation> map = isToTheEnd ? mapMultiple : mapSingle;
-		MoveStatementOperation rv = map.get( fromLocation, statement, toLocation );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MoveStatementOperation( fromLocation, statement, toLocation, isToTheEnd );
-			map.put( fromLocation, statement, toLocation, rv );
-		}
-		return rv;
-	}
-
 	private final BlockStatementIndexPair fromLocation;
 	private final Statement statement;
 	private final BlockStatementIndexPair toLocation;
 	private final boolean isMultiple;
 
-	private MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement, BlockStatementIndexPair toLocation, boolean isMultiple ) {
+	public MoveStatementOperation( BlockStatementIndexPair fromLocation, Statement statement,
+																 BlockStatementIndexPair toLocation, boolean isMultiple ) {
 		super( Application.PROJECT_GROUP, UUID.fromString( "3fede3ef-ba7f-4286-842f-016da7dbacf7" ) );
 		this.fromLocation = fromLocation;
 		this.statement = statement;
@@ -85,24 +70,9 @@ public final class MoveStatementOperation extends ActionOperation {
 		this.isMultiple = isMultiple;
 	}
 
-	public BlockStatementIndexPair getFromLocation() {
-		return this.fromLocation;
-	}
-
-	public Statement getStatement() {
-		return this.statement;
-	}
-
-	public BlockStatementIndexPair getToLocation() {
-		return this.toLocation;
-	}
-
-	public boolean isMultiple() {
-		return this.isMultiple;
-	}
-
 	@Override
-	protected void perform( CompletionStep step ) {
-		step.commitAndInvokeDo( new MoveStatementEdit( step, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
+	protected void perform( UserActivity activity ) {
+		activity
+				.commitAndInvokeDo( new MoveStatementEdit( activity, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );
 	}
 }

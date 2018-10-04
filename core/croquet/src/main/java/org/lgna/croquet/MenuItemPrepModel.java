@@ -43,21 +43,13 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.triggers.Trigger;
-
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuItemPrepModel extends AbstractPrepModel {
-	public MenuItemPrepModel( UUID id ) {
+public abstract class MenuItemPrepModel extends AbstractModel implements PrepModel {
+	MenuItemPrepModel( UUID id ) {
 		super( id );
-	}
-
-	@Override
-	public final Step<?> fire( Trigger trigger ) {
-		throw new RuntimeException();
 	}
 }

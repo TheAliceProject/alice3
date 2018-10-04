@@ -66,11 +66,6 @@ public class TemplatesTab extends ListUriTab {
 	}
 
 	@Override
-	public final String getTextForZeroProjects() {
-		return "there are no template projects.";
-	}
-
-	@Override
 	protected TemplatesTabContentPane createView() {
 		return new TemplatesTabContentPane( this );
 	}

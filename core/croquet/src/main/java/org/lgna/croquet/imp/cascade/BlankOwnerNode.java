@@ -60,11 +60,6 @@ public abstract class BlankOwnerNode<F, B, M extends CascadeBlankOwner<F, B>> ex
 	}
 
 	@Override
-	public int getBlankStepCount() {
-		return this.rtBlankOwner.getBlankStepCount();
-	}
-
-	@Override
 	public BlankNode<B> getBlankStepAt( int i ) {
 		return this.rtBlankOwner.getBlankStepAt( i );
 	}

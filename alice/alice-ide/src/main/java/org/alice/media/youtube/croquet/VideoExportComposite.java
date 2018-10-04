@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.video.preview.VideoComposite;
 import org.alice.media.youtube.croquet.views.ExportVideoView;
 import org.alice.stageide.StageIDE;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Operation;
@@ -60,7 +59,7 @@ import org.lgna.croquet.WizardPageComposite;
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Matt May
@@ -77,14 +76,14 @@ public class VideoExportComposite extends WizardPageComposite<ExportVideoView, E
 
 	private final ActionOperation exportToFileOperation = this.createActionOperation( "exportToFileOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 
 			File videosDirectory = StageIDE.getActiveInstance().getVideosDirectory();
 
 			String filename = "*.webm";
 
-			File exportFile = FileDialogUtilities.showSaveFileDialog( UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
-					VideoExportComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
+			File exportFile = FileDialogUtilities.showSaveFileDialog(
+					VideoExportComposite.this.getView().getAwtComponent(), "Save Video", videosDirectory, filename, FileUtilities.createFilenameFilter( "webm" ), "webm" );
 			if( exportFile != null ) {
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
@@ -127,7 +126,7 @@ public class VideoExportComposite extends WizardPageComposite<ExportVideoView, E
 	}
 
 	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus() {
 		Status rv = IS_GOOD_TO_GO_STATUS;
 		return rv;
 	}

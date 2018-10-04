@@ -43,7 +43,7 @@
 package org.alice.interact.event;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
-import org.alice.interact.BareBonesDragAdapter;
+import org.alice.interact.DragAdapter;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.STurnable;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -51,13 +51,13 @@ import org.lgna.story.implementation.AbstractTransformableImp;
 /**
  * @author David Culyba
  */
-public class SelectionEvent extends Event<BareBonesDragAdapter> {
-	public SelectionEvent( BareBonesDragAdapter source, AbstractTransformableImp transformable ) {
+public class SelectionEvent extends Event<DragAdapter> {
+	public SelectionEvent( DragAdapter source, AbstractTransformableImp transformable ) {
 		super( source );
 		this.transformable = transformable;
 	}
 
-	public SelectionEvent( BareBonesDragAdapter source, STurnable mtTransformable ) {
+	public SelectionEvent( DragAdapter source, STurnable mtTransformable ) {
 		super( source );
 		if( mtTransformable != null ) {
 			this.transformable = EmployeesOnly.getImplementation( mtTransformable );

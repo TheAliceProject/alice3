@@ -67,7 +67,7 @@ public interface DropReceptor {
 	public DropSite dragUpdated( DragStep step );
 
 	//todo: Dropped or Exited but not both?
-	public Model dragDropped( DragStep step );
+	public Triggerable dragDropped( DragStep step );
 
 	public void dragExited( DragStep step, boolean isDropRecipient );
 

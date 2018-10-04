@@ -47,7 +47,7 @@ import org.alice.ide.upgrade.views.ProjectAheadView;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.ProjectVersion;
@@ -75,12 +75,12 @@ public class ProjectAheadDialog extends SimpleOperationInputDialogCoreComposite<
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( UserActivity userActivity ) {
 		return null;
 	}
 

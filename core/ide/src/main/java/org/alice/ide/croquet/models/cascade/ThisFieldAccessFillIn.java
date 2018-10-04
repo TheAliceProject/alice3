@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.cascade;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.FieldAccess;
@@ -83,7 +82,7 @@ public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAc
 	}
 
 	@Override
-	public FieldAccess createValue( ItemNode<? super FieldAccess, Void> node, TransactionHistory transactionHistory ) {
+	public FieldAccess createValue( ItemNode<? super FieldAccess, Void> node ) {
 		return this.createValue( this.transientValue.field.getValue() );
 	}
 

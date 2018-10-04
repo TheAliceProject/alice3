@@ -47,7 +47,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
 import org.alice.ide.croquet.models.ast.cascade.MethodUtilities;
 import org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
@@ -136,12 +136,7 @@ public class ParameterAccessorMethodDragModel extends AbstractExpressionDragMode
 	}
 
 	@Override
-	protected Model getDropModel( BlockStatementIndexPair blockStatementIndexPair ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	protected Model getDropModel( ExpressionProperty expressionProperty ) {
+	protected Triggerable getDropOperation( ExpressionProperty expressionProperty ) {
 		return new InternalDropModel( expressionProperty, this.parameter, this.method );
 	}
 

@@ -61,16 +61,16 @@ public abstract class ItemDropDown<T, CM extends CustomItemState<T>> extends Dro
 
 	private final State.ValueListener<T> valueListener = new State.ValueListener<T>() {
 		@Override
-		public void changing( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		public void changing( State<T> state, T prevValue, T nextValue ) {
 		}
 
 		@Override
-		public void changed( State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-			ItemDropDown.this.handleChanged( state, prevValue, nextValue, isAdjusting );
+		public void changed( State<T> state, T prevValue, T nextValue ) {
+			ItemDropDown.this.handleChanged( state, prevValue, nextValue );
 		}
 	};
 
-	protected abstract void handleChanged( State<T> state, T prevValue, T nextValue, boolean isAdjusting );
+	protected abstract void handleChanged( State<T> state, T prevValue, T nextValue );
 
 	private CustomItemState<T> getState() {
 		Cascade.InternalRoot.InternalPopupPrepModel<T> model = this.getModel();

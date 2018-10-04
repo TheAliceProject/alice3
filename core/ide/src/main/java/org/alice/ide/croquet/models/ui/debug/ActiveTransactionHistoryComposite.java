@@ -77,14 +77,14 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 	protected void localize() {
 		super.localize();
 		// do not want to bother localizers with this composite
-		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "Transaction History" );
+		this.getIsFrameShowingState().setTextForBothTrueAndFalse( "UserActivity History" );
 		this.getIsFrameShowingState().getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke( KeyEvent.VK_F8, 0 ) );
 	}
 
 	@Override
 	protected TransactionHistoryView createView() {
 		TransactionHistoryView rv = super.createView();
-		rv.setTransactionHistory( IDE.getActiveInstance().getProjectTransactionHistory() );
+		rv.setRootActivity( IDE.getActiveInstance().getOverallUserActivity() );
 		return rv;
 	}
 }

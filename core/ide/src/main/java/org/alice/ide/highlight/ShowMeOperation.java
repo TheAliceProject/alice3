@@ -45,7 +45,6 @@ package org.alice.ide.highlight;
 
 import org.alice.ide.IDE;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -65,7 +64,7 @@ public class ShowMeOperation extends InconsequentialActionOperation {
 	}
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		//org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( org.alice.stageide.croquet.models.run.RunOperation.getInstance(), "You can run your program by pressing this button." );
 		IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewControllerAndRenderWindow( IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getDeclarationMenu().getPopupPrepModel() );
 	}

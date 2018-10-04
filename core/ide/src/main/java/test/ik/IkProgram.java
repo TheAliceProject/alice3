@@ -99,32 +99,32 @@ class IkProgram extends SProgram {
 
 	private final State.ValueListener<Boolean> linearAngularEnabledListener = new State.ValueListener<Boolean>() {
 		@Override
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		}
 	};
 	private final State.ValueListener<JointId> jointIdListener = new State.ValueListener<JointId>() {
 		@Override
-		public void changing( State<JointId> state, JointId prevValue, JointId nextValue, boolean isAdjusting ) {
+		public void changing( State<JointId> state, JointId prevValue, JointId nextValue ) {
 			IkProgram.this.handleChainChanging();
 		}
 
 		@Override
-		public void changed( State<JointId> state, JointId prevValue, JointId nextValue, boolean isAdjusting ) {
+		public void changed( State<JointId> state, JointId prevValue, JointId nextValue ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
 	//SOLVER this is for printing out the chain
 	private final State.ValueListener<Bone> boneListener = new State.ValueListener<Bone>() {
 		@Override
-		public void changing( State<Bone> state, Bone prevValue, Bone nextValue, boolean isAdjusting ) {
+		public void changing( State<Bone> state, Bone prevValue, Bone nextValue ) {
 		}
 
 		@Override
-		public void changed( State<Bone> state, Bone prevValue, Bone nextValue, boolean isAdjusting ) {
+		public void changed( State<Bone> state, Bone prevValue, Bone nextValue ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};

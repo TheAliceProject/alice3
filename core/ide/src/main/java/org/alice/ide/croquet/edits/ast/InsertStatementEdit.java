@@ -50,7 +50,7 @@ import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.models.ast.InsertStatementCompletionModel;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
 import org.lgna.project.ast.AbstractStatementWithBody;
@@ -73,26 +73,20 @@ public class InsertStatementEdit<M extends InsertStatementCompletionModel> exten
 	private Expression[] initialExpressions;
 	private final boolean isEnveloping;
 
-	public InsertStatementEdit( CompletionStep<M> completionStep, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions, boolean isEnveloping ) {
-		super( completionStep, statement );
-		BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( BlockStatementIndexPair.class );
-		if( Objects.equals( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
-			//pass
-		} else {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
-		}
+	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions, boolean isEnveloping ) {
+		super( userActivity, statement );
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.initialExpressions = initialExpressions;
 		this.isEnveloping = isEnveloping;
 	}
 
-	public InsertStatementEdit( CompletionStep<M> completionStep, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions ) {
-		this( completionStep, blockStatementIndexPair, statement, initialExpressions, false );
+	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement, Expression[] initialExpressions ) {
+		this( userActivity, blockStatementIndexPair, statement, initialExpressions, false );
 	}
 
-	public InsertStatementEdit( CompletionStep<M> completionStep, BlockStatementIndexPair blockStatementIndexPair, Statement statement ) {
-		this( completionStep, blockStatementIndexPair, statement, new Expression[] {} );
+	public InsertStatementEdit( UserActivity userActivity, BlockStatementIndexPair blockStatementIndexPair, Statement statement ) {
+		this( userActivity, blockStatementIndexPair, statement, new Expression[] {} );
 	}
 
 	public InsertStatementEdit( BinaryDecoder binaryDecoder, Object step ) {

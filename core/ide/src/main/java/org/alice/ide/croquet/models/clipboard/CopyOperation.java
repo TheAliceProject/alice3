@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.clipboard;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -66,7 +65,7 @@ public class CopyOperation extends InconsequentialActionOperation {
 	}
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		String modifierId = SystemUtilities.isMac() ? "alt" : "control";
 		String modifier = findLocalizedText( modifierId );
 		String content = String.format( findLocalizedText( "content"), modifier, modifier );

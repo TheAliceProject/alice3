@@ -43,30 +43,18 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import org.lgna.croquet.views.ViewController;
-
-import java.awt.Point;
-import java.util.EventObject;
+import com.apple.eawt.AppEvent;
+import org.lgna.croquet.history.UserActivity;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AppleApplicationEventTrigger extends EventObjectTrigger<EventObject> {
-	public static AppleApplicationEventTrigger createUserInstance( EventObject event ) {
-		return new AppleApplicationEventTrigger( null, event );
+public class AppleApplicationEventTrigger extends EventObjectTrigger<AppEvent> {
+	public static UserActivity setOnUserActivity( UserActivity activity, AppEvent event ) {
+		return new AppleApplicationEventTrigger( activity, event ).getUserActivity();
 	}
 
-	private AppleApplicationEventTrigger( ViewController<?, ?> viewController, EventObject event ) {
-		super( viewController, event );
-	}
-
-	public AppleApplicationEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
+	private AppleApplicationEventTrigger( UserActivity activity, AppEvent event ) {
+		super( activity, null, event );
 	}
 }

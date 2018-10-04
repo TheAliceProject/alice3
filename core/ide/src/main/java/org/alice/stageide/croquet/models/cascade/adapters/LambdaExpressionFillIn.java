@@ -43,7 +43,6 @@
 package org.alice.stageide.croquet.models.cascade.adapters;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.LambdaExpression;
@@ -66,7 +65,7 @@ public abstract class LambdaExpressionFillIn extends ExpressionFillInWithoutBlan
 	}
 
 	@Override
-	public LambdaExpression createValue( ItemNode<? super LambdaExpression, Void> node, TransactionHistory transactionHistory ) {
+	public LambdaExpression createValue( ItemNode<? super LambdaExpression, Void> node ) {
 		return this.createValue();
 	}
 

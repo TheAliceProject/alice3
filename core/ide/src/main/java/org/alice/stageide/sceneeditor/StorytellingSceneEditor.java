@@ -82,7 +82,7 @@ import org.alice.ide.instancefactory.ThisFieldAccessFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.preferences.IsToolBarShowing;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.ClickedObjectCondition;
@@ -111,13 +111,7 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActi
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
 import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.AbstractDropReceptor;
-import org.lgna.croquet.DragModel;
-import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.DropSite;
-import org.lgna.croquet.ImmutableDataSingleSelectListState;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.RefreshableDataSingleSelectListState;
+import org.lgna.croquet.*;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.DragStep;
@@ -257,11 +251,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 		}
 
 		@Override
-		protected Model dragDroppedPostRejectorCheck( DragStep dragStep ) {
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep dragStep ) {
 			if( isDropLocationOverLookingGlass( dragStep ) ) {
 				DropSite dropSite = new SceneDropSite( globalDragAdapter.getDropTargetTransformation() );
-				Model model = dragStep.getModel().getDropModel( dragStep, dropSite );
-				return model;
+				return dragStep.getModel().getDropOperation( dragStep, dropSite );
 			}
 			return null;
 		}
@@ -752,7 +745,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 			}
 			if( field != null ) {
 				InstanceFactory instanceFactory = ThisFieldAccessFactory.getInstance( field );
-				OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+				OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel()
+												.fire( InputEventTrigger.createUserActivity( clickInput.getInputEvent() ) );
 			} else {
 				Logger.severe( entityImp );
 			}

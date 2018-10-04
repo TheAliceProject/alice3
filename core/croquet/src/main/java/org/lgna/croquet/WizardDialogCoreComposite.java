@@ -48,18 +48,9 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel;
 import edu.cmu.cs.dennisc.javax.swing.models.ListModel;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.dialog.WizardDialogContentComposite;
-import org.lgna.croquet.triggers.Trigger;
-import org.lgna.croquet.views.AbstractLabel;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.CardPanel;
-import org.lgna.croquet.views.Label;
-import org.lgna.croquet.views.MigPanel;
-import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.Separator;
-import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
@@ -96,13 +87,13 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 
 		@Override
-		protected final void perform( Transaction transaction, Trigger trigger ) {
-			CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			userActivity.setCompletionModel( this );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
 			if( mainComposite.isPrevPageAvailable() ) {
 				mainComposite.prev();
 			}
-			step.finish();
+			userActivity.finish();
 		}
 	}
 
@@ -117,13 +108,13 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 
 		@Override
-		protected final void perform( Transaction transaction, Trigger trigger ) {
-			CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		protected final void performInActivity( UserActivity userActivity ) {
+			userActivity.setCompletionModel( this );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
 			if( mainComposite.isNextPageAvailable() ) {
 				mainComposite.next( false );
 			}
-			step.finish();
+			userActivity.finish();
 		}
 	}
 
@@ -197,10 +188,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		while( nextIndex < ( cards.size() - 1 ) ) {
 			nextIndex++;
 			WizardPageComposite wizardPageComposite = (WizardPageComposite)cards.get( nextIndex );
-			CompletionStep<?> step = null;
-			if( wizardPageComposite.isAutoAdvanceDesired( step ) ) {
-				//pass
-			} else {
+			if ( !wizardPageComposite.isAutoAdvanceDesired() ) {
 				break;
 			}
 		}
@@ -328,10 +316,10 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	@Override
-	protected final Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected final Status getStatusPreRejectorCheck() {
 		Composite<?> page = this.cardComposite.getShowingCard();
 		if( page instanceof WizardPageComposite ) {
-			return ( (WizardPageComposite)page ).getPageStatus( step );
+			return ( (WizardPageComposite)page ).getPageStatus();
 		} else {
 			Logger.todo( this, page );
 			//todo
@@ -404,23 +392,23 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
 			if( subComposite instanceof WizardPageComposite<?, ?> ) {
 				WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>)subComposite;
-				wizardPage.handlePreShowDialog( step );
+				wizardPage.handlePreShowDialog();
 			}
 		}
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	@Override
-	protected void handlePostHideDialog( CompletionStep<?> step ) {
-		super.handlePostHideDialog( step );
+	protected void handlePostHideDialog() {
+		super.handlePostHideDialog();
 		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
 			if( subComposite instanceof WizardPageComposite<?, ?> ) {
 				WizardPageComposite<?, ?> wizardPage = (WizardPageComposite<?, ?>)subComposite;
-				wizardPage.handlePostHideDialog( step );
+				wizardPage.handlePostHideDialog();
 			}
 		}
 	}

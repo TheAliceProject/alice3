@@ -42,10 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.data.ListData;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComboBox;
 import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
 
@@ -54,7 +51,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<T>> extends AbstractPrepModel {
+public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<T>> extends AbstractModel implements PrepModel {
 	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T, D> listSelectionState ) {
 		super( UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
 		assert listSelectionState != null;
@@ -62,17 +59,7 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends ListData<
 	}
 
 	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Lists.newArrayList( this.listSelectionState );
-	}
-
-	@Override
 	protected void localize() {
-	}
-
-	@Override
-	public Step<?> fire( Trigger trigger ) {
-		throw new RuntimeException();
 	}
 
 	public SingleSelectListState<T, D> getListSelectionState() {

@@ -44,7 +44,6 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoResult;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.Panel;
 
 import java.util.UUID;
@@ -77,7 +76,7 @@ public abstract class YesNoConfirmDialogComposite<V extends Panel> extends Singl
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return null;
 	}
 }

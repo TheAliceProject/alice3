@@ -46,7 +46,7 @@ package org.alice.ide.resource.manager.edits;
 import org.alice.ide.IDE;
 import org.lgna.common.Resource;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.Project;
 
 /**
@@ -55,8 +55,8 @@ import org.lgna.project.Project;
 public abstract class AddOrRemoveResourceEdit extends AbstractEdit {
 	private final Resource resource;
 
-	public AddOrRemoveResourceEdit( CompletionStep<?> completionStep, Resource resource ) {
-		super( completionStep );
+	public AddOrRemoveResourceEdit( UserActivity userActivity, Resource resource ) {
+		super( userActivity );
 		this.resource = resource;
 	}
 

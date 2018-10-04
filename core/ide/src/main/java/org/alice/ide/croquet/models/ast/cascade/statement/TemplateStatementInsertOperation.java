@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.Statement;
 
@@ -69,7 +69,7 @@ public abstract class TemplateStatementInsertOperation extends StatementInsertOp
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep step ) {
-		return new InsertStatementEdit<StatementInsertOperation>( step, this.getBlockStatementIndexPair(), this.createStatement(), new Expression[ 0 ], this.isEnveloping );
+	protected Edit createEdit( UserActivity userActivity ) {
+		return new InsertStatementEdit<StatementInsertOperation>( userActivity, this.getBlockStatementIndexPair(), this.createStatement(), new Expression[ 0 ], this.isEnveloping );
 	}
 }

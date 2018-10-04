@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.cascade;
 
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.ThisExpression;
 
@@ -72,7 +71,7 @@ public class ThisExpressionFillIn extends ExpressionFillInWithoutBlanks<ThisExpr
 	}
 
 	@Override
-	public ThisExpression createValue( ItemNode<? super ThisExpression, Void> node, TransactionHistory transactionHistory ) {
+	public ThisExpression createValue( ItemNode<? super ThisExpression, Void> node ) {
 		return new ThisExpression();
 	}
 }

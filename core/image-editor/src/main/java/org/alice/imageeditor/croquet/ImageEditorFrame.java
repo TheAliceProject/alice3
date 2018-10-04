@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.DocumentUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.imageeditor.croquet.views.ImageEditorPane;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -63,7 +62,7 @@ import org.lgna.croquet.codecs.EnumCodec;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.AbstractWindow;
 
 import javax.swing.JComboBox;
@@ -94,7 +93,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
 
 	private final Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			String rootDirectoryPath = rootDirectoryState.getValue();
 			JFileChooser jFileChooser = new JFileChooser();
 			if( ( rootDirectoryPath != null ) && ( rootDirectoryPath.length() > 0 ) ) {
@@ -137,7 +136,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
 
 	private final Operation clearOperation = this.createActionOperation( "clearOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			clearShapes();
 			//todo
 			getView().repaint();
@@ -147,7 +146,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
 
 	private final Operation cropOperation = this.createActionOperation( "cropOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			crop();
 			return null;
 		}
@@ -155,7 +154,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
 
 	private final Operation uncropOperation = this.createActionOperation( "uncropOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			uncrop();
 			return null;
 		}
@@ -163,7 +162,7 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
 
 	private final Operation copyOperation = this.createActionOperation( "copyOperation", new Action() {
 		@Override
-		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			if( isGoodToGoCroppingIfNecessary() ) {
 				copyImageToClipboard( getView().render() );
 				return null;

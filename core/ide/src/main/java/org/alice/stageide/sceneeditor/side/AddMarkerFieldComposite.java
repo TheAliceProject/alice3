@@ -49,7 +49,8 @@ import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldCompos
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
 import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.views.Dialog;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.Statement;
@@ -80,7 +81,7 @@ public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeM
 	protected abstract Color getInitialMarkerColor();
 
 	@Override
-	protected void handlePreShowDialog( CompletionStep<?> step ) {
+	protected void handlePreShowDialog( Dialog dialog ) {
 		Color initialMarkerColor = this.getInitialMarkerColor();
 		try {
 			Expression colorExpresion = StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
@@ -88,7 +89,7 @@ public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeM
 		} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
-		super.handlePreShowDialog( step );
+		super.handlePreShowDialog( dialog );
 	}
 
 	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
@@ -112,8 +113,8 @@ public abstract class AddMarkerFieldComposite extends AddPredeterminedValueTypeM
 	private static JavaMethod COLOR_ID_SETTER = JavaMethod.getInstance( SMarker.class, "setColorId", Color.class );
 
 	@Override
-	protected AddManagedFieldComposite.EditCustomization customize( CompletionStep<?> step, UserType<?> declaringType, UserField field, AddManagedFieldComposite.EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
+	protected AddManagedFieldComposite.EditCustomization customize( UserActivity userActivity, UserType<?> declaringType, UserField field, AddManagedFieldComposite.EditCustomization rv ) {
+		super.customize( userActivity, declaringType, field, rv );
 		AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
 		rv.addDoStatement( SetUpMethodGenerator.createSetterStatement(
 				false, field,

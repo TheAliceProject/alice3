@@ -87,7 +87,7 @@ public class KeywordMenuModel extends CascadeMenuModel<Expression> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super Expression, Expression> step ) {
+	public String getMenuItemText() {
 		Formatter formatter = FormatterState.getInstance().getValue();
 		return formatter.getNameForDeclaration( this.method );
 	}

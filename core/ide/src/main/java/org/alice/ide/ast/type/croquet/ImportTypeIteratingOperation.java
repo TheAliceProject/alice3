@@ -46,14 +46,14 @@ import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.common.Resource;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.FileDialogValueCreator;
 import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
@@ -63,7 +63,6 @@ import org.lgna.project.io.TypeResourcesPair;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -81,19 +80,19 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		return subSteps.size() < 2;
+	protected boolean hasNext( List<UserActivity> finishedSteps ) {
+		return finishedSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
-		switch( subSteps.size() ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
+		switch( finishedSteps.size() ) {
 		case 0:
-			return ImportTypeFileDialogValueCreator.getInstance();
+			return new FileDialogValueCreator( null, StageIDE.getActiveInstance().getTypesDirectory(), IoUtilities.TYPE_EXTENSION );
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				File file = (File)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				File file = (File)prevSubStep.getProducedValue();
 				try {
 					TypeResourcesPair typeResourcesPair = IoUtilities.readType( file );
 					NamedUserType importedType = typeResourcesPair.getType();
@@ -115,15 +114,13 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 					if( srcType != null ) {
 						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
 					} else {
-						new OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file )
-								.buildAndShow();
+						new OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file ).buildAndShow();
 						return null;
 					}
 				} catch( IOException ioe ) {
-					throw new RuntimeException( ioe );
+					new OkDialog.Builder( "Unable to read " + file.getName() ).buildAndShow();
 				} catch( VersionNotSupportedException vnse ) {
-					new OkDialog.Builder( "version not supported " + vnse.getVersion() )
-							.buildAndShow();
+					new OkDialog.Builder( "version not supported " + vnse.getVersion() ).buildAndShow();
 				}
 				return null;
 			} else {
@@ -132,10 +129,5 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 		default:
 			return null;
 		}
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( CompletionStep<?> step, List<Step<?>> subSteps ) {
-		step.finish();
 	}
 }

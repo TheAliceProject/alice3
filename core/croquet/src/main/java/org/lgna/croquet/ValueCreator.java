@@ -44,13 +44,9 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
-import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.triggers.IterationTrigger;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -61,7 +57,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueCreator<T> extends AbstractCompletionModel {
+public abstract class ValueCreator<T> extends AbstractCompletionModel implements Triggerable {
 	//todo: edits are never created by value creators.  allow group specification anyways?
 	public static final Group VALUE_CREATOR_GROUP = Group.getInstance( UUID.fromString( "4bef663b-1474-40ec-9731-4e2a2cb49333" ), "VALUE_CREATOR_GROUP" );
 
@@ -100,14 +96,8 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		public final F createValue( ItemNode<? super F, Void> node, TransactionHistory transactionHistory ) {
-			Trigger trigger = NullTrigger.createUserInstance();
-			Step<?> step = this.valueCreator.fire( trigger );
-			if( step != null ) {
-				return (F)step.getEphemeralDataFor( VALUE_KEY );
-			} else {
-				throw new CancelException();
-			}
+		public final F createValue( ItemNode<? super F, Void> node ) {
+			return this.valueCreator.fireAndGetValue();
 		}
 
 		@Override
@@ -117,7 +107,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	}
 
 	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
-	public static final Step.Key<Object> VALUE_KEY = Step.Key.createInstance( "ValueCreator.VALUE_KEY" );
 
 	public ValueCreator( UUID migrationId ) {
 		super( VALUE_CREATOR_GROUP, migrationId );
@@ -136,23 +125,38 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		return this.fillIn;
 	}
 
-	protected abstract T createValue( Transaction transaction, Trigger trigger );
+	protected abstract T createValue( UserActivity transaction );
 
-	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		T value = this.createValue( transaction, trigger );
-		CompletionStep<?> completionStep = transaction.getCompletionStep();
-		if( completionStep != null ) {
-			completionStep.putEphemeralDataFor( VALUE_KEY, value );
+	protected void performInActivity( UserActivity activity ) {
+		activity.setCompletionModel( this );
+
+		T value = this.createValue( activity );
+
+		if ( activity.isCanceled() || value == null ) {
+			activity.cancel();
+			throw new CancelException();
+		}
+
+		activity.setProducedValue(value);
+		activity.finish();
+	}
+
+	public T fireAndGetValue() throws CancelException {
+		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().getActivityWithoutTrigger();
+		IterationTrigger.createUserInstance( activity );
+		fire( activity );
+		if( activity.isSuccessfullyCompleted() ) {
+			return (T)activity.getProducedValue();
+		} else {
+			throw new CancelException();
 		}
 	}
 
-	public T fireAndGetValue( Trigger trigger ) throws CancelException {
-		CompletionStep<?> step = this.fire( trigger );
-		if( step.isSuccessfullyCompleted() ) {
-			return (T)step.getEphemeralDataFor( VALUE_KEY );
-		} else {
-			throw new CancelException();
+	@Override
+	public void fire( UserActivity activity ) {
+		if( this.isEnabled() ) {
+			this.initializeIfNecessary();
+			this.performInActivity( activity );
 		}
 	}
 }

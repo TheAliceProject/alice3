@@ -43,7 +43,6 @@
 package org.alice.ide.croquet.models.cascade;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.ParameterAccess;
 import org.lgna.project.ast.UserParameter;
@@ -82,7 +81,7 @@ public class ParameterAccessFillIn extends ExpressionFillInWithoutBlanks<Paramet
 	}
 
 	@Override
-	public ParameterAccess createValue( ItemNode<? super ParameterAccess, Void> node, TransactionHistory transactionHistory ) {
+	public ParameterAccess createValue( ItemNode<? super ParameterAccess, Void> node ) {
 		return this.createValue( this.transientValue.parameter.getValue() );
 	}
 

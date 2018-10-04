@@ -45,7 +45,6 @@ package org.alice.stageide.custom;
 import org.alice.ide.custom.CustomExpressionCreatorComposite;
 import org.alice.stageide.custom.components.KeyCustomExpressionCreatorView;
 import org.lgna.croquet.PlainStringValue;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
@@ -101,7 +100,7 @@ public class KeyCustomExpressionCreatorComposite extends CustomExpressionCreator
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( this.getValueState().getValue() != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {

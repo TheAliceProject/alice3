@@ -46,7 +46,7 @@ import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 
 import java.util.UUID;
@@ -63,7 +63,6 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 
 	@Override
 	protected void localize() {
-		super.localize();
 		Formatter formatter = FormatterState.getInstance().getValue();
 		this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
 	}
@@ -83,8 +82,8 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, DropSite dropSite ) {
-		return this.getLeftButtonClickModel();
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
+		return this.getLeftButtonClickOperation();
 	}
 
 }

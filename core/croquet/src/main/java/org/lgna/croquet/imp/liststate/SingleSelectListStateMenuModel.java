@@ -58,8 +58,8 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class SingleSelectListStateMenuModel<T, D extends ListData<T>> extends MenuModel {
-	/*package-private*/SingleSelectListStateMenuModel( SingleSelectListState<T, D> listSelectionState ) {
+public class SingleSelectListStateMenuModel<T, D extends ListData<T>> extends MenuModel {
+	public SingleSelectListStateMenuModel( SingleSelectListState<T, D> listSelectionState ) {
 		super( UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
 		this.listSelectionState = listSelectionState;
 	}

@@ -44,7 +44,6 @@
 package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.AbstractItemNode;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.croquet.imp.cascade.ItemNode;
@@ -60,59 +59,18 @@ public abstract class CascadeFillIn<F, B> extends CascadeBlankOwner<F, B> {
 		super( id );
 	}
 
-	//todo: better name
-	private static enum BlankActor {
-		CREATE_VALUES() {
-			@Override
-			public <F> F act( ItemNode<F, ?> itemNode, TransactionHistory transactionHistory ) {
-				return itemNode.createValue( transactionHistory );
-			}
-		},
-		GET_TRANSIENT_VALUES() {
-			@Override
-			public <F> F act( ItemNode<F, ?> itemNode, TransactionHistory transactionHistory ) {
-				assert transactionHistory == null : transactionHistory;
-				if( itemNode != null ) {
-					return itemNode.getTransientValue();
-				} else {
-					return null;
-				}
-			}
-		};
-		public abstract <F> F act( ItemNode<F, ?> itemNode, TransactionHistory transactionHistory );
+	public boolean isAutomaticallySelectedWhenSoleOption() {
+		return false;
 	}
 
-	private B[] runBlanks( ItemNode<? super F, B> itemNode, TransactionHistory transactionHistory, BlankActor blankActor, Class<B> cls ) {
+	protected B[] createFromBlanks( ItemNode<? super F, B> itemNode, Class<B> cls ) {
 		List<? extends CascadeBlank<B>> blanks = this.getBlanks();
 		B[] rv = ReflectionUtilities.newTypedArrayInstance( cls, blanks.size() );
 		for( int i = 0; i < rv.length; i++ ) {
 			BlankNode<B> blankStep = itemNode.getBlankStepAt( i );
 			AbstractItemNode<B, ?, ?> selectedFillInContext = blankStep.getSelectedFillInContext();
-			rv[ i ] = blankActor.act( selectedFillInContext, transactionHistory );
-			//			if( rv[ i ] == null ) {
-			//				if( this.cls == org.lgna.project.ast.Expression.class ) {
-			//					edu.cmu.cs.dennisc.croquet.CascadeBlank< B > blank = blankContext.getModel();
-			//					if( blank instanceof ExpressionBlank ) {
-			//						ExpressionBlank expressionBlank = (ExpressionBlank)blank;
-			//						//todo:
-			//						//this cast is very, very wrong
-			//						rv[ i ] = (B)new org.alice.ide.ast.EmptyExpression( expressionBlank.getValueType() );
-			//					}
-			//				}
-			//			}
+			rv[ i ] = selectedFillInContext.createValue();// itemNode != null ? itemNode.getTransientValue() : null BlankActor.CREATE_VALUES.act( selectedFillInContext );
 		}
 		return rv;
-	}
-
-	public boolean isAutomaticallySelectedWhenSoleOption() {
-		return false;
-	}
-
-	protected B[] createFromBlanks( ItemNode<? super F, B> itemNode, TransactionHistory transactionHistory, Class<B> cls ) {
-		return runBlanks( itemNode, transactionHistory, BlankActor.CREATE_VALUES, cls );
-	}
-
-	protected B[] getTransientFromBlanks( ItemNode<? super F, B> itemNode, Class<B> cls ) {
-		return runBlanks( itemNode, null, BlankActor.GET_TRANSIENT_VALUES, cls );
 	}
 }

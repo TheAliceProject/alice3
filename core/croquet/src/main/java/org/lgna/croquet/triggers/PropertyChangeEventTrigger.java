@@ -42,30 +42,20 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ViewController;
 
-import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 
 /**
  * @author Dennis Cosgrove
  */
 public class PropertyChangeEventTrigger extends EventObjectTrigger<PropertyChangeEvent> {
-	public static PropertyChangeEventTrigger createUserInstance( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
-		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent );
+	public static UserActivity createUserActivity( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
+		return new PropertyChangeEventTrigger( viewController, propertyChangeEvent ).getUserActivity();
 	}
 
 	private PropertyChangeEventTrigger( ViewController<?, ?> viewController, PropertyChangeEvent propertyChangeEvent ) {
 		super( viewController, propertyChangeEvent );
-	}
-
-	public PropertyChangeEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
 	}
 }

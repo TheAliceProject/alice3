@@ -45,16 +45,11 @@ package org.lgna.croquet.imp.cascade;
 
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.CascadeRoot;
 import org.lgna.croquet.CompletionModel;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ActionEventTrigger;
-import org.lgna.croquet.triggers.PopupMenuEventTrigger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.MenuItemContainer;
 
 import javax.swing.event.PopupMenuEvent;
@@ -83,11 +78,11 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 	public void select() {
 	}
 
-	public final T[] createValues( TransactionHistory transactionHistory, Class<T> componentType ) {
+	public final T[] createValues( Class<T> componentType ) {
 		RtBlank<T>[] rtBlanks = this.getBlankChildren();
 		T[] rv = ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
-			T value = rtBlanks[ i ].createValue( transactionHistory );
+			T value = rtBlanks[ i ].createValue();
 			try {
 				rv[ i ] = value;
 			} catch( ArrayStoreException ase ) {
@@ -98,37 +93,21 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		return rv;
 	}
 
-	public CompletionStep<CM> cancel( TransactionHistory transactionHistory, Trigger trigger, CancelException ce ) {
-		Transaction transaction = transactionHistory.acquireActiveTransaction();
-		CompletionStep<CM> completionStep = this.getElement().createCompletionStep( transaction, trigger );
-		this.getElement().handleCancel( completionStep, trigger, ce );
-		return completionStep;
+	public void cancel( UserActivity activity ) {
+		getElement().handleCancel( activity );
+		activity.cancel();
 	}
 
-	public CompletionStep<CM> complete( Trigger trigger ) {
-		CascadeRoot<T, CM> root = this.getElement();
-		TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-		CompletionStep<CM> completionStep;
+	public void complete( UserActivity activity ) {
 		try {
-			//T[] values = this.createValues( transactionHistory, root.getComponentType() );
-			completionStep = root.handleCompletion( transactionHistory, trigger, this );
+			getElement().handleCompletion( activity, this );
 		} catch( CancelException ce ) {
-			completionStep = this.cancel( transactionHistory, trigger, ce );
+			cancel( activity );
 		}
-		//
-		//		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-		//		org.lgna.croquet.history.CompletionStep<CM> completionStep = root.createCompletionStep( transaction, trigger );
-		//		try {
-		//			T[] values = this.createValues( completionStep.getTransactionHistory(), root.getComponentType() );
-		//			root.handleCompletion( completionStep, values );
-		//		} catch( CancelException ce ) {
-		//			this.cancel( completionStep, trigger, ce );
-		//		}
-		return completionStep;
 	}
 
-	protected void handleActionPerformed( ActionEvent e ) {
-		this.complete( ActionEventTrigger.createUserInstance( e ) );
+	void handleActionPerformed( ActionEvent e ) {
+		this.complete( ActionEventTrigger.createUserActivity( e ) );
 	}
 
 	public PopupMenuListener createPopupMenuListener( final MenuItemContainer menuItemContainer ) {
@@ -145,9 +124,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
 			@Override
 			public void popupMenuCanceled( PopupMenuEvent e ) {
-				//todo
-				TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				RtRoot.this.cancel( transactionHistory, PopupMenuEventTrigger.createUserInstance( e ), null );
+				RtRoot.this.cancel( menuItemContainer.getActivity() );
 			}
 		};
 	}

@@ -49,11 +49,11 @@ import org.lgna.croquet.triggers.Trigger;
  * @author Dennis Cosgrove
  */
 public class ListSelectionStatePrepStep<T> extends PrepStep<SingleSelectListStateComboBoxPrepModel<T, ?>> {
-	public static <T> ListSelectionStatePrepStep<T> createAndAddToTransaction( Transaction parent, SingleSelectListStateComboBoxPrepModel<T, ?> model, Trigger trigger ) {
-		return new ListSelectionStatePrepStep<T>( parent, model, trigger );
+	public static <T> void createAndAddToActivity( SingleSelectListStateComboBoxPrepModel<T, ?> model, UserActivity activity ) {
+		new ListSelectionStatePrepStep<T>( activity, model, activity.getTrigger() );
 	}
 
-	private ListSelectionStatePrepStep( Transaction parent, SingleSelectListStateComboBoxPrepModel<T, ?> model, Trigger trigger ) {
+	private ListSelectionStatePrepStep( UserActivity parent, SingleSelectListStateComboBoxPrepModel<T, ?> model, Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 }

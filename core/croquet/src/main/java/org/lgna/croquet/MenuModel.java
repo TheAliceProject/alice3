@@ -42,10 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.PopupPrepStep;
-import org.lgna.croquet.history.TransactionManager;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.PopupMenu;
 
@@ -76,11 +74,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		public Iterable<? extends Model> getChildren() {
-			return Lists.newLinkedList( this.menuModel );
-		}
-
-		@Override
 		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.menuModel.getClassUsedForLocalization();
 		}
@@ -90,13 +83,13 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		protected PopupPrepStep perform( final Trigger trigger ) {
-			final PopupPrepStep step = TransactionManager.addPopupPrepStep( this, trigger );
+		protected void perform( final UserActivity activity ) {
+			final PopupPrepStep step = PopupPrepStep.createAndAddToActivity( this, activity );
 
-			final PopupMenu popupMenu = new PopupMenu( this ) {
+			final PopupMenu popupMenu = new PopupMenu( this, activity ) {
 				@Override
 				protected void handleDisplayable() {
-					prologue( trigger );
+					prologue( activity.getTrigger() );
 					//todo: investigate
 					super.handleDisplayable();
 					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
@@ -125,17 +118,9 @@ public abstract class MenuModel extends AbstractMenuModel {
 				@Override
 				public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
 					if( this.cancelEvent != null ) {
-						System.err.println( "todo: cancel" );
-						//step.getParent().cancel();
+						step.getUserActivity().cancel();
 						this.cancelEvent = null;
-					} else {
-						System.err.println( "todo: finish" );
-						//step.getParent().finish();
 					}
-					InternalPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
-
-					System.err.println( "TODO: handleFinally?" );
-					//					performObserver.handleFinally();
 				}
 
 				@Override
@@ -161,7 +146,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 				public void componentResized( ComponentEvent e ) {
 					//					java.awt.Component awtComponent = e.getComponent();
 					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
-					step.handleResized( e );
 				}
 
 				@Override
@@ -171,10 +155,9 @@ public abstract class MenuModel extends AbstractMenuModel {
 				}
 			} );
 
-			this.menuModel.handlePopupMenuPrologue( popupMenu, step );
+			this.menuModel.handlePopupMenuPrologue( popupMenu );
 
 			step.showPopupMenu( popupMenu );
-			return step;
 		}
 	}
 

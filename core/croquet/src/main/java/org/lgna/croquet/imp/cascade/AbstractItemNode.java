@@ -44,25 +44,21 @@
 package org.lgna.croquet.imp.cascade;
 
 import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.history.TransactionHistory;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractItemNode<F, B, M extends CascadeItem<F, B>> extends CascadeNode<BlankNode<?>, M> implements ItemNode<F, B> {
 	public AbstractItemNode( M model ) {
-		super( null, model );
+		super( model );
 	}
-
-	@Override
-	public abstract int getBlankStepCount();
 
 	@Override
 	public abstract BlankNode<B> getBlankStepAt( int index );
 
 	@Override
-	public F createValue( TransactionHistory transactionHistory ) {
-		return this.getElement().createValue( this, transactionHistory );
+	public F createValue() {
+		return this.getElement().createValue( this );
 	}
 
 	@Override

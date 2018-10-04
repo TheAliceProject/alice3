@@ -43,7 +43,7 @@
 package org.alice.stageide.oneshot.edits;
 
 import org.alice.ide.instancefactory.InstanceFactory;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
 import org.lgna.story.implementation.ModelImp;
@@ -53,8 +53,8 @@ import org.lgna.story.implementation.PaintProperty;
  * @author Dennis Cosgrove
  */
 public class SetPaintEdit extends AbstractSetPaintEdit<ModelImp> {
-	public SetPaintEdit( CompletionStep completionStep, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+	public SetPaintEdit( UserActivity userActivity, InstanceFactory instanceFactory, AbstractMethod method, Expression[] argumentExpressions ) {
+		super( userActivity, instanceFactory, method, argumentExpressions );
 	}
 
 	@Override

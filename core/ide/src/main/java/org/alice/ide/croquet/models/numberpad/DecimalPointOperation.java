@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.numberpad;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Map;
@@ -78,8 +78,8 @@ public class DecimalPointOperation extends NumberPadOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		this.numberModel.replaceSelectionWithDecimalPoint();
-		step.finish();
+		activity.finish();
 	}
 }

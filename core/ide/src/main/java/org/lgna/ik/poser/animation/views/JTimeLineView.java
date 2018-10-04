@@ -63,10 +63,7 @@ import javax.swing.JPanel;
 import edu.cmu.cs.dennisc.java.awt.GraphicsContext;
 import edu.cmu.cs.dennisc.java.lang.DoubleUtilities;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.triggers.NullTrigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
 import org.lgna.ik.poser.animation.edits.CurrentTimeLineTimeChangeEdit;
 
@@ -286,11 +283,10 @@ public class JTimeLineView extends JPanel {
 		public void mouseReleased( MouseEvent e ) {
 			setMousePressed( false );
 			if( isTimeSliding ) {
-				TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				Transaction transaction = history.acquireActiveTransaction();
-				CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 				if( isTimeSliding ) {
-					step.commitAndInvokeDo( new CurrentTimeLineTimeChangeEdit( step, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime ) );
+					// TODO not use Application.getActiveInstance().acquireOpenActivity()
+					UserActivity userActivity = Application.getActiveInstance().acquireOpenActivity();
+					userActivity.commitAndInvokeDo( new CurrentTimeLineTimeChangeEdit( userActivity, getComposite().getTimeLine(), getComposite().getTimeLine().getCurrentTime(), prevCurrTime ) );
 					isTimeSliding = false;
 				}
 				if( isTimeSliding ) {

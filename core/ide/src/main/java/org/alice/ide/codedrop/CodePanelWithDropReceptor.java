@@ -76,7 +76,8 @@ import org.lgna.croquet.AbstractDropReceptor;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.AwtContainerView;
@@ -336,8 +337,8 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 		}
 
 		@Override
-		protected Model dragDroppedPostRejectorCheck( DragStep step ) {
-			Model rv = null;
+		protected Triggerable dragDroppedPostRejectorCheck( DragStep step ) {
+			Triggerable rv = null;
 			final DragModel dragModel = step.getModel();
 			DragComponent dragSource = step.getDragSource();
 			final MouseEvent eSource = step.getLatestMouseEvent();
@@ -376,7 +377,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 						} else {
 							blockStatementIndexPair = null;
 						}
-						rv = dragModel.getDropModel( step, blockStatementIndexPair );
+						rv = dragModel.getDropOperation( step, blockStatementIndexPair );
 
 						this.pushedContext = new BlockStatementIndexPairContext( blockStatementIndexPair );
 						IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
@@ -430,7 +431,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 											count = 1;
 										}
 										if( count > 0 ) {
-											rv = MoveStatementOperation.getInstance( fromLocation, statement, toLocation, isMultiple );
+											rv = new MoveStatementOperation( fromLocation, statement, toLocation, isMultiple );
 										} else {
 											rv = null;
 										}
@@ -448,7 +449,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 						} else {
 							blockStatementIndexPair = null;
 						}
-						rv = dragModel.getDropModel( step, blockStatementIndexPair );
+						rv = dragModel.getDropOperation( step, blockStatementIndexPair );
 					}
 				}
 			}

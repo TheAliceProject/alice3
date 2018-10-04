@@ -52,7 +52,6 @@ import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.codecs.EnumCodec;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.Member;
 import org.lgna.project.ast.UserMethod;
 
@@ -136,8 +135,8 @@ public abstract class DifferentImplementationHelpComposite<M extends Member> ext
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep step ) {
-		Status rv = super.getStatusPreRejectorCheck( step );
+	protected Status getStatusPreRejectorCheck() {
+		Status rv = super.getStatusPreRejectorCheck();
 		if( rv == IS_GOOD_TO_GO_STATUS ) {
 			DifferentImplementationChoice topLevelChoice = this.choiceState.getValue();
 			if( topLevelChoice != null ) {

@@ -69,6 +69,6 @@ public class RenameTypeComposite extends RenameDeclarationComposite<NamedUserTyp
 	}
 
 	private RenameTypeComposite( NamedUserType type ) {
-		super( UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new TypeNameValidator( type ), type );
+		super( UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new TypeNameValidator(), type );
 	}
 }

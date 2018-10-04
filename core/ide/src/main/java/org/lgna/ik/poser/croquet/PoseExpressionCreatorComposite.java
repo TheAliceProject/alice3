@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.ast.Expression;
@@ -81,7 +80,7 @@ public final class PoseExpressionCreatorComposite extends SingleValueCreatorInpu
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		if( this.poserComposite.isEmptyPose() ) {
 			return this.isEmptyPoseError;
 		} else {

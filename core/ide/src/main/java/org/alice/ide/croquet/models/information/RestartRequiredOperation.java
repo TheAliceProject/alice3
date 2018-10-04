@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.information;
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import org.alice.ide.operations.InconsequentialActionOperation;
-import org.lgna.croquet.history.CompletionStep;
 
 import javax.swing.Icon;
 import java.util.UUID;
@@ -69,7 +68,7 @@ public class RestartRequiredOperation extends InconsequentialActionOperation {
 	}
 
 	@Override
-	protected void performInternal( CompletionStep<?> step ) {
+	protected void performInternal() {
 		new OkDialog.Builder( "Exiting and restarting Alice is required." )
 				.title( "Restart Is Required" )
 				.icon( TWEEDLEDUM_AND_TWEEDLEDEE_ICON )

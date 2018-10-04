@@ -88,7 +88,7 @@ public class ExpressionDropDown<M extends Expression> extends ItemDropDown<M, Cu
 	}
 
 	@Override
-	protected void handleChanged( State<M> state, M prevValue, M nextValue, boolean isAdjusting ) {
+	protected void handleChanged( State<M> state, M prevValue, M nextValue ) {
 		this.mainComponent.setExpression( nextValue );
 	}
 };

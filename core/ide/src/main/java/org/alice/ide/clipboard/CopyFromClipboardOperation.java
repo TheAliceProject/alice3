@@ -48,7 +48,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 
 import java.util.Map;
@@ -77,8 +77,8 @@ public class CopyFromClipboardOperation extends FromClipboardOperation {
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep step, Statement statement ) {
+	protected Edit createEdit( UserActivity userActivity, Statement statement ) {
 		Statement copy = IDE.getActiveInstance().createCopy( statement );
-		return new InsertStatementEdit<CopyFromClipboardOperation>( step, this.getBlockStatementIndexPair(), copy );
+		return new InsertStatementEdit<CopyFromClipboardOperation>( userActivity, this.getBlockStatementIndexPair(), copy );
 	}
 }

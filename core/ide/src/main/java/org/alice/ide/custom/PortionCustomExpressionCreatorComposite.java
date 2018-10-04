@@ -45,7 +45,6 @@ package org.alice.ide.custom;
 
 import org.alice.ide.custom.components.PortionCustomExpressionCreatorView;
 import org.lgna.croquet.BoundedIntegerState;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 
@@ -88,25 +87,20 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck() {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
 	protected void initializeToPreviousExpression( Expression expression ) {
-		double value;
 		if( expression instanceof DoubleLiteral ) {
 			DoubleLiteral doubleLiteral = (DoubleLiteral)expression;
-			value = doubleLiteral.value.getValue();
-		} else {
-			value = Double.NaN;
-		}
-		if( Double.isNaN( value ) ) {
-			//pass
-		} else {
-			BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
-			decimal = decimal.movePointRight( 2 );
-			this.valueState.setValueTransactionlessly( decimal.intValue() );
+			double value = doubleLiteral.value.getValue();
+			if( Double.isFinite( value ) ) {
+				BigDecimal decimal = new BigDecimal( value, new MathContext( BigDecimal.ROUND_HALF_DOWN ) );
+				decimal = decimal.movePointRight( 2 );
+				this.valueState.setValueTransactionlessly( decimal.intValue() );
+			}
 		}
 	}
 }

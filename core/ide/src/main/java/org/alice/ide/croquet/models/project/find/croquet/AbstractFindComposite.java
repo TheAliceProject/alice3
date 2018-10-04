@@ -58,7 +58,6 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.project.events.ProjectChangeOfInterestListener;
-import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -72,7 +71,7 @@ import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
@@ -163,7 +162,7 @@ public abstract class AbstractFindComposite extends FrameCompositeWithInternalIs
 	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
 
 		@Override
-		public Edit perform( CompletionStep<?> step, AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( UserActivity userActivity, InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResultsState.getValue() != null ) {
 				AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();

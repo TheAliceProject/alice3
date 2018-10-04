@@ -55,7 +55,7 @@ public class BlankNode<B> extends CascadeNode<AbstractItemNode<B, ?, CascadeItem
 	}
 
 	private BlankNode( CascadeBlank<B> model ) {
-		super( null, model );
+		super( model );
 	}
 
 	private RtBlank<B> rtBlank;

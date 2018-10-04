@@ -44,11 +44,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.data.ListData;
-import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.FolderTabbedPane;
-import org.lgna.croquet.views.ScrollPane;
-import org.lgna.croquet.views.SwingComponentView;
-import org.lgna.croquet.views.TabbedPane;
 import org.lgna.croquet.views.ToolPaletteTabbedPane;
 
 import javax.swing.Icon;
@@ -70,47 +66,20 @@ public abstract class TabState<T extends TabComposite<?>, D extends ListData<T>>
 		return new ToolPaletteTabbedPane<T>( this );
 	}
 
-	public SwingComponentView<?> getMainComponentFor( T item ) {
-		TabbedPane<T> tabbedPane = ComponentManager.getFirstComponent( this, TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getMainComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public ScrollPane getScrollPaneFor( T item ) {
-		TabbedPane<T> tabbedPane = ComponentManager.getFirstComponent( this, TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getScrollPaneFor( item );
-		} else {
-			return null;
-		}
-	}
-
-	public SwingComponentView<?> getRootComponentFor( T item ) {
-		TabbedPane<T> tabbedPane = ComponentManager.getFirstComponent( this, TabbedPane.class );
-		if( tabbedPane != null ) {
-			return tabbedPane.getRootComponentFor( item );
-		} else {
-			return null;
-		}
-	}
-
 	public void setItemIconForBothTrueAndFalse( T item, Icon icon ) {
 		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}
 
 	@Override
-	protected void fireChanging( T prevValue, T nextValue, State.IsAdjusting isAdjusting ) {
+	protected void fireChanging( T prevValue, T nextValue ) {
 		if( prevValue != null ) {
 			prevValue.handlePostDeactivation();
 		}
-		super.fireChanging( prevValue, nextValue, isAdjusting );
+		super.fireChanging( prevValue, nextValue );
 	}
 
 	@Override
-	protected void fireChanged( T prevValue, T nextValue, State.IsAdjusting isAdjusting ) {
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( nextValue != null ) {
 			nextValue.handlePreActivation();

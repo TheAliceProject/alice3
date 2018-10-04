@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.ast.ExpressionCreator;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaMethod;
@@ -68,8 +68,8 @@ public class MarkerColorIdEdit extends AbstractEdit {
 
 	private static final JavaMethod SET_COLOR_ID_METHOD = JavaMethod.getInstance( SMarker.class, "setColorId", Color.class );
 
-	public MarkerColorIdEdit( CompletionStep step, UserField field, Expression nextArgumentExpression ) {
-		super( step );
+	public MarkerColorIdEdit( UserActivity userActivity, UserField field, Expression nextArgumentExpression ) {
+		super( userActivity );
 		this.field = field;
 		this.nextArgumentExpression = nextArgumentExpression;
 	}

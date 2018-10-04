@@ -44,12 +44,10 @@ package org.lgna.croquet.preferences;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.UUID;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -110,11 +108,19 @@ public class PreferencesManager {
 		try {
 			URI uri = new URI( path );
 			return new File( uri );
-		} catch (URISyntaxException urise) {
-			Logger.throwable( urise, "URI failure:", path );
+		} catch (Exception urise) {
+			// It did not read as a URI. Treat it as a system path.
 			return new File( path );
 		}
 	}
 
 	private Application application;
+
+	public String getValue( String propertyName, String defaultValue ) {
+		return getUserPreferences().get( propertyName, defaultValue );
+	}
+
+	public void setValue( String propertyName, String newValue ) {
+		getUserPreferences().put( propertyName, newValue );
+	}
 }

@@ -214,8 +214,4 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<JPanel, E, S
 		this.revalidateAndRepaint();
 	}
 
-	@Override
-	public TrackableShape getTrackableShapeFor( E item ) {
-		return this.getItemDetails( item );
-	}
 }

@@ -43,15 +43,11 @@
 
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.croquet.history.Step;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.SwingComponentView;
 
 import javax.swing.Action;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -87,7 +83,7 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 
 		int prevMnemonicKey = getMnemonicKey( action );
-		if( prevMnemonicKey != 0 ) {
+		if( prevMnemonicKey != 0 ) { // True if locale was just changed
 			action.putValue( Action.MNEMONIC_KEY, 0 );
 		}
 		action.putValue( Action.NAME, nextName );
@@ -96,30 +92,22 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	private final List<ContextFactory<?>> contextFactories = Lists.newCopyOnWriteArrayList();
-
-	//TODO: contemplate passing context factories on construction
-	public AbstractModel( UUID id/* , ContextFactory<?>... contextFactories */) {
+	protected AbstractModel( UUID id ) {
 		super( id );
+		this.migrationId = id;
+	}
+
+	private final UUID migrationId;
+
+	@Override
+	public UUID getMigrationId() {
+		return this.migrationId;
 	}
 
 	@Override
-	public Iterable<ContextFactory<?>> getContextFactories() {
-		return this.contextFactories;
+	public final void relocalize() {
+		this.localize();
 	}
-
-	public void addContextFactory( ContextFactory<?> contextFactory ) {
-		assert contextFactory != null : this;
-		this.contextFactories.add( contextFactory );
-	}
-
-	public void removeContextFactory( ContextFactory<?> contextFactory ) {
-		assert contextFactory != null : this;
-		this.contextFactories.remove( contextFactory );
-	}
-
-	@Override
-	public abstract Step<?> fire( Trigger trigger );
 
 	private boolean isEnabled = true;
 

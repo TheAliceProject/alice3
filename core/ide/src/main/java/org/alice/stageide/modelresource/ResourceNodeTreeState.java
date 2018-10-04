@@ -47,8 +47,8 @@ import edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon;
 import org.alice.ide.Theme;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CustomSingleSelectTreeState;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.triggers.NullTrigger;
 
@@ -100,9 +100,9 @@ public abstract class ResourceNodeTreeState extends CustomSingleSelectTreeState<
 	protected void setCurrentTruthAndBeautyValue( ResourceNode nextValue ) {
 		super.setCurrentTruthAndBeautyValue( nextValue );
 		if( nextValue.getResourceKey().isLeaf() ) {
-			Model model = nextValue.getLeftButtonClickModel();
+			Triggerable model = nextValue.getLeftButtonClickOperation();
 			if( model != null ) {
-				model.fire( NullTrigger.createUserInstance() );
+				model.fire( NullTrigger.createUserActivity() );
 			}
 		}
 	}

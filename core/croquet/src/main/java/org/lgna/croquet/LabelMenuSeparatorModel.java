@@ -46,7 +46,6 @@ import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.MenuTextSeparator;
 
 import javax.swing.Icon;
-import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -58,11 +57,6 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 
 	public LabelMenuSeparatorModel( UUID id ) {
 		super( id );
-	}
-
-	@Override
-	public Iterable<? extends Model> getChildren() {
-		return Collections.emptyList();
 	}
 
 	@Override

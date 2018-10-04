@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 
@@ -51,15 +51,18 @@ import org.lgna.croquet.views.ViewController;
  * @author Dennis Cosgrove
  */
 public class CascadeAutomaticDeterminationTrigger extends Trigger {
-	private final transient Trigger previousTrigger;
 
-	public CascadeAutomaticDeterminationTrigger( Trigger previousTrigger ) {
-		this.previousTrigger = previousTrigger;
+	public static UserActivity createChildActivity( UserActivity parent ) {
+		UserActivity childActivity = parent.newChildActivity();
+		new CascadeAutomaticDeterminationTrigger( childActivity, parent.getTrigger() );
+		return childActivity;
 	}
 
-	public CascadeAutomaticDeterminationTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.previousTrigger = null;
+	private final transient Trigger previousTrigger;
+
+	private CascadeAutomaticDeterminationTrigger( UserActivity activity, Trigger previousTrigger ) {
+		super(activity);
+		this.previousTrigger = previousTrigger;
 	}
 
 	@Override

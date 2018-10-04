@@ -46,7 +46,7 @@ import org.alice.ide.code.InsertCopiedStatementOperation;
 import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.Statement;
@@ -57,8 +57,8 @@ import javax.swing.undo.CannotUndoException;
  * @author Dennis Cosgrove
  */
 public final class InsertCopiedStatementEdit extends AbstractEdit<InsertCopiedStatementOperation> {
-	public InsertCopiedStatementEdit( CompletionStep<InsertCopiedStatementOperation> step, BlockStatement blockStatement, int index, Statement statement ) {
-		super( step );
+	public InsertCopiedStatementEdit( UserActivity userActivity, BlockStatement blockStatement, int index, Statement statement ) {
+		super( userActivity );
 		this.blockStatement = blockStatement;
 		this.index = index;
 		this.statement = statement;

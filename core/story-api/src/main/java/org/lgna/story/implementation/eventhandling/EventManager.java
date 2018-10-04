@@ -43,18 +43,15 @@
 
 package org.lgna.story.implementation.eventhandling;
 
-import java.awt.Component;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter;
-import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.AbstractDragAdapter.CameraView;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
+import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
+import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import org.alice.interact.DragAdapter;
+import org.alice.interact.DragAdapter.CameraView;
 import org.alice.interact.RuntimeDragAdapter;
 import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.MultipleEventPolicy;
@@ -62,34 +59,17 @@ import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 import org.lgna.story.Visual;
-import org.lgna.story.event.ArrowKeyEvent;
-import org.lgna.story.event.ArrowKeyPressListener;
-import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnObjectListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
-import org.lgna.story.event.MoveWithArrows;
-import org.lgna.story.event.NumberKeyEvent;
-import org.lgna.story.event.NumberKeyPressListener;
-import org.lgna.story.event.OcclusionEndListener;
-import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.PointOfViewChangeListener;
-import org.lgna.story.event.SceneActivationEvent;
-import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.TimeListener;
-import org.lgna.story.event.ViewEnterListener;
-import org.lgna.story.event.ViewExitListener;
-import org.lgna.story.event.WhileCollisionListener;
-import org.lgna.story.event.WhileInViewListener;
-import org.lgna.story.event.WhileOcclusionListener;
-import org.lgna.story.event.WhileProximityListener;
+import org.lgna.story.event.*;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
-import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
-import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
-import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Matt May
@@ -176,7 +156,7 @@ public class EventManager {
 	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
-	private AbstractDragAdapter dragAdapter;
+	private DragAdapter dragAdapter;
 
 	public EventManager( SceneImp scene ) {
 		this.scene = scene;

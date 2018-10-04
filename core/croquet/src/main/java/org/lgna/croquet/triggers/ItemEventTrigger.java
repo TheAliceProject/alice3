@@ -43,30 +43,20 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import org.lgna.croquet.views.ViewController;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.UserActivity;
 
-import java.awt.Point;
 import java.awt.event.ItemEvent;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ItemEventTrigger extends EventObjectTrigger<ItemEvent> {
-	public static ItemEventTrigger createUserInstance( ItemEvent itemEvent ) {
-		return new ItemEventTrigger( null, itemEvent );
+	public static UserActivity createUserActivity( ItemEvent itemEvent ) {
+		return new ItemEventTrigger( itemEvent ).getUserActivity();
 	}
 
-	private ItemEventTrigger( ViewController<?, ?> viewController, ItemEvent itemEvent ) {
-		super( viewController, itemEvent );
-	}
-
-	public ItemEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	protected Point getPoint() {
-		return null;
+	private ItemEventTrigger( ItemEvent itemEvent ) {
+		super( Application.getActiveInstance().acquireOpenActivity().getActivityWithoutModel(), null, itemEvent );
 	}
 }

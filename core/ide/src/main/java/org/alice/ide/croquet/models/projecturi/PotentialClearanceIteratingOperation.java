@@ -43,38 +43,30 @@
 package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.ProjectApplication;
-import org.alice.ide.ProjectDocumentFrame;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.SingleThreadIteratingOperation;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Operation;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialClearanceIteratingOperation extends SingleThreadIteratingOperation {
-	public PotentialClearanceIteratingOperation( Group group, UUID migrationId, ProjectDocumentFrame projectDocumentFrame, Model postClearanceModel ) {
+public abstract class PotentialClearanceIteratingOperation extends Operation {
+	public PotentialClearanceIteratingOperation( Group group, UUID migrationId, Triggerable postClearanceModel ) {
 		super( group, migrationId );
-		this.projectDocumentFrame = projectDocumentFrame;
 		this.postClearanceModel = postClearanceModel;
 	}
 
-	protected Model getPostClearanceModel() {
-		return this.postClearanceModel;
-	}
-
-	@Override
-	protected Iterator<Model> createIteratingData() {
-		List<Model> models = Lists.newLinkedList();
+	protected List<Triggerable> createIteratingData() {
+		List<Triggerable> steps = Lists.newLinkedList();
 		ProjectApplication application = ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
 		if (!application.isProjectUpToDateWithFile()) {
@@ -85,25 +77,41 @@ public abstract class PotentialClearanceIteratingOperation extends SingleThreadI
 				throw new CancelException();
 			}
 			if( result == YesNoCancelResult.YES ) {
-				models.add( SaveProjectOperation.getInstance() );
+				steps.add( SaveProjectOperation.getInstance() );
 			}
 		}
 		if( isPostClearanceModelDesired ) {
-			models.add( this.postClearanceModel );
+			steps.add( this.postClearanceModel );
 		}
-		return models.iterator();
+		return steps;
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iterator ) {
-		return iterator.hasNext();
+	protected final void performInActivity( final UserActivity userActivity ) {
+		userActivity.setCompletionModel( this );
+		try {
+			List<UserActivity> finishedActivities = Lists.newLinkedList();
+			for ( Triggerable step : createIteratingData() ) {
+				UserActivity child = userActivity.newChildActivity();
+				step.fire( child );
+				if ( child.isSuccessfullyCompleted() ) {
+					finishedActivities.add( child );
+				} else {
+					if (child.isPending()) {
+						Logger.severe( "Canceling while a subStep is pending. The substep should either finish or throw CancelException.", this );
+					}
+					throw new CancelException();
+				}
+			}
+			handleSuccessfulCompletionOfSubModels( userActivity, finishedActivities );
+		} catch( CancelException ce ) {
+			userActivity.cancel();
+		}
 	}
 
-	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iterator ) {
-		return iterator.next();
+	protected void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ){
+		activity.finish();
 	}
 
-	private final ProjectDocumentFrame projectDocumentFrame;
-	private final Model postClearanceModel;
+	private final Triggerable postClearanceModel;
 }

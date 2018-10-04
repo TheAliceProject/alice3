@@ -47,9 +47,7 @@ import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.IdeDragModel;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.lgna.croquet.DropReceptor;
-import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.AbstractWindow;
-import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.AwtContainerView;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.SwingComponentView;
@@ -76,7 +74,6 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 
 	private List<DropReceptor> holes = null;
 	private DragComponent<?> potentialDragSource;
-	private AwtComponentView<?> currentDropReceptorComponent;
 
 	private final AbstractWindow<?> window;
 
@@ -101,32 +98,27 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		this.potentialDragSource = null;
 	}
 
-	public void handleDragStarted( DragStep dragAndDropContext ) {
+	public void handleDragStarted() {
 		this.potentialDragSource = null;
 		if( this.holes != null ) {
 			this.repaint();
 		}
 	}
 
-	public void handleDragEnteredDropReceptor( DragStep dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor() {
 	}
 
-	public void handleDragExitedDropReceptor( DragStep dragAndDropContext ) {
-		this.currentDropReceptorComponent = null;
+	public void handleDragExitedDropReceptor() {
 		if( this.holes != null ) {
 			this.repaint();
 		}
 	}
 
-	public void handleDragStopped( DragStep dragAndDropContext ) {
+	public void handleDragStopped() {
 	}
 
 	private boolean isFauxStencilDesired() {
 		return IDE.getActiveInstance().isDragInProgress();
-	}
-
-	public void setDragInProgress( boolean isDragInProgress ) {
-		this.currentDropReceptorComponent = null;
 	}
 
 	@Override
@@ -139,11 +131,7 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		if( this.holes != null ) {
 			synchronized( this.holes ) {
 				Area area = new Area( new Rectangle( 0, 0, getWidth(), getHeight() ) );
-				if( this.currentDropReceptorComponent != null ) {
-					g2.setPaint( new Color( 0, 0, 127, 95 ) );
-				} else {
-					g2.setPaint( new Color( 0, 0, 127, 127 ) );
-				}
+				g2.setPaint( new Color( 0, 0, 127, 127 ) );
 
 				Rectangle potentialDragSourceBounds;
 				if( this.potentialDragSource != null ) {
@@ -186,19 +174,6 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 
 							g2.setColor( new Color( 0, 0, 0 ) );
 							g2.draw( holeBounds );
-							if( this.currentDropReceptorComponent == component ) {
-								g2.setColor( new Color( 0, 255, 0 ) );
-								g2.setStroke( THIN_STROKE );
-								g2.draw( holeBounds );
-								if( this.currentDropReceptorComponent == component ) {
-									g2.setColor( new Color( 0, 255, 0 ) );
-									g2.setStroke( THIN_STROKE );
-									g2.draw( holeBounds );
-									g2.setStroke( THICK_STROKE );
-									g2.setColor( new Color( 191, 255, 191, 63 ) );
-									g2.fill( holeBounds );
-								}
-							}
 						} else {
 							Logger.severe( dropReceptor );
 						}

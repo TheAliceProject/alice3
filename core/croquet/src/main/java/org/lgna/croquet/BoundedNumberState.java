@@ -44,6 +44,7 @@
 package org.lgna.croquet;
 
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.ChangeEventTrigger;
 import org.lgna.croquet.views.Slider;
 import org.lgna.croquet.views.Spinner;
@@ -59,7 +60,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberState<N extends Number> extends SimpleValueState<N> {
+public abstract class BoundedNumberState<N extends Number> extends State<N> {
 	public static class AtomicChange<N extends Number> {
 		private N minimum = null;
 		private N maximum = null;
@@ -142,14 +143,23 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 		return this.swingModel;
 	}
 
+
+	private void commitAdjustingValue( N prevValue, N nextValue, UserActivity activity ) {
+		commitStateEdit( prevValue, nextValue, activity );
+		fireChanged( prevValue, nextValue, true );
+	}
+
 	@Override
-	protected boolean isAdjustingIgnored() {
-		return false;
+	protected void adjustModelValueFromSwing( N nextValue, UserActivity activity ) {
+		changeModelValue( previousValue, nextValue, () -> commitAdjustingValue( previousValue, nextValue, activity ) );
 	}
 
 	private void handleStateChanged( ChangeEvent e ) {
-		N nextValue = this.getSwingValue();
-		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), ChangeEventTrigger.createUserInstance( e ) );
+		final UserActivity activity = Application.getActiveInstance().acquireOpenActivity().newChildActivity();
+		ChangeEventTrigger.createUserInstance( activity, e );
+		changingValueFromSwing( getSwingValue(),
+														swingModel.getBoundedRangeModel().getValueIsAdjusting(),
+														activity );
 	}
 
 	@Override
@@ -164,27 +174,10 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 
 	public abstract void setMaximum( N maximum );
 
-	public N getStepSize() {
-		return (N)this.getSwingModel().getSpinnerModel().getStepSize();
-	}
-
-	public void setStepSize( N stepSize ) {
-		this.getSwingModel().getSpinnerModel().setStepSize( stepSize );
-	}
-
 	public void setAll( AtomicChange<N> atomicChange ) {
 		atomicChange.updateSwingModel( this.swingModel );
 		if( atomicChange.value != null ) {
 			this.setCurrentTruthAndBeautyValue( atomicChange.value );
-		}
-	}
-
-	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
-		this.pushIsInTheMidstOfAtomicChange();
-		try {
-			this.setAll( atomicChange );
-		} finally {
-			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 

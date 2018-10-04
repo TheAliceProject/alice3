@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.ast.cascade.resource;
 
 import org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks;
 import org.lgna.common.Resource;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.ResourceExpression;
 
@@ -63,7 +62,7 @@ public abstract class ResourceExpressionFillIn<T extends Resource> extends Expre
 	}
 
 	@Override
-	public final ResourceExpression createValue( ItemNode<? super ResourceExpression, Void> node, TransactionHistory transactionHistory ) {
+	public final ResourceExpression createValue( ItemNode<? super ResourceExpression, Void> node ) {
 		return new ResourceExpression( this.transientValue.getType(), this.transientValue.resource.getValue() );
 	}
 

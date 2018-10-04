@@ -48,14 +48,12 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Lazy;
 import org.lgna.croquet.data.ListData;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.imp.liststate.SingleSelectListStateImp;
+import org.lgna.croquet.history.UserActivity;
+import org.lgna.croquet.imp.liststate.SingleSelectListStateMenuModel;
 import org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.croquet.views.ComponentManager;
 import org.lgna.croquet.views.DefaultRadioButtons;
-import org.lgna.croquet.views.ItemSelectable;
 import org.lgna.croquet.views.List;
-import org.lgna.croquet.views.TrackableShape;
 import org.lgna.croquet.views.renderers.ItemCodecListCellRenderer;
 
 import javax.swing.ComboBoxModel;
@@ -73,9 +71,9 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
+public class SingleSelectListState<T, D extends ListData<T>> extends ItemState<T> implements Iterable<T> {
 	private class DataIndexPair implements ComboBoxModel {
-		public DataIndexPair( D data, int index ) {
+		DataIndexPair( D data, int index ) {
 			this.data = data;
 			this.index = index;
 		}
@@ -116,7 +114,7 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 		@Override
 		public void setSelectedItem( Object item ) {
 			int index = this.data.indexOf( (T)item );
-			SingleSelectListState.this.imp.getSwingModel().setSelectionIndex( index );
+			SingleSelectListState.this.swingModel.setSelectionIndex( index );
 
 			//todo: update this.index???
 		}
@@ -141,12 +139,13 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 	public SingleSelectListState( Group group, UUID id, int selectionIndex, D data ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
-		this.imp = new SingleSelectListStateImp<T, D>( this, new SingleSelectListStateSwingModel( this.dataIndexPair ) );
-		this.imp.getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		swingModel = new SingleSelectListStateSwingModel( this.dataIndexPair );
+		swingModel.getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
-	public SingleSelectListStateImp<T, D> getImp() {
-		return this.imp;
+	// TODO Remove view from model
+	public SingleSelectListStateSwingModel getSwingModel() {
+		return this.swingModel;
 	}
 
 	@Override
@@ -186,17 +185,21 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 		return Collections.emptyList();
 	}
 
-	@Override
-	protected boolean isSwingValueValid() {
-		int index = this.imp.getSwingModel().getSelectionIndex();
+	private boolean isSwingValueValid() {
+		int index = this.swingModel.getSelectionIndex();
 		return ( -1 <= index ) && ( index < this.getItemCount() );
 	}
 
 	@Override
+	protected boolean shouldUpdateSwingModel( T nextValue ) {
+		return ( !isSwingValueValid() || super.shouldUpdateSwingModel( nextValue ) );
+	}
+
+	@Override
 	protected T getSwingValue() {
-		int index = this.imp.getSwingModel().getSelectionIndex();
+		int index = this.swingModel.getSelectionIndex();
 		if( index != -1 ) {
-			return (T)this.imp.getSwingModel().getComboBoxModel().getElementAt( index );
+			return (T)this.swingModel.getComboBoxModel().getElementAt( index );
 		} else {
 			return null;
 		}
@@ -216,12 +219,41 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 			}
 			isInTheMidstOfSettingSwingValue = true;
 			try {
-				this.imp.getSwingModel().setSelectionIndex( index );
+				this.swingModel.setSelectionIndex( index );
 			} finally {
 				isInTheMidstOfSettingSwingValue = false;
 			}
-			this.imp.getSwingModel().fireListSelectionChanged( index, index, false );
+			this.swingModel.fireListSelectionChanged( index, index, false );
 		}
+	}
+
+	private int atomicCount;
+	private T prevValueAtStartOfAtomicChange;
+
+	private void pushIsInTheMidstOfAtomicChange() {
+		if( isNotInTheMidstOfAtomicChange() ) {
+			this.prevValueAtStartOfAtomicChange = this.previousValue;
+		}
+		this.atomicCount++;
+	}
+
+	private void popIsInTheMidstOfAtomicChange() {
+		this.atomicCount--;
+		if( isNotInTheMidstOfAtomicChange() ) {
+			T nextValue = this.getCurrentTruthAndBeautyValue();
+			changeValue( prevValueAtStartOfAtomicChange, nextValue );
+		}
+	}
+
+	@Override
+	protected void changeValue( T prevValue, T nextValue, Runnable bookkeeping) {
+		if ( isNotInTheMidstOfAtomicChange() ) {
+			super.changeValue( prevValue, nextValue, bookkeeping );
+		}
+	}
+
+	private boolean isNotInTheMidstOfAtomicChange() {
+		return this.atomicCount <= 0;
 	}
 
 	public int getSelectedIndex() {
@@ -278,16 +310,16 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 		return this.dataIndexPair.data.iterator();
 	}
 
-	protected void fireContentsChanged( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireContentsChanged( this, index0, index1 );
+	void fireContentsChanged( int index0, int index1 ) {
+		Logger.errln( "todo: fireContentsChanged", this, index0, index1 );
 	}
 
-	protected void fireIntervalAdded( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireIntervalAdded( this, index0, index1 );
+	void fireIntervalAdded( int index0, int index1 ) {
+		Logger.errln( "todo: fireIntervalAdded", this, index0, index1 );
 	}
 
-	protected void fireIntervalRemoved( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireIntervalRemoved( this, index0, index1 );
+	void fireIntervalRemoved( int index0, int index1 ) {
+		Logger.errln( "todo: fireIntervalRemoved", this, index0, index1 );
 	}
 
 	public final void addItem( int index, T item ) {
@@ -422,17 +454,8 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 		return new DefaultRadioButtons<T>( this, false );
 	}
 
-	public TrackableShape getTrackableShapeFor( T item ) {
-		ItemSelectable<?, T, ?> itemSelectable = ComponentManager.getFirstComponent( this, ItemSelectable.class );
-		if( itemSelectable != null ) {
-			return itemSelectable.getTrackableShapeFor( item );
-		} else {
-			return null;
-		}
-	}
-
 	public MenuModel getMenuModel() {
-		return this.imp.getMenuModel();
+		return menuModelLazy.get();
 	}
 
 	private class EmptyConditionText extends PlainStringValue {
@@ -459,7 +482,13 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 	}
 
 	private final DataIndexPair dataIndexPair;
-	private final SingleSelectListStateImp<T, D> imp;
+	private final SingleSelectListStateSwingModel swingModel;
+	private final Lazy<MenuModel> menuModelLazy = new Lazy<MenuModel>() {
+		@Override
+		protected MenuModel create() {
+			return new SingleSelectListStateMenuModel<T, D>( SingleSelectListState.this );
+		}
+	};
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
 	private final ListSelectionListener listSelectionListener = new ListSelectionListener() {
 		@Override
@@ -467,14 +496,19 @@ public abstract class SingleSelectListState<T, D extends ListData<T>> extends It
 			if( isInTheMidstOfSettingSwingValue ) {
 				//pass
 			} else {
-				int index = imp.getSwingModel().getSelectionIndex();
+				int index = swingModel.getSelectionIndex();
 				T nextValue;
 				if( index != -1 ) {
-					nextValue = (T)imp.getSwingModel().getComboBoxModel().getElementAt( index );
+					nextValue = (T)swingModel.getComboBoxModel().getElementAt( index );
 				} else {
 					nextValue = null;
 				}
-				SingleSelectListState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), NullTrigger.createUserInstance() );
+				// TODO Carry through a user activity on a UI element
+				final UserActivity activity = NullTrigger.createUserActivity();
+				SingleSelectListState.this.changingValueFromSwing( nextValue, e.getValueIsAdjusting(), activity );
+				if (activity.isPending()) {
+					activity.finish();
+				}
 			}
 		}
 	};

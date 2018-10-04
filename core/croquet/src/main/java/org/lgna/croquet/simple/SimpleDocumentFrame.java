@@ -45,7 +45,7 @@ package org.lgna.croquet.simple;
 import org.lgna.croquet.Document;
 import org.lgna.croquet.DocumentFrame;
 import org.lgna.croquet.Group;
-import org.lgna.croquet.history.TransactionHistory;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.undo.UndoHistory;
 
 /**
@@ -59,11 +59,11 @@ import org.lgna.croquet.undo.UndoHistory;
 	}
 
 	private final Document document = new Document() {
-		private final TransactionHistory transactionHistory = new TransactionHistory();
+		private final UserActivity userActivity = new UserActivity();
 
 		@Override
-		public TransactionHistory getRootTransactionHistory() {
-			return this.transactionHistory;
+		public UserActivity getUserActivity() {
+			return userActivity;
 		}
 
 		@Override

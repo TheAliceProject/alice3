@@ -43,8 +43,8 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
@@ -60,22 +60,24 @@ public abstract class EventObjectTrigger<E extends EventObject> extends Trigger 
 	private final transient ViewController<?, ?> viewController;
 	private final transient E event;
 
-	public EventObjectTrigger( ViewController<?, ?> viewController, E event ) {
+	public EventObjectTrigger( UserActivity userActivity, ViewController<?, ?> viewController, E event ) {
+		super(userActivity);
 		this.viewController = viewController;
 		this.event = event;
 	}
 
-	public EventObjectTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.viewController = null;
-		this.event = null;
+	public EventObjectTrigger( ViewController<?, ?> viewController, E event ) {
+		this.viewController = viewController;
+		this.event = event;
 	}
 
 	public E getEvent() {
 		return this.event;
 	}
 
-	protected abstract Point getPoint();
+	protected Point getPoint() {
+		return null;
+	}
 
 	@Override
 	public ViewController<?, ?> getViewController() {

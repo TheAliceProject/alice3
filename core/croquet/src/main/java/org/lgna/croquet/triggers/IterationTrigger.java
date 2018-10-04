@@ -42,8 +42,8 @@
  *******************************************************************************/
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.PopupMenu;
 import org.lgna.croquet.views.ViewController;
 
@@ -53,20 +53,12 @@ import java.awt.Point;
  * @author Dennis Cosgrove
  */
 public class IterationTrigger extends Trigger {
-	public static IterationTrigger createUserInstance() {
-		return new IterationTrigger();
+	public static IterationTrigger createUserInstance( UserActivity userActivity ) {
+		return new IterationTrigger(userActivity);
 	}
 
-	private IterationTrigger() {
-	}
-
-	public IterationTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
-	@Override
-	public ViewController<?, ?> getViewController() {
-		return null;
+	private IterationTrigger(UserActivity userActivity) {
+		super(userActivity);
 	}
 
 	@Override

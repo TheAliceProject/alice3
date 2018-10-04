@@ -53,7 +53,7 @@ import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.project.ast.Member;
 
@@ -97,7 +97,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends CompositeView<
 	protected abstract boolean isRetainBothSelected();
 
 	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep step ) {
+	protected Status getStatusPreRejectorCheck() {
 		//todo
 		this.getView().repaint();
 		Status rv = IS_GOOD_TO_GO_STATUS;
@@ -159,16 +159,16 @@ public abstract class PotentialNameChangerHelpComposite<V extends CompositeView<
 	}
 
 	@Override
-	protected void cancel( CompletionStep<?> completionStep ) {
+	protected void cancel() {
 		this.potentialNameChanger.getImportHub().getIsDesiredState().setValueTransactionlessly( this.isImportDesiredPre );
 		this.potentialNameChanger.getProjectHub().getIsDesiredState().setValueTransactionlessly( this.isProjectDesiredPre );
 		this.potentialNameChanger.getImportHub().getNameState().setValueTransactionlessly( this.importNamePre );
 		this.potentialNameChanger.getProjectHub().getNameState().setValueTransactionlessly( this.projectNamePre );
-		super.cancel( completionStep );
+		super.cancel();
 	}
 
 	@Override
-	protected final Edit createEdit( CompletionStep completionStep ) {
+	protected final Edit createEdit( UserActivity userActivity ) {
 		return null;
 	}
 

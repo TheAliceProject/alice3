@@ -78,7 +78,7 @@ public class ResourceMenuModel extends CascadeMenuModel<ResourceNode> {
 	}
 
 	@Override
-	public String getMenuItemText( ItemNode<? super ResourceNode, ResourceNode> node ) {
+	public String getMenuItemText() {
 		return this.resourceNode.getText();
 	}
 

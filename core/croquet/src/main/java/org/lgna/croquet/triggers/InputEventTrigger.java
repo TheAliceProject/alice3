@@ -43,8 +43,7 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import org.lgna.croquet.views.ViewController;
+import org.lgna.croquet.history.UserActivity;
 
 import java.awt.Point;
 import java.awt.event.InputEvent;
@@ -54,16 +53,12 @@ import java.awt.event.MouseEvent;
  * @author Dennis Cosgrove
  */
 public class InputEventTrigger extends ComponentEventTrigger<InputEvent> {
-	public static InputEventTrigger createUserInstance( InputEvent inputEvent ) {
-		return new InputEventTrigger( null, inputEvent );
+	public static UserActivity createUserActivity( InputEvent inputEvent ) {
+		return new InputEventTrigger( inputEvent ).getUserActivity();
 	}
 
-	private InputEventTrigger( ViewController<?, ?> viewController, InputEvent inputEvent ) {
-		super( viewController, inputEvent );
-	}
-
-	public InputEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
+	private InputEventTrigger( InputEvent inputEvent ) {
+		super( null, inputEvent );
 	}
 
 	@Override

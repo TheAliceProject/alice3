@@ -50,17 +50,9 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryUriListTab extends RefreshableListUriTab {
-	private final File directory;
+abstract class DirectoryUriListTab extends RefreshableListUriTab {
 
-	public DirectoryUriListTab( UUID migrationId, File directory ) {
+	DirectoryUriListTab( UUID migrationId, File directory ) {
 		super( migrationId, new DirectoryUriListData( directory ) );
-		this.directory = directory;
-	}
-
-	@Override
-	public final String getTextForZeroProjects() {
-		String path = FileUtilities.getCanonicalPathIfPossible( this.directory );
-		return "there are no projects in " + path;
 	}
 }

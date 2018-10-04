@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import org.alice.stageide.sceneeditor.viewmanager.edits.MoveAndOrientToEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.SMovableTurnable;
@@ -168,15 +168,15 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) &&
 				( this.toMoveImp.getAbstraction() instanceof SMovableTurnable ) &&
 				( this.toMoveToImp.getAbstraction() != null ) ) {
 
-			MoveAndOrientToEdit edit = new MoveAndOrientToEdit( step, (SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction() );
-			step.commitAndInvokeDo( edit );
+			MoveAndOrientToEdit edit = new MoveAndOrientToEdit( activity, (SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction() );
+			activity.commitAndInvokeDo( edit );
 		} else {
-			step.cancel();
+			activity.cancel();
 		}
 	}
 

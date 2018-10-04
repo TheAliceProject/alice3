@@ -48,8 +48,8 @@ import org.lgna.croquet.Application;
 import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.SimpleItemState;
 import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.triggers.KeyEventTrigger;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.ComponentManager;
 import org.lgna.story.EmployeesOnly;
@@ -115,9 +115,9 @@ public final class KeyState extends SimpleItemState<Key> {
 
 	public void handleKeyPressed( KeyViewController viewController, KeyEvent e ) {
 		Key nextValue = EmployeesOnly.getKeyFromKeyCode( e.getKeyCode() );
-		Trigger trigger = KeyEventTrigger.createUserInstance( viewController, e );
+		UserActivity activity = KeyEventTrigger.createUserActivity( viewController, e );
 		this.value = nextValue;
-		this.changeValueFromSwing( this.value, IsAdjusting.FALSE, trigger );
+		this.changeValueFromSwing( this.value, activity );
 		this.updateViewControllers();
 	}
 

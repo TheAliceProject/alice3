@@ -44,7 +44,7 @@ package org.alice.ide.system.croquet;
 
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -66,13 +66,13 @@ public final class StartPerformanceInformationAndToolsOperation extends ActionOp
 	}
 
 	@Override
-	protected void perform( CompletionStep<?> step ) {
+	protected void perform( UserActivity activity ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( "control", "/name", "Microsoft.PerformanceInformationAndTools" );
 		try {
 			Process process = processBuilder.start();
 		} catch( IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}
-		step.finish();
+		activity.finish();
 	}
 }

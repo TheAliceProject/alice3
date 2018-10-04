@@ -49,7 +49,7 @@ import org.alice.ide.ast.declaration.views.AddFieldView;
 import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
 import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
 import org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.ManagementLevel;
@@ -117,7 +117,7 @@ public class AddUnmanagedPoseFieldComposite extends AddFieldComposite {
 	}
 
 	@Override
-	protected DeclareFieldEdit createEdit( CompletionStep<?> step, UserType<?> declaringType, UserField field ) {
+	protected DeclareFieldEdit createEdit( UserActivity step, UserType<?> declaringType, UserField field ) {
 		return new DeclareNonGalleryFieldEdit( step, declaringType, field );
 	}
 

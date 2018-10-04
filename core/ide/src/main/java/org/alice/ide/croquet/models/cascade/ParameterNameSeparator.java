@@ -55,18 +55,9 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class ParameterNameSeparator extends CascadeLabelSeparator {
-	private static Map<AbstractParameter, ParameterNameSeparator> map = Maps.newHashMap();
 
 	public static synchronized ParameterNameSeparator getInstance( AbstractParameter parameter ) {
-		assert parameter != null;
-		ParameterNameSeparator rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterNameSeparator( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
+		return new ParameterNameSeparator( parameter );
 	}
 
 	private final AbstractParameter parameter;

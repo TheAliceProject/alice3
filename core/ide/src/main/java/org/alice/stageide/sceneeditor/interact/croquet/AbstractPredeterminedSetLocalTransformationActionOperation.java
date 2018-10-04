@@ -77,7 +77,7 @@ public abstract class AbstractPredeterminedSetLocalTransformationActionOperation
 	@Override
 	protected AbstractTransformable getSGTransformable() {
 		EntityImp entityImp = getEntityImp();
-		return (AbstractTransformable)entityImp.getSgComposite();
+		return entityImp == null ? null : (AbstractTransformable)entityImp.getSgComposite();
 	}
 
 }

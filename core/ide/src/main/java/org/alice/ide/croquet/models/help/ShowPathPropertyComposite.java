@@ -45,7 +45,6 @@ package org.alice.ide.croquet.models.help;
 import org.alice.ide.croquet.models.help.views.ShowPathPropertyView;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite;
-import org.lgna.croquet.history.CompletionStep;
 
 import java.util.UUID;
 
@@ -65,7 +64,7 @@ public abstract class ShowPathPropertyComposite extends SimpleOperationUnadorned
 	}
 
 	@Override
-	protected String getDialogTitle( CompletionStep<?> step ) {
+	protected String getDialogTitle() {
 		return "System Property: " + this.propertyName;
 	}
 

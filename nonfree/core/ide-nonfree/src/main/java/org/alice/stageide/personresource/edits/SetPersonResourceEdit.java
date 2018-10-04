@@ -46,7 +46,7 @@ package org.alice.stageide.personresource.edits;
 import org.alice.stageide.personresource.IngredientsComposite;
 import org.alice.stageide.personresource.PersonResourceComposite;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.story.resources.sims2.PersonResource;
 
 /**
@@ -56,8 +56,8 @@ public class SetPersonResourceEdit extends AbstractEdit {
 	private final PersonResource prevResource;
 	private final PersonResource nextResource;
 
-	public SetPersonResourceEdit( CompletionStep step, PersonResource nextResource ) {
-		super( step );
+	public SetPersonResourceEdit( UserActivity userActivity, PersonResource nextResource ) {
+		super( userActivity );
 		IngredientsComposite ingredientsComposite = PersonResourceComposite.getInstance().getIngredientsComposite();
 		this.prevResource = ingredientsComposite.createResourceFromStates();
 		this.nextResource = nextResource;

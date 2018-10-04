@@ -47,11 +47,10 @@ import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 import org.alice.ide.croquet.edits.ast.InsertStatementEdit;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.Cascade;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeWithInternalBlank;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
@@ -86,9 +85,8 @@ public class LocalStatementCascade extends CascadeWithInternalBlank<Expression> 
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<Cascade<Expression>> completionStep, Expression[] values ) {
-		return new InsertStatementEdit(
-				completionStep,
+	protected Edit createEdit( UserActivity userActivity, Expression[] values ) {
+		return new InsertStatementEdit( userActivity,
 				this.blockStatementIndexPair,
 				new ExpressionStatement( values[ 0 ] ) );
 	}

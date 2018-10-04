@@ -44,7 +44,6 @@
 package org.alice.ide.croquet.models.cascade;
 
 import org.alice.ide.IDE;
-import org.lgna.croquet.history.TransactionHistory;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.Expression;
 
@@ -94,7 +93,7 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends Expre
 	protected abstract F createValue( Expression previousExpression );
 
 	@Override
-	public final F createValue( ItemNode<? super F, Void> node, TransactionHistory transactionHistory ) {
+	public final F createValue( ItemNode<? super F, Void> node ) {
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
 

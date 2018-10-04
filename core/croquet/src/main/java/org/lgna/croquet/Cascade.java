@@ -45,14 +45,11 @@ package org.lgna.croquet;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.PopupPrepStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.history.TransactionHistory;
-import org.lgna.croquet.history.TransactionManager;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.RtRoot;
-import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.MenuItemContainer;
 import org.lgna.croquet.views.imp.JDropProxy;
@@ -69,7 +66,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel implements JDropProxy.Hider {
+public abstract class Cascade<T> extends AbstractCompletionModel implements Triggerable, JDropProxy.Hider {
 	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
 		private final Cascade<T> cascade;
 
@@ -94,9 +91,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		}
 
 		@Override
-		public void prologue( Trigger trigger ) {
-			super.prologue( trigger );
-			this.cascade.prologue( trigger );
+		public void prologue() {
+			super.prologue();
+			this.cascade.prologue();
 		}
 
 		@Override
@@ -106,26 +103,20 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 		}
 
 		@Override
-		public final CompletionStep<Cascade<T>> createCompletionStep( Transaction transaction, Trigger trigger ) {
-			return transaction.createAndSetCompletionStep( this.cascade, trigger, new TransactionHistory() );
-		}
-
-		@Override
-		public CompletionStep<Cascade<T>> handleCompletion( TransactionHistory transactionHistory, Trigger trigger, RtRoot<T, Cascade<T>> rtRoot ) {
-			Transaction transaction = transactionHistory.acquireActiveTransaction();
-			CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
-			try {
-				T[] values = rtRoot.createValues( completionStep.getTransactionHistory(), this.getComponentType() );
-				Edit edit = this.cascade.createEdit( completionStep, values );
+		public void handleCompletion( UserActivity userActivity, RtRoot<T, Cascade<T>> rtRoot ) {
+				T[] values = rtRoot.createValues( this.getComponentType() );
+				Edit edit = cascade.createEdit( userActivity, values );
 				if( edit != null ) {
-					completionStep.commitAndInvokeDo( edit );
+					if (userActivity.getCompletionModel() == null) {
+						recordCompletionModel( userActivity );
+					}
+					userActivity.commitAndInvokeDo( edit );
 				} else {
-					completionStep.cancel();
+					if (userActivity.isPending()) {
+						throw new CancelException();
+					}
 				}
-			} finally {
 				this.getPopupPrepModel().handleFinally();
-			}
-			return completionStep;
 		}
 	}
 
@@ -154,28 +145,28 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 	}
 
 	@Override
-	@Deprecated
-	protected Model getSurrogateModel() {
-		return this.root.getPopupPrepModel();
-	}
-
-	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		throw new UnsupportedOperationException();
+	public final void fire( UserActivity activity ) {
+		Triggerable surrogateModel = this.root.getPopupPrepModel();
+		if( surrogateModel != null ) {
+			Logger.errln( "todo: end use of surrogate", this );
+			surrogateModel.fire( activity );
+		} else {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	public Class<T> getComponentType() {
 		return this.componentType;
 	}
 
-	protected void prologue( Trigger trigger ) {
+	protected void prologue() {
 	}
 
 	protected void epilogue() {
 		this.hideDropProxyIfNecessary();
 	}
 
-	protected abstract Edit createEdit( CompletionStep<Cascade<T>> completionStep, T[] values );
+	protected abstract Edit createEdit( UserActivity userActivity, T[] values );
 
 	//todo: reduce visibility
 	public static final class InternalMenuModel<T> extends AbstractMenuModel {
@@ -225,7 +216,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 
 			@Override
 			public void componentResized( ComponentEvent e ) {
-				TransactionManager.firePopupMenuResized( this.prepStep );
+				prepStep.firePopupMenuResized();
 			}
 
 			@Override
@@ -270,8 +261,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements JDro
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
-				final PopupPrepStep prepStep = TransactionManager.addPopupPrepStep( cascade.getRoot().getPopupPrepModel(), null );
-
+				final PopupPrepStep prepStep = PopupPrepStep.createAndAddToActivity( cascade.getRoot().getPopupPrepModel(), menuItemContainer.getActivity() );
 				Listeners listeners = map.get( menuItemContainer );
 				if( listeners != null ) {
 					listeners.componentListener.setPrepStep( prepStep );

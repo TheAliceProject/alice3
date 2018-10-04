@@ -44,6 +44,7 @@
 package org.lgna.croquet.history;
 
 import org.lgna.croquet.PopupPrepModel;
+import org.lgna.croquet.history.event.PopupMenuResizedEvent;
 import org.lgna.croquet.triggers.Trigger;
 import org.lgna.croquet.views.PopupMenu;
 
@@ -55,11 +56,11 @@ import java.awt.event.ComponentEvent;
 public final class PopupPrepStep extends PrepStep<PopupPrepModel> {
 	private transient PopupMenu popupMenu;
 
-	public static PopupPrepStep createAndAddToTransaction( Transaction parent, PopupPrepModel model, Trigger trigger ) {
-		return new PopupPrepStep( parent, model, trigger );
+	public static PopupPrepStep createAndAddToActivity( PopupPrepModel model, UserActivity activity ) {
+		return new PopupPrepStep( activity, model, activity.getTrigger() );
 	}
 
-	private PopupPrepStep( Transaction parent, PopupPrepModel model, Trigger trigger ) {
+	private PopupPrepStep( UserActivity parent, PopupPrepModel model, Trigger trigger ) {
 		super( parent, model, trigger );
 	}
 
@@ -70,7 +71,8 @@ public final class PopupPrepStep extends PrepStep<PopupPrepModel> {
 		this.popupMenu = null;
 	}
 
-	public void handleResized( ComponentEvent componentEvent ) {
+	public void firePopupMenuResized() {
+		fireChanged( new PopupMenuResizedEvent() );
 	}
 
 	public PopupMenu getPopupMenu() {

@@ -47,7 +47,7 @@ import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Model;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 
@@ -80,6 +80,10 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 		} else {
 			this.blankChild = new ResourceMenuModel( this );
 		}
+	}
+
+	@Override
+	protected void localize() {
 	}
 
 	public ResourceNode getParent() {
@@ -126,8 +130,8 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public Model getDropModel( DragStep step, DropSite dropSite ) {
-		if( ( this.resourceKey instanceof EnumConstantResourceKey )) {
+	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
+		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 			AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = AddResourceKeyManagedFieldComposite.getInstance();
 			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, true );
@@ -139,12 +143,12 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
 		}
 		else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
-			return NebulousIde.nonfree.getPersonResourceDropModel( this.resourceKey );
+			return NebulousIde.nonfree.getPersonResourceDropOperation( this.resourceKey );
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 			if( classResourceKey.isLeaf() ) {
 				if( this.children.size() > 0 ) {
-					return this.children.get( 0 ).getDropModel( step, dropSite );
+					return this.children.get( 0 ).getDropOperation( step, dropSite );
 				} else {
 					return null;
 				}
@@ -168,17 +172,17 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	public Model getLeftButtonClickModel() {
+	public Triggerable getLeftButtonClickOperation() {
 		if( ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
 			return null;
 		} else {
 			if( ( this.resourceKey instanceof EnumConstantResourceKey ) || NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
-				return this.getDropModel( null, null );
+				return this.getDropOperation( null, null );
 			} else if( this.resourceKey instanceof ClassResourceKey ) {
 				ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 				if( classResourceKey.isLeaf() ) {
 					if( this.children.size() > 0 ) {
-						return this.children.get( 0 ).getLeftButtonClickModel();
+						return this.children.get( 0 ).getLeftButtonClickOperation();
 					} else {
 						return null;
 					}

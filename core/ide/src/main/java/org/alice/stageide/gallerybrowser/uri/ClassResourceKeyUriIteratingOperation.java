@@ -45,12 +45,9 @@ package org.alice.stageide.gallerybrowser.uri;
 import org.alice.stageide.gallerybrowser.enumconstant.EnumConstantResourceKeySelectionComposite;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
-import org.lgna.croquet.Model;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Step;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.UserActivity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,17 +73,17 @@ public class ClassResourceKeyUriIteratingOperation extends ResourceKeyUriIterati
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
+	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
-		switch( subSteps.size() ) {
+		switch( finishedSteps.size() ) {
 		case 0:
 			EnumConstantResourceKeySelectionComposite composite = EnumConstantResourceKeySelectionComposite.getInstance();
 			composite.setClassResourceKey( classResourceKey );
 			return composite.getValueCreator();
 		case 1:
-			Step<?> prevSubStep = subSteps.get( 0 );
-			if( prevSubStep.containsEphemeralDataFor( ValueCreator.VALUE_KEY ) ) {
-				EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)prevSubStep.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+			UserActivity prevSubStep = finishedSteps.get( 0 );
+			if( prevSubStep.getProducedValue() != null ) {
+				EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)prevSubStep.getProducedValue();
 				return this.getAddResourceKeyManagedFieldCompositeOperation( enumConstantResourceKey );
 			} else {
 				return null;

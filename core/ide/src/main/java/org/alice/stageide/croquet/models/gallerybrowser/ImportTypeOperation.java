@@ -45,11 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Operation;
-import org.lgna.croquet.ValueCreator;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.IterationTrigger;
-import org.lgna.croquet.triggers.Trigger;
+import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.NamedUserType;
 
 import java.util.UUID;
@@ -71,10 +67,11 @@ public class ImportTypeOperation extends Operation { //todo: ValueOperation?
 	}
 
 	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-		CompletionStep step = TypeFromUriProducer.getInstance().fire( IterationTrigger.createUserInstance() );
-		NamedUserType userType = (NamedUserType)step.getEphemeralDataFor( ValueCreator.VALUE_KEY );
+	protected void performInActivity( UserActivity activity ) {
+		final UserActivity child = activity.newChildActivity();
+		TypeFromUriProducer.getInstance().fire( child );
+		NamedUserType userType = (NamedUserType) child.getProducedValue();
 		Logger.outln( userType );
-		step.finish();
+		child.finish();
 	}
 }

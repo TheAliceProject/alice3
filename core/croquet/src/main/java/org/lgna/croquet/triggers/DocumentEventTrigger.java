@@ -43,9 +43,8 @@
 
 package org.lgna.croquet.triggers;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import org.lgna.croquet.Application;
 import org.lgna.croquet.views.PopupMenu;
-import org.lgna.croquet.views.ViewController;
 
 import javax.swing.event.DocumentEvent;
 
@@ -60,17 +59,9 @@ public class DocumentEventTrigger extends Trigger {
 	private final transient DocumentEvent documentEvent;
 
 	private DocumentEventTrigger( DocumentEvent documentEvent ) {
+		// Each document event gets its own activity
+		super(Application.getActiveInstance().acquireOpenActivity().newChildActivity());
 		this.documentEvent = documentEvent;
-	}
-
-	public DocumentEventTrigger( BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.documentEvent = null;
-	}
-
-	@Override
-	public ViewController<?, ?> getViewController() {
-		return null;
 	}
 
 	@Override
