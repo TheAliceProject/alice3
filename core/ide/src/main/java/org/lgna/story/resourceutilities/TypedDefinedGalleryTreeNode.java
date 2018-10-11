@@ -71,6 +71,7 @@ public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 		userType = type;
 	}
 
+	@Override
 	public NamedUserType getUserType() {
 		return userType;
 	}
