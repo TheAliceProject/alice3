@@ -45,9 +45,14 @@ package org.alice.stageide.modelresource;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.icons.PersonResourceIconFactory;
 import org.alice.stageide.personresource.PersonResourceComposite;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.ValueConverter;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.TrimmedImageIconFactory;
 import org.lgna.project.ast.InstanceCreation;
@@ -105,7 +110,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		return SingletonHolder.toddlerInstance;
 	}
 
-	public static PersonResourceKey getPersonInstance() {
+	private static PersonResourceKey getPersonInstance() {
 		return SingletonHolder.personInstance;
 	}
 
@@ -216,6 +221,24 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	@Override
 	public String[] getThemeTags() {
 		return null;
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		if( NebulousIde.nonfree.isNonFreeEnabled() ) {
+			return node.getDropOperation( null, null );
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		if( NebulousIde.nonfree.isNonFreeEnabled() ) {
+			return NebulousIde.nonfree.getPersonResourceDropOperation( this );
+		} else {
+			return null;
+		}
 	}
 
 	@Override public AxisAlignedBox getBoundingBox() {

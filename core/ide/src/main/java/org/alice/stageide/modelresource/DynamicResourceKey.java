@@ -1,21 +1,19 @@
 package org.alice.stageide.modelresource;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.typemanager.TypeManager;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
 import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.*;
 import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resources.ModelStructure;
-import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
-
-import java.util.List;
-import java.util.Map;
-
 
 public class DynamicResourceKey extends InstanceCreatorKey {
 	private DynamicResource dynamicResource;
@@ -88,6 +86,17 @@ public class DynamicResourceKey extends InstanceCreatorKey {
 	@Override
 	public String[] getThemeTags() {
 		return dynamicResource.getThemeTags();
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		return node.getDropOperation( null, null );
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		return AddResourceKeyManagedFieldComposite.getInstance().
+			getLaunchOperationToCreateValue( this, true );
 	}
 
 	@Override

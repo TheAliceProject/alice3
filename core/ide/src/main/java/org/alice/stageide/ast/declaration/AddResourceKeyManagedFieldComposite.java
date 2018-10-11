@@ -54,6 +54,7 @@ import org.lgna.croquet.AbstractComposite;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeLineSeparator;
+import org.lgna.croquet.Operation;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.cascade.BlankNode;
@@ -107,9 +108,10 @@ public class AddResourceKeyManagedFieldComposite extends AddManagedFieldComposit
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( InstanceCreatorKey resourceKey, boolean isChangeResourceAllowed ) {
+	public Operation getLaunchOperationToCreateValue( InstanceCreatorKey resourceKey, boolean isChangeResourceAllowed ) {
 		this.resourceKey = resourceKey;
 		this.isChangeResourceAllowed = isChangeResourceAllowed;
+		return getLaunchOperation();
 	}
 
 	protected InstanceCreatorKey getResourceKey() {

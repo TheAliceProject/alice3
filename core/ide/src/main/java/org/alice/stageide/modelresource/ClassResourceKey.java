@@ -46,6 +46,10 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaType;
@@ -122,6 +126,34 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 	@Override
 	public String[] getThemeTags() {
 		return AliceResourceUtilties.getThemeTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		if( isLeaf() ) {
+			ResourceNode child = node.getFirstChild();
+			if( child != null ) {
+				return child.getLeftButtonClickOperation(controller);
+			} else {
+				return null;
+			}
+		} else {
+			return controller.getItemSelectionOperation( node );
+		}
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		if( isLeaf() ) {
+			ResourceNode child = node.getFirstChild();
+			if( child != null ) {
+				return child.getDropOperation( step, dropSite );
+			} else {
+				return null;
+			}
+		} else {
+			return new AddFieldCascade( node, dropSite );
+		}
 	}
 
 	@Override public AxisAlignedBox getBoundingBox() {

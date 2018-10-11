@@ -42,14 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
-import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.ide.typemanager.TypeManager;
+import org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite;
 import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.InstanceCreation;
@@ -59,11 +62,8 @@ import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import javax.swing.JComponent;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -157,6 +157,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	@Override
 	public String[] getThemeTags() {
 		return AliceResourceUtilties.getThemeTags( enumConstant.getDeclaringClass(), enumConstant.name(), JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		return node.getDropOperation( null, null );
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		return AddResourceKeyManagedFieldComposite.getInstance().
+			getLaunchOperationToCreateValue( this, true );
 	}
 
 	@Override public AxisAlignedBox getBoundingBox() {

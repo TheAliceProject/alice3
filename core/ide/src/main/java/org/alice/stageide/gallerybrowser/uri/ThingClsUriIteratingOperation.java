@@ -79,7 +79,7 @@ public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperat
 				SetupScenePerspectiveComposite composite = SetupScenePerspectiveComposite.getInstance();
 				GalleryDragModel dragModel = composite.getDragModelForCls( this.thingCls );
 				if( dragModel != null ) {
-					return dragModel.getLeftButtonClickOperation();
+					return dragModel.getLeftButtonClickOperation(null);
 				} else {
 					return null;
 				}

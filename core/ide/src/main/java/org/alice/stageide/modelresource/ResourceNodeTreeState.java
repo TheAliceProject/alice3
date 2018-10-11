@@ -60,7 +60,7 @@ import java.util.concurrent.Callable;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceNode> {
+public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceNode> {
 
 	//todo
 	private static final Icon EMPTY_ICON = new EmptyIcon( 0, Theme.DEFAULT_SMALL_ICON_SIZE.height );
@@ -71,28 +71,24 @@ public abstract class ResourceNodeTreeState extends CustomSingleSelectTreeState<
 
 	private final ResourceNode root;
 
-	public ResourceNodeTreeState( UUID migrationId, ResourceNode root ) {
-		super( Application.DOCUMENT_UI_GROUP, migrationId, root, ResourceNodeCodec.SINGLETON );
+	ResourceNodeTreeState( ResourceNode root ) {
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "34592791-1b96-429c-aa2a-a4dd706732bc" ), root, ResourceNodeCodec.SINGLETON );
 		this.root = root;
 	}
-
-	protected abstract boolean isBreadcrumbButtonIconDesired();
 
 	@Override
 	public Operation getItemSelectionOperation( Callable<ResourceNode> itemCallable ) {
 		Operation rv = super.getItemSelectionOperation( itemCallable );
+		ResourceNode resourceNode;
+		try {
+			resourceNode = itemCallable.call();
+			if (resourceNode.isBreadcrumbButtonIconDesired())
+				rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
+		} catch( Exception e ) {
+			Logger.throwable( e, this, itemCallable );
+			rv.setButtonIcon( this.getIconForNode( null, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
 
-		if( this.isBreadcrumbButtonIconDesired() ) {
-			ResourceNode resourceNode;
-			try {
-				resourceNode = itemCallable.call();
-			} catch( Exception e ) {
-				resourceNode = null;
-				Logger.throwable( e, this, itemCallable );
-			}
-			rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
 		}
-
 		return rv;
 	}
 
@@ -100,7 +96,7 @@ public abstract class ResourceNodeTreeState extends CustomSingleSelectTreeState<
 	protected void setCurrentTruthAndBeautyValue( ResourceNode nextValue ) {
 		super.setCurrentTruthAndBeautyValue( nextValue );
 		if( nextValue.getResourceKey().isLeaf() ) {
-			Triggerable model = nextValue.getLeftButtonClickOperation();
+			Triggerable model = nextValue.getLeftButtonClickOperation(this);
 			if( model != null ) {
 				model.fire( NullTrigger.createUserActivity() );
 			}

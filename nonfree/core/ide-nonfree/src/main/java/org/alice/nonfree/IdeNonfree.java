@@ -65,7 +65,6 @@ import org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonRe
 import org.alice.stageide.gallerybrowser.uri.PersonResourceKeyUriIteratingOperation;
 import org.alice.stageide.gallerybrowser.uri.ResourceKeyUriIteratingOperation;
 import org.alice.stageide.icons.SimsIconFactoryManager;
-import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
 import org.alice.stageide.modelresource.InstanceCreatorKey;
 import org.alice.stageide.modelresource.PersonResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
@@ -151,11 +150,11 @@ public class IdeNonfree extends NebulousIde {
 
 	@Override
 	public void addBipedResourceResourceNodes( List<ResourceNode> childNodes, List<ResourceNode> emptyList ) {
-		childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getElderInstance(), emptyList ) );
-		childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getAdultInstance(), emptyList ) );
-		childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getTeenInstance(), emptyList ) );
-		childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getChildInstance(), emptyList ) );
-		childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getToddlerInstance(), emptyList ) );
+		childNodes.add( new ResourceNode( PersonResourceKey.getElderInstance(), emptyList, true ) );
+		childNodes.add( new ResourceNode( PersonResourceKey.getAdultInstance(), emptyList, true ) );
+		childNodes.add( new ResourceNode( PersonResourceKey.getTeenInstance(), emptyList, true ) );
+		childNodes.add( new ResourceNode( PersonResourceKey.getChildInstance(), emptyList, true ) );
+		childNodes.add( new ResourceNode( PersonResourceKey.getToddlerInstance(), emptyList, true ) );
 	}
 
 	@Override

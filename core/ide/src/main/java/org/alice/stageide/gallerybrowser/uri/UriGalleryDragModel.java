@@ -70,6 +70,7 @@ import org.alice.stageide.modelresource.ResourceGalleryDragModel;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.EmptyIconFactory;
@@ -378,7 +379,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
 	}
 
 	@Override
-	public Triggerable getLeftButtonClickOperation() {
+	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
 		ResourceKey resourceKey = this.getResourceKey();
 		Class<?> thingCls = this.getThingCls();
 		return ResourceKeyUriIteratingOperation.getInstance( resourceKey, thingCls, this.uri );
@@ -388,7 +389,7 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
 	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
 		ResourceKey resourceKey = this.getResourceKey();
 		if( resourceKey instanceof EnumConstantResourceKey ) {
-			return this.getLeftButtonClickOperation();
+			return this.getLeftButtonClickOperation(null);
 		} else if( resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
@@ -398,11 +399,11 @@ public final class UriGalleryDragModel extends ResourceGalleryDragModel {
 				return new AddFieldCascade( this, dropSite );
 			}
 		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( resourceKey ) ) {
-			return this.getLeftButtonClickOperation();
+			return this.getLeftButtonClickOperation(null);
 		} else {
 			Class<?> thingCls = this.getThingCls();
 			if( thingCls != null ) {
-				return this.getLeftButtonClickOperation();
+				return this.getLeftButtonClickOperation(null);
 			} else {
 				return null;
 			}

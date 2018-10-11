@@ -46,6 +46,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
 
 import java.util.Map;
 
@@ -55,13 +56,13 @@ import java.util.Map;
 public class GalleryDragComponentCache {
 	private final Map<ResourceKey, GalleryDragComponent> map = Maps.newHashMap();
 
-	public synchronized GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode ) {
+	public synchronized GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller ) {
 		ResourceKey resourceKey = resourceNode.getResourceKey();
 		GalleryDragComponent rv = this.map.get( resourceKey );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new GalleryDragComponent( resourceNode );
+			rv = new GalleryDragComponent( resourceNode, controller );
 			this.map.put( resourceKey, rv );
 		}
 		return rv;

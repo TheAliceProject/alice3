@@ -83,7 +83,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 
 	@Override
 	public Triggerable getDropOperation( DragStep step, DropSite dropSite ) {
-		return this.getLeftButtonClickOperation();
+		return this.getLeftButtonClickOperation(null);
 	}
 
 }
