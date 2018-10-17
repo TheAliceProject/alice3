@@ -49,7 +49,7 @@ import org.lgna.croquet.Element;
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtNode<E extends Element, N extends CascadeNode<?, E>> {
+abstract class RtNode<E, N extends CascadeNode<E>> {
 	private final E element;
 	private final N node;
 	private RtNode<?, ?> parent;

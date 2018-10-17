@@ -50,7 +50,6 @@ import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.Expression;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -65,7 +64,7 @@ public class TypeUnsetBlank extends ExpressionBlank {
 	}
 
 	private TypeUnsetBlank() {
-		super( UUID.fromString( "e3bc0668-0d5a-455e-b594-d0107794509c" ), Void.class );
+		super( Void.class );
 	}
 
 	@Override

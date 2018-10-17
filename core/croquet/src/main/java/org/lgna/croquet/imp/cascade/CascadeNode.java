@@ -48,7 +48,7 @@ import org.lgna.croquet.Element;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends Element> {
+public abstract class CascadeNode<E> {
 	CascadeNode( E element ) {
 		this.element = element;
 	}

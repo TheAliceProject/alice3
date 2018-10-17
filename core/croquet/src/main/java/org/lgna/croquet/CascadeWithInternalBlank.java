@@ -57,7 +57,6 @@ public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
 		private final CascadeWithInternalBlank<T> cascade;
 
 		private InternalBlank( CascadeWithInternalBlank<T> cascade ) {
-			super( UUID.fromString( "b3dfbbd6-6932-4208-b9de-98fda5ef7145" ) );
 			this.cascade = cascade;
 		}
 

@@ -57,7 +57,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -88,7 +87,6 @@ public class KeyedBlank extends CascadeBlank<JavaKeyedArgument> {
 	private final ArgumentListProperty<JavaKeyedArgument> argumentListProperty;
 
 	private KeyedBlank( ArgumentListProperty<JavaKeyedArgument> argumentListProperty ) {
-		super( UUID.fromString( "c9b684e5-9e91-4c38-8cdf-ffce14de6a18" ) );
 		this.argumentListProperty = argumentListProperty;
 	}
 

@@ -54,19 +54,15 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank<B> extends AbstractElement {
-	public CascadeBlank( UUID id ) {
-		super( id );
-	}
-
-	@Override
-	protected void localize() {
+public abstract class CascadeBlank<B> {
+	public CascadeBlank() {
 	}
 
 	protected abstract void updateChildren( List<CascadeBlankChild> children, BlankNode<B> blankNode );
 
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
-		return ( child instanceof CascadeLineSeparator ) || ( ( child instanceof CascadeLabelSeparator ) && ( ( (CascadeLabelSeparator)child ).isValid() == false ) );
+		return ( child instanceof CascadeLineSeparator ) ||
+			   ( ( child instanceof CascadeLabelSeparator ) && (!((CascadeLabelSeparator) child).isValid()) );
 	}
 
 	public final CascadeBlankChild[] getFilteredChildren( BlankNode<B> blankNode ) {
@@ -81,9 +77,7 @@ public abstract class CascadeBlank<B> extends AbstractElement {
 		while( listIterator.hasNext() ) {
 			CascadeBlankChild child = listIterator.next();
 			if( isEmptySeparator( child ) ) {
-				if( isLineSeparatorAcceptable ) {
-					//pass 
-				} else {
+				if ( !isLineSeparatorAcceptable ) {
 					listIterator.remove();
 				}
 				isLineSeparatorAcceptable = false;

@@ -59,8 +59,7 @@ import java.util.UUID;
  */
 public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F, B> {
 	private class InternalBlank extends CascadeBlank<B> {
-		public InternalBlank() {
-			super( UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
+		InternalBlank() {
 		}
 
 		@Override

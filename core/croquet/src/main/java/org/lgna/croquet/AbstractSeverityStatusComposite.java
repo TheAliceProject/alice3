@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
 	public static final Status IS_GOOD_TO_GO_STATUS = null;
 
-	public static interface Status {
+	public interface Status {
 		boolean isGoodToGo();
 
 		String getText();

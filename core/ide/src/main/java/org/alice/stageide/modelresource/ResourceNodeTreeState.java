@@ -82,13 +82,13 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 		ResourceNode resourceNode;
 		try {
 			resourceNode = itemCallable.call();
-			if (resourceNode.isBreadcrumbButtonIconDesired())
-				rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
 		} catch( Exception e ) {
 			Logger.throwable( e, this, itemCallable );
-			rv.setButtonIcon( this.getIconForNode( null, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
-
+			rv.setButtonIcon( EMPTY_BUTTON_ICON );
+			return rv;
 		}
+		if (resourceNode.isBreadcrumbButtonIconDesired())
+			rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
 		return rv;
 	}
 

@@ -54,7 +54,6 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaType;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -97,18 +96,17 @@ public abstract class ExpressionBlank extends CascadeBlank<Expression> {
 	private final AbstractType<?, ?, ?> valueType;
 	private final ValueDetails<?> details;
 
-	public ExpressionBlank( UUID id, AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
-		super( id );
+	public ExpressionBlank( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
 		this.valueType = valueType;
 		this.details = details;
 	}
 
-	public <T> ExpressionBlank( UUID id, Class<T> cls, ValueDetails<T> details ) {
-		this( id, JavaType.getInstance( cls ), details );
+	public <T> ExpressionBlank( Class<T> cls, ValueDetails<T> details ) {
+		this( JavaType.getInstance( cls ), details );
 	}
 
-	public <T> ExpressionBlank( UUID id, Class<T> cls ) {
-		this( id, cls, null );
+	public <T> ExpressionBlank( Class<T> cls ) {
+		this( cls, null );
 	}
 
 	public AbstractType<?, ?, ?> getValueType() {

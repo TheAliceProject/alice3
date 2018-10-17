@@ -49,7 +49,6 @@ import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.Expression;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -64,7 +63,7 @@ public class ConditionBlank extends ExpressionBlank {
 	}
 
 	private ConditionBlank() {
-		super( UUID.fromString( "a5de4626-9fd1-4936-9958-7b85b1637262" ), Boolean.class );
+		super( Boolean.class );
 	}
 
 	@Override
