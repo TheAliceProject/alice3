@@ -45,7 +45,8 @@ public class ModelManifest extends Manifest {
 		public boolean equals(Object obj) {
 			if (obj instanceof Joint) {
 				Joint objJoint = (Joint)obj;
-				return name.equals(objJoint.name) && parent.equals(objJoint.parent);
+				return name.equals(objJoint.name) &&
+					(parent == null ? objJoint.parent == null : parent.equals(objJoint.parent));
 			}
 			return false;
 		}
@@ -53,6 +54,11 @@ public class ModelManifest extends Manifest {
 		@Override
 		public int hashCode() {
 			return Objects.hash(name, parent);
+		}
+
+		@Override
+		public String toString() {
+			return "Joint " + name + (parent == null ? "" : " (to " + parent + ")");
 		}
 	}
 

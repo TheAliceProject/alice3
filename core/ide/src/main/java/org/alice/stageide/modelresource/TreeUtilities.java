@@ -42,11 +42,17 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousIde;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.story.resources.BipedResource;
@@ -67,7 +73,11 @@ public class TreeUtilities {
 	private static ResourceNodeTreeState themeTreeState = new ResourceNodeTreeState( getTreeBasedOnTheme() );
 	private static ResourceNodeTreeState groupTreeState = new ResourceNodeTreeState( getTreeBasedOnGroup() );
 	private static ResourceNodeTreeState userTreeState = new ResourceNodeTreeState( getTreeBasedOnUserResources() );
-	private static ResourceNodeTreeState sClassListState = new ResourceNodeTreeState( getListBasedOnTopClasses() );
+	private static SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> sClassListState =
+		new SingleSelectListState<>( Application.APPLICATION_UI_GROUP,
+									 UUID.fromString( "920d77ef-8da3-474a-8a2b-8ee36817b29f" ),
+									 -1,
+									 getListBasedOnTopClasses() );
 
 	public static ResourceNodeTreeState getClassTreeState() {
 		return classTreeState;
@@ -85,13 +95,35 @@ public class TreeUtilities {
 		return userTreeState;
 	}
 
-	public static ResourceNodeTreeState getSClassListState() {
+	public static SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> getSClassListState() {
 		return sClassListState;
 	}
 
 	private static ResourceNode treeBasedOnClassHierarchy;
 	private static ResourceNode treeBasedOnTheme;
 	private static ResourceNode treeBasedOnGroup;
+
+	static class SClassCodec implements ItemCodec<ResourceNode> {
+		@Override
+		public Class<ResourceNode> getValueClass() {
+			return ResourceNode.class;
+		}
+
+		@Override
+		public void encodeValue( BinaryEncoder binaryEncoder, ResourceNode value ) {
+			throw new AssertionError();
+		}
+
+		@Override
+		public ResourceNode decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new AssertionError();
+		}
+
+		@Override
+		public void appendRepresentation( StringBuilder sb, ResourceNode value ) {
+			sb.append( value != null ? value.getSClassName() : null );
+		}
+	}
 
 	private static ResourceNode createNode( GalleryResourceTreeNode source, ResourceKey key ) {
 		List<ResourceNode> childNodes = Lists.newLinkedList();
@@ -121,12 +153,12 @@ public class TreeUtilities {
 		return treeBasedOnClassHierarchy;
 	}
 
-	private static ResourceNode getListBasedOnTopClasses() {
+	private static MutableListData<ResourceNode> getListBasedOnTopClasses() {
 		List<ResourceNode> classLeaves = Lists.newLinkedList();
 		for( ResourceNode srcNode : getTreeBasedOnClassHierarchy().getNodeChildren() ) {
 			classLeaves.add( new ResourceNode( srcNode.getResourceKey(), Collections.emptyList(), true ) );
 		}
-		return new ResourceNode( new RootResourceKey( "SClass", "SClass" ), classLeaves, true );
+		return new MutableListData<>( new SClassCodec(), classLeaves );
 	}
 
 

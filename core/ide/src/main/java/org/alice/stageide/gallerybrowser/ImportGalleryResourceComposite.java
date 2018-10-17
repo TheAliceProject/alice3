@@ -1,27 +1,31 @@
 package org.alice.stageide.gallerybrowser;
 
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
+import org.alice.ide.croquet.components.SClassPopupButton;
 import org.alice.ide.name.NameValidator;
 import org.alice.ide.name.validators.TypeNameValidator;
 import org.alice.stageide.StageIDE;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.views.BorderPanel;
-import org.lgna.croquet.views.Dialog;
-import org.lgna.croquet.views.FormPanel;
-import org.lgna.croquet.views.LabeledFormRow;
-import org.lgna.croquet.views.Panel;
-import org.lgna.croquet.views.SplitPane;
+import org.lgna.croquet.data.MutableListData;
+import org.lgna.croquet.event.ValueListener;
+import org.lgna.croquet.imp.dialog.views.GatedCommitDialogContentPane;
+import org.lgna.croquet.views.*;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.StaticAnalysisUtilities;
@@ -30,14 +34,16 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
-import org.lgna.story.resourceutilities.PipelineException;
+import org.lgna.story.resourceutilities.AliceModelLoader;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialogCoreComposite<Panel, Boolean> {
 	private final StageIDE ide = StageIDE.getActiveInstance();
@@ -48,6 +54,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 	private final ErrorStatus errorStatus;
 
 	private final SkeletonVisual skeletonVisual;
+	private Class<? extends ModelResource> parentJavaClass;
 
 	private final NameValidator typeValidator = new TypeNameValidator();
 
@@ -59,6 +66,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		detailsComposite = new ModelDetailsComposite( UUID.randomUUID());
 		splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.detailsComposite, 0.35f );
 		errorStatus = createErrorStatus( "errorStatus" );
+		AliceModelLoader.renameJoints(skeletonVisual);
 	}
 
 	@Override
@@ -83,12 +91,49 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 	@Override
 	protected Status getStatusPreRejectorCheck() {
 		String candidate = detailsComposite.modelName.getValue();
-		String explanation = typeValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-		if( explanation != null ) {
-			errorStatus.setText( explanation );
+		String nameExplanation = typeValidator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+		String sClassExplanation = getSuperclassExplanation();
+		if( errorStatus.setText( sClassExplanation, nameExplanation ) ) {
 			return errorStatus;
 		}
 		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	private String getSuperclassExplanation() {
+		if (parentJavaClass == null) {
+			return "Must select a superclass";
+		}
+		List<ModelManifest.Joint> baseJoints = getBaseJoints( parentJavaClass );
+
+		if ( skeletonVisual.skeleton.getValue() == null && !baseJoints.isEmpty() ) {
+			return "Required skeleton missing on " + skeletonVisual.getName();
+		}
+
+		List<ModelManifest.Joint> modelJoints = getModelJoints( skeletonVisual );
+		List<ModelManifest.Joint> missingJoints = getMissingJoints( modelJoints, baseJoints );
+		if ( missingJoints.isEmpty() ) {
+			detailsComposite.jointStatus.setText( "" );
+		} else {
+			final String aliceClassName = AliceResourceClassUtilities.getAliceClassName( parentJavaClass );
+			String missingJointsMessage =
+				aliceClassName + " requires the following joints that were not found on import:\n\n"
+					+ missingJoints.stream().map( joint -> joint.name ).collect( Collectors.joining( ", " ) )
+					+ "\n\nCorrect for these missing joints and reimport or select a different superclass.";
+			detailsComposite.jointStatus.setText( missingJointsMessage );
+			return "Missing joints for " + aliceClassName;
+		}
+		return null;
+	}
+
+	private void setSuperClass( Class<? extends ModelResource> aClass ) {
+		parentJavaClass = aClass;
+		refreshStatus();
+	}
+
+	@Override
+	protected void releaseView( CompositeView<?, ?> view ) {
+		splitComposite.releaseView();
+		super.releaseView( view );
 	}
 
 	@Override
@@ -99,61 +144,31 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
 	@Override
 	protected Boolean createValue() {
-		saveToMyGallery( skeletonVisual );
+		saveToMyGallery();
 		return true;
 	}
 
-	private void saveToMyGallery( SkeletonVisual skeleton ) {
+	private void saveToMyGallery() {
 		ide.setAuthorName( detailsComposite.author.getValue() );
 
-		// TODO get a parent class
-		String parentClassName = "Prop";
-		Class<? extends ModelResource> parentClass = AliceResourceClassUtilities
-				.getResourceClassForAliceName( parentClassName );
-
-		List<ModelManifest.Joint> baseJoints = getBaseJoints( parentClass );
-
-		if ( skeleton.skeleton.getValue() == null && !baseJoints.isEmpty() ) {
-			PipelineException p = new PipelineException(
-					"Required skeleton missing on " + skeleton.getName() + ". Base class is " + parentClass );
-			final OkDialog.Builder builder = new OkDialog.Builder( p.getLocalizedMessage() + "\nTry to correct it and reimport." );
-			builder.title( "Problem during import" );
-			builder.buildAndShow();
-			return;
-		}
-
-		List<ModelManifest.Joint> modelJoints = getModelJoints( skeleton );
-		List<ModelManifest.Joint> missingJoints = getMissingJoints( modelJoints, baseJoints );
-		if ( !missingJoints.isEmpty() ) {
-			StringBuilder missingJointsMessage = new StringBuilder(
-					"Base class " + parentClass + "requires the following joints:" );
-			for ( ModelManifest.Joint joint : baseJoints ) {
-				missingJointsMessage.append( '\t' )
-														.append( joint.name ).append( ":" )
-														.append( missingJoints.contains( joint ) ? "\tMISSING" : "\tFOUND" )
-														.append( '\n' );
-			}
-			missingJointsMessage.append( "Correct for these missing joints and reimport." );
-			final OkDialog.Builder builder = new OkDialog.Builder( missingJointsMessage.toString() );
-			builder.title( "Problem during import" );
-			builder.buildAndShow();
-			return;
-		}
+		List<ModelManifest.Joint> baseJoints = getBaseJoints( parentJavaClass );
+		List<ModelManifest.Joint> modelJoints = getModelJoints( skeletonVisual );
 		List<ModelManifest.Joint> extraJoints = getExtraJoints( modelJoints, baseJoints, true );
 
-		ModelManifest modelManifest = createSimpleManifest( detailsComposite.modelName.getValue(),
-																												detailsComposite.author.getValue(),
-																												parentClassName,
-																												skeleton.getAxisAlignedMinimumBoundingBox() );
+		ModelManifest modelManifest = createSimpleManifest(
+			detailsComposite.modelName.getValue(),
+			detailsComposite.author.getValue(),
+			AliceResourceClassUtilities.getAliceClassName( parentJavaClass ),
+			skeletonVisual.getAxisAlignedMinimumBoundingBox() );
 		modelManifest.additionalJoints = extraJoints;
 		for ( ModelManifest.Joint rootJoint : getRootJoints( modelJoints ) ) {
 			rootJoint.visibility = Visibility.COMPLETELY_HIDDEN;
 			modelManifest.rootJoints.add( rootJoint.name );
 		}
 
-		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( skeleton );
+		BufferedImage thumbnail = AdaptiveRecenteringThumbnailMaker.getInstance( 160, 120 ).createThumbnail( skeletonVisual );
 
-		GalleryModelIo modelIo = new GalleryModelIo( skeleton, thumbnail, modelManifest );
+		GalleryModelIo modelIo = new GalleryModelIo( skeletonVisual, thumbnail, modelManifest );
 		try {
 			modelIo.writeModel( ide.getGalleryDirectory() );
 		} catch (IOException e) {
@@ -214,7 +229,9 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 	private static ModelManifest.Joint createJoint(JointId jointId) {
 		ModelManifest.Joint joint = new ModelManifest.Joint();
 		joint.name = jointId.toString();
-		joint.parent = jointId.getParent().toString();
+		if (jointId.getParent() != null) {
+			joint.parent = jointId.getParent().toString();
+		}
 		joint.visibility = jointId.getVisibility();
 		return joint;
 	}
@@ -295,7 +312,18 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 	private class ModelDetailsComposite extends SimpleComposite<BorderPanel> {
 		StringState author = createStringState( "author" );
 		StringState modelName = createStringState( "modelName" );
+		StringState sClass = createStringState( "sClass" );
+		PlainStringValue jointStatus = createStringValue( "jointStatus" );
 
+		private ValueListener<ResourceNode> classSelectionListener = e -> {
+			if (e != null && e.getNextValue() != null) {
+				final ResourceKey key = e.getNextValue().getResourceKey();
+				if ( key instanceof ClassResourceKey ) {
+					ClassResourceKey classResourceKey = (ClassResourceKey) key;
+					setSuperClass( classResourceKey.getModelResourceCls() );
+				}
+			}
+		};
 
 		ModelDetailsComposite( UUID id ) {
 			super( id );
@@ -306,17 +334,36 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		@Override
 		protected BorderPanel createView() {
 			final BorderPanel view = new BorderPanel( this );
+			final Border emptyBorder = BorderFactory.createEmptyBorder( 8, 8, 8, 8 );
+
 			FormPanel centerComponent = new FormPanel() {
 				@Override
 				protected void appendRows( List<LabeledFormRow> rows ) {
+					final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> classList =
+						TreeUtilities.getSClassListState();
+					classList.clearSelection();
+					classList.addAndInvokeNewSchoolValueListener( classSelectionListener );
+					final SwingComponentView<?> classButton = new SClassPopupButton( classList );
 					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
 					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
+					rows.add( new LabeledFormRow( sClass.getSidekickLabel(), classButton ) );
 				}
 
 			};
-			centerComponent.setBorder( BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+			centerComponent.setBorder( emptyBorder );
 			view.addCenterComponent( centerComponent );
+
+			final ImmutableTextArea textArea = jointStatus.createImmutableTextArea(  );
+			textArea.setForegroundColor( GatedCommitDialogContentPane.ERROR_COLOR );
+			textArea.setBorder( emptyBorder );
+			view.addPageEndComponent( textArea );
 			return view;
+		}
+
+		@Override
+		public void releaseView() {
+			TreeUtilities.getSClassListState().removeNewSchoolValueListener( classSelectionListener );
+			super.releaseView();
 		}
 	}
 }

@@ -44,7 +44,7 @@ package org.lgna.croquet.views;
 
 import edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon;
-import org.lgna.croquet.CascadeRoot;
+import org.lgna.croquet.PopupPrepModel;
 
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
@@ -61,8 +61,8 @@ import java.awt.geom.RoundRectangle2D;
 /**
  * @author Dennis Cosgrove
  */
-public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<CascadeRoot.InternalPopupPrepModel<T>> {
-	public FauxComboBoxPopupButton( CascadeRoot.InternalPopupPrepModel<T> model ) {
+public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<PopupPrepModel> {
+	public FauxComboBoxPopupButton( PopupPrepModel model ) {
 		super( model );
 	}
 
@@ -77,7 +77,7 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<CascadeRoot.
 	protected class JFauxComboBoxPopupButton extends JPopupButton {
 		private final int OUTER_PAD = 6;
 
-		public JFauxComboBoxPopupButton() {
+		protected JFauxComboBoxPopupButton() {
 			this.setHorizontalTextPosition( SwingConstants.LEADING );
 		}
 

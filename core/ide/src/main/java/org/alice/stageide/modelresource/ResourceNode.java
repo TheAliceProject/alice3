@@ -49,6 +49,8 @@ import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
+import org.lgna.story.SModel;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import java.util.Collections;
 import java.util.List;
@@ -207,5 +209,18 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 		super.appendRepr( sb );
 		sb.append( "key=" );
 		sb.append( this.resourceKey );
+	}
+
+	public String getSClassName() {
+		ResourceKey key = getResourceKey();
+		if( key instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey) key;
+			Class<? extends SModel> modelClass =
+				AliceResourceClassUtilities.getModelClassForResourceClass( classResourceKey.getModelResourceCls() );
+			if ( modelClass != null ) {
+				return modelClass.getSimpleName();
+			}
+		}
+		return "";
 	}
 }
