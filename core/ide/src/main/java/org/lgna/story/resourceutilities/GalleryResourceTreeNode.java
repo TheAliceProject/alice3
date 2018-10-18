@@ -2,7 +2,9 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.UserType;
+import org.lgna.story.resources.DynamicResource;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -11,37 +13,36 @@ import java.util.List;
 
 public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNode, Iterable<GalleryResourceTreeNode>, Comparable<GalleryResourceTreeNode>{
 
-	protected GalleryResourceTreeNode parent;
+	protected TypedDefinedGalleryTreeNode parent;
 	protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();
 	protected String name;
 	private boolean isSorted = false;
 
-	public GalleryResourceTreeNode(String name) {
+	GalleryResourceTreeNode( String name ) {
 		this.name = name;
 	}
 
 	public abstract ResourceKey createResourceKey();
-
-	public abstract UserType getUserType();
 
 	public String getName() {
 		return this.name;
 	}
 
 	@Override
-	public GalleryResourceTreeNode getParent() {
+	public TypedDefinedGalleryTreeNode getParent() {
 		return this.parent;
 	}
 
-	public void setParent( GalleryResourceTreeNode parent ) {
+	public void setParent( TypedDefinedGalleryTreeNode parent ) {
+		if (this.parent == parent) {
+			return;
+		}
 		if( this.parent != null ) {
-			GalleryResourceTreeNode parentNode = this.parent;
-			parentNode.removeChild( this );
+			this.parent.removeChild( this );
 		}
 		this.parent = parent;
 		if( this.parent != null ) {
-			GalleryResourceTreeNode parentNode = this.parent;
-			parentNode.addChild( this );
+			this.parent.addChild( this );
 		}
 	}
 

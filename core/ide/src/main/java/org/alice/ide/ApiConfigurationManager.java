@@ -246,8 +246,6 @@ public abstract class ApiConfigurationManager {
 
 	public abstract CascadeMenuModel<InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( UserParameter parameter, AbstractMethod method );
 
-	public abstract List<JavaType> getTopLevelGalleryTypes();
-
 	public abstract JavaType getGalleryResourceParentFor( JavaType type );
 
 	public abstract List<AbstractDeclaration> getGalleryResourceChildrenFor( AbstractType<?, ?, ?> type );

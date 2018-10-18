@@ -15,13 +15,9 @@ public class ManifestDefinedGalleryTreeNode extends GalleryResourceTreeNode{
 
 	private final ModelManifest modelManifest;
 
-	public ManifestDefinedGalleryTreeNode(ModelManifest modelManifest) {
+	ManifestDefinedGalleryTreeNode( ModelManifest modelManifest ) {
 		super(modelManifest.description.name);
 		this.modelManifest = modelManifest;
-	}
-
-	public ModelManifest getModelManifest() {
-		return modelManifest;
 	}
 
 	@Override
@@ -30,7 +26,7 @@ public class ManifestDefinedGalleryTreeNode extends GalleryResourceTreeNode{
 	}
 
 	@Override
-	public UserType getUserType() {
-		return null;
+	public String toString() {
+		return "User Model (" + name + ")";
 	}
 }

@@ -49,6 +49,7 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -59,12 +60,10 @@ public abstract class InstanceCreatorKey extends ResourceKey {
 	
 	private static Map<JavaType, JavaType> mapResourceTypeToAbstractionType;
 
-	public static JavaType getAbstractionTypeForResourceType( AbstractType<?, ?, ?> assignableFromResourceType ) {
-		if( mapResourceTypeToAbstractionType != null ) {
-			//pass
-		} else {
+	static JavaType getAbstractionTypeForResourceType( AbstractType<?, ?, ?> assignableFromResourceType ) {
+		if ( mapResourceTypeToAbstractionType == null ) {
 			mapResourceTypeToAbstractionType = Maps.newHashMap();
-			List<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
+			Collection<JavaType> abstractionTypes = StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
 			for( JavaType abstractionType : abstractionTypes ) {
 				JavaType resourceType = (JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
 				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
