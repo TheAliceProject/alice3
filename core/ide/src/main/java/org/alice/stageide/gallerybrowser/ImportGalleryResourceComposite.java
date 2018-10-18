@@ -5,7 +5,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
-import org.alice.ide.croquet.components.SClassPopupButton;
+import org.alice.ide.croquet.components.SuperclassPopupButton;
 import org.alice.ide.name.NameValidator;
 import org.alice.ide.name.validators.TypeNameValidator;
 import org.alice.stageide.StageIDE;
@@ -343,7 +343,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 						TreeUtilities.getSClassListState();
 					classList.clearSelection();
 					classList.addAndInvokeNewSchoolValueListener( classSelectionListener );
-					final SwingComponentView<?> classButton = new SClassPopupButton( classList );
+					final SwingComponentView<?> classButton = new SuperclassPopupButton( classList );
 					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
 					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
 					rows.add( new LabeledFormRow( sClass.getSidekickLabel(), classButton ) );

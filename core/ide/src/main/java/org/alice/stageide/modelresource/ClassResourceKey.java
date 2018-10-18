@@ -109,6 +109,11 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
+	public boolean isInterface() {
+		return cls.isInterface();
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return this.cls.isEnum() && ( this.cls.getEnumConstants().length == 1 );
 	}

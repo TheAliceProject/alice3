@@ -60,6 +60,7 @@ import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * @author Dennis Cosgrove
@@ -121,7 +122,7 @@ public class TreeUtilities {
 
 		@Override
 		public void appendRepresentation( StringBuilder sb, ResourceNode value ) {
-			sb.append( value != null ? value.getSClassName() : null );
+			sb.append( value != null ? value.getSimpleClassName() : null );
 		}
 	}
 
@@ -155,26 +156,24 @@ public class TreeUtilities {
 
 	private static MutableListData<ResourceNode> getListBasedOnTopClasses() {
 		List<ResourceNode> classLeaves = Lists.newLinkedList();
-		for( ResourceNode srcNode : getTreeBasedOnClassHierarchy().getNodeChildren() ) {
-			classLeaves.add( new ResourceNode( srcNode.getResourceKey(), Collections.emptyList(), true ) );
-		}
+		selectResourceNodes( getTreeBasedOnClassHierarchy(), classLeaves, ResourceNode::isSubclassable );
 		return new MutableListData<>( new SClassCodec(), classLeaves );
 	}
 
 
 	private static ResourceNode getTreeBasedOnUserResources() {
 		List<ResourceNode> userResourceNodes = new ArrayList<>();
-		getUserResourceNodes(getTreeBasedOnClassHierarchy(), userResourceNodes);
+		selectResourceNodes( getTreeBasedOnClassHierarchy(), userResourceNodes, ResourceNode::isUserDefinedModel );
 		return new ResourceNode( new RootResourceKey( "MyGallery", "My Gallery" ),
 								 copy( userResourceNodes ) );
 	}
 
-	private static void getUserResourceNodes( ResourceNode node, List<ResourceNode> userResourceNodes ) {
-		if( node.isUserDefinedModel() ) {
-			userResourceNodes.add(node);
+	private static void selectResourceNodes( ResourceNode node, List<ResourceNode> selectedNodes, Predicate<ResourceNode> qualifier ) {
+		if( qualifier.test(node) ) {
+			selectedNodes.add(node);
 		}
 		for( ResourceNode child : node.getNodeChildren() ) {
-			getUserResourceNodes( child, userResourceNodes );
+			selectResourceNodes( child, selectedNodes, qualifier );
 		}
 	}
 

@@ -120,10 +120,4 @@ public abstract class GalleryDragModel extends AbstractModel implements DragMode
 	public abstract AxisAlignedBox getBoundingBox();
 
 	public abstract boolean placeOnGround();
-
-	public abstract boolean isInstanceCreator();
-
-	public boolean isUserDefinedModel() {
-		return false;
-	}
 }

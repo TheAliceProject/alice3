@@ -111,9 +111,12 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 		return this.resourceKey;
 	}
 
-	@Override
 	public boolean isUserDefinedModel() {
 		return (this.resourceKey instanceof DynamicResourceKey);
+	}
+
+	boolean isSubclassable() {
+		return resourceKey.isInterface() && !getFirstChild().isSubclassable();
 	}
 
 	@Override
@@ -178,7 +181,6 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 		}
 	}
 
-	@Override
 	public boolean isInstanceCreator() {
 		return this.resourceKey.isInstanceCreator();
 	}
@@ -211,16 +213,7 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 		sb.append( this.resourceKey );
 	}
 
-	public String getSClassName() {
-		ResourceKey key = getResourceKey();
-		if( key instanceof ClassResourceKey ) {
-			ClassResourceKey classResourceKey = (ClassResourceKey) key;
-			Class<? extends SModel> modelClass =
-				AliceResourceClassUtilities.getModelClassForResourceClass( classResourceKey.getModelResourceCls() );
-			if ( modelClass != null ) {
-				return modelClass.getSimpleName();
-			}
-		}
-		return "";
+	public String getSimpleClassName() {
+		return getResourceKey().getSearchText();
 	}
 }

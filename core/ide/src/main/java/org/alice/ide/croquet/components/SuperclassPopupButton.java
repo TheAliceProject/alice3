@@ -58,10 +58,10 @@ import org.lgna.croquet.views.Label;
 import javax.swing.*;
 import java.awt.*;
 
-public class SClassPopupButton  extends FauxComboBoxPopupButton<ResourceNode> implements ValueListener<ResourceNode> {
+public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode> implements ValueListener<ResourceNode> {
 	private final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> listState;
 
-	public SClassPopupButton( SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> state ) {
+	public SuperclassPopupButton( SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> state ) {
 		super(state.getMenuModel().getPopupPrepModel());
 		listState = state;
 		getAwtComponent().setLayout( new BoxLayout( getAwtComponent(), BoxLayout.LINE_AXIS ) );
@@ -129,9 +129,9 @@ public class SClassPopupButton  extends FauxComboBoxPopupButton<ResourceNode> im
 					internalAddComponent( new Label( icon ) );
 				}
 			}
-			String sClass = nextValue.getSClassName();
-			if ( sClass != null ) {
-				internalAddComponent( new Label( sClass ) );
+			String className = nextValue.getSimpleClassName();
+			if ( className != null ) {
+				internalAddComponent( new Label( className ) );
 			}
 		} else {
 			internalAddComponent( new Label( new EmptyIcon( 0, 30 )) );

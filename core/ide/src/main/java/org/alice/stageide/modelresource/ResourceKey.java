@@ -65,6 +65,10 @@ public abstract class ResourceKey {
 
 	public abstract boolean isLeaf();
 
+	public boolean isInterface() {
+		return false;
+	}
+
 	protected abstract void appendRep( StringBuilder sb );
 
 	public abstract InstanceCreation createInstanceCreation();
