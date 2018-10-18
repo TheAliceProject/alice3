@@ -65,4 +65,9 @@ public final class DoInOrder extends AbstractStatementWithBody {
 	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendDoInOrder(this);
 	}
+
+	@Override
+	boolean containsAReturnForEveryPath() {
+		return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
+	}
 }

@@ -60,6 +60,16 @@ public final class ReturnStatement extends Statement {
 		generator.appendReturnStatement(this);
 	}
 
+	@Override
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		return isEnabled.getValue();
+	}
+
+	@Override
+	boolean containsAReturnForEveryPath() {
+		return isEnabled.getValue();
+	}
+
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override

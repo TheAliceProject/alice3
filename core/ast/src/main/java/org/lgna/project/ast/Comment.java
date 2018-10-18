@@ -60,5 +60,10 @@ public class Comment extends Statement {
 		generator.formatMultiLineComment(text.getValue());
 	}
 
+	@Override
+	boolean isEnabledNonCommment() {
+		return false;
+	}
+
 	public final StringProperty text = new StringProperty( this, "" );
 }
