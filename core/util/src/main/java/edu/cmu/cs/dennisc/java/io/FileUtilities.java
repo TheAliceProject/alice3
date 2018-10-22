@@ -424,7 +424,7 @@ public class FileUtilities {
 		return new FilenameFilter() {
 			@Override
 			public boolean accept( File dir, String name ) {
-				return name.endsWith( extension );
+				return name.toUpperCase().endsWith( extension.toUpperCase() );
 			}
 		};
 	}
@@ -434,7 +434,7 @@ public class FileUtilities {
 			@Override
 			public boolean accept( File file ) {
 				if( file.isFile() ) {
-					return file.getName().endsWith( extension );
+					return file.getName().toUpperCase().endsWith( extension.toUpperCase() );
 				} else {
 					return false;
 				}
