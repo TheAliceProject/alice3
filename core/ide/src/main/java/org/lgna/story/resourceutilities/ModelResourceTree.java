@@ -73,7 +73,7 @@ public class ModelResourceTree {
 		return this.galleryTree;
 	}
 
-	Collection<TypedDefinedGalleryTreeNode> getDynamicNodes() {
+	Collection<TypeDefinedGalleryTreeNode> getDynamicNodes() {
 		return dynamicResources.values();
 	}
 
@@ -86,7 +86,7 @@ public class ModelResourceTree {
 	}
 
 	private ManifestDefinedGalleryTreeNode addUserModel( ModelManifest userModel ){
-		TypedDefinedGalleryTreeNode parentNode = dynamicResources.get( userModel.parentClass );
+		TypeDefinedGalleryTreeNode parentNode = dynamicResources.get( userModel.parentClass );
 		if (parentNode == null) {
 			new OkDialog.Builder( "Unable to find parent class " + userModel.parentClass ).buildAndShow();
 		}
@@ -96,7 +96,7 @@ public class ModelResourceTree {
 		return manifestNode;
 	}
 
-	TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
+	TypeDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
 		return this.galleryTree.getDescendantOfJavaType( type );
 	}
 
@@ -115,9 +115,9 @@ public class ModelResourceTree {
 	}
 
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
-	private void addNodes(TypedDefinedGalleryTreeNode root, Stack<Class<? extends ModelResource>> classes ) {
+	private void addNodes( TypeDefinedGalleryTreeNode root, Stack<Class<? extends ModelResource>> classes ) {
 		Class<?> rootClass = null;
-		TypedDefinedGalleryTreeNode currentNode = root;
+		TypeDefinedGalleryTreeNode currentNode = root;
 		while( !classes.isEmpty() ) {
 			Class<? extends ModelResource> currentClass = classes.pop();
 			if( currentClass.isAnnotationPresent( Deprecated.class ) ) {
@@ -128,12 +128,12 @@ public class ModelResourceTree {
 			if( rootClass == null ) {
 				rootClass = currentClass;
 			}
-			TypedDefinedGalleryTreeNode parentNode = currentNode;
-			TypedDefinedGalleryTreeNode classNode = null;
+			TypeDefinedGalleryTreeNode parentNode = currentNode;
+			TypeDefinedGalleryTreeNode classNode = null;
 			if( resourceClassToNodeMap.containsKey( currentClass ) ) {
 				classNode = resourceClassToNodeMap.get( currentClass );
 			} else {
-				//Build a new TypedDefinedGalleryTreeNode for the current class
+				//Build a new TypeDefinedGalleryTreeNode for the current class
 				classNode = createNode( rootClass, currentClass, parentNode );
 				if( root == null ) { //if the root node passed in is null, assign it to be the node from the first class we process
 					root = classNode;
@@ -143,8 +143,8 @@ public class ModelResourceTree {
 		}
 	}
 
-	private TypedDefinedGalleryTreeNode createNode( Class<?> rootClass, Class<? extends ModelResource> currentClass,
-													TypedDefinedGalleryTreeNode parentNode ) {
+	private TypeDefinedGalleryTreeNode createNode( Class<?> rootClass, Class<? extends ModelResource> currentClass,
+												   TypeDefinedGalleryTreeNode parentNode ) {
 		String aliceClassName = AliceResourceClassUtilities.getAliceClassName( currentClass );
 		UserPackage packageName = getAlicePackage( currentClass, rootClass );
 
@@ -162,7 +162,7 @@ public class ModelResourceTree {
 		NamedUserType aliceType = new NamedUserType( aliceClassName, packageName, parentType, noConstructors, noMethods,
 													 noFields );
 
-		TypedDefinedGalleryTreeNode classNode = new TypedDefinedGalleryTreeNode( aliceType, currentClass, modelClass );
+		TypeDefinedGalleryTreeNode classNode = new TypeDefinedGalleryTreeNode( aliceType, currentClass, modelClass );
 		classNode.setParent( parentNode );
 		resourceClassToNodeMap.put( currentClass, classNode );
 		registerDynamicClassIfFound( currentClass, classNode );
@@ -171,7 +171,7 @@ public class ModelResourceTree {
 				String fieldClassName = AliceResourceClassUtilities.getClassNameFromName( f.getName() ) + aliceClassName;
 				NamedUserType subParentType = classNode.getUserType();
 				NamedUserType fieldType = new NamedUserType( fieldClassName, packageName, subParentType, noConstructors, noMethods, noFields );
-				TypedDefinedGalleryTreeNode fieldNode = new TypedDefinedGalleryTreeNode( fieldType, currentClass, null );
+				TypeDefinedGalleryTreeNode fieldNode = new TypeDefinedGalleryTreeNode( fieldType, currentClass, null );
 				try {
 					ModelResource resource = (ModelResource)f.get( null );
 					JavaField javaField = JavaField.getInstance( f );
@@ -186,7 +186,7 @@ public class ModelResourceTree {
 		return classNode;
 	}
 
-	private void registerDynamicClassIfFound( Class<? extends ModelResource> resourceClass, TypedDefinedGalleryTreeNode classNode ) {
+	private void registerDynamicClassIfFound( Class<? extends ModelResource> resourceClass, TypeDefinedGalleryTreeNode classNode ) {
 		try {
 			Class dynamicResourceClass = Class.forName("org.lgna.story.resources.Dynamic" + resourceClass.getSimpleName());
 			if ( resourceClass.isAssignableFrom( dynamicResourceClass ) ) {
@@ -197,8 +197,8 @@ public class ModelResourceTree {
 		}
 	}
 
-	private TypedDefinedGalleryTreeNode createClassTree(List<Class<? extends ModelResource>> classes ) {
-		TypedDefinedGalleryTreeNode topNode = new TypedDefinedGalleryTreeNode( null, null, null );
+	private TypeDefinedGalleryTreeNode createClassTree( List<Class<? extends ModelResource>> classes ) {
+		TypeDefinedGalleryTreeNode topNode = new TypeDefinedGalleryTreeNode( null, null, null );
 
 		for( Class<? extends ModelResource> cls : classes ) {
 			Class<? extends ModelResource> currentClass = cls;
@@ -227,7 +227,7 @@ public class ModelResourceTree {
 		return topNode;
 	}
 
-	private final TypedDefinedGalleryTreeNode galleryTree;
-	private final Map<Object, TypedDefinedGalleryTreeNode> resourceClassToNodeMap = Maps.newHashMap();
-	private final Map<String, TypedDefinedGalleryTreeNode> dynamicResources = Maps.newHashMap();
+	private final TypeDefinedGalleryTreeNode galleryTree;
+	private final Map<Object, TypeDefinedGalleryTreeNode> resourceClassToNodeMap = Maps.newHashMap();
+	private final Map<String, TypeDefinedGalleryTreeNode> dynamicResources = Maps.newHashMap();
 }

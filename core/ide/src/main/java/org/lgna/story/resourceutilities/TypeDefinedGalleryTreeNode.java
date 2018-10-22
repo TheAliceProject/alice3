@@ -45,7 +45,6 @@ package org.lgna.story.resourceutilities;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
-import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
@@ -58,9 +57,9 @@ import org.lgna.story.resources.ModelResource;
  * @author dculyba
  * 
  */
-public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
-	TypedDefinedGalleryTreeNode( NamedUserType aliceClass, Class<? extends ModelResource> resourceClass,
-								 Class<? extends SModel> modelClass ) {
+public class TypeDefinedGalleryTreeNode extends GalleryResourceTreeNode {
+	TypeDefinedGalleryTreeNode( NamedUserType aliceClass, Class<? extends ModelResource> resourceClass,
+								Class<? extends SModel> modelClass ) {
 		super(aliceClass != null ? aliceClass.getName() : null);
 		this.userType = aliceClass;
 		if( this.userType != null ) {
@@ -100,26 +99,26 @@ public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 		return value != null ? value.getName() : null;
 	}
 
-	private TypedDefinedGalleryTreeNode getChildWithJavaType( AbstractType<?, ?, ?> type ) {
+	private TypeDefinedGalleryTreeNode getChildWithJavaType( AbstractType<?, ?, ?> type ) {
 		for( GalleryResourceTreeNode child : this.children ) {
-			if (child instanceof TypedDefinedGalleryTreeNode) {
-				if ((((TypedDefinedGalleryTreeNode)child).resourceJavaType != null) && type.isAssignableFrom(((TypedDefinedGalleryTreeNode)child).resourceJavaType)) {
-					return (TypedDefinedGalleryTreeNode)child;
+			if (child instanceof TypeDefinedGalleryTreeNode ) {
+				if ((((TypeDefinedGalleryTreeNode)child).resourceJavaType != null) && type.isAssignableFrom( ((TypeDefinedGalleryTreeNode)child).resourceJavaType)) {
+					return (TypeDefinedGalleryTreeNode)child;
 				}
 			}
 		}
 		return null;
 	}
 
-	TypedDefinedGalleryTreeNode getDescendantOfJavaType( AbstractType<?, ?, ?> type ) {
-		TypedDefinedGalleryTreeNode rv = this.getChildWithJavaType( type );
+	TypeDefinedGalleryTreeNode getDescendantOfJavaType( AbstractType<?, ?, ?> type ) {
+		TypeDefinedGalleryTreeNode rv = this.getChildWithJavaType( type );
 		if( rv != null ) {
 			return rv;
 		}
 		if( this.getChildCount() > 0 ) {
 			for( GalleryResourceTreeNode child : this.children ) {
-				if (child instanceof TypedDefinedGalleryTreeNode) {
-					TypedDefinedGalleryTreeNode result = ((TypedDefinedGalleryTreeNode)child).getDescendantOfJavaType(type);
+				if (child instanceof TypeDefinedGalleryTreeNode ) {
+					TypeDefinedGalleryTreeNode result = ((TypeDefinedGalleryTreeNode)child).getDescendantOfJavaType( type);
 					if (result != null) {
 						return result;
 					}

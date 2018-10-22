@@ -70,7 +70,7 @@ public enum StorytellingResourcesTreeUtils {
 		return this.galleryTree;
 	}
 
-	private TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType(AbstractType<?, ?, ?> type ) {
+	private TypeDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
 		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
 	}
 
@@ -86,7 +86,7 @@ public enum StorytellingResourcesTreeUtils {
 	public Collection<JavaType> getTopLevelGalleryTypes() {
 		if( this.rootTypes == null ) {
 			this.rootTypes = new HashSet<>();
-			for( TypedDefinedGalleryTreeNode node : getGalleryTreeInternal().getDynamicNodes() ) {
+			for( TypeDefinedGalleryTreeNode node : getGalleryTreeInternal().getDynamicNodes() ) {
 				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 			}
 		}
@@ -96,7 +96,7 @@ public enum StorytellingResourcesTreeUtils {
 	public JavaType getGalleryResourceParentFor( AbstractType<?, ?, ?> type ) {
 		GalleryResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( child != null ) {
-			TypedDefinedGalleryTreeNode parent = child.getParent();
+			TypeDefinedGalleryTreeNode parent = child.getParent();
 			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getGalleryResourceChildrenFor)
 			if( ( parent != null ) && hasSingleLeafChild( parent ) ) {
 				parent = parent.getParent();
@@ -127,7 +127,7 @@ public enum StorytellingResourcesTreeUtils {
 				if( hasSingleLeafChild( child ) ) {
 					child = child.getChildAt( 0 );
 				}
-				TypedDefinedGalleryTreeNode node = (TypedDefinedGalleryTreeNode)child;
+				TypeDefinedGalleryTreeNode node = (TypeDefinedGalleryTreeNode)child;
 				if( node.isLeaf() && ( node.getJavaField() != null ) ) {
 					//System.out.println( "  Returning field: " + node.getJavaField() );
 					toReturn.add( node.getJavaField() );

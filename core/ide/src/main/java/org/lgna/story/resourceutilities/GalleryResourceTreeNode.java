@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNode, Iterable<GalleryResourceTreeNode>, Comparable<GalleryResourceTreeNode>{
 
-	protected TypedDefinedGalleryTreeNode parent;
+	protected TypeDefinedGalleryTreeNode parent;
 	protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();
 	protected String name;
 	private boolean isSorted = false;
@@ -34,11 +34,11 @@ public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNo
 	}
 
 	@Override
-	public TypedDefinedGalleryTreeNode getParent() {
+	public TypeDefinedGalleryTreeNode getParent() {
 		return this.parent;
 	}
 
-	public void setParent( TypedDefinedGalleryTreeNode parent ) {
+	public void setParent( TypeDefinedGalleryTreeNode parent ) {
 		if (this.parent == parent) {
 			return;
 		}
