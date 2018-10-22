@@ -124,6 +124,12 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 		return this.children;
 	}
 
+	void addNodeChild( ResourceNode nodeChild ) {
+		nodeChild.parent = this;
+		this.children.add( nodeChild );
+		Collections.sort( children );
+	}
+
 	void addNodeChild( int index, ResourceNode nodeChild ) {
 		nodeChild.parent = this;
 		this.children.add( index, nodeChild );

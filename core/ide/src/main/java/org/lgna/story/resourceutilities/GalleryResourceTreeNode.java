@@ -2,9 +2,6 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.stageide.modelresource.ResourceKey;
-import org.alice.tweedle.file.ModelManifest;
-import org.lgna.project.ast.UserType;
-import org.lgna.story.resources.DynamicResource;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -17,12 +14,20 @@ public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNo
 	protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();
 	protected String name;
 	private boolean isSorted = false;
+	private ResourceKey resourceKey;
 
 	GalleryResourceTreeNode( String name ) {
 		this.name = name;
 	}
 
-	public abstract ResourceKey createResourceKey();
+	public ResourceKey getResourceKey() {
+		if (resourceKey == null) {
+			resourceKey = createResourceKey();
+		}
+		return resourceKey;
+	}
+
+	abstract ResourceKey createResourceKey();
 
 	public String getName() {
 		return this.name;

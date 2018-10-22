@@ -459,6 +459,39 @@ public enum StorytellingResources {
 		return this.userGalleryModelManifests;
 	}
 
+	List<ModelManifest> findNewUserGalleryResources() {
+		if (userGalleryModelManifests != null) {
+			List<ModelManifest> newModelManifests = new ArrayList<>();
+			File userGalleryDirectory = StoryApiDirectoryUtilities.getUserGalleryDirectory();
+			List<File> dynamicModelFiles = getDynamicModelFiles(userGalleryDirectory);
+			for (File modelFile : dynamicModelFiles ) {
+				try {
+					String fileContent = new String(Files.readAllBytes(Paths.get(modelFile.toURI())));
+					ModelManifest modelManifest = ManifestEncoderDecoder.fromJson(fileContent, ModelManifest.class);
+					modelManifest.setRootFile(modelFile.getParentFile());
+					if (manifestIsNew(modelManifest)) {
+						userGalleryModelManifests.add( modelManifest );
+						newModelManifests.add( modelManifest );
+					}
+				}
+				catch (IOException e) {
+					Logger.warning("Error loading model data from "+modelFile);
+				}
+			}
+			return newModelManifests;
+		}
+		return null;
+	}
+
+	private boolean manifestIsNew( ModelManifest newManifest ) {
+		for ( ModelManifest oldManifest: userGalleryModelManifests ) {
+			if ( oldManifest.getName().equals( newManifest.getName() ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/*package-private*/List<Class<? extends ModelResource>> findAndLoadInstalledAliceResourcesIfNecessary() {
 		if( this.installedAliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );

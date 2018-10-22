@@ -76,4 +76,7 @@ public abstract class GalleryTabView extends BorderPanel {
 		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		return rv;
 	}
+
+	public void modelUpdated() {
+	}
 }

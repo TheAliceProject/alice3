@@ -82,12 +82,13 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 
 	private final Map<ResourceNode, Integer> mapNodeToHorizontalScrollPosition = Maps.newHashMap();
 	private final ScrollPane scrollPane;
+	private final ModelResourceDirectoryView view;
 
 	public TreeOwningGalleryTabView( TreeOwningGalleryTab composite ) {
 		super( composite );
 
 		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
-		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
+		view = new ModelResourceDirectoryView( state );
 
 		this.scrollPane = createGalleryScrollPane( view );
 
@@ -137,5 +138,10 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 				jHorizontalScrollBar.setValue( nextScrollPosition );
 			}
 		} );
+	}
+
+	@Override
+	public void modelUpdated() {
+		view.modelUpdated();
 	}
 }

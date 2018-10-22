@@ -53,7 +53,7 @@ import java.util.Collections;
  */
 public abstract class TreeDirectoryViewController<T> extends PanelViewController<SingleSelectTreeState<T>> {
 	private static class InternalPanel<T> extends MigPanel {
-		public InternalPanel() {
+		InternalPanel() {
 			super( null, "insets 0", "", "" );
 		}
 
@@ -84,7 +84,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 
 		@Override
 		public void changed( State<T> state, T prevValue, T nextValue ) {
-			TreeDirectoryViewController.this.handleSelectionChange( state, prevValue, nextValue );
+			TreeDirectoryViewController.this.modelUpdated();
 		}
 	};
 
@@ -120,7 +120,7 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 		}
 	}
 
-	private void handleSelectionChange( State<T> state, T prevValue, T nextValue ) {
-		this.getInternalPanel().refreshLater();
+	public void modelUpdated() {
+		getInternalPanel().refreshLater();
 	}
 }

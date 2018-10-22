@@ -136,7 +136,7 @@ public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 	private JavaField resourceJavaField = null;
 
 	@Override
-	public ResourceKey createResourceKey() {
+	ResourceKey createResourceKey() {
 		ResourceKey resourceKey = null;
 		if (resourceJavaField != null) {
 			try {

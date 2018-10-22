@@ -106,4 +106,10 @@ public class GalleryComposite extends SimpleComposite<GalleryView> {
 	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
 		return this.shapesTab.getDragModelForCls( cls );
 	}
+
+	public void modelUpdated() {
+		resourceBasedTab.modelUpdated();
+		searchTab.modelUpdated();
+		myGalleryTab.modelUpdated();
+	}
 }

@@ -111,6 +111,12 @@ public class SearchTab extends GalleryTab {
 		this.worker.execute();
 	}
 
+	@Override
+	public void modelUpdated() {
+		handleFilterChanged( getFilterState().getValue() );
+		super.modelUpdated();
+	}
+
 	private SearchGalleryWorker worker;
 	private final StringState filterState = this.createStringState( "filterState" );
 	private final PlainStringValue noMatchesLabel = this.createStringValue( "noMatchesLabel" );

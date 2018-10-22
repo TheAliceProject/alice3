@@ -58,6 +58,7 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.ModelResource;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -76,13 +77,15 @@ public class ModelResourceTree {
 		return dynamicResources.values();
 	}
 
-	void addUserModels( List<ModelManifest> userModels ) {
+	List<ManifestDefinedGalleryTreeNode> addUserModels( List<ModelManifest> userModels ) {
+		List<ManifestDefinedGalleryTreeNode> newNodes = new ArrayList<>();
 		for (ModelManifest userModel : userModels) {
-			addUserModel(userModel);
+			newNodes.add( addUserModel(userModel) );
 		}
+		return newNodes;
 	}
 
-	private void addUserModel( ModelManifest userModel ){
+	private ManifestDefinedGalleryTreeNode addUserModel( ModelManifest userModel ){
 		TypedDefinedGalleryTreeNode parentNode = dynamicResources.get( userModel.parentClass );
 		if (parentNode == null) {
 			new OkDialog.Builder( "Unable to find parent class " + userModel.parentClass ).buildAndShow();
@@ -90,6 +93,7 @@ public class ModelResourceTree {
 
 		ManifestDefinedGalleryTreeNode manifestNode = new ManifestDefinedGalleryTreeNode(userModel);
 		manifestNode.setParent(parentNode);
+		return manifestNode;
 	}
 
 	TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {

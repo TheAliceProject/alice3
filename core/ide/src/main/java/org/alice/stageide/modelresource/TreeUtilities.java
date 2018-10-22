@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.SingleSelectListState;
@@ -57,6 +58,7 @@ import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
+import org.lgna.story.resourceutilities.ManifestDefinedGalleryTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.util.*;
@@ -136,10 +138,10 @@ public class TreeUtilities {
 			}
 		}
 		for( GalleryResourceTreeNode childSource : source.childrenList() ) {
-			ResourceKey childKey = childSource.createResourceKey();
+			ResourceKey childKey = childSource.getResourceKey();
 			childNodes.add( createNode( childSource, childKey ) );
 		}
-		return new ResourceNode( key, Collections.unmodifiableList( childNodes ), true );
+		return new ResourceNode( key, childNodes, true );
 	}
 
 	private static ResourceNode createTreeBasedOnClassHierarchy() {
@@ -152,6 +154,41 @@ public class TreeUtilities {
 			treeBasedOnClassHierarchy = createTreeBasedOnClassHierarchy();
 		}
 		return treeBasedOnClassHierarchy;
+	}
+
+	public static void updateTreeBasedOnClassHierarchy() {
+		if ( treeBasedOnClassHierarchy == null ) {
+			treeBasedOnClassHierarchy = createTreeBasedOnClassHierarchy();
+		}
+		else {
+			List<ManifestDefinedGalleryTreeNode> newNodes = StorytellingResourcesTreeUtils.INSTANCE.updateGalleryTree();
+			for( GalleryResourceTreeNode node : newNodes) {
+				ResourceKey childKey = node.getResourceKey();
+				final ResourceNode newResourceNode = createNode( node, childKey );
+				final ResourceNode parent = findByKey(treeBasedOnClassHierarchy, node.getParent().getResourceKey());
+				if (parent != null) {
+					parent.addNodeChild( newResourceNode );
+				}
+				userTreeState.getRoot().addNodeChild( newResourceNode );
+				// TODO add to tags and groups
+			}
+			if (!newNodes.isEmpty()) {
+				SetupScenePerspectiveComposite.getInstance().getGalleryComposite().modelUpdated();
+			}
+		}
+	}
+
+	private static ResourceNode findByKey( ResourceNode root, ResourceKey resourceKey ) {
+		if (resourceKey.equals( root.getResourceKey() )) {
+			return root;
+		}
+		for ( ResourceNode child : root.getNodeChildren()) {
+			ResourceNode checkChild = findByKey( child, resourceKey );
+			if (checkChild != null) {
+				return checkChild;
+			}
+		}
+		return null;
 	}
 
 	private static MutableListData<ResourceNode> getListBasedOnTopClasses() {

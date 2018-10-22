@@ -78,6 +78,11 @@ public enum StorytellingResourcesTreeUtils {
 		return getGalleryTreeInternal().getTree();
 	}
 
+	public List<ManifestDefinedGalleryTreeNode> updateGalleryTree() {
+		List<ModelManifest> newUserModelResources = StorytellingResources.INSTANCE.findNewUserGalleryResources();
+		return galleryTree.addUserModels(newUserModelResources);
+	}
+
 	public Collection<JavaType> getTopLevelGalleryTypes() {
 		if( this.rootTypes == null ) {
 			this.rootTypes = new HashSet<>();
