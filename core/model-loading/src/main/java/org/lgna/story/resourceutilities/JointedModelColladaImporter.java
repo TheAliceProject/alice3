@@ -11,6 +11,7 @@ import com.dddviewr.collada.geometry.Primitives;
 import com.dddviewr.collada.geometry.Triangles;
 import com.dddviewr.collada.images.Image;
 import com.dddviewr.collada.materials.InstanceEffect;
+import com.dddviewr.collada.materials.LibraryMaterials;
 import com.dddviewr.collada.materials.Material;
 import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.visualscene.BaseXform;
@@ -196,6 +197,9 @@ public class JointedModelColladaImporter {
 	}
 
 	private static int getMaterialIdForMaterialName(String materialName, Collada colladaModel) {
+		if (materialName == null) {
+			return -1;
+		}
 		int id = 0;
 		for (Material material : colladaModel.getLibraryMaterials().getMaterials()) {
 			if (material.getName().equals( materialName )) {
@@ -470,39 +474,42 @@ public class JointedModelColladaImporter {
 	}
 
 	private List<TexturedAppearance> createAliceMaterialsFromCollada( Collada colladaModel, File rootPath, List<Mesh> aliceMeshes ) throws ModelLoadingException {
-		List<Material> materials = colladaModel.getLibraryMaterials().getMaterials();
 		List<TexturedAppearance> textureAppearances = new LinkedList<TexturedAppearance>();
-		for (Material material : materials) {
-			int id = getMaterialIdForMaterialName( material.getName(), colladaModel );
-			boolean isUsed = false;
-			for (Mesh aliceMesh : aliceMeshes) {
-				if (aliceMesh.textureId.getValue() == id) {
-					isUsed = true;
-					break;
-				}
-			}
-			if (isUsed) {
-				Image image = getColladaImageForMaterial( material, colladaModel );
-				if (image  == null) {
-					throw new ModelLoadingException("Error loading material "+material.getName()+": No valid image found.");
-				}
-				BufferedImage bufferedImage;
-				try {
-					File imageFile = resolveTextureFileName( image.getInitFrom(), rootPath );
-					if (imageFile == null) {
-						throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not found.");
+		final LibraryMaterials libraryMaterials = colladaModel.getLibraryMaterials();
+		if (libraryMaterials != null) {
+			List<Material> materials = libraryMaterials.getMaterials();
+			for (Material material : materials) {
+				int id = getMaterialIdForMaterialName( material.getName(), colladaModel );
+				boolean isUsed = false;
+				for (Mesh aliceMesh : aliceMeshes) {
+					if (aliceMesh.textureId.getValue() == id) {
+						isUsed = true;
+						break;
 					}
-					bufferedImage = ImageUtilities.read( imageFile );
-				} catch( IOException e) {
-					throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+" not found.", e);
 				}
-				TexturedAppearance m_sgAppearance = new TexturedAppearance();
-				m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
-				m_sgAppearance.textureId.setValue(id);
-				textureAppearances.add(m_sgAppearance);
-			}
-			else {
-				modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getName());
+				if (isUsed) {
+					Image image = getColladaImageForMaterial( material, colladaModel );
+					if (image  == null) {
+						throw new ModelLoadingException("Error loading material "+material.getName()+": No valid image found.");
+					}
+					BufferedImage bufferedImage;
+					try {
+						File imageFile = resolveTextureFileName( image.getInitFrom(), rootPath );
+						if (imageFile == null) {
+							throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not found.");
+						}
+						bufferedImage = ImageUtilities.read( imageFile );
+					} catch( IOException e) {
+						throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+" not found.", e);
+					}
+					TexturedAppearance m_sgAppearance = new TexturedAppearance();
+					m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
+					m_sgAppearance.textureId.setValue(id);
+					textureAppearances.add(m_sgAppearance);
+				}
+				else {
+					modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getName());
+				}
 			}
 		}
 		if (textureAppearances.size() == 0) {

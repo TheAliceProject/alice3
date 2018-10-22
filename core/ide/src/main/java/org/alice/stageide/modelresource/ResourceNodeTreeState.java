@@ -95,7 +95,7 @@ public class ResourceNodeTreeState extends CustomSingleSelectTreeState<ResourceN
 	@Override
 	protected void setCurrentTruthAndBeautyValue( ResourceNode nextValue ) {
 		super.setCurrentTruthAndBeautyValue( nextValue );
-		if( nextValue.getResourceKey().isLeaf() ) {
+		if( nextValue != null && nextValue.getResourceKey().isLeaf() ) {
 			Triggerable model = nextValue.getLeftButtonClickOperation(this);
 			if( model != null ) {
 				model.fire( NullTrigger.createUserActivity() );
