@@ -66,7 +66,6 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		detailsComposite = new ModelDetailsComposite( UUID.randomUUID());
 		splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.detailsComposite, 0.35f );
 		errorStatus = createErrorStatus( "errorStatus" );
-		AliceModelLoader.renameJoints(skeletonVisual);
 	}
 
 	@Override

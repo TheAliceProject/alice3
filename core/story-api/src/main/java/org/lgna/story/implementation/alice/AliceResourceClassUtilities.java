@@ -218,8 +218,16 @@ public class AliceResourceClassUtilities {
 
 
 	public static List<JointId> getJoints(Class<? extends ModelResource> resourceClass) {
-		Field[] jointFields = getFieldsOfType(resourceClass, JointId.class);
 		List<JointId> baseJoints = new ArrayList<>();
+		addJoints( resourceClass, baseJoints );
+		for ( Class<?> parent : resourceClass.getInterfaces() ) {
+			addJoints( parent, baseJoints );
+		}
+		return baseJoints;
+	}
+
+	private static void addJoints( Class<?> resourceClass, List<JointId> baseJoints ) {
+		Field[] jointFields = getFieldsOfType( resourceClass, JointId.class);
 		for (Field f : jointFields) {
 			try {
 				JointId id = (JointId) f.get(null);
@@ -228,7 +236,6 @@ public class AliceResourceClassUtilities {
 				iae.printStackTrace();
 			}
 		}
-		return baseJoints;
 	}
 
 }
