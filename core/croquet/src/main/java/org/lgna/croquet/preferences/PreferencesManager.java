@@ -48,7 +48,6 @@ import org.lgna.croquet.Application;
 
 import java.io.File;
 import java.net.URI;
-import java.util.UUID;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -83,12 +82,11 @@ public class PreferencesManager {
 		return getUserPreferences().get( "5f80de2f-5119-4131-96d0-c0b80919a589", getInitialUserDirectory() );
 	}
 
-	public File getUserDirectory( UUID leafMigrationId, String defaultLeafDirectory ) {
+	public File getUserDirectory( String key, String defaultLeafDirectory ) {
 		// Group g = Application.DOCUMENT_UI_GROUP;
 		final String userDirName = getUserDirectory();
 		File userDirectory = getDirectory( userDirName );
-		String path = getUserPreferences()
-				.get( leafMigrationId.toString(), userDirectory.toPath().resolve(defaultLeafDirectory ).toString() );
+		String path = getUserPreferences().get( key, userDirectory.toPath().resolve(defaultLeafDirectory ).toString() );
 
 		File dir = getDirectory( substituteKeyIfNecessary( path, userDirName ) );
 		if ( !dir.exists() && !dir.mkdirs() ) {

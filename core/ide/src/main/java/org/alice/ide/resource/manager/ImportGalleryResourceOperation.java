@@ -1,10 +1,10 @@
 package org.alice.ide.resource.manager;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
 import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.gallerybrowser.ImportGalleryResourceComposite;
 import org.alice.stageide.icons.PlusIconFactory;
 import org.lgna.croquet.Application;
@@ -39,7 +39,7 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 	protected Triggerable getNext( List<UserActivity> finishedSteps ) {
 		switch (finishedSteps.size()) {
 		case 0:
-			return new FileDialogValueCreator( null, FileUtilities.getDefaultDirectory(), "dae" );
+			return new FileDialogValueCreator( null, StageIDE.getActiveInstance().getModelImportDirectory(), "dae" );
 		case 1:
 			SkeletonVisual skeleton = readFile( getLastValueProduced( finishedSteps ) );
 			return new ImportGalleryResourceComposite( skeleton ).getValueCreator();
@@ -53,7 +53,10 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 			throw new CancelException();
 		}
 		try {
-			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( (File) selectedFile, modelLogger );
+			final File colladaModelFile = (File) selectedFile;
+			// Save parent directory for next import
+			StageIDE.getActiveInstance().setModelImportDirectory( colladaModelFile.getParentFile() );
+			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaModelFile, modelLogger );
 			colladaImporter.setFlipModel( false );
 			return colladaImporter.loadSkeletonVisual();
 
