@@ -56,7 +56,6 @@ import edu.cmu.cs.dennisc.render.RenderUtils;
 import org.alice.ide.IDE;
 import org.alice.ide.IdeApp;
 import org.alice.ide.IdeConfiguration;
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.ast.AstEventManager;
 import org.alice.ide.cascade.ExpressionCascadeManager;
 import org.alice.ide.declarationseditor.CodeComposite;
@@ -113,7 +112,6 @@ import org.lgna.story.implementation.StoryApiDirectoryUtilities;
 import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.AbstractThumbnailMaker;
-import org.lgna.story.resourceutilities.StorytellingResources;
 
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
@@ -125,11 +123,11 @@ import java.awt.event.WindowStateListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class StageIDE extends IDE {
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
+	private static final String MODEL_IMPORT_DIRECTORY_KEY = "modelImportDirectory";
 
 	public static StageIDE getActiveInstance() {
 		return ClassUtilities.getInstance( IDE.getActiveInstance(), StageIDE.class );
@@ -509,23 +507,31 @@ public abstract class StageIDE extends IDE {
 		return this.getInstanceFactoryForSceneOrSceneField( field );
 	}
 
-  public File getGalleryDirectory() {
-		return getUserDirectory( UUID.fromString( "9894f0b8-a30d-460d-abc2-0e5cdbf885f0" ), "MyGallery" );
-  }
+	public File getGalleryDirectory() {
+		return getUserDirectory(  "9894f0b8-a30d-460d-abc2-0e5cdbf885f0", "MyGallery" );
+	}
 
-  public File getTypesDirectory() {
-		return getUserDirectory( UUID.fromString( "7f431542-fedc-4c21-8719-4f751836addf" ), "MyClasses" );
-  }
+	public File getTypesDirectory() {
+		return getUserDirectory(  "7f431542-fedc-4c21-8719-4f751836addf", "MyClasses" );
+	}
 
-  public File getVideosDirectory() {
-		return getUserDirectory( UUID.fromString( "ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe" ), "MyVideos" );
-  }
+	public File getVideosDirectory() {
+		return getUserDirectory(  "ba6036ad-61d6-4b7e-b2a7-5ea7c7760cfe", "MyVideos" );
+	}
 
-  public File getProjectsDirectory() {
-		return getUserDirectory( UUID.fromString( "b6cf8508-35ce-46b5-a208-b53784ebeca6" ), "MyProjects" );
-  }
+	public File getProjectsDirectory() {
+		return getUserDirectory(  "b6cf8508-35ce-46b5-a208-b53784ebeca6", "MyProjects" );
+}
 
-  private File getUserDirectory( UUID uuid, String leaf ) {
-		return getPreferencesManager().getUserDirectory( uuid, leaf );
-  }
+	public File getModelImportDirectory() {
+		return getUserDirectory( MODEL_IMPORT_DIRECTORY_KEY, "" );
+	}
+
+	public void setModelImportDirectory( File path) {
+		getPreferencesManager().setValue( MODEL_IMPORT_DIRECTORY_KEY, path.getAbsolutePath());
+	}
+
+	private File getUserDirectory( String key, String leaf ) {
+		return getPreferencesManager().getUserDirectory( key, leaf );
+	}
 }
