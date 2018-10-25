@@ -60,8 +60,7 @@ import java.util.UUID;
 class AddExpressionBlank extends CascadeBlank<Expression> {
 	private final DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty;
 
-	public AddExpressionBlank( DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty ) {
-		super( UUID.fromString( "c8fa59ec-80ba-4776-8b56-4c0e23848a5d" ) );
+	AddExpressionBlank( DeclarationProperty<AbstractType<?, ?, ?>> componentTypeProperty ) {
 		this.componentTypeProperty = componentTypeProperty;
 	}
 

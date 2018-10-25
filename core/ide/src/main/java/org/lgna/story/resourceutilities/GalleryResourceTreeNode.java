@@ -2,7 +2,6 @@ package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.stageide.modelresource.ResourceKey;
-import org.lgna.project.ast.UserType;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -11,37 +10,44 @@ import java.util.List;
 
 public abstract class GalleryResourceTreeNode implements javax.swing.tree.TreeNode, Iterable<GalleryResourceTreeNode>, Comparable<GalleryResourceTreeNode>{
 
-	protected GalleryResourceTreeNode parent;
+	protected TypeDefinedGalleryTreeNode parent;
 	protected List<GalleryResourceTreeNode> children = Lists.newLinkedList();
 	protected String name;
 	private boolean isSorted = false;
+	private ResourceKey resourceKey;
 
-	public GalleryResourceTreeNode(String name) {
+	GalleryResourceTreeNode( String name ) {
 		this.name = name;
 	}
 
-	public abstract ResourceKey createResourceKey();
+	public ResourceKey getResourceKey() {
+		if (resourceKey == null) {
+			resourceKey = createResourceKey();
+		}
+		return resourceKey;
+	}
 
-	public abstract UserType getUserType();
+	abstract ResourceKey createResourceKey();
 
 	public String getName() {
 		return this.name;
 	}
 
 	@Override
-	public GalleryResourceTreeNode getParent() {
+	public TypeDefinedGalleryTreeNode getParent() {
 		return this.parent;
 	}
 
-	public void setParent( GalleryResourceTreeNode parent ) {
+	public void setParent( TypeDefinedGalleryTreeNode parent ) {
+		if (this.parent == parent) {
+			return;
+		}
 		if( this.parent != null ) {
-			GalleryResourceTreeNode parentNode = this.parent;
-			parentNode.removeChild( this );
+			this.parent.removeChild( this );
 		}
 		this.parent = parent;
 		if( this.parent != null ) {
-			GalleryResourceTreeNode parentNode = this.parent;
-			parentNode.addChild( this );
+			this.parent.addChild( this );
 		}
 	}
 

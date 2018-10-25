@@ -43,22 +43,18 @@
 
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.croquet.history.PopupPrepStep;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.croquet.imp.cascade.RtRoot;
 import org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger;
 import org.lgna.croquet.triggers.Trigger;
-import org.lgna.croquet.views.FauxComboBoxPopupButton;
 import org.lgna.croquet.views.PopupMenu;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -99,7 +95,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			super.epilogue();
 		}
 
-		protected void handleFinally() {
+		void handleFinally() {
 			this.epilogue();
 		}
 
@@ -140,17 +136,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			super.appendRepr( sb );
 			sb.append( this.root );
 		}
-
-		public FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
-			return new FauxComboBoxPopupButton<T>( this );
-		}
 	}
 
-	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<T>( this );
-	private final List<CascadeRejector> cascadeRejectors = Lists.newCopyOnWriteArrayList();
+	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<>( this );
 	private String text;
 
-	public CascadeRoot( UUID id ) {
+	CascadeRoot( UUID id ) {
 		super( id );
 	}
 
@@ -158,26 +149,6 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	protected void localize() {
 		super.localize();
 		this.text = this.findDefaultLocalizedText();
-	}
-
-	public final int getCascadeRejectorCount() {
-		return this.cascadeRejectors.size();
-	}
-
-	public void addCascadeRejector( CascadeRejector cascadeRejector ) {
-		this.cascadeRejectors.add( cascadeRejector );
-	}
-
-	public void removeCascadeRejector( CascadeRejector cascadeRejector ) {
-		this.cascadeRejectors.remove( cascadeRejector );
-	}
-
-	public void clearCascadeRejectors() {
-		this.cascadeRejectors.clear();
-	}
-
-	public List<CascadeRejector> getCascadeRejectors() {
-		return Collections.unmodifiableList( this.cascadeRejectors );
 	}
 
 	public InternalPopupPrepModel<T> getPopupPrepModel() {

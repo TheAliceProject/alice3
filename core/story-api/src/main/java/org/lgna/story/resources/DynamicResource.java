@@ -4,7 +4,6 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.tweedle.file.AliceTextureReference;
 import org.alice.tweedle.file.ModelManifest;
-import org.alice.tweedle.file.ResourceReference;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.JointedModelImp;
@@ -12,9 +11,12 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resourceutilities.StorytellingResources;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class DynamicResource<I extends JointedModelImp,T extends SThing> implements ModelStructure<I,T>{
 

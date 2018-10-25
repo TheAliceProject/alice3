@@ -50,14 +50,16 @@ import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SModel;
+import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
 
 /**
  * @author dculyba
  * 
  */
-public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
-	public TypedDefinedGalleryTreeNode(NamedUserType aliceClass, Class<? extends ModelResource> resourceClass, Class<? extends SModel> modelClass ) {
+public class TypeDefinedGalleryTreeNode extends GalleryResourceTreeNode {
+	TypeDefinedGalleryTreeNode( NamedUserType aliceClass, Class<? extends ModelResource> resourceClass,
+								Class<? extends SModel> modelClass ) {
 		super(aliceClass != null ? aliceClass.getName() : null);
 		this.userType = aliceClass;
 		if( this.userType != null ) {
@@ -75,22 +77,20 @@ public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 		return userType;
 	}
 
-
-	public boolean hasModelClass() {
-		return this.modelClass != null;
-	}
-
-	public JavaType getResourceJavaType() {
+	JavaType getResourceJavaType() {
 		return this.resourceJavaType;
 	}
 
-
-	public void setJavaField( JavaField field ) {
+	void setJavaField( JavaField field ) {
 		this.resourceJavaField = field;
 	}
 
-	public JavaField getJavaField() {
+	JavaField getJavaField() {
 		return this.resourceJavaField;
+	}
+
+	void setDynamicResource( Class<? extends DynamicResource> dynamicClass ) {
+		this.dynamicClass = dynamicClass;
 	}
 
 	@Override
@@ -99,56 +99,26 @@ public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 		return value != null ? value.getName() : null;
 	}
 
-	public TypedDefinedGalleryTreeNode getChildWithJavaType(AbstractType<?, ?, ?> type ) {
+	private TypeDefinedGalleryTreeNode getChildWithJavaType( AbstractType<?, ?, ?> type ) {
 		for( GalleryResourceTreeNode child : this.children ) {
-			if (child instanceof TypedDefinedGalleryTreeNode) {
-				if ((((TypedDefinedGalleryTreeNode)child).resourceJavaType != null) && type.isAssignableFrom(((TypedDefinedGalleryTreeNode)child).resourceJavaType)) {
-					return (TypedDefinedGalleryTreeNode)child;
+			if (child instanceof TypeDefinedGalleryTreeNode ) {
+				if ((((TypeDefinedGalleryTreeNode)child).resourceJavaType != null) && type.isAssignableFrom( ((TypeDefinedGalleryTreeNode)child).resourceJavaType)) {
+					return (TypeDefinedGalleryTreeNode)child;
 				}
 			}
 		}
 		return null;
 	}
 
-	public TypedDefinedGalleryTreeNode getDescendantOfJavaType(AbstractType<?, ?, ?> type ) {
-		TypedDefinedGalleryTreeNode rv = this.getChildWithJavaType( type );
+	TypeDefinedGalleryTreeNode getDescendantOfJavaType( AbstractType<?, ?, ?> type ) {
+		TypeDefinedGalleryTreeNode rv = this.getChildWithJavaType( type );
 		if( rv != null ) {
 			return rv;
 		}
 		if( this.getChildCount() > 0 ) {
 			for( GalleryResourceTreeNode child : this.children ) {
-				if (child instanceof TypedDefinedGalleryTreeNode) {
-					TypedDefinedGalleryTreeNode result = ((TypedDefinedGalleryTreeNode)child).getDescendantOfJavaType(type);
-					if (result != null) {
-						return result;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	public TypedDefinedGalleryTreeNode getChildWithUserType(AbstractType<?, ?, ?> type ) {
-		for( GalleryResourceTreeNode child : this.children ) {
-			if (child instanceof TypedDefinedGalleryTreeNode) {
-				TypedDefinedGalleryTreeNode resourceChild = (TypedDefinedGalleryTreeNode)child;
-				if ((type != null) && (resourceChild.userType != null) && resourceChild.userType.isAssignableTo(type)) {
-					return resourceChild;
-				}
-			}
-		}
-		return null;
-	}
-
-	public TypedDefinedGalleryTreeNode getDescendantOfUserType(AbstractType<?, ?, ?> type ) {
-		TypedDefinedGalleryTreeNode rv = this.getChildWithUserType( type );
-		if( rv != null ) {
-			return rv;
-		}
-		if( this.getChildCount() > 0 ) {
-			for( GalleryResourceTreeNode child : this.children ) {
-				if (child instanceof TypedDefinedGalleryTreeNode) {
-					TypedDefinedGalleryTreeNode result = ((TypedDefinedGalleryTreeNode) child).getDescendantOfUserType(type);
+				if (child instanceof TypeDefinedGalleryTreeNode ) {
+					TypeDefinedGalleryTreeNode result = ((TypeDefinedGalleryTreeNode)child).getDescendantOfJavaType( type);
 					if (result != null) {
 						return result;
 					}
@@ -160,11 +130,12 @@ public class TypedDefinedGalleryTreeNode extends GalleryResourceTreeNode {
 
 	private NamedUserType userType;
 	private JavaType resourceJavaType;
-	private Class<? extends SModel> modelClass = null;
+	private final Class<? extends SModel> modelClass;
+	private Class<? extends DynamicResource> dynamicClass;
 	private JavaField resourceJavaField = null;
 
 	@Override
-	public ResourceKey createResourceKey() {
+	ResourceKey createResourceKey() {
 		ResourceKey resourceKey = null;
 		if (resourceJavaField != null) {
 			try {

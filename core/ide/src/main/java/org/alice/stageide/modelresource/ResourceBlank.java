@@ -47,7 +47,6 @@ import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.imp.cascade.BlankNode;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -55,8 +54,7 @@ import java.util.UUID;
 public class ResourceBlank extends CascadeBlank<ResourceNode> {
 	private final ResourceGalleryDragModel dragModel;
 
-	public ResourceBlank( ResourceGalleryDragModel dragModel ) {
-		super( UUID.fromString( "332c3632-32e1-4512-ba91-2008be1d5f7a" ) );
+	ResourceBlank( ResourceGalleryDragModel dragModel ) {
 		this.dragModel = dragModel;
 	}
 

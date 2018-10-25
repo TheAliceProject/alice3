@@ -43,10 +43,10 @@
 
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.views.GalleryTabView;
 import org.lgna.croquet.SimpleTabComposite;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.croquet.views.HorizontalTextPosition;
-import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.ScrollPane;
 
 import java.util.UUID;
@@ -54,7 +54,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTab extends SimpleTabComposite<Panel> {
+public abstract class GalleryTab extends SimpleTabComposite<GalleryTabView> {
 	public GalleryTab( UUID id ) {
 		super( id, IsCloseable.FALSE );
 	}
@@ -69,5 +69,9 @@ public abstract class GalleryTab extends SimpleTabComposite<Panel> {
 		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.2f );
 		button.setHorizontalTextPosition( HorizontalTextPosition.TRAILING );
+	}
+
+	protected void modelUpdated() {
+		getView().modelUpdated();
 	}
 }

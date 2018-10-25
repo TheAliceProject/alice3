@@ -78,6 +78,7 @@ import org.lgna.story.SJointedModel;
 import org.lgna.story.resources.JointedModelResource;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -480,7 +481,7 @@ public class TypeManager {
 		return createTypeFor( superType, createClassNameFromSuperType( superType ), null, null );
 	}
 
-	public static List<NamedUserType> getNamedUserTypesFromSuperTypes( List<JavaType> superTypes ) {
+	public static List<NamedUserType> getNamedUserTypesFromSuperTypes( Collection<JavaType> superTypes ) {
 		ArrayList<NamedUserType> rv = Lists.newArrayListWithInitialCapacity( superTypes.size() );
 		for( JavaType superType : superTypes ) {
 			rv.add( getNamedUserTypeFromSuperType( superType ) );

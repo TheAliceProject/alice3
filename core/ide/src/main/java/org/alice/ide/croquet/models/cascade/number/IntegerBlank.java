@@ -44,8 +44,6 @@ package org.alice.ide.croquet.models.cascade.number;
 
 import org.alice.ide.croquet.models.cascade.ExpressionBlank;
 
-import java.util.UUID;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +57,6 @@ public class IntegerBlank extends ExpressionBlank {
 	}
 
 	private IntegerBlank() {
-		super( UUID.fromString( "a30136a1-06fe-40f7-baad-c6bd7f6f83da" ), Integer.class );
+		super( Integer.class );
 	}
 }

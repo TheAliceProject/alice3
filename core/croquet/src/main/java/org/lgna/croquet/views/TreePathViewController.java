@@ -133,11 +133,10 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			if( this.lineEndComponent != null ) {
 				int width = this.lineEndComponent.getPreferredSize().width;
 				this.lineEndComponent.setBounds( x, 0, width, parentSize.height );
-			}
-
-			if( SYNTH_UI_CLASS_NAME.equals( this.lineEndComponent.getUI().getClass().getName() ) ) {
-				Point p = this.lineEndComponent.getLocation();
-				this.lineEndComponent.setLocation( p.x - AMOUNT_TO_SCOOT, p.y );
+				if ( SYNTH_UI_CLASS_NAME.equals( this.lineEndComponent.getUI().getClass().getName() ) ) {
+					Point p = this.lineEndComponent.getLocation();
+					this.lineEndComponent.setLocation( p.x - AMOUNT_TO_SCOOT, p.y );
+				}
 			}
 		}
 	}

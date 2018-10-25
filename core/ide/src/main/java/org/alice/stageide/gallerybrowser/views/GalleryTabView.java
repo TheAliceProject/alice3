@@ -45,12 +45,13 @@ package org.alice.stageide.gallerybrowser.views;
 import org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent;
 import org.alice.stageide.gallerybrowser.GalleryTab;
 import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.HorizontalScrollBarPaintOmittingWhenAppropriateScrollPane;
 import org.lgna.croquet.views.ScrollPane;
 
-import javax.swing.BorderFactory;
+import javax.swing.*;
 
 /**
  * @author Dennis Cosgrove
@@ -65,8 +66,8 @@ public abstract class GalleryTabView extends BorderPanel {
 		this.setBorder( BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
 	}
 
-	protected GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode ) {
-		return this.cache.getGalleryDragComponent( resourceNode );
+	protected GalleryDragComponent getGalleryDragComponent( ResourceNode resourceNode, SingleSelectTreeState<ResourceNode> controller ) {
+		return this.cache.getGalleryDragComponent( resourceNode, controller );
 	}
 
 	protected static ScrollPane createGalleryScrollPane( AwtComponentView<?> view ) {
@@ -74,5 +75,8 @@ public abstract class GalleryTabView extends BorderPanel {
 		rv.setBothScrollBarIncrements( 16, 160 );
 		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		return rv;
+	}
+
+	public void modelUpdated() {
 	}
 }

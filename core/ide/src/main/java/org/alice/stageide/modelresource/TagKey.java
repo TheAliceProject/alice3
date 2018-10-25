@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
@@ -55,7 +59,7 @@ public abstract class TagKey extends ResourceKey {
 
 	private final String tag;
 
-	public TagKey( String tag ) {
+	TagKey( String tag ) {
 		this.tag = tag;
 	}
 
@@ -66,7 +70,7 @@ public abstract class TagKey extends ResourceKey {
 	@Override
 	public String getInternalText() {
 		String tagValue;
-		int lastIndex = tag.lastIndexOf( GroupTagKey.SEPARATOR );
+		int lastIndex = tag.lastIndexOf( TagKey.SEPARATOR );
 		if( lastIndex != -1 ) {
 			tagValue = tag.substring( lastIndex + 1 );
 		} else {
@@ -108,6 +112,16 @@ public abstract class TagKey extends ResourceKey {
 	@Override
 	public boolean isInstanceCreator() {
 		return false;
+	}
+
+	@Override
+	public Triggerable getLeftClickOperation( ResourceNode node, SingleSelectTreeState<ResourceNode> controller ) {
+		return controller.getItemSelectionOperation( node );
+	}
+
+	@Override
+	public Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite ) {
+		return new AddFieldCascade( node, dropSite );
 	}
 
 	@Override

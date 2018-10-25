@@ -122,10 +122,9 @@ public abstract class ResourceKeyUriIteratingOperation extends SingleThreadItera
 		return finishedSteps.size() < this.getStepCount();
 	}
 
-	protected Operation getAddResourceKeyManagedFieldCompositeOperation( EnumConstantResourceKey enumConstantResourceKey ) {
-		AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = AddResourceKeyManagedFieldComposite.getInstance();
-		addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, false );
-		return addResourceKeyManagedFieldComposite.getLaunchOperation();
+	Operation getAddResourceKeyManagedFieldCompositeOperation( EnumConstantResourceKey enumConstantResourceKey ) {
+		return AddResourceKeyManagedFieldComposite.getInstance().
+			getLaunchOperationToCreateValue( enumConstantResourceKey, false );
 	}
 
 	protected Operation getMergeTypeOperation() {

@@ -48,6 +48,7 @@ import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
 import org.alice.stageide.gallerybrowser.views.GalleryTabView;
 import org.alice.stageide.gallerybrowser.views.GalleryView;
 import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.TreeUtilities;
 import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.ScrollPane;
@@ -113,7 +114,7 @@ public class SearchTabView extends GalleryTabView {
 	public void addGalleryDragComponents( List<ResourceNode> resourceNodes ) {
 		synchronized( this.getTreeLock() ) {
 			for( ResourceNode resourceNode : resourceNodes ) {
-				this.filteredResourcesView.addComponent( this.getGalleryDragComponent( resourceNode ) );
+				this.filteredResourcesView.addComponent( this.getGalleryDragComponent( resourceNode, TreeUtilities.getClassTreeState() ) );
 			}
 		}
 		this.filteredResourcesView.revalidateAndRepaint();
@@ -125,7 +126,7 @@ public class SearchTabView extends GalleryTabView {
 			if( filter.length() > 0 ) {
 				if( resourceNodes.size() > 0 ) {
 					for( ResourceNode resourceNode : resourceNodes ) {
-						this.filteredResourcesView.addComponent( this.getGalleryDragComponent( resourceNode ) );
+						this.filteredResourcesView.addComponent( this.getGalleryDragComponent( resourceNode, TreeUtilities.getClassTreeState() ) );
 					}
 				} else {
 					this.filteredResourcesView.addComponent( this.noMatchesLabel );

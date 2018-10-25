@@ -53,11 +53,14 @@ import org.alice.ide.DefaultTheme;
 import org.alice.ide.croquet.components.KnurlDragComponent;
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
 import org.alice.stageide.gallerybrowser.uri.UriGalleryDragModel;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.alice.stageide.icons.PlusIconFactory;
-import org.alice.stageide.modelresource.*;
-import org.lgna.croquet.Model;
+import org.alice.stageide.modelresource.InstanceCreatorKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.croquet.icon.IconSize;
@@ -67,26 +70,10 @@ import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.VerticalAlignment;
 import org.lgna.croquet.views.VerticalTextPosition;
-import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.ModelResource;
 
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToolTip;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.LayoutManager;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
@@ -104,10 +91,12 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 	private final Color activeHighlightColor;
 	private final Color activeShadowColor;
 
+	private final SingleSelectTreeState<ResourceNode> controller;
+
 	private static final class SuperclassIconLabel extends SwingComponentView<JLabel> {
 		private final Class<?> modelResourceInterface;
 
-		public SuperclassIconLabel( Class<?> modelResourceInterface ) {
+		SuperclassIconLabel( Class<?> modelResourceInterface ) {
 			this.modelResourceInterface = modelResourceInterface;
 		}
 
@@ -136,8 +125,9 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 		}
 	}
 
-	public GalleryDragComponent( GalleryDragModel model ) {
+	public GalleryDragComponent( ResourceNode model, SingleSelectTreeState<ResourceNode> controller ) {
 		super( model, false );
+		this.controller = controller;
 
 		if (model.isUserDefinedModel()) {
 			this.baseColor = ColorUtilities.scaleHSB(DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR, 1.0, 2.0, 1.0);
@@ -159,50 +149,73 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 			this.activeHighlightColor = ColorUtilities.createGray( 255 );
 			this.activeShadowColor = ColorUtilities.createGray( 181 );
 		}
-
-		Class<?> modelResourceCls = null;
-		if( model instanceof ResourceNode ) {
-			if( model instanceof ClassHierarchyBasedResourceNode ) {
-				//pass
-			} else {
-				ResourceNode resourceNode = (ResourceNode)model;
-				ResourceKey resourceKey = resourceNode.getResourceKey();
-				if( resourceKey instanceof InstanceCreatorKey ) {
-					InstanceCreatorKey instanceCreatorKey = (InstanceCreatorKey)resourceKey;
-					modelResourceCls = instanceCreatorKey.getModelResourceCls();
-				}
+		if (!model.isBreadcrumbButtonIconDesired()) {
+			ResourceKey resourceKey = model.getResourceKey();
+			if( resourceKey instanceof InstanceCreatorKey ) {
+				InstanceCreatorKey instanceCreatorKey = (InstanceCreatorKey)resourceKey;
+				addSuperclassIcon( instanceCreatorKey.getModelResourceCls() );
 			}
-		} else if( model instanceof UriGalleryDragModel ) {
-			UriGalleryDragModel uriGalleryDragModel = (UriGalleryDragModel)model;
-			InstanceCreatorKey resourceKey = uriGalleryDragModel.getResourceKey();
-			if( resourceKey != null ) {
-				modelResourceCls = resourceKey.getModelResourceCls();
-			}
-
-			Label label = new Label( PlusIconFactory.getInstance().getIcon( IconSize.SMALL.getSize() ) );
-			label.setToolTipText( uriGalleryDragModel.getTypeSummaryToolTipText() );
-			label.setVerticalAlignment( VerticalAlignment.BOTTOM );
-			this.internalAddComponent( label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT );
 		}
-		if( modelResourceCls != null ) {
-			if( modelResourceCls.isEnum() ) {
-				Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
-				if( modelResourceInterfaces.length > 0 ) {
-					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
-					if( ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-						IconFactory iconFactory = IconFactoryManager.getIconFactoryForResourceCls( (Class<ModelResource>)modelResourceInterface );
-						if( iconFactory != null ) {
-							final Dimension SUPER_CLASS_ICON_SIZE = new Dimension( 32, 24 );
-							Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
-							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
-							superclsLabel.getAwtComponent().setIcon( icon );
-							this.internalAddComponent( superclsLabel, GalleryDragLayoutManager.TOP_LEFT_CONSTRAINT );
-						}
+		setupDisplay( model );
+	}
+
+	public GalleryDragComponent( UriGalleryDragModel model ) {
+		super( model, false );
+		controller = null;
+
+		this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+		this.highlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
+		this.shadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
+		this.activeHighlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
+		this.activeShadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
+
+		Label label = new Label( PlusIconFactory.getInstance().getIcon( IconSize.SMALL.getSize() ) );
+		label.setToolTipText( model.getTypeSummaryToolTipText() );
+		label.setVerticalAlignment( VerticalAlignment.BOTTOM );
+		this.internalAddComponent( label, GalleryDragLayoutManager.TOP_RIGHT_CONSTRAINT );
+
+		InstanceCreatorKey resourceKey = model.getResourceKey();
+		if( resourceKey != null ) {
+			addSuperclassIcon( resourceKey.getModelResourceCls() );
+		}
+
+		setupDisplay( model );
+	}
+
+	public GalleryDragComponent( ShapeDragModel model ) {
+		super( model, false );
+		controller = null;
+
+		this.baseColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+		this.highlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
+		this.shadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
+		this.activeHighlightColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
+		this.activeShadowColor = ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
+
+		setupDisplay( model );
+	}
+
+	private void addSuperclassIcon( Class<?> modelResourceCls ) {
+		if ( modelResourceCls != null && modelResourceCls.isEnum() ) {
+			Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
+			if ( modelResourceInterfaces.length > 0 ) {
+				Class<?> modelResourceInterface = modelResourceInterfaces[0];
+				if ( ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
+					IconFactory iconFactory = IconFactoryManager
+						.getIconFactoryForResourceCls( (Class<ModelResource>) modelResourceInterface );
+					if ( iconFactory != null ) {
+						final Dimension SUPER_CLASS_ICON_SIZE = new Dimension( 32, 24 );
+						Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
+						SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
+						superclsLabel.getAwtComponent().setIcon( icon );
+						this.internalAddComponent( superclsLabel, GalleryDragLayoutManager.TOP_LEFT_CONSTRAINT );
 					}
 				}
 			}
 		}
+	}
 
+	private void setupDisplay( GalleryDragModel model ) {
 		Label label = new Label();
 		label.setText( model.getText() );
 		IconFactory iconFactory = model.getIconFactory();
@@ -292,7 +305,7 @@ public class GalleryDragComponent extends KnurlDragComponent<GalleryDragModel> {
 		super.handleLeftMouseButtonQuoteClickedUnquote( e );
 		switch( e.getClickCount() ) {
 		case 1:
-			Triggerable leftButtonClickModel = this.getModel().getLeftButtonClickOperation();
+			Triggerable leftButtonClickModel = this.getModel().getLeftButtonClickOperation(controller);
 			if( leftButtonClickModel != null ) {
 				leftButtonClickModel.fire( MouseEventTrigger.createUserActivity( this, e ) );
 			}

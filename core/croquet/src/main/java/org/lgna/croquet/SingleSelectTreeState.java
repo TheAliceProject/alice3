@@ -165,7 +165,6 @@ class TreeBlank<T> extends CascadeBlank<T> {
 	private final T node;
 
 	public TreeBlank( SingleSelectTreeState<T> model, T node ) {
-		super( UUID.fromString( "7c277038-5aa8-4429-9642-8dc3890aee5b" ) );
 		this.model = model;
 		this.node = node;
 	}

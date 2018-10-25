@@ -46,7 +46,10 @@ package org.lgna.croquet;
 import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.ScrollPane;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Dennis Cosgrove
@@ -54,7 +57,7 @@ import java.util.UUID;
 public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?, ?>> extends AbstractComposite<V> {
 	public static final Status IS_GOOD_TO_GO_STATUS = null;
 
-	public static interface Status {
+	public interface Status {
 		boolean isGoodToGo();
 
 		String getText();
@@ -63,6 +66,17 @@ public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?,
 	private static abstract class AbstractStatus extends AbstractInternalStringValue implements Status {
 		private AbstractStatus( UUID id, Key key ) {
 			super( id, key );
+		}
+
+		public final boolean setText( String... texts) {
+			// TODO Localize "AND" and perhaps "."
+			final String text = Arrays.stream( texts ).filter( Objects::nonNull ).collect( Collectors.joining( " AND " ) );
+			if (!text.isEmpty() && !".".equals(text.substring(text.length() - 1))) {
+				setText( text + "." );
+			} else {
+				setText( text );
+			}
+			return !text.isEmpty();
 		}
 	}
 

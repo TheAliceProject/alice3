@@ -70,14 +70,6 @@ public abstract class ViewController<J extends JComponent, M extends Model> exte
 		return model;
 	}
 
-	private boolean isPopupMenuOperationLimitedToRightMouseButton = true;
-	//	public boolean isPopupMenuOperationLimitedToRightMouseButton() {
-	//		return this.isPopupMenuOperationLimitedToRightMouseButton;
-	//	}
-	//	public void setPopupMenuOperationLimitedToRightMouseButton(boolean isPopupMenuOperationLimitedToRightMouseButton) {
-	//		this.isPopupMenuOperationLimitedToRightMouseButton = isPopupMenuOperationLimitedToRightMouseButton;
-	//	}
-
 	private PopupPrepModel popupPrepModel;
 
 	public final PopupPrepModel getPopupPrepModel() {
@@ -106,32 +98,14 @@ public abstract class ViewController<J extends JComponent, M extends Model> exte
 	private LenientMouseClickAdapter lenientMouseClickAdapter = new LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 1 ) {
-				if( ViewController.this.popupPrepModel != null ) {
-					if( ( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton == false ) || MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						ViewController.this.popupPrepModel.fire( MouseEventTrigger.createUserActivity( ViewController.this, e ) );
-					}
-				}
+			if ( quoteClickCountUnquote == 1 &&
+				ViewController.this.popupPrepModel != null
+				&& MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+				ViewController.this.popupPrepModel
+					.fire( MouseEventTrigger.createUserActivity( ViewController.this, e ) );
 			}
 		}
 	};
-
-	//	@Override
-	//	protected void handleDisplayable() {
-	//		super.handleDisplayable();
-	//		M model = this.getModel();
-	//		if( model != null ) {
-	//			model.addComponent( this );
-	//		}
-	//	}
-	//	@Override
-	//	protected void handleUndisplayable() {
-	//		M model = this.getModel();
-	//		if( model != null ) {
-	//			model.removeComponent( this );
-	//		}
-	//		super.handleUndisplayable();
-	//	}
 
 	@Override
 	protected void handleAddedTo( AwtComponentView<?> parent ) {
@@ -150,21 +124,4 @@ public abstract class ViewController<J extends JComponent, M extends Model> exte
 		}
 		super.handleRemovedFrom( parent );
 	}
-
-	//	@Override
-	//	protected void handleAddedTo( Component<?> parent ) {
-	//		super.handleAddedTo( parent );
-	//		if( this.popupMenuOperation != null ) {
-	//			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
-	//			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
-	//		}
-	//	}
-	//	@Override
-	//	protected void handleRemovedFrom( Component<?> parent ) {
-	//		if( this.popupMenuOperation != null ) {
-	//			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
-	//			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-	//		}
-	//		super.handleRemovedFrom( parent );
-	//	}
 }

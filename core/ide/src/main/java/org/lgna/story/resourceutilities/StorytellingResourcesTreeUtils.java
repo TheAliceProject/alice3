@@ -42,18 +42,16 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaType;
-
 import org.lgna.story.resources.ModelResource;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -72,51 +70,39 @@ public enum StorytellingResourcesTreeUtils {
 		return this.galleryTree;
 	}
 
-	private TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType(AbstractType<?, ?, ?> type ) {
+	private TypeDefinedGalleryTreeNode getGalleryResourceTreeNodeForJavaType( AbstractType<?, ?, ?> type ) {
 		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
-	}
-
-	public TypedDefinedGalleryTreeNode getGalleryResourceTreeNodeForUserType(AbstractType<?, ?, ?> type ) {
-		return getGalleryTreeInternal().getGalleryResourceTreeNodeForUserType( type );
 	}
 
 	public GalleryResourceTreeNode getGalleryTree() {
 		return getGalleryTreeInternal().getTree();
 	}
 
-	public List<JavaType> getTopLevelGalleryTypes() {
+	public List<ManifestDefinedGalleryTreeNode> updateGalleryTree() {
+		List<ModelManifest> newUserModelResources = StorytellingResources.INSTANCE.findNewUserGalleryResources();
+		return galleryTree.addUserModels(newUserModelResources);
+	}
+
+	public Collection<JavaType> getTopLevelGalleryTypes() {
 		if( this.rootTypes == null ) {
-			List<TypedDefinedGalleryTreeNode> rootNodes = this.getGalleryTreeInternal().getSModelBasedNodes();
-			this.rootTypes = Lists.newArrayList();
-			for( TypedDefinedGalleryTreeNode node : rootNodes ) {
+			this.rootTypes = new HashSet<>();
+			for( TypeDefinedGalleryTreeNode node : getGalleryTreeInternal().getDynamicNodes() ) {
 				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
 			}
 		}
-
 		return this.rootTypes;
-	}
-
-	private void buildGalleryTreeWithJars( File... resourceJars ) {
-		ArrayList<File> jarFiles = new ArrayList<File>();
-		Collections.addAll( jarFiles, resourceJars );
-		List<Class<? extends ModelResource>> modelResourceClasses = StorytellingResources.INSTANCE.getAndLoadModelResourceClasses( jarFiles );
-		this.galleryTree = new ModelResourceTree( modelResourceClasses );
-	}
-
-	public void initializeGalleryTreeWithJars( File... resourceJars ) {
-		this.buildGalleryTreeWithJars( resourceJars );
 	}
 
 	public JavaType getGalleryResourceParentFor( AbstractType<?, ?, ?> type ) {
 		GalleryResourceTreeNode child = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( child != null ) {
-			GalleryResourceTreeNode parent = child.getParent();
-			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getResourceChildren)
+			TypeDefinedGalleryTreeNode parent = child.getParent();
+			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getGalleryResourceChildrenFor)
 			if( ( parent != null ) && hasSingleLeafChild( parent ) ) {
 				parent = parent.getParent();
 			}
-			if (parent instanceof TypedDefinedGalleryTreeNode) {
-				return ((TypedDefinedGalleryTreeNode)parent).getResourceJavaType();
+			if ( parent != null ) {
+				return parent.getResourceJavaType();
 			}
 			else {
 				return null;
@@ -141,7 +127,7 @@ public enum StorytellingResourcesTreeUtils {
 				if( hasSingleLeafChild( child ) ) {
 					child = child.getChildAt( 0 );
 				}
-				TypedDefinedGalleryTreeNode node = (TypedDefinedGalleryTreeNode)child;
+				TypeDefinedGalleryTreeNode node = (TypeDefinedGalleryTreeNode)child;
 				if( node.isLeaf() && ( node.getJavaField() != null ) ) {
 					//System.out.println( "  Returning field: " + node.getJavaField() );
 					toReturn.add( node.getJavaField() );
@@ -154,6 +140,6 @@ public enum StorytellingResourcesTreeUtils {
 		return toReturn;
 	}
 
-	private List<JavaType> rootTypes = null;
+	private Collection<JavaType> rootTypes = null;
 	private ModelResourceTree galleryTree;
 }

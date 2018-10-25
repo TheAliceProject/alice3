@@ -50,6 +50,7 @@ import org.alice.stageide.gallerybrowser.search.croquet.SearchTab;
 import org.alice.stageide.gallerybrowser.search.croquet.views.SearchTabView;
 import org.alice.stageide.gallerybrowser.views.GalleryView;
 import org.alice.stageide.icons.TorusIcon;
+import org.alice.stageide.modelresource.TreeUtilities;
 import org.lgna.croquet.ImmutableDataTabState;
 import org.lgna.croquet.SimpleComposite;
 
@@ -60,13 +61,17 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class GalleryComposite extends SimpleComposite<GalleryView> {
-	private final ResourceBasedTab resourceBasedTab = new ResourceBasedTab();
-	private final ThemeBasedTab themeBasedTab = new ThemeBasedTab();
-	private final GroupBasedTab groupBasedTab = new GroupBasedTab();
+	private final TreeOwningGalleryTab resourceBasedTab =
+		new TreeOwningGalleryTab( TreeUtilities.getClassTreeState(), "ResourceBasedTab");
+	private final TreeOwningGalleryTab themeBasedTab =
+		new TreeOwningGalleryTab( TreeUtilities.getThemeTreeState(), "ThemeBasedTab" );
+	private final TreeOwningGalleryTab groupBasedTab =
+		new TreeOwningGalleryTab( TreeUtilities.getGroupTreeState(), "GroupBasedTab" );
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
 	private final ImportTab importTab = new ImportTab();
-	private final CustomGalleryTab myGalleryTab = new CustomGalleryTab();
+	private final TreeOwningGalleryTab myGalleryTab =
+		new TreeOwningGalleryTab( TreeUtilities.getUserTreeState(), "CustomGalleryTab" );
 	private final ImmutableDataTabState<GalleryTab> tabState = this.createImmutableTabState( "tabState", 0, GalleryTab.class,
 			IsIncludingImportAndExportType.getValue()
 					? new GalleryTab[] { this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab, this.importTab, this.myGalleryTab }
@@ -100,5 +105,11 @@ public class GalleryComposite extends SimpleComposite<GalleryView> {
 
 	public GalleryDragModel getDragModelForCls( Class<?> cls ) {
 		return this.shapesTab.getDragModelForCls( cls );
+	}
+
+	public void modelUpdated() {
+		resourceBasedTab.modelUpdated();
+		searchTab.modelUpdated();
+		myGalleryTab.modelUpdated();
 	}
 }

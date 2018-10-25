@@ -45,6 +45,8 @@ package org.alice.stageide.gallerybrowser.shapes;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite;
 import org.alice.stageide.icons.BillboardIconFactory;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.story.EmployeesOnly;
@@ -81,7 +83,7 @@ public class BillboardDragModel extends ShapeDragModel {
 	}
 
 	@Override
-	public Triggerable getLeftButtonClickOperation() {
+	public Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller ) {
 		return AddBillboardManagedFieldComposite.getInstance().getLaunchOperation();
 	}
 

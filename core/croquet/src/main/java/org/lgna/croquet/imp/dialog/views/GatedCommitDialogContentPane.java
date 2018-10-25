@@ -57,6 +57,8 @@ import java.awt.GridBagConstraints;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogContentPane extends DialogContentPane {
+	public static final Color ERROR_COLOR = Color.RED.darker().darker();
+
 	private final StatusLabel statusLabel = new StatusLabel();
 	private final LineAxisPanel controlLine = new LineAxisPanel();
 
@@ -81,7 +83,7 @@ public abstract class GatedCommitDialogContentPane extends DialogContentPane {
 
 		this.addPageEndComponent( pageEndPanel );
 
-		this.statusLabel.setForegroundColor( Color.RED.darker().darker() );
+		this.statusLabel.setForegroundColor( ERROR_COLOR );
 	}
 
 	protected LineAxisPanel getControlLine() {

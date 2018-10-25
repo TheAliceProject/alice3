@@ -111,7 +111,6 @@ import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.*;
 import org.lgna.story.AudioSource;
 import org.lgna.story.Color;
-import org.lgna.story.JointedModelPose;
 import org.lgna.story.Key;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Orientation;
@@ -318,11 +317,6 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 		}
 	}
 
-	@Override
-	public List<JavaType> getTopLevelGalleryTypes() {
-		return StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
-	}
-
 	protected static final JavaType BIPED_RESOURCE_TYPE = JavaType.getInstance( BipedResource.class );
 
 	@Override
@@ -388,7 +382,8 @@ public class StoryApiConfigurationManager extends ApiConfigurationManager {
 
 	@Override
 	public AbstractConstructor getGalleryResourceConstructorFor( AbstractType<?, ?, ?> argumentType ) {
-		List<NamedUserType> types = TypeManager.getNamedUserTypesFromSuperTypes( getTopLevelGalleryTypes() );
+		List<NamedUserType> types =
+			TypeManager.getNamedUserTypesFromSuperTypes( StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes() );
 		for( AbstractType<?, ?, ?> type : types ) {
 			AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 			List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();

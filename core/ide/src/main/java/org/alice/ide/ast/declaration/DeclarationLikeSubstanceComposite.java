@@ -478,25 +478,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends Node> extends 
 		} else {
 			initializerText = null;
 		}
-		if( ( valueTypeText != null ) || ( nameText != null ) || ( initializerText != null ) ) {
-			String preText = "";
-			StringBuilder sb = new StringBuilder();
-			//sb.append( "You must " );
-			if( valueTypeText != null ) {
-				sb.append( valueTypeText );
-				preText = " AND ";
-			}
-			if( nameText != null ) {
-				sb.append( preText );
-				sb.append( nameText );
-				preText = " AND ";
-			}
-			if( initializerText != null ) {
-				sb.append( preText );
-				sb.append( initializerText );
-			}
-			sb.append( "." );
-			this.errorStatus.setText( sb.toString() );
+		if( errorStatus.setText( valueTypeText, nameText, initializerText ) ) {
 			return this.errorStatus;
 		} else {
 			return IS_GOOD_TO_GO_STATUS;

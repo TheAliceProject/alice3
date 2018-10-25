@@ -55,8 +55,7 @@ import java.util.UUID;
  */
 public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemState<T> {
 	private final class CustomBlank extends CascadeBlank<T> {
-		public CustomBlank() {
-			super( UUID.fromString( "3fa6c08f-550d-4d80-b4a9-71c35c0fd186" ) );
+		CustomBlank() {
 		}
 
 		@Override

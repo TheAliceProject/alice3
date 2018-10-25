@@ -74,7 +74,6 @@ import org.lgna.story.STurnable;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -98,7 +97,6 @@ public class MethodInvocationBlank extends CascadeBlank<MethodInvocationEditFact
 	private final InstanceFactory instanceFactory;
 
 	private MethodInvocationBlank( InstanceFactory instanceFactory ) {
-		super( UUID.fromString( "3c5f528b-340b-4bcc-8094-3475867d2f6e" ) );
 		this.instanceFactory = instanceFactory;
 	}
 

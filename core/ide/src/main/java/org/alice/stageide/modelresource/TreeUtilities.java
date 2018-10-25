@@ -42,18 +42,27 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
+import org.lgna.story.resourceutilities.ManifestDefinedGalleryTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * @author Dennis Cosgrove
@@ -63,12 +72,63 @@ public class TreeUtilities {
 		throw new AssertionError();
 	}
 
-	private static ClassHierarchyBasedResourceNode treeBasedOnClassHierarchy;
-	private static UserDefinedResourceNode treeBasedOnUserResources;
-	private static ThemeBasedResourceNode treeBasedOnTheme;
-	private static GroupBasedResourceNode treeBasedOnGroup;
+	private static ResourceNodeTreeState classTreeState = new ResourceNodeTreeState( getTreeBasedOnClassHierarchy() );
+	private static ResourceNodeTreeState themeTreeState = new ResourceNodeTreeState( getTreeBasedOnTheme() );
+	private static ResourceNodeTreeState groupTreeState = new ResourceNodeTreeState( getTreeBasedOnGroup() );
+	private static ResourceNodeTreeState userTreeState = new ResourceNodeTreeState( getTreeBasedOnUserResources() );
+	private static SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> sClassListState =
+		new SingleSelectListState<>( Application.APPLICATION_UI_GROUP,
+									 UUID.fromString( "920d77ef-8da3-474a-8a2b-8ee36817b29f" ),
+									 -1,
+									 getListBasedOnTopClasses() );
 
-	private static ClassHierarchyBasedResourceNode createNode( GalleryResourceTreeNode source, ResourceKey key ) {
+	public static ResourceNodeTreeState getClassTreeState() {
+		return classTreeState;
+	}
+
+	public static ResourceNodeTreeState getThemeTreeState() {
+		return themeTreeState;
+	}
+
+	public static ResourceNodeTreeState getGroupTreeState() {
+		return groupTreeState;
+	}
+
+	public static ResourceNodeTreeState getUserTreeState() {
+		return userTreeState;
+	}
+
+	public static SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> getSClassListState() {
+		return sClassListState;
+	}
+
+	private static ResourceNode treeBasedOnClassHierarchy;
+	private static ResourceNode treeBasedOnTheme;
+	private static ResourceNode treeBasedOnGroup;
+
+	static class SClassCodec implements ItemCodec<ResourceNode> {
+		@Override
+		public Class<ResourceNode> getValueClass() {
+			return ResourceNode.class;
+		}
+
+		@Override
+		public void encodeValue( BinaryEncoder binaryEncoder, ResourceNode value ) {
+			throw new AssertionError();
+		}
+
+		@Override
+		public ResourceNode decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new AssertionError();
+		}
+
+		@Override
+		public void appendRepresentation( StringBuilder sb, ResourceNode value ) {
+			sb.append( value != null ? value.getSimpleClassName() : null );
+		}
+	}
+
+	private static ResourceNode createNode( GalleryResourceTreeNode source, ResourceKey key ) {
 		List<ResourceNode> childNodes = Lists.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
@@ -78,36 +138,80 @@ public class TreeUtilities {
 			}
 		}
 		for( GalleryResourceTreeNode childSource : source.childrenList() ) {
-			ResourceKey childKey = childSource.createResourceKey();
+			ResourceKey childKey = childSource.getResourceKey();
 			childNodes.add( createNode( childSource, childKey ) );
 		}
-		return new ClassHierarchyBasedResourceNode( key, Collections.unmodifiableList( childNodes ) );
+		return new ResourceNode( key, childNodes, true );
 	}
 
-	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
+	private static ResourceNode createTreeBasedOnClassHierarchy() {
 		GalleryResourceTreeNode root = StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree();
 		return createNode( root, new RootResourceKey( "AllClasses", "all classes" ) );
 	}
 
-	public static ClassHierarchyBasedResourceNode getTreeBasedOnClassHierarchy() {
-		if( treeBasedOnClassHierarchy != null ) {
-			//pass
-		} else {
+	public static ResourceNode getTreeBasedOnClassHierarchy() {
+		if ( treeBasedOnClassHierarchy == null ) {
 			treeBasedOnClassHierarchy = createTreeBasedOnClassHierarchy();
 		}
 		return treeBasedOnClassHierarchy;
 	}
 
-	public static UserDefinedResourceNode getTreeBasedOnUserResources() {
-		if ( treeBasedOnUserResources == null ) {
-			List<ResourceNode> userResourceNodes = new ArrayList<>();
-			getUserResourceNodes(getTreeBasedOnClassHierarchy(), userResourceNodes);
-
-			List<ResourceNode> convertedUserResourceNodes = convert( userResourceNodes, UserDefinedResourceNode.class.getSimpleName() );
-
-			treeBasedOnUserResources = new UserDefinedResourceNode( new RootResourceKey( "MyGallery", "My Gallery" ), convertedUserResourceNodes );
+	public static void updateTreeBasedOnClassHierarchy() {
+		if ( treeBasedOnClassHierarchy == null ) {
+			treeBasedOnClassHierarchy = createTreeBasedOnClassHierarchy();
 		}
-		return treeBasedOnUserResources;
+		else {
+			List<ManifestDefinedGalleryTreeNode> newNodes = StorytellingResourcesTreeUtils.INSTANCE.updateGalleryTree();
+			for( GalleryResourceTreeNode node : newNodes) {
+				ResourceKey childKey = node.getResourceKey();
+				final ResourceNode newResourceNode = createNode( node, childKey );
+				final ResourceNode parent = findByKey(treeBasedOnClassHierarchy, node.getParent().getResourceKey());
+				if (parent != null) {
+					parent.addNodeChild( newResourceNode );
+				}
+				userTreeState.getRoot().addNodeChild( newResourceNode );
+				// TODO add to tags and groups
+			}
+			if (!newNodes.isEmpty()) {
+				SetupScenePerspectiveComposite.getInstance().getGalleryComposite().modelUpdated();
+			}
+		}
+	}
+
+	private static ResourceNode findByKey( ResourceNode root, ResourceKey resourceKey ) {
+		if (resourceKey.equals( root.getResourceKey() )) {
+			return root;
+		}
+		for ( ResourceNode child : root.getNodeChildren()) {
+			ResourceNode checkChild = findByKey( child, resourceKey );
+			if (checkChild != null) {
+				return checkChild;
+			}
+		}
+		return null;
+	}
+
+	private static MutableListData<ResourceNode> getListBasedOnTopClasses() {
+		List<ResourceNode> classLeaves = Lists.newLinkedList();
+		selectResourceNodes( getTreeBasedOnClassHierarchy(), classLeaves, ResourceNode::isSubclassable );
+		return new MutableListData<>( new SClassCodec(), classLeaves );
+	}
+
+
+	private static ResourceNode getTreeBasedOnUserResources() {
+		List<ResourceNode> userResourceNodes = new ArrayList<>();
+		selectResourceNodes( getTreeBasedOnClassHierarchy(), userResourceNodes, ResourceNode::isUserDefinedModel );
+		return new ResourceNode( new RootResourceKey( "MyGallery", "My Gallery" ),
+								 copy( userResourceNodes ) );
+	}
+
+	private static void selectResourceNodes( ResourceNode node, List<ResourceNode> selectedNodes, Predicate<ResourceNode> qualifier ) {
+		if( qualifier.test(node) ) {
+			selectedNodes.add(node);
+		}
+		for( ResourceNode child : node.getNodeChildren() ) {
+			selectResourceNodes( child, selectedNodes, qualifier );
+		}
 	}
 
 	private static void addTags( InitializingIfAbsentListHashMap<String, ResourceNode> map, String[] tags, ResourceNode node ) {
@@ -122,23 +226,10 @@ public class TreeUtilities {
 		}
 	}
 
-	private static void getUserResourceNodes( ResourceNode node, List<ResourceNode> userResourceNodes ) {
-		if( node.isUserDefinedModel() ) {
-			userResourceNodes.add(node);
-		}
-		for( ResourceNode child : node.getNodeChildren() ) {
-			getUserResourceNodes( child, userResourceNodes );
-		}
-	}
-
 	private static void buildMap( InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup, InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme, ResourceNode node ) {
 		ResourceKey resourceKey = node.getResourceKey();
-		if( resourceKey instanceof EnumConstantResourceKey ) {
-			//pass
-		} else {
-			if( resourceKey instanceof RootResourceKey ) {
-				//pass
-			} else {
+		if ( !(resourceKey instanceof EnumConstantResourceKey) ) {
+			if ( !(resourceKey instanceof RootResourceKey) ) {
 				addTags( mapGroup, node.getResourceKey().getGroupTags(), node );
 				addTags( mapTheme, node.getResourceKey().getThemeTags(), node );
 			}
@@ -148,17 +239,12 @@ public class TreeUtilities {
 		}
 	}
 
-	private static List<ResourceNode> convert( List<ResourceNode> srcNodes, String nodeClassName ) {
+	private static List<ResourceNode> copy( List<ResourceNode> srcNodes ) {
 		if( srcNodes != null ) {
 			List<ResourceNode> dstNodes = Lists.newLinkedList();
 			for( ResourceNode srcNode : srcNodes ) {
-				List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren(), nodeClassName );
-				ResourceNode node = null;
-				switch (nodeClassName) {
-					case "ThemeBasedResourceNode" : node = new ThemeBasedResourceNode( srcNode.getResourceKey(), dstChildNodes ); break;
-					case "GroupBasedResourceNode" : node = new GroupBasedResourceNode( srcNode.getResourceKey(), dstChildNodes ); break;
-					case "UserDefinedResourceNode" : node = new UserDefinedResourceNode( srcNode.getResourceKey(), dstChildNodes ); break;
-				}
+				List<ResourceNode> dstChildNodes = copy( srcNode.getNodeChildren() );
+				ResourceNode node = new ResourceNode( srcNode.getResourceKey(), dstChildNodes );
 				dstNodes.add( node );
 			}
 			Collections.sort( dstNodes );
@@ -186,19 +272,13 @@ public class TreeUtilities {
 	}
 
 	private static void addTagNode( String tag, List<ResourceNode> dstChildNodes, List<ResourceNode> tagNodes, Map<String, ResourceNode> mapTagToNode, boolean isTheme ) {
-		ResourceNode dstNode;
-		if( isTheme ) {
-			TagKey tagKey;
-			if( tag.indexOf( TagKey.SEPARATOR ) == -1 ) {
-				tagKey = new ThemeTagKey( tag );
-			} else {
-				tagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
-			}
-			dstNode = new ThemeBasedResourceNode( tagKey, dstChildNodes );
+		TagKey tagKey;
+		if( isTheme && tag.indexOf( TagKey.SEPARATOR ) == -1 ) {
+			tagKey = new ThemeTagKey( tag );
 		} else {
-			GroupTagKey groupTagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
-			dstNode = new GroupBasedResourceNode( groupTagKey, dstChildNodes );
+			tagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
 		}
+		ResourceNode dstNode = new ResourceNode( tagKey, dstChildNodes );
 		tagNodes.add( dstNode );
 		mapTagToNode.put( tag, dstNode );
 	}
@@ -219,10 +299,7 @@ public class TreeUtilities {
 				Logger.severe( tag );
 			} else {
 				List<ResourceNode> srcChildNodes = map.get( tag );
-				String nodeClassName = isTheme ? ThemeBasedResourceNode.class.getSimpleName() : GroupBasedResourceNode.class.getSimpleName();
-				List<ResourceNode> dstChildNodes = convert( srcChildNodes, nodeClassName );
-
-				addTagNode( tag, dstChildNodes, rv, mapInternal, isTheme );
+				addTagNode( tag, copy( srcChildNodes ), rv, mapInternal, isTheme );
 			}
 		}
 		ListIterator<ResourceNode> listIterator = rv.listIterator();
@@ -230,7 +307,7 @@ public class TreeUtilities {
 			ResourceNode resourceNode = listIterator.next();
 			TagKey tagKey = (TagKey)resourceNode.getResourceKey();
 			String tag = tagKey.getTag();
-			assert tag.startsWith( "*" ) == false : tag;
+			assert !tag.startsWith( "*" ) : tag;
 			int lastIndex = tag.lastIndexOf( TagKey.SEPARATOR );
 			if( lastIndex != -1 ) {
 				String parentTag = tag.substring( 0, lastIndex );
@@ -268,23 +345,19 @@ public class TreeUtilities {
 		Logger.outln( themeNodes );
 		Logger.outln( groupNodes );
 
-		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey( "AllGroups", "all groups" ), groupNodes );
-		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey( "AllThemes", "all themes" ), themeNodes );
+		treeBasedOnGroup = new ResourceNode( new RootResourceKey( "AllGroups", "all groups" ), groupNodes );
+		treeBasedOnTheme = new ResourceNode( new RootResourceKey( "AllThemes", "all themes" ), themeNodes );
 	}
 
-	public static ThemeBasedResourceNode getTreeBasedOnTheme() {
-		if( treeBasedOnTheme != null ) {
-			//pass
-		} else {
+	private static ResourceNode getTreeBasedOnTheme() {
+		if ( treeBasedOnTheme == null ) {
 			createTreesBasedOnThemeAndGroup();
 		}
 		return treeBasedOnTheme;
 	}
 
-	public static GroupBasedResourceNode getTreeBasedOnGroup() {
-		if( treeBasedOnGroup != null ) {
-			//pass
-		} else {
+	private static ResourceNode getTreeBasedOnGroup() {
+		if ( treeBasedOnGroup == null ) {
 			createTreesBasedOnThemeAndGroup();
 		}
 		return treeBasedOnGroup;

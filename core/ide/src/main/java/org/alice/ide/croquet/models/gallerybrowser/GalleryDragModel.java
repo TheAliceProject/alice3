@@ -46,10 +46,12 @@ package org.alice.ide.croquet.models.gallerybrowser;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.stageide.StageIDE;
+import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.sceneeditor.StorytellingSceneEditor;
 import org.lgna.croquet.AbstractModel;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropReceptor;
+import org.lgna.croquet.SingleSelectTreeState;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
@@ -86,7 +88,7 @@ public abstract class GalleryDragModel extends AbstractModel implements DragMode
 		return DEFAULT_LARGE_ICON_SIZE;
 	}
 
-	public abstract Triggerable getLeftButtonClickOperation();
+	public abstract Triggerable getLeftButtonClickOperation( SingleSelectTreeState<ResourceNode> controller );
 
 	@Override
 	public List<? extends DropReceptor> createListOfPotentialDropReceptors() {
@@ -118,10 +120,4 @@ public abstract class GalleryDragModel extends AbstractModel implements DragMode
 	public abstract AxisAlignedBox getBoundingBox();
 
 	public abstract boolean placeOnGround();
-
-	public abstract boolean isInstanceCreator();
-
-	public boolean isUserDefinedModel() {
-		return false;
-	}
 }

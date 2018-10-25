@@ -132,15 +132,18 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			}
 		}
 
+		@Override
 		public JointImp getJointParent() {
 			return jointParentWrapper;
 		}
 
+		@Override
 		public List<JointImp> getJointChildren() {
 			return jointChildrenWrapper;
 		}
 
-		void setJointParent(JointImp jointParent) {
+		@Override
+		void setJointParent( JointImp jointParent) {
 			if (this.jointParentWrapper != null) {
 				this.jointParentWrapper.getJointChildren().remove(this);
 			}

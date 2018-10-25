@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.SingleSelectTreeState;
+import org.lgna.croquet.Triggerable;
+import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.icon.IconFactory;
 import org.lgna.project.ast.InstanceCreation;
 
@@ -60,6 +64,10 @@ public abstract class ResourceKey {
 	public abstract IconFactory getIconFactory();
 
 	public abstract boolean isLeaf();
+
+	public boolean isInterface() {
+		return false;
+	}
 
 	protected abstract void appendRep( StringBuilder sb );
 
@@ -82,4 +90,9 @@ public abstract class ResourceKey {
 		sb.append( "]" );
 		return sb.toString();
 	}
+
+	public abstract Triggerable getLeftClickOperation( ResourceNode node,
+													   SingleSelectTreeState<ResourceNode> controller );
+
+	public abstract Triggerable getDropOperation( ResourceNode node, DragStep step, DropSite dropSite );
 }

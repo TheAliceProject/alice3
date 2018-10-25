@@ -438,7 +438,7 @@ public class AliceModelLoader {
 		}
 	}
 	
-	private static void renameJoints( SkeletonVisual sv ) {
+	public static void renameJoints( SkeletonVisual sv ) {
 		
 		//Iterate through the skeleton to get a list of all the joint names for easy iteration
 		List<String> jointIDs = buildJointIDsList(sv.skeleton.getValue(), new LinkedList<String>());

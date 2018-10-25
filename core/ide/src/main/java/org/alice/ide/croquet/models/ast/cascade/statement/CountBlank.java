@@ -50,7 +50,6 @@ import org.lgna.project.annotations.CountDetails;
 import org.lgna.project.ast.Expression;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -65,7 +64,7 @@ public class CountBlank extends ExpressionBlank {
 	}
 
 	private CountBlank() {
-		super( UUID.fromString( "8dde36e7-5d10-46fa-9539-c52ed6495661" ), Integer.class, CountDetails.SINGLETON );
+		super( Integer.class, CountDetails.SINGLETON );
 	}
 
 	@Override

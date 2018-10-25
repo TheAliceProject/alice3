@@ -55,7 +55,6 @@ import org.lgna.project.ast.JavaType;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -78,7 +77,7 @@ public class ParameterBlank extends ExpressionBlank {
 	private final AbstractParameter parameter;
 
 	private ParameterBlank( AbstractParameter parameter ) {
-		super( UUID.fromString( "84524eb1-7dbe-4481-8037-005d6402dbf3" ), parameter.getValueType(), parameter.getDetails() );
+		super( parameter.getValueType(), parameter.getDetails() );
 		this.parameter = parameter;
 	}
 

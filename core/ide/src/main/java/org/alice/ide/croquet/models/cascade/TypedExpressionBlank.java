@@ -45,13 +45,11 @@ package org.alice.ide.croquet.models.cascade;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.AbstractType;
 
-import java.util.UUID;
-
 /**
  * @author Dennis Cosgrove
  */
 public final class TypedExpressionBlank extends ExpressionBlank {
 	public TypedExpressionBlank( AbstractType<?, ?, ?> valueType, ValueDetails<?> details ) {
-		super( UUID.fromString( "d03f9c80-7371-4d78-8579-63e392d18557" ), valueType, details );
+		super( valueType, details );
 	}
 }

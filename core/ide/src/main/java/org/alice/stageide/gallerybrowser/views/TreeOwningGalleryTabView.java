@@ -43,8 +43,6 @@
 package org.alice.stageide.gallerybrowser.views;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import org.alice.ide.DefaultTheme;
-import org.alice.stageide.gallerybrowser.ResourceBasedTab;
 import org.alice.stageide.gallerybrowser.TreeOwningGalleryTab;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.ResourceNodeTreeState;
@@ -57,9 +55,7 @@ import org.lgna.croquet.views.SwingComponentView;
 import org.lgna.croquet.views.TreeDirectoryViewController;
 import org.lgna.croquet.views.TreePathViewController;
 
-import javax.swing.JScrollBar;
-import javax.swing.SwingUtilities;
-import java.awt.Color;
+import javax.swing.*;
 import java.util.Map;
 
 /**
@@ -73,7 +69,7 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 
 		@Override
 		protected SwingComponentView<?> getComponentFor( ResourceNode value ) {
-			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value );
+			return TreeOwningGalleryTabView.this.getGalleryDragComponent( value, getModel() );
 		}
 	}
 
@@ -86,25 +82,19 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 
 	private final Map<ResourceNode, Integer> mapNodeToHorizontalScrollPosition = Maps.newHashMap();
 	private final ScrollPane scrollPane;
+	private final ModelResourceDirectoryView view;
 
 	public TreeOwningGalleryTabView( TreeOwningGalleryTab composite ) {
 		super( composite );
 
 		ResourceNodeTreeState state = composite.getResourceNodeTreeSelectionState();
-		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
+		view = new ModelResourceDirectoryView( state );
 
 		this.scrollPane = createGalleryScrollPane( view );
 
-		final boolean IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES = false;
-		Color breadCrumbColor;
-		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && ( composite instanceof ResourceBasedTab ) ) {
-			breadCrumbColor = DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
-		} else {
-			breadCrumbColor = null;
-		}
 		BorderPanel panel = new BorderPanel.Builder()
 				.vgap( PAD )
-				.pageStart( new TreePathViewController( state, breadCrumbColor ) )
+				.pageStart( new TreePathViewController( state, null ) )
 				.center( scrollPane )
 				.build();
 
@@ -148,5 +138,10 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 				jHorizontalScrollBar.setValue( nextScrollPosition );
 			}
 		} );
+	}
+
+	@Override
+	public void modelUpdated() {
+		view.modelUpdated();
 	}
 }

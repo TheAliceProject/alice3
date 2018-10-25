@@ -701,12 +701,7 @@ public abstract class DragAdapter {
 		if( !this.currentInputState.isAnyMouseButtonDown() ) {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if( e.getComponent() == this.lookingGlassComponent ) {
-				this.pickIntoSceneSuppressingErrors( e.getPoint(), new PickFrontMostObserver() {
-					@Override
-					public void done( PickResult pickResult ) {
-						currentInputState.setRolloverPickResult( pickResult );
-					}
-				} );
+				this.pickIntoSceneSuppressingErrors( e.getPoint(), currentInputState::setRolloverPickResult );
 			} else {
 				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ) );
 			}
@@ -737,12 +732,7 @@ public abstract class DragAdapter {
 		e.getComponent().requestFocus();
 
 		if( e.getComponent() == this.lookingGlassComponent ) {
-			this.pickIntoScene( e.getPoint(), new PickFrontMostObserver() {
-				@Override
-				public void done( PickResult result ) {
-					currentInputState.setClickPickResult( result );
-				}
-			} );
+			this.pickIntoScene( e.getPoint(), currentInputState::setClickPickResult );
 		} else {
 			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
 		}
@@ -757,12 +747,7 @@ public abstract class DragAdapter {
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
 		this.currentInputState.setInputEvent( e );
 		if( this.currentRolloverComponent == this.lookingGlassComponent ) {
-			this.pickIntoScene( e.getPoint(), new PickFrontMostObserver() {
-				@Override
-				public void done( PickResult pickResult ) {
-					currentInputState.setRolloverPickResult( pickResult );
-				}
-			} );
+			this.pickIntoScene( e.getPoint(), currentInputState::setRolloverPickResult );
 		} else {
 			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ) );
 		}
@@ -792,12 +777,7 @@ public abstract class DragAdapter {
 				//Don't pick into the scene if a mouse button is already down
 				if( !this.currentInputState.isAnyMouseButtonDown() )
 				{
-					this.pickIntoSceneSuppressingErrors( e.getPoint(), new PickFrontMostObserver() {
-						@Override
-						public void done( PickResult pickResult ) {
-							currentInputState.setRolloverPickResult( pickResult );
-						}
-					} );
+					this.pickIntoSceneSuppressingErrors( e.getPoint(), currentInputState::setRolloverPickResult );
 				}
 			}
 			else
@@ -950,8 +930,8 @@ public abstract class DragAdapter {
 	private Component lookingGlassComponent = null;
 	private Component currentRolloverComponent = null;
 	private Animator animator;
-	protected/*private*/InputState currentInputState = new InputState();
-	private InputState previousInputState = new InputState();
+	protected final/*private*/InputState currentInputState = new InputState();
+	private final InputState previousInputState = new InputState();
 	private boolean isInStageChange = false;
 	private double mouseWheelTimeoutTime = 0;
 	private Point mouseWheelStartLocation = null;

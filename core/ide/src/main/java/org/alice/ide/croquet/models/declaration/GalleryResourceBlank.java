@@ -52,7 +52,6 @@ import org.lgna.project.ast.Expression;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author Dennis Cosgrove
@@ -76,7 +75,6 @@ public class GalleryResourceBlank extends CascadeBlank<Expression> {
 	private final AbstractType<?, ?, ?> type;
 
 	private GalleryResourceBlank( AbstractType<?, ?, ?> type ) {
-		super( UUID.fromString( "083cebd0-a212-4b77-8bb3-a05f893ff2dd" ) );
 		this.type = type;
 	}
 
