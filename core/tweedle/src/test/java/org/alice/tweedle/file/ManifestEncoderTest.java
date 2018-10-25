@@ -5,6 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.Test;
 
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+
+import static org.alice.tweedle.file.ManifestEncoderDecoder.PROGRESSIVE_8601_FORMAT;
 import static org.junit.Assert.*;
 
 public class ManifestEncoderTest {
@@ -13,8 +18,16 @@ public class ManifestEncoderTest {
 					+ " \"groupTags\": [], \"themeTags\": [] }, \"metadata\": {"
 					+ " \"formatVersion\": \"0.1\", \"identifier\": { \"id\": \"SystemLibrary\","
 					+ " \"type\": \"Library\", \"version\": \"0.7\" } },"
-					+ " \"provenance\": { \"aliceVersion\": \"3.4.1.0\", \"creationYear\": \"2018\","
+					+ " \"provenance\": { \"aliceVersion\": \"3.4.1.0\", \"created\": \"2018\","
 					+ " \"creator\": \"Not Dennis\" }, \"prerequisites\": []}";
+
+	private static final String LIBRARY_WITH_DATE = "{ \"description\": {"
+		+ " \"name\": \"Alice SThing Library\", \"icon\": \"thumbnail.png\", \"tags\": [],"
+		+ " \"groupTags\": [], \"themeTags\": [] }, \"metadata\": {"
+		+ " \"formatVersion\": \"0.1\", \"identifier\": { \"id\": \"SystemLibrary\","
+		+ " \"type\": \"Library\", \"version\": \"0.7\" } },"
+		+ " \"provenance\": { \"aliceVersion\": \"3.4.1.0\", \"created\": \"2010-01-01T12:00:00+01:00\","
+		+ " \"creator\": \"Not Dennis\" }, \"prerequisites\": []}";
 	
 	private static final String SAMPLE_MODEL = "{ \"description\": {"
 					+ " \"name\": \"Alien\", \"icon\": \"thumbnail.png\","
@@ -22,7 +35,7 @@ public class ManifestEncoderTest {
 					+ " \"themeTags\": [ \"*outer space\" ] }, \"package\": {"
 					+ " \"formatVersion\": \"0.1\", \"identifier\": { \"id\": \"Alien\","
 					+ " \"type\": \"Model\", \"version\": \"1.0\" } },"
-					+ " \"provenance\": { \"aliceVersion\": \"3.4.1.0\", \"creationYear\": \"2011\","
+					+ " \"provenance\": { \"aliceVersion\": \"3.4.1.0\", \"created\": \"2011\","
 					+ " \"creator\": \"Laura Paoletti\" }, \"rootJoints\": [ \"ROOT\" ],"
 					+ " \"additionalJoints\": ["
 					+ " { \"name\": \"LOWER_LIP\", \"parent\": \"MOUTH\", \"visibility\": \"completelyHidden\" }"
@@ -39,7 +52,7 @@ public class ManifestEncoderTest {
 					+ " } } ], \"models\": [ { \"skeleton\": \"default\","
 					+ " \"textureSet\": \"default\", \"icon\": \"thumbnail.png\" } ]}";
 
-	private static final String SAMPLE_MODEL_WITH_3_RESOURCES = "{\"rootJoints\":[],\"additionalJoints\":[{\"name\":\"LOWER_LIP\",\"parent\":\"MOUTH\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_THUMB_TIP\",\"parent\":\"LEFT_THUMB_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_INDEX_FINGER_TIP\",\"parent\":\"LEFT_INDEX_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_MIDDLE_FINGER_TIP\",\"parent\":\"LEFT_MIDDLE_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_PINKY_FINGER_TIP\",\"parent\":\"LEFT_PINKY_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_THUMB_TIP\",\"parent\":\"RIGHT_THUMB_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_INDEX_FINGER_TIP\",\"parent\":\"RIGHT_INDEX_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_MIDDLE_FINGER_TIP\",\"parent\":\"RIGHT_MIDDLE_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_PINKY_FINGER_TIP\",\"parent\":\"RIGHT_PINKY_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_TOES\",\"parent\":\"LEFT_FOOT\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_TOES\",\"parent\":\"RIGHT_FOOT\",\"visibility\":\"COMPLETELY_HIDDEN\"}],\"additionalJointArrays\":[],\"additionalJointArrayIds\":[],\"poses\":[],\"boundingBox\":{\"min\":[-0.281617,7.213192E-4,-0.18244708],\"max\":[0.2846615,1.4431626,0.39562756]},\"placeOnGround\":false,\"textureSets\":[{\"id\":\"Alien_DEFAULT\",\"idToResourceMap\":{\"1\":\"Alien_DEFAULT_texture_1_diffuseMap\"}}],\"structures\":[{\"boundingBox\":{\"min\":[-0.281617,7.213192E-4,-0.18244708],\"max\":[0.2846615,1.4431626,0.39562756]},\"id\":\"Alien\",\"format\":\"dae\",\"file\":\"Alien_Alien.dae\",\"type\":\"skeletonMesh\"}],\"models\":[{\"id\":\"DEFAULT\",\"structure\":\"Alien\",\"textureSet\":\"Alien_DEFAULT\",\"icon\":\"DEFAULT.png\"}],\"description\":{\"name\":\"Alien\",\"icon\":\"Alien_cls.png\",\"tags\":[\"alien\",\"space\"],\"groupTags\":[\"characters\"],\"themeTags\":[\"*outer space\"]},\"provenance\":{\"aliceVersion\":\"3.4.0.0-alpha\",\"creationYear\":\"2011\",\"creator\":\"Laura Paoletti\"},\"metadata\":{\"formatVersion\":\"0.1+alpha\",\"identifier\":{\"version\":\"1.0\",\"type\":\"Model\"}},\"prerequisites\":[],\"resources\":[{\"uuid\":\"ec707422-033d-4c74-99f2-f4ebeea77642\",\"height\":512.0,\"width\":512.0,\"id\":\"Alien_DEFAULT_texture_1_diffuseMap\",\"format\":\"image/png\",\"file\":\"Alien_DEFAULT_texture_1_diffuseMap.png\",\"type\":\"image\"},{\"uuid\":\"d1cb1b8c-e08f-4e9a-8f89-3b6847fc1dbb\",\"height\":120.0,\"width\":43.0,\"id\":\"DEFAULT.png\",\"format\":\"image/png\",\"file\":\"DEFAULT.png\",\"type\":\"image\"},{\"uuid\":\"463c8b29-2fad-4203-9abe-5b7acad26544\",\"height\":120.0,\"width\":43.0,\"id\":\"Alien_cls.png\",\"format\":\"image/png\",\"file\":\"Alien_cls.png\",\"type\":\"image\"}]}";
+	private static final String SAMPLE_MODEL_WITH_3_RESOURCES = "{\"rootJoints\":[],\"additionalJoints\":[{\"name\":\"LOWER_LIP\",\"parent\":\"MOUTH\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_THUMB_TIP\",\"parent\":\"LEFT_THUMB_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_INDEX_FINGER_TIP\",\"parent\":\"LEFT_INDEX_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_MIDDLE_FINGER_TIP\",\"parent\":\"LEFT_MIDDLE_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_PINKY_FINGER_TIP\",\"parent\":\"LEFT_PINKY_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_THUMB_TIP\",\"parent\":\"RIGHT_THUMB_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_INDEX_FINGER_TIP\",\"parent\":\"RIGHT_INDEX_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_MIDDLE_FINGER_TIP\",\"parent\":\"RIGHT_MIDDLE_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_PINKY_FINGER_TIP\",\"parent\":\"RIGHT_PINKY_FINGER_KNUCKLE\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"LEFT_TOES\",\"parent\":\"LEFT_FOOT\",\"visibility\":\"COMPLETELY_HIDDEN\"},{\"name\":\"RIGHT_TOES\",\"parent\":\"RIGHT_FOOT\",\"visibility\":\"COMPLETELY_HIDDEN\"}],\"additionalJointArrays\":[],\"additionalJointArrayIds\":[],\"poses\":[],\"boundingBox\":{\"min\":[-0.281617,7.213192E-4,-0.18244708],\"max\":[0.2846615,1.4431626,0.39562756]},\"placeOnGround\":false,\"textureSets\":[{\"id\":\"Alien_DEFAULT\",\"idToResourceMap\":{\"1\":\"Alien_DEFAULT_texture_1_diffuseMap\"}}],\"structures\":[{\"boundingBox\":{\"min\":[-0.281617,7.213192E-4,-0.18244708],\"max\":[0.2846615,1.4431626,0.39562756]},\"id\":\"Alien\",\"format\":\"dae\",\"file\":\"Alien_Alien.dae\",\"type\":\"skeletonMesh\"}],\"models\":[{\"id\":\"DEFAULT\",\"structure\":\"Alien\",\"textureSet\":\"Alien_DEFAULT\",\"icon\":\"DEFAULT.png\"}],\"description\":{\"name\":\"Alien\",\"icon\":\"Alien_cls.png\",\"tags\":[\"alien\",\"space\"],\"groupTags\":[\"characters\"],\"themeTags\":[\"*outer space\"]},\"provenance\":{\"aliceVersion\":\"3.4.0.0-alpha\",\"created\":\"2011\",\"creator\":\"Laura Paoletti\"},\"metadata\":{\"formatVersion\":\"0.1+alpha\",\"identifier\":{\"version\":\"1.0\",\"type\":\"Model\"}},\"prerequisites\":[],\"resources\":[{\"uuid\":\"ec707422-033d-4c74-99f2-f4ebeea77642\",\"height\":512.0,\"width\":512.0,\"id\":\"Alien_DEFAULT_texture_1_diffuseMap\",\"format\":\"image/png\",\"file\":\"Alien_DEFAULT_texture_1_diffuseMap.png\",\"type\":\"image\"},{\"uuid\":\"d1cb1b8c-e08f-4e9a-8f89-3b6847fc1dbb\",\"height\":120.0,\"width\":43.0,\"id\":\"DEFAULT.png\",\"format\":\"image/png\",\"file\":\"DEFAULT.png\",\"type\":\"image\"},{\"uuid\":\"463c8b29-2fad-4203-9abe-5b7acad26544\",\"height\":120.0,\"width\":43.0,\"id\":\"Alien_cls.png\",\"format\":\"image/png\",\"file\":\"Alien_cls.png\",\"type\":\"image\"}]}";
 
 	@Test
 	public void aLibraryManifestShouldBeCreatedFromLibraryManifestJson() {
@@ -47,6 +60,28 @@ public class ManifestEncoderTest {
 
 		assertNotNull("The encoder should have returned something.", lib );
 	}
+
+	@Test
+	public void aLibraryManifestShouldHaveAProvenance() {
+		LibraryManifest lib = ManifestEncoderDecoder.fromJson( SAMPLE_LIBRARY, LibraryManifest.class );
+
+		assertNotNull("The manifest should have a provenance.", lib.provenance );
+	}
+
+	@Test
+	public void aLibraryManifestProvenanceShouldHaveACreatedYear() {
+		LibraryManifest lib = ManifestEncoderDecoder.fromJson( SAMPLE_LIBRARY, LibraryManifest.class );
+
+		assertNotNull("The manifest's provenance should have a created year.", lib.provenance.created);
+	}
+
+	@Test
+	public void aLibraryManifestProvenanceShouldHaveACreatedDate() {
+		LibraryManifest lib = ManifestEncoderDecoder.fromJson( LIBRARY_WITH_DATE, LibraryManifest.class );
+
+		assertNotNull("The manifest's provenance should have a created date.", lib.provenance.created);
+	}
+
 
 	@Test
 	public void somethingShouldBeCreatedForSerializedLibraryManifest() {
@@ -134,7 +169,72 @@ public class ManifestEncoderTest {
 		JsonObject description = jsonManifest.get( "description" ).getAsJsonObject();
 		String name = description.get( "name" ).getAsString();
 
-		assertEquals("The decription should have a name of 'A test project'.", "A test project", name );
+		assertEquals("The description should have a name of 'A test project'.", "A test project", name );
+	}
+
+	@Test
+	public void serializedLibraryManifestShouldHaveProvenance() {
+		String json = ManifestEncoderDecoder.toJson( getSimpleLibraryManifest() );
+
+		JsonParser parser = new JsonParser();
+		JsonObject jsonManifest = parser.parse(json).getAsJsonObject();
+		JsonObject provenance = jsonManifest.get( "provenance" ).getAsJsonObject();
+
+		assertNotNull("The manifest should have a provenance.", provenance);
+	}
+
+	@Test
+	public void serializedLibraryManifestShouldHaveProvenanceWithCreated() {
+		String json = ManifestEncoderDecoder.toJson( getSimpleLibraryManifest() );
+
+		JsonParser parser = new JsonParser();
+		JsonObject jsonManifest = parser.parse(json).getAsJsonObject();
+		JsonObject provenance = jsonManifest.get( "provenance" ).getAsJsonObject();
+		JsonElement created = provenance.get( "created" );
+
+		assertNotNull("The manifest's provenance should have a created.", created);
+	}
+
+	@Test
+	public void serializedLibraryManifestProvenanceCreatedShouldBeAString() {
+		String json = ManifestEncoderDecoder.toJson( getSimpleLibraryManifest() );
+
+		JsonParser parser = new JsonParser();
+		JsonObject jsonManifest = parser.parse(json).getAsJsonObject();
+		JsonObject provenance = jsonManifest.get( "provenance" ).getAsJsonObject();
+		String created = provenance.get( "created" ).getAsString();
+
+		assertNotNull("The manifest's provenance should have a created string.", created);
+	}
+
+	@Test
+	public void serializedLibraryManifestProvenanceCreatedShouldBeReadableAsTemporal() {
+		String json = ManifestEncoderDecoder.toJson( getSimpleLibraryManifest() );
+
+		JsonParser parser = new JsonParser();
+		JsonObject jsonManifest = parser.parse(json).getAsJsonObject();
+		JsonObject provenance = jsonManifest.get( "provenance" ).getAsJsonObject();
+		String created = provenance.get( "created" ).getAsString();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern( PROGRESSIVE_8601_FORMAT );
+		TemporalAccessor ta = fmt.parse( created );
+
+		assertNotNull("The manifest's provenance should have a parsed created.", ta);
+	}
+
+	@Test
+	public void serializedLibraryManifestProvenanceWithCreatedYearShouldBeReadableAsTemporal() {
+		final LibraryManifest manifest = getSimpleLibraryManifest();
+		manifest.provenance.created = Year.now();
+		String json = ManifestEncoderDecoder.toJson( manifest );
+
+		JsonParser parser = new JsonParser();
+		JsonObject jsonManifest = parser.parse(json).getAsJsonObject();
+		JsonObject provenance = jsonManifest.get( "provenance" ).getAsJsonObject();
+		String created = provenance.get( "created" ).getAsString();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern( PROGRESSIVE_8601_FORMAT );
+		TemporalAccessor ta = fmt.parse( created );
+
+		assertNotNull("The manifest's provenance should have a parsed created.", ta);
 	}
 
 	@Test
@@ -162,7 +262,7 @@ public class ManifestEncoderTest {
 	public void theRightNumberOfResourceShouldBeCreatedFromModelWithResourcesManifestJson() {
 		ModelManifest model = ManifestEncoderDecoder.fromJson(SAMPLE_MODEL_WITH_3_RESOURCES, ModelManifest.class );
 
-		assertTrue("The model.resources should have 3 resources in it.", model.resources.size() == 3 );
+		assertEquals( "The model.resources should have 3 resources in it.", 3, model.resources.size() );
 	}
 
 	private LibraryManifest getSimpleLibraryManifest() {
