@@ -57,6 +57,16 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		return isEnabled.getValue() && body.getValue().containsAtLeastOneEnabledReturnStatement();
+	}
+
+	@Override
+	boolean containsUnreachableCode() {
+		return isEnabled.getValue() && body.getValue().containsUnreachableCode();
+	}
+
+	@Override
 	public NodeProperty<BlockStatement> getBodyProperty() {
 		return this.body;
 	}

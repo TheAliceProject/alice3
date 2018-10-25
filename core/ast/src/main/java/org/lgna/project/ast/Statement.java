@@ -54,4 +54,20 @@ public abstract class Statement extends AbstractNode implements CodeAppender{
 	public abstract void appendCode( SourceCodeGenerator generator );
 
 	public final BooleanProperty isEnabled = new BooleanProperty( this, Boolean.TRUE );
+
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		return false;
+	}
+
+	boolean containsAReturnForEveryPath() {
+		return false;
+	}
+
+	boolean containsUnreachableCode() {
+		return false;
+	}
+
+	boolean isEnabledNonCommment() {
+		return isEnabled.getValue();
+	}
 }

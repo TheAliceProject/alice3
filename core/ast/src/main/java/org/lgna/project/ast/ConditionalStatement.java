@@ -60,6 +60,45 @@ public final class ConditionalStatement extends Statement {
 		generator.appendConditional(this);
 	}
 
+	@Override
+	boolean containsAtLeastOneEnabledReturnStatement() {
+		if (!isEnabled.getValue()) {
+			return false;
+		}
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
+			if ( booleanExpressionBodyPair.body.getValue().containsAtLeastOneEnabledReturnStatement() ) {
+				return true;
+			}
+		}
+		return elseBody.getValue().containsAtLeastOneEnabledReturnStatement();
+	}
+
+	@Override
+	boolean containsAReturnForEveryPath() {
+		if (!isEnabled.getValue()) {
+			return false;
+		}
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
+			if ( !booleanExpressionBodyPair.body.getValue().containsAReturnForEveryPath() ) {
+				return false;
+			}
+		}
+		return elseBody.getValue().containsAReturnForEveryPath();
+	}
+
+	@Override
+	boolean containsUnreachableCode() {
+		if (!isEnabled.getValue()) {
+			return false;
+		}
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : booleanExpressionBodyPairs ) {
+			if ( booleanExpressionBodyPair.body.getValue().containsUnreachableCode() ) {
+				return true;
+			}
+		}
+		return elseBody.getValue().containsUnreachableCode();
+	}
+
 	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );
 	public final NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>( this );
 }

@@ -53,6 +53,7 @@ import org.lgna.croquet.AbstractSeverityStatusComposite;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.project.ast.AbstractCode;
 import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.StaticAnalysisUtilities;
 import org.lgna.project.ast.UserMethod;
 
@@ -141,11 +142,12 @@ public class CodeComposite extends DeclarationComposite<AbstractCode, AbstractCo
 			AbstractSeverityStatusComposite.ErrorStatus nextErrorStatus;
 			AbstractCode code = this.getDeclaration();
 			UserMethod method = (UserMethod)code;
-			if( StaticAnalysisUtilities.containsUnreachableCode( method ) ) {
+			BlockStatement methodBody = method.body.getValue();
+			if( methodBody.containsUnreachableCode() ) {
 				nextErrorStatus = this.userFunctionStatusComposite.getUnreachableCodeError();
 			} else {
-				if( StaticAnalysisUtilities.containsAtLeastOneEnabledReturnStatement( method ) ) {
-					if( StaticAnalysisUtilities.containsAReturnForEveryPath( method ) ) {
+				if( methodBody.containsAtLeastOneEnabledReturnStatement() ) {
+					if( methodBody.containsAReturnForEveryPath() ) {
 						nextErrorStatus = null;
 					} else {
 						nextErrorStatus = this.userFunctionStatusComposite.getNotAllPathsEndInReturnStatementError();

@@ -65,4 +65,22 @@ public final class DoTogether extends AbstractStatementWithBody {
 	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendDoTogether(this);
 	}
+
+	@Override
+	boolean containsAReturnForEveryPath() {
+		return isEnabled.getValue() && body.getValue().containsAReturnForEveryPath();
+	}
+
+	@Override
+	boolean containsUnreachableCode() {
+		if (!isEnabled.getValue() ) {
+			return false;
+		}
+		for ( Statement statement : body.getValue().statements) {
+			if ( statement.containsUnreachableCode() ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
