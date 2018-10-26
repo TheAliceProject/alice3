@@ -85,6 +85,11 @@ public abstract class TagKey extends ResourceKey {
 	}
 
 	@Override
+	public String getSearchText() {
+		return this.getLocalizedDisplayText();
+	}
+
+	@Override
 	public InstanceCreation createInstanceCreation() {
 		return null;
 	}
