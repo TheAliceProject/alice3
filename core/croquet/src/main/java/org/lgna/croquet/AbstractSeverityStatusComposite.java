@@ -69,8 +69,8 @@ public abstract class AbstractSeverityStatusComposite<V extends CompositeView<?,
 		}
 
 		public final boolean setText( String... texts) {
-			// TODO Localize "AND" and perhaps "."
-			final String text = Arrays.stream( texts ).filter( Objects::nonNull ).collect( Collectors.joining( " AND " ) );
+			String and = " " + findLocalizedText( AbstractSeverityStatusComposite.class, "andConjuction" ) + " ";
+			final String text = Arrays.stream( texts ).filter( Objects::nonNull ).collect( Collectors.joining( and) );
 			if (!text.isEmpty() && !".".equals(text.substring(text.length() - 1))) {
 				setText( text + "." );
 			} else {
