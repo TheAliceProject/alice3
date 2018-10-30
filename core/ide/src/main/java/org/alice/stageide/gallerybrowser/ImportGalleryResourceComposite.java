@@ -15,6 +15,7 @@ import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.TreeUtilities;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.SimpleComposite;
@@ -122,9 +123,14 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		return null;
 	}
 
-	private void setSuperClass( Class<? extends ModelResource> aClass ) {
-		parentJavaClass = aClass;
-		refreshStatus();
+	private void setSuperclass( ResourceNode nextValue ) {
+		if ( nextValue != null ) {
+			final ResourceKey key = nextValue.getResourceKey();
+			if ( key instanceof ClassResourceKey ) {
+				parentJavaClass =  ((ClassResourceKey) key).getModelResourceCls();
+				refreshStatus();
+			}
+		}
 	}
 
 	@Override
@@ -307,21 +313,25 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		return modelManifest;
 	}
 
+	private void setShowUnitBox( Boolean showBox ) {
+		previewComposite.getView().setShowUnitBox(showBox);
+	}
+
+	private void setShowAxes( Boolean showBox ) {
+		previewComposite.getView().setShowAxes(showBox);
+	}
+
+	private final ValueListener<Boolean> showAxesListener = e -> setShowAxes( e.getNextValue() );
+	private final ValueListener<Boolean> showUnitBoxListener = e -> setShowUnitBox( e.getNextValue() );
+	private final ValueListener<ResourceNode> classSelectionListener = e -> setSuperclass( e.getNextValue() );
+
 	private class ModelDetailsComposite extends SimpleComposite<BorderPanel> {
 		StringState author = createStringState( "author" );
 		StringState modelName = createStringState( "modelName" );
 		StringState sClass = createStringState( "sClass" );
 		PlainStringValue jointStatus = createStringValue( "jointStatus" );
-
-		private ValueListener<ResourceNode> classSelectionListener = e -> {
-			if (e != null && e.getNextValue() != null) {
-				final ResourceKey key = e.getNextValue().getResourceKey();
-				if ( key instanceof ClassResourceKey ) {
-					ClassResourceKey classResourceKey = (ClassResourceKey) key;
-					setSuperClass( classResourceKey.getModelResourceCls() );
-				}
-			}
-		};
+		BooleanState isUnitBoxShowing = createBooleanState( "isUnitBoxShowing", true );
+		BooleanState areAxesShowing = createBooleanState( "areAxesShowing", true );
 
 		ModelDetailsComposite( UUID id ) {
 			super( id );
@@ -340,15 +350,19 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 					final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> classList =
 						TreeUtilities.getSClassListState();
 					classList.clearSelection();
-					classList.addAndInvokeNewSchoolValueListener( classSelectionListener );
+					classList.addNewSchoolValueListener( classSelectionListener );
 					String selectLabel = findLocalizedText( "unselectedSuper" );
 					final SwingComponentView<?> classButton = new SuperclassPopupButton( classList, selectLabel );
 					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
 					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
 					rows.add( new LabeledFormRow( sClass.getSidekickLabel(), classButton ) );
+					rows.add( new LabeledFormRow( isUnitBoxShowing.getSidekickLabel(), isUnitBoxShowing.createCheckBox()));
+					rows.add( new LabeledFormRow( areAxesShowing.getSidekickLabel(), areAxesShowing.createCheckBox()) );
 				}
 
 			};
+			isUnitBoxShowing.addAndInvokeNewSchoolValueListener( showUnitBoxListener );
+			areAxesShowing.addAndInvokeNewSchoolValueListener( showAxesListener );
 			centerComponent.setBorder( emptyBorder );
 			view.addCenterComponent( centerComponent );
 
