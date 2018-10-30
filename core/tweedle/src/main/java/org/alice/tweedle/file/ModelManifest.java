@@ -58,7 +58,7 @@ public class ModelManifest extends Manifest {
 
 		@Override
 		public String toString() {
-			return "Joint " + name + (parent == null ? "" : " (to " + parent + ")");
+			return name + (parent == null ? "" : " (->" + parent + ")");
 		}
 	}
 

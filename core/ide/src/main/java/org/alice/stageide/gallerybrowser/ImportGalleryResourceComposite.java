@@ -115,7 +115,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 			final String aliceClassName = AliceResourceClassUtilities.getAliceClassName( parentJavaClass );
 			String missingJointsMessage = findLocalizedText( "errorMissingJointsMessage" )
 				.replace( "</class/>", aliceClassName )
-				.replace( "</joints/>", missingJoints.stream().map( joint -> joint.name ).collect( Collectors.joining( ", " ) ) );
+				.replace( "</joints/>", missingJoints.stream().map( ModelManifest.Joint::toString ).collect( Collectors.joining( ", " ) ) );
 			detailsComposite.jointStatus.setText( missingJointsMessage );
 			return findLocalizedText( "errorMissingJoints" ).replace( "</class/>", aliceClassName );
 		}
