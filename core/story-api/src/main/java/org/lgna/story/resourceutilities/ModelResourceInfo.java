@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import java.time.Year;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -434,7 +436,7 @@ public class ModelResourceInfo {
 		manifest.description.groupTags.addAll(Arrays.asList(getGroupTags()));
 
 		manifest.provenance.aliceVersion = ProjectVersion.getCurrentVersion().toString();
-		manifest.provenance.creationYear = String.valueOf(getCreationYear());
+		manifest.provenance.created = getCreationYear() < 0 ? ZonedDateTime.now() : Year.of( getCreationYear() );
 		manifest.provenance.creator = getCreator();
 
 		manifest.metadata.identifier.id = getResourceName();

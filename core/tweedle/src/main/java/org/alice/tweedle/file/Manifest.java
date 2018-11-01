@@ -2,7 +2,8 @@ package org.alice.tweedle.file;
 
 
 import java.io.File;
-import java.time.Year;
+import java.time.ZonedDateTime;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Manifest {
 
 	public static class Provenance {
 		public String aliceVersion;
-		public String creationYear = Year.now().toString();
+		public Temporal created = ZonedDateTime.now();
 		public String creator = "Anonymous";
 	}
 
