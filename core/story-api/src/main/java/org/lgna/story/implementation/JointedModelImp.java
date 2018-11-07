@@ -178,7 +178,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 			return internalJointImp.isFreeInZ();
 		}
 
-		public void replaceWithJoint( JointImp newJoint, UnitQuaternion originalRotation ) {
+		void replaceWithJoint( JointImp newJoint, UnitQuaternion originalRotation ) {
 			OrthogonalMatrix3x3 currentRotation = this.getLocalOrientation();
 			OrthogonalMatrix3x3 invertedOriginal = new OrthogonalMatrix3x3();
 			invertedOriginal.setValue( originalRotation );
@@ -294,6 +294,13 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
 
 		this.visualData.setSGParent( getSgComposite() );
+
+		for (JointImpWrapper entry : mapIdToJoint.values()) {
+			final AbstractTransformable sgJoint = entry.getSgComposite();
+			if ( sgJoint.getParent() == null) {
+				sgJoint.setParent( getSgComposite() );
+			}
+		}
 
 		for( Visual sgVisual : this.visualData.getSgVisuals() ) {
 			putInstance( sgVisual );

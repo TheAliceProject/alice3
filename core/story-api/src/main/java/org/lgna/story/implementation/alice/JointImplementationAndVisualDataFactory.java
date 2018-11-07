@@ -65,13 +65,13 @@ import java.util.Map;
  * @author Dennis Cosgrove
  */
 public class JointImplementationAndVisualDataFactory implements JointedModelImp.JointImplementationAndVisualDataFactory {
-	private static Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
+	private static final Map<JointedModelResource, JointImplementationAndVisualDataFactory> map = Maps.newHashMap();
 
 	private static class VisualData implements JointedModelImp.VisualData {
 		private TexturedAppearance[] texturedAppearances;
 		private SkeletonVisual sgSkeletonVisual;
 
-		public VisualData( JointedModelResource resource ) {
+		VisualData( JointedModelResource resource ) {
 			assert resource != null;
 			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
 			//Get the copy of the original geometry (this makes a new skeleton, appearance and whatnot, and keeps references to static data like the meshes)
@@ -101,17 +101,8 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 		@Override
 		public void setSGParent( Composite parent ) {
 			sgSkeletonVisual.setParent( parent );
-			for( Visual sgVisual : this.getSgVisuals() ) {
-				sgVisual.setParent( parent );
-			}
 		}
 
-		//		public void setResource(org.lgna.story.resources.JointedModelResource resource) {
-		//			assert resource != null;
-		//			this.texturedAppearances = AliceResourceUtilties.getTexturedAppearances( resource );
-		//			this.sgSkeletonVisual = AliceResourceUtilties.createReplaceVisualElements( this.sgSkeletonVisual, resource );
-		//			this.sgSkeletonVisual.textures.setValue(this.texturedAppearances);
-		//		}
 		@Override
 		public Composite getSGParent() {
 			return this.sgSkeletonVisual.getParent();
@@ -121,9 +112,7 @@ public class JointImplementationAndVisualDataFactory implements JointedModelImp.
 	public static JointImplementationAndVisualDataFactory getInstance( JointedModelResource resource ) {
 		synchronized( map ) {
 			JointImplementationAndVisualDataFactory rv = map.get( resource );
-			if( rv != null ) {
-				//pass
-			} else {
+			if ( rv == null ) {
 				rv = new JointImplementationAndVisualDataFactory( resource );
 				map.put( resource, rv );
 			}
