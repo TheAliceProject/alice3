@@ -34,7 +34,6 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.AdaptiveRecenteringThumbnailMaker;
-import org.lgna.story.resourceutilities.AliceModelLoader;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -100,12 +99,12 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
 	private String getSuperclassExplanation() {
 		if (parentJavaClass == null) {
-			return "Must select a superclass";
+			return findLocalizedText( "errorMissingSuper" );
 		}
 		List<ModelManifest.Joint> baseJoints = getBaseJoints( parentJavaClass );
 
 		if ( skeletonVisual.skeleton.getValue() == null && !baseJoints.isEmpty() ) {
-			return "Required skeleton missing on " + skeletonVisual.getName();
+			return findLocalizedText( "errorMissingSkeleton" ).replace( "</skeleton/>", skeletonVisual.getName() );
 		}
 
 		List<ModelManifest.Joint> modelJoints = getModelJoints( skeletonVisual );
@@ -114,12 +113,11 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 			detailsComposite.jointStatus.setText( "" );
 		} else {
 			final String aliceClassName = AliceResourceClassUtilities.getAliceClassName( parentJavaClass );
-			String missingJointsMessage =
-				aliceClassName + " requires the following joints that were not found on import:\n\n"
-					+ missingJoints.stream().map( joint -> joint.name ).collect( Collectors.joining( ", " ) )
-					+ "\n\nCorrect for these missing joints and reimport or select a different superclass.";
+			String missingJointsMessage = findLocalizedText( "errorMissingJointsMessage" )
+				.replace( "</class/>", aliceClassName )
+				.replace( "</joints/>", missingJoints.stream().map( joint -> joint.name ).collect( Collectors.joining( ", " ) ) );
 			detailsComposite.jointStatus.setText( missingJointsMessage );
-			return "Missing joints for " + aliceClassName;
+			return findLocalizedText( "errorMissingJoints" ).replace( "</class/>", aliceClassName );
 		}
 		return null;
 	}
@@ -343,7 +341,8 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 						TreeUtilities.getSClassListState();
 					classList.clearSelection();
 					classList.addAndInvokeNewSchoolValueListener( classSelectionListener );
-					final SwingComponentView<?> classButton = new SuperclassPopupButton( classList );
+					String selectLabel = findLocalizedText( "unselectedSuper" );
+					final SwingComponentView<?> classButton = new SuperclassPopupButton( classList, selectLabel );
 					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
 					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
 					rows.add( new LabeledFormRow( sClass.getSidekickLabel(), classButton ) );

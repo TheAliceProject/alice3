@@ -53,9 +53,7 @@ import org.lgna.project.ast.InstanceCreation;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceKey {
-	public String getSearchText() {
-		return this.getLocalizedDisplayText();
-	}
+	abstract public String getSearchText();
 
 	public abstract String getInternalText();
 

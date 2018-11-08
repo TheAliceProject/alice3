@@ -43,6 +43,9 @@
 
 package org.alice.ide.name;
 
+import org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite;
+import org.lgna.croquet.AbstractElement;
+
 public abstract class NameValidator {
 	public abstract boolean isNameValid( String name );
 
@@ -53,10 +56,14 @@ public abstract class NameValidator {
 			if( this.isNameAvailable( name ) ) {
 				return null;
 			} else {
-				return "\"" + name + "\"" + " is not available.";
+				return AbstractElement
+					.findLocalizedText( DeclarationLikeSubstanceComposite.class, "isNotAvailable" )
+					.replaceAll( "</name/>", "\"" + name + "\"" );
 			}
 		} else {
-			return "\"" + name + "\"" + " is not a valid name.";
+			return AbstractElement
+				.findLocalizedText( DeclarationLikeSubstanceComposite.class, "isNotAValidName" )
+				.replaceAll( "</name/>", "\"" + name + "\"" );
 		}
 	}
 }

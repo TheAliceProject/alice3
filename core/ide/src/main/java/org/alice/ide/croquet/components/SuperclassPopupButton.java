@@ -60,10 +60,13 @@ import java.awt.*;
 
 public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode> implements ValueListener<ResourceNode> {
 	private final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> listState;
+	private String unselectedMessage;
 
-	public SuperclassPopupButton( SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> state ) {
+	public SuperclassPopupButton( SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> state,
+								  String unselectedMessage ) {
 		super(state.getMenuModel().getPopupPrepModel());
 		listState = state;
+		this.unselectedMessage = unselectedMessage;
 		getAwtComponent().setLayout( new BoxLayout( getAwtComponent(), BoxLayout.LINE_AXIS ) );
 	}
 
@@ -135,8 +138,7 @@ public class SuperclassPopupButton extends FauxComboBoxPopupButton<ResourceNode>
 			}
 		} else {
 			internalAddComponent( new Label( new EmptyIcon( 0, 30 )) );
-			// TODO Localize this message
-			internalAddComponent( new Label("Select parent class") );
+			internalAddComponent( new Label( unselectedMessage ) );
 		}
 		revalidateAndRepaint();
 	}
