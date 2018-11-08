@@ -2,13 +2,33 @@ package org.alice.stageide.modelviewer;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
+import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
 import org.alice.interact.DragAdapter;
 
 public class SkeletonVisualViewer extends Viewer {
 
 	private SkeletonVisual skeletonVisual = null;
 	private final SingleViewerDragAdapter dragAdapter = new SingleViewerDragAdapter();
+
+	private final ExtravagantAxes fancyAxes;
+
+	private final BoundingBoxDecorator unitBox = new BoundingBoxDecorator();
+	// To shrink unit box and hide unitBox
+	private final AxisAlignedBox zeroAAB = new AxisAlignedBox( 0, 0, 0, 0, 0, 0 );
+	// To grow and display unitBox
+	private final AxisAlignedBox unitAAB = new AxisAlignedBox( 0, 0, 0, 1, 1, 1 );
+
+	public SkeletonVisualViewer() {
+		super();
+		unitBox.setParent( getScene().getSgComposite() );
+		fancyAxes = new ExtravagantAxes( 1 );
+		for ( Component cmp : fancyAxes.getComponents() ) {
+			cmp.setParent( getScene().getSgComposite() );
+		}
+	}
 
 	public void setSkeletonVisual(SkeletonVisual skeletonVisual) {
 		if (skeletonVisual != this.skeletonVisual) {
@@ -17,7 +37,14 @@ public class SkeletonVisualViewer extends Viewer {
 			}
 			this.skeletonVisual = skeletonVisual;
 			if (this.skeletonVisual != null) {
-				this.skeletonVisual.setParent(this.getScene().getSgComposite());
+				this.skeletonVisual.setParent(getScene().getSgComposite());
+
+				final AxisAlignedBox modelBounds = this.skeletonVisual.getAxisAlignedMinimumBoundingBox();
+				// Scale to fit with skeletonVisual
+				fancyAxes.resize( modelBounds.getDiagonal(), 1.5, 1 );
+				//  Position next to skeletonVisual
+				unitAAB.setXMinimum( modelBounds.getXMaximum() );
+				unitAAB.setXMaximum( modelBounds.getXMaximum() + 1 );
 			}
 		}
 	}
@@ -33,8 +60,16 @@ public class SkeletonVisualViewer extends Viewer {
 	public void positionAndOrientCamera() {
 		final AxisAlignedBox boundingBox = skeletonVisual.getAxisAlignedMinimumBoundingBox();
 		final Point3 center = boundingBox.getCenter();
-		double height = boundingBox.getHeight();
-		getCamera().setTransformation(getScene().createOffsetStandIn( -2 * height, height, 0));
-		getCamera().setOrientationOnlyToPointAt(getScene().createOffsetStandIn(0, center.y, 0));
+		double diagonal = boundingBox.getDiagonal();
+		getCamera().setTransformation( getScene().createOffsetStandIn( -2 * diagonal, diagonal, -diagonal  ) );
+		getCamera().setOrientationOnlyToPointAt( getScene().createOffsetStandIn(0, center.y, 0 ) );
+	}
+
+	public void setShowUnitBox( Boolean showBox ) {
+		unitBox.setBox( showBox ? unitAAB : zeroAAB );
+	}
+
+	public void setShowAxes( Boolean showAxes ) {
+		fancyAxes.setOpacity( showAxes ? 0.4f : 0 );
 	}
 }
