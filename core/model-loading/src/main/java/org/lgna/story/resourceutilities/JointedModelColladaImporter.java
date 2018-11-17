@@ -344,7 +344,11 @@ public class JointedModelColladaImporter {
 			sgMesh = new Mesh();
 		}
         sgMesh.setName(geometry.getName());
-        sgMesh.normalBuffer.setValue(Buffers.newDirectFloatBuffer(geometry.getMesh().getNormalData()));
+		final float[] normals = geometry.getMesh().getNormalData();
+		if (normals == null) {
+			throw new ModelLoadingException( "No normal data found in model." );
+		}
+		sgMesh.normalBuffer.setValue( Buffers.newDirectFloatBuffer( normals ));
         float[] vertexData = geometry.getMesh().getPositionData();
         double[] doubleVertexData = new double[vertexData.length];
         for (int i=0; i<vertexData.length; i++) {
