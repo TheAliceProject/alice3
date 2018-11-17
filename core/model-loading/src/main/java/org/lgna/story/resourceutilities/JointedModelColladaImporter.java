@@ -716,6 +716,8 @@ public class JointedModelColladaImporter {
 			colladaModel = Collada.readFile( colladaModelFile.getAbsolutePath() );
 		} catch( SAXException | IOException e ) {
 			throw new ModelLoadingException("Failed to load collada file "+colladaModelFile, e);
+		} catch( ClassCastException e ) {
+			throw new ModelLoadingException("Failed to load collada file " + colladaModelFile + ".\nIf there are nested animations they should be removed.", e);
 		}
 		colladaModel.deindexMeshes();
 		return colladaModel;
