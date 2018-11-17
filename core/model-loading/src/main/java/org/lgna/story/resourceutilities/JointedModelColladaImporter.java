@@ -352,10 +352,9 @@ public class JointedModelColladaImporter {
         }
         sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(doubleVertexData) );
         final float[] coordData = geometry.getMesh().getTexCoordData();
-        if (coordData == null)
-				{
-					throw new ModelLoadingException( "No texture coordinate data found in model." );
-				}
+        if (coordData == null) {
+			throw new ModelLoadingException( "No texture coordinate data found in model." );
+		}
         sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
         
         //Find the triangle data and use it to set the index data
@@ -499,8 +498,13 @@ public class JointedModelColladaImporter {
 							throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not found.");
 						}
 						bufferedImage = ImageUtilities.read( imageFile );
+						if (bufferedImage == null) {
+							throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not readable.");
+						}
 					} catch( IOException e) {
 						throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+" not found.", e);
+					} catch( RuntimeException e) {
+						throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+".\n" + e.getMessage(), e);
 					}
 					TexturedAppearance m_sgAppearance = new TexturedAppearance();
 					m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
