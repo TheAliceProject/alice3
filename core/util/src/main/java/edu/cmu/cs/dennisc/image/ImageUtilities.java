@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.image;
 
+import com.sun.media.jai.codec.ByteArraySeekableStream;
 import edu.cmu.cs.dennisc.java.awt.Painter;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -51,6 +52,7 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
+import javax.media.jai.PlanarImage;
 import javax.swing.filechooser.FileFilter;
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
@@ -74,6 +76,11 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 
+import com.sun.media.jai.codec.SeekableStream;
+import com.sun.media.jai.codec.ImageDecoder;
+import com.sun.media.jai.codec.ImageCodec;
+
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,10 +89,10 @@ public class ImageUtilities {
 	public static final String JPEG_CODEC_NAME = "jpeg";
 	public static final String BMP_CODEC_NAME = "bmp";
 	public static final String GIF_CODEC_NAME = "gif";
-	//	public static final String TIFF_CODEC_NAME = "tiff";
+	public static final String TIFF_CODEC_NAME = "tiff";
 	public static final String TGA_CODEC_NAME = "tga";
 
-	private static final String[] s_codecNames = { PNG_CODEC_NAME, JPEG_CODEC_NAME, BMP_CODEC_NAME, GIF_CODEC_NAME, /* TIFF_CODEC_NAME, */TGA_CODEC_NAME };
+	private static final String[] s_codecNames = { PNG_CODEC_NAME, JPEG_CODEC_NAME, BMP_CODEC_NAME, GIF_CODEC_NAME, TIFF_CODEC_NAME, TGA_CODEC_NAME };
 	private static final Map<String, String[]> s_codecNameToExtensionsMap;
 	private static final Map<String, String> s_extensionToCodecNameMap;
 
@@ -94,14 +101,14 @@ public class ImageUtilities {
 		String[] jpegExtensions = { "jpeg", "jpg" };
 		String[] bmpExtensions = { "bmp" };
 		String[] gifExtensions = { "gif" };
-		// String[] tiffExtensions = { "tiff", "tif" };
+		String[] tiffExtensions = { "tiff", "tif" };
 		String[] tgaExtensions = { "tga" };
 		s_codecNameToExtensionsMap = Maps.newHashMap();
 		s_codecNameToExtensionsMap.put( PNG_CODEC_NAME, pngExtensions );
 		s_codecNameToExtensionsMap.put( JPEG_CODEC_NAME, jpegExtensions );
 		s_codecNameToExtensionsMap.put( BMP_CODEC_NAME, bmpExtensions );
 		s_codecNameToExtensionsMap.put( GIF_CODEC_NAME, gifExtensions );
-		//s_codecNameToExtensionsMap.put(TIFF_CODEC_NAME, tiffExtensions);
+		s_codecNameToExtensionsMap.put(TIFF_CODEC_NAME, tiffExtensions);
 		s_codecNameToExtensionsMap.put( TGA_CODEC_NAME, tgaExtensions );
 
 		s_extensionToCodecNameMap = Maps.newHashMap();
@@ -181,15 +188,8 @@ public class ImageUtilities {
 		String extension = FileUtilities.getExtension( file );
 		String codecName = getCodecNameForExtension( extension );
 		if( codecName != null ) {
-			try {
-				BufferedImage rv;
-				FileInputStream fis = new FileInputStream( file );
-				try {
-					rv = read( codecName, fis, imageReadParam );
-				} finally {
-					fis.close();
-				}
-				return rv;
+			try (FileInputStream fis = new FileInputStream( file )) {
+				return read( codecName, fis, imageReadParam );
 			} catch( RuntimeException re ) {
 				PrintUtilities.println( FileUtilities.getCanonicalPathIfPossible( file ) );
 				PrintUtilities.accessPrintStream().flush();
@@ -236,13 +236,34 @@ public class ImageUtilities {
 		} else {
 			bufferedInputStream = new BufferedInputStream( inputStream );
 		}
-		if( codecName.equals( TGA_CODEC_NAME ) ) {
+		switch (codecName) {
+		case TGA_CODEC_NAME:
 			return TgaUtilities.readTGA( bufferedInputStream );
-			//		} else if (codecName.equals(TIFF_CODEC_NAME)) {
-			//			return readTIFF(bufferedInputStream, null);
-		} else {
+		case TIFF_CODEC_NAME:
+			return readTIFF( bufferedInputStream );
+		default:
 			return ImageIO.read( bufferedInputStream );
 		}
+	}
+
+	private static BufferedImage readTIFF( BufferedInputStream inputStream ) throws IOException {
+		byte[] data = readBufferIntoArray(inputStream);
+		SeekableStream seekableStream = new ByteArraySeekableStream( data );
+		String[] names = ImageCodec.getDecoderNames(seekableStream);
+		ImageDecoder dec = ImageCodec.createImageDecoder(names[0], seekableStream, null);
+		RenderedImage im = dec.decodeAsRenderedImage();
+		return PlanarImage.wrapRenderedImage( im).getAsBufferedImage();
+	}
+
+	private static byte[] readBufferIntoArray( BufferedInputStream stream ) throws IOException {
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		int nRead;
+		byte[] data = new byte[1024];
+		while ((nRead = stream.read( data, 0, data.length )) != -1) {
+			buffer.write( data, 0, nRead );
+		}
+		buffer.flush();
+		return buffer.toByteArray();
 	}
 
 	public static void write( String path, Image image ) throws IOException {
