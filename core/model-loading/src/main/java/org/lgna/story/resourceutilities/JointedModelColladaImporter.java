@@ -547,6 +547,10 @@ public class JointedModelColladaImporter {
 	private Image getColladaImageForMaterial( Material material, Collada colladaModel ) {
 		InstanceEffect ie = material.getInstanceEffect();
 		Effect effect = colladaModel.findEffect( ie.getUrl() );
+		if (effect == null) {
+			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect found for url '"+ie.getUrl()+"'");
+			return null;
+		}
 		if (effect.getEffectMaterial() == null) {
 			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect material found for '"+effect.getId()+"'");
 			return null;
