@@ -43,8 +43,7 @@
 package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
 import org.alice.stageide.StageIDE;
 import org.lgna.croquet.history.UserActivity;
@@ -91,10 +90,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 					this.save( application, fileNext );
 				} catch( IOException ioe ) {
 					isExceptionRaised = true;
-					new OkDialog.Builder( ioe.getMessage() )
-							.title( "Unable to save file" )
-							.messageType( MessageType.ERROR )
-							.buildAndShow();
+					Dialogs.showError( "Unable to save file", ioe.getMessage() );
 				}
 				if ( !isExceptionRaised ) {
 					activity.finish();

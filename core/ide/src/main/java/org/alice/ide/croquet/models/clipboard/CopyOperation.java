@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.clipboard;
 
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
 import java.util.UUID;
@@ -69,8 +69,6 @@ public class CopyOperation extends InconsequentialActionOperation {
 		String modifierId = SystemUtilities.isMac() ? "alt" : "control";
 		String modifier = findLocalizedText( modifierId );
 		String content = String.format( findLocalizedText( "content"), modifier, modifier );
-		new OkDialog.Builder( content )
-				.title( findLocalizedText( "title" ) )
-				.buildAndShow();
+		Dialogs.showInfo( findLocalizedText( "title" ), content );
 	}
 }

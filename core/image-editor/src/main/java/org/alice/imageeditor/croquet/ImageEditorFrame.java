@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.javax.swing.DocumentUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.imageeditor.croquet.views.ImageEditorPane;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
@@ -114,16 +114,13 @@ public class ImageEditorFrame extends FrameCompositeWithInternalIsShowingState<I
 						if( file.isDirectory() ) {
 							rootDirectoryState.setValueTransactionlessly( file.getAbsolutePath() );
 						} else {
-							new OkDialog.Builder( "file is not a directory" )
-									.buildAndShow();
+							Dialogs.showInfo( "file is not a directory" );
 						}
 					} else {
-						new OkDialog.Builder( "file does not exist" )
-								.buildAndShow();
+						Dialogs.showInfo( "file does not exist" );
 					}
 				} else {
-					new OkDialog.Builder( "file is null" )
-							.buildAndShow();
+					Dialogs.showInfo( "file is null" );
 				}
 				return null;
 			} else {

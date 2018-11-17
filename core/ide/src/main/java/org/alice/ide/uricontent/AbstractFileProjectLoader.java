@@ -42,8 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.uricontent;
 
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.ProjectApplication;
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
@@ -58,7 +57,7 @@ import java.util.zip.ZipFile;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractFileProjectLoader extends UriProjectLoader {
-	public AbstractFileProjectLoader( File file ) {
+	AbstractFileProjectLoader( File file ) {
 		this.file = file;
 	}
 
@@ -72,42 +71,19 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 			final Locale locale = Locale.ENGLISH;
 			String lcFilename = file.getName().toLowerCase( locale );
 			if( lcFilename.endsWith( ".a2w" ) ) {
-				new OkDialog.Builder( "Alice3 does not load Alice2 worlds" )
-						.title( "Cannot read file" )
-						.messageType( MessageType.ERROR )
-						.buildAndShow();
+				Dialogs.showError( "Cannot read file",
+								   "Alice3 does not load Alice2 worlds" );
 			} else if( lcFilename.endsWith( IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) ) ) {
-				new OkDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + IoUtilities.PROJECT_EXTENSION + " extension." )
-						.title( "Incorrect File Type" )
-						.messageType( MessageType.ERROR )
-						.buildAndShow();
+				Dialogs.showError( "Incorrect File Type",
+								   file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + IoUtilities.PROJECT_EXTENSION + " extension." );
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) );
-				ZipFile zipFile;
 				try {
-					zipFile = new ZipFile( file );
+					ZipFile zipFile = new ZipFile( file );
+					return IoUtilities.readProject( zipFile );
+				} catch( VersionNotSupportedException vnse ) {
+					ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
 				} catch( IOException ioe ) {
-					if( isWorthyOfException ) {
-						throw new RuntimeException( file.getAbsolutePath(), ioe );
-					} else {
-						ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, false );
-						zipFile = null;
-					}
-				}
-				if( zipFile != null ) {
-					try {
-						return IoUtilities.readProject( zipFile );
-					} catch( VersionNotSupportedException vnse ) {
-						ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
-					} catch( IOException ioe ) {
-						if( isWorthyOfException ) {
-							throw new RuntimeException( file.getAbsolutePath(), ioe );
-						} else {
-							ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, true );
-						}
-					}
-				} else {
-					//actionContext.cancel();
+					ProjectApplication.getActiveInstance().showUnableToOpenFileDialog( file, "" );
 				}
 			}
 		} else {

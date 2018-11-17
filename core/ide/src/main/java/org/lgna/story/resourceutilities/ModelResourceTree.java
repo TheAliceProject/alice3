@@ -43,7 +43,7 @@
 package org.lgna.story.resourceutilities;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.tweedle.file.ModelManifest;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
@@ -88,7 +88,7 @@ public class ModelResourceTree {
 	private ManifestDefinedGalleryTreeNode addUserModel( ModelManifest userModel ){
 		TypeDefinedGalleryTreeNode parentNode = dynamicResources.get( userModel.parentClass );
 		if (parentNode == null) {
-			new OkDialog.Builder( "Unable to find parent class " + userModel.parentClass ).buildAndShow();
+			Dialogs.showInfo( "Unable to find parent class " + userModel.parentClass );
 		}
 
 		ManifestDefinedGalleryTreeNode manifestNode = new ManifestDefinedGalleryTreeNode(userModel);

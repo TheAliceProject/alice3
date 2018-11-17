@@ -52,7 +52,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.croquet.models.help.AbstractLoginComposite;
 import org.alice.ide.croquet.models.help.LogInOutComposite;
 import org.alice.ide.croquet.models.help.LogInOutListener;
@@ -140,8 +140,7 @@ public class UploadComposite extends WizardPageComposite<UploadView, ExportToYou
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
 				} catch( IOException ioe ) {
-					new OkDialog.Builder( "cannot export file: " + exportFile )
-							.buildAndShow();
+					Dialogs.showWarning( "cannot export file: " + exportFile );
 				}
 			}
 			return null;

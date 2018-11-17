@@ -45,8 +45,7 @@ package org.alice.ide.codedrop;
 
 import edu.cmu.cs.dennisc.java.awt.GraphicsUtilities;
 import edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.code.EnvelopStatementsOperation;
@@ -76,7 +75,6 @@ import org.lgna.croquet.AbstractDropReceptor;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
-import org.lgna.croquet.Operation;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.DragStep;
 import org.lgna.croquet.views.AwtComponentView;
@@ -361,10 +359,7 @@ public abstract class CodePanelWithDropReceptor extends BorderPanel {
 									sb.append( "<p><p>For more information on recursion see the Window -> Preferences menu." );
 								}
 								sb.append( "</html>" );
-								new OkDialog.Builder( sb.toString() )
-										.title( "Recursion is disabled." )
-										.messageType( MessageType.INFORMATION )
-										.buildAndShow();
+								Dialogs.showInfo( "Recursion is disabled.", sb.toString() );
 								return null;
 							}
 						}

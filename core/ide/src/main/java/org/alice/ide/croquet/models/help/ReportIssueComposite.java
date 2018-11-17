@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.help;
 
 import edu.cmu.cs.dennisc.issue.IssueType;
-import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.browser.ImmutableBrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
@@ -164,9 +164,9 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		if( this.attachmentState.getValue() != null ) {
 			rv = true;
 		} else {
-			YesNoCancelResult result = new YesNoCancelDialog.Builder( "Is your current project relevant to this issue report?" )
-					.title( "Attach current project?" )
-					.buildAndShow();
+			YesNoCancelResult result =
+				Dialogs.confirmOrCancel( "Attach current project?",
+										 "Is your current project relevant to this issue report?" );
 			if( result == YesNoCancelResult.YES ) {
 				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
 				rv = true;

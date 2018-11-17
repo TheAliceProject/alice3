@@ -43,10 +43,10 @@
 package org.alice.ide.croquet.models.information;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import java.util.UUID;
 
 /**
@@ -69,9 +69,8 @@ public class RestartRequiredOperation extends InconsequentialActionOperation {
 
 	@Override
 	protected void performInternal() {
-		new OkDialog.Builder( "Exiting and restarting Alice is required." )
-				.title( "Restart Is Required" )
-				.icon( TWEEDLEDUM_AND_TWEEDLEDEE_ICON )
-				.buildAndShow();
+		Dialogs.showInfo( "Restart Is Required",
+						  "Exiting and restarting Alice is required.",
+						  TWEEDLEDUM_AND_TWEEDLEDEE_ICON );
 	}
 }

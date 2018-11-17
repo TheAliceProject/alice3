@@ -1,7 +1,7 @@
 package org.alice.ide.resource.manager;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
@@ -61,9 +61,8 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 			return colladaImporter.loadSkeletonVisual();
 
 		} catch (ModelLoadingException e) {
-			new OkDialog.Builder( e.getLocalizedMessage() + "\n" + findLocalizedText( "tryAgain" ) )
-					.title( findLocalizedText( "title" ) )
-					.buildAndShow();
+			Dialogs.showInfo( findLocalizedText( "title" ),
+							  e.getLocalizedMessage() + "\n" + findLocalizedText( "tryAgain" ) );
 			throw new CancelException( e.getLocalizedMessage() );
 		}
 	}

@@ -43,7 +43,7 @@
 package org.alice.imageeditor.croquet;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.SingleThreadIteratingOperation;
@@ -97,8 +97,7 @@ public final class SaveOperation extends SingleThreadIteratingOperation {
 						rv = null;
 					}
 				} else {
-					new OkDialog.Builder( "Please select a file" )
-							.buildAndShow();
+					Dialogs.showInfo( "Please select a file" );
 					throw new CancelException();
 				}
 			} else {

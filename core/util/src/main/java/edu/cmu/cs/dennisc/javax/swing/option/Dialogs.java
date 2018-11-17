@@ -42,72 +42,64 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import edu.cmu.cs.dennisc.javax.swing.WindowStack;
+
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
-import java.awt.Component;
+import java.awt.EventQueue;
 
-/**
- * @author Dennis Cosgrove
- */
-public class YesNoCancelDialog extends OptionDialog {
-	public static class Builder {
-		public Builder( String message ) {
-			this.message = message;
-		}
-
-		public Builder( Component message ) {
-			this.message = message;
-		}
-
-		public Builder parentComponent( Component parentComponent ) {
-			this.parentComponent = parentComponent;
-			return this;
-		}
-
-		public Builder title( String title ) {
-			this.title = title;
-			return this;
-		}
-
-		public Builder messageType( MessageType messageType ) {
-			this.messageType = messageType;
-			return this;
-		}
-
-		public Builder icon( Icon icon ) {
-			this.icon = icon;
-			return this;
-		}
-
-		private YesNoCancelDialog build() {
-			return new YesNoCancelDialog( this );
-		}
-
-		public YesNoCancelResult buildAndShow() {
-			return this.build().show();
-		}
-
-		private Component parentComponent;
-		private Object message;
-		private String title;
-		private MessageType messageType = MessageType.QUESTION;
-		private Icon icon;
+public class Dialogs {
+	private Dialogs() {
 	}
 
-	private YesNoCancelDialog( Builder builder ) {
-		super( builder.parentComponent );
-		this.message = builder.message;
-		this.title = builder.title;
-		this.messageType = builder.messageType;
-		this.icon = builder.icon;
+	public static boolean confirm( String title, String message ) {
+		// TODO ensure this is run on DispatchThread
+		return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION );
 	}
 
-	public YesNoCancelResult show() {
-		return YesNoCancelResult.getInstance( JOptionPane.showConfirmDialog( this.getParentComponent(), this.message, this.title, JOptionPane.YES_NO_CANCEL_OPTION, this.messageType.getInternal(), this.icon ) );
+	public static boolean confirmWithWarning( String title, String message ) {
+		// TODO ensure this is run on DispatchThread
+		return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE );
 	}
 
-	private final Object message;
-	private final String title;
-	private final MessageType messageType;
-	private final Icon icon;
+	public static YesNoCancelResult confirmOrCancel( String title, String message ) {
+		// TODO ensure this is run on DispatchThread
+		return YesNoCancelResult.getInstance( JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_CANCEL_OPTION) );
+	}
+
+	public static void showError( String title, String message ) {
+		showMessageDialog( title, message, JOptionPane.ERROR_MESSAGE, null );
+	}
+
+	public static void showWarning( String title, String message ) {
+		showMessageDialog( title, message, JOptionPane.WARNING_MESSAGE, null );
+	}
+
+	public static void showWarning( String message ) {
+		showWarning( "", message );
+	}
+
+	public static void showInfo( String title, String message, Icon icon ) {
+		showMessageDialog( title, message, JOptionPane.INFORMATION_MESSAGE, icon );
+	}
+
+	public static void showInfo( String title, String message ) {
+		showMessageDialog( title, message, JOptionPane.INFORMATION_MESSAGE, null );
+	}
+
+	public static void showInfo( String message ) {
+		showInfo( "", message );
+	}
+
+	private static void showMessageDialog( String title, String message, int messageType, Icon icon ) {
+		show( () -> JOptionPane.showMessageDialog( WindowStack.peek(), message, title, messageType, icon ) );
+	}
+
+	private static void show(Runnable showDialog) {
+		if( EventQueue.isDispatchThread()) {
+			showDialog.run();
+		} else {
+			EventQueue.invokeLater( showDialog );
+		}
+	}
 }

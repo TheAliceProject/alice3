@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.ast;
 
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.IDE;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NodeListProperty;
@@ -120,8 +120,7 @@ public class DeleteMethodOperation extends DeleteMemberOperation<UserMethod> {
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			new OkDialog.Builder( sb.toString() )
-					.buildAndShow();
+			Dialogs.showInfo( sb.toString() );
 			return false;
 		} else {
 			return true;

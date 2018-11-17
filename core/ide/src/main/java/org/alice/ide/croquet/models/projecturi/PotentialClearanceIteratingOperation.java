@@ -44,7 +44,7 @@ package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
 import org.alice.ide.ProjectApplication;
 import org.lgna.croquet.CancelException;
@@ -70,9 +70,8 @@ public abstract class PotentialClearanceIteratingOperation extends Operation {
 		ProjectApplication application = ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
 		if (!application.isProjectUpToDateWithFile()) {
-			YesNoCancelResult result = new YesNoCancelDialog.Builder( findLocalizedText("message") )
-					.title( findLocalizedText("title") )
-					.buildAndShow();
+			YesNoCancelResult result =
+				Dialogs.confirmOrCancel( findLocalizedText( "title"), findLocalizedText( "message") );
 			if( result == YesNoCancelResult.CANCEL ) {
 				throw new CancelException();
 			}

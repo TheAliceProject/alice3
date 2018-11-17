@@ -44,7 +44,7 @@ package org.alice.ide.browser;
 
 import edu.cmu.cs.dennisc.browser.BrowserUtilities;
 import edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.issue.croquet.AnomalousSituationComposite;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
@@ -70,8 +70,8 @@ public abstract class BrowserOperation extends InconsequentialActionOperation {
 				BrowserUtilities.browse( url );
 			} catch( Exception e ) {
 				ClipboardUtilities.setClipboardContents( url.toString() );
-				new OkDialog.Builder( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." )
-						.buildAndShow();
+				Dialogs
+					.showInfo( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
 			}
 		} else {
 			StringBuilder sbDescription = new StringBuilder();

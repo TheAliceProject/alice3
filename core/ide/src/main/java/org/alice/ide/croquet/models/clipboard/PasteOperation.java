@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.clipboard;
 
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.operations.InconsequentialActionOperation;
 
 import java.util.UUID;
@@ -65,8 +65,6 @@ public class PasteOperation extends InconsequentialActionOperation {
 
 	@Override
 	protected void performInternal() {
-		new OkDialog.Builder( findLocalizedText( "content" ) )
-				.title( findLocalizedText( "title" ) )
-				.buildAndShow();
+		Dialogs.showInfo( findLocalizedText( "title" ), findLocalizedText( "content" ) );
 	}
 }

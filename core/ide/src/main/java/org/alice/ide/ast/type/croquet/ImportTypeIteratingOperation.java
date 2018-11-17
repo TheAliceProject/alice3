@@ -43,7 +43,7 @@
 package org.alice.ide.ast.type.croquet;
 
 import edu.cmu.cs.dennisc.javax.swing.icons.LineAxisIcon;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.icons.Icons;
 import org.alice.stageide.StageIDE;
@@ -114,13 +114,13 @@ public final class ImportTypeIteratingOperation extends SingleThreadIteratingOpe
 					if( srcType != null ) {
 						return new ImportTypeWizard( file.toURI(), importedType, importedResources, srcType, this.dstType ).getLaunchOperation();
 					} else {
-						new OkDialog.Builder( "Cannot find class " + this.dstType.getName() + " in " + file ).buildAndShow();
+						Dialogs.showInfo( "Cannot find class " + this.dstType.getName() + " in " + file );
 						return null;
 					}
 				} catch( IOException ioe ) {
-					new OkDialog.Builder( "Unable to read " + file.getName() ).buildAndShow();
+					Dialogs.showInfo( "Unable to read " + file.getName() );
 				} catch( VersionNotSupportedException vnse ) {
-					new OkDialog.Builder( "version not supported " + vnse.getVersion() ).buildAndShow();
+					Dialogs.showInfo( "version not supported " + vnse.getVersion() );
 				}
 				return null;
 			} else {
