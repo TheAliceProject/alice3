@@ -46,8 +46,7 @@ package org.alice.ide;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
@@ -55,6 +54,7 @@ import org.alice.ide.uricontent.FileProjectLoader;
 import org.alice.ide.uricontent.UriContentLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
 import org.lgna.croquet.history.UserActivity;
@@ -70,7 +70,6 @@ import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
-import org.lgna.project.io.IoUtilities;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -187,10 +186,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		sb.append( FileUtilities.getCanonicalPathIfPossible( file ) );
 		sb.append( ".\n\n" );
 		sb.append( message );
-		new OkDialog.Builder( sb.toString() )
-				.title( "Cannot read file" )
-				.messageType( MessageType.ERROR )
-				.buildAndShow();
+		Dialogs.showError( "Cannot read file", sb.toString() );
 	}
 
 	public void handleVersionNotSupported( File file, VersionNotSupportedException vnse ) {
@@ -202,14 +198,6 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		sb.append( "\n    (Minimum Supported Version: " );
 		sb.append( vnse.getMinimumSupportedVersion() );
 		sb.append( ")" );
-		this.showUnableToOpenFileDialog( file, sb.toString() );
-	}
-
-	public void showUnableToOpenProjectMessageDialog( File file, boolean isValidZip ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Look for files with an " );
-		sb.append( IoUtilities.PROJECT_EXTENSION );
-		sb.append( " extension." );
 		this.showUnableToOpenFileDialog( file, sb.toString() );
 	}
 
@@ -225,40 +213,36 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 
 	private void setUriProjectPair( UriProjectLoader uriProjectLoader ) {
 		this.uriProjectLoader = null;
-		Project project;
-		if( uriProjectLoader != null ) {
-			try {
-				project = uriProjectLoader.getContentWaitingIfNecessary( UriContentLoader.MutationPlan.WILL_MUTATE );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			} catch( ExecutionException ee ) {
-				throw new RuntimeException( ee );
-			}
-		} else {
-			project = null;
+		if ( uriProjectLoader == null ) {
+			return;
 		}
-		if( project != null ) {
-			// Remove the old project history listener, so the old project can be cleaned up
-			if( ( this.getProject() != null ) && ( this.getProjectHistory() != null ) ) {
-				this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
-			}
-			this.setProject( project );
-			this.uriProjectLoader = uriProjectLoader;
-			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
-			URI uri = this.uriProjectLoader.getUri();
-			File file = UriUtilities.getFile( uri );
-			try {
-				if( ( file != null ) && file.canWrite() ) {
-					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
-					RecentProjectsListData.getInstance().handleOpen( file );
-				}
-			} catch( Throwable throwable ) {
-				throwable.printStackTrace();
-			}
-			this.updateTitle();
-		} else {
-			//actionContext.cancel();
+		Project project = null;
+		try {
+			project = uriProjectLoader.getContentWaitingIfNecessary( UriContentLoader.MutationPlan.WILL_MUTATE );
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
+		if( project == null ) {
+			throw new CancelException("No project loaded." );
+		}
+
+		// Remove the old project history listener, so the old project can be cleaned up
+		if( ( this.getProject() != null ) && ( this.getProjectHistory() != null ) ) {
+			this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
+		}
+		this.setProject( project );
+		this.uriProjectLoader = uriProjectLoader;
+		this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
+		URI uri = this.uriProjectLoader.getUri();
+		File file = UriUtilities.getFile( uri );
+		try {
+			if( ( file != null ) && file.canWrite() ) {
+				RecentProjectsListData.getInstance().handleOpen( file );
+			}
+		} catch( Throwable throwable ) {
+			throwable.printStackTrace();
+		}
+		this.updateTitle();
 	}
 
 	@Deprecated
@@ -389,10 +373,7 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 			}
 		}
 		if( sb.length() > 0 ) {
-			new OkDialog.Builder( sb.toString() )
-					.title( "A Problem With Your Project Has Been Fixed" )
-					.messageType( MessageType.WARNING )
-					.buildAndShow();
+			Dialogs.showWarning( "A Problem With Your Project Has Been Fixed", sb.toString() );
 		}
 		ProgramTypeUtilities.sanityCheckAllTypes( project );
 		this.setDocument( new ProjectDocument( project, newProjectActivity() ) );

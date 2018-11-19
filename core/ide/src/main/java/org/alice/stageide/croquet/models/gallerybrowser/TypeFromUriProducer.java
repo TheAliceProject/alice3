@@ -43,8 +43,7 @@
 package org.alice.stageide.croquet.models.gallerybrowser;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import org.alice.ide.IDE;
 import org.alice.ide.ProjectApplication;
@@ -93,10 +92,7 @@ public class TypeFromUriProducer extends UriCreator<NamedUserType> {
 		sb.append( ".\n\nLook for files with an " );
 		sb.append( IoUtilities.TYPE_EXTENSION );
 		sb.append( " extension." );
-		new OkDialog.Builder( sb.toString() )
-				.title( "Cannot read file" )
-				.messageType( MessageType.ERROR )
-				.buildAndShow();
+		Dialogs.showError( "Cannot read file", sb.toString() );
 	}
 
 	@Override
@@ -104,15 +100,10 @@ public class TypeFromUriProducer extends UriCreator<NamedUserType> {
 		final Locale locale = Locale.ENGLISH;
 		String lcName = file.getName().toLowerCase( locale );
 		if( lcName.endsWith( ".a2c" ) ) {
-			new OkDialog.Builder( "Alice3 does not load Alice2 characters" )
-					.title( "Incorrect File Type" )
-					.messageType( MessageType.ERROR )
-					.buildAndShow();
+			Dialogs.showError( "Incorrect File Type", "Alice3 does not load Alice2 characters" );
 		} else if( lcName.endsWith( IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) ) ) {
-			new OkDialog.Builder( file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + IoUtilities.TYPE_EXTENSION + " extension." )
-					.title( "Incorrect File Type" )
-					.messageType( MessageType.ERROR )
-					.buildAndShow();
+			Dialogs.showError( "Incorrect File Type",
+							   file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + IoUtilities.TYPE_EXTENSION + " extension."  );
 		} else {
 			boolean isWorthyOfException = lcName.endsWith( IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) );
 			ZipFile zipFile;

@@ -45,8 +45,7 @@ package org.lgna.croquet.importer;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Sets;
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.lgna.croquet.Application;
 
 import java.io.File;
@@ -86,13 +85,7 @@ public abstract class Importer<T> {
 					return this.createFromFile( file );
 				} catch( IOException ioe ) {
 					ioe.printStackTrace();
-					StringBuilder sb = new StringBuilder();
-					sb.append( "Unable to import: " );
-					sb.append( file.getAbsolutePath() );
-					new OkDialog.Builder( sb.toString() )
-							.title( "Exception Thrown" )
-							.messageType( MessageType.ERROR )
-							.buildAndShow();
+					Dialogs.showError( "Exception Thrown", "Unable to import: " + file.getAbsolutePath() );
 					return null;
 				}
 			} else {
@@ -107,10 +100,7 @@ public abstract class Importer<T> {
 					prefix = ", ";
 				}
 				sb.append( " }." );
-				new OkDialog.Builder( sb.toString() )
-						.title( "Content Type Not Supported" )
-						.messageType( MessageType.ERROR )
-						.buildAndShow();
+				Dialogs.showError( "Content Type Not Supported", sb.toString() );
 				return null;
 			}
 		} else {

@@ -42,8 +42,7 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.lgna.croquet.history.UserActivity;
 
 import java.awt.Component;
@@ -73,10 +72,7 @@ public abstract class FileDialogOperation extends Operation {
 				this.handleFile( file );
 				userActivity.finish();
 			} catch( IOException ioe ) {
-				new OkDialog.Builder( ioe.getMessage() )
-						.title( this.getImp().getName() )
-						.messageType( MessageType.ERROR )
-						.buildAndShow();
+				Dialogs.showError( getImp().getName(), ioe.getMessage() );
 				userActivity.cancel();
 			} catch( CancelException ce ) {
 				userActivity.cancel();

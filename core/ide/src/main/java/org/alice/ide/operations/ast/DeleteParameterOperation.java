@@ -44,9 +44,7 @@ package org.alice.ide.operations.ast;
 
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
-import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
-import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.edits.ast.DeleteParameterEdit;
@@ -104,8 +102,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					sb.append( "accesses" );
 				}
 				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
-				new OkDialog.Builder( sb.toString() )
-						.buildAndShow();
+				Dialogs.showInfo( sb.toString() );
 				activity.cancel();
 			} else {
 				if( N_INVOCATIONS > 0 ) {
@@ -133,12 +130,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					YesNoCancelResult result = new YesNoCancelDialog.Builder( sb.toString() )
-							.title( "Delete Parameter" )
-							.buildAndShow();
-					if( result == YesNoCancelResult.YES ) {
-						//pass
-					} else {
+					if ( !Dialogs.confirm( "Delete Parameter", sb.toString() ) ) {
 						activity.cancel();
 					}
 				}

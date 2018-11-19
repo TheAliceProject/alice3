@@ -43,7 +43,7 @@
 package org.alice.ide.croquet.models.print;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.IDE;
 import org.alice.ide.declarationseditor.DeclarationComposite;
 import org.alice.ide.declarationseditor.components.DeclarationView;
@@ -80,9 +80,8 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 		if( printable != null ) {
 			return printable;
 		} else {
-			new OkDialog.Builder( "Print not supported for " + declarationComposite )
-					.title( "Print not supported" )
-					.buildAndShow();
+			Dialogs.showInfo( "Print not supported",
+							  "Print not supported for " + declarationComposite );
 			Logger.todo( "print not supported for:", declarationComposite );
 			return null;
 		}

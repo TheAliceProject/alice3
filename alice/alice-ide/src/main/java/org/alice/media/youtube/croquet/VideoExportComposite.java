@@ -46,7 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.video.preview.VideoComposite;
 import org.alice.media.youtube.croquet.views.ExportVideoView;
 import org.alice.stageide.StageIDE;
@@ -88,8 +88,7 @@ public class VideoExportComposite extends WizardPageComposite<ExportVideoView, E
 				try {
 					FileUtilities.copyFile( getOwner().getTempRecordedVideoFile(), exportFile );
 				} catch( IOException ioe ) {
-					new OkDialog.Builder( "cannot export file: " + exportFile )
-							.buildAndShow();
+					Dialogs.showWarning( "cannot export file: " + exportFile );
 				}
 			}
 			return null;

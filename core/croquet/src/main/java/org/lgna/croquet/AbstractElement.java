@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
@@ -96,13 +96,13 @@ public abstract class AbstractElement implements Element {
 					if ( cls != this.getClass() ) {
 						String clipboardContents = "java.util.UUID.fromString( \"" + migrationId + "\" )";
 						ClipboardUtilities.setClipboardContents( clipboardContents );
-						new OkDialog.Builder( "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates." ).buildAndShow();
+						Dialogs.showInfo( "WARNING: duplicate migrationId.\n\"" + clipboardContents + "\" has been copied to clipboard.\nRemove all duplicates." );
 					}
 				} else {
 					mapMigrationIdToCls.put( migrationId, this.getClass() );
 				}
 			} else {
-				new OkDialog.Builder( "migrationId is null for " + this + " " + this.getClass() ).buildAndShow();
+				Dialogs.showInfo( "migrationId is null for " + this + " " + this.getClass() );
 			}
 		}
 	}

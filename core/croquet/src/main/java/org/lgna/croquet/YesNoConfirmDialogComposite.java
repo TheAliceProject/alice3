@@ -42,8 +42,6 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.YesNoResult;
 import org.lgna.croquet.views.Panel;
 
 import java.util.UUID;
@@ -51,17 +49,11 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class YesNoConfirmDialogComposite<V extends Panel> extends SingleValueCreatorInputDialogCoreComposite<V, YesNoResult> {
-	private final MessageType messageType;
+public abstract class YesNoConfirmDialogComposite<V extends Panel> extends SingleValueCreatorInputDialogCoreComposite<V, Boolean> {
 	private String title;
 
-	public YesNoConfirmDialogComposite( UUID migrationId, MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-	}
-
 	public YesNoConfirmDialogComposite( UUID migrationId ) {
-		this( migrationId, MessageType.QUESTION );
+		super( migrationId );
 	}
 
 	@Override
@@ -71,7 +63,7 @@ public abstract class YesNoConfirmDialogComposite<V extends Panel> extends Singl
 	}
 
 	@Override
-	protected YesNoResult createValue() {
+	protected Boolean createValue() {
 		return null;
 	}
 

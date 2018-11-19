@@ -46,8 +46,7 @@ import edu.cmu.cs.dennisc.crash.CrashDetector;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 import edu.cmu.cs.dennisc.java.util.Sets;
-import edu.cmu.cs.dennisc.javax.swing.option.MessageType;
-import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.pattern.Crawler;
 import edu.cmu.cs.dennisc.pattern.Criterion;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
@@ -332,10 +331,7 @@ public abstract class IDE extends ProjectApplication {
 				Set<UserField> alreadyMovedFields = Sets.newHashSet();
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
-					new OkDialog.Builder( message )
-							.title( "Unable to Recover" )
-							.messageType( MessageType.ERROR )
-							.buildAndShow();
+					Dialogs.showError( "Unable to Recover", message );
 				}
 			}
 		}
