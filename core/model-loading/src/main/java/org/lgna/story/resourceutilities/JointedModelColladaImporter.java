@@ -344,7 +344,11 @@ public class JointedModelColladaImporter {
 			sgMesh = new Mesh();
 		}
         sgMesh.setName(geometry.getName());
-        sgMesh.normalBuffer.setValue(Buffers.newDirectFloatBuffer(geometry.getMesh().getNormalData()));
+		final float[] normals = geometry.getMesh().getNormalData();
+		if (normals == null) {
+			throw new ModelLoadingException( "No normal data found in model." );
+		}
+		sgMesh.normalBuffer.setValue( Buffers.newDirectFloatBuffer( normals ));
         float[] vertexData = geometry.getMesh().getPositionData();
         double[] doubleVertexData = new double[vertexData.length];
         for (int i=0; i<vertexData.length; i++) {
@@ -352,10 +356,9 @@ public class JointedModelColladaImporter {
         }
         sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(doubleVertexData) );
         final float[] coordData = geometry.getMesh().getTexCoordData();
-        if (coordData == null)
-				{
-					throw new ModelLoadingException( "No texture coordinate data found in model." );
-				}
+        if (coordData == null) {
+			throw new ModelLoadingException( "No texture coordinate data found in model." );
+		}
         sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
         
         //Find the triangle data and use it to set the index data
@@ -499,8 +502,13 @@ public class JointedModelColladaImporter {
 							throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not found.");
 						}
 						bufferedImage = ImageUtilities.read( imageFile );
+						if (bufferedImage == null) {
+							throw new ModelLoadingException("Error loading texture: File '"+image.getInitFrom()+"' not readable.");
+						}
 					} catch( IOException e) {
 						throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+" not found.", e);
+					} catch( RuntimeException e) {
+						throw new ModelLoadingException("Error loading texture: "+image.getInitFrom()+".\n" + e.getMessage(), e);
 					}
 					TexturedAppearance m_sgAppearance = new TexturedAppearance();
 					m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
@@ -543,6 +551,10 @@ public class JointedModelColladaImporter {
 	private Image getColladaImageForMaterial( Material material, Collada colladaModel ) {
 		InstanceEffect ie = material.getInstanceEffect();
 		Effect effect = colladaModel.findEffect( ie.getUrl() );
+		if (effect == null) {
+			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect found for url '"+ie.getUrl()+"'");
+			return null;
+		}
 		if (effect.getEffectMaterial() == null) {
 			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect material found for '"+effect.getId()+"'");
 			return null;
@@ -712,6 +724,8 @@ public class JointedModelColladaImporter {
 			colladaModel = Collada.readFile( colladaModelFile.getAbsolutePath() );
 		} catch( SAXException | IOException e ) {
 			throw new ModelLoadingException("Failed to load collada file "+colladaModelFile, e);
+		} catch( ClassCastException e ) {
+			throw new ModelLoadingException("Failed to load collada file " + colladaModelFile + ".\nIf there are nested animations they should be removed.", e);
 		}
 		colladaModel.deindexMeshes();
 		return colladaModel;
