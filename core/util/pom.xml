@@ -68,7 +68,7 @@
 			<artifactId>jai-codec</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.media</groupId>
+			<groupId>javax.media</groupId>
 			<artifactId>jai-core</artifactId>
 		</dependency>
 
