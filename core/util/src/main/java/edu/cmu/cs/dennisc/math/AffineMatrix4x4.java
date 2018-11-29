@@ -807,7 +807,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 			afRV = new double[ 3 ];
 			offsetDest = 0;
 		}
-		transformVector( afRV, offsetDest, afSrc, offsetSrc );
+		orientation.transformVector( afRV, offsetDest, afSrc, offsetSrc );
 		afRV[ offsetDest ] += this.translation.x;
 		afRV[ offsetDest + 1 ] += this.translation.y;
 		afRV[ offsetDest + 2 ] += this.translation.z;
@@ -836,20 +836,6 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 	public float[] transformNormal( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
 	{
 		return transformVector( afRV, offsetDest, afSrc, offsetSrc );
-	}
-
-	private double[] transformVector( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc )
-	{
-		if( afRV == null )
-		{
-			afRV = new double[ 3 ];
-			offsetDest = 0;
-		}
-
-		afRV[ offsetDest ] = ( this.orientation.right.x * afSrc[ offsetSrc ] ) + ( this.orientation.up.x * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.x * afSrc[ offsetSrc + 2 ] );
-		afRV[ offsetDest + 1 ] = ( this.orientation.right.y * afSrc[ offsetSrc ] ) + ( this.orientation.up.y * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.y * afSrc[ offsetSrc + 2 ] );
-		afRV[ offsetDest + 2 ] = ( this.orientation.right.z * afSrc[ offsetSrc ] ) + ( this.orientation.up.z * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.z * afSrc[ offsetSrc + 2 ] );
-		return afRV;
 	}
 
 	private float[] transformVector( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
