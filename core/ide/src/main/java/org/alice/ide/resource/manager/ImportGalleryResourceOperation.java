@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ImportGalleryResourceOperation extends SingleThreadIteratingOperation {
@@ -64,6 +65,11 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 			Dialogs.showInfo( findLocalizedText( "title" ),
 							  e.getLocalizedMessage() + "\n" + findLocalizedText( "tryAgain" ) );
 			throw new CancelException( e.getLocalizedMessage() );
+		} catch (Throwable t) {
+			modelLogger.log( Level.WARNING, "An unknown error occurred attempting to read the file.", t );
+			Dialogs.showInfo( findLocalizedText( "title" ),
+							  "An unknown error occurred attempting to read the file.\n" + findLocalizedText( "tryAgain" ) );
+			throw new CancelException( t.getLocalizedMessage(), t );
 		}
 	}
 

@@ -309,7 +309,7 @@ public class JointedModelColladaImporter {
 
 				//Create the new transform by inverting the existing one so that we're working in untransformed space
 				AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( aliceInverseBindMatrix );
-				//Since these are absolute transforms, they need to have the scale removed both from the translation and the orientaion
+				//Since these are absolute transforms, they need to have the scale removed both from the translation and the orientation
 				//The scale is derived from the scale applied to the orientation
 				double xScale = newTransform.orientation.right.calculateMagnitude();
 				double yScale = newTransform.orientation.up.calculateMagnitude();
@@ -384,28 +384,28 @@ public class JointedModelColladaImporter {
         sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
         sgMesh.textureId.setValue( getMaterialIdForMaterialName( tris.getMaterial(), colladaModel ) );
         
-        if (meshController != null && sgMesh instanceof WeightedMesh) {
-        	WeightInfo weightInfo = createWeightInfoForController( meshController );
-        
-        	//Since this is weighted mesh, we need to transform the mesh data into the bind space
-			float[] bindMatrixData = meshController.getSkin().getBindShapeMatrix();
-        	AffineMatrix4x4 bindMatrix;
-        	if (bindMatrixData != null ) {
-        		bindMatrix = floatArrayToAliceMatrix( bindMatrixData );
-			}
-			else {
-        		bindMatrix = AffineMatrix4x4.createIdentity();
-			}
-        	double[] bindSpaceVertexData = new double[vertexData.length];
-            for (int i=0; i<vertexData.length; i+=3) {
-            	bindMatrix.transformVertex( bindSpaceVertexData, i, doubleVertexData, i );
-            }
-            sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(bindSpaceVertexData) );
-
-        	((WeightedMesh)sgMesh).weightInfo.setValue( weightInfo );
-        }
-        
+        if (sgMesh instanceof WeightedMesh) {
+			applyWeight( (WeightedMesh) sgMesh, meshController, doubleVertexData );
+		}
         return sgMesh;
+	}
+
+	private void applyWeight( WeightedMesh sgMesh, Controller meshController, double[] vertices )
+		throws ModelLoadingException {
+		WeightInfo weightInfo = createWeightInfoForController( meshController );
+		//Since this is a weighted mesh, we need to transform the mesh data into the bind space
+		float[] bindMatrixData = meshController.getSkin().getBindShapeMatrix();
+		if ( bindMatrixData == null ) {
+			sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(vertices) );
+		} else {
+			AffineMatrix4x4 bindMatrix = floatArrayToAliceMatrix( bindMatrixData );
+			double[] bindSpaceVertices = new double[vertices.length];
+			for ( int i = 0; i< vertices.length; i+=3 ) {
+				bindMatrix.transformVertex( bindSpaceVertices, i, vertices, i );
+			}
+			sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(bindSpaceVertices) );
+		}
+		sgMesh.weightInfo.setValue( weightInfo );
 	}
 
 	private List<Mesh> createAliceMeshesFromCollada( Collada colladaModel ) throws ModelLoadingException {
@@ -737,6 +737,9 @@ public class JointedModelColladaImporter {
 		Collada colladaModel = readColladaModel();
 
 		VisualScene scene = colladaModel.getLibraryVisualScenes().getScene( colladaModel.getScene().getInstanceVisualScene().getUrl() );
+		if (scene == null) {
+			throw new ModelLoadingException("Error processing model: No scene found.");
+		}
 		//Find and build the skeleton first
 		Node rootNode = findRootNode(scene.getNodes());
 		Joint aliceSkeleton = null;

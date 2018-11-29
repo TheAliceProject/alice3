@@ -251,7 +251,11 @@ public class SkeletonVisual extends Visual {
 		if (skeleton.getValue() != null) {
 			skeleton.getValue().scale(scale);
 		}
-		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : geometries.getValue()) {
+		scaleMeshes( scale );
+	}
+
+	public void scaleMeshes( Vector3 scale ) {
+		for ( Geometry g : geometries.getValue()) {
 			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
 			//If we start to support things like cylinders and boxes, then this would need to be updated
 			if (g instanceof Mesh) {
