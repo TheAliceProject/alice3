@@ -172,11 +172,21 @@ public abstract class ProgramContext {
 
 	private ReasonToDisableSomeAmountOfRendering rendering;
 
-	protected void disableRendering() {
+	void disableRendering() {
 		this.rendering = ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
 		IDE ide = IDE.getActiveInstance();
 		if( ide != null ) {
 			ide.getDocumentFrame().disableRendering( rendering );
+		}
+	}
+
+	private void enableRendering() {
+		if( this.rendering != null ) {
+			IDE ide = IDE.getActiveInstance();
+			if( ide != null ) {
+				ide.getDocumentFrame().enableRendering();
+			}
+			this.rendering = null;
 		}
 	}
 
@@ -200,12 +210,7 @@ public abstract class ProgramContext {
 	public void cleanUpProgram() {
 		UserProgramRunningStateUtilities.setUserProgramRunning( false );
 		this.getProgramImp().shutDown();
-		if( this.rendering != null ) {
-			IDE ide = IDE.getActiveInstance();
-			if( ide != null ) {
-				ide.getDocumentFrame().enableRendering();
-			}
-			this.rendering = null;
-		}
+		vm.stopExecution();
+		enableRendering();
 	}
 }

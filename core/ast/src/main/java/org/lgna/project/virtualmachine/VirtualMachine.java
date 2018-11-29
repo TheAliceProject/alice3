@@ -983,6 +983,9 @@ public abstract class VirtualMachine {
 			this.pushLocal( constant, n );
 			try {
 				for( int i = 0; i < n; i++ ) {
+					if (isStopped ) {
+						return;
+					}
 					CountLoopIterationEvent countLoopIterationEvent;
 					if( listeners != null ) {
 						countLoopIterationEvent = new CountLoopIterationEvent( this, countLoop, i, n );
@@ -1057,6 +1060,9 @@ public abstract class VirtualMachine {
 		try {
 			int index = 0;
 			for( Object o : array ) {
+				if (isStopped ) {
+					return;
+				}
 				ForEachLoopIterationEvent forEachLoopIterationEvent;
 				if( listeners != null ) {
 					forEachLoopIterationEvent = new ForEachLoopIterationEvent( this, forEachInLoop, o, array, index );
@@ -1180,7 +1186,7 @@ public abstract class VirtualMachine {
 
 	protected void executeWhileLoop( WhileLoop whileLoop, VirtualMachineListener[] listeners ) throws ReturnException {
 		int i = 0;
-		while( this.evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
+		while( !isStopped && evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
 			WhileLoopIterationEvent whileLoopIterationEvent;
 			if( listeners != null ) {
 				whileLoopIterationEvent = new WhileLoopIterationEvent( this, whileLoop, i );
@@ -1206,6 +1212,9 @@ public abstract class VirtualMachine {
 	}
 
 	protected void execute( Statement statement ) throws ReturnException {
+		if ( isStopped ) {
+			return;
+		}
 		assert statement != null : this;
 		if( statement.isEnabled.getValue() ) {
 			StatementExecutionEvent statementEvent;
@@ -1268,6 +1277,10 @@ public abstract class VirtualMachine {
 		}
 	}
 
+	public void stopExecution() {
+		isStopped = true;
+	}
+
 	public void addVirtualMachineListener( VirtualMachineListener virtualMachineListener ) {
 		synchronized( this.virtualMachineListeners ) {
 			this.virtualMachineListeners.add( virtualMachineListener );
@@ -1287,4 +1300,5 @@ public abstract class VirtualMachine {
 	}
 
 	private final List<VirtualMachineListener> virtualMachineListeners = Lists.newLinkedList();
+	private boolean isStopped = false;
 }
