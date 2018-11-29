@@ -64,7 +64,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -132,14 +131,14 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 			}
 		}
 
-		public void preProcess() {
+		void preProcess() {
 			for( int i = 0; i < this.affineMatrices.length; i++ ) {
 				this.affineMatrices[ i ].setZero();
 				this.weights[ i ] = 0f;
 			}
 		}
 
-		public void process( Joint joint, AffineMatrix4x4 oTransformation ) {
+		void process( Joint joint, AffineMatrix4x4 oTransformation ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get( joint.jointID.getValue() );
 			if( iatwp != null ) {
 				AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( oTransformation, iatwp.getInverseAbsoluteTransformation() );
@@ -165,7 +164,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 			}
 		}
 
-		public void postProcess() {
+		void postProcess() {
 			for( int i = 0; i < this.affineMatrices.length; i++ ) {
 				float weight = this.weights[ i ];
 				if( ( 0.999f < weight ) && ( weight < 1.001f ) ) {
@@ -687,7 +686,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 		}
 	}
 
-	protected void updateAppearanceIdToAdapterMap() {
+	private void updateAppearanceIdToAdapterMap() {
 		synchronized( appearanceIdToAdapterMap ) {
 			List<GlrElement<? extends Element>> oldAdapters = new ArrayList<GlrElement<? extends Element>>();
 			for( Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() ) {
@@ -712,7 +711,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 		}
 	}
 
-	protected void updateAppearanceToGeometryAdapterMap() {
+	private void updateAppearanceToGeometryAdapterMap() {
 		synchronized( appearanceIdToGeometryAdapaters ) {
 			appearanceIdToGeometryAdapaters.clear();
 			for( TexturedAppearance ta : this.owner.textures.getValue() ) {
@@ -770,8 +769,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 
 	private boolean skeletonIsDirty = true;
 	private Joint currentSkeleton = null;
-	private Map<Integer, GlrTexturedAppearance> appearanceIdToAdapterMap = Maps.newHashMap();
-	protected Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = Maps.newHashMap();
-	private Map<Integer, GlrMesh<Mesh>[]> appearanceIdToGeometryAdapaters = Maps.newHashMap();
+	private final Map<Integer, GlrTexturedAppearance> appearanceIdToAdapterMap = Maps.newHashMap();
+	protected final Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = Maps.newHashMap();
+	private final Map<Integer, GlrMesh<Mesh>[]> appearanceIdToGeometryAdapaters = Maps.newHashMap();
 	private boolean isDataDirty = true;
 }
