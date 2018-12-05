@@ -196,16 +196,16 @@ public class JointedModelColladaImporter {
 		System.out.println( "Tris:  "+triCount+", normals: "+normalCount+", vertices: "+vertexCount+", uvs: "+uvCount);
 	}
 
-	private static int getMaterialIdForMaterialName(String materialName, Collada colladaModel) {
-		if (materialName == null) {
+	private static int getMaterialIndex(String materialId, Collada colladaModel) {
+		if (materialId == null) {
 			return -1;
 		}
-		int id = 0;
+		int index = 0;
 		for (Material material : colladaModel.getLibraryMaterials().getMaterials()) {
-			if (material.getName().equals( materialName )) {
-				return id;
+			if (materialId.equals( material.getId() )) {
+				return index;
 			}
-			id++;
+			index++;
 		}
 		return -1;
 	}
@@ -382,17 +382,16 @@ public class JointedModelColladaImporter {
         }
 		int[] triangleIndexData = tris.getData();
         sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
-        sgMesh.textureId.setValue( getMaterialIdForMaterialName( tris.getMaterial(), colladaModel ) );
+        sgMesh.textureId.setValue( getMaterialIndex( tris.getMaterial(), colladaModel ) );
         
         if (sgMesh instanceof WeightedMesh) {
-			applyWeight( (WeightedMesh) sgMesh, meshController, doubleVertexData );
+			recordWeights( (WeightedMesh) sgMesh, meshController, doubleVertexData );
 		}
         return sgMesh;
 	}
 
-	private void applyWeight( WeightedMesh sgMesh, Controller meshController, double[] vertices )
+	private void recordWeights( WeightedMesh sgMesh, Controller meshController, double[] vertices )
 		throws ModelLoadingException {
-		WeightInfo weightInfo = createWeightInfoForController( meshController );
 		//Since this is a weighted mesh, we need to transform the mesh data into the bind space
 		float[] bindMatrixData = meshController.getSkin().getBindShapeMatrix();
 		if ( bindMatrixData == null ) {
@@ -405,7 +404,7 @@ public class JointedModelColladaImporter {
 			}
 			sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(bindSpaceVertices) );
 		}
-		sgMesh.weightInfo.setValue( weightInfo );
+		sgMesh.weightInfo.setValue( createWeightInfoForController( meshController ) );
 	}
 
 	private List<Mesh> createAliceMeshesFromCollada( Collada colladaModel ) throws ModelLoadingException {
@@ -482,10 +481,10 @@ public class JointedModelColladaImporter {
 		if (libraryMaterials != null) {
 			List<Material> materials = libraryMaterials.getMaterials();
 			for (Material material : materials) {
-				int id = getMaterialIdForMaterialName( material.getName(), colladaModel );
+				int index = getMaterialIndex( material.getId(), colladaModel );
 				boolean isUsed = false;
 				for (Mesh aliceMesh : aliceMeshes) {
-					if (aliceMesh.textureId.getValue() == id) {
+					if (aliceMesh.textureId.getValue() == index) {
 						isUsed = true;
 						break;
 					}
@@ -493,7 +492,7 @@ public class JointedModelColladaImporter {
 				if (isUsed) {
 					Image image = getColladaImageForMaterial( material, colladaModel );
 					if (image  == null) {
-						throw new ModelLoadingException("Error loading material "+material.getName()+": No valid image found.");
+						throw new ModelLoadingException("Error loading material "+material.getId()+": No valid image found.");
 					}
 					BufferedImage bufferedImage;
 					try {
@@ -512,11 +511,11 @@ public class JointedModelColladaImporter {
 					}
 					TexturedAppearance m_sgAppearance = new TexturedAppearance();
 					m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
-					m_sgAppearance.textureId.setValue(id);
+					m_sgAppearance.textureId.setValue(index);
 					textureAppearances.add(m_sgAppearance);
 				}
 				else {
-					modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getName());
+					modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getId());
 				}
 			}
 		}
@@ -552,31 +551,31 @@ public class JointedModelColladaImporter {
 		InstanceEffect ie = material.getInstanceEffect();
 		Effect effect = colladaModel.findEffect( ie.getUrl() );
 		if (effect == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect found for url '"+ie.getUrl()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No effect found for url '"+ie.getUrl()+"'");
 			return null;
 		}
 		if (effect.getEffectMaterial() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect material found for '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No effect material found for '"+effect.getId()+"'");
 			return null;
 		}
 		else if (effect.getEffectMaterial().getDiffuse() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse value found for effect '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse value found for effect '"+effect.getId()+"'");
 			return null;
 		}
 		else if (effect.getEffectMaterial().getDiffuse().getTexture() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse texture found for effect '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse texture found for effect '"+effect.getId()+"'");
 			return null;
 		}
 		else if (effect.getEffectMaterial().getDiffuse().getTexture().getTexture() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse texture value found for effect '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse texture value found for effect '"+effect.getId()+"'");
 			return null;
 		}
-		String textureName = effect.getEffectMaterial().getDiffuse().getTexture().getTexture();
+		String textureId = effect.getEffectMaterial().getDiffuse().getTexture().getTexture();
 
-		NewParam textureParam = effect.findNewParam(textureName);
+		NewParam textureParam = effect.findNewParam(textureId);
 		while (textureParam != null) {
 			if (textureParam.getSurface() != null) {
-				textureName = textureParam.getSurface().getInitFrom();
+				textureId = textureParam.getSurface().getInitFrom();
 				textureParam = null;
 				break;
 			}
@@ -588,7 +587,7 @@ public class JointedModelColladaImporter {
 			}
 		}
 
-		return colladaModel.findImage( textureName );
+		return colladaModel.findImage( textureId );
 	}
 
 
