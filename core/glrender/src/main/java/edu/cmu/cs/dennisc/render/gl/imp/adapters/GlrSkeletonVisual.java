@@ -92,7 +92,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 		protected FloatBuffer textCoordBuffer;
 		protected IntBuffer indexBuffer;
 
-		private AffineMatrix4x4[] affineMatrices;
+		private AffineMatrix4x4[] weightedJointMatrices;
 		private float[] weights;
 		private boolean needsInitialization = true;
 
@@ -121,10 +121,10 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 				this.vertexBuffer = BufferUtilities.copyDoubleBuffer( this.weightedMesh.vertexBuffer.getValue() );
 				int nVertexCount = this.vertexBuffer.limit() / 3;
 
-				this.affineMatrices = new AffineMatrix4x4[ nVertexCount ];
+				this.weightedJointMatrices = new AffineMatrix4x4[ nVertexCount ];
 				this.weights = new float[ nVertexCount ];
 				for( int i = 0; i < nVertexCount; i++ ) {
-					this.affineMatrices[ i ] = new AffineMatrix4x4();
+					this.weightedJointMatrices[ i ] = new AffineMatrix4x4();
 					this.weights[ i ] = 0f;
 				}
 				needsInitialization = false;
@@ -132,16 +132,17 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 		}
 
 		void preProcess() {
-			for( int i = 0; i < this.affineMatrices.length; i++ ) {
-				this.affineMatrices[ i ].setZero();
+			for( int i = 0; i < this.weightedJointMatrices.length; i++ ) {
+				this.weightedJointMatrices[ i ].setZero();
 				this.weights[ i ] = 0f;
 			}
 		}
 
-		void process( Joint joint, AffineMatrix4x4 oTransformation ) {
+		void process( Joint joint, AffineMatrix4x4 jointTransform ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get( joint.jointID.getValue() );
 			if( iatwp != null ) {
-				AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( oTransformation, iatwp.getInverseAbsoluteTransformation() );
+				// jointTransform * IBMi - This is the reverse of the Collada skin weighting spec which is IBMi * JMi
+				AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( jointTransform, iatwp.getInverseAbsoluteTransformation() );
 				//				System.out.println( "\n  Processing mesh " + this.weightedMesh.getName() );
 				//				System.out.println( "  On Joint " + joint.jointID.getValue() );
 				//				System.out.println( "  Weight Info " + this.weightedMesh.weightInfo.getValue().hashCode() );
@@ -157,7 +158,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 					int vertexIndex = iatwp.getIndex();
 					float weight = iatwp.getWeight();
 					AffineMatrix4x4 transform = AffineMatrix4x4.createMultiplication( oDelta, weight );
-					this.affineMatrices[ vertexIndex ].add( transform );
+					this.weightedJointMatrices[ vertexIndex ].add( transform );
 					this.weights[ vertexIndex ] += weight;
 					iatwp.advance();
 				}
@@ -165,20 +166,19 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 		}
 
 		void postProcess() {
-			for( int i = 0; i < this.affineMatrices.length; i++ ) {
-				float weight = this.weights[ i ];
-				if( ( 0.999f < weight ) && ( weight < 1.001f ) ) {
-					//pass
-				} else if( weight != 0 ) {
-					AffineMatrix4x4 am = this.affineMatrices[ i ];
-					this.affineMatrices[ i ].multiply( 1.0 / weight );
+			for( int i = 0; i < weightedJointMatrices.length; i++ ) {
+				float weight = weights[ i ];
+				if ( (!(0.999f < weight)) || (!(weight < 1.001f)) ) {
+					if( weight != 0 ) {
+						weightedJointMatrices[ i ].multiply( 1.0 / weight );
+					}
 				}
 			}
-			this.transformBuffers( this.affineMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue() );
+			this.transformBuffers( weightedJointMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue() );
 			setIsGeometryChanged( true );
 		}
 
-		private void transformBuffers( AffineMatrix4x4[] voAffineMatrices, DoubleBuffer vertices, FloatBuffer normals, DoubleBuffer verticesSrc, FloatBuffer normalsSrc ) {
+		private void transformBuffers( AffineMatrix4x4[] weightedVertices, DoubleBuffer vertices, FloatBuffer normals, DoubleBuffer verticesSrc, FloatBuffer normalsSrc ) {
 			double[] vertexSrc = new double[ 3 ];
 			float[] normalSrc = new float[ 3 ];
 			double[] vertexDst = new double[ 3 ];
@@ -188,7 +188,7 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 			verticesSrc.rewind();
 			normalsSrc.rewind();
 
-			for( AffineMatrix4x4 voAffineMatrice : voAffineMatrices ) {
+			for( AffineMatrix4x4 voAffineMatrice : weightedVertices ) {
 				vertexSrc[ 0 ] = verticesSrc.get();
 				vertexSrc[ 1 ] = verticesSrc.get();
 				vertexSrc[ 2 ] = verticesSrc.get();
@@ -636,8 +636,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 	public void processWeightedMesh() {
 		if( this.currentSkeleton != null ) {
 			synchronized( appearanceIdToMeshControllersMap ) {
-				for( Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
-					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
+				for( WeightedMeshControl[] controls : appearanceIdToMeshControllersMap.values() ) {
+					for( WeightedMeshControl wmc : controls ) {
 						wmc.preProcess();
 					}
 				}
@@ -647,8 +647,8 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 				synchronized( this.currentSkeleton ) {
 					processWeightedMesh( this.currentSkeleton, oTransformationPre, inverseScale );
 				}
-				for( Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
-					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
+				for( WeightedMeshControl[] controls : appearanceIdToMeshControllersMap.values() ) {
+					for( WeightedMeshControl wmc : controls ) {
 						wmc.postProcess();
 					}
 				}
@@ -657,31 +657,27 @@ public class GlrSkeletonVisual extends GlrVisual<SkeletonVisual> implements Prop
 		this.skeletonIsDirty = false;
 	}
 
-	private void processWeightedMesh( Composite currentNode, AffineMatrix4x4 oTransformationPre, Matrix3x3 inverseScale ) {
-		if( currentNode == null ) {
+	private void processWeightedMesh( Joint joint, AffineMatrix4x4 parentTransform, Matrix3x3 inverseScale ) {
+		if( joint == null ) {
 			return;
 		}
-		AffineMatrix4x4 oTransformationPost = oTransformationPre;
-		if( currentNode instanceof Joint ) {
-			Joint currentJoint = (Joint) currentNode;
-			oTransformationPost = AffineMatrix4x4.createMultiplication( oTransformationPre, ( currentJoint ).localTransformation.getValue() );
+		AffineMatrix4x4 absoluteLocalTransform =
+			AffineMatrix4x4.createMultiplication( parentTransform, joint.localTransformation.getValue() );
 
-			AffineMatrix4x4 unscaledTransform = new AffineMatrix4x4( oTransformationPost );
-			unscaledTransform.translation.x *= inverseScale.right.x;
-			unscaledTransform.translation.y *= inverseScale.up.y;
-			unscaledTransform.translation.z *= inverseScale.backward.z;
+		AffineMatrix4x4 unscaledJointTransform = new AffineMatrix4x4( absoluteLocalTransform );
+		unscaledJointTransform.translation.x *= inverseScale.right.x;
+		unscaledJointTransform.translation.y *= inverseScale.up.y;
+		unscaledJointTransform.translation.z *= inverseScale.backward.z;
 
-			for( Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
-				for( WeightedMeshControl wmc : controlEntry.getValue() ) {
-					wmc.process( currentJoint, unscaledTransform );
-				}
+		for( WeightedMeshControl[] controls : appearanceIdToMeshControllersMap.values() ) {
+			for( WeightedMeshControl wmc : controls ) {
+				wmc.process( joint, unscaledJointTransform );
 			}
-		}
-		for( int i = 0; i < currentNode.getComponentCount(); i++ ) {
-			Component comp = currentNode.getComponentAt( i );
+			}
+		for( int i = 0; i < joint.getComponentCount(); i++ ) {
+			Component comp = joint.getComponentAt( i );
 			if( comp instanceof Joint ) {
-				Joint jointChild = (Joint)comp;
-				processWeightedMesh( jointChild, oTransformationPost, inverseScale );
+				processWeightedMesh( (Joint)comp, absoluteLocalTransform, inverseScale );
 			}
 		}
 	}

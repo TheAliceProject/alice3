@@ -54,20 +54,14 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
 	protected float[] weights;
 	protected int index = 0;
 
-	public void setWeights( float[] weightsIn )
-	{
-		this.weights = weightsIn;
-	}
+	public abstract void setWeights(float[] weightsIn);
 
 	public float getWeight()
 	{
 		return this.weights[ this.index ];
 	}
 
-	public int getIndex()
-	{
-		return this.index;
-	}
+	public abstract int getIndex();
 
 	public boolean isDone()
 	{
@@ -106,5 +100,4 @@ public abstract class InverseAbsoluteTransformationWeightsPair implements Binary
 		binaryEncoder.encode( this.inverseAbsoluteTransformation );
 		binaryEncoder.encode( this.weights );
 	}
-
 }

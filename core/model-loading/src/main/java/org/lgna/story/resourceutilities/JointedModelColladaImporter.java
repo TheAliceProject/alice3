@@ -223,58 +223,47 @@ public class JointedModelColladaImporter {
 	}
 
 	private static WeightInfo createWeightInfoForController( Controller meshController ) throws ModelLoadingException {
-		Skin skin = meshController.getSkin();        
-    	VertexWeights vertexWeights = skin.getVertexWeights();
-    	float[] weightData = skin.getWeightData();
-    	int[] vertexWeightData = vertexWeights.getData();
     	/*
-    	 *  From the Collada 1.5 Spec:
     	 *  Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
 			says that the first vertex has 3 bones, the second has 2, etc. Also, the <v> element says that the first
 			vertex is weighted with weights[0] towards the bind shape, weights[1] towards bone 0, and
 			weights[2] towards bone 1:
-			<skin>
-			 <source id="joints"/>
-			 <source id="weights"/>
-			 <vertex_weights count="4">
-			 <input semantic="JOINT" source="#joints"/>
-			 <input semantic="WEIGHT" source="#weights"/>
-			 <vcount>3 2 2 3</vcount>
-			 <v>
-			 -1 0 0 1 1 2
+		 *  From the Collada 1.4.1 spec: (Alice, MAYA, and Blender use the 1.4.1 schema for export)
+			<controller id="skin">
+				<skin source="#base_mesh">
+					<source id="Joints">
+						<Name_array count="4"> Root Spine1 Spine2 Head </Name_array>
+						...
+					</source>
+					<source id="Weights">
+						<float_array count="4"> 0.0 0.33 0.66 1.0 </float_array>
+						...
+					</source>
+					<source id="Inv_bind_mats">
+						<float_array count="64"> ... </float_array>
+						...
+					</source>
+					<joints>
+						<input semantic="JOINT" source="#Joints"/>
+						<input semantic="INV_BIND_MATRIX" source="#Inv_bind_mats"/>
+					</joints>
+					<vertex_weights count="4">
+						<input semantic="JOINT" source="#Joints"/>
+						<input semantic="WEIGHT" source="#Weights"/>
+						<vcount>3 2 2 3</vcount>
+						<v>
+						-1 0 0 1 1 2
 			 -1 3 1 4
 			 -1 3 2 4
 			 -1 0 3 1 2 2
-			 </v>
-			 </vertex_weights>
-			</skin> 
+						</v>
+					</vertex_weights>
+				</skin>
+			</controller>
     	 */
-    	int entryCount = 0;
-    	Map<Integer, float[]> jointWeightMap = new HashMap<Integer, float[]>();
-    	//Loop through the vertex weights and build a map of joints (stored as their indices to the joint data) to arrays of weight info
-    	//The weight info is stored as arrays of weights where the index of the entry is the index of the joint and the weight values is the weighting of that vertex to the joint
-    	for (int vertex=0; vertex<vertexWeights.getCount(); vertex++) {
-    		int boneCount = vertexWeights.getVcount().getData()[vertex];
-    		for (int bone=0; bone<boneCount; bone++) {
-    			int jointIndex = vertexWeightData[entryCount*2];
-    			int weightIndex = vertexWeightData[entryCount*2 + 1];
-  
-    			float weight = weightData[weightIndex];
-    
-    			float[] weightArray;
-    			if (jointWeightMap.containsKey( jointIndex )) {
-    				weightArray = jointWeightMap.get( jointIndex );
-    			}
-    			else {
-    				weightArray = new float[vertexWeights.getCount()];
-    				jointWeightMap.put( jointIndex, weightArray );
-    			}
-    			weightArray[vertex] = weight;
-    			entryCount++;
-    		}
-    
-    	}
-    	//Take the weight data and convert it to WeightInfo
+		Skin skin = meshController.getSkin();
+		Map<Integer, float[]> jointWeightMap = getJointWeightMap( skin );
+		//Take the weight data and convert it to WeightInfo
     	String[] jointData = skin.getJointData();
     	if (jointData == null) {
     		throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no joint data found on mesh skin." );
@@ -306,31 +295,44 @@ public class JointedModelColladaImporter {
 				String jointId = jointData[jointIndex];
 				float[] inverseBindMatrix = Arrays.copyOfRange( inverseBindMatrixData, 16*jointIndex, 16*jointIndex+16 );
 				AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix( inverseBindMatrix );
-
-				//Create the new transform by inverting the existing one so that we're working in untransformed space
-				AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( aliceInverseBindMatrix );
-				//Since these are absolute transforms, they need to have the scale removed both from the translation and the orientation
-				//The scale is derived from the scale applied to the orientation
-				double xScale = newTransform.orientation.right.calculateMagnitude();
-				double yScale = newTransform.orientation.up.calculateMagnitude();
-				double zScale = newTransform.orientation.backward.calculateMagnitude();
-				//Create a scale that will remove the implicit scale
-				Vector3 transformScale = new Vector3( xScale, yScale, zScale );
-				//Apply the scale
-				newTransform.translation.multiply( transformScale );
-				//Normalize the orientation to remove the implicit scale
-				newTransform.orientation.normalizeColumns();
-				//Re-invert the transform and set the new value
-				newTransform.invert();
-
-
-
 				iawp.setWeights(jointAndWeights.getValue());
-				iawp.setInverseAbsoluteTransformation(newTransform);
+				// The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
+				iawp.setInverseAbsoluteTransformation(aliceInverseBindMatrix);
 				weightInfo.addReference( jointId, iawp );
 			}
 		}
     	return weightInfo;
+	}
+
+	private static Map<Integer, float[]> getJointWeightMap( Skin skin ) {
+		VertexWeights vertexWeights = skin.getVertexWeights();
+		float[] weightData = skin.getWeightData();
+		int[] vertexWeightData = vertexWeights.getData();
+		Map<Integer, float[]> jointWeightMap = new HashMap<>();
+		int entryCount = 0;
+		//Loop through the vertex weights and build a map of joints (stored as their indices to the joint data) to
+		// arrays of weight info.
+		//The weight info is stored as arrays of weights where the index of the entry is the index of the joint and
+		// the weight values are the weighting of that vertex to the joint
+		for (int vertex=0; vertex<vertexWeights.getCount(); vertex++) {
+			int boneCount = vertexWeights.getVcount().getData()[vertex];
+			for (int bone=0; bone<boneCount; bone++) {
+				int jointIndex = vertexWeightData[entryCount*2];
+				int weightIndex = vertexWeightData[entryCount*2 + 1];
+
+				float[] weightArray;
+				if (jointWeightMap.containsKey( jointIndex )) {
+					weightArray = jointWeightMap.get( jointIndex );
+				}
+				else {
+					weightArray = new float[vertexWeights.getCount()];
+					jointWeightMap.put( jointIndex, weightArray );
+				}
+				weightArray[vertex] = weightData[weightIndex];
+				entryCount++;
+			}
+		}
+		return jointWeightMap;
 	}
 
 	private Mesh createAliceSGMeshFromGeometry( Geometry geometry, Collada colladaModel ) throws ModelLoadingException {

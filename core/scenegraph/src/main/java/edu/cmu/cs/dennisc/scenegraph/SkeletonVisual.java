@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -51,8 +50,6 @@ import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.CopyableArrayProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
-
-import java.util.Map;
 
 public class SkeletonVisual extends Visual {
 
@@ -254,7 +251,7 @@ public class SkeletonVisual extends Visual {
 		scaleMeshes( scale );
 	}
 
-	public void scaleMeshes( Vector3 scale ) {
+	private void scaleMeshes(Vector3 scale) {
 		for ( Geometry g : geometries.getValue()) {
 			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
 			//If we start to support things like cylinders and boxes, then this would need to be updated
@@ -285,7 +282,7 @@ public class SkeletonVisual extends Visual {
 
 	private SkeletonVisualBoundingBoxTracker tracker = null;
 
-	public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	public final CopyableArrayProperty<WeightedMesh> weightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
 	{
 		@Override
 		protected WeightedMesh[] createArray( int length ) {
@@ -299,7 +296,7 @@ public class SkeletonVisual extends Visual {
 		}
 	};
 
-	public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
+	public final CopyableArrayProperty<TexturedAppearance> textures = new CopyableArrayProperty<TexturedAppearance>( this)
 	{
 		@Override
 		protected TexturedAppearance[] createArray( int length ) {
@@ -318,7 +315,7 @@ public class SkeletonVisual extends Visual {
 	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
 	public final BooleanProperty hasDefaultPoseWeightedMeshes = new BooleanProperty( this, false );
 
-	public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	public final CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new CopyableArrayProperty<WeightedMesh>( this)
 	{
 		@Override
 		protected WeightedMesh[] createArray( int length ) {
