@@ -240,8 +240,8 @@ public class JointedModelColladaImporter {
 	}
 
 	private static WeightInfo createWeightInfoForController( Controller meshController ) throws ModelLoadingException {
-    	/*
-    	 *  Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
+		/*
+		 *  Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
 			says that the first vertex has 3 bones, the second has 2, etc. Also, the <v> element says that the first
 			vertex is weighted with weights[0] towards the bind shape, weights[1] towards bone 0, and
 			weights[2] towards bone 1:
@@ -270,29 +270,29 @@ public class JointedModelColladaImporter {
 						<vcount>3 2 2 3</vcount>
 						<v>
 						-1 0 0 1 1 2
-			 -1 3 1 4
-			 -1 3 2 4
-			 -1 0 3 1 2 2
+						-1 3 1 4
+						-1 3 2 4
+						-1 0 3 1 2 2
 						</v>
 					</vertex_weights>
 				</skin>
 			</controller>
-    	 */
+		 */
 		Skin skin = meshController.getSkin();
 		Map<Integer, float[]> jointWeightMap = getJointWeightMap( skin );
 		//Take the weight data and convert it to WeightInfo
-    	String[] jointData = skin.getJointData();
-    	if (jointData == null) {
-    		throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no joint data found on mesh skin." );
-    	}
-    
-    	//Array of inverse bind matrices for all the referenced joints. Is indexed into by the joint index.
-    	float[] inverseBindMatrixData = skin.getInvBindMatrixData();
-    	if (inverseBindMatrixData == null) {
-    		throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no inverse bind matrix data found on mesh skin." );
-    	}
-    	WeightInfo weightInfo = new WeightInfo();
-    	for (Entry<Integer, float[]> jointAndWeights : jointWeightMap.entrySet()) {
+		String[] jointData = skin.getJointData();
+		if (jointData == null) {
+			throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no joint data found on mesh skin." );
+		}
+
+		//Array of inverse bind matrices for all the referenced joints. Is indexed into by the joint index.
+		float[] inverseBindMatrixData = skin.getInvBindMatrixData();
+		if (inverseBindMatrixData == null) {
+			throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no inverse bind matrix data found on mesh skin." );
+		}
+		WeightInfo weightInfo = new WeightInfo();
+		for (Entry<Integer, float[]> jointAndWeights : jointWeightMap.entrySet()) {
 			int nonZeroWeights = 0;
 			for (float weight : jointAndWeights.getValue()) {
 				if (weight != 0) {
@@ -318,7 +318,7 @@ public class JointedModelColladaImporter {
 				weightInfo.addReference( jointId, iawp );
 			}
 		}
-    	return weightInfo;
+		return weightInfo;
 	}
 
 	private static Map<Integer, float[]> getJointWeightMap( Skin skin ) {
@@ -362,51 +362,51 @@ public class JointedModelColladaImporter {
 		else {
 			sgMesh = new Mesh();
 		}
-        sgMesh.setName(geometry.getName());
+		sgMesh.setName(geometry.getName());
 		final float[] normals = geometry.getMesh().getNormalData();
 		if (normals == null) {
 			throw new ModelLoadingException( "No normal data found in model." );
 		}
 		sgMesh.normalBuffer.setValue( Buffers.newDirectFloatBuffer( normals ));
-        float[] vertexData = geometry.getMesh().getPositionData();
-        double[] doubleVertexData = new double[vertexData.length];
-        for (int i=0; i<vertexData.length; i++) {
-        	doubleVertexData[i] = vertexData[i];
-        }
-        sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(doubleVertexData) );
-        final float[] coordData = geometry.getMesh().getTexCoordData();
-        if (coordData == null) {
+		float[] vertexData = geometry.getMesh().getPositionData();
+		double[] doubleVertexData = new double[vertexData.length];
+		for (int i=0; i<vertexData.length; i++) {
+			doubleVertexData[i] = vertexData[i];
+		}
+		sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(doubleVertexData) );
+		final float[] coordData = geometry.getMesh().getTexCoordData();
+		if (coordData == null) {
 			throw new ModelLoadingException( "No texture coordinate data found in model." );
 		}
-        sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
-        
-        //Find the triangle data and use it to set the index data
-        Triangles tris = null;
-        for (Primitives p : geometry.getMesh().getPrimitives()) {
-        	if (p instanceof Triangles) {
-        		if (tris == null) {
-        			tris = (Triangles)p;
-        		}
-        		else {
-        			modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
-        		}
-        	}
-        	else {
+		sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
+
+		//Find the triangle data and use it to set the index data
+		Triangles tris = null;
+		for (Primitives p : geometry.getMesh().getPrimitives()) {
+			if (p instanceof Triangles) {
+				if (tris == null) {
+					tris = (Triangles)p;
+				}
+				else {
+					modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
+				}
+			}
+			else {
 				modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive type "+p.getClass()+". Skipping this geometry.");
-        	}
-        }
-        if (tris == null) {
+			}
+		}
+		if (tris == null) {
 			modelLoadingLogger.log( Level.WARNING, "Error converting mesh "+geometry.getName()+". No triangle primitive data found. Skipping entire mesh." );
 			return null;
-        }
+		}
 		int[] triangleIndexData = tris.getData();
-        sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
-        sgMesh.textureId.setValue( getMaterialIndex( tris.getMaterial(), colladaModel ) );
-        
-        if (sgMesh instanceof WeightedMesh) {
+		sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
+		sgMesh.textureId.setValue( getMaterialIndex( tris.getMaterial(), colladaModel ) );
+
+		if (sgMesh instanceof WeightedMesh) {
 			recordWeights( (WeightedMesh) sgMesh, meshController, doubleVertexData );
 		}
-        return sgMesh;
+		return sgMesh;
 	}
 
 	private void recordWeights( WeightedMesh sgMesh, Controller meshController, double[] vertices )
@@ -458,7 +458,7 @@ public class JointedModelColladaImporter {
 					type = BufferedImage.TYPE_4BYTE_ABGR;
 				}
 				tex = new BufferedImage(image.getWidth(null),
-						image.getHeight(null), type);
+										image.getHeight(null), type);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 				return null;
@@ -473,7 +473,7 @@ public class JointedModelColladaImporter {
 				BufferedImage bufferedImage = ((BufferedImage) image);
 				for (int y = image.getHeight(null) - 1; y >= 0; y--) {
 					bufferedImage.getRGB(0, (flipImage ? row++ : y),
-							imageWidth, 1, tmpData, 0, imageWidth);
+										 imageWidth, 1, tmpData, 0, imageWidth);
 					tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
 				}
 			} else {
@@ -647,32 +647,6 @@ public class JointedModelColladaImporter {
 		return weightInfo;
 	}
 
-	private static WeightInfo removeImplicitScaleFromWeightInfo( WeightInfo weightInfo ) {
-		Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = weightInfo.getMap();
-		for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
-			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
-			AffineMatrix4x4 originalInverseTransform = iatwp.getInverseAbsoluteTransformation();
-			//Create the new transform by inverting the existing one so that we're working in untransformed space
-			AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( originalInverseTransform );
-			//Since these are absolute transforms, they need to have the scale removed both from the translation and the orientaion
-			//The scale is derived from the scale applied to the orientation
-			double xScale = newTransform.orientation.right.calculateMagnitude();
-			double yScale = newTransform.orientation.up.calculateMagnitude();
-			double zScale = newTransform.orientation.backward.calculateMagnitude();
-			//Create a scale that will remove the implicit scale
-			Vector3 transformScale = new Vector3( xScale, yScale, zScale );
-			//Apply the scale
-			newTransform.translation.multiply( transformScale );
-			//Normalize the orientation to remove the implicit scale
-			newTransform.orientation.normalizeColumns();
-			//Re-invert the transform and set the new value
-			newTransform.invert();
-			iatwp.setInverseAbsoluteTransformation( newTransform );
-		}
-		return weightInfo;
-	}
-
-
 	/**
 	 * 	Alice models are in a different geometric space than maya models
 	 *  Models must have their space transformed so that the look correct in Alice
@@ -691,49 +665,6 @@ public class JointedModelColladaImporter {
 			flipMesh(wm);
 			flipWeightInfo(wm.weightInfo.getValue());
 		}
-	}
-
-	private static void removeImplicitScaleFromSkeleton( Joint joint, Vector3 scale) {
-		Vector3 localScale = getImplicitScale(joint);
-		AffineMatrix4x4 scaledTransform = joint.localTransformation.getValue();
-		scaledTransform.translation.multiply( scale );
-		scaledTransform.orientation.normalizeColumns();
-		joint.localTransformation.setValue( scaledTransform );
-		Vector3 newScale = Vector3.createMultiplication( scale, localScale );
-		for( int i = 0; i < joint.getComponentCount(); i++ )
-		{
-			Component comp = joint.getComponentAt( i );
-			if (comp instanceof Joint) {
-				removeImplicitScaleFromSkeleton((Joint)comp, newScale);
-			}
-		}
-
-	}
-
-	//Looks at the transforms in the skeleton and removes any scaling found in the orientation matrices
-	//Scaling is removed by applying that scale to the children of that joint and normalizing the matrix
-	private static void removeImplicitScale(SkeletonVisual sv) {
-		if (sv.skeleton.getValue() != null) {
-			//Implicit scale is set on the orientation of the root joint of the skeleton
-			Vector3 rootScale = getImplicitScale(sv.skeleton.getValue());
-			removeImplicitScaleFromSkeleton(sv.skeleton.getValue(), new Vector3(1, 1, 1));
-			for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
-				//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
-				//If we start to support things like cylinders and boxes, then this would need to be updated
-				if (g instanceof Mesh) {
-					((Mesh) g).scale(rootScale);
-				}
-			}
-		}
-	}
-
-	private static Vector3 getImplicitScale( Joint skeleton ) {
-		OrthogonalMatrix3x3 orientation = skeleton.localTransformation.getValue().orientation;
-		double scaleX = orientation.right.calculateMagnitude();
-		double scaleY = orientation.up.calculateMagnitude();
-		double scaleZ = orientation.backward.calculateMagnitude();
-
-		return new Vector3( scaleX, scaleY, scaleZ );
 	}
 
 	private Collada readColladaModel() throws ModelLoadingException {
@@ -798,8 +729,8 @@ public class JointedModelColladaImporter {
 		skeletonVisual.geometries.setValue( aliceGeometry.toArray( new Mesh[aliceGeometry.size()] ) );
 		skeletonVisual.weightedMeshes.setValue( aliceWeightedMeshes.toArray( new WeightedMesh[aliceWeightedMeshes.size()] ) );
 
-		//Remove any scale from the model
-		removeImplicitScale( skeletonVisual );
+		//Remove any scale from the model? No.
+		//removeImplicitScale( skeletonVisual );
 		float extraScale = colladaModel.getUnit().getMeter();
 		if (extraScale != 1.0f) {
 			skeletonVisual.scale(new Vector3(extraScale, extraScale, extraScale));
