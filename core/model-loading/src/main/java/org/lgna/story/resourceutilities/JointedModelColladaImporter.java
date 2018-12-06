@@ -108,6 +108,21 @@ public class JointedModelColladaImporter {
 		return null;
 	}
 
+	private AffineMatrix4x4 collapsedRootTransform(List<Node> nodes, Node root ) throws ModelLoadingException {
+		if (nodes.contains( root )) {
+			return AffineMatrix4x4.createIdentity();
+		}
+		for (Node n : nodes) {
+			AffineMatrix4x4 childTransform = collapsedRootTransform( n.getChildNodes(), root);
+			if (childTransform != null) {
+				final AffineMatrix4x4 nodeTransform = getNodeTransform( n );
+				nodeTransform.multiply( childTransform );
+				return nodeTransform;
+			}
+		}
+		return null;
+	}
+
 	private static Node findRootNode( List<Node> nodes ) throws ModelLoadingException {
 		Node rootNode = findNodeNamedRoot( nodes );
 		if (rootNode != null) {
@@ -146,6 +161,21 @@ public class JointedModelColladaImporter {
 	}
 
 	private static Joint createAliceSkeletonFromNode( Node node ) throws ModelLoadingException {
+		Joint j = new Joint();
+		j.jointID.setValue(node.getName());
+		j.setName(node.getName());
+
+		j.localTransformation.setValue(getNodeTransform(node));
+		for (Node child : node.getChildNodes()) {
+			if (nodeIsJoint( child )) {
+				Joint childJoint = createAliceSkeletonFromNode(child);
+				childJoint.setParent(j);
+			}
+		}
+		return j;
+	}
+
+	private static AffineMatrix4x4 getNodeTransform( Node node ) throws ModelLoadingException {
 		AffineMatrix4x4 aliceMatrix = AffineMatrix4x4.createIdentity();
 		for (int i=0; i<node.getXforms().size(); i++) {
 			BaseXform xform = node.getXforms().get( i );
@@ -167,20 +197,7 @@ public class JointedModelColladaImporter {
 				aliceMatrix.orientation.applyRotationAboutArbitraryAxis( axis, new AngleInDegrees( rotate.getAngle() ) );
 			}
 		}
-
-		Joint j = new Joint();
-		j.jointID.setValue( node.getName() );
-		j.setName( node.getName() );
-//		aliceMatrix.orientation.normalizeColumns();
-
-		j.localTransformation.setValue( aliceMatrix );
-		for (Node child : node.getChildNodes()) {
-			if (nodeIsJoint( child )) {
-				Joint childJoint = createAliceSkeletonFromNode( child );
-				childJoint.setParent( j );
-			}
-		}
-		return j;
+		return aliceMatrix;
 	}
 
 	private static void getGeometryInfo( Geometry geometry ) {
@@ -746,6 +763,11 @@ public class JointedModelColladaImporter {
 		Joint aliceSkeleton = null;
 		if (rootNode != null) {
 			aliceSkeleton = createAliceSkeletonFromNode(rootNode);
+			AffineMatrix4x4 rootTransform = collapsedRootTransform( scene.getNodes(), rootNode);
+			if (rootTransform != null && !rootTransform.isIdentity()) {
+				rootTransform.multiply( aliceSkeleton.getLocalTransformation() );
+				aliceSkeleton.setLocalTransformation(rootTransform);
+			}
 		}
 
 		//Find and build meshes (both static and weighted) from the collada model
