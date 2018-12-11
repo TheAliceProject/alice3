@@ -58,7 +58,6 @@ public class ImportGalleryResourceOperation extends SingleThreadIteratingOperati
 			// Save parent directory for next import
 			StageIDE.getActiveInstance().setModelImportDirectory( colladaModelFile.getParentFile() );
 			JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter( colladaModelFile, modelLogger );
-			colladaImporter.setFlipModel( false );
 			return colladaImporter.loadSkeletonVisual();
 
 		} catch (ModelLoadingException e) {

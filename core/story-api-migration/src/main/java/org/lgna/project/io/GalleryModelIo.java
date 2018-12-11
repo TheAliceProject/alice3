@@ -62,7 +62,6 @@ public class GalleryModelIo extends DataSourceIo {
         File colladaFile  = new File( "C:\\Users\\dculyba\\Documents\\Alice3\\MyProjects\\alienExport\\models\\Alien\\Alien_Alien.dae" );
         Logger modelLogger = Logger.getLogger( "org.lgna.story.resourceutilities.AliceColladaModelLoader" );
         JointedModelColladaImporter colladaImporter = new JointedModelColladaImporter(colladaFile, modelLogger);
-        colladaImporter.setFlipModel(false);
 
         SkeletonVisual sv = null;
         try {
