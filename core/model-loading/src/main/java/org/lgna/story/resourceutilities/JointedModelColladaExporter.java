@@ -703,7 +703,10 @@ public class JointedModelColladaExporter {
 	}
 
 	private String getInstanceMaterialSymbolForIndex(Integer index) {
-		return  getMaterialIDForIndex(index) + "_instance";
+		// This must be the same as material id because Alice currently bypasses instance_material, requiring the
+		// instance_material's symbol, which identifies it within an instance_controller to be the same as the
+		// library material's id, which is unique in the entire collada file.
+		return getMaterialIDForIndex(index);
 	}
 
 	private String getEffectIDForIndex(Integer index) {

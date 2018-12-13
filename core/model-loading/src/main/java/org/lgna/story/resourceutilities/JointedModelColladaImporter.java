@@ -383,6 +383,11 @@ public class JointedModelColladaImporter {
 			return null;
 		}
 		sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(tris.getData()) );
+		// TODO Remove this early binding. The material on a piece of geometry references an instance_material by symbol.
+		// The instance_material, which is specific to an instance_controller on a node, uses target to reference the
+		// material in library_materials by id. The following line bypasses the instance_material, requiring it to have
+		// identical symbol and target and forcing all nodes to use the same material.
+		// TODO Stop using the index as the ID.
 		sgMesh.textureId.setValue( getMaterialIndex( tris.getMaterial(), colladaModel ) );
 
 		if (sgMesh instanceof WeightedMesh) {
