@@ -382,23 +382,13 @@ public class JointedModelColladaImporter {
 			modelLoadingLogger.log( Level.WARNING, "Error converting mesh "+geometry.getName()+". No triangle primitive data found. Skipping entire mesh." );
 			return null;
 		}
-		int[] triangleIndexData = tris.getData();
-		flipTriangles(triangleIndexData);
-		sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
+		sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(tris.getData()) );
 		sgMesh.textureId.setValue( getMaterialIndex( tris.getMaterial(), colladaModel ) );
 
 		if (sgMesh instanceof WeightedMesh) {
 			recordWeights( (WeightedMesh) sgMesh, meshController, doubleVertexData );
 		}
 		return sgMesh;
-	}
-
-	private void flipTriangles(int[] triangles) {
-		for (int i=0; i<triangles.length; i += 3) {
-			int v = triangles[i+1];
-			triangles[i+1] = triangles[i+2];
-			triangles[i+2] = v;
-		}
 	}
 
 	private void recordWeights( WeightedMesh sgMesh, Controller meshController, double vertices[] )
@@ -695,38 +685,41 @@ public class JointedModelColladaImporter {
 	private Orientation establishOrientation(Collada colladaModel) {
 		String upAxis = colladaModel.getUpAxis();
 		if ("X_UP".equals(upAxis)) {
-			return new Orientation(NEGATE_Z_ROTATE_AROUND_Z);
+			return new Orientation(QUARTER_TURN_AROUND_Z);
 		}
 		if ("Z_UP".equals(upAxis)) {
-			return new Orientation(FLIP_AROUND_X);
+			return new Orientation(QUARTER_TURN_AROUND_X);
 		}
-		return new Orientation(NEGATE_Z);
+		return new Orientation(ABOUT_FACE_AROUND_Y);
 	}
 
-	private static final OrthogonalMatrix3x3 NEGATE_Z = new OrthogonalMatrix3x3(
-		new Vector3(1, 0, 0),
+	private static final OrthogonalMatrix3x3 ABOUT_FACE_AROUND_Y = new OrthogonalMatrix3x3(
+		new Vector3(-1, 0, 0),
 		new Vector3(0, 1, 0),
 		new Vector3(0, 0, -1));
 
-	private static final OrthogonalMatrix3x3 NEGATE_Z_ROTATE_AROUND_Z = new OrthogonalMatrix3x3(
-		new Vector3(0,-1,0),
-		new Vector3(1,0,0),
-		new Vector3(0,0,-1));
+	private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_Z = new OrthogonalMatrix3x3(
+		new Vector3(0,1,0),
+		new Vector3(-1,0,0),
+		new Vector3(0,0,1));
 
-	private static final OrthogonalMatrix3x3 FLIP_AROUND_X = new OrthogonalMatrix3x3(
+	private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_X = new OrthogonalMatrix3x3(
 		new Vector3(1,0,0),
-		new Vector3(0,0,1),
+		new Vector3(0,0,-1),
 		new Vector3(0,1,0));
 
 	public class Orientation {
 		final private OrthogonalMatrix3x3 orient3;
+		final private AffineMatrix4x4 inverse4;
 
 		public Orientation(OrthogonalMatrix3x3 orient3) {
 			this.orient3 = orient3;
+			inverse4 = orient4();
+			inverse4.invert();
 		}
 
 		AffineMatrix4x4 orientMatrixToAlice(AffineMatrix4x4 matrix) {
-			return orient4().multiply(matrix).multiply(orient4());
+			return orient4().multiply(matrix).multiply(inverse4);
 		}
 
 		AffineMatrix4x4 orient4() {
