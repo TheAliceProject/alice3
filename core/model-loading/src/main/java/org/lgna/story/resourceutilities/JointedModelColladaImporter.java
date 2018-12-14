@@ -22,7 +22,6 @@ import com.dddviewr.collada.visualscene.Translate;
 import com.dddviewr.collada.visualscene.VisualScene;
 import com.jogamp.common.nio.Buffers;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -30,6 +29,8 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
+import edu.cmu.cs.dennisc.property.FloatBufferProperty;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -60,13 +61,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class JointedModelColladaImporter {
-
-//	private static Logger LOGGER;
-
-	private boolean FLIP_MODEL = true;
 	private final File colladaModelFile;
 	private final Logger modelLoadingLogger;
 	private final File rootPath;
+	private Orientation orientation;
 
 	public JointedModelColladaImporter(File colladaModelFile, Logger modelLoadingLogger) {
 		this.colladaModelFile = colladaModelFile;
@@ -108,7 +106,22 @@ public class JointedModelColladaImporter {
 		return null;
 	}
 
-	private static Node findRootNode( List<Node> nodes ) throws ModelLoadingException {
+	private AffineMatrix4x4 collapsedRootTransform(List<Node> nodes, Node root ) throws ModelLoadingException {
+		if (nodes.contains( root )) {
+			return AffineMatrix4x4.createIdentity();
+		}
+		for (Node n : nodes) {
+			AffineMatrix4x4 childTransform = collapsedRootTransform( n.getChildNodes(), root);
+			if (childTransform != null) {
+				final AffineMatrix4x4 nodeTransform = getNodeTransform( n );
+				nodeTransform.multiply( childTransform );
+				return nodeTransform;
+			}
+		}
+		return null;
+	}
+
+	private static Node findRootNode( List<Node> nodes ) {
 		Node rootNode = findNodeNamedRoot( nodes );
 		if (rootNode != null) {
 			return rootNode;
@@ -121,31 +134,44 @@ public class JointedModelColladaImporter {
 		return null;
 	}
 
-	public void setFlipModel(boolean flipModel) {
-		this.FLIP_MODEL = flipModel;
-	}
-
-	private static AffineMatrix4x4 floatArrayToAliceMatrix( float[] floatData ) throws ModelLoadingException {
+	private AffineMatrix4x4 floatArrayToAliceMatrix( float[] floatData ) throws ModelLoadingException {
 		double[] doubleData = new double[floatData.length];
 		for (int i=0; i<floatData.length; i++) {
 			doubleData[i] = floatData[i];
 		}
+		AffineMatrix4x4 srcMatrix;
 		if (doubleData.length == 12) {
-			return AffineMatrix4x4.createFromRowMajorArray12(doubleData );
+			srcMatrix = AffineMatrix4x4.createFromRowMajorArray12(doubleData );
 		}
 		else if (doubleData.length == 16) {
-			return AffineMatrix4x4.createFromRowMajorArray16(doubleData );
+			srcMatrix = AffineMatrix4x4.createFromRowMajorArray16(doubleData );
 		}
 		else {
 			throw new ModelLoadingException("Error converting collada matrix to Alice matrix. Expected array of size 12 or 16, instead got "+floatData.length);
 		}
+		return orientation.orientMatrixToAlice(srcMatrix);
 	}
 
-	private static AffineMatrix4x4 colladaMatrixToAliceMatrix( Matrix m ) throws ModelLoadingException {
+	private AffineMatrix4x4 colladaMatrixToAliceMatrix( Matrix m ) throws ModelLoadingException {
 		return floatArrayToAliceMatrix(m.getData());
 	}
 
-	private static Joint createAliceSkeletonFromNode( Node node ) throws ModelLoadingException {
+	private Joint createAliceSkeletonFromNode( Node node ) throws ModelLoadingException {
+		Joint j = new Joint();
+		j.jointID.setValue(node.getName());
+		j.setName(node.getName());
+
+		j.localTransformation.setValue(getNodeTransform(node));
+		for (Node child : node.getChildNodes()) {
+			if (nodeIsJoint( child )) {
+				Joint childJoint = createAliceSkeletonFromNode(child);
+				childJoint.setParent(j);
+			}
+		}
+		return j;
+	}
+
+	private AffineMatrix4x4 getNodeTransform( Node node ) throws ModelLoadingException {
 		AffineMatrix4x4 aliceMatrix = AffineMatrix4x4.createIdentity();
 		for (int i=0; i<node.getXforms().size(); i++) {
 			BaseXform xform = node.getXforms().get( i );
@@ -154,58 +180,35 @@ public class JointedModelColladaImporter {
 			}
 			else if (xform instanceof Translate){
 				Translate translate = (Translate)xform;
+				// TODO orient to Alice
 				aliceMatrix.translation.set( translate.getX(), translate.getY(), translate.getZ() );
 			}
 			else if (xform instanceof Scale) {
 				Scale scale = (Scale)xform;
+				// TODO orient to Alice
 				OrthogonalMatrix3x3 scaleMatrix = new OrthogonalMatrix3x3( new Vector3(scale.getX(),0,0), new Vector3(0,scale.getY(),0), new Vector3(0,0,scale.getZ()) );
 				aliceMatrix.orientation.applyMultiplication( scaleMatrix );
 			}
 			else if (xform instanceof Rotate) {
 				Rotate rotate = (Rotate)xform;
+				// TODO orient to Alice
 				Vector3 axis = new Vector3( rotate.getX(), rotate.getY(), rotate.getZ() );
 				aliceMatrix.orientation.applyRotationAboutArbitraryAxis( axis, new AngleInDegrees( rotate.getAngle() ) );
 			}
 		}
-
-		Joint j = new Joint();
-		j.jointID.setValue( node.getName() );
-		j.setName( node.getName() );
-//		aliceMatrix.orientation.normalizeColumns();
-
-		j.localTransformation.setValue( aliceMatrix );
-		for (Node child : node.getChildNodes()) {
-			if (nodeIsJoint( child )) {
-				Joint childJoint = createAliceSkeletonFromNode( child );
-				childJoint.setParent( j );
-			}
-		}
-		return j;
+		return aliceMatrix;
 	}
 
-	private static void getGeometryInfo( Geometry geometry ) {
-		float[] normalData = geometry.getMesh().getNormalData();
-		int normalCount = normalData.length / 3;
-		float[] vertexData = geometry.getMesh().getPositionData();
-		int vertexCount = vertexData.length / 3;
-		float[] uvData = geometry.getMesh().getTexCoordData();
-		int uvCount = uvData.length / 2;
-		Triangles tris = (Triangles)geometry.getMesh().getPrimitives().get( 0 );
-		int triCount = tris.getCount();
-
-		System.out.println( "Tris:  "+triCount+", normals: "+normalCount+", vertices: "+vertexCount+", uvs: "+uvCount);
-	}
-
-	private static int getMaterialIdForMaterialName(String materialName, Collada colladaModel) {
-		if (materialName == null) {
+	private static int getMaterialIndex(String materialId, Collada colladaModel) {
+		if (materialId == null) {
 			return -1;
 		}
-		int id = 0;
+		int index = 0;
 		for (Material material : colladaModel.getLibraryMaterials().getMaterials()) {
-			if (material.getName().equals( materialName )) {
-				return id;
+			if (materialId.equals( material.getId() )) {
+				return index;
 			}
-			id++;
+			index++;
 		}
 		return -1;
 	}
@@ -222,71 +225,60 @@ public class JointedModelColladaImporter {
 		return null;
 	}
 
-	private static WeightInfo createWeightInfoForController( Controller meshController ) throws ModelLoadingException {
-		Skin skin = meshController.getSkin();        
-    	VertexWeights vertexWeights = skin.getVertexWeights();
-    	float[] weightData = skin.getWeightData();
-    	int[] vertexWeightData = vertexWeights.getData();
-    	/*
-    	 *  From the Collada 1.5 Spec:
-    	 *  Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
+	private WeightInfo createWeightInfoForController( Controller meshController ) throws ModelLoadingException {
+		/*
+		 *  Here is an example of a more complete <vertex_weights> element. Note that the <vcount> element
 			says that the first vertex has 3 bones, the second has 2, etc. Also, the <v> element says that the first
 			vertex is weighted with weights[0] towards the bind shape, weights[1] towards bone 0, and
 			weights[2] towards bone 1:
-			<skin>
-			 <source id="joints"/>
-			 <source id="weights"/>
-			 <vertex_weights count="4">
-			 <input semantic="JOINT" source="#joints"/>
-			 <input semantic="WEIGHT" source="#weights"/>
-			 <vcount>3 2 2 3</vcount>
-			 <v>
-			 -1 0 0 1 1 2
-			 -1 3 1 4
-			 -1 3 2 4
-			 -1 0 3 1 2 2
-			 </v>
-			 </vertex_weights>
-			</skin> 
-    	 */
-    	int entryCount = 0;
-    	Map<Integer, float[]> jointWeightMap = new HashMap<Integer, float[]>();
-    	//Loop through the vertex weights and build a map of joints (stored as their indices to the joint data) to arrays of weight info
-    	//The weight info is stored as arrays of weights where the index of the entry is the index of the joint and the weight values is the weighting of that vertex to the joint
-    	for (int vertex=0; vertex<vertexWeights.getCount(); vertex++) {
-    		int boneCount = vertexWeights.getVcount().getData()[vertex];
-    		for (int bone=0; bone<boneCount; bone++) {
-    			int jointIndex = vertexWeightData[entryCount*2];
-    			int weightIndex = vertexWeightData[entryCount*2 + 1];
-  
-    			float weight = weightData[weightIndex];
-    
-    			float[] weightArray;
-    			if (jointWeightMap.containsKey( jointIndex )) {
-    				weightArray = jointWeightMap.get( jointIndex );
-    			}
-    			else {
-    				weightArray = new float[vertexWeights.getCount()];
-    				jointWeightMap.put( jointIndex, weightArray );
-    			}
-    			weightArray[vertex] = weight;
-    			entryCount++;
-    		}
-    
-    	}
-    	//Take the weight data and convert it to WeightInfo
-    	String[] jointData = skin.getJointData();
-    	if (jointData == null) {
-    		throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no joint data found on mesh skin." );
-    	}
-    
-    	//Array of inverse bind matrices for all the referenced joints. Is indexed into by the joint index.
-    	float[] inverseBindMatrixData = skin.getInvBindMatrixData();
-    	if (inverseBindMatrixData == null) {
-    		throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no inverse bind matrix data found on mesh skin." );
-    	}
-    	WeightInfo weightInfo = new WeightInfo();
-    	for (Entry<Integer, float[]> jointAndWeights : jointWeightMap.entrySet()) {
+		 *  From the Collada 1.4.1 spec: (Alice, MAYA, and Blender use the 1.4.1 schema for export)
+			<controller id="skin">
+				<skin source="#base_mesh">
+					<source id="Joints">
+						<Name_array count="4"> Root Spine1 Spine2 Head </Name_array>
+						...
+					</source>
+					<source id="Weights">
+						<float_array count="4"> 0.0 0.33 0.66 1.0 </float_array>
+						...
+					</source>
+					<source id="Inv_bind_mats">
+						<float_array count="64"> ... </float_array>
+						...
+					</source>
+					<joints>
+						<input semantic="JOINT" source="#Joints"/>
+						<input semantic="INV_BIND_MATRIX" source="#Inv_bind_mats"/>
+					</joints>
+					<vertex_weights count="4">
+						<input semantic="JOINT" source="#Joints"/>
+						<input semantic="WEIGHT" source="#Weights"/>
+						<vcount>3 2 2 3</vcount>
+						<v>
+						-1 0 0 1 1 2
+						-1 3 1 4
+						-1 3 2 4
+						-1 0 3 1 2 2
+						</v>
+					</vertex_weights>
+				</skin>
+			</controller>
+		 */
+		Skin skin = meshController.getSkin();
+		Map<Integer, float[]> jointWeightMap = getJointWeightMap( skin );
+		//Take the weight data and convert it to WeightInfo
+		String[] jointData = skin.getJointData();
+		if (jointData == null) {
+			throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no joint data found on mesh skin." );
+		}
+
+		//Array of inverse bind matrices for all the referenced joints. Is indexed into by the joint index.
+		float[] inverseBindMatrixData = skin.getInvBindMatrixData();
+		if (inverseBindMatrixData == null) {
+			throw new ModelLoadingException( "Error converting mesh "+meshController.getName()+", no inverse bind matrix data found on mesh skin." );
+		}
+		WeightInfo weightInfo = new WeightInfo();
+		for (Entry<Integer, float[]> jointAndWeights : jointWeightMap.entrySet()) {
 			int nonZeroWeights = 0;
 			for (float weight : jointAndWeights.getValue()) {
 				if (weight != 0) {
@@ -306,31 +298,44 @@ public class JointedModelColladaImporter {
 				String jointId = jointData[jointIndex];
 				float[] inverseBindMatrix = Arrays.copyOfRange( inverseBindMatrixData, 16*jointIndex, 16*jointIndex+16 );
 				AffineMatrix4x4 aliceInverseBindMatrix = floatArrayToAliceMatrix( inverseBindMatrix );
-
-				//Create the new transform by inverting the existing one so that we're working in untransformed space
-				AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( aliceInverseBindMatrix );
-				//Since these are absolute transforms, they need to have the scale removed both from the translation and the orientaion
-				//The scale is derived from the scale applied to the orientation
-				double xScale = newTransform.orientation.right.calculateMagnitude();
-				double yScale = newTransform.orientation.up.calculateMagnitude();
-				double zScale = newTransform.orientation.backward.calculateMagnitude();
-				//Create a scale that will remove the implicit scale
-				Vector3 transformScale = new Vector3( xScale, yScale, zScale );
-				//Apply the scale
-				newTransform.translation.multiply( transformScale );
-				//Normalize the orientation to remove the implicit scale
-				newTransform.orientation.normalizeColumns();
-				//Re-invert the transform and set the new value
-				newTransform.invert();
-
-
-
 				iawp.setWeights(jointAndWeights.getValue());
-				iawp.setInverseAbsoluteTransformation(newTransform);
+				// The Inverse Bind Matrix for jointIndex i. IBMi in the Collada spec.
+				iawp.setInverseAbsoluteTransformation(aliceInverseBindMatrix);
 				weightInfo.addReference( jointId, iawp );
 			}
 		}
-    	return weightInfo;
+		return weightInfo;
+	}
+
+	private static Map<Integer, float[]> getJointWeightMap( Skin skin ) {
+		VertexWeights vertexWeights = skin.getVertexWeights();
+		float[] weightData = skin.getWeightData();
+		int[] vertexWeightData = vertexWeights.getData();
+		Map<Integer, float[]> jointWeightMap = new HashMap<>();
+		int entryCount = 0;
+		//Loop through the vertex weights and build a map of joints (stored as their indices to the joint data) to
+		// arrays of weight info.
+		//The weight info is stored as arrays of weights where the index of the entry is the index of the joint and
+		// the weight values are the weighting of that vertex to the joint
+		for (int vertex=0; vertex<vertexWeights.getCount(); vertex++) {
+			int boneCount = vertexWeights.getVcount().getData()[vertex];
+			for (int bone=0; bone<boneCount; bone++) {
+				int jointIndex = vertexWeightData[entryCount*2];
+				int weightIndex = vertexWeightData[entryCount*2 + 1];
+
+				float[] weightArray;
+				if (jointWeightMap.containsKey( jointIndex )) {
+					weightArray = jointWeightMap.get( jointIndex );
+				}
+				else {
+					weightArray = new float[vertexWeights.getCount()];
+					jointWeightMap.put( jointIndex, weightArray );
+				}
+				weightArray[vertex] = weightData[weightIndex];
+				entryCount++;
+			}
+		}
+		return jointWeightMap;
 	}
 
 	private Mesh createAliceSGMeshFromGeometry( Geometry geometry, Collada colladaModel ) throws ModelLoadingException {
@@ -343,69 +348,67 @@ public class JointedModelColladaImporter {
 		else {
 			sgMesh = new Mesh();
 		}
-        sgMesh.setName(geometry.getName());
+		sgMesh.setName(geometry.getName());
 		final float[] normals = geometry.getMesh().getNormalData();
 		if (normals == null) {
 			throw new ModelLoadingException( "No normal data found in model." );
 		}
-		sgMesh.normalBuffer.setValue( Buffers.newDirectFloatBuffer( normals ));
-        float[] vertexData = geometry.getMesh().getPositionData();
-        double[] doubleVertexData = new double[vertexData.length];
-        for (int i=0; i<vertexData.length; i++) {
-        	doubleVertexData[i] = vertexData[i];
-        }
-        sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(doubleVertexData) );
-        final float[] coordData = geometry.getMesh().getTexCoordData();
-        if (coordData == null) {
+		orientation.orientNormals(normals, sgMesh.normalBuffer);
+
+		float[] colladaVertices = geometry.getMesh().getPositionData();
+		double[] doubleVertexData = orientation.orientVertices(colladaVertices, sgMesh.vertexBuffer);
+		final float[] coordData = geometry.getMesh().getTexCoordData();
+		if (coordData == null) {
 			throw new ModelLoadingException( "No texture coordinate data found in model." );
 		}
-        sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
-        
-        //Find the triangle data and use it to set the index data
-        Triangles tris = null;
-        for (Primitives p : geometry.getMesh().getPrimitives()) {
-        	if (p instanceof Triangles) {
-        		if (tris == null) {
-        			tris = (Triangles)p;
-        		}
-        		else {
-        			modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
-        		}
-        	}
-        	else {
-				modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive type "+p.getClass()+". Skipping this geometry.");
-        	}
-        }
-        if (tris == null) {
-			modelLoadingLogger.log( Level.WARNING, "Error converting mesh "+geometry.getName()+". No triangle primitive data found. Skipping entire mesh." );
-			return null;
-        }
-		int[] triangleIndexData = tris.getData();
-        sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(triangleIndexData) );
-        sgMesh.textureId.setValue( getMaterialIdForMaterialName( tris.getMaterial(), colladaModel ) );
-        
-        if (meshController != null && sgMesh instanceof WeightedMesh) {
-        	WeightInfo weightInfo = createWeightInfoForController( meshController );
-        
-        	//Since this is weighted mesh, we need to transform the mesh data into the bind space
-			float[] bindMatrixData = meshController.getSkin().getBindShapeMatrix();
-        	AffineMatrix4x4 bindMatrix;
-        	if (bindMatrixData != null ) {
-        		bindMatrix = floatArrayToAliceMatrix( bindMatrixData );
+		sgMesh.textCoordBuffer.setValue( Buffers.newDirectFloatBuffer( coordData ) );
+
+		//Find the triangle data and use it to set the index data
+		Triangles tris = null;
+		for (Primitives p : geometry.getMesh().getPrimitives()) {
+			if (p instanceof Triangles) {
+				if (tris == null) {
+					tris = (Triangles)p;
+				}
+				else {
+					modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive count: Found extra triangle primitives, only processing the first.");
+				}
 			}
 			else {
-        		bindMatrix = AffineMatrix4x4.createIdentity();
+				modelLoadingLogger.log( Level.WARNING, "Converting mesh '"+geometry.getName()+"': Unsupported primitive type "+p.getClass()+". Skipping this geometry.");
 			}
-        	double[] bindSpaceVertexData = new double[vertexData.length];
-            for (int i=0; i<vertexData.length; i+=3) {
-            	bindMatrix.transformVertex( bindSpaceVertexData, i, doubleVertexData, i );
-            }
-            sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(bindSpaceVertexData) );
+		}
+		if (tris == null) {
+			modelLoadingLogger.log( Level.WARNING, "Error converting mesh "+geometry.getName()+". No triangle primitive data found. Skipping entire mesh." );
+			return null;
+		}
+		sgMesh.indexBuffer.setValue( Buffers.newDirectIntBuffer(tris.getData()) );
+		// TODO Remove this early binding. The material on a piece of geometry references an instance_material by symbol.
+		// The instance_material, which is specific to an instance_controller on a node, uses target to reference the
+		// material in library_materials by id. The following line bypasses the instance_material, requiring it to have
+		// identical symbol and target and forcing all nodes to use the same material.
+		// TODO Stop using the index as the ID.
+		sgMesh.textureId.setValue( getMaterialIndex( tris.getMaterial(), colladaModel ) );
 
-        	((WeightedMesh)sgMesh).weightInfo.setValue( weightInfo );
-        }
-        
-        return sgMesh;
+		if (sgMesh instanceof WeightedMesh) {
+			recordWeights( (WeightedMesh) sgMesh, meshController, doubleVertexData );
+		}
+		return sgMesh;
+	}
+
+	private void recordWeights( WeightedMesh sgMesh, Controller meshController, double vertices[] )
+		throws ModelLoadingException {
+		//Since this is a weighted mesh, we need to transform the mesh data into the bind space
+		float[] bindMatrixData = meshController.getSkin().getBindShapeMatrix();
+		if (bindMatrixData != null) {
+			AffineMatrix4x4 bindMatrix = floatArrayToAliceMatrix( bindMatrixData );
+			double[] bindSpaceVertices = new double[vertices.length];
+			for ( int i = 0; i< vertices.length; i+=3 ) {
+				bindMatrix.transformVertex( bindSpaceVertices, i, vertices, i );
+			}
+			sgMesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(bindSpaceVertices) );
+		}
+		sgMesh.weightInfo.setValue( createWeightInfoForController( meshController ) );
 	}
 
 	private List<Mesh> createAliceMeshesFromCollada( Collada colladaModel ) throws ModelLoadingException {
@@ -440,7 +443,7 @@ public class JointedModelColladaImporter {
 					type = BufferedImage.TYPE_4BYTE_ABGR;
 				}
 				tex = new BufferedImage(image.getWidth(null),
-						image.getHeight(null), type);
+										image.getHeight(null), type);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 				return null;
@@ -455,7 +458,7 @@ public class JointedModelColladaImporter {
 				BufferedImage bufferedImage = ((BufferedImage) image);
 				for (int y = image.getHeight(null) - 1; y >= 0; y--) {
 					bufferedImage.getRGB(0, (flipImage ? row++ : y),
-							imageWidth, 1, tmpData, 0, imageWidth);
+										 imageWidth, 1, tmpData, 0, imageWidth);
 					tex.setRGB(0, y, imageWidth, 1, tmpData, 0, imageWidth);
 				}
 			} else {
@@ -482,10 +485,10 @@ public class JointedModelColladaImporter {
 		if (libraryMaterials != null) {
 			List<Material> materials = libraryMaterials.getMaterials();
 			for (Material material : materials) {
-				int id = getMaterialIdForMaterialName( material.getName(), colladaModel );
+				int index = getMaterialIndex( material.getId(), colladaModel );
 				boolean isUsed = false;
 				for (Mesh aliceMesh : aliceMeshes) {
-					if (aliceMesh.textureId.getValue() == id) {
+					if (aliceMesh.textureId.getValue() == index) {
 						isUsed = true;
 						break;
 					}
@@ -493,7 +496,7 @@ public class JointedModelColladaImporter {
 				if (isUsed) {
 					Image image = getColladaImageForMaterial( material, colladaModel );
 					if (image  == null) {
-						throw new ModelLoadingException("Error loading material "+material.getName()+": No valid image found.");
+						throw new ModelLoadingException("Error loading material "+material.getId()+": No valid image found.");
 					}
 					BufferedImage bufferedImage;
 					try {
@@ -512,11 +515,11 @@ public class JointedModelColladaImporter {
 					}
 					TexturedAppearance m_sgAppearance = new TexturedAppearance();
 					m_sgAppearance.diffuseColorTexture.setValue( getAliceTexture(bufferedImage) );
-					m_sgAppearance.textureId.setValue(id);
+					m_sgAppearance.textureId.setValue(index);
 					textureAppearances.add(m_sgAppearance);
 				}
 				else {
-					modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getName());
+					modelLoadingLogger.log( Level.WARNING, "Loading materials: Skipping unreferenced material "+material.getId());
 				}
 			}
 		}
@@ -552,31 +555,31 @@ public class JointedModelColladaImporter {
 		InstanceEffect ie = material.getInstanceEffect();
 		Effect effect = colladaModel.findEffect( ie.getUrl() );
 		if (effect == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect found for url '"+ie.getUrl()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No effect found for url '"+ie.getUrl()+"'");
 			return null;
 		}
 		if (effect.getEffectMaterial() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No effect material found for '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No effect material found for '"+effect.getId()+"'");
 			return null;
 		}
 		else if (effect.getEffectMaterial().getDiffuse() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse value found for effect '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse value found for effect '"+effect.getId()+"'");
 			return null;
 		}
 		else if (effect.getEffectMaterial().getDiffuse().getTexture() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse texture found for effect '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse texture found for effect '"+effect.getId()+"'");
 			return null;
 		}
 		else if (effect.getEffectMaterial().getDiffuse().getTexture().getTexture() == null) {
-			modelLoadingLogger.warning("Error loading material '"+material.getName()+"': No diffuse texture value found for effect '"+effect.getId()+"'");
+			modelLoadingLogger.warning("Error loading material '"+material.getId()+"': No diffuse texture value found for effect '"+effect.getId()+"'");
 			return null;
 		}
-		String textureName = effect.getEffectMaterial().getDiffuse().getTexture().getTexture();
+		String textureId = effect.getEffectMaterial().getDiffuse().getTexture().getTexture();
 
-		NewParam textureParam = effect.findNewParam(textureName);
+		NewParam textureParam = effect.findNewParam(textureId);
 		while (textureParam != null) {
 			if (textureParam.getSurface() != null) {
-				textureName = textureParam.getSurface().getInitFrom();
+				textureId = textureParam.getSurface().getInitFrom();
 				textureParam = null;
 				break;
 			}
@@ -588,134 +591,7 @@ public class JointedModelColladaImporter {
 			}
 		}
 
-		return colladaModel.findImage( textureName );
-	}
-
-
-	private static void flipJoints( Joint j ) {
-		AffineMatrix4x4 newTransform = new AffineMatrix4x4( j.localTransformation.getValue() );
-		newTransform = ColladaTransformUtilities.createFlippedAffineTransform( newTransform );
-		j.localTransformation.setValue( newTransform );
-		for( int i = 0; i < j.getComponentCount(); i++ )
-		{
-			Component comp = j.getComponentAt( i );
-			if (comp instanceof Joint) {
-				flipJoints((Joint)comp);
-			}
-		}
-	}
-
-	private static Mesh flipMesh( Mesh mesh ) {
-		double[] vertices = BufferUtilities.convertDoubleBufferToArray( mesh.vertexBuffer.getValue() );
-		double[] newVertices = ColladaTransformUtilities.createFlippedPoint3DoubleArray(vertices);
-		mesh.vertexBuffer.setValue( Buffers.newDirectDoubleBuffer(newVertices) );
-
-		float[] normals = BufferUtilities.convertFloatBufferToArray( mesh.normalBuffer.getValue() );
-		float[] newNormals = ColladaTransformUtilities.createFlippedPoint3FloatArray(normals);
-		mesh.normalBuffer.setValue( Buffers.newDirectFloatBuffer(newNormals) );
-
-		return mesh;
-	}
-
-	private static WeightInfo flipWeightInfo( WeightInfo weightInfo) {
-		Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = weightInfo.getMap();
-		for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
-			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
-			AffineMatrix4x4 originalTransform = AffineMatrix4x4.createInverse( iatwp.getInverseAbsoluteTransformation() );
-			AffineMatrix4x4 newTransform = ColladaTransformUtilities.createFlippedAffineTransform( originalTransform );
-			newTransform.invert();
-			iatwp.setInverseAbsoluteTransformation( newTransform );
-		}
-		return weightInfo;
-	}
-
-	private static WeightInfo removeImplicitScaleFromWeightInfo( WeightInfo weightInfo ) {
-		Map<String, InverseAbsoluteTransformationWeightsPair> mapReferencesToInverseAbsoluteTransformationWeightsPairs = weightInfo.getMap();
-		for (Entry<String, InverseAbsoluteTransformationWeightsPair> pair : mapReferencesToInverseAbsoluteTransformationWeightsPairs.entrySet()) {
-			InverseAbsoluteTransformationWeightsPair iatwp = pair.getValue();
-			AffineMatrix4x4 originalInverseTransform = iatwp.getInverseAbsoluteTransformation();
-			//Create the new transform by inverting the existing one so that we're working in untransformed space
-			AffineMatrix4x4 newTransform = AffineMatrix4x4.createInverse( originalInverseTransform );
-			//Since these are absolute transforms, they need to have the scale removed both from the translation and the orientaion
-			//The scale is derived from the scale applied to the orientation
-			double xScale = newTransform.orientation.right.calculateMagnitude();
-			double yScale = newTransform.orientation.up.calculateMagnitude();
-			double zScale = newTransform.orientation.backward.calculateMagnitude();
-			//Create a scale that will remove the implicit scale
-			Vector3 transformScale = new Vector3( xScale, yScale, zScale );
-			//Apply the scale
-			newTransform.translation.multiply( transformScale );
-			//Normalize the orientation to remove the implicit scale
-			newTransform.orientation.normalizeColumns();
-			//Re-invert the transform and set the new value
-			newTransform.invert();
-			iatwp.setInverseAbsoluteTransformation( newTransform );
-		}
-		return weightInfo;
-	}
-
-
-	/**
-	 * 	Alice models are in a different geometric space than maya models
-	 *  Models must have their space transformed so that the look correct in Alice
-	 */
-	private static void flipAliceModel(SkeletonVisual sv) {
-		flipJoints(sv.skeleton.getValue());
-		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
-			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
-			//If we start to support things like cylinders and boxes, then this would need to be updated
-			if (g instanceof Mesh) {
-				Mesh m = (Mesh)g;
-				flipMesh(m);
-			}
-		}
-		for (WeightedMesh wm : sv.weightedMeshes.getValue()) {
-			flipMesh(wm);
-			flipWeightInfo(wm.weightInfo.getValue());
-		}
-	}
-
-	private static void removeImplicitScaleFromSkeleton( Joint joint, Vector3 scale) {
-		Vector3 localScale = getImplicitScale(joint);
-		AffineMatrix4x4 scaledTransform = joint.localTransformation.getValue();
-		scaledTransform.translation.multiply( scale );
-		scaledTransform.orientation.normalizeColumns();
-		joint.localTransformation.setValue( scaledTransform );
-		Vector3 newScale = Vector3.createMultiplication( scale, localScale );
-		for( int i = 0; i < joint.getComponentCount(); i++ )
-		{
-			Component comp = joint.getComponentAt( i );
-			if (comp instanceof Joint) {
-				removeImplicitScaleFromSkeleton((Joint)comp, newScale);
-			}
-		}
-
-	}
-
-	//Looks at the transforms in the skeleton and removes any scaling found in the orientation matrices
-	//Scaling is removed by applying that scale to the children of that joint and normalizing the matrix
-	private static void removeImplicitScale(SkeletonVisual sv) {
-		if (sv.skeleton.getValue() != null) {
-			//Implicit scale is set on the orientation of the root joint of the skeleton
-			Vector3 rootScale = getImplicitScale(sv.skeleton.getValue());
-			removeImplicitScaleFromSkeleton(sv.skeleton.getValue(), new Vector3(1, 1, 1));
-			for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
-				//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
-				//If we start to support things like cylinders and boxes, then this would need to be updated
-				if (g instanceof Mesh) {
-					((Mesh) g).scale(rootScale);
-				}
-			}
-		}
-	}
-
-	private static Vector3 getImplicitScale( Joint skeleton ) {
-		OrthogonalMatrix3x3 orientation = skeleton.localTransformation.getValue().orientation;
-		double scaleX = orientation.right.calculateMagnitude();
-		double scaleY = orientation.up.calculateMagnitude();
-		double scaleZ = orientation.backward.calculateMagnitude();
-
-		return new Vector3( scaleX, scaleY, scaleZ );
+		return colladaModel.findImage( textureId );
 	}
 
 	private Collada readColladaModel() throws ModelLoadingException {
@@ -727,6 +603,7 @@ public class JointedModelColladaImporter {
 		} catch( ClassCastException e ) {
 			throw new ModelLoadingException("Failed to load collada file " + colladaModelFile + ".\nIf there are nested animations they should be removed.", e);
 		}
+		orientation = establishOrientation(colladaModel);
 		colladaModel.deindexMeshes();
 		return colladaModel;
 	}
@@ -737,11 +614,19 @@ public class JointedModelColladaImporter {
 		Collada colladaModel = readColladaModel();
 
 		VisualScene scene = colladaModel.getLibraryVisualScenes().getScene( colladaModel.getScene().getInstanceVisualScene().getUrl() );
+		if (scene == null) {
+			throw new ModelLoadingException("Error processing model: No scene found.");
+		}
 		//Find and build the skeleton first
 		Node rootNode = findRootNode(scene.getNodes());
 		Joint aliceSkeleton = null;
 		if (rootNode != null) {
 			aliceSkeleton = createAliceSkeletonFromNode(rootNode);
+			AffineMatrix4x4 rootTransform = collapsedRootTransform( scene.getNodes(), rootNode);
+			if (rootTransform != null && !rootTransform.isIdentity()) {
+				rootTransform.multiply( aliceSkeleton.getLocalTransformation() );
+				aliceSkeleton.setLocalTransformation(rootTransform);
+			}
 		}
 
 		//Find and build meshes (both static and weighted) from the collada model
@@ -772,17 +657,10 @@ public class JointedModelColladaImporter {
 		skeletonVisual.geometries.setValue( aliceGeometry.toArray( new Mesh[aliceGeometry.size()] ) );
 		skeletonVisual.weightedMeshes.setValue( aliceWeightedMeshes.toArray( new WeightedMesh[aliceWeightedMeshes.size()] ) );
 
-		//Remove any scale from the model
-		removeImplicitScale( skeletonVisual );
 		float extraScale = colladaModel.getUnit().getMeter();
 		if (extraScale != 1.0f) {
 			skeletonVisual.scale(new Vector3(extraScale, extraScale, extraScale));
 		}
-		//Convert the model from maya/collada space to Alice space
-		if (FLIP_MODEL) {
-			flipAliceModel(skeletonVisual);
-		}
-
 
 		List<TexturedAppearance> sgTextureAppearances = createAliceMaterialsFromCollada( colladaModel, rootPath, aliceMeshes );
 		skeletonVisual.textures.setValue(sgTextureAppearances.toArray(new TexturedAppearance[sgTextureAppearances.size()]));
@@ -809,11 +687,88 @@ public class JointedModelColladaImporter {
 		return skeletonVisual;
 	}
 
+	private Orientation establishOrientation(Collada colladaModel) {
+		String upAxis = colladaModel.getUpAxis();
+		if ("X_UP".equals(upAxis)) {
+			return new Orientation(QUARTER_TURN_AROUND_Z);
+		}
+		if ("Z_UP".equals(upAxis)) {
+			return new Orientation(QUARTER_TURN_AROUND_X);
+		}
+		return new Orientation(ABOUT_FACE_AROUND_Y);
+	}
+
+	private static final OrthogonalMatrix3x3 ABOUT_FACE_AROUND_Y = new OrthogonalMatrix3x3(
+		new Vector3(-1, 0, 0),
+		new Vector3(0, 1, 0),
+		new Vector3(0, 0, -1));
+
+	private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_Z = new OrthogonalMatrix3x3(
+		new Vector3(0,1,0),
+		new Vector3(-1,0,0),
+		new Vector3(0,0,1));
+
+	private static final OrthogonalMatrix3x3 QUARTER_TURN_AROUND_X = new OrthogonalMatrix3x3(
+		new Vector3(1,0,0),
+		new Vector3(0,0,-1),
+		new Vector3(0,1,0));
+
+	public class Orientation {
+		final private OrthogonalMatrix3x3 orient3;
+		final private AffineMatrix4x4 inverse4;
+
+		public Orientation(OrthogonalMatrix3x3 orient3) {
+			this.orient3 = orient3;
+			inverse4 = orient4();
+			inverse4.invert();
+		}
+
+		AffineMatrix4x4 orientMatrixToAlice(AffineMatrix4x4 matrix) {
+			return orient4().multiply(matrix).multiply(inverse4);
+		}
+
+		AffineMatrix4x4 orient4() {
+			return new AffineMatrix4x4(orient3(), Point3.ORIGIN);
+		}
+
+		double[] orientVertices(float[] sourceVertices, DoubleBufferProperty destination) {
+			double[] transformedVertices = new double[sourceVertices.length];
+			for (int i=0; i<sourceVertices.length; i += 3) {
+				orient3().transformVector(transformedVertices, i, sourceVertices, i);
+			}
+			destination.setValue( Buffers.newDirectDoubleBuffer(transformedVertices) );
+			return transformedVertices;
+		}
+
+		OrthogonalMatrix3x3 orient3() {
+			return orient3;
+		}
+
+		void orientNormals(float[] normalData, FloatBufferProperty destination) {
+			float[] transformedNormals = new float[normalData.length];
+			for (int i=0; i<normalData.length; i += 3) {
+				orient3().transformVector(transformedNormals, i, normalData, i);
+			}
+			destination.setValue( Buffers.newDirectFloatBuffer(transformedNormals) );
+		}
+	}
 
 /*
  *  Convenience methods for debugging
  */
 
+	private static void printGeometryInfo( Geometry geometry ) {
+		float[] normalData = geometry.getMesh().getNormalData();
+		int normalCount = normalData.length / 3;
+		float[] vertexData = geometry.getMesh().getPositionData();
+		int vertexCount = vertexData.length / 3;
+		float[] uvData = geometry.getMesh().getTexCoordData();
+		int uvCount = uvData.length / 2;
+		Triangles tris = (Triangles)geometry.getMesh().getPrimitives().get( 0 );
+		int triCount = tris.getCount();
+
+		System.out.println( "Tris:  "+triCount+", normals: "+normalCount+", vertices: "+vertexCount+", uvs: "+uvCount);
+	}
 
 	private static void printJoints( Joint j, String indent) {
 		System.out.println( indent+"Joint "+j.jointID.getValue() );

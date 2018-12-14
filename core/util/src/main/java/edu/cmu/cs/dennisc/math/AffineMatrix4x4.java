@@ -140,6 +140,28 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		return rv;
 	}
 
+	public static AffineMatrix4x4 createFromRowMajorArray16( float[] rowMajorArray ) {
+		assert rowMajorArray.length == 16;
+		AffineMatrix4x4 rv = AffineMatrix4x4.createNaN();
+		rv.orientation.right.x = rowMajorArray[0];
+		rv.orientation.up.x = rowMajorArray[1];
+		rv.orientation.backward.x = rowMajorArray[2];
+		rv.translation.x = rowMajorArray[3];
+		rv.orientation.right.y = rowMajorArray[4];
+		rv.orientation.up.y = rowMajorArray[5];
+		rv.orientation.backward.y = rowMajorArray[6];
+		rv.translation.y = rowMajorArray[7];
+		rv.orientation.right.z = rowMajorArray[8];
+		rv.orientation.up.z = rowMajorArray[9];
+		rv.orientation.backward.z = rowMajorArray[10];
+		rv.translation.z = rowMajorArray[11];
+		assert rowMajorArray[ 12 ] == 0.0;
+		assert rowMajorArray[ 13 ] == 0.0;
+		assert rowMajorArray[ 14 ] == 0.0;
+		assert rowMajorArray[ 15 ] == 1.0;
+		return rv;
+	}
+
 	//todo: reduce visibility to private
 	public AffineMatrix4x4() {
 	}
@@ -611,8 +633,9 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		setReturnValueToMultiplication( this, a, b );
 	}
 
-	public void multiply( AffineMatrix4x4 b ) {
+	public AffineMatrix4x4 multiply( AffineMatrix4x4 b ) {
 		setToMultiplication( this, b );
+		return this;
 	}
 
 	//Multiply
@@ -807,7 +830,7 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 			afRV = new double[ 3 ];
 			offsetDest = 0;
 		}
-		transformVector( afRV, offsetDest, afSrc, offsetSrc );
+		orientation.transformVector( afRV, offsetDest, afSrc, offsetSrc );
 		afRV[ offsetDest ] += this.translation.x;
 		afRV[ offsetDest + 1 ] += this.translation.y;
 		afRV[ offsetDest + 2 ] += this.translation.z;
@@ -836,20 +859,6 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 	public float[] transformNormal( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
 	{
 		return transformVector( afRV, offsetDest, afSrc, offsetSrc );
-	}
-
-	private double[] transformVector( double[] afRV, int offsetDest, double[] afSrc, int offsetSrc )
-	{
-		if( afRV == null )
-		{
-			afRV = new double[ 3 ];
-			offsetDest = 0;
-		}
-
-		afRV[ offsetDest ] = ( this.orientation.right.x * afSrc[ offsetSrc ] ) + ( this.orientation.up.x * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.x * afSrc[ offsetSrc + 2 ] );
-		afRV[ offsetDest + 1 ] = ( this.orientation.right.y * afSrc[ offsetSrc ] ) + ( this.orientation.up.y * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.y * afSrc[ offsetSrc + 2 ] );
-		afRV[ offsetDest + 2 ] = ( this.orientation.right.z * afSrc[ offsetSrc ] ) + ( this.orientation.up.z * afSrc[ offsetSrc + 1 ] ) + ( this.orientation.backward.z * afSrc[ offsetSrc + 2 ] );
-		return afRV;
 	}
 
 	private float[] transformVector( float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )

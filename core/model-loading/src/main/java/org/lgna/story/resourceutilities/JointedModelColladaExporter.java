@@ -437,9 +437,10 @@ public class JointedModelColladaExporter {
 		mesh.setVertices( vertices );
 		//Create and add the triangles
 		Triangles triangles = createTriangles(sgMesh, vertexName, normalName, uvName);
-		//Grab the texture ID number from the mesh and use that to make the material reference
-		Integer textureID = sgMesh.textureId.getValue();
-		triangles.setMaterial(getMaterialIDForID(textureID));
+		// Grab the texture index from the mesh and use that to make the material reference
+		Integer textureIndex = sgMesh.textureId.getValue();
+		// Sets a reference to an instance_material by its symbol
+		triangles.setMaterial( getInstanceMaterialSymbolForIndex( textureIndex ) );
 		mesh.getLinesOrLinestripsOrPolygons().add( triangles );
 
 		geometry.setMesh( mesh );
@@ -682,41 +683,47 @@ public class JointedModelColladaExporter {
 		}
 	}
 
-	private String getImageNameForID(Integer id) {
-		return textureNameMap.get(id) + "_diffuseMap";
+	private String getImageNameForIndex(Integer index) {
+		return textureNameMap.get(index) + "_diffuseMap";
 	}
 
 	//Image file name must be unique to the model.
 	//We don't know if models share textures, so we must construct a unique file name to avoid collisions
 	//To support sharing textures, we will need to have a way to connect the texture id (a number) to a unique filename
-	private String getExternallyUniqueImageNameForID(Integer id) { return getFullResourceName() + "_" + getImageNameForID(id); }
+	private String getExternallyUniqueImageNameForID(Integer id) { return getFullResourceName() + "_" + getImageNameForIndex(id); }
 
-	private String getImageFileNameForID(Integer id) { return getExternallyUniqueImageNameForID(id) + "."+IMAGE_EXTENSION; }
+	private String getImageFileNameForIndex(Integer index) { return getExternallyUniqueImageNameForID(index) + "."+IMAGE_EXTENSION; }
 
-	private String getImageIDForID(Integer id) {
-		return getImageNameForID(id) + "-image";
+	private String getImageIDForIndex(Integer index) {
+		return getImageNameForIndex(index) + "-image";
 	}
 
-	private String getMaterialNameForID(Integer id) {
-		return textureNameMap.get(id) + "_shader";
+	private String getMaterialIDForIndex(Integer index) {
+		return textureNameMap.get(index) + "_shader";
 	}
 
-	private String getMaterialIDForID(Integer id) {
-		return getMaterialNameForID(id);
+	private String getInstanceMaterialSymbolForIndex(Integer index) {
+		// This must be the same as material id because Alice currently bypasses instance_material, requiring the
+		// instance_material's symbol, which identifies it within an instance_controller to be the same as the
+		// library material's id, which is unique in the entire collada file.
+		return getMaterialIDForIndex(index);
 	}
 
-	private String getEffectNameForID(Integer id) { return textureNameMap.get(id) + "_fx"; }
+	private String getEffectIDForIndex(Integer index) {
+		return textureNameMap.get(index) + "_fx";
+	}
 
-	private String getEffectIDForID(Integer id) { return getEffectNameForID(id); }
-
-	private BindMaterial createBindMaterialForTextureID( Integer textureID ) {
+	private BindMaterial createBindMaterialForTextureIndex( Integer textureIndex ) {
 		BindMaterial bindMaterial = factory.createBindMaterial();
 
 		BindMaterial.TechniqueCommon techniqueCommon = factory.createBindMaterialTechniqueCommon();
 		InstanceMaterial instanceMaterial = factory.createInstanceMaterial();
 		techniqueCommon.getInstanceMaterial().add(instanceMaterial);
-		instanceMaterial.setSymbol(getMaterialNameForID(textureID));
-		instanceMaterial.setTarget("#"+ getMaterialIDForID(textureID));
+		// Symbol uniquely identifies the instance_material.
+		// It is referred to from a geometry sub element (e.g. triangle) by material="anInstanceMaterialSymbol"
+		instanceMaterial.setSymbol(getInstanceMaterialSymbolForIndex(textureIndex));
+		// Target is the id of the material to use does not have #
+		instanceMaterial.setTarget(getMaterialIDForIndex(textureIndex));
 		InstanceMaterial.BindVertexInput bindVertexInput = factory.createInstanceMaterialBindVertexInput();
 		instanceMaterial.getBindVertexInput().add(bindVertexInput);
 		bindVertexInput.setSemantic("UVMap");
@@ -742,7 +749,7 @@ public class JointedModelColladaExporter {
 		Node visualSceneNode = createVisualSceneNode(meshName);
 		InstanceGeometry instanceGeometry = factory.createInstanceGeometry();
 		instanceGeometry.setUrl(geometryURL);
-		instanceGeometry.setBindMaterial(createBindMaterialForTextureID(sgMesh.textureId.getValue()));
+		instanceGeometry.setBindMaterial(createBindMaterialForTextureIndex(sgMesh.textureId.getValue()));
 		visualSceneNode.getInstanceGeometry().add(instanceGeometry);
 
 		return visualSceneNode;
@@ -755,7 +762,7 @@ public class JointedModelColladaExporter {
 		Node visualSceneNode = createVisualSceneNode(meshName);
 		InstanceController instanceController = factory.createInstanceController();
 		instanceController.setUrl(controllerURL);
-		instanceController.setBindMaterial(createBindMaterialForTextureID(sgWeightedMesh.textureId.getValue()));
+		instanceController.setBindMaterial(createBindMaterialForTextureIndex(sgWeightedMesh.textureId.getValue()));
 		visualSceneNode.getInstanceController().add(instanceController);
 
 		return visualSceneNode;
@@ -777,24 +784,27 @@ public class JointedModelColladaExporter {
 		return colorType;
 	}
 
-	private Effect createEffect(Integer textureID) {
+	private Effect createEffect(Integer textureIndex) {
 		Effect effect = factory.createEffect();
-		effect.setId( getEffectIDForID(textureID) );
-		effect.setName( getEffectNameForID(textureID)) ;
+		final String effectId = getEffectIDForIndex(textureIndex);
+		effect.setId(effectId);
+		// Id is required. Name is not, but we will repeat the ID.
+		effect.setName(effectId) ;
 
 		ProfileCOMMON profile = factory.createProfileCOMMON();
 
 		//Create the surface param
 		CommonNewparamType surfaceParam = factory.createCommonNewparamType();
-		surfaceParam.setSid(getImageNameForID(textureID)+"-surface");
+		final String surfaceParamSid = getImageNameForIndex(textureIndex) + "-surface";
+		surfaceParam.setSid(surfaceParamSid);
 		FxSurfaceCommon surface = factory.createFxSurfaceCommon();
 		surface.setType("2D");
 		FxSurfaceInitFromCommon surfaceInit = factory.createFxSurfaceInitFromCommon();
 		//This "setValue" needs something that has an ID.
 		//We're using the same pattern we used for making the Image entries for the library_images section
 		Image image = factory.createImage();
-		image.setName(getImageNameForID(textureID));
-		image.setId(getImageIDForID(textureID));
+		image.setName( getImageNameForIndex(textureIndex));
+		image.setId( getImageIDForIndex(textureIndex));
 		surfaceInit.setValue(image);
 
 		surface.getInitFrom().add(surfaceInit);
@@ -803,9 +813,10 @@ public class JointedModelColladaExporter {
 
 		//Create the sampler param
 		CommonNewparamType samplerParam = factory.createCommonNewparamType();
-		samplerParam.setSid(getImageNameForID(textureID)+"-sampler");
+		final String samplerParamSid = getImageNameForIndex(textureIndex) + "-sampler";
+		samplerParam.setSid(samplerParamSid);
 		FxSampler2DCommon sampler = factory.createFxSampler2DCommon();
-		sampler.setSource(getImageNameForID(textureID)+"-surface");
+		sampler.setSource(surfaceParamSid);
 		samplerParam.setSampler2D(sampler);
 		profile.getImageOrNewparam().add(samplerParam);
 
@@ -817,7 +828,7 @@ public class JointedModelColladaExporter {
 		lambert.setAmbient( createCommonColorType("ambient", 0, 0, 0, 1) );
 		CommonColorOrTextureType diffuse = factory.createCommonColorOrTextureType();
 		CommonColorOrTextureType.Texture texture = factory.createCommonColorOrTextureTypeTexture();
-		texture.setTexture( getImageNameForID(textureID)+"-sampler" );
+		texture.setTexture(samplerParamSid);
 		texture.setTexcoord( "UVMap" ); //Based on generated example collada file
 		diffuse.setTexture(texture);
 		lambert.setDiffuse(diffuse);
@@ -853,21 +864,23 @@ public class JointedModelColladaExporter {
 		LibraryEffects libraryEffects = factory.createLibraryEffects();
 		for ( TexturedAppearance texture : visual.textures.getValue()) {
 			Image image = factory.createImage();
-			Integer textureID = texture.textureId.getValue();
-			image.setName(getImageNameForID(textureID));
-			image.setId(getImageIDForID(textureID));
-			image.setInitFrom(getImageFileNameForID(textureID));
+			Integer textureIndex = texture.textureId.getValue();
+			image.setName( getImageNameForIndex(textureIndex));
+			image.setId( getImageIDForIndex(textureIndex));
+			image.setInitFrom( getImageFileNameForIndex(textureIndex));
 			libraryImages.getImage().add(image);
 
 			Material material = factory.createMaterial();
-			material.setName(getMaterialNameForID(textureID));
-			material.setId(getMaterialIDForID(textureID));
+			final String materialId = getMaterialIDForIndex(textureIndex);
+			material.setId( materialId );
+			// Material name is not required, but we will repeat the ID
+			material.setName(materialId);
 			InstanceEffect instanceEffect = factory.createInstanceEffect();
-			instanceEffect.setUrl("#"+ getEffectIDForID(textureID));
+			instanceEffect.setUrl("#"+ getEffectIDForIndex(textureIndex));
 			material.setInstanceEffect(instanceEffect);
 			libraryMaterials.getMaterial().add(material);
 
-			Effect effect = createEffect(textureID);
+			Effect effect = createEffect(textureIndex);
 			libraryEffects.getEffect().add(effect);
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add(libraryImages);
@@ -998,8 +1011,8 @@ public class JointedModelColladaExporter {
 	public List<String> getTextureFileNames() {
 		List<String> textureFileNames = new ArrayList<>();
 		for (TexturedAppearance texture : visual.textures.getValue()) {
-			Integer textureID = texture.textureId.getValue();
-			textureFileNames.add(getImageFileNameForID(textureID));
+			Integer textureIndex = texture.textureId.getValue();
+			textureFileNames.add(getImageFileNameForIndex(textureIndex));
 		}
 		return textureFileNames;
 	}
@@ -1015,7 +1028,7 @@ public class JointedModelColladaExporter {
 
 	private TexturedAppearance getTextureAppearance(Integer textureId) {
 		for (TexturedAppearance texture : visual.textures.getValue()) {
-			if (textureId == texture.textureId.getValue()) {
+			if (textureId.equals(texture.textureId.getValue())) {
 				return texture;
 			}
 		}
@@ -1025,7 +1038,7 @@ public class JointedModelColladaExporter {
 	public ImageResource createImageResourceForTexture(Integer textureId) throws IOException {
 		TexturedAppearance texturedAppearance = getTextureAppearance(textureId);
 		BufferedImageTexture bufferedTexture = (BufferedImageTexture)texturedAppearance.diffuseColorTexture.getValue();
-		return ImageFactory.createImageResource(bufferedTexture.getBufferedImage(), getImageFileNameForID(textureId));
+		return ImageFactory.createImageResource(bufferedTexture.getBufferedImage(), getImageFileNameForIndex(textureId));
 	}
 
 	public Integer getTextureIdForName(String textureName) {
@@ -1055,8 +1068,8 @@ public class JointedModelColladaExporter {
 	public List<DataSource> createImageDataSources(String pathName) {
 		List<DataSource> dataSources = new ArrayList<>();
 		for (TexturedAppearance texture : visual.textures.getValue()) {
-			Integer textureID = texture.textureId.getValue();
-			final String textureName = pathName +"/"+getImageFileNameForID(textureID);
+			Integer textureIndex = texture.textureId.getValue();
+			final String textureName = pathName +"/"+ getImageFileNameForIndex(textureIndex);
 			DataSource dataSource = new DataSource() {
 				@Override public String getName() { return textureName; }
 
@@ -1080,7 +1093,7 @@ public class JointedModelColladaExporter {
 	public List<File> saveTexturesToDirectory( File directory ) throws IOException {
 		List<File> textureFiles = new ArrayList<>();
 		for ( TexturedAppearance texture : visual.textures.getValue() ) {
-			File textureFile = new File(directory, getImageFileNameForID(texture.textureId.getValue()));
+			File textureFile = new File(directory, getImageFileNameForIndex(texture.textureId.getValue()));
 			try {
 				FileUtilities.createParentDirectoriesIfNecessary(textureFile);
 				textureFile.createNewFile();

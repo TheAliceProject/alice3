@@ -112,16 +112,16 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 		initializeJointBoundingBoxes(joint, AffineMatrix4x4.createIdentity());
 	}
 
-	private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 oTransformationPre)
+	void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform)
 	{
 		if (currentNode == null)
 		{
 			return;
 		}
-		AffineMatrix4x4 oTransformationPost = oTransformationPre;
+		AffineMatrix4x4 absoluteLocalTransform = parentTransform;
 		if (currentNode instanceof Transformable)
 		{
-			oTransformationPost = AffineMatrix4x4.createMultiplication(oTransformationPre, ((Transformable)currentNode).localTransformation.getValue());
+			absoluteLocalTransform = AffineMatrix4x4.createMultiplication(parentTransform, ((Transformable)currentNode).localTransformation.getValue());
 			if (currentNode instanceof Joint)
 			{
 				AxisAlignedBox box = new AxisAlignedBox();
@@ -159,7 +159,7 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 			if (comp instanceof Composite)
 			{
 				Composite jointChild = (Composite)comp;
-				initializeJointBoundingBoxes( jointChild, oTransformationPost );
+				initializeJointBoundingBoxes( jointChild, absoluteLocalTransform );
 			}
 		}
 	}

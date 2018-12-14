@@ -362,4 +362,26 @@ public abstract class AbstractMatrix3x3 implements BinaryEncodableAndDecodable, 
 	public boolean isWithinReasonableEpsilonOf( AbstractMatrix3x3 other ) {
 		return this.isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON );
 	}
+
+
+	void transformVector(double[] afRV, int offsetDest, double[] afSrc, int offsetSrc)
+	{
+		afRV[ offsetDest ] = ( right.x * afSrc[ offsetSrc ] ) + ( up.x * afSrc[ offsetSrc + 1 ] ) + ( backward.x * afSrc[ offsetSrc + 2 ] );
+		afRV[ offsetDest + 1 ] = ( right.y * afSrc[ offsetSrc ] ) + ( up.y * afSrc[ offsetSrc + 1 ] ) + ( backward.y * afSrc[ offsetSrc + 2 ] );
+		afRV[ offsetDest + 2 ] = ( right.z * afSrc[ offsetSrc ] ) + ( up.z * afSrc[ offsetSrc + 1 ] ) + ( backward.z * afSrc[ offsetSrc + 2 ] );
+	}
+
+	public void transformVector(double[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
+	{
+		afRV[ offsetDest ] = ( right.x * afSrc[ offsetSrc ] ) + ( up.x * afSrc[ offsetSrc + 1 ] ) + ( backward.x * afSrc[ offsetSrc + 2 ] );
+		afRV[ offsetDest + 1 ] = ( right.y * afSrc[ offsetSrc ] ) + ( up.y * afSrc[ offsetSrc + 1 ] ) + ( backward.y * afSrc[ offsetSrc + 2 ] );
+		afRV[ offsetDest + 2 ] = ( right.z * afSrc[ offsetSrc ] ) + ( up.z * afSrc[ offsetSrc + 1 ] ) + ( backward.z * afSrc[ offsetSrc + 2 ] );
+	}
+
+	public void transformVector(float[] afRV, int offsetDest, float[] afSrc, int offsetSrc )
+	{
+		afRV[ offsetDest ] = (float) (( right.x * afSrc[ offsetSrc ] ) + ( up.x * afSrc[ offsetSrc + 1 ] ) + ( backward.x * afSrc[ offsetSrc + 2 ] ));
+		afRV[ offsetDest + 1 ] = (float) (( right.y * afSrc[ offsetSrc ] ) + ( up.y * afSrc[ offsetSrc + 1 ] ) + ( backward.y * afSrc[ offsetSrc + 2 ] ));
+		afRV[ offsetDest + 2 ] = (float) (( right.z * afSrc[ offsetSrc ] ) + ( up.z * afSrc[ offsetSrc + 1 ] ) + ( backward.z * afSrc[ offsetSrc + 2 ] ));
+	}
 }

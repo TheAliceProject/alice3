@@ -1,11 +1,18 @@
 package org.alice.stageide.gallerybrowser;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
 import org.alice.ide.ReasonToDisableSomeAmountOfRendering;
 import org.alice.ide.croquet.components.SuperclassPopupButton;
+import org.alice.ide.icons.Icons;
 import org.alice.ide.name.NameValidator;
 import org.alice.ide.name.validators.TypeNameValidator;
 import org.alice.stageide.StageIDE;
@@ -15,14 +22,7 @@ import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.TreeUtilities;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
-import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.PlainStringValue;
-import org.lgna.croquet.SimpleComposite;
-import org.lgna.croquet.SingleSelectListState;
-import org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite;
-import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.StringState;
+import org.lgna.croquet.*;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.dialog.views.GatedCommitDialogContentPane;
@@ -48,22 +48,22 @@ import java.util.stream.Collectors;
 public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialogCoreComposite<Panel, Boolean> {
 	private final StageIDE ide = StageIDE.getActiveInstance();
 
-	private final SkeletonPreviewComposite previewComposite;
+	private final ModelPreviewComposite previewComposite;
 	private final ModelDetailsComposite detailsComposite;
 	private final SplitComposite splitComposite;
 	private final ErrorStatus errorStatus;
 
 	private final SkeletonVisual skeletonVisual;
 	private Class<? extends ModelResource> parentJavaClass;
+	private Double appliedScale = 1.0;
 
 	private final NameValidator typeValidator = new TypeNameValidator();
 
 	public ImportGalleryResourceComposite( SkeletonVisual sv ) {
 		super( UUID.fromString( "39f498c3-ce50-48af-91de-0ef10e174cf5" ) );
 		skeletonVisual = sv;
-		previewComposite = new SkeletonPreviewComposite();
-		previewComposite.getView().setSkeletonVisual( sv );
-		detailsComposite = new ModelDetailsComposite( UUID.randomUUID());
+		previewComposite = new ModelPreviewComposite(sv);
+		detailsComposite = new ModelDetailsComposite();
 		splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.detailsComposite, 0.35f );
 		errorStatus = createErrorStatus( "errorStatus" );
 	}
@@ -82,7 +82,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 
 	@Override
 	protected void handlePreShowDialog( Dialog dialog) {
-		previewComposite.getView().positionAndOrientCamera();
+		previewComposite.positionAndOrientCamera();
 		ide.getDocumentFrame().disableRendering( ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		super.handlePreShowDialog( dialog );
 	}
@@ -131,6 +131,18 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 				refreshStatus();
 			}
 		}
+	}
+
+	private void scaleModel(Double newScale) {
+		if ( newScale != null ) {
+			double change = newScale/appliedScale;
+			skeletonVisual.scale(new Vector3(change, change, change));
+			appliedScale = newScale;
+		}
+	}
+
+	private void rotateSkeleton(AffineMatrix4x4 rotation) {
+		skeletonVisual.skeleton.getValue().applyTransformation(rotation, AsSeenBy.SELF);
 	}
 
 	@Override
@@ -313,56 +325,75 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		return modelManifest;
 	}
 
-	private void setShowUnitBox( Boolean showBox ) {
-		previewComposite.getView().setShowUnitBox(showBox);
-	}
-
-	private void setShowAxes( Boolean showBox ) {
-		previewComposite.getView().setShowAxes(showBox);
-	}
-
-	private final ValueListener<Boolean> showAxesListener = e -> setShowAxes( e.getNextValue() );
-	private final ValueListener<Boolean> showUnitBoxListener = e -> setShowUnitBox( e.getNextValue() );
-	private final ValueListener<ResourceNode> classSelectionListener = e -> setSuperclass( e.getNextValue() );
+	private static final AffineMatrix4x4 ROTATE_LEFT_AROUND_Y = new AffineMatrix4x4(new OrthogonalMatrix3x3(
+		new Vector3(0, 0, -1),
+		new Vector3(0, 1, 0),
+		new Vector3(1, 0, 0)), Point3.ORIGIN);
+	private static final AffineMatrix4x4 ROTATE_RIGHT_AROUND_Y = new AffineMatrix4x4(new OrthogonalMatrix3x3(
+		new Vector3(0, 0, 1),
+		new Vector3(0, 1, 0),
+		new Vector3(-1, 0, 0)), Point3.ORIGIN);
 
 	private class ModelDetailsComposite extends SimpleComposite<BorderPanel> {
 		StringState author = createStringState( "author" );
 		StringState modelName = createStringState( "modelName" );
 		StringState sClass = createStringState( "sClass" );
 		PlainStringValue jointStatus = createStringValue( "jointStatus" );
-		BooleanState isUnitBoxShowing = createBooleanState( "isUnitBoxShowing", true );
-		BooleanState areAxesShowing = createBooleanState( "areAxesShowing", true );
+		// This is here ONLY to satisfy the way LabeledFormRow creates and localizes labels
+		// TODO Remove this once localization is fixed
+		StringState rotateModel = createStringState( "rotateModel" );
+		BoundedDoubleState resizeModel = createBoundedDoubleState(
+			"resizeModel",new BoundedDoubleDetails().initialValue( 1.0 ).minimum( 0.01 ).maximum( 100.0 ).stepSize( 0.01 ) );
 
-		ModelDetailsComposite( UUID id ) {
-			super( id );
+		private ActionOperation rotateOperation(String rotateLeft, AffineMatrix4x4 rotation) {
+			return createActionOperation(rotateLeft, (userActivity, source) -> {
+				rotateSkeleton(rotation);
+				return null;
+			});
+		}
+
+		ModelDetailsComposite() {
+			super( UUID.randomUUID() );
 			author.setValueTransactionlessly( ide.getAuthorName() );
 			modelName.setValueTransactionlessly( StaticAnalysisUtilities.getConventionalClassName( skeletonVisual.getName() ) );
 		}
 
 		@Override
 		protected BorderPanel createView() {
+			Operation rotateLeft = rotateOperation("rotateLeft", ROTATE_LEFT_AROUND_Y);
+			Operation rotateRight = rotateOperation("rotateRight", ROTATE_RIGHT_AROUND_Y);
+			rotateLeft.setButtonIcon(Icons.PREVIOUS_SMALL);
+			rotateRight.setButtonIcon(Icons.NEXT_SMALL);
 			final BorderPanel view = new BorderPanel( this );
 			final Border emptyBorder = BorderFactory.createEmptyBorder( 8, 8, 8, 8 );
 
 			FormPanel centerComponent = new FormPanel() {
 				@Override
 				protected void appendRows( List<LabeledFormRow> rows ) {
-					final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> classList =
-						TreeUtilities.getSClassListState();
+					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
+					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
+
+					final SingleSelectListState<ResourceNode, MutableListData<ResourceNode>> classList = TreeUtilities.getSClassListState();
 					classList.clearSelection();
 					classList.addNewSchoolValueListener( classSelectionListener );
 					String selectLabel = findLocalizedText( "unselectedSuper" );
 					final SwingComponentView<?> classButton = new SuperclassPopupButton( classList, selectLabel );
-					rows.add( new LabeledFormRow( modelName.getSidekickLabel(), modelName.createTextField() ) );
-					rows.add( new LabeledFormRow( author.getSidekickLabel(), author.createTextField() ) );
 					rows.add( new LabeledFormRow( sClass.getSidekickLabel(), classButton ) );
-					rows.add( new LabeledFormRow( isUnitBoxShowing.getSidekickLabel(), isUnitBoxShowing.createCheckBox()));
-					rows.add( new LabeledFormRow( areAxesShowing.getSidekickLabel(), areAxesShowing.createCheckBox()) );
+
+					String forwardMessage = "    (" + findLocalizedText( "forwardMessage" ) + ")";
+					FlowPanel rotateButtons = new FlowPanel(
+						FlowPanel.Alignment.LEFT,
+						rotateLeft.createButton(),
+						rotateRight.createButton(),
+						new Label(forwardMessage, TextPosture.OBLIQUE)
+					);
+					rows.add( new LabeledFormRow( rotateModel.getSidekickLabel(), rotateButtons ) );
+
+					resizeModel.addNewSchoolValueListener(resizeListener);
+					rows.add( new LabeledFormRow( resizeModel.getSidekickLabel(), resizeModel.createSpinner() ) );
 				}
 
 			};
-			isUnitBoxShowing.addAndInvokeNewSchoolValueListener( showUnitBoxListener );
-			areAxesShowing.addAndInvokeNewSchoolValueListener( showAxesListener );
 			centerComponent.setBorder( emptyBorder );
 			view.addCenterComponent( centerComponent );
 
@@ -378,5 +409,54 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 			TreeUtilities.getSClassListState().removeNewSchoolValueListener( classSelectionListener );
 			super.releaseView();
 		}
+
+		private final ValueListener<ResourceNode> classSelectionListener = e -> setSuperclass( e.getNextValue() );
+		private final ValueListener<Double> resizeListener = e -> scaleModel( e.getNextValue() );
 	}
+
+	private class ModelPreviewComposite extends SimpleComposite<BorderPanel> {
+		private final SkeletonPreviewComposite skeletonPreview;
+		BooleanState isUnitCubeShowing = createBooleanState( "isUnitCubeShowing", true );
+		BooleanState areAxesShowing = createBooleanState( "areAxesShowing", true );
+
+		ModelPreviewComposite( SkeletonVisual sv ) {
+			super( UUID.randomUUID() );
+			skeletonPreview = new SkeletonPreviewComposite();
+			skeletonPreview.getView().setSkeletonVisual(sv );
+		}
+
+		@Override
+		protected BorderPanel createView() {
+			final BorderPanel view = new BorderPanel( this );
+			FlowPanel controls = new FlowPanel(
+				FlowPanel.Alignment.CENTER,
+				isUnitCubeShowing.getSidekickLabel().createLabel(),
+				isUnitCubeShowing.createCheckBox(),
+				new Label( "        "),
+				areAxesShowing.getSidekickLabel().createLabel(),
+				areAxesShowing.createCheckBox()
+			);
+			isUnitCubeShowing.addAndInvokeNewSchoolValueListener( showUnitBoxListener );
+			areAxesShowing.addAndInvokeNewSchoolValueListener( showAxesListener );
+			view.addCenterComponent(skeletonPreview.getView());
+			view.addPageEndComponent( controls );
+			return view;
+		}
+
+		void positionAndOrientCamera() {
+			skeletonPreview.getView().positionAndOrientCamera();
+		}
+
+		void setShowUnitBox(Boolean showBox) {
+			skeletonPreview.getView().setShowUnitBox(showBox);
+		}
+
+		void setShowAxes(Boolean showBox) {
+			skeletonPreview.getView().setShowAxes(showBox);
+		}
+		private final ValueListener<Boolean> showAxesListener = e -> setShowAxes( e.getNextValue() );
+		private final ValueListener<Boolean> showUnitBoxListener = e -> setShowUnitBox( e.getNextValue() );
+	}
+
+
 }

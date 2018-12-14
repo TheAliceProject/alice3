@@ -114,7 +114,7 @@ public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshCo
 	
 	private static final float WEIGHT_THRESHOLD = .2f;
 	
-    public AxisAlignedBox getBoundingBoxForJoint(Joint joint)
+    AxisAlignedBox getBoundingBoxForJoint( Joint joint )
     { 	
         InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
         AffineMatrix4x4 inverseJoint = joint.getInverseAbsoluteTransformation();
