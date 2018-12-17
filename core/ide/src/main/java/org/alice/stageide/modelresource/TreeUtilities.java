@@ -193,7 +193,8 @@ public class TreeUtilities {
 
 	private static MutableListData<ResourceNode> getListBasedOnTopClasses() {
 		List<ResourceNode> classLeaves = Lists.newLinkedList();
-		selectResourceNodes( getTreeBasedOnClassHierarchy(), classLeaves, ResourceNode::isSubclassable );
+		// TODO Extend import to cover poses and change this to use ResourceNode::isSubclassable
+		selectResourceNodes( getTreeBasedOnClassHierarchy(), classLeaves, ResourceNode::isSubclassableAndDoesNotRequirePoses );
 		return new MutableListData<>( new SClassCodec(), classLeaves );
 	}
 
