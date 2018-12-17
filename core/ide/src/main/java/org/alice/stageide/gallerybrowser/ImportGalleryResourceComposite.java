@@ -142,7 +142,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 	}
 
 	private void rotateSkeleton(AffineMatrix4x4 rotation) {
-		skeletonVisual.skeleton.getValue().applyTransformation(rotation, AsSeenBy.SELF);
+		skeletonVisual.skeleton.getValue().applyTransformation(rotation, AsSeenBy.SCENE);
 	}
 
 	@Override
