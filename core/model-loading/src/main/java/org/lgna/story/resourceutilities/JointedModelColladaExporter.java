@@ -102,8 +102,8 @@ public class JointedModelColladaExporter {
 	private static final String IMAGE_EXTENSION = "png";
 
 	//Controls whether or not we flip the coordinate space during our conversion
-	//Keeping the current coordinates appears to be the right move for collada exporting
-	private static final boolean FLIP_COORDINATE_SPACE = false;
+	//Collada models are rotated on import to match Alice, so Alice models will be flipped on export.
+	private static final boolean FLIP_COORDINATE_SPACE = true;
 	private static final boolean SCALE_MODEL = false;
 	private static final double MODEL_SCALE = 1.0;
 
