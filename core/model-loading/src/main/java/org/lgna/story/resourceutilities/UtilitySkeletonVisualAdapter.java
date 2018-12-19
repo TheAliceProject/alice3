@@ -107,12 +107,12 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 		return box;
 	}
 
-	public void initializeJointBoundingBoxes(Joint joint)
+	void initializeJointBoundingBoxes(Joint joint)
 	{
 		initializeJointBoundingBoxes(joint, AffineMatrix4x4.createIdentity());
 	}
 
-	void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform)
+	private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform)
 	{
 		if (currentNode == null)
 		{
@@ -153,13 +153,10 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 				PrintUtilities.println("Set bounding box on "+currentNode.getName()+" to: "+box/*+", and the bounding radius to "+boundingRadius*/);
 			}
 		}
-		for (int i=0; i<currentNode.getComponentCount(); i++)
-		{
-			Component comp = currentNode.getComponentAt(i);
+		for (Component comp : currentNode.getComponents()) {
 			if (comp instanceof Composite)
 			{
-				Composite jointChild = (Composite)comp;
-				initializeJointBoundingBoxes( jointChild, absoluteLocalTransform );
+				initializeJointBoundingBoxes((Composite)comp, absoluteLocalTransform );
 			}
 		}
 	}

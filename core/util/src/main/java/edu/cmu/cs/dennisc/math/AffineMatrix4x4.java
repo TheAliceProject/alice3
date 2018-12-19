@@ -910,4 +910,16 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 	public MAffineMatrix4x4 createImmutable() {
 		return new MAffineMatrix4x4( this.orientation.createImmutable(), this.translation.createImmutable() );
 	}
+
+	static private DecimalFormat format = new DecimalFormat("0.000" );
+
+	public String displayString() {
+		StringBuilder sb = new StringBuilder();
+		try {
+			append(sb, format, true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
 }
