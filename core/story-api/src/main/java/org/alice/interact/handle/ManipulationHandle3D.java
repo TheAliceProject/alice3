@@ -45,6 +45,7 @@ package org.alice.interact.handle;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import org.alice.interact.DragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
@@ -313,7 +314,20 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	@Override
 	public void setParent( Composite parent ) {
 		super.setParent( parent );
+		invertParentScale(parent);
 		this.updateCameraRelativeOpacity();
+	}
+
+	private void invertParentScale(Composite parent) {
+		OrthogonalMatrix3x3 local = localTransformation.getValue().orientation;
+		// Remove previous scale
+		local.normalizeColumns();
+		if (parent != null) {
+			OrthogonalMatrix3x3 parentOrientation = parent.getAbsoluteTransformation().orientation;
+			local.right.multiply(1 / parentOrientation.right.calculateMagnitude() );
+			local.up.multiply(1 / parentOrientation.up.calculateMagnitude() );
+			local.backward.multiply(1 / parentOrientation.backward.calculateMagnitude() );
+		}
 	}
 
 	@Override
