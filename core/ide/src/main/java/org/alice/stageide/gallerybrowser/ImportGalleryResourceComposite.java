@@ -20,6 +20,7 @@ import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.modelresource.ResourceNode;
 import org.alice.stageide.modelresource.TreeUtilities;
+import org.alice.stageide.modelviewer.SkeletonVisualViewer;
 import org.alice.tweedle.file.ModelManifest;
 import org.alice.tweedle.file.StructureReference;
 import org.lgna.croquet.*;
@@ -138,6 +139,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 			double change = newScale/appliedScale;
 			skeletonVisual.scale(new Vector3(change, change, change));
 			appliedScale = newScale;
+			previewComposite.updateView();
 		}
 	}
 
@@ -415,7 +417,7 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 	}
 
 	private class ModelPreviewComposite extends SimpleComposite<BorderPanel> {
-		private final SkeletonPreviewComposite skeletonPreview;
+		final SkeletonPreviewComposite skeletonPreview;
 		BooleanState isUnitCubeShowing = createBooleanState( "isUnitCubeShowing", true );
 		BooleanState areAxesShowing = createBooleanState( "areAxesShowing", true );
 
@@ -456,6 +458,16 @@ public class ImportGalleryResourceComposite extends SingleValueCreatorInputDialo
 		}
 		private final ValueListener<Boolean> showAxesListener = e -> setShowAxes( e.getNextValue() );
 		private final ValueListener<Boolean> showUnitBoxListener = e -> setShowUnitBox( e.getNextValue() );
+
+		void updateView() {
+			final SkeletonVisualViewer view = skeletonPreview.getView();
+			view.updateScale();
+			if (isUnitCubeShowing.getValue()) {
+				// Refresh the cube shown
+				view.setShowUnitBox(true);
+			}
+			view.positionAndOrientCamera();
+		}
 	}
 
 
