@@ -107,9 +107,9 @@ public class UtilitySkeletonVisualAdapter extends GlrSkeletonVisual
 		return box;
 	}
 
-	void initializeJointBoundingBoxes(Joint joint)
+	void initializeJointBoundingBoxes()
 	{
-		initializeJointBoundingBoxes(joint, AffineMatrix4x4.createIdentity());
+		initializeJointBoundingBoxes(owner.skeleton.getValue(), AffineMatrix4x4.createIdentity());
 	}
 
 	private void initializeJointBoundingBoxes(Composite currentNode, AffineMatrix4x4 parentTransform)

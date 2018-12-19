@@ -95,6 +95,10 @@ public class Joint extends Transformable implements ModelJoint
 		AffineMatrix4x4 newTransform = new AffineMatrix4x4( localTransformation.getValue() );
 		newTransform.translation.multiply( scale );
 		localTransformation.setValue( newTransform );
+		AxisAlignedBox bb = boundingBox.getValue();
+		if (bb != null) {
+			bb.scale(scale);
+		}
 		for( int i = 0; i < getComponentCount(); i++ )
 		{
 			Component comp = getComponentAt( i );

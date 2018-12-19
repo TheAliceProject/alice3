@@ -666,7 +666,7 @@ public class JointedModelColladaImporter {
 		UtilitySkeletonVisualAdapter skeletonVisualAdapter = new UtilitySkeletonVisualAdapter();
 		skeletonVisualAdapter.initialize(skeletonVisual);
 		skeletonVisualAdapter.processWeightedMesh();
-		skeletonVisualAdapter.initializeJointBoundingBoxes(skeletonVisual.skeleton.getValue());
+		skeletonVisualAdapter.initializeJointBoundingBoxes();
 		AxisAlignedBox absoluteBBox = skeletonVisualAdapter.getAbsoluteBoundingBox();
 		if (skeletonVisual.geometries.getValue() != null) {
 			for (edu.cmu.cs.dennisc.scenegraph.Geometry g : skeletonVisual.geometries.getValue()) {

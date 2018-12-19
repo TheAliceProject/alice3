@@ -395,6 +395,11 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
 		this.maximum.add( v );
 	}
 
+	public void scale( Vector3 v ) {
+		minimum.multiply(v);
+		maximum.multiply(v);
+	}
+
 	public void scale( Matrix3x3 m ) {
 		//		todo?
 		//		m.transform( this.minimum );
