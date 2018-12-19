@@ -47,12 +47,10 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point2;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
@@ -61,7 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl
 {
 	
-	public AxisAlignedBox getAbsoluteBoundingBox()
+	AxisAlignedBox getAbsoluteBoundingBox()
     { 
 		AxisAlignedBox box = new AxisAlignedBox(); 
     	this.indexBuffer.rewind();
@@ -112,12 +110,9 @@ public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshCo
 		return this.weightedMesh;
 	}
 	
-	private static final float WEIGHT_THRESHOLD = .2f;
-	
     AxisAlignedBox getBoundingBoxForJoint( Joint joint )
     { 	
         InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
-        AffineMatrix4x4 inverseJoint = joint.getInverseAbsoluteTransformation();
         AxisAlignedBox box = new AxisAlignedBox(); 
         if (iatwp != null)
         {
@@ -125,21 +120,16 @@ public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshCo
             while (!iatwp.isDone())
             {
                 int vertexIndex = iatwp.getIndex()*3;
-                float weight = iatwp.getWeight();
-                if (weight > WEIGHT_THRESHOLD)
-                {
-                    weight = 1;
-                }
+				// The vertex is stored in bind space (in Collada, v*BSM).
+				// In the bind pose IBMi * JMi = identity, so neither needs to be considered.
                 Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex+1), this.vertexBuffer.get(vertexIndex+2));
-                Point3 localVertex = inverseJoint.createTransformed(vertex);
-                localVertex.multiply(weight);
-                box.union(localVertex);
+                box.union(vertex);
                 iatwp.advance();
             }
         }
         return box;
     }
-    
+
     private double getRadiusCalculationForJoint(Joint joint)
     {
         Vector3 directionToBoxCenter = Vector3.createNormalized(joint.boundingBox.getValue().getCenter());
