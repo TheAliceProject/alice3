@@ -119,6 +119,12 @@ public class ResourceNode extends ResourceGalleryDragModel implements Comparable
 		return resourceKey.isInterface() && !getFirstChild().isSubclassable();
 	}
 
+	boolean isSubclassableAndDoesNotRequirePoses() {
+		return !resourceKey.getInternalText().equals("Slitherer")
+			&& !resourceKey.getInternalText().equals("Flyer")
+			&& isSubclassable();
+	}
+
 	@Override
 	public List<ResourceNode> getNodeChildren() {
 		return this.children;

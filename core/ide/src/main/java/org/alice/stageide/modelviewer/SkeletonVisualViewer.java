@@ -38,15 +38,18 @@ public class SkeletonVisualViewer extends Viewer {
 			this.skeletonVisual = skeletonVisual;
 			if (this.skeletonVisual != null) {
 				this.skeletonVisual.setParent(getScene().getSgComposite());
-
-				final AxisAlignedBox modelBounds = this.skeletonVisual.getAxisAlignedMinimumBoundingBox();
-				// Scale to fit with skeletonVisual
-				fancyAxes.resize( modelBounds.getDiagonal(), 1.5, 1 );
-				//  Position next to skeletonVisual
-				unitAAB.setXMinimum( modelBounds.getXMaximum() );
-				unitAAB.setXMaximum( modelBounds.getXMaximum() + 1 );
+				updateScale();
 			}
 		}
+	}
+
+	public void updateScale() {
+		final AxisAlignedBox modelBounds = this.skeletonVisual.getAxisAlignedMinimumBoundingBox();
+		// Scale to fit with skeletonVisual
+		fancyAxes.resize( modelBounds.getDiagonal(), 1.5, 1 );
+		//  Position next to skeletonVisual
+		unitAAB.setXMinimum( modelBounds.getXMaximum() );
+		unitAAB.setXMaximum( modelBounds.getXMaximum() + 1 );
 	}
 
 	@Override
