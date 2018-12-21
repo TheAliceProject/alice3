@@ -922,4 +922,23 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements BinaryEncodabl
 		}
 		return sb.toString();
 	}
+
+	public void normalizeOrientation() {
+		if( orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
+			return;
+		}
+		double xScale = orientation.right.calculateMagnitude();
+		double yScale = orientation.up.calculateMagnitude();
+		double zScale = orientation.backward.calculateMagnitude();
+
+		OrthogonalMatrix3x3 inverseScale = OrthogonalMatrix3x3.createIdentity();
+		inverseScale.right.x = 1 / xScale;
+		inverseScale.up.y = 1 / yScale;
+		inverseScale.backward.z = 1 / zScale;
+		orientation.applyMultiplication( inverseScale );
+
+		translation.x /= xScale;
+		translation.y /= yScale;
+		translation.z /= zScale;
+	}
 }

@@ -122,6 +122,7 @@ public abstract class AbstractTransformable extends Composite {
 			rv.setIdentity();
 		} else {
 			asSeenBy.getInverseAbsoluteTransformation( rv );
+			rv.normalizeOrientation();
 			rv.multiply( getAbsoluteTransformation() );
 		}
 		return rv;

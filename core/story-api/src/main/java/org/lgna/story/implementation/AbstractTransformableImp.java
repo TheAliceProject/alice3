@@ -857,7 +857,6 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				m1 = AffineMatrix4x4.accessIdentity();
 			}
 			AffineMatrix4x4 m0 = getTransformation( target );
-			m0.orientation.normalizeColumns();
 			//			if( isSmooth ) {
 			//				this.perform( new SmoothAffineMatrix4x4Animation( duration, style, m0, m1 ) );
 			//			} else {
