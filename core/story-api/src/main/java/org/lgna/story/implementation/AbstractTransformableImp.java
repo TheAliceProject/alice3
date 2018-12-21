@@ -598,7 +598,9 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.setOrientationOnly( target, offset );
 		} else {
 			final OrthogonalMatrix3x3 buffer = new OrthogonalMatrix3x3();
-			UnitQuaternion q0 = new UnitQuaternion( this.getTransformation( target ).orientation );
+			final OrthogonalMatrix3x3 targetOrientation = this.getTransformation(target).orientation;
+			targetOrientation.normalizeColumns();
+			UnitQuaternion q0 = new UnitQuaternion(targetOrientation);
 			UnitQuaternion q1;
 			if( offset != null ) {
 				q1 = offset.createUnitQuaternion();
@@ -855,6 +857,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				m1 = AffineMatrix4x4.accessIdentity();
 			}
 			AffineMatrix4x4 m0 = getTransformation( target );
+			m0.orientation.normalizeColumns();
 			//			if( isSmooth ) {
 			//				this.perform( new SmoothAffineMatrix4x4Animation( duration, style, m0, m1 ) );
 			//			} else {

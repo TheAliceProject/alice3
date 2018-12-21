@@ -140,10 +140,10 @@ public abstract class AbstractTransformable extends Composite {
 
 			//todo: optimize
 			AffineMatrix4x4 m = new AffineMatrix4x4( vehicle.getInverseAbsoluteTransformation() );
-			if( asSeenBy.isSceneOf( this ) ) {
-				//pass
-			} else {
-				m.multiply( asSeenBy.getAbsoluteTransformation() );
+			if (!asSeenBy.isSceneOf(this)) {
+				final AffineMatrix4x4 seenBy = asSeenBy.getAbsoluteTransformation();
+				seenBy.orientation.normalizeColumns();
+				m.multiply(seenBy);
 			}
 			m.multiply( transformation );
 

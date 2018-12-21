@@ -400,7 +400,7 @@ public final class AxisAlignedBox implements BinaryEncodableAndDecodable {
 		maximum.multiply(v);
 	}
 
-	public void scale( Matrix3x3 m ) {
+	public void scale( AbstractMatrix3x3 m ) {
 		//		todo?
 		//		m.transform( this.minimum );
 		//		m.transform( this.maximum );
