@@ -41,27 +41,16 @@ package org.lgna.story.resourceutilities;/*
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point2;
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSkeletonVisual;
 import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
-import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl
-{
-	
-	AxisAlignedBox getAbsoluteBoundingBox()
-    { 
-		AxisAlignedBox box = new AxisAlignedBox(); 
+class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshControl {
+	AxisAlignedBox getAbsoluteBoundingBox() {
+		AxisAlignedBox box = new AxisAlignedBox();
     	this.indexBuffer.rewind();
     	while(this.indexBuffer.hasRemaining())
     	{
@@ -71,119 +60,28 @@ public class UtilityWeightedMeshControl extends GlrSkeletonVisual.WeightedMeshCo
     	}
     	return box;
     }
-	
-	public AxisAlignedBox getSrcAbsoluteBoundingBox()
-    { 
-		AxisAlignedBox box = new AxisAlignedBox(); 
-    	this.indexBuffer.rewind();
-    	while(this.indexBuffer.hasRemaining())
-    	{
-    		int index = this.indexBuffer.get()*3;
-        	Point3 vertex = new Point3(this.weightedMesh.vertexBuffer.getValue().get(index), this.weightedMesh.vertexBuffer.getValue().get(index+1), this.weightedMesh.vertexBuffer.getValue().get(index+2));
-    		box.union(vertex);
-    	}
-    	return box;
-    }
-	
-	public DoubleBuffer getTransformedVertices()
-	{
-		return this.vertexBuffer;
-	}
-	
-	public FloatBuffer getTransformedNormals()
-	{
-		return this.normalBuffer;
-	}
-	
-	public IntBuffer getIndexBuffer()
-	{
-		return this.indexBuffer;
-	}
-	
-	public FloatBuffer getTextCoordBuffer()
-	{
-		return this.textCoordBuffer;
-	}
-	
-	public WeightedMesh getSgWeightedMesh()
-	{
-		return this.weightedMesh;
-	}
-	
-    AxisAlignedBox getBoundingBoxForJoint( Joint joint )
-    { 	
-        InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
-        AxisAlignedBox box = new AxisAlignedBox(); 
-        if (iatwp != null)
-        {
-            iatwp.reset();
-            while (!iatwp.isDone())
-            {
-                int vertexIndex = iatwp.getIndex()*3;
-				// The vertex is stored in bind space (in Collada, v*BSM).
-				// In the bind pose IBMi * JMi = identity, so neither needs to be considered.
-                Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex+1), this.vertexBuffer.get(vertexIndex+2));
-                box.union(vertex);
-                iatwp.advance();
-            }
-        }
-        return box;
-    }
 
-    private double getRadiusCalculationForJoint(Joint joint)
-    {
-        Vector3 directionToBoxCenter = Vector3.createNormalized(joint.boundingBox.getValue().getCenter());
-        Point3 min3 = joint.boundingBox.getValue().getMinimum();
-        Point3 max3 = joint.boundingBox.getValue().getMaximum();
-        double[] absVals = {Math.abs(directionToBoxCenter.x), Math.abs(directionToBoxCenter.y), Math.abs(directionToBoxCenter.z)};
-        int maxIndex = 1;
-        for (int i=0; i<absVals.length; i++)
-        {
-            if (absVals[i] > absVals[maxIndex])
-            {
-                maxIndex = i;
-            }
-        }
-        if (maxIndex == 0) //X-Axis
-        {
-            Point2 min = new Point2(min3.y, min3.z);
-            Point2 max = new Point2(max3.y, max3.z);
-            double radius = Point2.calculateDistanceBetween(min, max);
-            return radius;
-        }
-        if (maxIndex == 1) //Y-Axis
-        {
-            Point2 min = new Point2(min3.x, min3.z);
-            Point2 max = new Point2(max3.x, max3.z);
-            double radius = Point2.calculateDistanceBetween(min, max);
-            return radius;
-        }
-        if (maxIndex == 2) //Z-Axis
-        {
-            Point2 min = new Point2(min3.x, min3.y);
-            Point2 max = new Point2(max3.x, max3.y);
-            double radius = Point2.calculateDistanceBetween(min, max);
-            return radius;
-        }
-        return Double.NaN;
-    }
-    
-    public double getBoundingRadiusForJoint(Joint joint)
-    {
-        double thisRadius = getRadiusCalculationForJoint(joint);
-        double parentRadius = Double.NaN;
-        if (joint.getParent() instanceof Joint)
-        {
-            parentRadius = getRadiusCalculationForJoint((Joint)joint.getParent());
-        }
-        
-        if (Double.isNaN(parentRadius)|| Double.isNaN(thisRadius))
-        {
-            return thisRadius;
-        }
-        return (thisRadius + parentRadius) / 2;
-    }
-    
-    
-    
+	private static final float WEIGHT_THRESHOLD = .2f;
+
+	AxisAlignedBox getBoundingBoxForJoint( Joint joint ) {
+		InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get(joint.jointID.getValue());
+		AxisAlignedBox box = new AxisAlignedBox();
+		if (iatwp != null) {
+			iatwp.reset();
+			AffineMatrix4x4 inverseJoint = iatwp.getInverseAbsoluteTransformation();
+			AffineMatrix4x4 projectedJoint = joint.getAbsoluteTransformation();
+			while (!iatwp.isDone()) {
+				int vertexIndex = iatwp.getIndex()*3;
+				Point3 vertex = new Point3(this.vertexBuffer.get(vertexIndex), this.vertexBuffer.get(vertexIndex+1), this.vertexBuffer.get(vertexIndex+2));
+				Point3 localVertex = inverseJoint.createTransformed(vertex);
+				final float weight = iatwp.getWeight();
+				if (weight > WEIGHT_THRESHOLD) {
+					box.union(localVertex);
+				}
+				iatwp.advance();
+			}
+			box.scale(projectedJoint.orientation);
+		}
+		return box;
+	}
 }
