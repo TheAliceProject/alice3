@@ -176,11 +176,11 @@ public class IncompleteAstUtilities {
 	}
 
 	public static FieldAccess createIncompleteFieldAccess( AbstractField field ) {
-		return AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
+		return new FieldAccess(new SelectedInstanceFactoryExpression(field.getDeclaringType() ), field);
 	}
 
 	public static AssignmentExpression createIncompleteAssignmentExpression( Expression expression, AbstractField field ) {
-		FieldAccess fieldAccess = AstUtilities.createFieldAccess( expression, field );
+		FieldAccess fieldAccess = new FieldAccess(expression, field);
 		AbstractType<?, ?, ?> valueType = field.getValueType();
 		return new AssignmentExpression( valueType, fieldAccess, AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}

@@ -50,7 +50,6 @@ import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ThisExpression;
 
 import java.util.UUID;
 
@@ -94,6 +93,6 @@ public class FieldAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 
 	@Override
 	protected Expression createLeftHandSide( Expression... expressions ) {
-		return new FieldAccess( new ThisExpression(), this.field );
+		return new FieldAccess(field);
 	}
 }

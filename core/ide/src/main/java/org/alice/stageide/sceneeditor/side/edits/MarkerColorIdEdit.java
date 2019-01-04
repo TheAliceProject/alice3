@@ -49,11 +49,11 @@ import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NodeUtilities;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.Color;
 import org.lgna.story.SMarker;
@@ -76,9 +76,7 @@ public class MarkerColorIdEdit extends AbstractEdit {
 
 	private void set( Expression argumentExpression ) {
 		Statement statement = AstUtilities.createMethodInvocationStatement(
-				AstUtilities.createFieldAccess( new ThisExpression(), field ),
-				SET_COLOR_ID_METHOD,
-				argumentExpression );
+			new FieldAccess(field), SET_COLOR_ID_METHOD, argumentExpression );
 		StageIDE.getActiveInstance().getSceneEditor().executeStatements( statement );
 	}
 

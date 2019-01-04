@@ -124,17 +124,7 @@ public class SetUpMethodGenerator {
 	}
 
 	private static Expression createInstanceExpression( boolean isThis, AbstractField field ) {
-		Expression thisExpression = new ThisExpression();
-		if( isThis ) {
-			return thisExpression;
-		} else {
-			return new FieldAccess( thisExpression, field );
-		}
-	}
-
-	private static ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?> parameterCls, Expression instanceExpression, Expression argumentExpression ) {
-		AbstractMethod method = AstUtilities.lookupMethod( declarationCls, methodName, parameterCls );
-		return AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
+		return isThis ? new ThisExpression() : new FieldAccess(field);
 	}
 
 	private static ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?>[] parameterClses, Expression instanceExpression,
@@ -143,28 +133,16 @@ public class SetUpMethodGenerator {
 		return AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
-	//	public static void fillInAutomaticPointOfViewAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField pointOfViewField)
-	//	{
-	//		if (pointOfViewField != null)
-	//		{
-	//			bodyStatementsProperty.add( createStatement( org.lgna.story.Turnable.class, "moveAndOrientTo", new Class< ? >[] {org.lgna.story.Entity.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), getExpressionCreator().createExpression( 0.0 ) ) );
-	//		}
-	//	}
-
-	public static void fillInAutomaticVehicleAssignment( StatementListProperty bodyStatementsProperty, AbstractField field, AbstractField vehicleField, boolean isVehicleScene ) {
-		if( vehicleField != null ) {
-			bodyStatementsProperty.add( createStatement( MutableRider.class, "setVehicle", SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ),
-					SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
-		}
-	}
-
-	public static ExpressionStatement createSetVehicleStatement( AbstractField field, AbstractField vehicleField, boolean isVehicleScene ) {
+	static ExpressionStatement createSetVehicleStatement(AbstractField field, AbstractField vehicleField,
+														 boolean isVehicleScene) {
+		AbstractMethod setVehicleMethod = AstUtilities.lookupMethod(MutableRider.class, "setVehicle", (Class<?>) SThing.class);
+		Expression vehicle;
 		if( ( vehicleField != null ) || isVehicleScene ) {
-			return createStatement( MutableRider.class, "setVehicle", SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ),
-					SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
+			vehicle = SetUpMethodGenerator.createInstanceExpression(isVehicleScene, vehicleField);
 		} else {
-			return createStatement( MutableRider.class, "setVehicle", SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ), new NullLiteral() );
+			vehicle = new NullLiteral();
 		}
+		return AstUtilities.createMethodInvocationStatement(new FieldAccess(field), setVehicleMethod, vehicle);
 	}
 
 	public static ExpressionStatement createSetPaintStatement( AbstractField field, Paint paint ) {
@@ -177,7 +155,7 @@ public class SetUpMethodGenerator {
 			}
 			if( paintExpression != null ) {
 				if( field.getValueType().isAssignableFrom( SModel.class ) ) {
-					return createStatement( SModel.class, "setPaint", new Class<?>[] { Paint.class, SetPaint.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression );
+					return createStatement( SModel.class, "setPaint", new Class<?>[] { Paint.class, SetPaint.Detail[].class }, new FieldAccess( field ), paintExpression );
 				}
 			}
 		}
@@ -194,7 +172,7 @@ public class SetUpMethodGenerator {
 			}
 			if( colorIdExpression != null ) {
 				if( field.getValueType().isAssignableTo( SMarker.class ) ) {
-					return createStatement( SMarker.class, "setColorId", new Class<?>[] { Color.class }, SetUpMethodGenerator.createInstanceExpression( false, field ), colorIdExpression );
+					return createStatement( SMarker.class, "setColorId", new Class<?>[] { Color.class }, new FieldAccess( field ), colorIdExpression );
 				}
 			}
 		}
@@ -311,8 +289,7 @@ public class SetUpMethodGenerator {
 		SJointedModel jointedModel = getJointedModelForJointImp( jointImp );
 		AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( jointedModel );
 		assert getJointMethod != null;
-		Expression expression = new MethodInvocation( new FieldAccess( new ThisExpression(), entityField ), getJointMethod );
-		return expression;
+		return new MethodInvocation( new FieldAccess(entityField), getJointMethod );
 	}
 
 	private static AbstractMethod getJointGetterForJoint( SJoint joint, UserInstance sceneInstance ) {
@@ -327,7 +304,7 @@ public class SetUpMethodGenerator {
 			for( AbstractMethod jointGetter : jti.getJointGetters() ) {
 				Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(
 						sceneInstance,
-						new Expression[] { new MethodInvocation( new FieldAccess( new ThisExpression(), entityField ), jointGetter ) } );
+						new Expression[] { new MethodInvocation( new FieldAccess(entityField), jointGetter ) } );
 				for( Object o : values ) {
 					if( o instanceof SJoint ) {
 						JointImp gottenJoint = EmployeesOnly.getImplementation( (SJoint)o );
@@ -436,11 +413,11 @@ public class SetUpMethodGenerator {
 					for( JointedTypeInfo jointInfo : jointedTypeInfos ) {
 						List<Expression> jointAccessExpressions = Lists.newLinkedList();
 						for( AbstractMethod jointGetter : jointInfo.getJointGetters() ) {
-							Expression getJointExpression = new MethodInvocation( new FieldAccess( new ThisExpression(), field ), jointGetter );
+							Expression getJointExpression = new MethodInvocation( new FieldAccess(field), jointGetter );
 							jointAccessExpressions.add( getJointExpression );
 						}
 						for( JointMethodArrayAccessInfo jointArrayGetter : jointInfo.getJointArrayAccessGetters() ) {
-							Expression getJointExpression = new MethodInvocation( new FieldAccess( new ThisExpression(), field ), jointArrayGetter.getMethod() );
+							Expression getJointExpression = new MethodInvocation( new FieldAccess(field), jointArrayGetter.getMethod() );
 							Expression arrayAccessExpression = new ArrayAccess( jointArrayGetter.getMethod().getReturnType(), getJointExpression, new IntegerLiteral( jointArrayGetter.getIndex() ) );
 							jointAccessExpressions.add( arrayAccessExpression );
 						}
