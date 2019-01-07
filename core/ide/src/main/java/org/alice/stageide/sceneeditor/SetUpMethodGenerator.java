@@ -339,13 +339,13 @@ public class SetUpMethodGenerator {
 							Expression expression;
 							if( value instanceof SThing ) {
 								SThing entity = (SThing)value;
-								boolean isEntityScene = ( entity instanceof SScene );
 								if( entity instanceof SJoint ) {
 									SJoint joint = (SJoint)entity;
 									expression = getGetterExpressionForJoint( joint, sceneInstance );
 								} else {
-									AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( entity );
-									expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, entityField );
+									boolean isEntityScene = ( entity instanceof SScene );
+									AbstractField sceneField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( entity );
+									expression = SetUpMethodGenerator.createInstanceExpression( isEntityScene, sceneField );
 								}
 							} else {
 								expression = getExpressionCreator().createExpression( value );
