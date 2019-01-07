@@ -138,15 +138,6 @@ public abstract class VirtualMachine {
 		return getConstructor( entryPointType, arguments ).evaluate( this, null, arguments );
 	}
 
-	public UserInstance ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap( NamedUserType entryPointType, Object... arguments ) {
-		pushCurrentThread( null );
-		try {
-			return UserInstance.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
-		} finally {
-			popCurrentThread();
-		}
-	}
-
 	public Object createAndSetFieldInstance( UserInstance userInstance, UserField field ) {
 		Expression expression = field.initializer.getValue();
 		assert expression != null;
@@ -167,10 +158,6 @@ public abstract class VirtualMachine {
 		//} finally {
 		//	popCurrentThread();
 		//}
-	}
-
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( UserInstance instance, UserField field, UserInstance value ) {
-		Logger.todo( instance, field, value );
 	}
 
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( UserInstance instance, Statement statement ) {
