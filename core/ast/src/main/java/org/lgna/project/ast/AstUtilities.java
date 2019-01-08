@@ -291,16 +291,9 @@ public class AstUtilities {
 		return AstUtilities.createMethodInvocation( new TypeExpression( method.getDeclaringType() ), method, argumentExpressions );
 	}
 
-	public static FieldAccess createFieldAccess( Expression expression, AbstractField field ) {
-		FieldAccess rv = new FieldAccess();
-		rv.expression.setValue( expression );
-		rv.field.setValue( field );
-		return rv;
-	}
-
 	public static FieldAccess createStaticFieldAccess( AbstractField field ) {
 		assert field.isStatic();
-		return createFieldAccess( new TypeExpression( field.getDeclaringType() ), field );
+		return new FieldAccess(new TypeExpression(field.getDeclaringType() ), field);
 	}
 
 	public static FieldAccess createStaticFieldAccess( Field fld ) {

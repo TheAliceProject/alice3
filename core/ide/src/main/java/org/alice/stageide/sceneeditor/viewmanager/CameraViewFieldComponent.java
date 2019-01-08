@@ -45,9 +45,8 @@ package org.alice.stageide.sceneeditor.viewmanager;
 
 import org.alice.ide.members.components.templates.GetterTemplate;
 import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.FieldAccess;
 
 //todo
 public class CameraViewFieldComponent extends GetterTemplate {
@@ -66,7 +65,7 @@ public class CameraViewFieldComponent extends GetterTemplate {
 
 	@Override
 	protected Expression createIncompleteExpression() {
-		return AstUtilities.createFieldAccess( new ThisExpression(), this.field );
+		return new FieldAccess(field);
 	}
 
 }

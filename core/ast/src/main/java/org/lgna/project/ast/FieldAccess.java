@@ -59,6 +59,10 @@ public final class FieldAccess extends Expression implements PrecedentedAppender
 		this.field.setValue( field );
 	}
 
+	public FieldAccess(AbstractField field ) {
+		this( new ThisExpression(), field );
+	}
+
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		AbstractField fieldValue = this.field.getValue();

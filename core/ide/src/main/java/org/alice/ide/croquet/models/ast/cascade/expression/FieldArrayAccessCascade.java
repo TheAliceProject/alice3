@@ -47,9 +47,9 @@ import edu.cmu.cs.dennisc.map.MapToMap;
 import org.alice.ide.IDE;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionProperty;
+import org.lgna.project.ast.FieldAccess;
 
 import java.util.UUID;
 
@@ -79,10 +79,9 @@ public class FieldArrayAccessCascade extends ArrayAccessCascade {
 
 	@Override
 	protected Expression createAccessExpression() {
-		return AstUtilities.createFieldAccess(
-				IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
-				this.field
-				);
+		return new FieldAccess(
+			IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
+			field);
 	}
 
 	@Override

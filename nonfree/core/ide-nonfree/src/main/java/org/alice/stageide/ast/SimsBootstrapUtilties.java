@@ -48,6 +48,7 @@ import org.alice.stageide.StoryApiConfigurationManager;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.NamedUserType;
@@ -115,18 +116,18 @@ public class SimsBootstrapUtilties extends BootstrapUtilties {
 			Logger.errln( "cannot create expression", e );
 		}
 
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setFloorPaintMethod, floorPaintExpression ) );
+		setupStatements.add( createMethodInvocationStatement(new FieldAccess(roomField), setFloorPaintMethod, floorPaintExpression ) );
 		JavaMethod setWallPaintMethod = JavaMethod.getInstance( SRoom.class, "setWallPaint", Paint.class, SetWallPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setWallPaintMethod, wallPaintExpression ) );
+		setupStatements.add( createMethodInvocationStatement(new FieldAccess(roomField), setWallPaintMethod, wallPaintExpression ) );
 		JavaMethod setCeilingPaintMethod = JavaMethod.getInstance( SRoom.class, "setCeilingPaint", Paint.class, SetCeilingPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setCeilingPaintMethod, ceilingPaintExpression ) );
+		setupStatements.add( createMethodInvocationStatement(new FieldAccess(roomField), setCeilingPaintMethod, ceilingPaintExpression ) );
 
 		if( groundAppearance != null ) {
 			JavaMethod setGroundPaintMethod = JavaMethod.getInstance( SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class );
-			setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundPaintMethod, createFieldAccess( groundAppearance ) ) );
+			setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setGroundPaintMethod, createFieldAccess(groundAppearance ) ) );
 			if( groundOpacity != 1 ) {
 				JavaMethod setGroundOpacityMethod = JavaMethod.getInstance( SGround.class, "setOpacity", Number.class, SetOpacity.Detail[].class );
-				setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundOpacityMethod, new DoubleLiteral( groundOpacity ) ) );
+				setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity ) ) );
 			}
 		}
 

@@ -60,7 +60,6 @@ import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.MoveAndOrientTo;
 import org.lgna.story.SMovableTurnable;
@@ -176,7 +175,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	@Override
 	protected void perform( UserActivity activity ) {
 		if( ( this.toMoveField != null ) && ( this.toMoveToField != null ) ) {
-			Expression toMoveToExpression = new FieldAccess( new ThisExpression(), this.toMoveToField );
+			Expression toMoveToExpression = new FieldAccess(toMoveToField);
 			AbstractMethod method = AstUtilities.lookupMethod( SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { SThing.class, MoveAndOrientTo.Detail[].class } );
 			LocalTransformationEdit edit = new LocalTransformationEdit( activity, ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new Expression[] { toMoveToExpression } );
 			activity.commitAndInvokeDo( edit );

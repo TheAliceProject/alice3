@@ -108,18 +108,17 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 			Expression expressionValue;
 			if( value != null )
 			{
-				SThing entity = value;
-				if( entity instanceof SJoint ) {
-					expressionValue = SetUpMethodGenerator.getGetterExpressionForJoint( (SJoint)entity, this.sceneInstance );
+				if( value instanceof SJoint ) {
+					expressionValue = SetUpMethodGenerator.getGetterExpressionForJoint((SJoint) value, this.sceneInstance );
 				}
 				else {
-					AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( entity );
-					Expression thisExpression = new ThisExpression();
 					if( value instanceof SScene ) {
-						expressionValue = thisExpression;
+						expressionValue = new ThisExpression();
 					}
 					else {
-						expressionValue = new FieldAccess( thisExpression, entityField );
+						AbstractField entityField =
+							sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(value);
+						expressionValue = new FieldAccess(entityField);
 					}
 				}
 			}

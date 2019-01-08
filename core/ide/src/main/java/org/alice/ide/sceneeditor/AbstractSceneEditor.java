@@ -86,8 +86,9 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 
 	private VirtualMachine vm;
 
+	// This map and selection were put in to support possible future projects with multiple scenes
 	private Map<UserField, UserInstance> mapSceneFieldToInstance = new HashMap<UserField, UserInstance>();
-	private Map<UserInstance, UserField> mapSceneInstanceToField = new HashMap<UserInstance, UserField>();
+	private final SceneFieldState sceneFieldListSelectionState = new SceneFieldState();
 
 	private Map<UserField, Statement> mapSceneFieldToInitialCodeState = new HashMap<UserField, Statement>();
 
@@ -95,7 +96,6 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 	private UserInstance programInstance;
 	private UserField selectedField;
 
-	private final SceneFieldState sceneFieldListSelectionState = new SceneFieldState();
 
 	private final State.ValueListener<ProjectDocument> projectListener = new State.ValueListener<ProjectDocument>() {
 		@Override
@@ -338,25 +338,14 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 		return this.vm;
 	}
 
-	protected void addScene( UserField sceneField ) {
-		NamedUserType sceneType = (NamedUserType)sceneField.getValueType();
-		Object userInstance = this.programInstance.getFieldValue( sceneField );
-		assert userInstance != null;
-		assert userInstance instanceof UserInstance;
-		UserInstance rv = (UserInstance)userInstance;
-		rv.ensureInverseMapExists();
-		mapSceneFieldToInstance.put( sceneField, rv );
-		mapSceneInstanceToField.put( rv, sceneField );
-		this.sceneFieldListSelectionState.addItem( sceneField );
-
-		//		for (org.lgna.project.ast.AbstractField field : sceneField.valueType.getValue().getDeclaredFields())
-		//		{
-		//			if (field instanceof org.lgna.project.ast.UserField) {
-		//				org.lgna.project.ast.UserField uf = (org.lgna.project.ast.UserField)field;
-		//				this.addField(sceneField.valueType.getValue(), uf, statements)
-		//			}
-		//		}
-
+	private void addScene(UserField sceneField) {
+		Object sceneObject = programInstance.getFieldValue( sceneField );
+		assert sceneObject != null;
+		assert sceneObject instanceof UserInstance;
+		UserInstance sceneInstance = (UserInstance) sceneObject;
+		sceneInstance.ensureInverseMapExists();
+		mapSceneFieldToInstance.put( sceneField, sceneInstance );
+		sceneFieldListSelectionState.addItem( sceneField );
 	}
 
 	protected void setActiveScene( UserField sceneField ) {
@@ -396,7 +385,6 @@ public abstract class AbstractSceneEditor extends BorderPanel {
 			}
 			this.programType = programType;
 			mapSceneFieldToInstance.clear();
-			mapSceneInstanceToField.clear();
 			if( this.programType != null ) {
 				setProgramInstance( this.createProgramInstance() );
 				for( AbstractField programField : this.programType.getDeclaredFields() ) {

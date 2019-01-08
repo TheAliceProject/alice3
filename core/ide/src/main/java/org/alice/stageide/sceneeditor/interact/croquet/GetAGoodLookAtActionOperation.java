@@ -51,7 +51,6 @@ import org.lgna.croquet.Group;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.SCamera;
 import org.lgna.story.SThing;
@@ -89,7 +88,7 @@ public class GetAGoodLookAtActionOperation extends ActionOperation {
 		UserField cameraField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.camera );
 		UserField toLookAtField = StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.toLookAt );
 		ThisFieldAccessFactory cameraInstanceFactory = ThisFieldAccessFactory.getInstance( cameraField );
-		Expression[] toLookAtExpressions = { new FieldAccess( new ThisExpression(), toLookAtField ) };
+		Expression[] toLookAtExpressions = { new FieldAccess(toLookAtField) };
 		GetAGoodLookAtEdit edit = new GetAGoodLookAtEdit( activity, cameraInstanceFactory, OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD, toLookAtExpressions, camera, toLookAt );
 		activity.commitAndInvokeDo( edit );
 	}

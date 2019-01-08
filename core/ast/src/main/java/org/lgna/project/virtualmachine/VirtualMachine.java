@@ -119,8 +119,8 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	public void ENTRY_POINT_invoke( UserInstance instance, AbstractMethod method, Object... arguments ) {
-		this.invoke( instance, method, arguments );
+	public void ENTRY_POINT_invoke( UserInstance target, AbstractMethod method, Object... arguments ) {
+		invoke( target, method, arguments );
 	}
 
 	private NamedUserConstructor getConstructor( NamedUserType entryPointType, Object[] arguments ) {
@@ -136,15 +136,6 @@ public abstract class VirtualMachine {
 
 	public UserInstance ENTRY_POINT_createInstance( NamedUserType entryPointType, Object... arguments ) {
 		return getConstructor( entryPointType, arguments ).evaluate( this, null, arguments );
-	}
-
-	public UserInstance ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap( NamedUserType entryPointType, Object... arguments ) {
-		pushCurrentThread( null );
-		try {
-			return UserInstance.createInstanceWithInverseMap( this, entryPointType.getDeclaredConstructor(), arguments );
-		} finally {
-			popCurrentThread();
-		}
 	}
 
 	public Object createAndSetFieldInstance( UserInstance userInstance, UserField field ) {
@@ -167,10 +158,6 @@ public abstract class VirtualMachine {
 		//} finally {
 		//	popCurrentThread();
 		//}
-	}
-
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_removeField( UserInstance instance, UserField field, UserInstance value ) {
-		Logger.todo( instance, field, value );
 	}
 
 	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( UserInstance instance, Statement statement ) {
@@ -415,17 +402,13 @@ public abstract class VirtualMachine {
 	}
 
 	private void checkIndex( int index, int length ) {
-		if( ( 0 <= index ) && ( index < length ) ) {
-			//pass
-		} else {
+		if ((index < 0) || (length <= index)) {
 			throw new LgnaVmArrayIndexOutOfBoundsException( this, index, length );
 		}
 	}
 
 	private void checkNotNull( Object value, String message ) {
-		if( value != null ) {
-			//pass
-		} else {
+		if (value == null) {
 			throw new LgnaVmNullPointerException( message, this );
 		}
 	}
@@ -486,7 +469,7 @@ public abstract class VirtualMachine {
 
 	private static void checkArguments( Class<?>[] parameterTypes, Object[] arguments, IllegalArgumentException iae, String text ) {
 		if( parameterTypes.length != arguments.length ) {
-			throw new RuntimeException( "wrong number of arguments.  exprected: " + parameterTypes.length + "; received: " + arguments.length + ". " + text, iae );
+			throw new RuntimeException( "wrong number of arguments.  expected: " + parameterTypes.length + "; received: " + arguments.length + ". " + text, iae );
 		}
 		int i = 0;
 		for( Class<?> parameterType : parameterTypes ) {
@@ -556,10 +539,8 @@ public abstract class VirtualMachine {
 	protected Object invoke( Object instance, AbstractMethod method, Object... arguments ) {
 		assert method != null;
 
-		if( method.isStatic() ) {
-			//pass
-		} else {
-			this.checkNotNull( instance, "caller is null" );
+		if (!method.isStatic()) {
+			checkNotNull( instance, "Instance method target is null" );
 		}
 		if( method instanceof UserMethod ) {
 			return this.invokeUserMethod( instance, (UserMethod)method, arguments );
@@ -728,17 +709,17 @@ public abstract class VirtualMachine {
 				parameterCount += 1;
 			}
 			assert parameterCount == allArguments.length : methodInvocation.method.getValue().getName();
-			Expression callerExpression = methodInvocation.expression.getValue();
-			Object caller = this.evaluate( callerExpression );
-			AbstractMethod method = methodInvocation.method.getValue();
-			if( method.isStatic() ) {
-				//pass
-			} else {
-				this.checkNotNull( caller, "caller is null" );
+			Expression targetExpression = methodInvocation.expression.getValue();
+			Object target = this.evaluate( targetExpression );
+
+			try {
+				return invoke(target, methodInvocation.method.getValue(), allArguments );
+			} catch (Throwable e) {
+				Logger.severe( "The method invocation threw an error. Continuing past.", methodInvocation.method.getValue(), e );
+				return null;
 			}
-			return this.invoke( caller, method, allArguments );
 		} else {
-			Logger.severe( methodInvocation.method.getValue() );
+			Logger.severe( "The method invocation is not valid. Continuing past.", methodInvocation.method.getValue() );
 			return null;
 		}
 	}
