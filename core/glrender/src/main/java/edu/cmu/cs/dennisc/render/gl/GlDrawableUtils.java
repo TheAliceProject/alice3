@@ -192,23 +192,11 @@ public class GlDrawableUtils {
 		throw new AssertionError();
 	}
 
-	//private GLCapabilities glCapabilities;
-	public static GLCapabilities createGlCapabilities( RenderCapabilities requestedCapabilities ) {
-		GLProfile profile = GLProfile.getDefault();
-
-		GLCapabilities rv = new GLCapabilities( profile );
-
-		rv.setStencilBits( requestedCapabilities.getStencilBits() );
-		//rv.setSampleBuffers( true );
-		//rv.setNumSamples( 8 );
-
-		//		com.jogamp.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
-		//		if( chooser instanceof edu.cmu.cs.dennisc.com.jogamp.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
-		//			rv.setHardwareAccelerated( false );
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
-		//			rv.setDepthBits( 32 );
-		//		}
-		return rv;
+	static GLCapabilities createGlCapabilities(RenderCapabilities requestedCapabilities) {
+		GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
+		capabilities.setStencilBits( requestedCapabilities.getStencilBits() );
+		capabilities.setDepthBits( 32 );
+		return capabilities;
 	}
 
 	public static GLCapabilities createGlCapabilitiesForLightweightComponent( RenderCapabilities requestedCapabilities ) {
