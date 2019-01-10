@@ -66,7 +66,7 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 		if( details instanceof NumberValueDetails ) {
 			return ( (NumberValueDetails)details ).getLiterals();
 		} else {
-			return new double[] { 0.25, 0.5, 1.0, 2.0, 10.0 };
+			return new double[] { 0, 0.25, 0.5, 1.0, 2.0, 10.0 };
 		}
 	}
 
