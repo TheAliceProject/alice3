@@ -204,9 +204,15 @@ public class RunComposite extends SimpleModalFrameComposite<RunView> {
 
 	@Override
 	protected void handlePostHideWindow( Frame frame ) {
-		Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( frame.getAwtComponent() );
-		this.location = bounds.getLocation();
-		this.size = bounds.getSize();
+		final RunProgramContext context = programContext;
+		if (frame != null && context!= null) {
+			final ProgramImp imp = context.getProgramImp();
+			if (imp != null) {
+				Rectangle bounds = imp.getNormalDialogBounds(frame.getAwtComponent());
+				this.location = bounds.getLocation();
+				this.size = bounds.getSize();
+			}
+		}
 		super.handlePostHideWindow( frame );
 	}
 
