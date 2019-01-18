@@ -78,8 +78,7 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 								   file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + IoUtilities.PROJECT_EXTENSION + " extension." );
 			} else {
 				try {
-					ZipFile zipFile = new ZipFile( file );
-					return IoUtilities.readProject( zipFile );
+					return IoUtilities.readProject( file );
 				} catch( VersionNotSupportedException vnse ) {
 					ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
 				} catch( IOException ioe ) {

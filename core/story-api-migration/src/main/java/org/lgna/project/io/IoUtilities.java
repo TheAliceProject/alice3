@@ -77,28 +77,20 @@ public abstract class IoUtilities {
 		return FileUtilities.listFiles( directory, TYPE_EXTENSION );
 	}
 
-	public static Project readProject( ZipFile zipFile ) throws IOException, VersionNotSupportedException {
-		return readProject( new ZipEntryContainer( zipFile ) );
-	}
-
 	public static Project readProject( File file ) throws IOException, VersionNotSupportedException {
-		return readProject( new ZipFile( file ) );
+		return projectReader(file).readProject();
 	}
 
 	public static Project readProject( String path ) throws IOException, VersionNotSupportedException {
 		return readProject( new File( path ) );
 	}
 
-	private static TypeResourcesPair readType( ZipEntryContainer container ) throws IOException, VersionNotSupportedException {
-		return readerForContainer(container).readType(container);
-	}
-
 	public static TypeResourcesPair readType( ZipFile zipFile ) throws IOException, VersionNotSupportedException {
-		return readType( new ZipEntryContainer( zipFile ) );
+		return projectReader(zipFile).readType();
 	}
 
 	public static TypeResourcesPair readType( File file ) throws IOException, VersionNotSupportedException {
-		return readType( new ZipFile( file ) );
+		return projectReader(file).readType();
 	}
 
 	public static void writeProject( OutputStream os, final Project project, DataSource... dataSources ) throws IOException {
@@ -120,28 +112,31 @@ public abstract class IoUtilities {
 		latestReadbleWriter().writeType( new FileOutputStream( file ), type, dataSources );
 	}
 
-
-	private static Project readProject( ZipEntryContainer container ) throws IOException, VersionNotSupportedException {
-		return readerForContainer(container).readProject(container);
+	public static ProjectIo.ProjectReader projectReader(File file) throws IOException {
+		return projectReader(new ZipFile(file ));
 	}
 
-	private static ProjectIo readerForContainer( ZipEntryContainer container) throws IOException {
+	private static ProjectIo.ProjectReader projectReader(ZipFile zipFile) throws IOException {
+		return readerForContainer( new ZipEntryContainer(zipFile ) );
+	}
+
+	private static ProjectIo.ProjectReader readerForContainer(ZipEntryContainer container) throws IOException {
 		InputStream metadata = container.getInputStream( METADATA_ENTRY_NAME );
 		if( metadata == null ) {
 			// Old format a3p files
-			return new XmlProjectIo();
+			return XmlProjectIo.reader(container);
 		} else {
 			// TODO readerForContainer(metadata);
 			return null;
 		}
 	}
 
-	private static ProjectIo latestReadbleWriter() {
+	private static ProjectIo.ProjectWriter latestReadbleWriter() {
 		//TODO replace with JSON variant
-		return new XmlProjectIo();
+		return XmlProjectIo.writer();
 	}
 
-	private static ProjectIo playerWriter() {
-		return new JsonProjectIo();
+	private static ProjectIo.ProjectWriter playerWriter() {
+		return JsonProjectIo.writer();
 	}
 }
