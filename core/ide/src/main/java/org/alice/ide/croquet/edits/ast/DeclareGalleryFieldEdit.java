@@ -46,6 +46,7 @@ package org.alice.ide.croquet.edits.ast;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserField;
@@ -83,7 +84,11 @@ public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		int index = this.getDeclaringType().fields.size();
-		this.sceneEditor.addField( this.getDeclaringType(), this.getField(), index, this.doStatements );
+		try {
+			sceneEditor.addField(this.getDeclaringType(), getField(), index, doStatements);
+		} catch (RuntimeException e) {
+			throw new CancelException("Field creation failed.", e);
+		}
 	}
 
 	@Override
