@@ -53,9 +53,11 @@ import org.lgna.project.migration.AstMigration;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated Use CompoundMigration with NodeMigrations going forward
  */
+@Deprecated
 public abstract class FieldAccessAstMigration extends AstMigration {
-	public FieldAccessAstMigration( Version minimumVersion, Version resultVersion ) {
+	FieldAccessAstMigration(Version minimumVersion, Version resultVersion) {
 		super( minimumVersion, resultVersion );
 	}
 

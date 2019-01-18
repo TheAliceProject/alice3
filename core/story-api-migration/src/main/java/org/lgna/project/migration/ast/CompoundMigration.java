@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,36 +43,32 @@
 package org.lgna.project.migration.ast;
 
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.project.Project;
 import org.lgna.project.Version;
 import org.lgna.project.ast.CrawlPolicy;
-import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.Node;
 import org.lgna.project.migration.AstMigration;
 
 /**
- * @author Dennis Cosgrove
- * @deprecated Use CompoundMigration with NodeMigrations going forward
+ * A Migration that walks the node tree and applies an arbitrary series of individual migrations.
+ * All migrations are applied to a given node before moving on to the next node.
  */
-@Deprecated
-public abstract class MethodInvocationAstMigration extends AstMigration {
-	MethodInvocationAstMigration(Version minimumVersion, Version resultVersion) {
+public class CompoundMigration extends AstMigration {
+	private final NodeMigration[] migrations;
+
+	public CompoundMigration(Version minimumVersion, Version resultVersion, NodeMigration... migrations) {
 		super( minimumVersion, resultVersion );
+		this.migrations = migrations;
 	}
 
-	protected abstract void migrate( MethodInvocation methodInvocation, Project projectIfApplicable );
+	private void migrateNode(Crawlable node, Project projectIfApplicable) {
+		for (NodeMigration migration : migrations) {
+			migration.migrateNode(node, projectIfApplicable);
+		}
+	}
 
 	@Override
 	public final void migrate( Node node, final Project projectIfApplicable ) {
-		node.crawl( new Crawler() {
-			@Override
-			public void visit( Crawlable crawlable ) {
-				if( crawlable instanceof MethodInvocation ) {
-					MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-					MethodInvocationAstMigration.this.migrate( methodInvocation, projectIfApplicable );
-				}
-			}
-		}, CrawlPolicy.COMPLETE, null );
+		node.crawl(crawlable -> migrateNode(crawlable, projectIfApplicable), CrawlPolicy.COMPLETE, null );
 	}
 }

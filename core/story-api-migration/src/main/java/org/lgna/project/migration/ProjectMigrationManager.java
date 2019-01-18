@@ -44,12 +44,18 @@ package org.lgna.project.migration;
 
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
+import org.lgna.project.migration.ast.CompoundMigration;
 import org.lgna.project.migration.ast.ChangeDeclaringClassForAxesSetVehicle;
 import org.lgna.project.migration.ast.EventAstMigration;
+import org.lgna.project.migration.ast.MethodMovedToSuperclass;
 import org.lgna.project.migration.ast.MouseClickAstMigration;
 import org.lgna.project.migration.ast.NoOpAstMigrationStandIn;
 import org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration;
 import org.lgna.project.migration.ast.UnderscoreFieldAccessAstMigration;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SModel;
+import org.lgna.story.Say;
+import org.lgna.story.Think;
 
 /**
  * @author Dennis Cosgrove
@@ -5905,6 +5911,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			new ChangeDeclaringClassForAxesSetVehicle(
 					new Version( "3.2.5.0.0" ),
 					new Version( "3.2.113.0.0" )
+			),
+			new CompoundMigration(
+					new Version("3.2.113.0.0"),
+					new Version("3.4.0.2"),
+					new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "say", String.class, Say.Detail[].class),
+					new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "think", String.class, Think.Detail[].class)
 			)
 	};
 

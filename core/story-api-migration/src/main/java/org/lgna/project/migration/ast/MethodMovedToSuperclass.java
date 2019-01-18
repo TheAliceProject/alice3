@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,40 +39,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *******************************************************************************/
+ */
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.pattern.Crawlable;
-import edu.cmu.cs.dennisc.pattern.Crawler;
 import org.lgna.project.Project;
-import org.lgna.project.Version;
-import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.Node;
-import org.lgna.project.migration.AstMigration;
 
-/**
- * @author Dennis Cosgrove
- * @deprecated Use CompoundMigration with NodeMigrations going forward
- */
-@Deprecated
-public abstract class MethodInvocationAstMigration extends AstMigration {
-	MethodInvocationAstMigration(Version minimumVersion, Version resultVersion) {
-		super( minimumVersion, resultVersion );
+ /*
+  * Used in a CompoundMigration to change the invoked class of a method to a superclass.
+  * If the newClass is not an ancestor of the oldClass, the resulting AST may have errors but the migration will
+  * continue. */
+public class MethodMovedToSuperclass implements NodeMigration {
+	private final Class oldClass;
+	private final Class newClass;
+	private final String methodName;
+	private final AbstractMethod replacementMethod;
+
+	public MethodMovedToSuperclass(Class<?> oldClass, Class<?> newClass, String methodName, Class<?>... parameterTypes ) {
+		this.oldClass = oldClass;
+		this.newClass = newClass;
+		this.methodName = methodName;
+		replacementMethod = JavaMethod.getInstance(newClass, methodName, parameterTypes);
+		if (!newClass.isAssignableFrom(oldClass)) {
+			Logger.severe(String.format(
+				"Using MethodMovedToSuperclass to move a method invocation from %s to %s, which is not a superclass.",
+				oldClass.getSimpleName(), newClass.getSimpleName() ));
+		}
 	}
 
-	protected abstract void migrate( MethodInvocation methodInvocation, Project projectIfApplicable );
-
 	@Override
-	public final void migrate( Node node, final Project projectIfApplicable ) {
-		node.crawl( new Crawler() {
-			@Override
-			public void visit( Crawlable crawlable ) {
-				if( crawlable instanceof MethodInvocation ) {
-					MethodInvocation methodInvocation = (MethodInvocation)crawlable;
-					MethodInvocationAstMigration.this.migrate( methodInvocation, projectIfApplicable );
-				}
+	public void migrateNode(Crawlable node, Project projectIfApplicable) {
+		if( node instanceof MethodInvocation ) {
+			MethodInvocation invocation = (MethodInvocation) node;
+			AbstractMethod method = invocation.method.getValue();
+			if (method instanceof JavaMethod && method.getDeclaringType() == JavaType.getInstance(oldClass) && method.getName().equals(methodName)) {
+				invocation.method.setValue(replacementMethod);
+				Logger.outln(String.format("Changed %s.%s call to %s.%s",
+										   oldClass.getSimpleName(), methodName, newClass.getSimpleName(), methodName));
 			}
-		}, CrawlPolicy.COMPLETE, null );
+		}
 	}
 }
