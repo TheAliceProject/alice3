@@ -50,17 +50,11 @@ import org.lgna.project.ast.Node;
  * @author Dennis Cosgrove
  */
 public interface MigrationManager {
-	public static final String NO_REPLACEMENT = null;
+	String NO_REPLACEMENT = null;
 
-	public Version getCurrentVersion();
+	boolean hasMigrationsFor(Version decodedVersion);
 
-	public boolean isDevoidOfVersionIndependentMigrations();
+	String migrate(String source, Version version);
 
-	public String migrate( String source, Version version );
-
-	public void migrate( Node root, Project projectIfApplicable, Version version );
-
-	public void addVersionIndependentMigration( Migration migration );
-
-	public void removeVersionIndependentMigration( Migration migration );
+	void migrate(Node root, Project projectIfApplicable, Version version);
 }

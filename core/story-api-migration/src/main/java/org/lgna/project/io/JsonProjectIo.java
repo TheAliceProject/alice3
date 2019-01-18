@@ -62,7 +62,7 @@ import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//TODO add migration on read - ProjectMigrationManager, MigrationManagerDecodedVersionPair, & AstMigrationUtilities
+//TODO add migration on read - ProjectMigrationManager, MigrationManager, DecodedVersion, & AstMigrationUtilities
 public class JsonProjectIo extends DataSourceIo implements ProjectIo{
 
 	private static final String MANIFEST_ENTRY_NAME = "manifest.json";

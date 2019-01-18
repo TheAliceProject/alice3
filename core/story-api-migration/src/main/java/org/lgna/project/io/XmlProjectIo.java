@@ -60,13 +60,12 @@ import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Node;
 import org.lgna.project.ast.ResourceExpression;
 import org.lgna.project.migration.MigrationManager;
 import org.lgna.project.migration.ProjectMigrationManager;
-import org.lgna.project.migration.ast.AstMigrationUtilities;
 import org.lgna.project.properties.PropertyKey;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -77,6 +76,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -155,43 +155,34 @@ public class XmlProjectIo implements ProjectIo{
 		}
 	}
 
-	private static Document readXML( InputStream is, MigrationManagerDecodedVersionPair[] migrationpairs ) throws IOException {
-		String modifiedText = null;
-		for( MigrationManagerDecodedVersionPair migrationpair : migrationpairs ) {
-			MigrationManager migrationManager = migrationpair.getMigrationManager();
-			Version decodedVersion = migrationpair.getDecodedVersion();
-			if ((migrationManager.getCurrentVersion().compareTo( decodedVersion ) != 0) || !migrationManager
-							.isDevoidOfVersionIndependentMigrations()) {
-				if (modifiedText == null) {
-					modifiedText = TextFileUtilities.read( new InputStreamReader( is, "UTF-8" ) );
-				}
-				modifiedText = migrationManager.migrate( modifiedText, decodedVersion );
-			}
-		}
-		if( modifiedText != null ) {
-			is = new ByteArrayInputStream( modifiedText.getBytes( "UTF-8" ) );
+	private static Document readXML(InputStream is, MigrationManager migrationManager, Version decodedVersion ) {
+		if (migrationManager.hasMigrationsFor(decodedVersion)) {
+			String modifiedText = TextFileUtilities.read(new InputStreamReader(is, StandardCharsets.UTF_8));
+			modifiedText = migrationManager.migrate(modifiedText, decodedVersion);
+			is = new ByteArrayInputStream(modifiedText.getBytes(StandardCharsets.UTF_8));
 		}
 		return XMLUtilities.read( is );
 	}
 
-	private static Document readXML( ZipEntryContainer zipEntryContainer, String entryName, MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) throws IOException {
+	private static Document readXML( ZipEntryContainer zipEntryContainer, String entryName, MigrationManager migrationManager, Version decodedVersion ) throws IOException {
 		assert zipEntryContainer != null;
 		InputStream is = zipEntryContainer.getInputStream( entryName );
-		return readXML( is, migrationManagerDecodedVersionPairs );
+		return readXML( is, migrationManager, decodedVersion);
 	}
 
 	private static NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName) throws IOException, VersionNotSupportedException {
 		Version decodedProjectVersion = readSourceProgramVersion( zipEntryContainer );
 
-		MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs = {
-				new MigrationManagerDecodedVersionPair( ProjectMigrationManager.getInstance(), decodedProjectVersion )
-		};
-
-		Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );
+		Document xmlDocument = readXML( zipEntryContainer, entryName, ProjectMigrationManager.getInstance(), decodedProjectVersion );
 		NamedUserType type = (NamedUserType) (new XmlEncoderDecoder()).decode( xmlDocument );
-
-		AstMigrationUtilities.migrateNode( type, null, migrationManagerDecodedVersionPairs );
+		migrateNode(type, ProjectMigrationManager.getInstance(), decodedProjectVersion );
 		return type;
+	}
+
+	private static void migrateNode(Node affectedNode, MigrationManager migrationManager, Version decodedVersion) {
+		if (migrationManager.hasMigrationsFor(decodedVersion)) {
+			migrationManager.migrate(affectedNode, null, decodedVersion );
+		}
 	}
 
 	private static Set<Resource> readResources( ZipEntryContainer zipEntryContainer ) throws IOException {
@@ -224,22 +215,18 @@ public class XmlProjectIo implements ProjectIo{
 		return resources;
 	}
 
-	private static void writeVersion( ZipOutputStream zos, final String entryName, final Version version ) throws IOException {
-		ZipUtilities.write( zos, new DataSource() {
+	private static void writeVersion(ZipOutputStream zos ) throws IOException {
+		ZipUtilities.write(zos, new DataSource() {
 			@Override
 			public String getName() {
-				return entryName;
+				return ProjectIo.VERSION_ENTRY_NAME;
 			}
 
 			@Override
 			public void write( OutputStream os ) throws IOException {
-				os.write( version.toString().getBytes() );
+				os.write( ProjectVersion.getCurrentVersion().toString().getBytes() );
 			}
 		} );
-	}
-
-	private static void writeVersions( ZipOutputStream zos ) throws IOException {
-		writeVersion( zos, VERSION_ENTRY_NAME, ProjectVersion.getCurrentVersion() );
 	}
 
 	private static void writeXML( final Document xmlDocument, ZipOutputStream zos, final String entryName ) throws IOException {
@@ -329,7 +316,7 @@ public class XmlProjectIo implements ProjectIo{
 	@Override
 	public void writeProject( OutputStream os, final Project project, DataSource... dataSources ) throws IOException {
 		ZipOutputStream zos = new ZipOutputStream( os );
-		writeVersions( zos );
+		writeVersion( zos );
 		NamedUserType programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
 		final Set<PropertyKey<Object>> propertyKeys = project.getPropertyKeys();
@@ -379,7 +366,7 @@ public class XmlProjectIo implements ProjectIo{
 	@Override
 	public void writeType( OutputStream os, NamedUserType type, DataSource... dataSources ) throws IOException {
 		ZipOutputStream zos = new ZipOutputStream( os );
-		writeVersions( zos );
+		writeVersion( zos );
 		writeType( type, zos, TYPE_ENTRY_NAME );
 		writeDataSources( zos, dataSources );
 

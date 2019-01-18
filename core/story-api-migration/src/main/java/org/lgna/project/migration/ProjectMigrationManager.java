@@ -5908,6 +5908,11 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			)
 	};
 
+	@Override
+	public boolean hasMigrationsFor(Version decodedVersion) {
+		return getCurrentVersion().compareTo(decodedVersion) > 0 || hasVersionIndependentMigrations();
+	}
+
 	// @formatter:on
 
 	private static class SingletonHolder {
