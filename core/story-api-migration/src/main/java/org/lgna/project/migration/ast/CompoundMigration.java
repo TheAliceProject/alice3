@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,25 +42,33 @@
  *******************************************************************************/
 package org.lgna.project.migration.ast;
 
+import edu.cmu.cs.dennisc.pattern.Crawlable;
 import org.lgna.project.Project;
 import org.lgna.project.Version;
+import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.Node;
-import org.lgna.project.io.MigrationManagerDecodedVersionPair;
-import org.lgna.project.migration.MigrationManager;
+import org.lgna.project.migration.AstMigration;
 
 /**
- * @author Dennis Cosgrove
+ * A Migration that walks the node tree and applies an arbitrary series of individual migrations.
+ * All migrations are applied to a given node before moving on to the next node.
  */
-public class AstMigrationUtilities {
-	public static void migrateNode( Node affecteeNode, Project projectIfApplicable, MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) {
-		for( MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
-			MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
-			Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
-			if( ( migrationManager.getCurrentVersion().compareTo( decodedVersion ) == 0 ) && migrationManager.isDevoidOfVersionIndependentMigrations() ) {
-				//pass
-			} else {
-				migrationManager.migrate( affecteeNode, projectIfApplicable, decodedVersion );
-			}
+public class CompoundMigration extends AstMigration {
+	private final NodeMigration[] migrations;
+
+	public CompoundMigration(Version minimumVersion, Version resultVersion, NodeMigration... migrations) {
+		super( minimumVersion, resultVersion );
+		this.migrations = migrations;
+	}
+
+	private void migrateNode(Crawlable node, Project projectIfApplicable) {
+		for (NodeMigration migration : migrations) {
+			migration.migrateNode(node, projectIfApplicable);
 		}
+	}
+
+	@Override
+	public final void migrate( Node node, final Project projectIfApplicable ) {
+		node.crawl(crawlable -> migrateNode(crawlable, projectIfApplicable), CrawlPolicy.COMPLETE, null );
 	}
 }

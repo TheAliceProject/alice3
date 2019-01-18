@@ -73,10 +73,11 @@ import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Paint;
 import org.lgna.story.implementation.overlay.BubbleAnimation;
 import org.lgna.story.implementation.overlay.BubbleImp;
+import org.lgna.story.implementation.overlay.SpeechBubbleImp;
+import org.lgna.story.implementation.overlay.ThoughtBubbleImp;
 
 import javax.swing.JOptionPane;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
@@ -415,17 +416,28 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
 		this.animateScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 
-	public void displayBubble( BubbleImp bubbleImp, Number duration ) {
-		if( this.getScene() != null ) {
-			perform( new BubbleAnimation( 0.2, duration.doubleValue(), 0.2, bubbleImp ) );
+	public void say(String text, double duration, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference ) {
+		BubbleImp bubbleImp = new SpeechBubbleImp(this, getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
+		displayBubble( bubbleImp, duration );
+	}
+
+	public void think( String text, double duration, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference ) {
+		BubbleImp bubbleImp = new ThoughtBubbleImp(this, getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
+		displayBubble( bubbleImp, duration );
+	}
+
+	private void displayBubble(BubbleImp bubbleImp, double duration) {
+		if( getScene() != null ) {
+			duration = adjustDurationIfNecessary( duration );
+			perform( new BubbleAnimation( 0.2, duration, 0.2, bubbleImp ) );
 		} else {
 			//todo
 			JOptionPane.showMessageDialog( null, "unable to display bubble" );
 		}
 	}
 
-	public Bubble.Originator getSpeechBubbleOriginator() {
-		return this.m_originator;
+	private Bubble.Originator getSpeechBubbleOriginator() {
+		return m_originator;
 	}
 
 	private Bubble.Originator m_originator = createOriginator();
@@ -450,7 +462,7 @@ public abstract class ModelImp extends TransformableImp implements Scalable {
 		return offsetAsSeenBySubject;
 	}
 
-	protected Bubble.Originator createOriginator() {
+	private Bubble.Originator createOriginator() {
 		return new Bubble.Originator() {
 			@Override
 			public void calculate( Point2D.Float out_originOfTail, Point2D.Float out_bodyConnectionLocationOfTail, Point2D.Float out_textBoundsOffset, Bubble bubble, RenderTarget renderTarget, Rectangle actualViewport, AbstractCamera sgCamera, Dimension2D textSize ) {

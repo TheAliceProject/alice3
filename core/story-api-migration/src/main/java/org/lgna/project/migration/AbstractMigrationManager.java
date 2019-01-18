@@ -59,7 +59,7 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 
 	private final Version currentVersion;
 
-	public AbstractMigrationManager( Version currentVersion ) {
+	AbstractMigrationManager(Version currentVersion) {
 		this.currentVersion = currentVersion;
 	}
 
@@ -67,14 +67,12 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 
 	protected abstract AstMigration[] getAstMigrations();
 
-	@Override
-	public Version getCurrentVersion() {
+	Version getCurrentVersion() {
 		return this.currentVersion;
 	}
 
-	@Override
-	public boolean isDevoidOfVersionIndependentMigrations() {
-		return versionIndependentMigrations.size() == 0;
+	boolean hasVersionIndependentMigrations() {
+		return versionIndependentMigrations.size() > 0;
 	}
 
 	@Override
@@ -107,12 +105,10 @@ public abstract class AbstractMigrationManager implements MigrationManager {
 		}
 	}
 
-	@Override
 	public void addVersionIndependentMigration( Migration migration ) {
 		versionIndependentMigrations.add( migration );
 	}
 
-	@Override
 	public void removeVersionIndependentMigration( Migration migration ) {
 		versionIndependentMigrations.remove( migration );
 	}
