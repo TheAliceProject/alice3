@@ -44,7 +44,6 @@ package org.alice.ide.croquet.models.projecturi;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.ide.ProjectApplication;
-import org.alice.ide.ProjectDocumentFrame;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Triggerable;
 import org.lgna.croquet.history.UserActivity;
@@ -66,7 +65,7 @@ public abstract class UriPotentialClearanceIteratingOperation extends PotentialC
 	protected final void handleSuccessfulCompletionOfSubModels( UserActivity activity, List<UserActivity> subSteps ) {
 		UriProjectLoader uriProjectPair = this.getUriProjectLoader( subSteps );
 		if( uriProjectPair != null ) {
-			ProjectApplication.getActiveInstance().loadProjectFrom( uriProjectPair );
+			ProjectApplication.getActiveInstance().loadProject(activity, uriProjectPair );
 		}
 		if( subSteps.size() > 0 ) {
 			UriProjectLoader value = (UriProjectLoader) subSteps.get( subSteps.size() - 1 ).getProducedValue();
