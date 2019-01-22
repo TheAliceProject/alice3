@@ -82,7 +82,7 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 				} catch( VersionNotSupportedException vnse ) {
 					ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
 				} catch( IOException ioe ) {
-					ProjectApplication.getActiveInstance().showUnableToOpenFileDialog( file, "" );
+			Dialogs.showUnableToOpenFileDialog( file, "" );
 				}
 			}
 		} else {

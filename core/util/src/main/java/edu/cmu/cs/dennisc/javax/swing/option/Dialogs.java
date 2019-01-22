@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing.option;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.WindowStack;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import java.awt.EventQueue;
+import java.io.File;
 
 public class Dialogs {
 	private Dialogs() {
@@ -65,6 +67,11 @@ public class Dialogs {
 	public static YesNoCancelResult confirmOrCancel( String title, String message ) {
 		// TODO ensure this is run on DispatchThread
 		return YesNoCancelResult.getInstance( JOptionPane.showConfirmDialog( WindowStack.peek(), message, title, JOptionPane.YES_NO_CANCEL_OPTION) );
+	}
+
+	public static void showUnableToOpenFileDialog(File file, String message) {
+		Dialogs.showError("Cannot read file",
+						  String.format("Unable to open file %s.\n\n%s", FileUtilities.getCanonicalPathIfPossible(file), message));
 	}
 
 	public static void showError( String title, String message ) {

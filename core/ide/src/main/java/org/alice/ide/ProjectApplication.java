@@ -180,25 +180,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		return rv.replaceAll( " ", "" );
 	}
 
-	public void showUnableToOpenFileDialog( File file, String message ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Unable to open file " );
-		sb.append( FileUtilities.getCanonicalPathIfPossible( file ) );
-		sb.append( ".\n\n" );
-		sb.append( message );
-		Dialogs.showError( "Cannot read file", sb.toString() );
-	}
-
 	public void handleVersionNotSupported( File file, VersionNotSupportedException vnse ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( getApplicationName() );
-		sb.append( " is not backwards compatible with:" );
-		sb.append( "\n    File Version: " );
-		sb.append( vnse.getVersion() );
-		sb.append( "\n    (Minimum Supported Version: " );
-		sb.append( vnse.getMinimumSupportedVersion() );
-		sb.append( ")" );
-		this.showUnableToOpenFileDialog( file, sb.toString() );
+		Dialogs.showUnableToOpenFileDialog(
+			file, String.format(
+				"%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)",
+				getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
 	}
 
 	private UriProjectLoader uriProjectLoader;
