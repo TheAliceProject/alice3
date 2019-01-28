@@ -60,7 +60,7 @@ public final class FieldAccess extends Expression implements PrecedentedAppender
 	}
 
 	public FieldAccess(AbstractField field ) {
-		this( new ThisExpression(), field );
+		this( ThisExpression.createInstanceThatCanExistWithoutAnAncestorType(field.getFirstAncestorAssignableTo(AbstractType.class)), field );
 	}
 
 	@Override
