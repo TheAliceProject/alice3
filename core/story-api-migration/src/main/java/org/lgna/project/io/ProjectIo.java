@@ -44,6 +44,7 @@ package org.lgna.project.io;
 
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import org.lgna.project.Project;
+import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
 
@@ -56,11 +57,17 @@ public interface ProjectIo {
 	String VERSION_ENTRY_NAME = "version.txt";
 	String PROPERTIES_ENTRY_NAME = "properties.bin";
 
-	Project readProject( ZipEntryContainer container ) throws IOException, VersionNotSupportedException;
+	interface ProjectReader {
+		Project readProject() throws IOException, VersionNotSupportedException;
 
-	TypeResourcesPair readType( ZipEntryContainer container ) throws IOException, VersionNotSupportedException;
+		TypeResourcesPair readType() throws IOException, VersionNotSupportedException;
 
-	void writeProject( OutputStream os, Project project, DataSource[] dataSources ) throws IOException;
+		Version checkForFutureVersion() throws IOException;
+	}
 
-	void writeType( OutputStream os, NamedUserType type, DataSource[] dataSources ) throws IOException;
+	interface ProjectWriter {
+		void writeProject(OutputStream os, Project project, DataSource[] dataSources) throws IOException;
+
+		void writeType(OutputStream os, NamedUserType type, DataSource[] dataSources) throws IOException;
+	}
 }

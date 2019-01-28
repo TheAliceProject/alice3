@@ -44,7 +44,6 @@ package org.alice.ide.uricontent;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.lgna.project.Project;
 
 import java.io.File;
 import java.net.URI;
@@ -66,35 +65,9 @@ public class FileProjectLoader extends AbstractFileProjectLoader {
 		File file = new File( FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" );
 		FileProjectLoader uriProjectPair = new FileProjectLoader( file );
 
-		UriContentLoader.MutationPlan mutationPlan = MutationPlan.WILL_MUTATE;
 		for( int i = 0; i < 32; i++ ) {
 			Logger.outln( i );
-			final boolean IS_OBSERVER_DESIRED = true;
-			if( IS_OBSERVER_DESIRED ) {
-				uriProjectPair.getContentOnEventDispatchThread( mutationPlan, new GetContentObserver<Project>() {
-					@Override
-					public void workStarted() {
-						Logger.outln( "workStarted" );
-					}
-
-					@Override
-					public void workEnded() {
-						Logger.outln( "workEnded" );
-					}
-
-					@Override
-					public void completed( Project project ) {
-						Logger.outln( project );
-					}
-
-					@Override
-					public void failed( Throwable t ) {
-						t.printStackTrace();
-					}
-				} );
-			} else {
-				Logger.outln( uriProjectPair.getContentWaitingIfNecessary( mutationPlan ) );
-			}
+			uriProjectPair.deliverContentOnEventDispatchThread(Logger::outln);
 			Thread.sleep( 100 );
 		}
 	}
