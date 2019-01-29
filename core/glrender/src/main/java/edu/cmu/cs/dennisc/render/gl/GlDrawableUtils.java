@@ -195,7 +195,9 @@ public class GlDrawableUtils {
 	static GLCapabilities createGlCapabilities(RenderCapabilities requestedCapabilities) {
 		GLCapabilities capabilities = new GLCapabilities(GLProfile.getDefault());
 		capabilities.setStencilBits( requestedCapabilities.getStencilBits() );
-		capabilities.setDepthBits( 32 );
+		if( !SystemUtilities.isWindows() ) {
+			capabilities.setDepthBits(32);
+		}
 		return capabilities;
 	}
 
