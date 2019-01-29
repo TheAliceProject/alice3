@@ -59,7 +59,6 @@ public abstract class GitRepo {
 		assert this.rootDir.isDirectory() : this.rootDir;
 
 		this.plugin8 = new Plugin8( this.config, this.rootDir );
-		this.plugin6 = new Plugin6( this.config, this.rootDir );
 	}
 
 	public Config getConfig() {
@@ -75,9 +74,6 @@ public abstract class GitRepo {
 		if( this.config.isPlugin8Desired() ) {
 			list.add( this.plugin8 );
 		}
-		if( this.config.isPlugin6Desired() ) {
-			list.add( this.plugin6 );
-		}
 		return Collections.unmodifiableList( list );
 	}
 
@@ -88,5 +84,4 @@ public abstract class GitRepo {
 	private final Config config;
 	private final File rootDir;
 	private final Plugin8 plugin8;
-	private final Plugin6 plugin6;
 }

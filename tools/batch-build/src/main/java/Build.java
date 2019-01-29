@@ -60,7 +60,6 @@ public class Build {
 	public static void main( String[] args ) throws Exception {
 		Options options = new Options();
 		options.addOption( new Option( "isDev", "mode=Mode.DEV" ) );
-		options.addOption( new Option( "skipPlugin6", "isPlugin6Desired=false" ) );
 		options.addOption( new Option( "skipPlugin8", "isPlugin8Desired=false" ) );
 		options.addOption( new Option( "skipInstaller", "isInstallerDesired=false" ) );
 		options.addOption( new Option( "skipClean", "isCleanDesired=false" ) );
@@ -74,7 +73,6 @@ public class Build {
 				.rootDir( new File( FileUtilities.getDefaultDirectory(), "Projects/Alice/Code" ) )
 				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
 
-		.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
 		.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
 		.isInstallerDesired( commandLine.hasOption( "skipInstaller" ) == false )
 
@@ -85,8 +83,6 @@ public class Build {
 				.aliceModelSourceVersion( "2016.08.19" )
 				.nebulousModelSourceVersion( "2016.07.15" )
 
-		//getUserProperties6File is expected to be in 6.9 even for 6.9.1
-		.netBeans6Version( "6.9" )
 		.netBeans8Version( "8.1" )
 
 		.installerIncludedJvmVersion( "1.8.0_102" )
@@ -97,7 +93,6 @@ public class Build {
 		JdkUtils.initialize();
 		MavenUtils.initialize();
 		AntUtils.initialize();
-		NetBeansUtils.initialize( config );
 		if( config.isInstallerDesired() ) {
 			Install4JUtils.initialize( config );
 		}
@@ -178,13 +173,6 @@ public class Build {
 		Logger.outln( config );
 		Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
 		Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
-		Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
-		if( config.isPlugin6Desired() ) {
-			Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
-		}
-		if( config.isPlugin8Desired() ) {
-			Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
-		}
 
 		Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
 		Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );

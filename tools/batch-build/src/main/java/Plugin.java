@@ -227,10 +227,6 @@ public abstract class Plugin {
 		File projectZip = this.getProjectTemplateZipFile();
 		ZipUtilities.zip( this.projectTemplateDir, projectZip );
 		assert projectZip.exists() : projectZip;
-
-		File userPropertiesFile = NetBeansUtils.getUserPropertiesFile( this.version );
-		File platformPrivatePropertiesFile = new File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
-		TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
 	}
 
 	public void zipJavaDocs( File tempDirectoryForJavaDoc ) throws IOException {
