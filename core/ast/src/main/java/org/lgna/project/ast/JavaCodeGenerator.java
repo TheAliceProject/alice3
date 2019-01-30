@@ -126,7 +126,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		private String commentsLocalizationBundleName;
 	}
 
-	JavaCodeGenerator( Builder builder ) {
+	public JavaCodeGenerator( Builder builder ) {
 		super( builder.codeOrganizerDefinitionMap, builder.defaultCodeDefinitionOrganizer );
 		this.isLambdaSupported = builder.isLambdaSupported;
 		this.isPublicStaticFinalFieldGetterDesired = builder.isPublicStaticFinalFieldGetterDesired;
@@ -215,15 +215,14 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendSectionPostfix( userType, entry.getKey(), shouldCollapseSection );
 	}
 
-	private void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName,
-																							boolean shouldCollapse ) {
+	protected void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
 		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName );
 		if( sectionComment != null ) {
 			getCodeStringBuilder().append( "\n\n" ).append( sectionComment ).append( "\n" );
 		}
 	}
 
-	private void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+	protected void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
 		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName + ".end" );
 		if( sectionComment != null ) {
 			getCodeStringBuilder().append( "\n" ).append( sectionComment ).append( "\n" );
@@ -327,9 +326,18 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			appendExpression( expressionValue );
 		}
 	}
+	protected String getImportsPrefix() {
+		return "";
+	}
+
+	protected String getImportsPostfix() {
+		return "";
+	}
+
 
 	private StringBuilder getImports() {
 		StringBuilder sb = new StringBuilder();
+		sb.append( getImportsPrefix() );
 		for( JavaPackage packageToImportOnDemand : packagesToImportOnDemand ) {
 			sb.append( "import " );
 			sb.append( packageToImportOnDemand.getName() );
@@ -359,6 +367,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			sb.append( methodToImportStatic.getName() );
 			sb.append( ';' );
 		}
+		sb.append( getImportsPostfix() );
 		return sb;
 	}
 
@@ -509,7 +518,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return sb.toString();
 	}
 
-	private String getLocalizedMultiLineComment( AbstractType<?, ?, ?> type, String sectionName ) {
+	protected String getLocalizedMultiLineComment( AbstractType<?, ?, ?> type, String sectionName ) {
 		String comment = getLocalizedComment( type, sectionName, Locale.getDefault() );
 		if( comment != null ) {
 			comment = formatBlockComment( comment );

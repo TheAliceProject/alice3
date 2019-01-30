@@ -135,7 +135,9 @@ public class ProjectCodeGenerator {
 		int createWorkUnit = 0;
 		for (org.lgna.project.ast.NamedUserType type : namedUserTypes) {
 			String path = type.getName() + ".java";
-			String code = type.generateJavaCode(new NetbeansJavaCodeGenerator(javaCodeGeneratorBuilder));
+			final NetbeansJavaCodeGenerator generator = new NetbeansJavaCodeGenerator(javaCodeGeneratorBuilder);
+			type.appendCode(generator);
+			String code = generator.getText();
 			File file = new File(javaSrcDirectory, path);
 			boolean isMarkedForOpen = false;
 			if (type.isAssignableTo(SProgram.class)) {
