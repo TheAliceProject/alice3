@@ -61,7 +61,6 @@ public class Build {
 		Options options = new Options();
 		options.addOption( new Option( "isDev", "mode=Mode.DEV" ) );
 		options.addOption( new Option( "skipPlugin8", "isPlugin8Desired=false" ) );
-		options.addOption( new Option( "skipInstaller", "isInstallerDesired=false" ) );
 		options.addOption( new Option( "skipClean", "isCleanDesired=false" ) );
 		options.addOption( new Option( "skipJavaDocs", "isJavaDocGenerationDesired=false" ) );
 
@@ -74,7 +73,6 @@ public class Build {
 				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
 
 		.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
-		.isInstallerDesired( commandLine.hasOption( "skipInstaller" ) == false )
 
 		.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
 		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
@@ -85,18 +83,12 @@ public class Build {
 
 		.netBeans8Version( "8.1" )
 
-		.installerIncludedJvmVersion( "1.8.0_102" )
-
 		.build();
 		// @formatter:on
 
 		JdkUtils.initialize();
 		MavenUtils.initialize();
 		AntUtils.initialize();
-		if( config.isInstallerDesired() ) {
-			Install4JUtils.initialize( config );
-		}
-
 		BuildRepo buildRepo = new BuildRepo( config );
 		GitRepo repo;
 		if( config.getMode().isDev() ) {
@@ -131,35 +123,10 @@ public class Build {
 				plugin.zipJavaDocs( tempDirectoryForJavaDoc );
 				timer.mark( "zipJavaDocs" + plugin.getVersion() );
 
-				if( config.getMode().isDev() ) {
-					//pass
-				} else {
+				if ( !config.getMode().isDev() ) {
 					plugin.createNbm();
 					timer.mark( "nbm" + plugin.getVersion() );
 				}
-			}
-		}
-
-		if( config.isInstallerDesired() ) {
-			Installer installer = new Installer( config, repo.getRootDir() );
-
-			installer.copyJarsFromMaven();
-			timer.mark( "copyJarsFromMaven" );
-
-			installer.copyJarsFromBuild( buildRepo );
-			timer.mark( "copyJarsFromBuild" );
-
-			installer.copyDistribution( buildRepo );
-			timer.mark( "copyDistribution" );
-
-			installer.prepareInstall4jFile();
-			timer.mark( "prepareInstall4jFile" );
-
-			if( config.getMode().isDev() ) {
-				//pass
-			} else {
-				installer.createInstallers( config );
-				timer.mark( "createInstallers" );
 			}
 		}
 
