@@ -46,6 +46,7 @@ package org.alice.netbeans;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.io.File;
+import java.util.Objects;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -357,26 +358,30 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 			return false;
 		}
 		final File destFolder = FileUtil.normalizeFile(new File(createdFolderTextField.getText()).getAbsoluteFile());
+		// Only do these checks the first time through
+		if (!Objects.equals( checkedDestinationFolder, destFolder )) {
+			File projLoc = destFolder;
+			while (projLoc != null && !projLoc.exists()) {
+				projLoc = projLoc.getParentFile();
+			}
+			if (projLoc == null || !projLoc.canWrite()) {
+				wizardDescriptor.putProperty( "WizardPanel_errorMessage", "Project Folder cannot be created." );
+				return false;
+			}
 
-		File projLoc = destFolder;
-		while (projLoc != null && !projLoc.exists()) {
-			projLoc = projLoc.getParentFile();
-		}
-		if (projLoc == null || !projLoc.canWrite()) {
-			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder cannot be created.");
-			return false;
-		}
+			if (FileUtil.toFileObject( projLoc ) == null) {
+				wizardDescriptor.putProperty( "WizardPanel_errorMessage", "Project Folder is not a valid path." );
+				return false;
+			}
 
-		if (FileUtil.toFileObject(projLoc) == null) {
-			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder is not a valid path.");
-			return false;
-		}
-
-		File[] kids = destFolder.listFiles();
-		if (destFolder.exists() && kids != null && kids.length > 0) {
-			// Folder exists and is not empty
-			wizardDescriptor.putProperty("WizardPanel_errorMessage", "Project Folder already exists and is not empty.");
-			return false;
+			File[] kids = destFolder.listFiles();
+			if (destFolder.exists() && kids != null && kids.length > 0) {
+				// Folder exists and is not empty
+				wizardDescriptor.putProperty( "WizardPanel_errorMessage",
+											  "Project Folder already exists and is not empty." );
+				return false;
+			}
+			checkedDestinationFolder = destFolder;
 		}
 		wizardDescriptor.putProperty("WizardPanel_errorMessage", "");
 		return true;
@@ -456,4 +461,5 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		panel.fireChangeEvent(); // Notify that the panel changed
 	}
 
+	File checkedDestinationFolder;
 }
