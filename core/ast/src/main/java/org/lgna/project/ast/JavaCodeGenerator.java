@@ -58,6 +58,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -396,11 +397,15 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	}
 
 	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
-		final String doInOrderName = ResourceBundleUtilities
-						.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" );
 		openBlock();
-		// TODO adjust CodeFormatter to not insert linefeed before this comment
-		appendSingleLineComment( doInOrderName );
+		try {
+			final String doInOrderName = ResourceBundleUtilities
+				.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" );
+			// TODO adjust CodeFormatter to not insert linefeed before this comment
+			appendSingleLineComment( doInOrderName );
+		} catch (MissingResourceException mre) {
+			System.out.println("No resource bundle setup to localize do in order.");
+		}
 		BlockStatement blockStatement = doInOrder.body.getValue();
 		for( Statement subStatement : blockStatement.statements ) {
 			appendStatement( subStatement );
