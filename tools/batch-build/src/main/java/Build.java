@@ -71,11 +71,9 @@ public class Build {
 		Config config = new Config.Builder()
 				.rootDir( new File( FileUtilities.getDefaultDirectory(), "Projects/Alice/Code" ) )
 				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
-
-		.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
-
-		.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
-		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
+				.isPlugin8Desired( !commandLine.hasOption( "skipPlugin8" ) )
+				.isCleanDesired( !commandLine.hasOption( "skipClean" ) )
+				.isJavaDocGenerationDesired( !commandLine.hasOption( "skipJavaDocs" ) )
 
 				.joglVersion( "2.3.2" )
 				.aliceModelSourceVersion( "2016.08.19" )
@@ -87,24 +85,18 @@ public class Build {
 		// @formatter:on
 
 		BuildRepo buildRepo = new BuildRepo( config );
-		GitRepo repo;
-		if( config.getMode().isDev() ) {
-			repo = new DevRepo( config );
-		} else {
-			repo = buildRepo;
-		}
 
 		Timer timer = new Timer( "build" );
 		timer.start();
 		buildRepo.compileJars();
 		timer.mark( "compileJars" );
 
-		List<Plugin> plugins = repo.getPlugins();
+		List<Plugin> plugins = buildRepo.getPlugins();
 		if( plugins.size() > 0 ) {
 			File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
 			timer.mark( "generateJavaDocs" );
 
-			for( Plugin plugin : repo.getPlugins() ) {
+			for( Plugin plugin : plugins ) {
 				plugin.copyJars( buildRepo );
 				timer.mark( "copyJars" + plugin.getVersion() );
 
