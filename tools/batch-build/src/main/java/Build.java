@@ -86,9 +86,6 @@ public class Build {
 		.build();
 		// @formatter:on
 
-		JdkUtils.initialize();
-		MavenUtils.initialize();
-		AntUtils.initialize();
 		BuildRepo buildRepo = new BuildRepo( config );
 		GitRepo repo;
 		if( config.getMode().isDev() ) {
@@ -139,10 +136,7 @@ public class Build {
 		Logger.outln();
 		Logger.outln( config );
 		Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
-		Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
 
-		Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
-		Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );
 		Logger.outln();
 		Logger.outln();
 		Logger.outln( "done" );

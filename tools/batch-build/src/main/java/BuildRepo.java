@@ -72,14 +72,21 @@ public class BuildRepo extends GitRepo {
 
 	public void compileJars() throws IOException, InterruptedException {
 		List<String> command = Lists.newLinkedList();
-		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
+		command.add( "mvn" );
 		if( this.getConfig().isCleanDesired() ) {
 			command.add( "clean" );
 		}
 		command.add( "compile" );
 		command.add( "install" );
+
+		runCommand( getRootDir(), command );
+	}
+
+	static void runCommand( File dir, List<String> command) throws IOException, InterruptedException {
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		processBuilder.directory( this.getRootDir() );
+		processBuilder.environment()
+					  .put( "JAVA_HOME", "/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home/" );
+		processBuilder.directory( dir );
 		ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 
