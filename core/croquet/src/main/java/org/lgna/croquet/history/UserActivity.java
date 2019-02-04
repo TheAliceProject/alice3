@@ -237,7 +237,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 	}
 
 	private void removeIfEmpty() {
-		if ( childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null) {
+		if ( getOwner() != null && childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null ) {
 			getOwner().childActivities.remove( this );
 			getOwner().fireChanged( new ChangeEvent<UserActivity>( getOwner() ) );
 		}

@@ -324,8 +324,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 	}
 
 	private UserActivity newProjectActivity() {
-		// This is the activity of opening or creating this project
-		getOverallUserActivity().getLatestActivity().finish();
+		// If present, this is the activity of opening or creating a project
+		UserActivity openChild = getOpenActivity();
+		if ( openChild != null ) {
+			openChild.finish();
+		}
 		// If there was a project the new one replaces it.
 		if (projectActivity != null) {
 			projectActivity.finish();
