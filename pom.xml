@@ -68,7 +68,7 @@
 
 		<jogl.version>2.3.2</jogl.version>
 
-		<alice.build.version>3.4.0.2</alice.build.version>
+		<alice.build.version>3.5.0.0</alice.build.version>
 		<alice.build.prerelease>-alpha</alice.build.prerelease>
 		<alice.build.metadata></alice.build.metadata>
 		<alice.model.version>2016.08.19</alice.model.version>

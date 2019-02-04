@@ -5914,7 +5914,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			),
 			new CompoundMigration(
 					new Version("3.2.113.0.0"),
-					new Version("3.4.0.2"),
+					new Version("3.5.0.0"),
 					new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "say", String.class, Say.Detail[].class),
 					new MethodMovedToSuperclass(SJointedModel.class, SModel.class, "think", String.class, Think.Detail[].class)
 			)
