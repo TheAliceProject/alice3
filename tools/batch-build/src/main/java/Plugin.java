@@ -85,7 +85,7 @@ public abstract class Plugin {
 		assert this.projectXmlText != null;
 		assert this.projectXmlText.length() > 0;
 
-		this.projectTemplateDir = new File( this.getRoot(), "ProjectTemplate" );
+		this.projectTemplateDir = new File( this.getRoot(), "../src/main/resources/ProjectTemplate" );
 		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
 		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
 	}
