@@ -80,6 +80,7 @@ public class DoTogetherCustomizer extends javax.swing.JPanel {
                 (this, displayName, true,
                 DialogDescriptor.OK_CANCEL_OPTION, DialogDescriptor.OK_OPTION,
                 new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         if (descriptor.getValue().equals(DialogDescriptor.OK_OPTION)) {
                             evaluateInput();

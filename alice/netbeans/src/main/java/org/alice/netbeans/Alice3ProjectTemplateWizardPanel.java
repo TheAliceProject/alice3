@@ -61,6 +61,7 @@ public class Alice3ProjectTemplateWizardPanel implements WizardDescriptor.Panel,
 	public Alice3ProjectTemplateWizardPanel() {
 	}
 
+	@Override
 	public Component getComponent() {
 		if (this.component == null) {
 			this.component = new Alice3ProjectTemplatePanelVisual(this);
@@ -69,21 +70,25 @@ public class Alice3ProjectTemplateWizardPanel implements WizardDescriptor.Panel,
 		return this.component;
 	}
 
+	@Override
 	public HelpCtx getHelp() {
 		return new HelpCtx(Alice3ProjectTemplateWizardPanel.class);
 	}
 
+	@Override
 	public boolean isValid() {
 		getComponent();
 		return this.component.valid(this.wizardDescriptor);
 	}
 
+	@Override
 	public final void addChangeListener(ChangeListener l) {
 		synchronized (this.listeners) {
 			this.listeners.add(l);
 		}
 	}
 
+	@Override
 	public final void removeChangeListener(ChangeListener l) {
 		synchronized (this.listeners) {
 			this.listeners.remove(l);
@@ -97,20 +102,24 @@ public class Alice3ProjectTemplateWizardPanel implements WizardDescriptor.Panel,
 		}
 	}
 
+	@Override
 	public void readSettings(Object settings) {
 		this.wizardDescriptor = (WizardDescriptor) settings;
 		this.component.read(wizardDescriptor);
 	}
 
+	@Override
 	public void storeSettings(Object settings) {
 		WizardDescriptor d = (WizardDescriptor) settings;
 		this.component.store(d);
 	}
 
+	@Override
 	public boolean isFinishPanel() {
 		return true;
 	}
 
+	@Override
 	public void validate() throws WizardValidationException {
 		getComponent();
 		this.component.validate(wizardDescriptor);

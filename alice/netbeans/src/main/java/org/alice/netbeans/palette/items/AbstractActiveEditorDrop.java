@@ -65,6 +65,7 @@ public abstract class AbstractActiveEditorDrop implements ActiveEditorDrop {
 	private String createBody() {
 		return "\n" + I18nUtilities.getCode( this.getClass() ) + "\n";
 	}
+	@Override
 	public final boolean handleTransfer(JTextComponent targetComponent) {
 		if( this.prologue( targetComponent ) ) {
 			String[] imports = this.getImports();

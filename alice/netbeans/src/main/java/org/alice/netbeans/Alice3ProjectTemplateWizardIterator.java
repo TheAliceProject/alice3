@@ -145,6 +145,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 				int result = JOptionPane.showConfirmDialog(this.panels[ 0].getComponent(), message, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (result == JOptionPane.YES_OPTION) {
 					SwingUtilities.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							for (TopComponent topComponent : componentsToClose) {
 								topComponent.close();
@@ -156,6 +157,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		}
 	}
 
+	@Override
 	public void initialize(WizardDescriptor wizardDescriptor) {
 		this.wizardDescriptor = wizardDescriptor;
 		this.index = 0;
@@ -181,6 +183,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		}
 	}
 
+	@Override
 	public void uninitialize(WizardDescriptor wiz) {
 		this.wizardDescriptor.putProperty("projdir", null);
 		this.wizardDescriptor.putProperty("name", null);
@@ -188,10 +191,12 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		this.panels = null;
 	}
 
+	@Override
 	public Set<FileObject> instantiate() throws IOException {
 		return instantiate(null);
 	}
 	
+	@Override
 	public Set<FileObject> instantiate(ProgressHandle progressHandle) throws IOException {
 		if (progressHandle != null) {
 			progressHandle.start();
@@ -245,18 +250,22 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		}
 	}
 
+	@Override
 	public String name() {
 		return MessageFormat.format("{0} of {1}", index + 1, panels.length);
 	}
 
+	@Override
 	public boolean hasNext() {
 		return this.index < this.panels.length - 1;
 	}
 
+	@Override
 	public boolean hasPrevious() {
 		return this.index > 0;
 	}
 
+	@Override
 	public void nextPanel() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
@@ -264,6 +273,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		this.index++;
 	}
 
+	@Override
 	public void previousPanel() {
 		if (!hasPrevious()) {
 			throw new NoSuchElementException();
@@ -271,14 +281,17 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 		this.index--;
 	}
 
+	@Override
 	public WizardDescriptor.Panel current() {
 		return this.panels[index];
 	}
 
 	// If nothing unusual changes in the middle of the wizard, simply:
+	@Override
 	public final void addChangeListener(ChangeListener l) {
 	}
 
+	@Override
 	public final void removeChangeListener(ChangeListener l) {
 	}
 

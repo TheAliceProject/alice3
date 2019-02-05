@@ -68,15 +68,18 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 
         this.variableNameTextField.getDocument().addDocumentListener( new DocumentListener() {
 
-            public void insertUpdate(DocumentEvent arg0) {
+            @Override
+			public void insertUpdate(DocumentEvent arg0) {
                 evaluateInput();
             }
 
-            public void removeUpdate(DocumentEvent arg0) {
+            @Override
+			public void removeUpdate(DocumentEvent arg0) {
                 evaluateInput();
             }
 
-            public void changedUpdate(DocumentEvent arg0) {
+            @Override
+			public void changedUpdate(DocumentEvent arg0) {
                 evaluateInput();
             }
         });
@@ -164,6 +167,7 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 
         cancelButton.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.cancelButton.text")); // NOI18N
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
@@ -171,6 +175,7 @@ public class CountLoopCustomizer extends javax.swing.JPanel {
 
         okButton.setText(org.openide.util.NbBundle.getMessage(CountLoopCustomizer.class, "CountLoopCustomizer.okButton.text")); // NOI18N
         okButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
             }

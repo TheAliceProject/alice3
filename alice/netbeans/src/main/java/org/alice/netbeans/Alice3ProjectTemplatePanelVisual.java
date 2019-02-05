@@ -137,6 +137,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
         org.openide.awt.Mnemonics.setLocalizedText(browseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.browseButton.text")); // NOI18N
         browseButton.setActionCommand(org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.browseButton.actionCommand")); // NOI18N
         browseButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
             }
@@ -156,6 +157,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
         org.openide.awt.Mnemonics.setLocalizedText(aliceWorldBrowseButton, org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.text")); // NOI18N
         aliceWorldBrowseButton.setActionCommand(org.openide.util.NbBundle.getMessage(Alice3ProjectTemplatePanelVisual.class, "Alice3ProjectTemplatePanelVisual.aliceWorldBrowseButton.actionCommand")); // NOI18N
         aliceWorldBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aliceWorldBrowseButtonActionPerformed(evt);
             }
@@ -419,6 +421,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 	}
 
 	// Implementation of DocumentListener --------------------------------------
+	@Override
 	public void changedUpdate(DocumentEvent e) {
 		updateTexts(e);
 		if (this.projectNameTextField.getDocument() == e.getDocument()) {
@@ -426,6 +429,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		}
 	}
 
+	@Override
 	public void insertUpdate(DocumentEvent e) {
 		updateTexts(e);
 		if (this.projectNameTextField.getDocument() == e.getDocument()) {
@@ -433,6 +437,7 @@ public class Alice3ProjectTemplatePanelVisual extends JPanel implements Document
 		}
 	}
 
+	@Override
 	public void removeUpdate(DocumentEvent e) {
 		updateTexts(e);
 		if (this.projectNameTextField.getDocument() == e.getDocument()) {

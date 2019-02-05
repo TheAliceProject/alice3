@@ -69,6 +69,7 @@ public class DoTogether implements ActiveEditorDrop {
         return buffer.toString();
     }
 
+    @Override
     public boolean handleTransfer(JTextComponent targetComponent) {
         String[] imports = { "static org.lgna.common.ThreadUtilities.doTogether" };
         DoTogetherCustomizer c = new DoTogetherCustomizer(this, targetComponent);
