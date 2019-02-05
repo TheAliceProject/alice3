@@ -77,6 +77,11 @@
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
 		<nebulous.lib.version>2017.05.01</nebulous.lib.version>
+
+		<netbeans.version>RELEASE82</netbeans.version>
+		<guava.version>13.0.1</guava.version>
+		<commons.discovery.version>0.5</commons.discovery.version>
+
 	</properties>
 
 	<modules>
@@ -102,6 +107,7 @@
 		<module>nonfree/core/story-api-nonfree</module>
 
 		<module>alice/alice-ide</module>
+		<module>alice/netbeans</module>
 		<module>installer</module>
 	</modules>
 
@@ -181,6 +187,12 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>tweedle</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>netbeans</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
@@ -575,6 +587,12 @@
 			<name>Atlassian Public Repository</name>
 			<layout>default</layout>
 			<url>https://maven.atlassian.com/maven-external</url>
+		</repository>
+
+		<repository>
+			<id>netbeans</id>
+			<name>Netbeans</name>
+			<url>http://bits.netbeans.org/maven2/</url>
 		</repository>
 	</repositories>
 

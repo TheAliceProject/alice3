@@ -43,11 +43,8 @@
 
 package org.alice.netbeans.completion;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import java.util.Locale;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
