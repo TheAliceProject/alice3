@@ -277,17 +277,55 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
 				<configuration>
-					<descriptor>${project.basedir}/src/main/resources/assemblies/project-template.xml</descriptor>
-					<finalName>classes/org/alice/netbeans/ProjectTemplate</finalName>
+					<sourcepath>
+						${project.basedir}/../../core/util/src/main/java/:
+						${project.basedir}/../../core/scenegraph/src/main/java/:
+						${project.basedir}/../../core/ast/src/main/java/:
+						${project.basedir}/../../core/story-api/src/main/java/
+					</sourcepath>
+					<encoding>UTF-8</encoding>
+					<docencoding>UTF-8</docencoding>
+					<doctitle>Alice 3</doctitle>
+					<subpackages>org.lgna.story</subpackages>
+					<excludePackageNames>org.lgna.story.implementation:org.lgna.story.resourceutilities</excludePackageNames>
+					<reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
+					<destDir>javadoc</destDir>
 				</configuration>
 				<executions>
 					<execution>
 						<phase>generate-resources</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>project-template</id>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/project-template.xml</descriptor>
+							<finalName>classes/org/alice/netbeans/ProjectTemplate</finalName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>javadoc</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptor>${project.basedir}/src/main/resources/assemblies/javadoc.xml</descriptor>
+							<finalName>nbm/netbeans/extra/doc/aliceDocs</finalName>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
