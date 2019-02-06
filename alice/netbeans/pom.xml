@@ -298,6 +298,8 @@
 				<version>4.1</version>
 				<extensions>true</extensions>
 				<configuration>
+					<licenseName>Alice 3 License</licenseName>
+					<licenseFile>src/main/resources/license.txt</licenseFile>
 					<installerLicenseFile>src/main/resources/license.txt</installerLicenseFile>
 					<brandingToken>alice3</brandingToken>
 					<installerPack200Enable>true</installerPack200Enable>
