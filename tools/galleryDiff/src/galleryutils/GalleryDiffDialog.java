@@ -67,6 +67,7 @@ public class GalleryDiffDialog extends JDialog {
 		ComboBoxModel model = new DefaultComboBoxModel(new String[]{"TEST1", "TEST2"});
 		this.existingOptions.setModel(model);
 		this.existingOptions.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				selectedOption = existingOptions.getSelectedItem().toString();
 				useCustom.setSelected(false);
@@ -80,15 +81,18 @@ public class GalleryDiffDialog extends JDialog {
 		this.customOption = new JTextField(40);
 		this.customOption.setMaximumSize( this.customOption.getPreferredSize() );
 		this.customOption.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				useCustom.setSelected(true);
 			}
 		});
 		this.customOption.addFocusListener(new FocusListener() {
+			@Override
 			public void focusLost(FocusEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
+			@Override
 			public void focusGained(FocusEvent e) {
 				useCustom.setSelected(true);
 			}
@@ -115,6 +119,7 @@ public class GalleryDiffDialog extends JDialog {
 		
 		this.okButton = new JButton("OKAY");
 		this.okButton.addActionListener( new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String customString = customOption.getText();
 				if (useCustom.isSelected() && selectedOption == null && customString != null && customString.length() > 0) {
@@ -129,6 +134,7 @@ public class GalleryDiffDialog extends JDialog {
 		
 		this.cancelButton = new JButton("CANCEL");
 		this.cancelButton.addActionListener( new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				selectedOption = null;
 				GalleryDiffDialog.this.setVisible(false);
