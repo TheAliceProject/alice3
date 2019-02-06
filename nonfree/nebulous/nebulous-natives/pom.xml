@@ -81,7 +81,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<descriptor>${project.basedir}/src/main/resources/assemblies/linux-amd64.xml</descriptor>
+							<descriptors>
+								<descriptor>${project.basedir}/src/main/resources/assemblies/linux-amd64.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 					<execution>
@@ -91,7 +93,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<descriptor>${project.basedir}/src/main/resources/assemblies/linux-i586.xml</descriptor>
+							<descriptors>
+								<descriptor>${project.basedir}/src/main/resources/assemblies/linux-i586.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 					<execution>
@@ -101,7 +105,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<descriptor>${project.basedir}/src/main/resources/assemblies/macosx.xml</descriptor>
+							<descriptors>
+								<descriptor>${project.basedir}/src/main/resources/assemblies/macosx.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 					<execution>
@@ -111,7 +117,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<descriptor>${project.basedir}/src/main/resources/assemblies/win32.xml</descriptor>
+							<descriptors>
+								<descriptor>${project.basedir}/src/main/resources/assemblies/win32.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 					<execution>
@@ -121,7 +129,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<descriptor>${project.basedir}/src/main/resources/assemblies/win64.xml</descriptor>
+							<descriptors>
+								<descriptor>${project.basedir}/src/main/resources/assemblies/win64.xml</descriptor>
+							</descriptors>
 						</configuration>
 					</execution>
 				</executions>
