@@ -340,9 +340,10 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>${project.basedir}/src/main/resources/assemblies/project-template.xml</descriptor>
-								<finalName>classes/org/alice/netbeans/ProjectTemplate</finalName>
+								<descriptor>src/main/resources/assemblies/project-template.xml</descriptor>
 							</descriptors>
+							<finalName>classes/org/alice/netbeans/ProjectTemplate</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 						</configuration>
 					</execution>
 					<execution>
@@ -353,9 +354,10 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>${project.basedir}/src/main/resources/assemblies/javadoc.xml</descriptor>
-								<finalName>nbm/netbeans/extra/doc/aliceDocs</finalName>
+								<descriptor>src/main/resources/assemblies/javadoc.xml</descriptor>
 							</descriptors>
+							<finalName>nbm/netbeans/extra/doc/aliceDocs</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 						</configuration>
 					</execution>
 					<execution>
@@ -366,9 +368,10 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>${project.basedir}/src/main/resources/assemblies/story-src.xml</descriptor>
-								<finalName>nbm/netbeans/extra/src/aliceSource</finalName>
+								<descriptor>src/main/resources/assemblies/story-src.xml</descriptor>
 							</descriptors>
+							<finalName>nbm/netbeans/extra/src/aliceSource</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 						</configuration>
 					</execution>
 				</executions>
