@@ -316,7 +316,6 @@
 							<resources>
 								<resource>
 									<directory>${project.basedir}/../../core/resources/target/distribution/platform</directory>
-									<filtering>true</filtering>
 									<excludes>
 										<exclude>**/ffmpeg/**</exclude>
 										<exclude>**/libvlc/**</exclude>
@@ -388,6 +387,7 @@
 					<installerLicenseFile>src/main/resources/license.txt</installerLicenseFile>
 					<brandingToken>alice3</brandingToken>
 					<installerPack200Enable>true</installerPack200Enable>
+					<homePageUrl>http://www.alice.org/get-alice/alice-3-with-netbeans/</homePageUrl>
 				</configuration>
 			</plugin>
 
