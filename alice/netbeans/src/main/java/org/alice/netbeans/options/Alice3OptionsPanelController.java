@@ -54,7 +54,7 @@ import org.openide.util.Lookup;
 
 @OptionsPanelController.TopLevelRegistration(
 		categoryName = "#OptionsCategory_Name_Alice3",
-		iconBase = "src/main/java/org/alice/netbeans/options/aliceLogo32x32.png",
+		iconBase = "org/alice/netbeans/options/aliceLogo32x32.png",
 		keywords = "#OptionsCategory_Keywords_Alice3",
 		keywordsCategory = "Alice3"
 )
