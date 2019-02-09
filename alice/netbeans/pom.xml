@@ -376,6 +376,20 @@
 							<appendAssemblyId>false</appendAssemblyId>
 						</configuration>
 					</execution>
+					<execution>
+						<id>final-name</id>
+						<phase>install</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/resources/assemblies/rename-nbm.xml</descriptor>
+							</descriptors>
+							<finalName>.</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
