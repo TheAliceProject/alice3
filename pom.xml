@@ -77,6 +77,11 @@
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
 		<nebulous.lib.version>2017.05.01</nebulous.lib.version>
+
+		<netbeans.version>RELEASE82</netbeans.version>
+		<guava.version>13.0.1</guava.version>
+		<commons.discovery.version>0.5</commons.discovery.version>
+
 	</properties>
 
 	<modules>
@@ -102,6 +107,7 @@
 		<module>nonfree/core/story-api-nonfree</module>
 
 		<module>alice/alice-ide</module>
+		<module>alice/netbeans</module>
 		<module>installer</module>
 	</modules>
 
@@ -181,6 +187,12 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>tweedle</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>netbeans</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
@@ -282,7 +294,7 @@
 			<dependency>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.21.0</version>
+				<version>3.0.0-M3</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -302,13 +314,18 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>3.1.1</version>
+				</plugin>
+				<plugin>
 					<inherited>true</inherited>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.0.0-M2</version>
 					<executions>
-					  <execution>
-						<id>enforce-maven-3</id>
+						<execution>
+							<id>enforce-maven-3</id>
 						<goals>
 						  <goal>enforce</goal>
 						</goals>
@@ -326,7 +343,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.6.2</version>
+					<version>3.8.0</version>
 					<configuration>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
@@ -345,7 +362,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.1.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -355,22 +372,22 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.4</version>
+					<version>2.7</version>
 				</plugin>
 				<plugin>
 					<groupId>org.commonjava.maven.plugins</groupId>
 					<artifactId>directory-maven-plugin</artifactId>
-					<version>0.1</version>
+					<version>0.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.21.0</version>
+					<version>3.0.0-M3</version>
 					<dependencies>
 						<dependency>
 							<groupId>org.apache.maven.surefire</groupId>
 							<artifactId>surefire-junit47</artifactId>
-							<version>2.21.0</version>
+							<version>3.0.0-M3</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -575,6 +592,12 @@
 			<name>Atlassian Public Repository</name>
 			<layout>default</layout>
 			<url>https://maven.atlassian.com/maven-external</url>
+		</repository>
+
+		<repository>
+			<id>netbeans</id>
+			<name>Netbeans</name>
+			<url>http://bits.netbeans.org/maven2/</url>
 		</repository>
 	</repositories>
 

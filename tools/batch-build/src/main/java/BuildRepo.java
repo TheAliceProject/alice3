@@ -51,42 +51,71 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BuildRepo extends GitRepo {
-	public BuildRepo( Config config ) {
-		super( config, "alice_for_build" );
-		this.distributionSourceDir = new File( this.getRootDir(), "/core/resources/target/distribution" );
+class BuildRepo {
+	BuildRepo(Config config) {
+		this.config = config;
+
+		plugin8 = new Plugin8( this.config, getRootDir() );
+		distributionSourceDir = new File( getRootDir(), "/core/resources/target/distribution" );
 	}
 
-	public File getDistributionSourceDir() {
-		return this.distributionSourceDir;
+	public Config getConfig() {
+		return config;
 	}
 
-	public File getCoreSrcDirectory( String projectName ) {
-		return new File( this.getRootDir(), "core/" + projectName + "/src/main/java" );
+	private File getRootDir() {
+		return config.getRootDir();
 	}
 
-	public void compileJars() throws IOException, InterruptedException {
+	List<Plugin> getPlugins() {
+		List<Plugin> list = Lists.newLinkedList();
+		if( config.isPlugin8Desired() ) {
+			list.add( plugin8 );
+		}
+		return Collections.unmodifiableList( list );
+	}
+
+	private final Config config;
+	private final Plugin8 plugin8;
+
+	File getDistributionSourceDir() {
+		return distributionSourceDir;
+	}
+
+	File getCoreSrcDirectory( String projectName ) {
+		return new File( getRootDir(), "core/" + projectName + "/src/main/java" );
+	}
+
+	void compileJars() throws IOException, InterruptedException {
 		List<String> command = Lists.newLinkedList();
-		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
-		if( this.getConfig().isCleanDesired() ) {
+		command.add( "mvn" );
+		if( getConfig().isCleanDesired() ) {
 			command.add( "clean" );
 		}
 		command.add( "compile" );
 		command.add( "install" );
+
+		runCommand( getRootDir(), command );
+	}
+
+	static void runCommand( File dir, List<String> command) throws IOException, InterruptedException {
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		processBuilder.directory( this.getRootDir() );
+		processBuilder.environment()
+					  .put( "JAVA_HOME", "/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home/" );
+		processBuilder.directory( dir );
 		ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 
-	public void copyJars( ProjectCollection projectCollection, File dstDir ) throws IOException {
+	void copyJars( ProjectCollection projectCollection, File dstDir ) throws IOException {
 		for( String projectName : projectCollection.getProjectNames() ) {
 			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-			File src = new File( this.getRootDir(), projectCollection.getDirName() + "/" + projectName + "/target/" + filename );
+			File src = new File( getRootDir(), projectCollection.getDirName() + "/" + projectName + "/target/" + filename );
 			File dst = new File( dstDir, filename );
 			assert src.exists() : src;
 			FileUtilities.copyFile( src, dst );
@@ -95,20 +124,20 @@ public class BuildRepo extends GitRepo {
 		}
 	}
 
-	public File generateJavaDocs() throws IOException {
+	File generateJavaDocs() throws IOException {
 		File tempDirectoryForJavaDoc = new File( FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
-		boolean isRequired = ( this.getConfig().isJavaDocGenerationDesired() ) || ( tempDirectoryForJavaDoc.exists() == false );
+		boolean isRequired = ( getConfig().isJavaDocGenerationDesired() ) || ( !tempDirectoryForJavaDoc.exists() );
 		if( isRequired ) {
 			if( tempDirectoryForJavaDoc.exists() ) {
 				FileUtils.deleteDirectory( tempDirectoryForJavaDoc );
 			}
-			assert tempDirectoryForJavaDoc.exists() == false : tempDirectoryForJavaDoc;
+			assert !tempDirectoryForJavaDoc.exists() : tempDirectoryForJavaDoc;
 			tempDirectoryForJavaDoc.mkdirs();
 
 			StringBuilder sb = new StringBuilder();
-			String[] subNames = { "util", "scenegraph", "ast", "story-api" };
+			String[] subNames = { "util", "scenegraph", "ast", "story-api", "tweedle" };
 			for( String subName : subNames ) {
-				sb.append( this.getCoreSrcDirectory( subName ).getAbsolutePath() );
+				sb.append( getCoreSrcDirectory( subName ).getAbsolutePath() );
 				sb.append( SystemUtilities.PATH_SEPARATOR );
 			}
 			String srcPath = sb.toString();

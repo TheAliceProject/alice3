@@ -177,8 +177,8 @@ public class StoryApiDirectoryUtilities {
 			return StoryApiDirectoryUtilities.userGalleryDirectory;
 		}
 		else {
-			File userDir = getDirectoryFromProperty( "user.dir" );
-			return new File(userDir,  "MyGallery");
+			File userHome = getDirectoryFromProperty( "user.home" );
+			return new File(userHome,  "Alice3/MyGallery");
 		}
 	}
 }

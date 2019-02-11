@@ -71,10 +71,12 @@ public class PressAndDragMouseButtonThenScrollMouseWheel {
 
 		JLabel pressAndDragLabel = new JLabel( "press and drag then use mouse wheel" );
 		pressAndDragLabel.addMouseMotionListener( new MouseMotionListener() {
+			@Override
 			public void mouseDragged( MouseEvent e ) {
 				System.out.println( "drag: when=" + e.getWhen() );
 			}
 
+			@Override
 			public void mouseMoved( MouseEvent e ) {
 			}
 		} );

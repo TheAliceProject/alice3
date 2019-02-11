@@ -83,11 +83,6 @@ public class Plugin8 extends Plugin {
 	}
 
 	@Override
-	protected File getJdkToUseForNbmAntCommand() {
-		return JdkUtils.getJdk8HomeDir();
-	}
-
-	@Override
 	protected File getNbmFile() {
 		return new File( this.suiteDir, "build/updates/org-alice-netbeans.nbm" );
 	}
