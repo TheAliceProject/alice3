@@ -49,6 +49,7 @@ import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -87,7 +88,7 @@ public class UserProceduresSubComposite extends UserMethodsSubComposite {
 	}
 
 	@Override
-	protected AbstractMethod getGetterOrSetter( UserField field ) {
-		return field.getSetter();
+	protected List<? extends AbstractMethod> getGettersOrSetters( UserField field ) {
+		return field.getSetters();
 	}
 }
