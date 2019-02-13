@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,39 +44,38 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Setter extends AbstractMethodContainedByUserField {
-	Setter( UserField field ) {
+public class ArrayItemGetter extends Getter {
+	ArrayItemGetter( UserField field ) {
 		super( field );
 	}
 
 	@Override
 	public AbstractType<?, ?, ?> getReturnType() {
-		return JavaType.VOID_TYPE;
+		UserField field = this.getField();
+		return field.getValueType().getComponentType();
 	}
 
 	@Override
 	public List<AbstractParameter> getRequiredParameters() {
-		return this.requiredParameters;
+		return requiredParameters;
 	}
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendSetter( this );
+		generator.appendIndexedGetter(this);
 	}
 
 	@Override
 	public String getName() {
-		//todo: handle boolean and is
-		String fieldName = this.getField().getName();
+		UserField field = this.getField();
+		String fieldName = field.getName();
 		StringBuilder sb = new StringBuilder();
-		sb.append( "set" );
+		sb.append( "get" );
 		if( fieldName.length() > 0 ) {
 			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
 			sb.append( fieldName.substring( 1 ) );
@@ -84,5 +83,6 @@ public class Setter extends AbstractMethodContainedByUserField {
 		return sb.toString();
 	}
 
-	private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
+	private final List<AbstractParameter> requiredParameters =
+		Collections.unmodifiableList( Lists.newArrayList( new UserParameter( "index", Integer.class ) ) );
 }

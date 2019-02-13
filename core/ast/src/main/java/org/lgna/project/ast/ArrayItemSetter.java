@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,21 +44,17 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Setter extends AbstractMethodContainedByUserField {
-	Setter( UserField field ) {
+public class ArrayItemSetter extends Setter {
+	ArrayItemSetter( UserField field ) {
 		super( field );
-	}
-
-	@Override
-	public AbstractType<?, ?, ?> getReturnType() {
-		return JavaType.VOID_TYPE;
+		requiredParameters = Collections.unmodifiableList( Lists.newArrayList(
+			new UserParameter( "index", Integer.class ),
+			new UserParameter( "value", getField().getValueType().getComponentType()) ) );
 	}
 
 	@Override
@@ -68,12 +64,11 @@ public class Setter extends AbstractMethodContainedByUserField {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendSetter( this );
+		generator.appendIndexedSetter( this );
 	}
 
 	@Override
 	public String getName() {
-		//todo: handle boolean and is
 		String fieldName = this.getField().getName();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "set" );
@@ -84,5 +79,5 @@ public class Setter extends AbstractMethodContainedByUserField {
 		return sb.toString();
 	}
 
-	private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
+	private final List<AbstractParameter> requiredParameters;
 }

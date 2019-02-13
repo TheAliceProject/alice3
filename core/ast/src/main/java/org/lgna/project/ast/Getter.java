@@ -42,7 +42,6 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,8 +49,8 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class Getter extends AbstractMethodContainedByUserField implements CodeAppender {
-	/* package-private */Getter( UserField field ) {
+public class Getter extends AbstractMethodContainedByUserField {
+	Getter( UserField field ) {
 		super( field );
 	}
 
