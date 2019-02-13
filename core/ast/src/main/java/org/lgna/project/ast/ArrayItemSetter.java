@@ -43,7 +43,6 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;

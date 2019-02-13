@@ -50,7 +50,7 @@ import org.lgna.project.code.CodeAppender;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMethodContainedByUserField extends AbstractMethod implements CodeAppender {
-	/* package-private */AbstractMethodContainedByUserField( UserField field ) {
+	AbstractMethodContainedByUserField( UserField field ) {
 		this.field = field;
 	}
 

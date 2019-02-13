@@ -91,13 +91,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	protected Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		final ExpressionStatement expressionStatement = (ExpressionStatement)getStatement();
 		Expression expression = expressionStatement.expression.getValue();
-		if( expression instanceof MethodInvocation ) {
-			MethodInvocation methodInvocation = (MethodInvocation)expression;
-			if( methodInvocation.isValid() ) {
-				//pass
-			} else {
-				return Color.RED;
-			}
+		if (expression instanceof MethodInvocation && !expression.isValid()) {
+			return Color.RED;
 		}
 		return super.getBackgroundPaint( x, y, width, height );
 	}
