@@ -49,6 +49,7 @@ import edu.cmu.cs.dennisc.property.EnumProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.code.CodeOrganizer;
 
 import java.util.Collections;
 import java.util.List;
@@ -173,6 +174,16 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendField(this);
+	}
+
+	void addToOrganizer( CodeOrganizer codeOrganizer, boolean showPublicStaticFinal ) {
+		codeOrganizer.addField( this );
+		if (!showPublicStaticFinal && isPublicAccess() && isStatic() && isFinal()) {
+			return;
+		}
+		initializeAccessors();
+		codeOrganizer.addGetters( getters );
+		codeOrganizer.addSetters( setters );
 	}
 
 	// This is to support the instantiation process used in deserialization. If that changes this could be moved
