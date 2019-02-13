@@ -45,6 +45,7 @@ package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 /**
  * @author Dennis Cosgrove
@@ -84,5 +85,11 @@ public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppend
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendLambda( this );
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		// The VM evaluates lambda invoaction in a different way then other methods.
+		throw new RuntimeException();
 	}
 }

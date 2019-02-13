@@ -43,7 +43,7 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,6 +82,12 @@ public class Setter extends AbstractMethodContainedByUserField {
 			sb.append( fieldName.substring( 1 ) );
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		virtualMachine.set( getField(), target, arguments[ 0 ] );
+		return null;
 	}
 
 	private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );

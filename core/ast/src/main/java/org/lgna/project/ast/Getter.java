@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,5 +83,10 @@ public class Getter extends AbstractMethodContainedByUserField {
 			sb.append( fieldName.substring( 1 ) );
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		return virtualMachine.get( getField(), target);
 	}
 }

@@ -79,5 +79,13 @@ public class ArrayItemSetter extends Setter {
 		return sb.toString();
 	}
 
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		Object array = virtualMachine.get( getField(), target);
+		final Integer index = (Integer) arguments[0];
+		virtualMachine.setItemAtIndex( getField().getValueType(), array, index, arguments[1] );
+		return null;
+	}
+
 	private final List<AbstractParameter> requiredParameters;
 }

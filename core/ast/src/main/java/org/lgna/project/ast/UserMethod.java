@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 /**
  * @author Dennis Cosgrove
@@ -87,6 +88,11 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator {
 	@Override
 	public boolean isFinal() {
 		return this.isFinal.getValue();
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		return virtualMachine.invokeUserMethod( target, this, arguments );
 	}
 
 	//	@Override

@@ -83,6 +83,13 @@ public class ArrayItemGetter extends Getter {
 		return sb.toString();
 	}
 
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		Object array = virtualMachine.get( getField(), target);
+		final Integer index = (Integer) arguments[0];
+		return virtualMachine.getItemAtIndex( getField().getValueType(), array, index );
+	}
+
 	private final List<AbstractParameter> requiredParameters =
 		Collections.unmodifiableList( Lists.newArrayList( new UserParameter( "index", Integer.class ) ) );
 }
