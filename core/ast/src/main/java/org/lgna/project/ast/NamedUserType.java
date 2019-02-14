@@ -134,15 +134,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		}
 
 		for( UserField field : this.fields ) {
-			codeOrganizer.addField( field );
-			if (field.isPublicAccess() && field.isStatic() && field.isFinal() &&
-							!generator.isPublicStaticFinalFieldGetterDesired()) {
-				continue;
-			}
-			codeOrganizer.addGetter( field.getGetter() );
-			if (!field.isFinal()) {
-				codeOrganizer.addSetter( field.getSetter() );
-			}
+			field.addToOrganizer( codeOrganizer, generator.isPublicStaticFinalFieldGetterDesired() );
 		}
 
 		return codeOrganizer;

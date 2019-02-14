@@ -245,6 +245,14 @@ class Decoder {
 					methodReflectionProxy = varArgsReplacement;
 				}
 				rv = JavaMethod.getInstance( methodReflectionProxy );
+			} else if( clsName.equals( ArrayItemGetter.class.getName() ) ) {
+				Element xmlField = (Element) xmlElement.getFirstChild();
+				UserField field = (UserField) decode( xmlField, map );
+				rv = field.getArrayItemGetter();
+			} else if( clsName.equals( ArrayItemSetter.class.getName() ) ) {
+				Element xmlField = (Element) xmlElement.getFirstChild();
+				UserField field = (UserField) decode( xmlField, map );
+				rv = field.getArrayItemSetter();
 			} else if( clsName.equals( Getter.class.getName() ) || clsName.equals( Setter.class.getName() ) ) {
 
 				Node xmlFirstChild = xmlElement.getFirstChild();

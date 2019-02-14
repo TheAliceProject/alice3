@@ -43,7 +43,7 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,8 +51,8 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class Setter extends AbstractMethodContainedByUserField implements CodeAppender {
-	/* package-private */Setter( UserField field ) {
+public class Setter extends AbstractMethodContainedByUserField {
+	Setter( UserField field ) {
 		super( field );
 	}
 
@@ -62,7 +62,7 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 	}
 
 	@Override
-	public List<SetterParameter> getRequiredParameters() {
+	public List<AbstractParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
@@ -84,5 +84,11 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 		return sb.toString();
 	}
 
-	private final List<SetterParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		virtualMachine.set( getField(), target, arguments[ 0 ] );
+		return null;
+	}
+
+	private final List<AbstractParameter> requiredParameters = Collections.unmodifiableList( Lists.newArrayList( new SetterParameter( this ) ) );
 }

@@ -43,12 +43,16 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.EnumProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.annotations.Visibility;
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.code.CodeOrganizer;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -77,6 +81,26 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 		} else {
 			return this.setter;
 		}
+	}
+
+	public ArrayItemGetter getArrayItemGetter() {
+		initializeAccessors();
+		return arrayItemGetter;
+	}
+
+	public ArrayItemSetter getArrayItemSetter() {
+		initializeAccessors();
+		return arrayItemSetter;
+	}
+
+	public List<Getter> getGetters() {
+		initializeAccessors();
+		return getters;
+	}
+
+	public List<Setter> getSetters() {
+		initializeAccessors();
+		return setters;
 	}
 
 	@Override
@@ -153,6 +177,40 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 		generator.appendField(this);
 	}
 
+	void addToOrganizer( CodeOrganizer codeOrganizer, boolean showPublicStaticFinal ) {
+		codeOrganizer.addField( this );
+		if (!showPublicStaticFinal && isPublicAccess() && isStatic() && isFinal()) {
+			return;
+		}
+		initializeAccessors();
+		codeOrganizer.addGetters( getters );
+		codeOrganizer.addSetters( setters );
+	}
+
+	// This is to support the instantiation process used in deserialization. If that changes this could be moved
+	// into the constructor and only called once with the variables becoming final.
+	private void initializeAccessors() {
+		if ( getters == null ) {
+			if (valueType.getValue().isArray()) {
+				arrayItemGetter = new ArrayItemGetter( this );
+				getters = Collections.unmodifiableList( Lists.newArrayList( arrayItemGetter, getter ) );
+			} else {
+				getters = Collections.singletonList( getter );
+			}
+
+			if (isFinal()) {
+				setters = Collections.emptyList();
+			} else {
+				if (valueType.getValue().isArray()) {
+					arrayItemSetter = new ArrayItemSetter( this );
+					setters = Collections.unmodifiableList( Lists.newArrayList( arrayItemSetter, setter ) );
+				} else {
+					setters = Collections.singletonList( setter );
+				}
+			}
+		}
+	}
+
 	public final StringProperty name = new StringProperty( this, null );
 	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
 	public final EnumProperty<AccessLevel> accessLevel = new EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
@@ -170,4 +228,8 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	private Visibility m_visibility = Visibility.PRIME_TIME;
 	private final Getter getter = new Getter( this );
 	private final Setter setter = new Setter( this );
+	private ArrayItemGetter arrayItemGetter;
+	private ArrayItemSetter arrayItemSetter;
+	private List<Getter> getters;
+	private List<Setter> setters;
 }

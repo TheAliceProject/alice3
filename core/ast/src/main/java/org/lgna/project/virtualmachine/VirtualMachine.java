@@ -378,7 +378,7 @@ public abstract class VirtualMachine {
 		ReflectionUtilities.set( fld, instance, value );
 	}
 
-	protected Object get( AbstractField field, Object instance ) {
+	public Object get( AbstractField field, Object instance ) {
 		assert field != null;
 		assert ( instance != null ) || field.isStatic() : field;
 		if( field instanceof UserField ) {
@@ -390,7 +390,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected void set( AbstractField field, Object instance, Object value ) {
+	public void set( AbstractField field, Object instance, Object value ) {
 		assert field != null;
 		if( field instanceof UserField ) {
 			this.setUserField( (UserField)field, instance, value );
@@ -413,7 +413,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object getItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index ) {
+	public Object getItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index ) {
 		assert arrayType != null;
 		assert arrayType.isArray();
 		if( array instanceof UserArrayInstance ) {
@@ -426,7 +426,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected void setItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index, Object value ) {
+	public void setItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index, Object value ) {
 		value = UserInstance.getJavaInstanceIfNecessary( value );
 		assert arrayType != null;
 		assert arrayType.isArray() : arrayType;
@@ -440,7 +440,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object invokeUserMethod( Object instance, UserMethod method, Object... arguments ) {
+	public Object invokeUserMethod( Object instance, UserMethod method, Object... arguments ) {
 		if( method.isStatic() ) {
 			assert instance == null;
 		} else {
@@ -489,7 +489,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object invokeMethodDeclaredInJava( Object instance, JavaMethod method, Object... arguments ) {
+	public Object invokeMethodDeclaredInJava( Object instance, JavaMethod method, Object... arguments ) {
 		instance = UserInstance.getJavaInstanceIfNecessary( instance );
 		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
 		Method mthd = method.getMethodReflectionProxy().getReification();
@@ -542,20 +542,8 @@ public abstract class VirtualMachine {
 		if (!method.isStatic()) {
 			checkNotNull( instance, "Instance method target is null" );
 		}
-		if( method instanceof UserMethod ) {
-			return this.invokeUserMethod( instance, (UserMethod)method, arguments );
-		} else if( method instanceof JavaMethod ) {
-			return this.invokeMethodDeclaredInJava( instance, (JavaMethod)method, arguments );
-		} else if( method instanceof Getter ) {
-			Getter getter = (Getter)method;
-			return this.get( getter.getField(), instance );
-		} else if( method instanceof Setter ) {
-			Setter setter = (Setter)method;
-			this.set( setter.getField(), instance, arguments[ 0 ] );
-			return null;
-		} else {
-			throw new RuntimeException();
-		}
+
+		return method.invoke(this, instance, arguments);
 	}
 
 	protected Object evaluateAssignmentExpression( AssignmentExpression assignmentExpression ) {

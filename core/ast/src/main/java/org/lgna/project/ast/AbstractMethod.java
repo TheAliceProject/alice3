@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 import javax.lang.model.element.Modifier;
 import java.util.Collection;
 import java.util.List;
@@ -102,4 +104,6 @@ public abstract class AbstractMethod extends AbstractCode implements Method {
 	public boolean isProcedure() {
 		return isFunction() == false;
 	}
+
+	public abstract Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments );
 }

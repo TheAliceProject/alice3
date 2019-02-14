@@ -139,6 +139,18 @@ public abstract class SourceCodeGenerator {
 		closeBlock();
 	}
 
+	void appendIndexedGetter( ArrayItemGetter getter ) {
+		UserField field = getter.getField();
+		appendMethodHeader( getter );
+		openBlock();
+		appendSingleCodeLine( () -> {
+			appendString( "return this." );
+			appendString( field.name.getValue() );
+			appendString( "[index]" );
+		});
+		closeBlock();
+	}
+
 	public void appendSetter( Setter setter ) {
 		UserField field = setter.getField();
 		appendMethodHeader( setter );
@@ -148,6 +160,20 @@ public abstract class SourceCodeGenerator {
 			appendString( field.name.getValue() );
 			appendAssignmentOperator();
 			appendString( field.name.getValue() );
+		} );
+		closeBlock();
+	}
+
+	void appendIndexedSetter( ArrayItemSetter setter ) {
+		UserField field = setter.getField();
+		appendMethodHeader( setter );
+		openBlock();
+		appendSingleCodeLine( () -> {
+			appendString( "this." );
+			appendString( field.name.getValue() );
+			appendString( "[index]" );
+			appendAssignmentOperator();
+			appendString( "value" );
 		} );
 		closeBlock();
 	}

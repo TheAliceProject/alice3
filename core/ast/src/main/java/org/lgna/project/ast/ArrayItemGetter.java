@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2019 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -42,39 +42,36 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
 import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Getter extends AbstractMethodContainedByUserField {
-	Getter( UserField field ) {
+public class ArrayItemGetter extends Getter {
+	ArrayItemGetter( UserField field ) {
 		super( field );
 	}
 
 	@Override
 	public AbstractType<?, ?, ?> getReturnType() {
 		UserField field = this.getField();
-		return field.getValueType();
+		return field.getValueType().getComponentType();
 	}
 
 	@Override
 	public List<AbstractParameter> getRequiredParameters() {
-		return Collections.emptyList();
+		return requiredParameters;
 	}
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendGetter(this);
+		generator.appendIndexedGetter(this);
 	}
 
 	@Override
 	public String getName() {
 		UserField field = this.getField();
-		//todo: handle boolean and is
 		String fieldName = field.getName();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "get" );
@@ -87,6 +84,11 @@ public class Getter extends AbstractMethodContainedByUserField {
 
 	@Override
 	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
-		return virtualMachine.get( getField(), target);
+		Object array = virtualMachine.get( getField(), target);
+		final Integer index = (Integer) arguments[0];
+		return virtualMachine.getItemAtIndex( getField().getValueType(), array, index );
 	}
+
+	private final List<AbstractParameter> requiredParameters =
+		Collections.unmodifiableList( Lists.newArrayList( new UserParameter( "index", Integer.class ) ) );
 }

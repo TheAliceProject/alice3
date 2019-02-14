@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Modifier;
@@ -273,6 +274,11 @@ public class JavaMethod extends AbstractMethod {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null : this;
 		return Modifier.isStrict( mthd.getModifiers() );
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		return virtualMachine.invokeMethodDeclaredInJava( target, this, arguments );
 	}
 
 	@Override
