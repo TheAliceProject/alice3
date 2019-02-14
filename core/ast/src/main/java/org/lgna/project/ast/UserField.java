@@ -89,6 +89,7 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	}
 
 	public ArrayItemSetter getArrayItemSetter() {
+		initializeAccessors();
 		return arrayItemSetter;
 	}
 
