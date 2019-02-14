@@ -85,18 +85,18 @@ public class UserInstance {
 
 	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor,
 					UserType<?> fallbackType, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, fallbackType );
+		return new UserInstance( vm, constructor, arguments, fallbackType, new HashMap<>() );
 	}
 
 	private final VirtualMachine vm;
 	private final Object nextInstance;
 	private final UserType<?> type;
-	private final Map<UserField, Object> fieldMap = new HashMap<>();
+	private final Map<UserField, Object> fieldMap;
 	// TODO Move this on to the scene, since that is the only user of this map
 	private Map<Object, UserField> inverseFieldMap;
 
 	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments,
-					UserType<?> fallbackType ) {
+					UserType<?> fallbackType, Map<UserField, Object> fieldMap ) {
 		this.vm = vm;
 		UserType<?> constType = constructor.getDeclaringType();
 
@@ -104,6 +104,7 @@ public class UserInstance {
 
 		assert this.type != null : constructor.getId();
 
+		this.fieldMap = fieldMap;
 
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
@@ -117,7 +118,7 @@ public class UserInstance {
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
 			if( nextConstructor.isUserAuthored() ) {
-				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType );
+				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType, fieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
 				ConstructorReflectionProxy constructorReflectionProxy = nextConstructorDeclaredInJava.getConstructorReflectionProxy();
