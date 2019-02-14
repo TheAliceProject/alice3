@@ -455,7 +455,8 @@ public abstract class IDE extends ProjectApplication {
 		if (files != null && !files.isEmpty()) {
 			File file = files.get( 0 );
 			if( file.exists() ) {
-				new OpenProjectFromOsOperation( file ).fire( null );
+				UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
+				new OpenProjectFromOsOperation( file ).fire( activity );
 			}
 		}
 	}

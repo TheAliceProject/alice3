@@ -150,7 +150,7 @@ class PropertyReferenceToElement extends AbstractPropertyReference {
 		if( value != null ) {
 			setPropertyValue( value );
 		} else {
-			throw new RuntimeException( "could resolve reference- element: " + getElement() + "; propertyName: " + getPropertyName() + "; key: " + m_key );
+			throw new RuntimeException( "could not resolve reference- element: " + getElement() + "; propertyName: " + getPropertyName() + "; key: " + m_key );
 		}
 	}
 }

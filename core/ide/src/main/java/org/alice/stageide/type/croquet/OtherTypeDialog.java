@@ -64,6 +64,7 @@ import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.croquet.simple.SimpleApplication;
+import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.Panel;
 import org.lgna.project.Project;
 import org.lgna.project.annotations.Visibility;
@@ -466,7 +467,7 @@ public class OtherTypeDialog extends ValueCreatorInputDialogCoreComposite<Panel,
 
 		Project project = IoUtilities.readProject( args[ 0 ] );
 		ProjectStack.pushProject( project );
-		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( null );
+		OtherTypeDialog.getInstance().getValueCreator( SModel.class ).fire( NullTrigger.createUserActivity() );
 		System.exit( 0 );
 	}
 }

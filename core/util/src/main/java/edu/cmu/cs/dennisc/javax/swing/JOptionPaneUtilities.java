@@ -42,11 +42,13 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.javax.swing;
 
+import edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug;
+
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
  * @author Dennis Cosgrove
@@ -56,22 +58,20 @@ public class JOptionPaneUtilities {
 		throw new Error();
 	}
 
-	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType, final int maxPreferredWidth, final int maxPreferredHeight ) {
-		assert ( messageType == JOptionPane.ERROR_MESSAGE ) || ( messageType == JOptionPane.INFORMATION_MESSAGE ) || ( messageType == JOptionPane.WARNING_MESSAGE ) || ( messageType == JOptionPane.PLAIN_MESSAGE );
+	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType) {
+		assert ( messageType == JOptionPane.ERROR_MESSAGE ) || ( messageType == JOptionPane.INFORMATION_MESSAGE )
+			|| ( messageType == JOptionPane.WARNING_MESSAGE ) || ( messageType == JOptionPane.PLAIN_MESSAGE );
 		JTextArea textArea = new JTextArea( text );
 		textArea.setEditable( false );
-		JOptionPane.showMessageDialog( owner, new JScrollPane( textArea ) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		JOptionPane.showMessageDialog( owner, new JScrollPaneCoveringLinuxPaintBug( textArea ) {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension rv = super.getPreferredSize();
-				rv.width = Math.min( rv.width, maxPreferredWidth );
-				rv.height = Math.min( rv.height, maxPreferredHeight );
+				rv.width = Math.min( rv.width, screenSize.width - 120 );
+				rv.height = Math.min( rv.height, screenSize.height - 150 );
 				return rv;
 			}
 		}, title, messageType );
-	}
-
-	public static void showMessageDialogInScrollableUneditableTextArea( Component owner, String text, String title, int messageType ) {
-		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
 	}
 }

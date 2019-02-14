@@ -55,6 +55,7 @@ import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.data.MutableListData;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.imp.cascade.BlankNode;
+import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.ArrayInstanceCreation;
@@ -167,7 +168,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		//new org.alice.stageide.StageIDE();
 		try {
-			ArrayCustomExpressionCreatorComposite.getInstance( JavaType.getInstance( String[].class ) ).getValueCreator().fire( null );
+			ArrayCustomExpressionCreatorComposite.getInstance( JavaType.getInstance( String[].class ) ).getValueCreator().fire( NullTrigger.createUserActivity() );
 		} catch( CancelException ce ) {
 			//pass
 		}
