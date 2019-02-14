@@ -73,9 +73,9 @@ public abstract class FileDialogOperation extends Operation {
 				userActivity.finish();
 			} catch( IOException ioe ) {
 				Dialogs.showError( getImp().getName(), ioe.getMessage() );
-				userActivity.cancel();
+				userActivity.cancel( new CancelException( ioe ) );
 			} catch( CancelException ce ) {
-				userActivity.cancel();
+				userActivity.cancel( ce );
 			}
 		} else {
 			userActivity.cancel();

@@ -78,7 +78,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 				openingActivity.finish();
 			}
 		} catch( CancelException ce ) {
-			cancel();
+			cancel(ce);
 		}
 	}
 
@@ -88,7 +88,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		if( isCommitted ) { // close button condition
 			createAndCommitEdit();
 		} else {
-			cancel();
+			cancel( null );
 		}
 	}
 

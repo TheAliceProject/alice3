@@ -92,7 +92,7 @@ public abstract class IteratingOperation extends Operation {
 			}
 			this.handleSuccessfulCompletionOfSubModels( activity );
 		} catch( CancelException ce ) {
-			activity.cancel();
+			activity.cancel(ce);
 		}
 	}
 }

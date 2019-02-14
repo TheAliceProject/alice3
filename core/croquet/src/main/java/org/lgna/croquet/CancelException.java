@@ -48,14 +48,18 @@ package org.lgna.croquet;
  */
 public class CancelException extends RuntimeException {
 	public CancelException() {
-		this( null );
+		super();
 	}
 
 	public CancelException( String message ) {
 		super( message );
 	}
 
+	public CancelException( Throwable e ) {
+		super( e );
+	}
+
 	public CancelException( String message, Throwable e ) {
-		super( message, e);
+		super( message, e );
 	}
 }
