@@ -44,6 +44,7 @@ package org.lgna.croquet.history;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Criterion;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.DragModel;
 import org.lgna.croquet.DropSite;
@@ -64,6 +65,7 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 	enum ActivityStatus {
 		PENDING,
 		CANCELED,
+		ERROR,
 		FINISHED
 	}
 	private final List<PrepStep<?>> prepSteps;
@@ -214,7 +216,11 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 	}
 
 	public boolean isCanceled() {
-		return ActivityStatus.CANCELED == status;
+		return ActivityStatus.CANCELED == status || ActivityStatus.ERROR == status;
+	}
+
+	public boolean isCanceledByError() {
+		return ActivityStatus.ERROR == status;
 	}
 
 	public void commitAndInvokeDo( Edit edit ) {
@@ -226,17 +232,27 @@ public class UserActivity extends ActivityNode<CompletionModel> {
 
 	public void finish() {
 		status = ActivityStatus.FINISHED;
-		removeIfEmpty();
+		removeFromOwnerIfEmpty();
 		fireChanged( new FinishedEvent() );
 	}
 
 	public void cancel() {
-		removeIfEmpty();
+		removeFromOwnerIfEmpty();
 		status = ActivityStatus.CANCELED;
 		fireChanged( new CancelEvent() );
 	}
 
-	private void removeIfEmpty() {
+	public void cancel( CancelException ce ) {
+		removeFromOwnerIfEmpty();
+		if ( ce != null && ce.getCause() != ce ) {
+			status = ActivityStatus.ERROR;
+		} else {
+			status = ActivityStatus.CANCELED;
+		}
+		fireChanged( new CancelEvent() );
+	}
+
+	private void removeFromOwnerIfEmpty() {
 		if ( getOwner() != null && childActivities.isEmpty() && prepSteps.isEmpty() && model == null && edit == null ) {
 			getOwner().childActivities.remove( this );
 			getOwner().fireChanged( new ChangeEvent<UserActivity>( getOwner() ) );
