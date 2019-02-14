@@ -133,7 +133,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel implements
 		T value = this.createValue( activity );
 
 		if ( activity.isCanceled() || value == null ) {
-			activity.cancel();
 			throw new CancelException();
 		}
 

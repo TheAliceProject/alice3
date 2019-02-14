@@ -98,7 +98,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends CompositeView<?, 
 		super.handlePostHideDialog();
 	}
 
-	protected void cancel() {
-		openingActivity.cancel();
+	protected void cancel( CancelException ce ) {
+		openingActivity.cancel(ce);
 	}
 }

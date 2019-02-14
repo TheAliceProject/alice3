@@ -208,7 +208,7 @@ public class AddResourceKeyManagedFieldComposite extends AddManagedFieldComposit
 	@Override
 	protected void handlePostHideDialog() {
 		super.handlePostHideDialog();
-		if( openingActivity.isCanceled() ) {
+		if( openingActivity.isCanceledByError() ) {
 			Dialogs.showWarning("Failed to create model",
 								"There was a problem putting that model in the scene.");
 		}

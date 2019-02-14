@@ -47,6 +47,7 @@ import org.alice.ide.ast.type.merge.croquet.AddMembersPage;
 import org.alice.ide.ast.type.merge.croquet.PotentialNameChanger;
 import org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities;
 import org.lgna.croquet.Application;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Element;
 import org.lgna.croquet.HtmlStringValue;
 import org.lgna.croquet.PlainStringValue;
@@ -159,12 +160,12 @@ public abstract class PotentialNameChangerHelpComposite<V extends CompositeView<
 	}
 
 	@Override
-	protected void cancel() {
+	protected void cancel( CancelException ce ) {
 		this.potentialNameChanger.getImportHub().getIsDesiredState().setValueTransactionlessly( this.isImportDesiredPre );
 		this.potentialNameChanger.getProjectHub().getIsDesiredState().setValueTransactionlessly( this.isProjectDesiredPre );
 		this.potentialNameChanger.getImportHub().getNameState().setValueTransactionlessly( this.importNamePre );
 		this.potentialNameChanger.getProjectHub().getNameState().setValueTransactionlessly( this.projectNamePre );
-		super.cancel();
+		super.cancel( ce );
 	}
 
 	@Override

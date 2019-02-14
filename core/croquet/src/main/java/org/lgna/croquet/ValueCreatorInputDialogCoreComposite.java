@@ -75,7 +75,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends CompositeVi
 				this.value = createValue();
 				openingActivity.finish();
 			} catch( CancelException ce ) {
-				openingActivity.cancel();
+				openingActivity.cancel(ce);
 			}
 		} else {
 			openingActivity.cancel();
