@@ -94,11 +94,6 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 	}
 
 	@Override
-	protected float getDefaultMarkerOpacity() {
-		return 1;
-	}
-
-	@Override
 	protected void createVisuals() {
 
 		this.sgAppearance = new SimpleAppearance();

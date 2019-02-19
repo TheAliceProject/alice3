@@ -532,7 +532,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements Rend
 			public void run() {
 				StorytellingSceneEditor.this.revalidateAndRepaint();
 				SideComposite.getInstance().getObjectPropertiesTab().getView().revalidateAndRepaint();
-
+				SideComposite.getInstance().getObjectMarkersTab().getView().revalidateAndRepaint();
 			}
 		};
 		try {
