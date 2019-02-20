@@ -346,13 +346,13 @@ public abstract class ExpressionCascadeManager {
 		for( AbstractField field : selectedType.getDeclaredFields() ) {
 			AbstractType<?, ?, ?> fieldType = field.getValueType();
 			if( this.isApplicableForFillInAndPossiblyPartFillIns( type, fieldType ) ) {
-				Expression fieldAccess = new FieldAccess( new ThisExpression(), field );
+				Expression fieldAccess = new FieldAccess(field);
 				this.appendFillInAndPossiblyPartFillIns( blankChildren, type, fieldAccess );
 			}
 			if( fieldType.isArray() ) {
 				AbstractType<?, ?, ?> fieldComponentType = fieldType.getComponentType();
 				if( this.isApplicableForFillInAndPossiblyPartFillIns( type, fieldComponentType ) ) {
-					Expression fieldAccess = new FieldAccess( new ThisExpression(), field );
+					Expression fieldAccess = new FieldAccess(field);
 					blankChildren.add( new ArrayAccessFillIn( fieldAccess ) );
 				}
 				if( arrayLengthFillIns != null ) {

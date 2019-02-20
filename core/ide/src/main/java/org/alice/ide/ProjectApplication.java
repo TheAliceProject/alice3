@@ -43,7 +43,6 @@
 
 package org.alice.ide;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ClassUtilities;
 import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
@@ -51,10 +50,8 @@ import org.alice.ide.frametitle.IdeFrameTitleGenerator;
 import org.alice.ide.project.ProjectDocumentState;
 import org.alice.ide.recentprojects.RecentProjectsListData;
 import org.alice.ide.uricontent.FileProjectLoader;
-import org.alice.ide.uricontent.UriContentLoader;
 import org.alice.ide.uricontent.UriProjectLoader;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.PerspectiveApplication;
 import org.lgna.croquet.history.UserActivity;
@@ -78,7 +75,6 @@ import java.net.URI;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Dennis Cosgrove
@@ -180,69 +176,17 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		return rv.replaceAll( " ", "" );
 	}
 
-	public void showUnableToOpenFileDialog( File file, String message ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Unable to open file " );
-		sb.append( FileUtilities.getCanonicalPathIfPossible( file ) );
-		sb.append( ".\n\n" );
-		sb.append( message );
-		Dialogs.showError( "Cannot read file", sb.toString() );
-	}
-
 	public void handleVersionNotSupported( File file, VersionNotSupportedException vnse ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( getApplicationName() );
-		sb.append( " is not backwards compatible with:" );
-		sb.append( "\n    File Version: " );
-		sb.append( vnse.getVersion() );
-		sb.append( "\n    (Minimum Supported Version: " );
-		sb.append( vnse.getMinimumSupportedVersion() );
-		sb.append( ")" );
-		this.showUnableToOpenFileDialog( file, sb.toString() );
+		Dialogs.showUnableToOpenFileDialog(
+			file, String.format(
+				"%s is not backwards compatible with:\n    File Version: %s\n    (Minimum Supported Version: %s)",
+				getApplicationName(), vnse.getVersion(), vnse.getMinimumSupportedVersion()));
 	}
 
 	private UriProjectLoader uriProjectLoader;
 
-	public UriProjectLoader getUriProjectLoader() {
-		return this.uriProjectLoader;
-	}
-
 	public final URI getUri() {
 		return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
-	}
-
-	private void setUriProjectPair( UriProjectLoader uriProjectLoader ) {
-		this.uriProjectLoader = null;
-		if ( uriProjectLoader == null ) {
-			return;
-		}
-		Project project = null;
-		try {
-			project = uriProjectLoader.getContentWaitingIfNecessary( UriContentLoader.MutationPlan.WILL_MUTATE );
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
-		if( project == null ) {
-			throw new CancelException("No project loaded." );
-		}
-
-		// Remove the old project history listener, so the old project can be cleaned up
-		if( ( this.getProject() != null ) && ( this.getProjectHistory() != null ) ) {
-			this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
-		}
-		this.setProject( project );
-		this.uriProjectLoader = uriProjectLoader;
-		this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
-		URI uri = this.uriProjectLoader.getUri();
-		File file = UriUtilities.getFile( uri );
-		try {
-			if( ( file != null ) && file.canWrite() ) {
-				RecentProjectsListData.getInstance().handleOpen( file );
-			}
-		} catch( Throwable throwable ) {
-			throwable.printStackTrace();
-		}
-		this.updateTitle();
 	}
 
 	@Deprecated
@@ -380,8 +324,11 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 	}
 
 	private UserActivity newProjectActivity() {
-		// This is the activity of opening or creating this project
-		getOverallUserActivity().getLatestActivity().finish();
+		// If present, this is the activity of opening or creating a project
+		UserActivity openChild = getOpenActivity();
+		if ( openChild != null ) {
+			openChild.finish();
+		}
 		// If there was a project the new one replaces it.
 		if (projectActivity != null) {
 			projectActivity.finish();
@@ -402,19 +349,42 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
 		return latest == projectActivity ? null : latest;
 	}
 
-	public final void loadProjectFrom( UriProjectLoader uriProjectLoader ) {
-		this.setUriProjectPair( uriProjectLoader );
-		this.updateHistoryIndexFileSync();
-		this.updateUndoRedoEnabled();
+	public final void loadProject(UserActivity activity, UriProjectLoader uriProjectLoader ) {
+		this.uriProjectLoader = uriProjectLoader;
+		if ( uriProjectLoader != null ) {
+			uriProjectLoader.deliverContentOnEventDispatchThread(proj -> projectLoaded(activity, proj));
+		}
+	}
+
+	private void projectLoaded(UserActivity activity, Project project) {
+		if( project == null ) {
+			uriProjectLoader = null;
+			activity.cancel();
+		} else {
+			updateInterface(project);
+		}
+	}
+
+	private void updateInterface(Project project) {
+		// Remove the old project history listener, so the old project can be cleaned up
+		if( ( getProject() != null ) && ( getProjectHistory() != null ) ) {
+			getProjectHistory().removeHistoryListener( projectHistoryListener );
+		}
+		setProject( project );
+		getProjectHistory().addHistoryListener( projectHistoryListener );
+		URI uri = uriProjectLoader.getUri();
+		File file = UriUtilities.getFile(uri );
+		try {
+			if( ( file != null ) && file.canWrite() ) {
+				RecentProjectsListData.getInstance().handleOpen(file );
+			}
+		} catch( Throwable throwable ) {
+			throwable.printStackTrace();
+		}
+
+		updateHistoryIndexFileSync();
+		updateUndoRedoEnabled();
 		projectFileUtilities.startAutoSaving();
-	}
-
-	public final void loadProjectFrom( File file ) {
-		this.loadProjectFrom( new FileProjectLoader( file ) );
-	}
-
-	public final void loadProjectFrom( String path ) {
-		loadProjectFrom( new File( path ) );
 	}
 
 	protected abstract BufferedImage createThumbnail() throws Throwable;

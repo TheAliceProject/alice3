@@ -43,6 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
+import static com.jogamp.opengl.GL.GL_POLYGON_OFFSET_FILL;
 import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 
 import com.jogamp.opengl.GL;
@@ -58,6 +59,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Dennis Cosgrove
@@ -69,6 +71,17 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
 
 	public void removeRenderContext( RenderContext rc ) {
 		this.renderContexts.remove( rc );
+	}
+
+	@Override
+	public void initialize( T element ) {
+		super.initialize( element );
+		// The jitter factor is used to tweak otherwise coplanar surfaces that might end up interwoven during render.
+		// The problem is referred to as "Z fighting".
+		// This jitter, in combination with upping the bit depth in GlDrawableUtils, will lessen the problem likelihood
+		// and intensity, but not eliminate it.
+		// TODO Use a value based on element that would remain consistent across executions to preserve z-ordering seen.
+		jitterFactor =  ThreadLocalRandom.current().nextFloat();
 	}
 
 	@Override
@@ -131,7 +144,10 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
 				setIsGeometryChanged( false );
 			} else {
 				if( rc.gl.glIsList( id ) ) {
+					rc.gl.glEnable(GL_POLYGON_OFFSET_FILL);
+					rc.gl.glPolygonOffset(jitterFactor, 1);
 					rc.gl.glCallList( id );
+					rc.gl.glDisable(GL_POLYGON_OFFSET_FILL);
 				} else {
 					Logger.severe( this );
 				}
@@ -169,4 +185,5 @@ public abstract class GlrGeometry<T extends Geometry> extends GlrElement<T> {
 
 	private final List<RenderContext> renderContexts = Lists.newLinkedList();
 	private boolean isGeometryChanged;
+	private float jitterFactor;
 }

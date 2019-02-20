@@ -111,7 +111,7 @@ public abstract class MarkersView extends BorderPanel {
 		}
 	}
 
-	private static class MarkerListView extends CustomRadioButtons<UserField> {
+	private class MarkerListView extends CustomRadioButtons<UserField> {
 		private class MarkerPopupButton extends PopupButton {
 			private final UserField field;
 
@@ -166,7 +166,7 @@ public abstract class MarkersView extends BorderPanel {
 		private final ValueListener<UserField> selectionListener = new ValueListener<UserField>() {
 			@Override
 			public void valueChanged( ValueEvent<UserField> e ) {
-				repaint();
+				MarkersView.this.repaint();
 			}
 		};
 

@@ -53,9 +53,11 @@ import org.lgna.project.migration.AstMigration;
 
 /**
  * @author Dennis Cosgrove
+ * @deprecated Use CompoundMigration with NodeMigrations going forward
  */
+@Deprecated
 public abstract class MethodInvocationAstMigration extends AstMigration {
-	public MethodInvocationAstMigration( Version minimumVersion, Version resultVersion ) {
+	MethodInvocationAstMigration(Version minimumVersion, Version resultVersion) {
 		super( minimumVersion, resultVersion );
 	}
 

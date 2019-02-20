@@ -104,7 +104,7 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 
 	protected abstract boolean isAcceptable( AbstractMethod method );
 
-	protected abstract AbstractMethod getGetterOrSetter( UserField field );
+	protected abstract List<? extends AbstractMethod> getGettersOrSetters( UserField field );
 
 	@Override
 	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
@@ -123,10 +123,7 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 			}
 		}
 		for( UserField field : this.type.getDeclaredFields() ) {
-			AbstractMethod method = this.getGetterOrSetter( field );
-			if( method != null ) {
-				rv.add( method );
-			}
+			rv.addAll( getGettersOrSetters( field ) );
 		}
 		return rv;
 	}

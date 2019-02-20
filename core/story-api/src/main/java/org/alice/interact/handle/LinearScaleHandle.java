@@ -154,8 +154,6 @@ public class LinearScaleHandle extends LinearDragHandle {
 		}
 		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
 		if( objectTransformation.isNaN() ) {
-			objectTransformation = this.getTransformationForAxis( this.dragAxis );
-			assert !objectTransformation.isNaN() : "Created NaN transformation from " + this.dragAxis;
 			objectTransformation = new AffineMatrix4x4();
 		}
 		this.setTransformation( objectTransformation, this.getReferenceFrame() );

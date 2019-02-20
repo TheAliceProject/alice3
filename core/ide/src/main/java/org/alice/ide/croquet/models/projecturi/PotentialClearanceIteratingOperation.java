@@ -104,7 +104,7 @@ public abstract class PotentialClearanceIteratingOperation extends Operation {
 			}
 			handleSuccessfulCompletionOfSubModels( userActivity, finishedActivities );
 		} catch( CancelException ce ) {
-			userActivity.cancel();
+			userActivity.cancel(ce);
 		}
 	}
 

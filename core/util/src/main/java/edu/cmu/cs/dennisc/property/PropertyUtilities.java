@@ -53,7 +53,7 @@ public final class PropertyUtilities {
 	private PropertyUtilities() {
 	}
 
-	public static Method getGetter( Class<?> cls, String propertyName ) {
+	private static Method getGetter( Class<?> cls, String propertyName ) {
 		Class<?>[] parameterTypes = {};
 		String methodName;
 		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
@@ -77,9 +77,7 @@ public final class PropertyUtilities {
 						if( mthdParameterTypes.length == ( parameterTypes.length + 1 ) ) {
 							boolean isMatch = true;
 							for( int i = 0; i < parameterTypes.length; i++ ) {
-								if( mthdParameterTypes[ i ] == parameterTypes[ i ] ) {
-									//pass
-								} else {
+								if (mthdParameterTypes[i] != parameterTypes[i]) {
 									isMatch = false;
 									break;
 								}
@@ -96,7 +94,7 @@ public final class PropertyUtilities {
 		return rv;
 	}
 
-	public static Method getSetter( Class<?> cls, String propertyName ) {
+	private static Method getSetter( Class<?> cls, String propertyName ) {
 		Method getter = getGetter( cls, propertyName );
 		Class<?> valueClass = getter.getReturnType();
 		Class<?>[] parameterTypes = { valueClass };
@@ -108,31 +106,13 @@ public final class PropertyUtilities {
 		}
 
 		Method rv = getSetter( cls, methodName, parameterTypes );
-		if( rv != null ) {
-			//pass
-		} else {
+		if (rv == null) {
 			if( valueClass.equals( Double.TYPE ) || valueClass.equals( Double.class ) ) {
 				parameterTypes[ 0 ] = Number.class;
 				rv = getSetter( cls, methodName, parameterTypes );
 			}
 		}
 		return rv;
-	}
-
-	public static boolean hasGetter( Class<?> cls, String propertyName ) {
-		try {
-			return getGetter( cls, propertyName ) != null;
-		} catch( RuntimeException re ) {
-			return false;
-		}
-	}
-
-	public static boolean hasSetter( Class<?> cls, String propertyName ) {
-		try {
-			return getSetter( cls, propertyName ) != null;
-		} catch( RuntimeException re ) {
-			return false;
-		}
 	}
 
 	public static String getPropertyNameForGetter( Method method ) {
@@ -156,79 +136,11 @@ public final class PropertyUtilities {
 		}
 	}
 
-	private static String getPropertyNameForSetter( Method method, boolean isExtraParametersAcceptable ) {
-		String prefix = "set";
-		String name = method.getName();
-		if( name.startsWith( prefix ) ) {
-			Class<?>[] parameterClses = method.getParameterTypes();
-			if( ( parameterClses.length == 1 ) || ( isExtraParametersAcceptable && ( parameterClses.length >= 1 ) ) ) {
-				Class<?> valueClass = parameterClses[ 0 ];
-				boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
-				String rv = name.substring( prefix.length() );
-				if( isBoolean ) {
-					rv = "Is" + rv;
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public static String getPropertyNameForSetter( Method method ) {
-		return getPropertyNameForSetter( method, false );
-	}
-
-	public static boolean isGetterAndSetterExists( Method method ) {
-		String propertyName = getPropertyNameForGetter( method );
-		if( propertyName != null ) {
-			return hasSetter( method.getDeclaringClass(), propertyName );
-		} else {
-			return false;
-		}
-	}
-
-	public static boolean isSetterAndGetterExists( Method method ) {
-		String propertyName = getPropertyNameForSetter( method, false );
-		if( propertyName != null ) {
-			return hasGetter( method.getDeclaringClass(), propertyName );
-		} else {
-			return false;
-		}
-	}
-
-	public static boolean isSetterWithExtraParametersAndGetterExists( Method method ) {
-		String propertyName = getPropertyNameForSetter( method, true );
-		if( propertyName != null ) {
-			return hasGetter( method.getDeclaringClass(), propertyName );
-		} else {
-			return false;
-		}
-	}
-
 	public static Method getSetterForGetter( Method method, Class<?> cls ) {
 		return getSetter( cls, getPropertyNameForGetter( method ) );
 	}
 
 	public static Method getSetterForGetter( Method method ) {
 		return getSetterForGetter( method, method.getDeclaringClass() );
-	}
-
-	public static Method getGetterForSetter( Method method ) {
-		return getGetter( method.getDeclaringClass(), getPropertyNameForSetter( method ) );
-	}
-
-	public static Object getPropertyValue( Object o, String propertyName ) {
-		Method getter = getGetter( o.getClass(), propertyName );
-		Object[] args = {};
-		return ReflectionUtilities.invoke( o, getter, args );
-	}
-
-	public static void setPropertyValue( Object o, String propertyName, Object value ) {
-		Method setter = getSetter( o.getClass(), propertyName );
-		Object[] args = { value };
-		ReflectionUtilities.invoke( o, setter, args );
 	}
 }

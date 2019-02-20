@@ -556,7 +556,7 @@ public abstract class AbstractComposite<V extends CompositeView<?, ?>> extends A
 					activity.finish();
 				}
 			} catch( CancelException ce ) {
-				activity.cancel();
+				activity.cancel(ce);
 			}
 		}
 

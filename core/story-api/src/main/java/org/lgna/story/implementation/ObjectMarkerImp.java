@@ -140,11 +140,6 @@ public class ObjectMarkerImp extends MarkerImp {
 		return this.sgVisuals;
 	}
 
-	@Override
-	public float getDefaultMarkerOpacity() {
-		return 0.75f;
-	}
-
 	private Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap;
 
 	private Visual[] sgVisuals;

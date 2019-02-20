@@ -46,7 +46,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.croquet.imp.cascade.ItemNode;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ThisExpression;
 
 import java.util.Map;
 import java.util.UUID;
@@ -78,7 +77,7 @@ public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<FieldAc
 	}
 
 	private FieldAccess createValue( AbstractField field ) {
-		return new FieldAccess( new ThisExpression(), field );
+		return new FieldAccess(field);
 	}
 
 	@Override

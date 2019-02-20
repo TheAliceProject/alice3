@@ -90,6 +90,7 @@ public class GalleryDiff {
 
 		// Workaround for a bug where the class loader holds onto a reference to
 		// a loaded jar file and doesn't let us delete the file
+		@Override
 		public void close() {
 			try {
 				Class clazz = URLClassLoader.class;

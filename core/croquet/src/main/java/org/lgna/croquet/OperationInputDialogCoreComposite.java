@@ -76,10 +76,10 @@ public abstract class OperationInputDialogCoreComposite<V extends CompositeView<
 					openingActivity.finish();
 				}
 			} catch (CancelException ce) {
-				cancel();
+				cancel(ce);
 			}
 		} else {
-			cancel();
+			cancel( null );
 		}
 	}
 

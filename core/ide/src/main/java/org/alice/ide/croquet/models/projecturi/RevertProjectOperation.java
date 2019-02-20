@@ -76,7 +76,7 @@ public class RevertProjectOperation extends UriActionOperation {
 			if( uri != null ) {
 				UriProjectLoader loader = UriProjectLoader.createInstance( uri );
 				if( loader != null ) {
-					application.loadProjectFrom( loader );
+					application.loadProject(activity, loader );
 					activity.finish();
 				} else {
 					Dialogs.showInfo( "todo: revert loader == null " + uri );

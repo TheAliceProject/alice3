@@ -118,6 +118,7 @@ public class MethodInvocationBlank extends CascadeBlank<MethodInvocationEditFact
 			methods.add( OneShotSorter.ROLL_METHOD );
 			methods.add( OneShotSorter.TURN_TO_FACE_METHOD );
 			methods.add( OneShotSorter.POINT_AT_METHOD );
+			methods.add( OneShotSorter.ORIENT_TO_METHOD );
 			methods.add( OneShotSorter.ORIENT_TO_UPRIGHT_METHOD );
 		}
 		if( movableTurnableType.isAssignableFrom( instanceFactoryValueType ) ) {

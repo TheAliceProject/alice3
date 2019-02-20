@@ -44,26 +44,23 @@
 import edu.cmu.cs.dennisc.java.io.FileSystemUtils;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
-import edu.cmu.cs.dennisc.java.lang.ProcessUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
-import edu.cmu.cs.dennisc.pattern.Criterion;
 import org.apache.commons.io.FileUtils;
 import org.lgna.project.ProjectVersion;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Plugin {
-	public Plugin( Config config, File repoRoot, int version ) {
+	Plugin(Config config, File repoRoot, int version) {
 		this.config = config;
 		this.version = version;
 		this.root = new File( repoRoot, "alice/netbeans/" + version );
@@ -72,23 +69,23 @@ public abstract class Plugin {
 
 		InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans" + this.version + "Plugin/manifest.mf" );
 		assert manifestInputStream != null;
-		this.manifestText = PluginCommon.substituteVersionTexts( config, TextFileUtilities.read( manifestInputStream ) );
+		this.manifestText = substituteVersionTexts( config, TextFileUtilities.read( manifestInputStream ) );
 		assert this.manifestText != null;
 		assert this.manifestText.length() > 0;
 
 		InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans" + this.version + "Plugin/Alice3Library.xml" );
 		assert libraryXmlInputStream != null;
-		this.libraryXmlText = PluginCommon.substituteVersionTexts( config, TextFileUtilities.read( libraryXmlInputStream ) );
+		this.libraryXmlText = substituteVersionTexts( config, TextFileUtilities.read( libraryXmlInputStream ) );
 		assert this.libraryXmlText != null;
 		assert this.libraryXmlText.length() > 0;
 
 		InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans" + this.version + "Plugin/project.xml" );
 		assert projectXmlInputStream != null;
-		this.projectXmlText = PluginCommon.substituteVersionTexts( config, TextFileUtilities.read( projectXmlInputStream ) );
+		this.projectXmlText = substituteVersionTexts( config, TextFileUtilities.read( projectXmlInputStream ) );
 		assert this.projectXmlText != null;
 		assert this.projectXmlText.length() > 0;
 
-		this.projectTemplateDir = new File( this.getRoot(), "ProjectTemplate" );
+		this.projectTemplateDir = new File( this.getRoot(), "../src/main/resources/ProjectTemplate" );
 		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
 		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
 	}
@@ -101,19 +98,19 @@ public abstract class Plugin {
 		return new File( this.getWizardDir(), "release" );
 	}
 
-	protected final File getJarsDir() {
+	private File getJarsDir() {
 		return new File( this.getWizardReleaseDir(), "modules/ext" );
 	}
 
-	protected final File getDistributionDir() {
+	private File getDistributionDir() {
 		return new File( this.getWizardReleaseDir(), "src/aliceSource.jar_root" );
 	}
 
-	protected final File getJavaDocZipFile() {
+	private File getJavaDocZipFile() {
 		return new File( this.getWizardReleaseDir(), "doc/aliceDocs.zip" );
 	}
 
-	protected final File getSrcZipFile() {
+	private File getSrcZipFile() {
 		return new File( this.getWizardReleaseDir(), "src/aliceSource.jar" );
 	}
 
@@ -123,33 +120,15 @@ public abstract class Plugin {
 
 	protected abstract File getNbmFile();
 
-	protected abstract File getJdkToUseForNbmAntCommand();
-
-	protected Config getConfig() {
-		return this.config;
-	}
-
-	protected File getRoot() {
+	File getRoot() {
 		return this.root;
-	}
-
-	protected String getManifestText() {
-		return this.manifestText;
-	}
-
-	protected String getLibraryXmlText() {
-		return this.libraryXmlText;
-	}
-
-	protected String getProjectXmlText() {
-		return this.projectXmlText;
 	}
 
 	public int getVersion() {
 		return this.version;
 	}
 
-	public void copyJars( BuildRepo buildRepo ) throws IOException {
+	void copyJars( BuildRepo buildRepo ) throws IOException {
 		ProjectCollection coreProjectCollection = new ProjectCollection.Builder( "core" )
 				.addProjectNames(
 						"util",
@@ -157,7 +136,8 @@ public abstract class Plugin {
 						"glrender",
 						"story-api",
 						"ast",
-						"story-api-migration" )
+						"story-api-migration",
+						"tweedle")
 				.build();
 
 		ProjectCollection nonfreeProjectCollection = new ProjectCollection.Builder( "nonfree/core" )
@@ -167,131 +147,113 @@ public abstract class Plugin {
 
 		if( this.getJarsDir().exists() ) {
 			FileUtils.deleteDirectory( this.getJarsDir() );
-			assert this.getJarsDir().exists() == false : this.getJarsDir();
+			assert !this.getJarsDir().exists() : this.getJarsDir();
 		}
 
 		buildRepo.copyJars( coreProjectCollection, this.getJarsDir() );
 		buildRepo.copyJars( nonfreeProjectCollection, this.getJarsDir() );
 
-		List<String> jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( this.config );
+		List<String> jarPathsToCopyFromMaven = getJarPathsToCopyFromMaven( this.config );
 
+		final File mavenRepository = new File( FileUtilities.getUserDirectory(), ".m2/repository" );
 		for( String mavenRepoJarPath : jarPathsToCopyFromMaven ) {
-			File src = new File( MavenUtils.getMavenRepositoryDir(), mavenRepoJarPath );
+			File src = new File( mavenRepository, mavenRepoJarPath );
 			File dst = new File( this.getJarsDir(), src.getName() );
 			assert src.exists() : src;
 			FileUtilities.copyFile( src, dst );
 			assert dst.exists() : dst;
 			Logger.outln( dst );
 		}
+
 	}
 
-	public void copyDistribution( BuildRepo buildRepo ) throws IOException {
+	void copyDistribution( BuildRepo buildRepo ) throws IOException {
 		if( this.getDistributionDir().exists() ) {
 			FileUtils.deleteDirectory( this.getDistributionDir() );
-			assert this.getDistributionDir().exists() == false : this.getDistributionDir();
+			assert !this.getDistributionDir().exists() : this.getDistributionDir();
 		}
-
 		File distribSrc = buildRepo.getDistributionSourceDir();
 		assert distribSrc.exists() : distribSrc;
 		assert distribSrc.isDirectory() : distribSrc;
-		FileUtilities.copyDirectory( distribSrc, this.getDistributionDir(), new Criterion<File>() {
-			@Override
-			public boolean accept( File file ) {
-				if( file.isDirectory() ) {
-					String directoryName = file.getName();
-					if( directoryName.equals( "application" ) || directoryName.equals( "ffmpeg" ) || directoryName.equals( "libvlc" ) ) {
-						return false;
-					}
-				}
-				return true;
+		FileUtilities.copyDirectory( distribSrc, this.getDistributionDir(), file -> {
+			if( file.isDirectory() ) {
+				String directoryName = file.getName();
+				return !directoryName.equals( "application" )
+					&& !directoryName.equals( "ffmpeg" )
+					&& !directoryName.equals( "libvlc" );
 			}
+			return true;
 		} );
 	}
 
-	public void prepareFiles() throws IOException {
+	void prepareFiles() throws IOException {
 		File dstManifestFile = new File( this.getWizardDir(), "manifest.mf" );
 		FileSystemUtils.deleteIfExists( dstManifestFile );
-		TextFileUtilities.write( dstManifestFile, this.getManifestText() );
+		TextFileUtilities.write( dstManifestFile, manifestText );
 		assert dstManifestFile.exists() : dstManifestFile;
 
 		File dstLibraryXmlFile = this.getLibraryXmlFile();
 		FileSystemUtils.deleteIfExists( dstLibraryXmlFile );
-		TextFileUtilities.write( dstLibraryXmlFile, this.getLibraryXmlText() );
+		TextFileUtilities.write( dstLibraryXmlFile, libraryXmlText );
 		assert dstLibraryXmlFile.exists() : dstLibraryXmlFile;
 
 		File dstProjectXmlFile = new File( this.getWizardDir(), "nbproject/project.xml" );
 		FileSystemUtils.deleteIfExists( dstProjectXmlFile );
-		TextFileUtilities.write( dstProjectXmlFile, this.getProjectXmlText() );
+		TextFileUtilities.write( dstProjectXmlFile, projectXmlText );
 		assert dstProjectXmlFile.exists() : dstProjectXmlFile;
 
 		File projectZip = this.getProjectTemplateZipFile();
 		ZipUtilities.zip( this.projectTemplateDir, projectZip );
 		assert projectZip.exists() : projectZip;
-
-		File userPropertiesFile = NetBeansUtils.getUserPropertiesFile( this.version );
-		File platformPrivatePropertiesFile = new File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
-		TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
 	}
 
-	public void zipJavaDocs( File tempDirectoryForJavaDoc ) throws IOException {
+	void zipJavaDocs( File tempDirectoryForJavaDoc ) throws IOException {
 		File docZip = this.getJavaDocZipFile();
 		FileUtilities.createParentDirectoriesIfNecessary( docZip );
 		ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
 		assert docZip.exists() : docZip;
 	}
 
-	public void zipSrc( BuildRepo buildRepo ) throws IOException {
+	void zipSrc( BuildRepo buildRepo ) throws IOException {
 		File srcDirectory = new File( buildRepo.getCoreSrcDirectory( "story-api" ), "org/lgna/story" );
 		assert srcDirectory.exists() : srcDirectory;
 		assert srcDirectory.isDirectory() : srcDirectory;
 		File dstZip = this.getSrcZipFile();
-		ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new FileFilter() {
-			@Override
-			public boolean accept( File file ) {
-				return "java".equals( FileUtilities.getExtension( file ) );
-			}
-		} );
+		ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip,
+										  file -> "java".equals( FileUtilities.getExtension( file ) ) );
 	}
 
-	private void _ant( String arg, File javaHomeDir ) throws IOException, InterruptedException {
+	private void _ant( String arg ) throws IOException, InterruptedException {
 		List<String> command = Lists.newLinkedList();
-		command.add( AntUtils.getAntCommandFile().getAbsolutePath() );
+		command.add( "ant" );
 		if( arg != null ) {
 			command.add( arg );
 		}
-
-		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		if( javaHomeDir != null ) {
-			Map<String, String> env = processBuilder.environment();
-			env.put( "JAVA_HOME", javaHomeDir.getAbsolutePath() );
-		}
-		processBuilder.directory( this.getSuiteDir() );
-		ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+		BuildRepo.runCommand( getSuiteDir(), command );
 	}
 
-	private void antClean( File javaHomeDir ) throws IOException, InterruptedException {
-		_ant( "clean", javaHomeDir );
+	private void antClean() throws IOException, InterruptedException {
+		_ant( "clean" );
 	}
 
-	private void antCompile( File javaHomeDir ) throws IOException, InterruptedException {
-		_ant( null, javaHomeDir );
+	private void antCompile() throws IOException, InterruptedException {
+		_ant( null );
 	}
 
-	private void antNBM( File javaHomeDir ) throws IOException, InterruptedException {
-		_ant( "nbms", javaHomeDir );
+	private void antNBM() throws IOException, InterruptedException {
+		_ant( "nbms" );
 	}
 
-	public void createNbm() throws IOException, InterruptedException {
+	void createNbm() throws IOException, InterruptedException {
 		File nbm = this.getNbmFile();
 
 		FileSystemUtils.deleteIfExists( nbm );
 
-		File javaHomeDir = JdkUtils.getJdk8HomeDir();
 		if( this.config.isCleanDesired() ) {
-			antClean( javaHomeDir );
+			antClean();
 		}
-		antCompile( javaHomeDir );
-		antNBM( javaHomeDir );
+		antCompile();
+		antNBM();
 
 		assert nbm.exists() : nbm;
 
@@ -302,6 +264,31 @@ public abstract class Plugin {
 		assert nbmVersion.exists() : nbmVersion;
 
 		Logger.outln( nbmVersion );
+	}
+
+	private static String substituteVersionTexts( Config config, String s ) {
+		s = s.trim();
+		s = s.replaceAll( "___ALICE_VERSION___", ProjectVersion.getCurrentVersionText() );
+		s = s.replaceAll( "___JOGL_VERSION___", config.getJoglVersion() );
+		s = s.replaceAll( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
+		s = s.replaceAll( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
+		return s;
+	}
+
+	private static List<String> getJarPathsToCopyFromMaven( Config config ) {
+		List<String> list = Lists.newLinkedList();
+		list.add( substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ) );
+		list.add( substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ) );
+		list.add( "javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" );
+		list.add( "com/sun/javamp3/1.0/javamp3-1.0.jar" );
+		list.add( "org/apache/commons/commons-text/1.1/commons-text-1.1.jar" );
+		list.add( "org/apache/commons/commons-lang3/3.5/commons-lang3-3.5.jar" );
+		list.add( "com/sun/media/jai-codec/1.1.3/jai-codec-1.1.3.jar" );
+		list.add( "javax/media/jai-core/1.1.3/jai-core-1.1.3.jar" );
+		list.add( "com/google/code/gson/gson/2.8.2/gson-2.8.2.jar" );
+		list.add( substituteVersionTexts( config, "org/alice/alice-model-source/___ALICE_MODEL_SOURCE_VERSION___/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar" ) );
+		list.add( substituteVersionTexts( config, "org/alice/nonfree/nebulous-model-source/___NEBULOUS_MODEL_SOURCE_VERSION___/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar" ) );
+		return Collections.unmodifiableList( list );
 	}
 
 	private final Config config;

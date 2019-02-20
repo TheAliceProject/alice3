@@ -81,24 +81,23 @@ public final class ImageFactory {
 
 	public static BufferedImage getBufferedImage( ImageResource imageResource ) {
 		assert imageResource != null;
-		BufferedImage rv = ImageFactory.resourceToBufferedImageMap.get( imageResource );
-		if( rv != null ) {
-			//pass
-		} else {
-			try {
-				rv = ImageIO.read( new ByteArrayInputStream( imageResource.getData() ) );
-				//				if( imageResource.getWidth() < 0 || imageResource.getHeight() < 0 ) {
-				imageResource.setWidth( rv.getWidth() );
-				imageResource.setHeight( rv.getHeight() );
-				//				}
-
-				imageResource.addContentListener( ImageFactory.resourceContentListener );
-				ImageFactory.resourceToBufferedImageMap.put( imageResource, rv );
-			} catch( IOException ioe ) {
-				//todo: return warning texture
-			}
+		BufferedImage cachedImage = ImageFactory.resourceToBufferedImageMap.get( imageResource );
+		if (cachedImage != null) {
+			return cachedImage;
 		}
-		return rv;
+		try {
+			BufferedImage image = ImageIO.read( new ByteArrayInputStream( imageResource.getData() ) );
+			if( image != null ) {
+				imageResource.setWidth( image.getWidth() );
+				imageResource.setHeight( image.getHeight() );
+				imageResource.addContentListener( ImageFactory.resourceContentListener );
+				ImageFactory.resourceToBufferedImageMap.put( imageResource, image );
+				return image;
+			}
+		} catch( IOException ioe ) {
+			//todo: return warning texture
+		}
+		return null;
 	}
 
 	public static ImageResource createImageResource(BufferedImage image, String fileName) throws IOException {
@@ -118,7 +117,9 @@ public final class ImageFactory {
 			ImageResource rv = new ImageResource( file, contentType );
 
 			//update width and height details
-			getBufferedImage( rv );
+			if (null == getBufferedImage( rv ) ) {
+				throw new IOException( "content not found for " + file );
+			}
 
 			return rv;
 		} else {

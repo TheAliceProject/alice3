@@ -234,7 +234,7 @@ public class EventManager {
 	}
 
 	public void addKeyListener( KeyPressListener keyListener, MultipleEventPolicy eventPolicy, HeldKeyPolicy heldKeyPolicy ) {
-		this.keyHandler.addListener( keyListener, eventPolicy, null, heldKeyPolicy );
+		keyHandler.addListener(keyListener, eventPolicy, heldKeyPolicy );
 	}
 
 	public void addNumberKeyListener( NumberKeyPressListener keyPressListener, MultipleEventPolicy policy, HeldKeyPolicy heldKeyPolicy ) {

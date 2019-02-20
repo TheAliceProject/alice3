@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
+import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Getter;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.Setter;
@@ -162,12 +163,16 @@ public class CodeOrganizer {
 		addItem( method, method.getName(), NON_STATIC_METHODS, ALL_METHODS );
 	}
 
-	public void addGetter( Getter getter ) {
-		addItem( getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS );
+	public void addGetters( List<Getter> getters ) {
+		for (Getter getter : getters) {
+			addItem( getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS );
+		}
 	}
 
-	public void addSetter( Setter setter ) {
-		addItem( setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS );
+	public void addSetters( List<Setter> setters ) {
+		for (Setter setter : setters) {
+			addItem( setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS );
+		}
 	}
 
 	public void addField( UserField field ) {

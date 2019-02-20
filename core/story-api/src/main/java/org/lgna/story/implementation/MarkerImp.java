@@ -163,7 +163,7 @@ public abstract class MarkerImp extends VisualScaleModelImp {
 
 	protected float getDefaultMarkerOpacity()
 	{
-		return 1;
+		return 0.5f;
 	}
 
 	public Color4f getMarkerColor()

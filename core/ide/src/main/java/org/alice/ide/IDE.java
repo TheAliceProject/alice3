@@ -59,6 +59,7 @@ import org.alice.ide.issue.DefaultExceptionHandler;
 import org.alice.ide.perspectives.ProjectPerspective;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.ide.stencil.PotentialDropReceptorsFeedbackView;
+import org.alice.ide.uricontent.FileProjectLoader;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Operation;
@@ -430,28 +431,22 @@ public abstract class IDE extends ProjectApplication {
 
 	protected abstract void promptForLicenseAgreements();
 
-	public File getProjectFileToLoadOnWindowOpened() {
-		return this.projectFileToLoadOnWindowOpened;
-	}
-
 	public void setProjectFileToLoadOnWindowOpened( File projectFileToLoadOnWindowOpened ) {
 		this.projectFileToLoadOnWindowOpened = projectFileToLoadOnWindowOpened;
 	}
 
 	@Override
 	protected void handleWindowOpened( WindowEvent e ) {
-		this.promptForLicenseAgreements();
-		if( this.projectFileToLoadOnWindowOpened != null ) {
-			this.loadProjectFrom( this.projectFileToLoadOnWindowOpened );
-			this.projectFileToLoadOnWindowOpened = null;
+		promptForLicenseAgreements();
+		UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
+		if( projectFileToLoadOnWindowOpened != null ) {
+			this.loadProject(activity, new FileProjectLoader(projectFileToLoadOnWindowOpened) );
+			projectFileToLoadOnWindowOpened = null;
 		}
-
-		if ( this.getUri() == null ) {
-			this.setPerspective( this.getDocumentFrame().getNoProjectPerspective() );
-
-			UserActivity userActivity = getOverallUserActivity().getLatestActivity().newChildActivity(); // or acquireOpenActivity()?
-			WindowEventTrigger.setOnUserActivity( userActivity, e );
-			this.getDocumentFrame().getNewProjectOperation().fire( userActivity );
+		if ( getUri() == null ) {
+			setPerspective( getDocumentFrame().getNoProjectPerspective() );
+			WindowEventTrigger.setOnUserActivity( activity, e );
+			getDocumentFrame().getNewProjectOperation().fire( activity );
 		}
 	}
 
@@ -460,7 +455,8 @@ public abstract class IDE extends ProjectApplication {
 		if (files != null && !files.isEmpty()) {
 			File file = files.get( 0 );
 			if( file.exists() ) {
-				new OpenProjectFromOsOperation( file ).fire( null );
+				UserActivity activity = getOverallUserActivity().getLatestActivity().newChildActivity();
+				new OpenProjectFromOsOperation( file ).fire( activity );
 			}
 		}
 	}

@@ -50,7 +50,6 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.StoryApiConfigurationManager;
 import org.alice.stageide.sceneeditor.SetUpMethodGenerator;
-import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AccessLevel;
@@ -136,64 +135,55 @@ public class BootstrapUtilties {
 		return rv;
 	}
 
-	protected static UserField createPrivateFinalField( Class<?> cls, String name ) {
+	static UserField createPrivateFinalField(Class<?> cls, String name) {
 		return createPrivateFinalField( JavaType.getInstance( cls ), name );
 	}
 
-	private static UserMethod addCommentIfNecessaryToMethod( UserMethod userMethod ) {
-		StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
+	private static void addCommentIfNecessaryToMethod(UserMethod userMethod ) {
 		String innerComment = StoryApiSpecificAstUtilities.getInnerCommentForMethodName( userMethod.getDeclaringType(), userMethod.getName() );
 		if( innerComment != null ) {
+			StatementListProperty bodyStatementsProperty = userMethod.body.getValue().statements;
 			bodyStatementsProperty.add( 0, new Comment( innerComment ) );
 		}
-		return userMethod;
 	}
 
-	private static UserMethod createMethod( AccessLevel access, AbstractType<?, ?, ?> returnType, String name ) {
+	private static UserMethod createProcedure(AccessLevel access, String name) {
 		UserMethod rv = new UserMethod();
 		rv.accessLevel.setValue( access );
-		rv.returnType.setValue( returnType );
+		rv.returnType.setValue( JavaType.getInstance(Void.TYPE) );
 		rv.name.setValue( name );
 		rv.body.setValue( new BlockStatement() );
 		return rv;
 	}
 
-	private static UserMethod createMethod( AccessLevel access, Class<?> cls, String name ) {
-		return createMethod( access, JavaType.getInstance( cls ), name );
-	}
-
-	protected static FieldAccess createThisFieldAccess( AbstractField field ) {
-		return new FieldAccess( new ThisExpression(), field );
-	}
-
-	protected static ExpressionStatement createMethodInvocationStatement( Expression expression, AbstractMethod method, Expression... argumentExpressions ) {
+	static ExpressionStatement createMethodInvocationStatement(Expression expression, AbstractMethod method, Expression... argumentExpressions) {
 		return AstUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
 	}
 
-	private static LocalDeclarationStatement createLocalDeclarationStatementInitializedByInstanceCreation( String name, AbstractType<?, ?, ?> type, boolean isFinal ) {
-		UserLocal local = new UserLocal( name, type, isFinal );
+	private static LocalDeclarationStatement createStoryDeclaration(AbstractType<?, ?, ?> type) {
+		UserLocal local = new UserLocal("story", type, true);
 		return AstUtilities.createLocalDeclarationStatement( local, new InstanceCreation( type.getDeclaredConstructor() ) );
 	}
 
-	protected static FieldAccess createFieldAccess( Enum<?> value ) {
+	static FieldAccess createFieldAccess(Enum<?> value) {
 		return AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 
 	//todo
 	public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
 
-	public static NamedUserType createProgramType( UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor ) {
+	static NamedUserType createProgramType(UserField[] modelFields, ExpressionStatement[] setupStatements, Color atmosphereColor, double fogDensity, Color aboveLightColor, Color belowLightColor) {
 		UserField cameraField = createPrivateFinalField( SCamera.class, "camera" );
 		cameraField.isDeletionAllowed.setValue( false );
 		cameraField.managementLevel.setValue( ManagementLevel.MANAGED );
 
-		UserMethod myFirstMethod = createMethod( AccessLevel.PUBLIC, Void.TYPE, MY_FIRST_PROCEDURE_NAME );
+		UserMethod myFirstMethod = createProcedure(AccessLevel.PUBLIC, MY_FIRST_PROCEDURE_NAME );
 
-		UserMethod performGeneratedSetupMethod = createMethod( AccessLevel.PRIVATE, Void.TYPE, StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
+		UserMethod performGeneratedSetupMethod = createProcedure(AccessLevel.PRIVATE, StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
 		performGeneratedSetupMethod.managementLevel.setValue( ManagementLevel.MANAGED );
 		BlockStatement performGeneratedSetupBody = performGeneratedSetupMethod.body.getValue();
 
-		UserMethod initializeEventListenersMethod = createMethod( AccessLevel.PRIVATE, Void.TYPE, StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+		UserMethod initializeEventListenersMethod = createProcedure(AccessLevel.PRIVATE, StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 
 		UserLambda sceneActivationListener = AstUtilities.createUserLambda( SceneActivationListener.class );
 		LambdaExpression sceneActivationListenerExpression = new LambdaExpression( sceneActivationListener );
@@ -208,7 +198,7 @@ public class BootstrapUtilties {
 
 		for( UserField field : fields ) {
 			AbstractMethod method = field.getValueType().findMethod( "setVehicle", SThing.class );
-			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( createThisFieldAccess( field ), method, new ThisExpression() ) );
+			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new FieldAccess(field), method, new ThisExpression() ) );
 		}
 
 		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
@@ -232,9 +222,7 @@ public class BootstrapUtilties {
 				Logger.severe( "This exception should not occure: " + e );
 			}
 		}
-		if( Double.isNaN( fogDensity ) ) {
-			//pass
-		} else {
+		if (!Double.isNaN(fogDensity)) {
 			JavaMethod setFogDensityMethod = JavaMethod.getInstance( SScene.class, "setFogDensity", Number.class, SetFogDensity.Detail[].class );
 			performGeneratedSetupBody.statements.add( createMethodInvocationStatement( new ThisExpression(), setFogDensityMethod, new DoubleLiteral( fogDensity ) ) );
 		}
@@ -258,9 +246,9 @@ public class BootstrapUtilties {
 		}
 		performGeneratedSetupBody.statements.add( setupStatements );
 
-		UserMethod performCustomSetupMethod = createMethod( AccessLevel.PRIVATE, Void.TYPE, "performCustomSetup" );
+		UserMethod performCustomSetupMethod = createProcedure(AccessLevel.PRIVATE, "performCustomSetup" );
 
-		UserMethod handleActiveChangedMethod = createMethod( AccessLevel.PROTECTED, Void.TYPE, "handleActiveChanged" );
+		UserMethod handleActiveChangedMethod = createProcedure(AccessLevel.PROTECTED, "handleActiveChanged" );
 		UserParameter isActiveParameter = new UserParameter( "isActive", Boolean.class );
 		UserParameter activeCountParameter = new UserParameter( "activationCount", Integer.class );
 		handleActiveChangedMethod.requiredParameters.add( isActiveParameter );
@@ -312,16 +300,16 @@ public class BootstrapUtilties {
 		rv.fields.add( sceneField );
 
 		UserParameter argsParameter = new UserParameter( "args", String[].class );
-		UserMethod mainMethod = createMethod( AccessLevel.PUBLIC, Void.TYPE, "main" );
+		UserMethod mainMethod = createProcedure(AccessLevel.PUBLIC, "main" );
 		mainMethod.requiredParameters.add( argsParameter );
 		BlockStatement mainBody = mainMethod.body.getValue();
 
 		mainMethod.isStatic.setValue( true );
 		mainMethod.isSignatureLocked.setValue( true );
 
-		LocalDeclarationStatement localDeclarationStatement = createLocalDeclarationStatementInitializedByInstanceCreation( "story", rv, true );
-		UserLocal storyLocal = localDeclarationStatement.local.getValue();
-		mainBody.statements.add( localDeclarationStatement );
+		LocalDeclarationStatement storyDeclaration = createStoryDeclaration(rv);
+		UserLocal storyLocal = storyDeclaration.local.getValue();
+		mainBody.statements.add( storyDeclaration );
 		mainBody.statements.add( createMethodInvocationStatement( new LocalAccess( storyLocal ), rv.findMethod( "initializeInFrame", String[].class ), new ParameterAccess( argsParameter ) ) );
 		mainBody.statements.add( createMethodInvocationStatement( new LocalAccess( storyLocal ), StoryApiConfigurationManager.SET_ACTIVE_SCENE_METHOD, new MethodInvocation( new LocalAccess( storyLocal ), sceneField.getGetter() ) ) );
 
@@ -339,16 +327,16 @@ public class BootstrapUtilties {
 
 		UserField[] modelFields = { groundField
 		};
-		ArrayList<ExpressionStatement> setupStatements = new ArrayList<ExpressionStatement>();
+		ArrayList<ExpressionStatement> setupStatements = new ArrayList<>();
 
 		JavaMethod setPaintMethod = JavaMethod.getInstance( SGround.class, "setPaint", Paint.class, SetPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
+		setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setPaintMethod, createFieldAccess(appearance ) ) );
 
 		if( groundOpacity != 1 ) {
 			JavaMethod setGroundOpacityMethod = JavaMethod.getInstance( SGround.class, "setOpacity", Number.class, SetOpacity.Detail[].class );
-			setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundOpacityMethod, new DoubleLiteral( groundOpacity ) ) );
+			setupStatements.add( createMethodInvocationStatement(new FieldAccess(groundField), setGroundOpacityMethod, new DoubleLiteral(groundOpacity ) ) );
 		}
 
-		return createProgramType( modelFields, setupStatements.toArray( new ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
+		return createProgramType(modelFields, setupStatements.toArray(new ExpressionStatement[0]), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
 	}
 }

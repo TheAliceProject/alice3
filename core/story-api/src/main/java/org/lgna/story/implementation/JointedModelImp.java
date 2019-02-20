@@ -43,13 +43,11 @@
 
 package org.lgna.story.implementation;
 
-import java.awt.Font;
 import java.lang.reflect.Field;
 import java.util.*;
 
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
-import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -66,16 +64,12 @@ import edu.cmu.cs.dennisc.math.Vector4;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.*;
-import edu.cmu.cs.dennisc.scenegraph.graphics.Bubble;
 import org.lgna.ik.core.solver.Bone;
 import org.lgna.ik.core.solver.Bone.Direction;
 import org.lgna.story.Paint;
 import org.lgna.story.Pose;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
-import org.lgna.story.implementation.overlay.BubbleImp;
-import org.lgna.story.implementation.overlay.SpeechBubbleImp;
-import org.lgna.story.implementation.overlay.ThoughtBubbleImp;
 import org.lgna.story.implementation.visualization.JointedModelVisualization;
 import org.lgna.story.resources.DynamicResource;
 import org.lgna.story.resources.JointArrayId;
@@ -978,18 +972,6 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 
 	public void animateStraightenOutJoints() {
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
-	}
-
-	public void say( String text, double duration, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference ) {
-		duration = adjustDurationIfNecessary( duration );
-		BubbleImp bubbleImp = new SpeechBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
-		this.displayBubble( bubbleImp, duration );
-	}
-
-	public void think( String text, double duration, Font font, Color4f textColor, Color4f fillColor, Color4f outlineColor, Bubble.PositionPreference positionPreference ) {
-		duration = adjustDurationIfNecessary( duration );
-		BubbleImp bubbleImp = new ThoughtBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
-		this.displayBubble( bubbleImp, duration );
 	}
 
 	public void strikePose( Pose<? extends SJointedModel> pose, double duration, Style style ) {

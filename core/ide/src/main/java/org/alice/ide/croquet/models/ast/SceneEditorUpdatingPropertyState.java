@@ -104,7 +104,7 @@ public class SceneEditorUpdatingPropertyState extends PropertyState {
 				e = ThisExpression.createInstanceThatCanExistWithoutAnAncestorType( StorytellingSceneEditor.getInstance().getActiveSceneType() );
 			}
 			else {
-				e = new FieldAccess( new ThisExpression(), this.field );
+				e = new FieldAccess(field);
 			}
 			AbstractParameter parameter = this.getSetter().getRequiredParameters().get( 0 );
 			SimpleArgument argument = new SimpleArgument( parameter, nextValue );

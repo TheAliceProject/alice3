@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import org.alice.ide.IDE;
 import org.alice.ide.ast.declaration.AddManagedFieldComposite;
 import org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
@@ -207,6 +208,10 @@ public class AddResourceKeyManagedFieldComposite extends AddManagedFieldComposit
 	@Override
 	protected void handlePostHideDialog() {
 		super.handlePostHideDialog();
+		if( openingActivity.isCanceledByError() ) {
+			Dialogs.showWarning("Failed to create model",
+								"There was a problem putting that model in the scene.");
+		}
 		this.resourceKey = null;
 	}
 }

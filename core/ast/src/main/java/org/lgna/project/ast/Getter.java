@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.virtualmachine.VirtualMachine;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,8 +50,8 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class Getter extends AbstractMethodContainedByUserField implements CodeAppender {
-	/* package-private */Getter( UserField field ) {
+public class Getter extends AbstractMethodContainedByUserField {
+	Getter( UserField field ) {
 		super( field );
 	}
 
@@ -83,5 +83,10 @@ public class Getter extends AbstractMethodContainedByUserField implements CodeAp
 			sb.append( fieldName.substring( 1 ) );
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public Object invoke( VirtualMachine virtualMachine, Object target, Object[] arguments ) {
+		return virtualMachine.get( getField(), target);
 	}
 }

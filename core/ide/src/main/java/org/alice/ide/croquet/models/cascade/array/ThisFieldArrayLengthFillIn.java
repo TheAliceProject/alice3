@@ -47,7 +47,6 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.ThisExpression;
 
 import java.util.Map;
 import java.util.UUID;
@@ -79,6 +78,6 @@ public class ThisFieldArrayLengthFillIn extends ArrayLengthFillIn {
 
 	@Override
 	protected Expression createAccessExpression() {
-		return new FieldAccess( new ThisExpression(), this.field );
+		return new FieldAccess(field);
 	}
 }

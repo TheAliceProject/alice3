@@ -85,21 +85,18 @@ public class UserInstance {
 
 	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor,
 					UserType<?> fallbackType, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, fallbackType, new HashMap<UserField, Object>(), null );
-	}
-
-	public static UserInstance createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, null, new HashMap<UserField, Object>(), new HashMap<Object, UserField>() );
+		return new UserInstance( vm, constructor, arguments, fallbackType, new HashMap<>() );
 	}
 
 	private final VirtualMachine vm;
 	private final Object nextInstance;
 	private final UserType<?> type;
 	private final Map<UserField, Object> fieldMap;
+	// TODO Move this on to the scene, since that is the only user of this map
 	private Map<Object, UserField> inverseFieldMap;
 
 	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments,
-					UserType<?> fallbackType, Map<UserField, Object> fieldMap, Map<Object, UserField> inverseFieldMap ) {
+					UserType<?> fallbackType, Map<UserField, Object> fieldMap ) {
 		this.vm = vm;
 		UserType<?> constType = constructor.getDeclaringType();
 
@@ -108,7 +105,6 @@ public class UserInstance {
 		assert this.type != null : constructor.getId();
 
 		this.fieldMap = fieldMap;
-		this.inverseFieldMap = inverseFieldMap;
 
 		ConstructorBlockStatement constructorBlockStatement = constructor.body.getValue();
 		ConstructorInvocationStatement constructorInvocationStatement = constructorBlockStatement.constructorInvocationStatement.getValue();
@@ -122,7 +118,7 @@ public class UserInstance {
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
 			if( nextConstructor.isUserAuthored() ) {
-				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType, fieldMap, inverseFieldMap );
+				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType, fieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
 				ConstructorReflectionProxy constructorReflectionProxy = nextConstructorDeclaredInJava.getConstructorReflectionProxy();
@@ -151,14 +147,18 @@ public class UserInstance {
 	}
 
 	public void ensureInverseMapExists() {
-		if( this.inverseFieldMap != null ) {
-			//pass
-		} else {
-			this.inverseFieldMap = Maps.newHashMap();
-			for( UserField field : this.fieldMap.keySet() ) {
-				Object value = this.fieldMap.get( field );
-				this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
+		if (inverseFieldMap == null) {
+			inverseFieldMap = Maps.newHashMap();
+			for( UserField field : fieldMap.keySet() ) {
+				Object value = fieldMap.get( field );
+				addToInverseMapIfManaged(field, value);
 			}
+		}
+	}
+
+	private void addToInverseMapIfManaged(UserField field, Object value) {
+		if (field.getManagementLevel() == ManagementLevel.MANAGED) {
+			inverseFieldMap.put( getJavaInstanceIfNecessary(value), field );
 		}
 	}
 
@@ -186,10 +186,10 @@ public class UserInstance {
 		return ClassUtilities.getInstance( this.getFieldValueInstanceInJava( field ), cls );
 	}
 
-	public void setFieldValue( UserField field, Object value ) {
-		this.fieldMap.put( field, value );
-		if( this.inverseFieldMap != null ) {
-			this.inverseFieldMap.put( getJavaInstanceIfNecessary( value ), field );
+	void setFieldValue(UserField field, Object value) {
+		fieldMap.put(field, value);
+		if (inverseFieldMap != null) {
+			addToInverseMapIfManaged(field, value);
 		}
 	}
 

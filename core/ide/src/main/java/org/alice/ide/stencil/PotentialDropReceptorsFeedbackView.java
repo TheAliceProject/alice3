@@ -149,8 +149,11 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 				if( isFauxStencilDesired() ) {
 					for( DropReceptor dropReceptor : this.holes ) {
 						SwingComponentView<?> component = dropReceptor.getViewController();
-						Rectangle holeBounds = SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
-						area.subtract( new Area( holeBounds ) );
+						if (component != null && component.getParent() != null) {
+							Rectangle holeBounds = SwingUtilities
+								.convertRectangle(component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent());
+							area.subtract(new Area(holeBounds));
+						}
 					}
 
 					if( potentialDragSourceBounds != null ) {
